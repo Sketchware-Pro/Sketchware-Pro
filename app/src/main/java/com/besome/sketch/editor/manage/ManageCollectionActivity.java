@@ -267,7 +267,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             H.setVisibility(View.VISIBLE);
         } else {
             H.setVisibility(View.GONE);
-            if (m.c == 3 || m.c == 4) {
+            if (m.currentItemId == 3 || m.currentItemId == 4) {
                 x.setVisibility(View.GONE);
             }
         }
@@ -408,7 +408,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     }
 
     public final int m() {
-        return m.c;
+        return m.currentItemId;
     }
 
     public void m(int var1) {
@@ -440,8 +440,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) p.d(position);
                     int currentPosition = C.getCurrentPosition() / 1000;
-                    viewHolder.z.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
-                    viewHolder.A.setProgress(C.getCurrentPosition() / 1000);
+                    viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
+                    viewHolder.playbackProgress.setProgress(C.getCurrentPosition() / 1000);
                 });
             }
         };
@@ -543,14 +543,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             l();
         } else if (id == R.id.fab) {
             a(false);
-            f(m.c);
+            f(m.currentItemId);
         }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (n.d == 0) {
+        if (n.currentViewType == 0) {
             ((GridLayoutManager) p.getLayoutManager()).d(n());
             p.requestLayout();
         }
@@ -645,11 +645,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         u = Mp.h().f();
         v = Pp.h().f();
 
-        if (m.c == -1) {
-            n.d = 0;
+        if (m.currentItemId == -1) {
+            n.currentViewType = 0;
             n.a(q);
             p.setLayoutManager(new GridLayoutManager(getApplicationContext(), n()));
-            m.c = 0;
+            m.currentItemId = 0;
             m.c();
         }
 
@@ -660,9 +660,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void r() {
         u = Mp.h().f();
-        if (m.c == 4) {
+        if (m.currentItemId == 4) {
             n.a(u);
-            n.d = 4;
+            n.currentViewType = 4;
         }
 
         n.c();
@@ -670,9 +670,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void s() {
         s = Np.g().f();
-        if (m.c == 2) {
+        if (m.currentItemId == 2) {
             n.a(s);
-            n.d = 2;
+            n.currentViewType = 2;
         }
 
         n.c();
@@ -680,9 +680,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void t() {
         q = Op.g().f();
-        if (m.c == 0) {
+        if (m.currentItemId == 0) {
             n.a(q);
-            n.d = 0;
+            n.currentViewType = 0;
         }
 
         n.c();
@@ -690,9 +690,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void u() {
         v = Pp.h().f();
-        if (m.c == 5) {
+        if (m.currentItemId == 5) {
             n.a(v);
-            n.d = 5;
+            n.currentViewType = 5;
         }
 
         n.c();
@@ -700,9 +700,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void v() {
         r = Qp.g().f();
-        if (m.c == 1) {
+        if (m.currentItemId == 1) {
             n.a(r);
-            n.d = 1;
+            n.currentViewType = 1;
         }
 
         n.c();
@@ -710,9 +710,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void w() {
         t = Rp.h().f();
-        if (m.c == 3) {
+        if (m.currentItemId == 3) {
             n.a(t);
-            n.d = 3;
+            n.currentViewType = 3;
         }
 
         n.c();
@@ -759,12 +759,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     }
 
     private class CategoryAdapter extends RecyclerView.a<CategoryAdapter.ViewHolder> {
-        public int c;
+
+        private int currentItemId;
         public final ManageCollectionActivity d;
 
         public CategoryAdapter(ManageCollectionActivity var1) {
             d = var1;
-            c = -1;
+            currentItemId = -1;
         }
 
         @Override
@@ -776,47 +777,47 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(CategoryAdapter.ViewHolder holder, int position) {
-            holder.u.setText(ManageCollectionActivity.a(d.getApplicationContext(), position));
-            holder.t.setImageResource(ManageCollectionActivity.g(position));
+            holder.name.setText(ManageCollectionActivity.a(d.getApplicationContext(), position));
+            holder.icon.setImageResource(ManageCollectionActivity.g(position));
             ef var3;
             ColorMatrix var4;
             ColorMatrixColorFilter var5;
-            if (c == position) {
-                var3 = Ze.a(holder.t);
+            if (currentItemId == position) {
+                var3 = Ze.a(holder.icon);
                 var3.c(1.0F);
                 var3.d(1.0F);
                 var3.a(300L);
                 var3.a(new AccelerateInterpolator());
                 var3.c();
-                var3 = Ze.a(holder.t);
+                var3 = Ze.a(holder.icon);
                 var3.c(1.0F);
                 var3.d(1.0F);
                 var3.a(300L);
                 var3.a(new AccelerateInterpolator());
                 var3.c();
-                holder.v.setVisibility(View.VISIBLE);
+                holder.pointerLeft.setVisibility(View.VISIBLE);
                 var4 = new ColorMatrix();
                 var4.setSaturation(1.0F);
                 var5 = new ColorMatrixColorFilter(var4);
-                holder.t.setColorFilter(var5);
+                holder.icon.setColorFilter(var5);
             } else {
-                var3 = Ze.a(holder.t);
+                var3 = Ze.a(holder.icon);
                 var3.c(0.8F);
                 var3.d(0.8F);
                 var3.a(300L);
                 var3.a(new DecelerateInterpolator());
                 var3.c();
-                var3 = Ze.a(holder.t);
+                var3 = Ze.a(holder.icon);
                 var3.c(0.8F);
                 var3.d(0.8F);
                 var3.a(300L);
                 var3.a(new DecelerateInterpolator());
                 var3.c();
-                holder.v.setVisibility(View.GONE);
+                holder.pointerLeft.setVisibility(View.GONE);
                 var4 = new ColorMatrix();
                 var4.setSaturation(0.0F);
                 var5 = new ColorMatrixColorFilter(var4);
-                holder.t.setColorFilter(var5);
+                holder.icon.setColorFilter(var5);
             }
         }
 
@@ -827,53 +828,54 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         }
 
         private class ViewHolder extends RecyclerView.v implements OnClickListener {
-            public ImageView t;
-            public TextView u;
-            public View v;
+
+            public final ImageView icon;
+            public final TextView name;
+            public final View pointerLeft;
             public final CategoryAdapter w;
 
-            public ViewHolder(CategoryAdapter var1, View var2) {
-                super(var2);
+            public ViewHolder(CategoryAdapter var1, View itemView) {
+                super(itemView);
                 w = var1;
-                t = var2.findViewById(R.id.img_icon);
-                u = var2.findViewById(R.id.tv_name);
-                v = var2.findViewById(R.id.pointer_left);
-                var2.setOnClickListener(this);
+                icon = itemView.findViewById(R.id.img_icon);
+                name = itemView.findViewById(R.id.tv_name);
+                pointerLeft = itemView.findViewById(R.id.pointer_left);
+                itemView.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    if (j() != -1 && j() != w.c) {
-                        if (w.c == 1) {
+                    if (j() != -1 && j() != w.currentItemId) {
+                        if (w.currentItemId == 1) {
                             w.d.a(w.d.r);
                         }
 
-                        w.c(w.c);
-                        w.c = j();
-                        w.c(w.c);
+                        w.c(w.currentItemId);
+                        w.currentItemId = j();
+                        w.c(w.currentItemId);
                         w.d.p.removeAllViews();
-                        w.d.n.d = w.c;
-                        if (w.c == 0) {
+                        w.d.n.currentViewType = w.currentItemId;
+                        if (w.currentItemId == 0) {
                             w.d.n.a(w.d.q);
-                        } else if (w.c == 1) {
+                        } else if (w.currentItemId == 1) {
                             w.d.n.a(w.d.r);
-                        } else if (w.c == 2) {
+                        } else if (w.currentItemId == 2) {
                             w.d.n.a(w.d.s);
-                        } else if (w.c == 3) {
+                        } else if (w.currentItemId == 3) {
                             w.d.n.a(w.d.t);
-                        } else if (w.c == 4) {
+                        } else if (w.currentItemId == 4) {
                             w.d.n.a(w.d.u);
                         } else {
                             w.d.n.a(w.d.v);
                         }
 
-                        if (w.d.n.d == 0) {
+                        if (w.d.n.currentViewType == 0) {
                             w.d.p.setLayoutManager(new GridLayoutManager(getApplicationContext(), w.d.n()));
                             w.d.x.f();
                         } else {
                             w.d.p.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
-                            if (w.d.n.d != 1 && w.d.n.d != 2) {
+                            if (w.d.n.currentViewType != 1 && w.d.n.currentViewType != 2) {
                                 w.d.x.c();
                             } else {
                                 w.d.x.f();
@@ -888,22 +890,23 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     }
 
     private class CollectionAdapter extends RecyclerView.a<RecyclerView.v> {
-        public int c;
-        public int d;
-        public ArrayList<? extends SelectableBean> e;
+
+        private int lastSelectedItemPosition;
+        private int currentViewType;
+        private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
         public final ManageCollectionActivity f;
 
-        public CollectionAdapter(ManageCollectionActivity var1, RecyclerView var2) {
+        public CollectionAdapter(ManageCollectionActivity var1, RecyclerView target) {
             f = var1;
-            c = -1;
-            d = -1;
+            lastSelectedItemPosition = -1;
+            currentViewType = -1;
             // RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)
-            var2.a(new RecyclerView.m() {
+            target.a(new RecyclerView.m() {
                 @Override
                 // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
                 public void a(RecyclerView recyclerView, int dx, int dy) {
                     super.a(recyclerView, dx, dy);
-                    if (d == 3 || d == 4 || d == 5) {
+                    if (currentViewType == 3 || currentViewType == 4 || currentViewType == 5) {
                         return;
                     }
                     if (dy > 2) {
@@ -916,107 +919,107 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                 }
             });
-            e = new ArrayList<>();
+            currentCollectionTypeItems = new ArrayList<>();
         }
 
         @Override
         // RecyclerView.Adapter#getItemCount()
         public int a() {
-            return e.size();
+            return currentCollectionTypeItems.size();
         }
 
         public void a(BlockCollectionViewHolder holder, int position) {
-            BlockCollectionBean var3 = (BlockCollectionBean) e.get(position);
+            BlockCollectionBean var3 = (BlockCollectionBean) currentCollectionTypeItems.get(position);
             if (f.k) {
-                holder.y.setVisibility(View.VISIBLE);
-                holder.v.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
+                holder.blockIcon.setVisibility(View.GONE);
             } else {
-                holder.v.setVisibility(View.VISIBLE);
-                holder.y.setVisibility(View.GONE);
+                holder.blockIcon.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (var3.isSelected) {
-                holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            holder.v.setImageResource(f.a((BlockBean) var3.blocks.get(0)));
-            holder.x.setText(var3.name);
-            holder.u.setChecked(var3.isSelected);
+            holder.blockIcon.setImageResource(f.a((BlockBean) var3.blocks.get(0)));
+            holder.name.setText(var3.name);
+            holder.checkBox.setChecked(var3.isSelected);
         }
 
         public void a(FontCollectionViewHolder holder, int position) {
-            ProjectResourceBean bean = (ProjectResourceBean) e.get(position);
+            ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             if (f.k) {
-                holder.z.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                holder.z.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
-                holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            holder.u.setChecked(bean.isSelected);
-            holder.x.setText(bean.resName + ".ttf");
+            holder.checkBox.setChecked(bean.isSelected);
+            holder.name.setText(bean.resName + ".ttf");
 
             try {
-                holder.y.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
-                holder.y.setText(xB.b().a(f.getApplicationContext(), R.string.design_manager_font_description_example_sentence));
+                holder.preview.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
+                holder.preview.setText(xB.b().a(f.getApplicationContext(), R.string.design_manager_font_description_example_sentence));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         public void a(ImageCollectionViewHolder holder, int position) {
-            ProjectResourceBean bean = (ProjectResourceBean) e.get(position);
+            ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             if (f.k) {
-                holder.y.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                holder.y.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isNinePatch()) {
-                holder.x.setVisibility(View.VISIBLE);
+                holder.ninePatchIcon.setVisibility(View.VISIBLE);
             } else {
-                holder.x.setVisibility(View.GONE);
+                holder.ninePatchIcon.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
-                holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             Glide.with(f.getApplicationContext()).load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
-                    .asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v));
-            holder.u.setText(bean.resName);
-            holder.t.setChecked(bean.isSelected);
+                    .asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image));
+            holder.name.setText(bean.resName);
+            holder.checkBox.setChecked(bean.isSelected);
         }
 
         public void a(MoreBlockCollectionViewHolder holder, int position) {
-            MoreBlockCollectionBean bean = (MoreBlockCollectionBean) e.get(position);
+            MoreBlockCollectionBean bean = (MoreBlockCollectionBean) currentCollectionTypeItems.get(position);
             if (f.k) {
-                holder.w.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                holder.w.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
-                holder.v.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.v.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            holder.x.setText(bean.name);
-            holder.u.setChecked(bean.isSelected);
-            holder.y.removeAllViews();
+            holder.name.setText(bean.name);
+            holder.checkBox.setChecked(bean.isSelected);
+            holder.blockArea.removeAllViews();
             position = 0;
             Rs header = new Rs(f.getBaseContext(), 0, bean.spec, " ", "definedFunc");
-            holder.y.addView(header);
+            holder.blockArea.addView(header);
             Iterator<String> var5 = FB.c(bean.spec).iterator();
 
             while (true) {
@@ -1056,28 +1059,28 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                 }
 
-                holder.y.addView(block);
+                holder.blockArea.addView(block);
                 header.a((Ts) header.V.get(position), block);
                 ++position;
             }
         }
 
         public void a(SoundCollectionViewHolder holder, int position) {
-            ProjectResourceBean bean = (ProjectResourceBean) e.get(position);
+            ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             String soundFilePath = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
             if (f.k) {
-                holder.v.setVisibility(View.GONE);
-                holder.C.setVisibility(View.VISIBLE);
+                holder.album.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                f.a(soundFilePath, holder.v);
-                holder.v.setVisibility(View.VISIBLE);
-                holder.C.setVisibility(View.GONE);
+                f.a(soundFilePath, holder.album);
+                holder.album.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
-                holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             int soundPositionInS = bean.curSoundPosition / 1000;
@@ -1086,47 +1089,47 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             }
 
             int totalSoundDurationInS = bean.totalSoundDuration / 1000;
-            holder.z.setText(String.format("%d:%02d", soundPositionInS / 60, soundPositionInS % 60));
-            holder.B.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
-            holder.u.setChecked(bean.isSelected);
-            holder.x.setText(bean.resName);
+            holder.currentPosition.setText(String.format("%d:%02d", soundPositionInS / 60, soundPositionInS % 60));
+            holder.totalDuration.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
+            holder.checkBox.setChecked(bean.isSelected);
+            holder.name.setText(bean.resName);
             if (f.E == position) {
                 if (f.C != null && f.C.isPlaying()) {
-                    holder.y.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
+                    holder.play.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
-                    holder.y.setImageResource(R.drawable.circled_play_96_blue);
+                    holder.play.setImageResource(R.drawable.circled_play_96_blue);
                 }
             } else {
-                holder.y.setImageResource(R.drawable.circled_play_96_blue);
+                holder.play.setImageResource(R.drawable.circled_play_96_blue);
             }
 
-            holder.A.setMax(bean.totalSoundDuration / 100);
-            holder.A.setProgress(bean.curSoundPosition / 100);
+            holder.playbackProgress.setMax(bean.totalSoundDuration / 100);
+            holder.playbackProgress.setProgress(bean.curSoundPosition / 100);
         }
 
         public void a(WidgetCollectionViewHolder holder, int position) {
-            WidgetCollectionBean bean = (WidgetCollectionBean) e.get(position);
+            WidgetCollectionBean bean = (WidgetCollectionBean) currentCollectionTypeItems.get(position);
             if (f.k) {
-                holder.y.setVisibility(View.VISIBLE);
-                holder.v.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
+                holder.widgetIcon.setVisibility(View.GONE);
             } else {
-                holder.y.setVisibility(View.GONE);
-                holder.v.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.GONE);
+                holder.widgetIcon.setVisibility(View.VISIBLE);
             }
 
             if (bean.isSelected) {
-                holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            holder.v.setImageResource(ViewBean.getViewTypeResId(((ViewBean) bean.widgets.get(0)).type));
-            holder.x.setText(bean.name);
-            holder.u.setChecked(bean.isSelected);
+            holder.widgetIcon.setImageResource(ViewBean.getViewTypeResId(((ViewBean) bean.widgets.get(0)).type));
+            holder.name.setText(bean.name);
+            holder.checkBox.setChecked(bean.isSelected);
         }
 
         public void a(ArrayList<? extends SelectableBean> beans) {
-            e = beans;
+            currentCollectionTypeItems = beans;
             if (beans.size() <= 0) {
                 f.w.setVisibility(View.VISIBLE);
             } else {
@@ -1137,7 +1140,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         @Override
         // RecyclerView.Adapter#getItemViewType(int)
         public int b(int position) {
-            position = d;
+            position = currentViewType;
 
             if (position == 0) {
                 return 0;
@@ -1194,253 +1197,259 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         }
 
         private class BlockCollectionViewHolder extends RecyclerView.v {
-            public CardView t;
-            public CheckBox u;
-            public ImageView v;
-            public ImageView w;
-            public TextView x;
-            public LinearLayout y;
+
+            public final CardView cardView;
+            public final CheckBox checkBox;
+            public final ImageView blockIcon;
+            public final ImageView delete;
+            public final TextView name;
+            public final LinearLayout deleteContainer;
             public final CollectionAdapter z;
 
-            public BlockCollectionViewHolder(CollectionAdapter var1, View var2) {
-                super(var2);
+            public BlockCollectionViewHolder(CollectionAdapter var1, View itemView) {
+                super(itemView);
                 z = var1;
-                t = var2.findViewById(R.id.layout_item);
-                u = var2.findViewById(R.id.chk_select);
-                v = var2.findViewById(R.id.img_block);
-                w = var2.findViewById(R.id.img_delete);
-                x = var2.findViewById(R.id.tv_block_name);
-                y = var2.findViewById(R.id.delete_img_container);
-                u.setVisibility(View.GONE);
-                t.setOnClickListener(v -> {
-                    CollectionAdapter.this.c = j();
+                cardView = itemView.findViewById(R.id.layout_item);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                blockIcon = itemView.findViewById(R.id.img_block);
+                delete = itemView.findViewById(R.id.img_delete);
+                name = itemView.findViewById(R.id.tv_block_name);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                checkBox.setVisibility(View.GONE);
+                cardView.setOnClickListener(v -> {
+                    lastSelectedItemPosition = j();
                     if (ManageCollectionActivity.this.k) {
-                        u.setChecked(!u.isChecked());
-                        CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
-                        CollectionAdapter.this.c(CollectionAdapter.this.c);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        CollectionAdapter.this.c(lastSelectedItemPosition);
                         return;
                     }
-                    ManageCollectionActivity.this.h(CollectionAdapter.this.c);
+                    ManageCollectionActivity.this.h(lastSelectedItemPosition);
                 });
-                t.setOnLongClickListener(v -> {
+                cardView.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
-                    CollectionAdapter.this.c = j();
-                    u.setChecked(!u.isChecked());
-                    CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
+                    lastSelectedItemPosition = j();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
             }
         }
 
         private class FontCollectionViewHolder extends RecyclerView.v {
-            public final CollectionAdapter A;
-            public CardView t;
-            public CheckBox u;
-            public ImageView v;
-            public ImageView w;
-            public TextView x;
-            public TextView y;
-            public LinearLayout z;
 
-            public FontCollectionViewHolder(CollectionAdapter var1, View var2) {
-                super(var2);
+            public final CollectionAdapter A;
+            public final CardView cardView;
+            public final CheckBox checkBox;
+            public final ImageView fontIcon;
+            public final ImageView delete;
+            public final TextView name;
+            public final TextView preview;
+            public final LinearLayout deleteContainer;
+
+            public FontCollectionViewHolder(CollectionAdapter var1, View itemView) {
+                super(itemView);
                 A = var1;
-                t = var2.findViewById(R.id.layout_item);
-                u = var2.findViewById(R.id.chk_select);
-                v = var2.findViewById(R.id.img_font);
-                v.setVisibility(View.GONE);
-                w = var2.findViewById(R.id.img_delete);
-                x = var2.findViewById(R.id.tv_font_name);
-                z = var2.findViewById(R.id.delete_img_container);
-                y = var2.findViewById(R.id.tv_font_preview);
-                y.setText(xB.b().a(var1.f.getApplicationContext(), R.string.common_word_preview));
-                u.setVisibility(View.GONE);
-                t.setOnClickListener(v -> {
-                    CollectionAdapter.this.c = j();
+                cardView = itemView.findViewById(R.id.layout_item);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                fontIcon = itemView.findViewById(R.id.img_font);
+                fontIcon.setVisibility(View.GONE);
+                delete = itemView.findViewById(R.id.img_delete);
+                name = itemView.findViewById(R.id.tv_font_name);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                preview = itemView.findViewById(R.id.tv_font_preview);
+                preview.setText(xB.b().a(var1.f.getApplicationContext(), R.string.common_word_preview));
+                checkBox.setVisibility(View.GONE);
+                cardView.setOnClickListener(v -> {
+                    lastSelectedItemPosition = j();
                     if (ManageCollectionActivity.this.k) {
-                        u.setChecked(!u.isChecked());
-                        CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
-                        CollectionAdapter.this.c(CollectionAdapter.this.c);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        CollectionAdapter.this.c(lastSelectedItemPosition);
                         return;
                     }
-                    ManageCollectionActivity.this.i(CollectionAdapter.this.c);
+                    ManageCollectionActivity.this.i(lastSelectedItemPosition);
                 });
-                t.setOnLongClickListener(v -> {
+                cardView.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
-                    CollectionAdapter.this.c = j();
-                    u.setChecked(!u.isChecked());
-                    CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
+                    lastSelectedItemPosition = j();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return false;
                 });
             }
         }
 
         private class ImageCollectionViewHolder extends RecyclerView.v {
-            public CheckBox t;
-            public TextView u;
-            public ImageView v;
-            public ImageView w;
-            public ImageView x;
-            public LinearLayout y;
+
+            public final CheckBox checkBox;
+            public final TextView name;
+            public final ImageView image;
+            public final ImageView delete;
+            public final ImageView ninePatchIcon;
+            public final LinearLayout deleteContainer;
             public final CollectionAdapter z;
 
-            public ImageCollectionViewHolder(CollectionAdapter var1, View var2) {
-                super(var2);
+            public ImageCollectionViewHolder(CollectionAdapter var1, View itemView) {
+                super(itemView);
                 z = var1;
-                t = var2.findViewById(R.id.chk_select);
-                u = var2.findViewById(R.id.tv_image_name);
-                v = var2.findViewById(R.id.img);
-                w = var2.findViewById(R.id.img_delete);
-                y = var2.findViewById(R.id.delete_img_container);
-                x = var2.findViewById(R.id.img_nine_patch);
-                t.setVisibility(View.GONE);
-                v.setOnClickListener(v -> {
-                    CollectionAdapter.this.c = j();
+                checkBox = itemView.findViewById(R.id.chk_select);
+                name = itemView.findViewById(R.id.tv_image_name);
+                image = itemView.findViewById(R.id.img);
+                delete = itemView.findViewById(R.id.img_delete);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                ninePatchIcon = itemView.findViewById(R.id.img_nine_patch);
+                checkBox.setVisibility(View.GONE);
+                image.setOnClickListener(v -> {
+                    lastSelectedItemPosition = j();
                     if (ManageCollectionActivity.this.k) {
-                        t.setChecked(!t.isChecked());
-                        CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = t.isChecked();
-                        CollectionAdapter.this.c(CollectionAdapter.this.c);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        CollectionAdapter.this.c(lastSelectedItemPosition);
                         return;
                     }
-                    ManageCollectionActivity.this.j(CollectionAdapter.this.c);
+                    ManageCollectionActivity.this.j(lastSelectedItemPosition);
                 });
-                v.setOnLongClickListener(v -> {
+                image.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
-                    CollectionAdapter.this.c = j();
-                    t.setChecked(!t.isChecked());
-                    CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = t.isChecked();
+                    lastSelectedItemPosition = j();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
             }
         }
 
         private class MoreBlockCollectionViewHolder extends RecyclerView.v {
-            public CardView t;
-            public CheckBox u;
-            public ImageView v;
-            public LinearLayout w;
-            public TextView x;
-            public RelativeLayout y;
+
+            public final CardView cardView;
+            public final CheckBox checkBox;
+            public final ImageView delete;
+            public final LinearLayout deleteContainer;
+            public final TextView name;
+            public final RelativeLayout blockArea;
             public final CollectionAdapter z;
 
-            public MoreBlockCollectionViewHolder(CollectionAdapter var1, View var2) {
-                super(var2);
+            public MoreBlockCollectionViewHolder(CollectionAdapter var1, View itemView) {
+                super(itemView);
                 z = var1;
-                t = var2.findViewById(R.id.layout_item);
-                u = var2.findViewById(R.id.chk_select);
-                v = var2.findViewById(R.id.img_delete);
-                w = var2.findViewById(R.id.delete_img_container);
-                x = var2.findViewById(R.id.tv_block_name);
-                y = var2.findViewById(R.id.block_area);
-                u.setVisibility(View.GONE);
-                t.setOnClickListener(v -> {
-                    CollectionAdapter.this.c = j();
+                cardView = itemView.findViewById(R.id.layout_item);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                delete = itemView.findViewById(R.id.img_delete);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                name = itemView.findViewById(R.id.tv_block_name);
+                blockArea = itemView.findViewById(R.id.block_area);
+                checkBox.setVisibility(View.GONE);
+                cardView.setOnClickListener(v -> {
+                    lastSelectedItemPosition = j();
                     if (ManageCollectionActivity.this.k) {
-                        u.setChecked(!u.isChecked());
-                        CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
-                        CollectionAdapter.this.c(CollectionAdapter.this.c);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        CollectionAdapter.this.c(lastSelectedItemPosition);
                         return;
                     }
-                    ManageCollectionActivity.this.k(CollectionAdapter.this.c);
+                    ManageCollectionActivity.this.k(lastSelectedItemPosition);
                 });
-                t.setOnLongClickListener(v -> {
+                cardView.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
-                    CollectionAdapter.this.c = j();
-                    u.setChecked(!u.isChecked());
-                    CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
+                    lastSelectedItemPosition = j();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
             }
         }
 
         private class SoundCollectionViewHolder extends RecyclerView.v {
-            public ProgressBar A;
-            public TextView B;
-            public LinearLayout C;
-            public final CollectionAdapter D;
-            public CardView t;
-            public CheckBox u;
-            public ImageView v;
-            public ImageView w;
-            public TextView x;
-            public ImageView y;
-            public TextView z;
 
-            public SoundCollectionViewHolder(CollectionAdapter var1, View var2) {
-                super(var2);
+            public final ProgressBar playbackProgress;
+            public final TextView totalDuration;
+            public final LinearLayout deleteContainer;
+            public final CollectionAdapter D;
+            public final CardView cardView;
+            public final CheckBox checkBox;
+            public final ImageView album;
+            public final ImageView delete;
+            public final TextView name;
+            public final ImageView play;
+            public final TextView currentPosition;
+
+            public SoundCollectionViewHolder(CollectionAdapter var1, View itemView) {
+                super(itemView);
                 D = var1;
-                t = var2.findViewById(R.id.layout_item);
-                u = var2.findViewById(R.id.chk_select);
-                v = var2.findViewById(R.id.img_album);
-                x = var2.findViewById(R.id.tv_sound_name);
-                y = var2.findViewById(R.id.img_play);
-                w = var2.findViewById(R.id.img_delete);
-                z = var2.findViewById(R.id.tv_currenttime);
-                A = var2.findViewById(R.id.prog_playtime);
-                B = var2.findViewById(R.id.tv_endtime);
-                C = var2.findViewById(R.id.delete_img_container);
-                u.setVisibility(View.GONE);
-                y.setOnClickListener(v -> {
+                cardView = itemView.findViewById(R.id.layout_item);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                album = itemView.findViewById(R.id.img_album);
+                name = itemView.findViewById(R.id.tv_sound_name);
+                play = itemView.findViewById(R.id.img_play);
+                delete = itemView.findViewById(R.id.img_delete);
+                currentPosition = itemView.findViewById(R.id.tv_currenttime);
+                playbackProgress = itemView.findViewById(R.id.prog_playtime);
+                totalDuration = itemView.findViewById(R.id.tv_endtime);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                checkBox.setVisibility(View.GONE);
+                play.setOnClickListener(v -> {
                     if (ManageCollectionActivity.this.k) {
-                        ManageCollectionActivity.this.F = SoundCollectionViewHolder.this.z;
-                        ManageCollectionActivity.this.G = SoundCollectionViewHolder.this.A;
-                        ManageCollectionActivity.this.a(CollectionAdapter.this.e, j());
+                        ManageCollectionActivity.this.F = currentPosition;
+                        ManageCollectionActivity.this.G = playbackProgress;
+                        ManageCollectionActivity.this.a(currentCollectionTypeItems, j());
                     }
                 });
-                t.setOnClickListener(v -> {
-                    CollectionAdapter.this.c = j();
+                cardView.setOnClickListener(v -> {
+                    lastSelectedItemPosition = j();
                     if (ManageCollectionActivity.this.k) {
-                        u.setChecked(!u.isChecked());
-                        CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
-                        CollectionAdapter.this.c(CollectionAdapter.this.c);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        CollectionAdapter.this.c(lastSelectedItemPosition);
                         return;
                     }
-                    ManageCollectionActivity.this.l(CollectionAdapter.this.c);
+                    ManageCollectionActivity.this.l(lastSelectedItemPosition);
                 });
-                t.setOnLongClickListener(v -> {
+                cardView.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
-                    CollectionAdapter.this.c = j();
-                    u.setChecked(!u.isChecked());
-                    CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
+                    lastSelectedItemPosition = j();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
             }
         }
 
         private class WidgetCollectionViewHolder extends RecyclerView.v {
-            public CardView t;
-            public CheckBox u;
-            public ImageView v;
-            public ImageView w;
-            public TextView x;
-            public LinearLayout y;
+
+            public final CardView cardView;
+            public final CheckBox checkBox;
+            public final ImageView widgetIcon;
+            public final ImageView delete;
+            public final TextView name;
+            public final LinearLayout deleteContainer;
             public final CollectionAdapter z;
 
-            public WidgetCollectionViewHolder(CollectionAdapter var1, View var2) {
-                super(var2);
+            public WidgetCollectionViewHolder(CollectionAdapter var1, View itemView) {
+                super(itemView);
                 z = var1;
-                t = var2.findViewById(R.id.layout_item);
-                u = var2.findViewById(R.id.chk_select);
-                v = var2.findViewById(R.id.img_widget);
-                w = var2.findViewById(R.id.img_delete);
-                x = var2.findViewById(R.id.tv_widget_name);
-                y = var2.findViewById(R.id.delete_img_container);
-                u.setVisibility(View.GONE);
-                t.setOnClickListener(v -> {
-                    CollectionAdapter.this.c = j();
+                cardView = itemView.findViewById(R.id.layout_item);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                widgetIcon = itemView.findViewById(R.id.img_widget);
+                delete = itemView.findViewById(R.id.img_delete);
+                name = itemView.findViewById(R.id.tv_widget_name);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                checkBox.setVisibility(View.GONE);
+                cardView.setOnClickListener(v -> {
+                    lastSelectedItemPosition = j();
                     if (ManageCollectionActivity.this.k) {
-                        u.setChecked(!u.isChecked());
-                        CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
-                        CollectionAdapter.this.c(CollectionAdapter.this.c);
+                        checkBox.setChecked(!checkBox.isChecked());
+                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        CollectionAdapter.this.c(lastSelectedItemPosition);
                         return;
                     }
-                    ManageCollectionActivity.this.m(CollectionAdapter.this.c);
+                    ManageCollectionActivity.this.m(lastSelectedItemPosition);
                 });
-                t.setOnLongClickListener(v -> {
+                cardView.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
-                    CollectionAdapter.this.c = j();
-                    u.setChecked(!u.isChecked());
-                    CollectionAdapter.this.e.get(CollectionAdapter.this.c).isSelected = u.isChecked();
+                    lastSelectedItemPosition = j();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
             }
