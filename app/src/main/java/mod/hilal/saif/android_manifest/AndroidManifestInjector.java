@@ -137,6 +137,10 @@ public class AndroidManifestInjector {
         return isActivityAttributeUsed("android:windowSoftInputMode", projectId, actName);
     }
 
+    public static boolean isActivityExportedUsed(String sc_id, String activityName) {
+        return isActivityAttributeUsed("android:exported", sc_id, activityName);
+    }
+
     public static boolean isActivityAttributeUsed(String attribute, String sc_id, String activityName) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(sc_id);
         String className = activityName.substring(0, activityName.indexOf(".java"));

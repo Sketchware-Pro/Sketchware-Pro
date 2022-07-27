@@ -343,7 +343,7 @@ public class Ix {
                     }
                 }
                 if (c.isDynamicLinkUsed) {
-                    if (targetsSdkVersion31OrHigher) {
+                    if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
                         activityTag.a("android", "exported", "false");
                     }
                     writeDLIntentFilter(activityTag);
@@ -362,7 +362,7 @@ public class Ix {
                     Nx categoryTag = new Nx("category");
                     categoryTag.a("android", "name", Intent.CATEGORY_LAUNCHER);
                     intentFilterTag.a(categoryTag);
-                    if (targetsSdkVersion31OrHigher) {
+                    if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
                         activityTag.a("android", "exported", "true");
                     }
                     activityTag.a(intentFilterTag);
