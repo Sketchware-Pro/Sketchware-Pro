@@ -107,148 +107,140 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     public String y;
     public String z = "";
 
-    public ManageCollectionActivity() {
-    }
-
-    public static String a(Context var0, int var1) {
-        String var2;
-        if (var1 == 0) {
-            var2 = xB.b().a(var0, R.string.common_word_image);
-        } else if (var1 == 1) {
-            var2 = xB.b().a(var0, R.string.common_word_sound);
-        } else if (var1 == 2) {
-            var2 = xB.b().a(var0, R.string.common_word_font);
-        } else if (var1 == 3) {
-            var2 = xB.b().a(var0, R.string.common_word_widget);
-        } else if (var1 == 4) {
-            var2 = xB.b().a(var0, R.string.common_word_block);
+    public static String a(Context context, int position) {
+        String label;
+        if (position == 0) {
+            label = xB.b().a(context, R.string.common_word_image);
+        } else if (position == 1) {
+            label = xB.b().a(context, R.string.common_word_sound);
+        } else if (position == 2) {
+            label = xB.b().a(context, R.string.common_word_font);
+        } else if (position == 3) {
+            label = xB.b().a(context, R.string.common_word_widget);
+        } else if (position == 4) {
+            label = xB.b().a(context, R.string.common_word_block);
         } else {
-            var2 = xB.b().a(var0, R.string.common_word_moreblock);
+            label = xB.b().a(context, R.string.common_word_moreblock);
         }
 
-        return var2;
+        return label;
     }
 
-    public static int g(int var0) {
-        if (var0 == 0) {
-            var0 = R.drawable.ic_picture_48dp;
-        } else if (var0 == 1) {
-            var0 = R.drawable.ic_sound_wave_48dp;
-        } else if (var0 == 2) {
-            var0 = R.drawable.ic_font_48dp;
-        } else if (var0 == 3) {
-            var0 = R.drawable.collage_96;
-        } else if (var0 == 4) {
-            var0 = R.drawable.block_96_blue;
+    public static int g(int position) {
+        if (position == 0) {
+            position = R.drawable.ic_picture_48dp;
+        } else if (position == 1) {
+            position = R.drawable.ic_sound_wave_48dp;
+        } else if (position == 2) {
+            position = R.drawable.ic_font_48dp;
+        } else if (position == 3) {
+            position = R.drawable.collage_96;
+        } else if (position == 4) {
+            position = R.drawable.block_96_blue;
         } else {
-            var0 = R.drawable.more_block_96dp;
+            position = R.drawable.more_block_96dp;
         }
 
-        return var0;
+        return position;
     }
 
     public void A() {
-        ArrayList var1 = this.r;
-        this.a(var1);
-        Intent var2 = new Intent(this.getApplicationContext(), AddSoundCollectionActivity.class);
-        var2.putParcelableArrayListExtra("sounds", var1);
-        var2.putExtra("sc_id", this.y);
-        this.startActivityForResult(var2, 269);
+        a(r);
+        Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
+        intent.putParcelableArrayListExtra("sounds", r);
+        intent.putExtra("sc_id", y);
+        startActivityForResult(intent, 269);
     }
 
-    public int a(BlockBean var1) {
-        if (var1.type.equals("c")) {
+    public int a(BlockBean block) {
+        if (block.type.equals("c")) {
             return R.drawable.fav_block_c_96dp;
-        } else if (var1.type.equals("b")) {
+        } else if (block.type.equals("b")) {
             return R.drawable.fav_block_boolean_96dp;
-        } else if (var1.type.equals("f")) {
+        } else if (block.type.equals("f")) {
             return R.drawable.fav_block_final_96dp;
-        } else if (var1.type.equals("e")) {
+        } else if (block.type.equals("e")) {
             return R.drawable.fav_block_e_96dp;
-        } else if (var1.type.equals("d")) {
+        } else if (block.type.equals("d")) {
             return R.drawable.fav_block_number_96dp;
+        } else if (block.type.equals("s")) {
+            return R.drawable.fav_block_string_96dp;
         } else {
-            return var1.type.equals("s") ? R.drawable.fav_block_string_96dp : R.drawable.fav_block_command_96dp;
+            return R.drawable.fav_block_command_96dp;
         }
     }
 
-    public void a(String var1, ImageView var2) {
-        MediaMetadataRetriever var3 = new MediaMetadataRetriever();
-        var3.setDataSource(var1);
-        if (var3.getEmbeddedPicture() != null) {
-            byte[] var4 = var3.getEmbeddedPicture();
-            Glide.with(this.getApplicationContext()).load(var4).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+    public void a(String filePath, ImageView target) {
+        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+        metadataRetriever.setDataSource(filePath);
+        byte[] embeddedPicture = metadataRetriever.getEmbeddedPicture();
+        if (embeddedPicture != null) {
+            Glide.with(getApplicationContext()).load(embeddedPicture).centerCrop().into(new SimpleTarget<GlideDrawable>() {
                 @Override
                 public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    var2.setImageDrawable(glideDrawable);
+                    target.setImageDrawable(glideDrawable);
                 }
             });
         } else {
-            var2.setImageResource(R.drawable.default_album_art_200dp);
-            var2.setBackgroundResource(R.drawable.bg_outline_album);
+            target.setImageResource(R.drawable.default_album_art_200dp);
+            target.setBackgroundResource(R.drawable.bg_outline_album);
         }
 
-        var3.release();
+        metadataRetriever.release();
     }
 
     public void a(ArrayList<ProjectResourceBean> var1) {
-        this.A.cancel();
-        int var2 = this.E;
-        if (var2 != -1) {
-            ((ProjectResourceBean) var1.get(var2)).curSoundPosition = 0;
-            this.E = -1;
-            this.D = -1;
-            this.n.c();
+        A.cancel();
+        if (E != -1) {
+            var1.get(E).curSoundPosition = 0;
+            E = -1;
+            D = -1;
+            n.c();
         }
 
-        MediaPlayer var3 = this.C;
-        if (var3 != null && var3.isPlaying()) {
-            this.C.pause();
+        if (C != null && C.isPlaying()) {
+            C.pause();
         }
     }
 
-    public final void a(ArrayList<? extends SelectableBean> var1, int var2) {
-        MediaPlayer var3;
-        if (this.E == var2) {
-            var3 = this.C;
-            if (var3 != null) {
-                if (var3.isPlaying()) {
-                    this.A.cancel();
-                    this.C.pause();
-                    ((ProjectResourceBean) var1.get(this.E)).curSoundPosition = this.C.getCurrentPosition();
-                    this.n.c(this.E);
+    public final void a(ArrayList<? extends SelectableBean> var1, int position) {
+        if (E == position) {
+            if (C != null) {
+                if (C.isPlaying()) {
+                    A.cancel();
+                    C.pause();
+                    ((ProjectResourceBean) var1.get(E)).curSoundPosition = C.getCurrentPosition();
+                    n.c(E);
                     return;
                 }
 
-                this.C.start();
-                this.n(var2);
-                this.n.c();
+                C.start();
+                n(position);
+                n.c();
             }
         } else {
-            var3 = this.C;
-            if (var3 != null && var3.isPlaying()) {
-                this.A.cancel();
-                this.C.pause();
-                this.C.release();
+            if (C != null && C.isPlaying()) {
+                A.cancel();
+                C.pause();
+                C.release();
             }
 
-            int var4 = this.D;
-            if (var4 != -1) {
-                ((ProjectResourceBean) var1.get(var4)).curSoundPosition = 0;
-                this.n.c(this.D);
+            if (D != -1) {
+                ((ProjectResourceBean) var1.get(D)).curSoundPosition = 0;
+                n.c(D);
             }
 
-            this.E = var2;
-            this.D = var2;
-            this.n.c(this.E);
-            this.C = new MediaPlayer();
-            this.C.setAudioStreamType(3);
-            this.C.setOnPreparedListener(mp -> {
+            E = position;
+            D = position;
+            n.c(E);
+            C = new MediaPlayer();
+            C.setAudioStreamType(3);
+            C.setOnPreparedListener(mp -> {
                 C.start();
-                n(var2);
+                n(position);
                 n.c(E);
             });
-            this.C.setOnCompletionListener(mp -> {
+            C.setOnCompletionListener(mp -> {
                 A.cancel();
                 ((ProjectResourceBean) var1.get(E)).curSoundPosition = 0;
                 n.c(E);
@@ -257,213 +249,178 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             });
 
             try {
-                StringBuilder var7 = new StringBuilder();
-                var7.append(wq.a());
-                var7.append(File.separator);
-                var7.append("sound");
-                var7.append(File.separator);
-                var7.append("data");
-                var7.append(File.separator);
-                var7.append(((ProjectResourceBean) var1.get(this.E)).resFullName);
-                String var6 = var7.toString();
-                this.C.setDataSource(var6);
-                this.C.prepare();
-            } catch (Exception var5) {
-                this.E = -1;
-                this.n.c(this.E);
-                var5.printStackTrace();
+                C.setDataSource(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) var1.get(E)).resFullName);
+                C.prepare();
+            } catch (Exception e) {
+                E = -1;
+                n.c(E);
+                e.printStackTrace();
             }
         }
     }
 
     public final void a(boolean var1) {
-        this.k = var1;
-        this.invalidateOptionsMenu();
-        this.x();
-        if (this.k) {
-            this.a(this.r);
-            this.H.setVisibility(View.VISIBLE);
+        k = var1;
+        invalidateOptionsMenu();
+        x();
+        if (k) {
+            a(r);
+            H.setVisibility(View.VISIBLE);
         } else {
-            this.H.setVisibility(View.GONE);
-            int var2 = this.m.c;
-            if (var2 == 3 || var2 == 4) {
-                this.x.setVisibility(View.GONE);
+            H.setVisibility(View.GONE);
+            if (m.c == 3 || m.c == 4) {
+                x.setVisibility(View.GONE);
             }
         }
 
-        this.n.c();
+        n.c();
     }
 
-    public final int b(String var1) {
-        MediaMetadataRetriever var2 = new MediaMetadataRetriever();
-        var2.setDataSource(var1);
-        return (int) Long.parseLong(var2.extractMetadata(9));
+    public final int b(String filePath) {
+        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+        metadataRetriever.setDataSource(filePath);
+        return (int) Long.parseLong(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
     }
 
     public void f(int var1) {
         if (var1 == 0) {
-            this.z();
+            z();
         } else if (var1 == 1) {
-            this.A();
+            A();
         } else {
-            this.y();
+            y();
         }
     }
 
     public void h(int var1) {
-        String var2 = (String) Mp.h().g().get(var1);
-        Intent var3 = new Intent(this.getApplicationContext(), ShowBlockCollectionActivity.class);
-        var3.putExtra("block_name", var2);
-        this.startActivityForResult(var3, 274);
+        String blockName = (String) Mp.h().g().get(var1);
+        Intent intent = new Intent(getApplicationContext(), ShowBlockCollectionActivity.class);
+        intent.putExtra("block_name", blockName);
+        startActivityForResult(intent, 274);
     }
 
     public void i(int var1) {
-        ArrayList var2 = this.s;
-        ProjectResourceBean var3 = (ProjectResourceBean) var2.get(var1);
-        Intent var4 = new Intent(this.getApplicationContext(), AddFontCollectionActivity.class);
-        var4.putParcelableArrayListExtra("fonts", var2);
-        var4.putExtra("sc_id", this.y);
-        var4.putExtra("edit_target", var3);
-        this.startActivityForResult(var4, 272);
+        ProjectResourceBean editTarget = s.get(var1);
+        Intent intent = new Intent(getApplicationContext(), AddFontCollectionActivity.class);
+        intent.putParcelableArrayListExtra("fonts", s);
+        intent.putExtra("sc_id", y);
+        intent.putExtra("edit_target", editTarget);
+        startActivityForResult(intent, 272);
     }
 
     public void j(int var1) {
-        ArrayList var2 = this.q;
-        ProjectResourceBean var3 = (ProjectResourceBean) var2.get(var1);
-        Intent var4 = new Intent(this.getApplicationContext(), AddImageCollectionActivity.class);
-        var4.putParcelableArrayListExtra("images", var2);
-        var4.putExtra("sc_id", this.y);
-        var4.putExtra("edit_target", var3);
-        this.startActivityForResult(var4, 268);
+        ProjectResourceBean editTarget = q.get(var1);
+        Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
+        intent.putParcelableArrayListExtra("images", q);
+        intent.putExtra("sc_id", y);
+        intent.putExtra("edit_target", editTarget);
+        startActivityForResult(intent, 268);
     }
 
     public void k(int var1) {
-        String var2 = (String) Pp.h().g().get(var1);
-        Intent var3 = new Intent(this.getApplicationContext(), ShowMoreBlockCollectionActivity.class);
-        var3.putExtra("block_name", var2);
-        this.startActivityForResult(var3, 279);
+        String blockName = (String) Pp.h().g().get(var1);
+        Intent intent = new Intent(getApplicationContext(), ShowMoreBlockCollectionActivity.class);
+        intent.putExtra("block_name", blockName);
+        startActivityForResult(intent, 279);
     }
 
     public void l() {
-        for (int var1 = 0; var1 < this.m.a(); ++var1) {
-            Iterator var2;
-            if (var1 == 0) {
-                var2 = this.q.iterator();
-
-                while (var2.hasNext()) {
-                    ProjectResourceBean var8 = (ProjectResourceBean) var2.next();
-                    if (var8.isSelected) {
-                        Op.g().a(var8.resName, false);
+        for (int i = 0; i < m.a(); i++) {
+            if (i == 0) {
+                for (ProjectResourceBean bean : q) {
+                    if (bean.isSelected) {
+                        Op.g().a(bean.resName, false);
                     }
                 }
 
                 Op.g().e();
-                this.t();
-            } else {
-                ProjectResourceBean var4;
-                Iterator var7;
-                if (var1 == 1) {
-                    var7 = this.r.iterator();
-
-                    while (var7.hasNext()) {
-                        var4 = (ProjectResourceBean) var7.next();
-                        if (var4.isSelected) {
-                            Qp.g().a(var4.resName, false);
-                        }
+                t();
+            } else if (i == 1) {
+                for (ProjectResourceBean bean : r) {
+                    if (bean.isSelected) {
+                        Qp.g().a(bean.resName, false);
                     }
-
-                    Qp.g().e();
-                    this.v();
-                } else if (var1 == 2) {
-                    var7 = this.s.iterator();
-
-                    while (var7.hasNext()) {
-                        var4 = (ProjectResourceBean) var7.next();
-                        if (var4.isSelected) {
-                            Np.g().a(var4.resName, false);
-                        }
-                    }
-
-                    Np.g().e();
-                    this.s();
-                } else if (var1 == 3) {
-                    var2 = this.t.iterator();
-
-                    while (var2.hasNext()) {
-                        WidgetCollectionBean var6 = (WidgetCollectionBean) var2.next();
-                        if (var6.isSelected) {
-                            if (!this.K) {
-                                this.K = true;
-                            }
-
-                            Rp.h().a(var6.name, false);
-                        }
-                    }
-
-                    Rp.h().e();
-                    this.w();
-                } else if (var1 == 4) {
-                    var2 = this.u.iterator();
-
-                    while (var2.hasNext()) {
-                        BlockCollectionBean var5 = (BlockCollectionBean) var2.next();
-                        if (var5.isSelected) {
-                            Mp.h().a(var5.name, false);
-                        }
-                    }
-
-                    Mp.h().e();
-                    this.r();
-                } else {
-                    var2 = this.v.iterator();
-
-                    while (var2.hasNext()) {
-                        MoreBlockCollectionBean var3 = (MoreBlockCollectionBean) var2.next();
-                        if (var3.isSelected) {
-                            Pp.h().a(var3.name, false);
-                        }
-                    }
-
-                    Pp.h().e();
-                    this.u();
                 }
+
+                Qp.g().e();
+                v();
+            } else if (i == 2) {
+                for (ProjectResourceBean bean : s) {
+                    if (bean.isSelected) {
+                        Np.g().a(bean.resName, false);
+                    }
+                }
+
+                Np.g().e();
+                s();
+            } else if (i == 3) {
+                for (WidgetCollectionBean bean : t) {
+                    if (bean.isSelected) {
+                        if (!K) {
+                            K = true;
+                        }
+
+                        Rp.h().a(bean.name, false);
+                    }
+                }
+
+                Rp.h().e();
+                w();
+            } else if (i == 4) {
+                for (BlockCollectionBean bean : u) {
+                    if (bean.isSelected) {
+                        Mp.h().a(bean.name, false);
+                    }
+                }
+
+                Mp.h().e();
+                r();
+            } else {
+                for (MoreBlockCollectionBean bean : v) {
+                    if (bean.isSelected) {
+                        Pp.h().a(bean.name, false);
+                    }
+                }
+
+                Pp.h().e();
+                u();
             }
         }
 
-        this.x();
-        this.a(false);
-        if (this.m() == 0 || this.m() == 1 || this.m() == 2) {
-            this.x.f();
+        x();
+        a(false);
+        int m = m();
+        if (m == 0 || m == 1 || m == 2) {
+            x.f();
         }
 
-        bB.a(this.getApplicationContext(), xB.b().a(this.getApplicationContext(), R.string.common_message_complete_delete), 1).show();
-        this.n.c();
+        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), 1).show();
+        n.c();
     }
 
     public void l(int var1) {
-        ArrayList var2 = this.r;
-        ProjectResourceBean var3 = (ProjectResourceBean) var2.get(var1);
-        this.a(var2);
-        Intent var4 = new Intent(this.getApplicationContext(), AddSoundCollectionActivity.class);
-        var4.putParcelableArrayListExtra("sounds", var2);
-        var4.putExtra("sc_id", this.y);
-        var4.putExtra("edit_target", var3);
-        this.startActivityForResult(var4, 270);
+        ProjectResourceBean editTarget = r.get(var1);
+        a(r);
+        Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
+        intent.putParcelableArrayListExtra("sounds", r);
+        intent.putExtra("sc_id", y);
+        intent.putExtra("edit_target", editTarget);
+        startActivityForResult(intent, 270);
     }
 
     public final int m() {
-        return this.m.c;
+        return m.c;
     }
 
     public void m(int var1) {
-        String var2 = (String) Rp.h().g().get(var1);
-        Intent var3 = new Intent(this.getApplicationContext(), ShowWidgetCollectionActivity.class);
-        var3.putExtra("widget_name", var2);
-        this.startActivityForResult(var3, 273);
+        String widgetName = (String) Rp.h().g().get(var1);
+        Intent intent = new Intent(getApplicationContext(), ShowWidgetCollectionActivity.class);
+        intent.putExtra("widget_name", widgetName);
+        startActivityForResult(intent, 273);
     }
 
     public final int n() {
-        int var1 = (int) ((float) this.getResources().getDisplayMetrics().widthPixels / this.getResources().getDisplayMetrics().density) / 100;
+        int var1 = (int) ((float) getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density) / 100;
         int var2 = var1;
         if (var1 > 2) {
             var2 = var1 - 1;
@@ -472,9 +429,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         return var2;
     }
 
-    public final void n(int var1) {
-        this.A = new Timer();
-        this.B = new TimerTask() {
+    public final void n(int position) {
+        A = new Timer();
+        B = new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(() -> {
@@ -482,321 +439,333 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         A.cancel();
                         return;
                     }
-                    ManageCollectionActivity.b.e eVar = (ManageCollectionActivity.b.e) p.d(var1);
+                    ManageCollectionActivity.b.e viewHolder = (ManageCollectionActivity.b.e) p.d(position);
                     int currentPosition = C.getCurrentPosition() / 1000;
-                    eVar.z.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
-                    eVar.A.setProgress(C.getCurrentPosition() / 1000);
+                    viewHolder.z.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
+                    viewHolder.A.setProgress(C.getCurrentPosition() / 1000);
                 });
             }
         };
-        this.A.schedule(this.B, 100L, 100L);
+        A.schedule(B, 100L, 100L);
     }
 
     public final void o() {
-        this.l = (Toolbar) this.findViewById(R.id.toolbar);
-        this.a(this.l);
-        this.findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        this.d().a(xB.b().a(this.getApplicationContext(), R.string.design_actionbar_title_manager_collection));
-        this.d().e(true);
-        this.d().d(true);
-        this.l.setNavigationOnClickListener(v -> {
+        l = (Toolbar) findViewById(R.id.toolbar);
+        a(l);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_collection));
+        d().e(true);
+        d().d(true);
+        l.setNavigationOnClickListener(v -> {
             if (mB.a()) {
                 return;
             }
             onBackPressed();
         });
-        this.w = (TextView) this.findViewById(R.id.tv_no_collections);
-        this.w.setText(xB.b().a(this.getApplicationContext(), R.string.event_message_no_events));
-        this.o = (RecyclerView) this.findViewById(R.id.category_list);
-        this.o.setHasFixedSize(true);
-        this.o.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), 1, false));
-        ((Bi) this.o.getItemAnimator()).a(false);
-        this.m = new ManageCollectionActivity.a(this);
-        this.o.setAdapter(this.m);
-        this.p = (RecyclerView) this.findViewById(R.id.collection_list);
-        this.p.setHasFixedSize(true);
-        this.n = new ManageCollectionActivity.b(this, this.p);
-        this.p.setAdapter(this.n);
-        this.x = (FloatingActionButton) this.findViewById(R.id.fab);
-        this.x.setOnClickListener(this);
-        this.H = (LinearLayout) this.findViewById(R.id.layout_btn_group);
-        this.I = (Button) this.findViewById(R.id.btn_delete);
-        this.J = (Button) this.findViewById(R.id.btn_cancel);
-        this.I.setText(xB.b().a(this.getApplicationContext(), R.string.common_word_delete));
-        this.J.setText(xB.b().a(this.getApplicationContext(), R.string.common_word_cancel));
-        this.I.setOnClickListener(this);
-        this.J.setOnClickListener(this);
-        if (!super.j.h()) {
-            xo.a(this.getApplicationContext());
+        w = (TextView) findViewById(R.id.tv_no_collections);
+        w.setText(xB.b().a(getApplicationContext(), R.string.event_message_no_events));
+        o = (RecyclerView) findViewById(R.id.category_list);
+        o.setHasFixedSize(true);
+        o.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+        ((Bi) o.getItemAnimator()).a(false);
+        m = new ManageCollectionActivity.a(this);
+        o.setAdapter(m);
+        p = (RecyclerView) findViewById(R.id.collection_list);
+        p.setHasFixedSize(true);
+        n = new ManageCollectionActivity.b(this, p);
+        p.setAdapter(n);
+        x = (FloatingActionButton) findViewById(R.id.fab);
+        x.setOnClickListener(this);
+        H = (LinearLayout) findViewById(R.id.layout_btn_group);
+        I = (Button) findViewById(R.id.btn_delete);
+        J = (Button) findViewById(R.id.btn_cancel);
+        I.setText(xB.b().a(getApplicationContext(), R.string.common_word_delete));
+        J.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
+        I.setOnClickListener(this);
+        J.setOnClickListener(this);
+        if (!j.h()) {
+            xo.a(getApplicationContext());
         }
     }
 
-    public void onActivityResult(int var1, int var2, Intent var3) {
-        if (var1 != 279) {
-            switch (var1) {
-                case 267:
-                case 268:
-                    this.t();
-                    break;
-                case 269:
-                case 270:
-                    this.v();
-                    break;
-                case 271:
-                case 272:
-                    this.s();
-                    break;
-                case 273:
-                    this.w();
-                    break;
-                case 274:
-                    this.r();
-            }
-        } else {
-            this.u();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 267:
+            case 268:
+                t();
+                break;
+
+            case 269:
+            case 270:
+                v();
+                break;
+
+            case 271:
+            case 272:
+                s();
+                break;
+
+            case 273:
+                w();
+                break;
+
+            case 274:
+                r();
+                break;
+
+            case 279:
+                u();
+                break;
+
+            default:
         }
 
-        super.onActivityResult(var1, var2, var3);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
     public void onBackPressed() {
-        if (this.K) {
-            this.setResult(-1);
-            this.finish();
+        if (K) {
+            setResult(RESULT_OK);
+            finish();
         }
 
         super.onBackPressed();
     }
 
-    public void onClick(View var1) {
-        int var2 = var1.getId();
-        if (var2 != R.id.btn_cancel) {
-            if (var2 != R.id.btn_delete) {
-                if (var2 == R.id.fab) {
-                    this.a(false);
-                    this.f(this.m.c);
-                }
-            } else if (this.k) {
-                this.l();
-            }
-        } else if (this.k) {
-            this.a(false);
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.btn_cancel && k) {
+            a(false);
+        } else if (id == R.id.btn_delete && k) {
+            l();
+        } else if (id == R.id.fab) {
+            a(false);
+            f(m.c);
         }
     }
 
-    public void onConfigurationChanged(Configuration var1) {
-        super.onConfigurationChanged(var1);
-        if (this.n.d == 0) {
-            ((GridLayoutManager) this.p.getLayoutManager()).d(this.n());
-            this.p.requestLayout();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (n.d == 0) {
+            ((GridLayoutManager) p.getLayoutManager()).d(n());
+            p.requestLayout();
         }
     }
 
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
-        if (!super.j()) {
-            this.finish();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!j()) {
+            finish();
         }
 
-        this.setContentView(R.layout.manage_collection);
-        this.o();
+        setContentView(R.layout.manage_collection);
+        o();
     }
 
-    public boolean onCreateOptionsMenu(Menu var1) {
-        this.getMenuInflater().inflate(R.menu.manage_collection_menu, var1);
-        if (this.k) {
-            var1.findItem(R.id.menu_collection_delete).setVisible(false);
-        } else {
-            var1.findItem(R.id.menu_collection_delete).setVisible(true);
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.manage_collection_menu, menu);
+        menu.findItem(R.id.menu_collection_delete).setVisible(!k);
 
         return true;
     }
 
+    @Override
     public void onDestroy() {
-        this.a(this.r);
+        a(r);
         super.onDestroy();
     }
 
-    public boolean onOptionsItemSelected(MenuItem var1) {
-        if (var1.getItemId() == R.id.menu_collection_delete) {
-            this.a(this.k ^ true);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.menu_collection_delete) {
+            a(!k);
         }
 
-        return super.onOptionsItemSelected(var1);
+        return super.onOptionsItemSelected(menuItem);
     }
 
+    @Override
     public void onPause() {
         super.onPause();
-        MediaPlayer var1 = this.C;
-        if (var1 != null && var1.isPlaying()) {
-            this.A.cancel();
-            this.C.pause();
-            ((ProjectResourceBean) this.r.get(this.E)).curSoundPosition = this.C.getCurrentPosition();
+
+        if (C != null && C.isPlaying()) {
+            A.cancel();
+            C.pause();
+            r.get(E).curSoundPosition = C.getCurrentPosition();
         }
     }
 
-    public void onPostCreate(Bundle var1) {
-        super.onPostCreate(var1);
-        if (var1 == null) {
-            this.p();
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            p();
         } else {
-            this.y = var1.getString("sc_id");
+            y = savedInstanceState.getString("sc_id");
         }
 
-        this.q();
+        q();
     }
 
+    @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
-            this.finish();
+        if (!j()) {
+            finish();
         }
 
-        super.d.setScreenName(ManageCollectionActivity.class.getSimpleName().toString());
-        super.d.send((new ScreenViewBuilder()).build());
-        ManageCollectionActivity.b var1 = this.n;
-        if (var1 != null) {
-            var1.c();
+        d.setScreenName(ManageCollectionActivity.class.getSimpleName());
+        d.send((new ScreenViewBuilder()).build());
+        if (n != null) {
+            n.c();
         }
     }
 
-    public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", this.y);
-        super.onSaveInstanceState(var1);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", y);
+        super.onSaveInstanceState(outState);
     }
 
     public void p() {
-        this.y = this.getIntent().getStringExtra("sc_id");
+        y = getIntent().getStringExtra("sc_id");
     }
 
     public void q() {
-        this.q = Op.g().f();
-        this.r = Qp.g().f();
-        this.s = Np.g().f();
-        this.t = Rp.h().f();
-        this.u = Mp.h().f();
-        this.v = Pp.h().f();
-        ManageCollectionActivity.b var1;
-        if (this.m.c == -1) {
-            var1 = this.n;
-            var1.d = 0;
-            var1.a(this.q);
-            this.p.setLayoutManager(new GridLayoutManager(this.getApplicationContext(), this.n()));
-            ManageCollectionActivity.a var2 = this.m;
-            var2.c = 0;
-            if (var2 != null) {
-                var2.c();
-            }
+        q = Op.g().f();
+        r = Qp.g().f();
+        s = Np.g().f();
+        t = Rp.h().f();
+        u = Mp.h().f();
+        v = Pp.h().f();
+
+        if (m.c == -1) {
+            n.d = 0;
+            n.a(q);
+            p.setLayoutManager(new GridLayoutManager(getApplicationContext(), n()));
+            m.c = 0;
+            m.c();
         }
 
-        var1 = this.n;
-        if (var1 != null) {
-            var1.c();
+        if (n != null) {
+            n.c();
         }
     }
 
     public void r() {
-        this.u = Mp.h().f();
-        if (this.m.c == 4) {
-            this.n.a(this.u);
-            this.n.d = 4;
+        u = Mp.h().f();
+        if (m.c == 4) {
+            n.a(u);
+            n.d = 4;
         }
 
-        this.n.c();
+        n.c();
     }
 
     public void s() {
-        this.s = Np.g().f();
-        if (this.m.c == 2) {
-            this.n.a(this.s);
-            this.n.d = 2;
+        s = Np.g().f();
+        if (m.c == 2) {
+            n.a(s);
+            n.d = 2;
         }
 
-        this.n.c();
+        n.c();
     }
 
     public void t() {
-        this.q = Op.g().f();
-        if (this.m.c == 0) {
-            this.n.a(this.q);
-            this.n.d = 0;
+        q = Op.g().f();
+        if (m.c == 0) {
+            n.a(q);
+            n.d = 0;
         }
 
-        this.n.c();
+        n.c();
     }
 
     public void u() {
-        this.v = Pp.h().f();
-        if (this.m.c == 5) {
-            this.n.a(this.v);
-            this.n.d = 5;
+        v = Pp.h().f();
+        if (m.c == 5) {
+            n.a(v);
+            n.d = 5;
         }
 
-        this.n.c();
+        n.c();
     }
 
     public void v() {
-        this.r = Qp.g().f();
-        if (this.m.c == 1) {
-            this.n.a(this.r);
-            this.n.d = 1;
+        r = Qp.g().f();
+        if (m.c == 1) {
+            n.a(r);
+            n.d = 1;
         }
 
-        this.n.c();
+        n.c();
     }
 
     public void w() {
-        this.t = Rp.h().f();
-        if (this.m.c == 3) {
-            this.n.a(this.t);
-            this.n.d = 3;
+        t = Rp.h().f();
+        if (m.c == 3) {
+            n.a(t);
+            n.d = 3;
         }
 
-        this.n.c();
+        n.c();
     }
 
     public final void x() {
-        Iterator var1;
-        if (this.m() == 0) {
-            for (var1 = this.q.iterator(); var1.hasNext(); ((ProjectResourceBean) var1.next()).isSelected = false) {
+        int m = m();
+
+        if (m == 0) {
+            for (ProjectResourceBean bean : q) {
+                bean.isSelected = false;
             }
-        } else if (this.m() == 1) {
-            for (var1 = this.r.iterator(); var1.hasNext(); ((ProjectResourceBean) var1.next()).isSelected = false) {
+        } else if (m == 1) {
+            for (ProjectResourceBean bean : r) {
+                bean.isSelected = false;
             }
-        } else if (this.m() == 2) {
-            for (var1 = this.s.iterator(); var1.hasNext(); ((ProjectResourceBean) var1.next()).isSelected = false) {
+        } else if (m == 2) {
+            for (ProjectResourceBean bean : s) {
+                bean.isSelected = false;
             }
-        } else if (this.m() == 3) {
-            for (var1 = this.t.iterator(); var1.hasNext(); ((WidgetCollectionBean) var1.next()).isSelected = false) {
+        } else if (m == 3) {
+            for (WidgetCollectionBean bean : t) {
+                bean.isSelected = false;
             }
         } else {
-            for (var1 = this.u.iterator(); var1.hasNext(); ((BlockCollectionBean) var1.next()).isSelected = false) {
+            for (BlockCollectionBean bean : u) {
+                bean.isSelected = false;
             }
         }
     }
 
     public void y() {
-        Intent var1 = new Intent(this.getApplicationContext(), AddFontCollectionActivity.class);
-        var1.putParcelableArrayListExtra("fonts", this.s);
-        var1.putExtra("sc_id", this.y);
-        this.startActivityForResult(var1, 271);
+        Intent intent = new Intent(getApplicationContext(), AddFontCollectionActivity.class);
+        intent.putParcelableArrayListExtra("fonts", s);
+        intent.putExtra("sc_id", y);
+        startActivityForResult(intent, 271);
     }
 
     public void z() {
-        Intent var1 = new Intent(this.getApplicationContext(), AddImageCollectionActivity.class);
-        var1.putParcelableArrayListExtra("images", this.q);
-        var1.putExtra("sc_id", this.y);
-        this.startActivityForResult(var1, 267);
+        Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
+        intent.putParcelableArrayListExtra("images", q);
+        intent.putExtra("sc_id", y);
+        startActivityForResult(intent, 267);
     }
 
-    public class a extends androidx.recyclerview.widget.RecyclerView.a<ManageCollectionActivity.a.a2> {
+    public class a extends RecyclerView.a<ManageCollectionActivity.a.a2> {
         public int c;
         public final ManageCollectionActivity d;
 
         public a(ManageCollectionActivity var1) {
-            this.d = var1;
-            this.c = -1;
+            d = var1;
+            c = -1;
         }
 
         public int a() {
@@ -804,12 +773,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         }
 
         public void b(a2 var1, int var2) {
-            var1.u.setText(ManageCollectionActivity.a(this.d.getApplicationContext(), var2));
+            var1.u.setText(ManageCollectionActivity.a(d.getApplicationContext(), var2));
             var1.t.setImageResource(ManageCollectionActivity.g(var2));
             ef var3;
             ColorMatrix var4;
             ColorMatrixColorFilter var5;
-            if (this.c == var2) {
+            if (c == var2) {
                 var3 = Ze.a(var1.t);
                 var3.c(1.0F);
                 var3.d(1.0F);
@@ -860,109 +829,98 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public a2(ManageCollectionActivity.a var1, View var2) {
                 super(var2);
-                this.w = var1;
-                this.t = (ImageView) var2.findViewById(R.id.img_icon);
-                this.u = (TextView) var2.findViewById(R.id.tv_name);
-                this.v = var2.findViewById(R.id.pointer_left);
+                w = var1;
+                t = var2.findViewById(R.id.img_icon);
+                u = var2.findViewById(R.id.tv_name);
+                v = var2.findViewById(R.id.pointer_left);
                 var2.setOnClickListener(this);
             }
 
-            public void onClick(View var1) {
+            @Override
+            public void onClick(View v) {
                 if (!mB.a()) {
-                    if (this.j() != -1) {
-                        int var2 = this.j();
-                        ManageCollectionActivity.a var5 = this.w;
-                        int var3 = var5.c;
-                        if (var2 != var3) {
-                            ManageCollectionActivity var6;
-                            if (var3 == 1) {
-                                var6 = var5.d;
-                                var6.a(var6.r);
-                            }
-
-                            var5 = this.w;
-                            var5.c(var5.c);
-                            this.w.c = this.j();
-                            var5 = this.w;
-                            var5.c(var5.c);
-                            this.w.d.p.removeAllViews();
-                            ManageCollectionActivity.b var4 = this.w.d.n;
-                            var5 = this.w;
-                            var2 = var5.c;
-                            var4.d = var2;
-                            if (var2 == 0) {
-                                var5.d.n.a(this.w.d.q);
-                            } else if (var2 == 1) {
-                                var5.d.n.a(this.w.d.r);
-                            } else if (var2 == 2) {
-                                var5.d.n.a(this.w.d.s);
-                            } else if (var2 == 3) {
-                                var5.d.n.a(this.w.d.t);
-                            } else if (var2 == 4) {
-                                var5.d.n.a(this.w.d.u);
-                            } else {
-                                var5.d.n.a(this.w.d.v);
-                            }
-
-                            if (this.w.d.n.d == 0) {
-                                var6 = this.w.d;
-                                var6.p.setLayoutManager(new GridLayoutManager(var6.getApplicationContext(), this.w.d.n()));
-                                this.w.d.x.f();
-                            } else {
-                                var6 = this.w.d;
-                                var6.p.setLayoutManager(new LinearLayoutManager(var6.getApplicationContext(), 1, false));
-                                if (this.w.d.n.d != 1 && this.w.d.n.d != 2) {
-                                    this.w.d.x.c();
-                                } else {
-                                    this.w.d.x.f();
-                                }
-                            }
-
-                            this.w.d.n.c();
+                    if (j() != -1 && j() != w.c) {
+                        if (w.c == 1) {
+                            w.d.a(w.d.r);
                         }
+
+                        w.c(w.c);
+                        w.c = j();
+                        w.c(w.c);
+                        w.d.p.removeAllViews();
+                        w.d.n.d = w.c;
+                        if (w.c == 0) {
+                            w.d.n.a(w.d.q);
+                        } else if (w.c == 1) {
+                            w.d.n.a(w.d.r);
+                        } else if (w.c == 2) {
+                            w.d.n.a(w.d.s);
+                        } else if (w.c == 3) {
+                            w.d.n.a(w.d.t);
+                        } else if (w.c == 4) {
+                            w.d.n.a(w.d.u);
+                        } else {
+                            w.d.n.a(w.d.v);
+                        }
+
+                        if (w.d.n.d == 0) {
+                            w.d.p.setLayoutManager(new GridLayoutManager(getApplicationContext(), w.d.n()));
+                            w.d.x.f();
+                        } else {
+                            w.d.p.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+                            if (w.d.n.d != 1 && w.d.n.d != 2) {
+                                w.d.x.c();
+                            } else {
+                                w.d.x.f();
+                            }
+                        }
+
+                        w.d.n.c();
                     }
                 }
             }
         }
     }
 
-    public class b extends androidx.recyclerview.widget.RecyclerView.a<v> {
+    public class b extends RecyclerView.a<v> {
         public int c;
         public int d;
         public ArrayList<? extends SelectableBean> e;
         public final ManageCollectionActivity f;
 
         public b(ManageCollectionActivity var1, RecyclerView var2) {
-            this.f = var1;
-            this.c = -1;
-            this.d = -1;
+            f = var1;
+            c = -1;
+            d = -1;
+            // RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)
             var2.a(new RecyclerView.m() {
                 @Override
-                public void a(RecyclerView recyclerView, int i, int i1) {
-                    super.a(recyclerView, i, i1);
+                // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
+                public void a(RecyclerView recyclerView, int dx, int dy) {
+                    super.a(recyclerView, dx, dy);
                     if (d == 3 || d == 4 || d == 5) {
                         return;
                     }
-                    if (i1 > 2) {
+                    if (dy > 2) {
                         if (!x.isEnabled()) {
                             return;
                         }
                         x.c();
-                    } else if (i1 < -2 && x.isEnabled()) {
+                    } else if (dy < -2 && x.isEnabled()) {
                         x.f();
                     }
                 }
             });
-            this.e = new ArrayList();
+            e = new ArrayList<>();
         }
 
         public int a() {
-            return this.e.size();
+            return e.size();
         }
 
         public void a(ManageCollectionActivity.b.a var1, int var2) {
-            BlockCollectionBean var3 = (BlockCollectionBean) this.e.get(var2);
-            if (this.f.k) {
+            BlockCollectionBean var3 = (BlockCollectionBean) e.get(var2);
+            if (f.k) {
                 var1.y.setVisibility(View.VISIBLE);
                 var1.v.setVisibility(View.GONE);
             } else {
@@ -976,130 +934,109 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            var1.v.setImageResource(this.f.a((BlockBean) var3.blocks.get(0)));
+            var1.v.setImageResource(f.a((BlockBean) var3.blocks.get(0)));
             var1.x.setText(var3.name);
             var1.u.setChecked(var3.isSelected);
         }
 
         public void a(b2 var1, int var2) {
-            ProjectResourceBean var3 = (ProjectResourceBean) this.e.get(var2);
-            StringBuilder var4 = new StringBuilder();
-            var4.append(wq.a());
-            var4.append(File.separator);
-            var4.append("font");
-            var4.append(File.separator);
-            var4.append("data");
-            var4.append(File.separator);
-            var4.append(var3.resFullName);
-            String var5 = var4.toString();
-            if (this.f.k) {
+            ProjectResourceBean bean = (ProjectResourceBean) e.get(var2);
+            if (f.k) {
                 var1.z.setVisibility(View.VISIBLE);
             } else {
                 var1.z.setVisibility(View.GONE);
             }
 
-            if (var3.isSelected) {
+            if (bean.isSelected) {
                 var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
                 var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            var1.u.setChecked(var3.isSelected);
-            TextView var6 = var1.x;
-            var4 = new StringBuilder();
-            var4.append(var3.resName);
-            var4.append(".ttf");
-            var6.setText(var4.toString());
+            var1.u.setChecked(bean.isSelected);
+            var1.x.setText(bean.resName + ".ttf");
 
             try {
-                var1.y.setTypeface(Typeface.createFromFile(var5));
-                var1.y.setText(xB.b().a(this.f.getApplicationContext(), R.string.design_manager_font_description_example_sentence));
-            } catch (Exception var7) {
-                var7.printStackTrace();
+                var1.y.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
+                var1.y.setText(xB.b().a(f.getApplicationContext(), R.string.design_manager_font_description_example_sentence));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         public void a(ManageCollectionActivity.b.c var1, int var2) {
-            ProjectResourceBean var3 = (ProjectResourceBean) this.e.get(var2);
-            StringBuilder var4 = new StringBuilder();
-            var4.append(wq.a());
-            var4.append(File.separator);
-            var4.append("image");
-            var4.append(File.separator);
-            var4.append("data");
-            var4.append(File.separator);
-            var4.append(var3.resFullName);
-            String var5 = var4.toString();
-            if (this.f.k) {
+            ProjectResourceBean bean = (ProjectResourceBean) e.get(var2);
+            if (f.k) {
                 var1.y.setVisibility(View.VISIBLE);
             } else {
                 var1.y.setVisibility(View.GONE);
             }
 
-            if (var3.isNinePatch()) {
+            if (bean.isNinePatch()) {
                 var1.x.setVisibility(View.VISIBLE);
             } else {
                 var1.x.setVisibility(View.GONE);
             }
 
-            if (((ProjectResourceBean) this.e.get(var2)).isSelected) {
+            if (bean.isSelected) {
                 var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
                 var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            Glide.with(this.f.getApplicationContext()).load(var5).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(var1.v));
-            var1.u.setText(((ProjectResourceBean) this.e.get(var2)).resName);
-            var1.t.setChecked(((ProjectResourceBean) this.e.get(var2)).isSelected);
+            Glide.with(f.getApplicationContext()).load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
+                    .asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(var1.v));
+            var1.u.setText(bean.resName);
+            var1.t.setChecked(bean.isSelected);
         }
 
         public void a(ManageCollectionActivity.b.d var1, int var2) {
-            MoreBlockCollectionBean var3 = (MoreBlockCollectionBean) this.e.get(var2);
-            if (this.f.k) {
+            MoreBlockCollectionBean bean = (MoreBlockCollectionBean) e.get(var2);
+            if (f.k) {
                 var1.w.setVisibility(View.VISIBLE);
             } else {
                 var1.w.setVisibility(View.GONE);
             }
 
-            if (var3.isSelected) {
+            if (bean.isSelected) {
                 var1.v.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
                 var1.v.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            var1.x.setText(var3.name);
-            var1.u.setChecked(var3.isSelected);
+            var1.x.setText(bean.name);
+            var1.u.setChecked(bean.isSelected);
             var1.y.removeAllViews();
             var2 = 0;
-            Rs var4 = new Rs(this.f.getBaseContext(), 0, var3.spec, " ", "definedFunc");
-            var1.y.addView(var4);
-            Iterator var5 = FB.c(var3.spec).iterator();
+            Rs header = new Rs(f.getBaseContext(), 0, bean.spec, " ", "definedFunc");
+            var1.y.addView(header);
+            Iterator<String> var5 = FB.c(bean.spec).iterator();
 
             while (true) {
-                Rs var9;
+                Rs block;
                 while (true) {
                     String var6;
                     do {
                         if (!var5.hasNext()) {
-                            var4.k();
+                            header.k();
                             return;
                         }
 
-                        var6 = (String) var5.next();
+                        var6 = var5.next();
                     } while (var6.charAt(0) != '%');
 
                     if (var6.charAt(1) == 'b') {
-                        var9 = new Rs(this.f.getBaseContext(), var2 + 1, var6.substring(3), "b", "getVar");
+                        block = new Rs(f.getBaseContext(), var2 + 1, var6.substring(3), "b", "getVar");
                         break;
                     }
 
                     if (var6.charAt(1) == 'd') {
-                        var9 = new Rs(this.f.getBaseContext(), var2 + 1, var6.substring(3), "d", "getVar");
+                        block = new Rs(f.getBaseContext(), var2 + 1, var6.substring(3), "d", "getVar");
                         break;
                     }
 
                     if (var6.charAt(1) == 's') {
-                        var9 = new Rs(this.f.getBaseContext(), var2 + 1, var6.substring(3), "s", "getVar");
+                        block = new Rs(f.getBaseContext(), var2 + 1, var6.substring(3), "s", "getVar");
                         break;
                     }
 
@@ -1107,55 +1044,47 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         String var8 = var6.substring(var6.lastIndexOf(".") + 1);
                         String var7 = var6.substring(var6.indexOf(".") + 1, var6.lastIndexOf("."));
                         var6 = kq.a(var7);
-                        var9 = new Rs(this.f.getBaseContext(), var2 + 1, var8, var6, kq.b(var7), "getVar");
+                        block = new Rs(f.getBaseContext(), var2 + 1, var8, var6, kq.b(var7), "getVar");
                         break;
                     }
                 }
 
-                var1.y.addView(var9);
-                var4.a((Ts) var4.V.get(var2), var9);
+                var1.y.addView(block);
+                header.a((Ts) header.V.get(var2), block);
                 ++var2;
             }
         }
 
         public void a(ManageCollectionActivity.b.e var1, int var2) {
-            ProjectResourceBean var3 = (ProjectResourceBean) this.e.get(var2);
-            StringBuilder var4 = new StringBuilder();
-            var4.append(wq.a());
-            var4.append(File.separator);
-            var4.append("sound");
-            var4.append(File.separator);
-            var4.append("data");
-            var4.append(File.separator);
-            var4.append(var3.resFullName);
-            String var7 = var4.toString();
-            if (this.f.k) {
+            ProjectResourceBean bean = (ProjectResourceBean) e.get(var2);
+            String soundFilePath = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
+            if (f.k) {
                 var1.v.setVisibility(View.GONE);
                 var1.C.setVisibility(View.VISIBLE);
             } else {
-                this.f.a(var7, var1.v);
+                f.a(soundFilePath, var1.v);
                 var1.v.setVisibility(View.VISIBLE);
                 var1.C.setVisibility(View.GONE);
             }
 
-            if (var3.isSelected) {
+            if (bean.isSelected) {
                 var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
                 var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            int var5 = ((ProjectResourceBean) this.e.get(var2)).curSoundPosition / 1000;
-            if (var3.totalSoundDuration == 0) {
-                var3.totalSoundDuration = this.f.b(var7);
+            int soundPositionInS = bean.curSoundPosition / 1000;
+            if (bean.totalSoundDuration == 0) {
+                bean.totalSoundDuration = f.b(soundFilePath);
             }
 
-            int var6 = var3.totalSoundDuration / 1000;
-            var1.z.setText(String.format("%d:%02d", var5 / 60, var5 % 60));
-            var1.B.setText(String.format("%d:%02d", var6 / 60, var6 % 60));
-            var1.u.setChecked(var3.isSelected);
-            var1.x.setText(var3.resName);
-            if (this.f.E == var2) {
-                if (this.f.C != null && this.f.C.isPlaying()) {
+            int totalSoundDurationInS = bean.totalSoundDuration / 1000;
+            var1.z.setText(String.format("%d:%02d", soundPositionInS / 60, soundPositionInS % 60));
+            var1.B.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
+            var1.u.setChecked(bean.isSelected);
+            var1.x.setText(bean.resName);
+            if (f.E == var2) {
+                if (f.C != null && f.C.isPlaying()) {
                     var1.y.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
                     var1.y.setImageResource(R.drawable.circled_play_96_blue);
@@ -1164,13 +1093,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 var1.y.setImageResource(R.drawable.circled_play_96_blue);
             }
 
-            var1.A.setMax(var3.totalSoundDuration / 100);
-            var1.A.setProgress(var3.curSoundPosition / 100);
+            var1.A.setMax(bean.totalSoundDuration / 100);
+            var1.A.setProgress(bean.curSoundPosition / 100);
         }
 
         public void a(ManageCollectionActivity.b.f var1, int var2) {
-            WidgetCollectionBean var3 = (WidgetCollectionBean) this.e.get(var2);
-            if (this.f.k) {
+            WidgetCollectionBean bean = (WidgetCollectionBean) e.get(var2);
+            if (f.k) {
                 var1.y.setVisibility(View.VISIBLE);
                 var1.v.setVisibility(View.GONE);
             } else {
@@ -1178,28 +1107,29 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 var1.v.setVisibility(View.VISIBLE);
             }
 
-            if (var3.isSelected) {
+            if (bean.isSelected) {
                 var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
                 var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            var1.v.setImageResource(ViewBean.getViewTypeResId(((ViewBean) var3.widgets.get(0)).type));
-            var1.x.setText(var3.name);
-            var1.u.setChecked(var3.isSelected);
+            var1.v.setImageResource(ViewBean.getViewTypeResId(((ViewBean) bean.widgets.get(0)).type));
+            var1.x.setText(bean.name);
+            var1.u.setChecked(bean.isSelected);
         }
 
-        public void a(ArrayList<? extends SelectableBean> var1) {
-            this.e = var1;
-            if (var1.size() <= 0) {
-                this.f.w.setVisibility(View.VISIBLE);
+        public void a(ArrayList<? extends SelectableBean> beans) {
+            e = beans;
+            if (beans.size() <= 0) {
+                f.w.setVisibility(View.VISIBLE);
             } else {
-                this.f.w.setVisibility(View.GONE);
+                f.w.setVisibility(View.GONE);
             }
         }
 
         public int b(int var1) {
-            var1 = this.d;
+            var1 = d;
+
             if (var1 == 0) {
                 return 0;
             } else if (var1 == 1) {
@@ -1208,8 +1138,10 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 return 2;
             } else if (var1 == 3) {
                 return 3;
+            } else if (var1 == 4) {
+                return 4;
             } else {
-                return var1 == 4 ? 4 : 5;
+                return 5;
             }
         }
 
@@ -1229,28 +1161,19 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
         public void b(v var1, int var2) {
             int var3 = var1.i();
-            if (var3 != 0) {
-                if (var3 != 1) {
-                    if (var3 != 2) {
-                        if (var3 != 3) {
-                            if (var3 != 4) {
-                                if (var3 == 5) {
-                                    this.a((ManageCollectionActivity.b.d) var1, var2);
-                                }
-                            } else {
-                                this.a((ManageCollectionActivity.b.a) var1, var2);
-                            }
-                        } else {
-                            this.a((ManageCollectionActivity.b.f) var1, var2);
-                        }
-                    } else {
-                        this.a((b2) var1, var2);
-                    }
-                } else {
-                    this.a((ManageCollectionActivity.b.e) var1, var2);
-                }
-            } else {
-                this.a((ManageCollectionActivity.b.c) var1, var2);
+
+            if (var3 == 0) {
+                a((ManageCollectionActivity.b.c) var1, var2);
+            } else if (var3 == 1) {
+                a((ManageCollectionActivity.b.e) var1, var2);
+            } else if (var3 == 2) {
+                a((b2) var1, var2);
+            } else if (var3 == 3) {
+                a((ManageCollectionActivity.b.f) var1, var2);
+            } else if (var3 == 4) {
+                a((ManageCollectionActivity.b.a) var1, var2);
+            } else if (var3 == 5) {
+                a((ManageCollectionActivity.b.d) var1, var2);
             }
         }
 
@@ -1265,15 +1188,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public a(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
-                this.z = var1;
-                this.t = (CardView) var2.findViewById(R.id.layout_item);
-                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
-                this.v = (ImageView) var2.findViewById(R.id.img_block);
-                this.w = (ImageView) var2.findViewById(R.id.img_delete);
-                this.x = (TextView) var2.findViewById(R.id.tv_block_name);
-                this.y = (LinearLayout) var2.findViewById(R.id.delete_img_container);
-                this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(v -> {
+                z = var1;
+                t = var2.findViewById(R.id.layout_item);
+                u = var2.findViewById(R.id.chk_select);
+                v = var2.findViewById(R.id.img_block);
+                w = var2.findViewById(R.id.img_delete);
+                x = var2.findViewById(R.id.tv_block_name);
+                y = var2.findViewById(R.id.delete_img_container);
+                u.setVisibility(View.GONE);
+                t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
                         u.setChecked(!u.isChecked());
@@ -1283,7 +1206,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     ManageCollectionActivity.this.h(ManageCollectionActivity.b.this.c);
                 });
-                this.t.setOnLongClickListener(v -> {
+                t.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
                     ManageCollectionActivity.b.this.c = j();
                     u.setChecked(!u.isChecked());
@@ -1305,18 +1228,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public b2(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
-                this.A = var1;
-                this.t = (CardView) var2.findViewById(R.id.layout_item);
-                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
-                this.v = (ImageView) var2.findViewById(R.id.img_font);
-                this.v.setVisibility(View.GONE);
-                this.w = (ImageView) var2.findViewById(R.id.img_delete);
-                this.x = (TextView) var2.findViewById(R.id.tv_font_name);
-                this.z = (LinearLayout) var2.findViewById(R.id.delete_img_container);
-                this.y = (TextView) var2.findViewById(R.id.tv_font_preview);
-                this.y.setText(xB.b().a(var1.f.getApplicationContext(), R.string.common_word_preview));
-                this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(v -> {
+                A = var1;
+                t = var2.findViewById(R.id.layout_item);
+                u = var2.findViewById(R.id.chk_select);
+                v = var2.findViewById(R.id.img_font);
+                v.setVisibility(View.GONE);
+                w = var2.findViewById(R.id.img_delete);
+                x = var2.findViewById(R.id.tv_font_name);
+                z = var2.findViewById(R.id.delete_img_container);
+                y = var2.findViewById(R.id.tv_font_preview);
+                y.setText(xB.b().a(var1.f.getApplicationContext(), R.string.common_word_preview));
+                u.setVisibility(View.GONE);
+                t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
                         u.setChecked(!u.isChecked());
@@ -1326,7 +1249,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     ManageCollectionActivity.this.i(ManageCollectionActivity.b.this.c);
                 });
-                this.t.setOnLongClickListener(v -> {
+                t.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
                     ManageCollectionActivity.b.this.c = j();
                     u.setChecked(!u.isChecked());
@@ -1347,15 +1270,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public c(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
-                this.z = var1;
-                this.t = (CheckBox) var2.findViewById(R.id.chk_select);
-                this.u = (TextView) var2.findViewById(R.id.tv_image_name);
-                this.v = (ImageView) var2.findViewById(R.id.img);
-                this.w = (ImageView) var2.findViewById(R.id.img_delete);
-                this.y = (LinearLayout) var2.findViewById(R.id.delete_img_container);
-                this.x = (ImageView) var2.findViewById(R.id.img_nine_patch);
-                this.t.setVisibility(View.GONE);
-                this.v.setOnClickListener(v -> {
+                z = var1;
+                t = var2.findViewById(R.id.chk_select);
+                u = var2.findViewById(R.id.tv_image_name);
+                v = var2.findViewById(R.id.img);
+                w = var2.findViewById(R.id.img_delete);
+                y = var2.findViewById(R.id.delete_img_container);
+                x = var2.findViewById(R.id.img_nine_patch);
+                t.setVisibility(View.GONE);
+                v.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
                         t.setChecked(!t.isChecked());
@@ -1365,7 +1288,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     ManageCollectionActivity.this.j(ManageCollectionActivity.b.this.c);
                 });
-                this.v.setOnLongClickListener(v -> {
+                v.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
                     ManageCollectionActivity.b.this.c = j();
                     t.setChecked(!t.isChecked());
@@ -1386,15 +1309,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public d(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
-                this.z = var1;
-                this.t = (CardView) var2.findViewById(R.id.layout_item);
-                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
-                this.v = (ImageView) var2.findViewById(R.id.img_delete);
-                this.w = (LinearLayout) var2.findViewById(R.id.delete_img_container);
-                this.x = (TextView) var2.findViewById(R.id.tv_block_name);
-                this.y = (RelativeLayout) var2.findViewById(R.id.block_area);
-                this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(v -> {
+                z = var1;
+                t = var2.findViewById(R.id.layout_item);
+                u = var2.findViewById(R.id.chk_select);
+                v = var2.findViewById(R.id.img_delete);
+                w = var2.findViewById(R.id.delete_img_container);
+                x = var2.findViewById(R.id.tv_block_name);
+                y = var2.findViewById(R.id.block_area);
+                u.setVisibility(View.GONE);
+                t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
                         u.setChecked(!u.isChecked());
@@ -1404,7 +1327,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     ManageCollectionActivity.this.k(ManageCollectionActivity.b.this.c);
                 });
-                this.t.setOnLongClickListener(v -> {
+                t.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
                     ManageCollectionActivity.b.this.c = j();
                     u.setChecked(!u.isChecked());
@@ -1429,26 +1352,26 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public e(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
-                this.D = var1;
-                this.t = (CardView) var2.findViewById(R.id.layout_item);
-                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
-                this.v = (ImageView) var2.findViewById(R.id.img_album);
-                this.x = (TextView) var2.findViewById(R.id.tv_sound_name);
-                this.y = (ImageView) var2.findViewById(R.id.img_play);
-                this.w = (ImageView) var2.findViewById(R.id.img_delete);
-                this.z = (TextView) var2.findViewById(R.id.tv_currenttime);
-                this.A = (ProgressBar) var2.findViewById(R.id.prog_playtime);
-                this.B = (TextView) var2.findViewById(R.id.tv_endtime);
-                this.C = (LinearLayout) var2.findViewById(R.id.delete_img_container);
-                this.u.setVisibility(View.GONE);
-                this.y.setOnClickListener(v -> {
+                D = var1;
+                t = var2.findViewById(R.id.layout_item);
+                u = var2.findViewById(R.id.chk_select);
+                v = var2.findViewById(R.id.img_album);
+                x = var2.findViewById(R.id.tv_sound_name);
+                y = var2.findViewById(R.id.img_play);
+                w = var2.findViewById(R.id.img_delete);
+                z = var2.findViewById(R.id.tv_currenttime);
+                A = var2.findViewById(R.id.prog_playtime);
+                B = var2.findViewById(R.id.tv_endtime);
+                C = var2.findViewById(R.id.delete_img_container);
+                u.setVisibility(View.GONE);
+                y.setOnClickListener(v -> {
                     if (ManageCollectionActivity.this.k) {
                         ManageCollectionActivity.this.F = ManageCollectionActivity.b.e.this.z;
                         ManageCollectionActivity.this.G = ManageCollectionActivity.b.e.this.A;
                         ManageCollectionActivity.this.a(ManageCollectionActivity.b.this.e, j());
                     }
                 });
-                this.t.setOnClickListener(v -> {
+                t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
                         u.setChecked(!u.isChecked());
@@ -1458,7 +1381,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     ManageCollectionActivity.this.l(ManageCollectionActivity.b.this.c);
                 });
-                this.t.setOnLongClickListener(v -> {
+                t.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
                     ManageCollectionActivity.b.this.c = j();
                     u.setChecked(!u.isChecked());
@@ -1479,15 +1402,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             public f(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
-                this.z = var1;
-                this.t = (CardView) var2.findViewById(R.id.layout_item);
-                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
-                this.v = (ImageView) var2.findViewById(R.id.img_widget);
-                this.w = (ImageView) var2.findViewById(R.id.img_delete);
-                this.x = (TextView) var2.findViewById(R.id.tv_widget_name);
-                this.y = (LinearLayout) var2.findViewById(R.id.delete_img_container);
-                this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(v -> {
+                z = var1;
+                t = var2.findViewById(R.id.layout_item);
+                u = var2.findViewById(R.id.chk_select);
+                v = var2.findViewById(R.id.img_widget);
+                w = var2.findViewById(R.id.img_delete);
+                x = var2.findViewById(R.id.tv_widget_name);
+                y = var2.findViewById(R.id.delete_img_container);
+                u.setVisibility(View.GONE);
+                t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
                         u.setChecked(!u.isChecked());
@@ -1497,7 +1420,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                     }
                     ManageCollectionActivity.this.m(ManageCollectionActivity.b.this.c);
                 });
-                this.t.setOnLongClickListener(v -> {
+                t.setOnLongClickListener(v -> {
                     ManageCollectionActivity.this.a(true);
                     ManageCollectionActivity.b.this.c = j();
                     u.setChecked(!u.isChecked());
