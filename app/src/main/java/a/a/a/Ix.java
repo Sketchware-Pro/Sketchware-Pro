@@ -342,12 +342,6 @@ public class Ix {
                         activityTag.a("android", "screenOrientation", "landscape");
                     }
                 }
-                if (c.isDynamicLinkUsed) {
-                    if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
-                        activityTag.a("android", "exported", "false");
-                    }
-                    writeDLIntentFilter(activityTag);
-                }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
                     if (keyboardSetting.length() > 0) {
@@ -366,6 +360,11 @@ public class Ix {
                         activityTag.a("android", "exported", "true");
                     }
                     activityTag.a(intentFilterTag);
+                } else if (c.isDynamicLinkUsed) {
+                    if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
+                        activityTag.a("android", "exported", "false");
+                    }
+                    writeDLIntentFilter(activityTag);
                 }
                 applicationTag.a(activityTag);
             }
