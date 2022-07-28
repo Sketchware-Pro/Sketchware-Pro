@@ -600,7 +600,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
         if (categoryAdapter.currentItemId == -1) {
             collectionAdapter.currentViewType = 0;
-            collectionAdapter.a(images);
+            collectionAdapter.setData(images);
             collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
             categoryAdapter.currentItemId = 0;
             // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
@@ -616,7 +616,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void loadImages() {
         images = Op.g().f();
         if (categoryAdapter.currentItemId == 0) {
-            collectionAdapter.a(images);
+            collectionAdapter.setData(images);
             collectionAdapter.currentViewType = 0;
         }
 
@@ -627,7 +627,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void loadSounds() {
         sounds = Qp.g().f();
         if (categoryAdapter.currentItemId == 1) {
-            collectionAdapter.a(sounds);
+            collectionAdapter.setData(sounds);
             collectionAdapter.currentViewType = 1;
         }
 
@@ -638,7 +638,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void loadFonts() {
         fonts = Np.g().f();
         if (categoryAdapter.currentItemId == 2) {
-            collectionAdapter.a(fonts);
+            collectionAdapter.setData(fonts);
             collectionAdapter.currentViewType = 2;
         }
 
@@ -649,7 +649,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void loadWidgets() {
         widgets = Rp.h().f();
         if (categoryAdapter.currentItemId == 3) {
-            collectionAdapter.a(widgets);
+            collectionAdapter.setData(widgets);
             collectionAdapter.currentViewType = 3;
         }
 
@@ -660,7 +660,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void loadBlocks() {
         blocks = Mp.h().f();
         if (categoryAdapter.currentItemId == 4) {
-            collectionAdapter.a(blocks);
+            collectionAdapter.setData(blocks);
             collectionAdapter.currentViewType = 4;
         }
 
@@ -671,7 +671,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void loadMoreBlocks() {
         moreBlocks = Pp.h().f();
         if (categoryAdapter.currentItemId == 5) {
-            collectionAdapter.a(moreBlocks);
+            collectionAdapter.setData(moreBlocks);
             collectionAdapter.currentViewType = 5;
         }
 
@@ -802,17 +802,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
                         if (currentItemId == 0) {
-                            collectionAdapter.a(images);
+                            collectionAdapter.setData(images);
                         } else if (currentItemId == 1) {
-                            collectionAdapter.a(sounds);
+                            collectionAdapter.setData(sounds);
                         } else if (currentItemId == 2) {
-                            collectionAdapter.a(fonts);
+                            collectionAdapter.setData(fonts);
                         } else if (currentItemId == 3) {
-                            collectionAdapter.a(widgets);
+                            collectionAdapter.setData(widgets);
                         } else if (currentItemId == 4) {
-                            collectionAdapter.a(blocks);
+                            collectionAdapter.setData(blocks);
                         } else {
-                            collectionAdapter.a(moreBlocks);
+                            collectionAdapter.setData(moreBlocks);
                         }
 
                         if (collectionAdapter.currentViewType == 0) {
@@ -877,53 +877,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             return currentCollectionTypeItems.size();
         }
 
-        public void a(BlockCollectionViewHolder holder, int position) {
-            BlockCollectionBean var3 = (BlockCollectionBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-                holder.blockIcon.setVisibility(View.GONE);
-            } else {
-                holder.blockIcon.setVisibility(View.VISIBLE);
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (var3.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
-            holder.blockIcon.setImageResource(getBlockIcon(var3.blocks.get(0)));
-            holder.name.setText(var3.name);
-            holder.checkBox.setChecked(var3.isSelected);
-        }
-
-        public void a(FontCollectionViewHolder holder, int position) {
-            ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
-            holder.checkBox.setChecked(bean.isSelected);
-            holder.name.setText(bean.resName + ".ttf");
-
-            try {
-                holder.preview.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
-                holder.preview.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_description_example_sentence));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void a(ImageCollectionViewHolder holder, int position) {
+        private void onBindViewHolder(ImageCollectionViewHolder holder, int position) {
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
@@ -943,78 +897,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            Glide.with(getApplicationContext()).load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
-                    .asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image));
+            Glide.with(getApplicationContext())
+                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
+                    .asBitmap()
+                    .centerCrop()
+                    .error(R.drawable.ic_remove_grey600_24dp)
+                    .into(new BitmapImageViewTarget(holder.image));
+
             holder.name.setText(bean.resName);
             holder.checkBox.setChecked(bean.isSelected);
         }
 
-        public void a(MoreBlockCollectionViewHolder holder, int position) {
-            MoreBlockCollectionBean bean = (MoreBlockCollectionBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
-            holder.name.setText(bean.name);
-            holder.checkBox.setChecked(bean.isSelected);
-            holder.blockArea.removeAllViews();
-            position = 0;
-            Rs header = new Rs(getBaseContext(), 0, bean.spec, " ", "definedFunc");
-            holder.blockArea.addView(header);
-            Iterator<String> var5 = FB.c(bean.spec).iterator();
-
-            while (true) {
-                Rs block;
-                while (true) {
-                    String var6;
-                    do {
-                        if (!var5.hasNext()) {
-                            header.k();
-                            return;
-                        }
-
-                        var6 = var5.next();
-                    } while (var6.charAt(0) != '%');
-
-                    if (var6.charAt(1) == 'b') {
-                        block = new Rs(getBaseContext(), position + 1, var6.substring(3), "b", "getVar");
-                        break;
-                    }
-
-                    if (var6.charAt(1) == 'd') {
-                        block = new Rs(getBaseContext(), position + 1, var6.substring(3), "d", "getVar");
-                        break;
-                    }
-
-                    if (var6.charAt(1) == 's') {
-                        block = new Rs(getBaseContext(), position + 1, var6.substring(3), "s", "getVar");
-                        break;
-                    }
-
-                    if (var6.charAt(1) == 'm') {
-                        String var8 = var6.substring(var6.lastIndexOf(".") + 1);
-                        String var7 = var6.substring(var6.indexOf(".") + 1, var6.lastIndexOf("."));
-                        var6 = kq.a(var7);
-                        block = new Rs(getBaseContext(), position + 1, var8, var6, kq.b(var7), "getVar");
-                        break;
-                    }
-                }
-
-                holder.blockArea.addView(block);
-                header.a((Ts) header.V.get(position), block);
-                ++position;
-            }
-        }
-
-        public void a(SoundCollectionViewHolder holder, int position) {
+        private void onBindViewHolder(SoundCollectionViewHolder holder, int position) {
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             String soundFilePath = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
             if (selectingToBeDeletedItems) {
@@ -1056,7 +950,32 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             holder.playbackProgress.setProgress(bean.curSoundPosition / 100);
         }
 
-        public void a(WidgetCollectionViewHolder holder, int position) {
+        private void onBindViewHolder(FontCollectionViewHolder holder, int position) {
+            ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
+            if (selectingToBeDeletedItems) {
+                holder.deleteContainer.setVisibility(View.VISIBLE);
+            } else {
+                holder.deleteContainer.setVisibility(View.GONE);
+            }
+
+            if (bean.isSelected) {
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
+            } else {
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
+            }
+
+            holder.checkBox.setChecked(bean.isSelected);
+            holder.name.setText(bean.resName + ".ttf");
+
+            try {
+                holder.preview.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
+                holder.preview.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_description_example_sentence));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void onBindViewHolder(WidgetCollectionViewHolder holder, int position) {
             WidgetCollectionBean bean = (WidgetCollectionBean) currentCollectionTypeItems.get(position);
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
@@ -1077,7 +996,94 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             holder.checkBox.setChecked(bean.isSelected);
         }
 
-        public void a(ArrayList<? extends SelectableBean> beans) {
+        private void onBindViewHolder(BlockCollectionViewHolder holder, int position) {
+            BlockCollectionBean bean = (BlockCollectionBean) currentCollectionTypeItems.get(position);
+            if (selectingToBeDeletedItems) {
+                holder.deleteContainer.setVisibility(View.VISIBLE);
+                holder.blockIcon.setVisibility(View.GONE);
+            } else {
+                holder.blockIcon.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.GONE);
+            }
+
+            if (bean.isSelected) {
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
+            } else {
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
+            }
+
+            holder.blockIcon.setImageResource(getBlockIcon(bean.blocks.get(0)));
+            holder.name.setText(bean.name);
+            holder.checkBox.setChecked(bean.isSelected);
+        }
+
+        private void onBindViewHolder(MoreBlockCollectionViewHolder holder, int position) {
+            MoreBlockCollectionBean bean = (MoreBlockCollectionBean) currentCollectionTypeItems.get(position);
+            if (selectingToBeDeletedItems) {
+                holder.deleteContainer.setVisibility(View.VISIBLE);
+            } else {
+                holder.deleteContainer.setVisibility(View.GONE);
+            }
+
+            if (bean.isSelected) {
+                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
+            } else {
+                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
+            }
+
+            holder.name.setText(bean.name);
+            holder.checkBox.setChecked(bean.isSelected);
+            holder.blockArea.removeAllViews();
+
+            int blockId = 0;
+            Rs block = new Rs(getBaseContext(), 0, bean.spec, " ", "definedFunc");
+            holder.blockArea.addView(block);
+            Iterator<String> spec = FB.c(bean.spec).iterator();
+
+            while (true) {
+                Rs specBlock;
+                while (true) {
+                    String specPart;
+                    do {
+                        if (!spec.hasNext()) {
+                            block.k();
+                            return;
+                        }
+
+                        specPart = spec.next();
+                    } while (specPart.charAt(0) != '%');
+
+                    if (specPart.charAt(1) == 'b') {
+                        specBlock = new Rs(getBaseContext(), blockId + 1, specPart.substring(3), "b", "getVar");
+                        break;
+                    }
+
+                    if (specPart.charAt(1) == 'd') {
+                        specBlock = new Rs(getBaseContext(), blockId + 1, specPart.substring(3), "d", "getVar");
+                        break;
+                    }
+
+                    if (specPart.charAt(1) == 's') {
+                        specBlock = new Rs(getBaseContext(), blockId + 1, specPart.substring(3), "s", "getVar");
+                        break;
+                    }
+
+                    if (specPart.charAt(1) == 'm') {
+                        String var8 = specPart.substring(specPart.lastIndexOf(".") + 1);
+                        String var7 = specPart.substring(specPart.indexOf(".") + 1, specPart.lastIndexOf("."));
+                        String type = kq.a(var7);
+                        specBlock = new Rs(getBaseContext(), blockId + 1, var8, type, kq.b(var7), "getVar");
+                        break;
+                    }
+                }
+
+                holder.blockArea.addView(specBlock);
+                block.a((Ts) block.V.get(blockId), specBlock);
+                blockId++;
+            }
+        }
+
+        private void setData(ArrayList<? extends SelectableBean> beans) {
             currentCollectionTypeItems = beans;
             if (beans.size() <= 0) {
                 noItemsNote.setVisibility(View.VISIBLE);
@@ -1131,17 +1137,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             int viewType = holder.i();
 
             if (viewType == 0) {
-                a((ImageCollectionViewHolder) holder, position);
+                onBindViewHolder((ImageCollectionViewHolder) holder, position);
             } else if (viewType == 1) {
-                a((SoundCollectionViewHolder) holder, position);
+                onBindViewHolder((SoundCollectionViewHolder) holder, position);
             } else if (viewType == 2) {
-                a((FontCollectionViewHolder) holder, position);
+                onBindViewHolder((FontCollectionViewHolder) holder, position);
             } else if (viewType == 3) {
-                a((WidgetCollectionViewHolder) holder, position);
+                onBindViewHolder((WidgetCollectionViewHolder) holder, position);
             } else if (viewType == 4) {
-                a((BlockCollectionViewHolder) holder, position);
+                onBindViewHolder((BlockCollectionViewHolder) holder, position);
             } else if (viewType == 5) {
-                a((MoreBlockCollectionViewHolder) holder, position);
+                onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
             }
         }
 
