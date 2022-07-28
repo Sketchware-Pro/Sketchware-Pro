@@ -78,6 +78,16 @@ import a.a.a.xo;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements OnClickListener {
 
+    private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
+    private static final int REQUEST_CODE_SHOW_IMAGE_DETAILS = 268;
+    private static final int REQUEST_CODE_ADD_SOUND_DIALOG = 269;
+    private static final int REQUEST_CODE_SHOW_SOUND_DETAILS = 270;
+    private static final int REQUEST_CODE_ADD_FONT_DIALOG = 271;
+    private static final int REQUEST_CODE_SHOW_FONT_DETAILS = 272;
+    private static final int REQUEST_CODE_SHOW_WIDGET_DETAILS = 273;
+    private static final int REQUEST_CODE_SHOW_BLOCK_DETAILS = 274;
+    private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
+
     private Timer soundPlaybackTimeCounter = new Timer();
     private MediaPlayer mediaPlayer;
     private int D = -1;
@@ -139,7 +149,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 267);
+        startActivityForResult(intent, REQUEST_CODE_ADD_IMAGE_DIALOG);
     }
 
     private void showAddSoundDialog() {
@@ -147,14 +157,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 269);
+        startActivityForResult(intent, REQUEST_CODE_ADD_SOUND_DIALOG);
     }
 
     private void showAddFontDialog() {
         Intent intent = new Intent(getApplicationContext(), AddFontCollectionActivity.class);
         intent.putParcelableArrayListExtra("fonts", fonts);
         intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 271);
+        startActivityForResult(intent, REQUEST_CODE_ADD_FONT_DIALOG);
     }
 
     private int getBlockIcon(BlockBean block) {
@@ -249,7 +259,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
-        startActivityForResult(intent, 268);
+        startActivityForResult(intent, REQUEST_CODE_SHOW_IMAGE_DETAILS);
     }
 
     private void openSoundDetails(int position) {
@@ -259,7 +269,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
-        startActivityForResult(intent, 270);
+        startActivityForResult(intent, REQUEST_CODE_SHOW_SOUND_DETAILS);
     }
 
     private void openFontDetails(int position) {
@@ -268,28 +278,28 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         intent.putParcelableArrayListExtra("fonts", fonts);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
-        startActivityForResult(intent, 272);
+        startActivityForResult(intent, REQUEST_CODE_SHOW_FONT_DETAILS);
     }
 
     private void openWidgetDetails(int position) {
         String widgetName = Rp.h().g().get(position);
         Intent intent = new Intent(getApplicationContext(), ShowWidgetCollectionActivity.class);
         intent.putExtra("widget_name", widgetName);
-        startActivityForResult(intent, 273);
+        startActivityForResult(intent, REQUEST_CODE_SHOW_WIDGET_DETAILS);
     }
 
     private void openBlockDetails(int position) {
         String blockName = Mp.h().g().get(position);
         Intent intent = new Intent(getApplicationContext(), ShowBlockCollectionActivity.class);
         intent.putExtra("block_name", blockName);
-        startActivityForResult(intent, 274);
+        startActivityForResult(intent, REQUEST_CODE_SHOW_BLOCK_DETAILS);
     }
 
     private void openMoreBlockDetails(int position) {
         String blockName = Pp.h().g().get(position);
         Intent intent = new Intent(getApplicationContext(), ShowMoreBlockCollectionActivity.class);
         intent.putExtra("block_name", blockName);
-        startActivityForResult(intent, 279);
+        startActivityForResult(intent, REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS);
     }
 
     private void deleteSelectedToBeDeletedItems() {
@@ -445,30 +455,30 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case 267:
-            case 268:
+            case REQUEST_CODE_ADD_IMAGE_DIALOG:
+            case REQUEST_CODE_SHOW_IMAGE_DETAILS:
                 loadImages();
                 break;
 
-            case 269:
-            case 270:
+            case REQUEST_CODE_ADD_SOUND_DIALOG:
+            case REQUEST_CODE_SHOW_SOUND_DETAILS:
                 loadSounds();
                 break;
 
-            case 271:
-            case 272:
+            case REQUEST_CODE_ADD_FONT_DIALOG:
+            case REQUEST_CODE_SHOW_FONT_DETAILS:
                 loadFonts();
                 break;
 
-            case 273:
+            case REQUEST_CODE_SHOW_WIDGET_DETAILS:
                 loadWidgets();
                 break;
 
-            case 274:
+            case REQUEST_CODE_SHOW_BLOCK_DETAILS:
                 loadBlocks();
                 break;
 
-            case 279:
+            case REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS:
                 loadMoreBlocks();
                 break;
 
