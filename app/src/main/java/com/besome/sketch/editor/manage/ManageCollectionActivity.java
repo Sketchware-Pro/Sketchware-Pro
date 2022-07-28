@@ -386,12 +386,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 runOnUiThread(() -> {
                     if (mediaPlayer == null) {
                         soundPlaybackTimeCounter.cancel();
-                        return;
+                    } else {
+                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.d(position);
+                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                        viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
+                        viewHolder.playbackProgress.setProgress(mediaPlayer.getCurrentPosition() / 1000);
                     }
-                    CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.d(position);
-                    int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
-                    viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
-                    viewHolder.playbackProgress.setProgress(mediaPlayer.getCurrentPosition() / 1000);
                 });
             }
         }, 100L, 100L);
@@ -405,10 +405,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(v -> {
-            if (mB.a()) {
-                return;
+            if (!mB.a()) {
+                onBackPressed();
             }
-            onBackPressed();
         });
 
         noItemsNote = findViewById(R.id.tv_no_collections);
@@ -1158,9 +1157,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         CollectionAdapter.this.c(lastSelectedItemPosition);
-                        return;
+                    } else {
+                        openBlockDetails(lastSelectedItemPosition);
                     }
-                    openBlockDetails(lastSelectedItemPosition);
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
@@ -1202,9 +1201,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         CollectionAdapter.this.c(lastSelectedItemPosition);
-                        return;
+                    } else {
+                        openFontDetails(lastSelectedItemPosition);
                     }
-                    openFontDetails(lastSelectedItemPosition);
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
@@ -1242,9 +1241,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         CollectionAdapter.this.c(lastSelectedItemPosition);
-                        return;
+                    } else {
+                        openImageDetails(lastSelectedItemPosition);
                     }
-                    openImageDetails(lastSelectedItemPosition);
                 });
                 image.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
@@ -1282,9 +1281,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         CollectionAdapter.this.c(lastSelectedItemPosition);
-                        return;
+                    } else {
+                        openMoreBlockDetails(lastSelectedItemPosition);
                     }
-                    openMoreBlockDetails(lastSelectedItemPosition);
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
@@ -1335,12 +1334,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                                     mediaPlayer.pause();
                                     ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = mediaPlayer.getCurrentPosition();
                                     collectionAdapter.c(E);
-                                    return;
+                                } else {
+                                    mediaPlayer.start();
+                                    scheduleSoundPlaybackTimeCounter(position);
+                                    collectionAdapter.c();
                                 }
-
-                                mediaPlayer.start();
-                                scheduleSoundPlaybackTimeCounter(position);
-                                collectionAdapter.c();
                             }
                         } else {
                             if (mediaPlayer != null && mediaPlayer.isPlaying()) {
@@ -1389,9 +1387,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         CollectionAdapter.this.c(lastSelectedItemPosition);
-                        return;
+                    } else {
+                        openSoundDetails(lastSelectedItemPosition);
                     }
-                    openSoundDetails(lastSelectedItemPosition);
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
@@ -1429,9 +1427,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         CollectionAdapter.this.c(lastSelectedItemPosition);
-                        return;
+                    } else {
+                        openWidgetDetails(lastSelectedItemPosition);
                     }
-                    openWidgetDetails(lastSelectedItemPosition);
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
