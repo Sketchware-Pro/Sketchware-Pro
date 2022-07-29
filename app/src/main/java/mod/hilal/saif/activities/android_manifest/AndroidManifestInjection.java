@@ -56,7 +56,6 @@ public class AndroidManifestInjection extends Activity {
     private ListView act_list;
     private String sc_id;
     private String activityName;
-    private AlertDialog.Builder dia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -596,17 +595,12 @@ public class AndroidManifestInjection extends Activity {
                 startActivity(intent);
             });
             linearLayout.setOnLongClickListener(v -> {
-                dia = new AlertDialog.Builder(AndroidManifestInjection.this);
-
-                dia.setTitle((String) _data.get(position).get("act_name"));
-
-                dia.setMessage("do you want to delete all attributes related to this activity?");
-
-                dia.setPositiveButton("Yes", (dialog, which) -> deleteActivity(position));
-
-                dia.setNegativeButton("No", null);
-                dia.show();
-
+                new AlertDialog.Builder(AndroidManifestInjection.this)
+                        .setTitle((String) _data.get(position).get("act_name"))
+                        .setMessage("Delete all attributes related to this activity?")
+                        .setPositiveButton(R.string.common_word_delete, (dialog, which) -> deleteActivity(position))
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .show();
                 return true;
             });
 
