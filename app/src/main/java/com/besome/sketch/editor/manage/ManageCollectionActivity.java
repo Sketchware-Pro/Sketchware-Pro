@@ -47,7 +47,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.google.android.gms.analytics.HitBuilders.ScreenViewBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -586,8 +585,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             finish();
         }
 
-        d.setScreenName(ManageCollectionActivity.class.getSimpleName());
-        d.send((new ScreenViewBuilder()).build());
         if (collectionAdapter != null) {
             // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
             collectionAdapter.c();
