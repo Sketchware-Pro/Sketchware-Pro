@@ -73,7 +73,6 @@ import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.xB;
-import a.a.a.xo;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements OnClickListener {
 
@@ -446,9 +445,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         cancel.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        if (!j.h()) {
-            xo.a(getApplicationContext());
-        }
     }
 
     @Override
