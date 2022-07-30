@@ -143,7 +143,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         iconNameValidator = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, alreadyAddedImageNames);
         iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();
-        new Handler().postDelayed(() -> new c(getApplicationContext()).execute(), 300L);
+        new Handler().postDelayed(() -> new InitialIconLoader(getApplicationContext()).execute(), 300L);
     }
 
     @Override
@@ -151,6 +151,49 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         super.onResume();
         d.setScreenName(ImportIconActivity.class.getSimpleName());
         d.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    private void setIconName(int iconPosition) {
+        iconName.setText(icons.get(iconPosition).first);
+    }
+
+    private void setIconColor(int colorType) {
+        if (iconType != colorType) {
+            iconType = colorType;
+            if (colorType == 0) {
+                showBlackIcons.setBackgroundColor(0xff33b8f5);
+                showGreyIcons.setBackgroundColor(0xffe5e5e5);
+                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
+            } else if (colorType == 1) {
+                showBlackIcons.setBackgroundColor(0xffe5e5e5);
+                showGreyIcons.setBackgroundColor(0xff33b8f5);
+                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
+            } else if (colorType == 2) {
+                showBlackIcons.setBackgroundColor(0xffe5e5e5);
+                showGreyIcons.setBackgroundColor(0xffe5e5e5);
+                showWhiteIcons.setBackgroundColor(0xff33b8f5);
+            }
+            new IconColorChangedIconLoader(getApplicationContext()).execute();
+        }
+    }
+
+    private void listIcons() {
+        icons = new ArrayList<>();
+        String color = "black";
+        if (iconType != 0) {
+            if (iconType == 1) {
+                color = "grey";
+            } else if (iconType == 2) {
+                color = "white";
+            }
+        }
+        String iconFolderName = "icon_" + color;
+        for (String iconName : new File(wq.f() + File.separator + iconFolderName).list()) {
+            icons.add(new Pair<>(
+                    iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
+                    wq.f() + File.separator + iconFolderName + File.separator + iconName
+            ));
+        }
     }
 
     private class IconAdapter extends RecyclerView.a<IconAdapter.ViewHolder> {
@@ -215,8 +258,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    private class c extends MA {
-        public c(Context context) {
+    private class InitialIconLoader extends MA {
+        public InitialIconLoader(Context context) {
             super(context);
             ImportIconActivity.this.a(this);
         }
@@ -246,51 +289,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    private void setIconName(int iconPosition) {
-        iconName.setText(icons.get(iconPosition).first);
-    }
-
-    private void setIconColor(int colorType) {
-        if (iconType != colorType) {
-            iconType = colorType;
-            if (colorType == 0) {
-                showBlackIcons.setBackgroundColor(0xff33b8f5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == 1) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xff33b8f5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == 2) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xff33b8f5);
-            }
-            new b(getApplicationContext()).execute();
-        }
-    }
-
-    private void listIcons() {
-        icons = new ArrayList<>();
-        String color = "black";
-        if (iconType != 0) {
-            if (iconType == 1) {
-                color = "grey";
-            } else if (iconType == 2) {
-                color = "white";
-            }
-        }
-        String iconFolderName = "icon_" + color;
-        for (String iconName : new File(wq.f() + File.separator + iconFolderName).list()) {
-            icons.add(new Pair<>(
-                    iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
-                    wq.f() + File.separator + iconFolderName + File.separator + iconName
-            ));
-        }
-    }
-
-    private class b extends MA {
-        public b(Context context) {
+    private class IconColorChangedIconLoader extends MA {
+        public IconColorChangedIconLoader(Context context) {
             super(context);
             ImportIconActivity.this.a(this);
             k();
