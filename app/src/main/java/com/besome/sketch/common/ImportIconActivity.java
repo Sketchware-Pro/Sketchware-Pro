@@ -1,8 +1,10 @@
 package com.besome.sketch.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -37,7 +39,6 @@ import a.a.a.uq;
 import a.a.a.wq;
 import a.a.a.xB;
 
-/* loaded from: classes.dex */
 public class ImportIconActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public Toolbar k;
     public RecyclerView l;
@@ -65,107 +66,108 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         KB.a(this, "icons" + File.separator + "icon_pack.zip", wq.f());
     }
 
-    @Override // android.view.View.OnClickListener
-    public void onClick(View view) {
-        if (mB.a()) {
-            return;
-        }
-        int id = view.getId();
-        if (id == R.id.btn_accept) {
-            if (!this.w.b() || this.o.c < 0) {
-                return;
+    @Override
+    public void onClick(View v) {
+        if (!mB.a()) {
+            int id = v.getId();
+
+            if (id == R.id.btn_accept) {
+                if (w.b() && o.c >= 0) {
+                    Intent intent = new Intent();
+                    intent.putExtra("iconName", t.getText().toString());
+                    intent.putExtra("iconPath", u.get(o.c).second);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+            } else if (id == R.id.btn_black) {
+                g(0);
+            } else if (id == R.id.btn_cancel) {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+            } else if (id == R.id.btn_grey) {
+                g(1);
+            } else if (id == R.id.btn_white) {
+                g(2);
             }
-            Intent intent = new Intent();
-            intent.putExtra("iconName", this.t.getText().toString());
-            intent.putExtra("iconPath", (String) this.u.get(this.o.c).second);
-            setResult(-1, intent);
-            finish();
-        } else if (id == R.id.btn_black) {
-            g(0);
-        } else if (id == R.id.btn_cancel) {
-            setResult(0);
-            finish();
-        } else if (id == R.id.btn_grey) {
-            g(1);
-        } else if (id == R.id.btn_white) {
-            g(2);
         }
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity, android.content.ComponentCallbacks
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
-        ((GridLayoutManager) this.l.getLayoutManager()).d(m());
-        this.l.requestLayout();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ((GridLayoutManager) l.getLayoutManager()).d(m());
+        l.requestLayout();
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, androidx.core.app.ComponentActivity, android.app.Activity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.import_icon);
-        this.k = (Toolbar) findViewById(R.id.toolbar);
-        a(this.k);
+
+        k = findViewById(R.id.toolbar);
+        a(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().a(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
         d().e(true);
         d().d(true);
-        this.k.setNavigationOnClickListener(v -> {
+        k.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
-        this.v = getIntent().getStringArrayListExtra("imageNames");
-        this.m = (Button) findViewById(R.id.btn_accept);
-        this.m.setText(xB.b().a(getApplicationContext(), R.string.common_word_accept));
-        this.n = (Button) findViewById(R.id.btn_cancel);
-        this.n.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
-        this.m.setOnClickListener(this);
-        this.n.setOnClickListener(this);
-        this.l = (RecyclerView) findViewById(R.id.image_list);
-        this.l.setHasFixedSize(true);
-        this.l.setLayoutManager(new GridLayoutManager(getBaseContext(), m()));
-        this.o = new a();
-        this.l.setAdapter(this.o);
-        this.q = (Button) findViewById(R.id.btn_black);
-        this.r = (Button) findViewById(R.id.btn_grey);
-        this.s = (Button) findViewById(R.id.btn_white);
-        this.q.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_black));
-        this.r.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_grey));
-        this.s.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_white));
-        this.q.setOnClickListener(this);
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
-        this.t = (EditText) findViewById(R.id.ed_input);
+
+        v = getIntent().getStringArrayListExtra("imageNames");
+        m = findViewById(R.id.btn_accept);
+        m.setText(xB.b().a(getApplicationContext(), R.string.common_word_accept));
+        n = findViewById(R.id.btn_cancel);
+        n.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
+        m.setOnClickListener(this);
+        n.setOnClickListener(this);
+        l = findViewById(R.id.image_list);
+        l.setHasFixedSize(true);
+        l.setLayoutManager(new GridLayoutManager(getBaseContext(), m()));
+        o = new a();
+        l.setAdapter(o);
+        q = findViewById(R.id.btn_black);
+        r = findViewById(R.id.btn_grey);
+        s = findViewById(R.id.btn_white);
+        q.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_black));
+        r.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_grey));
+        s.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_white));
+        q.setOnClickListener(this);
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
+        t = findViewById(R.id.ed_input);
         ((TextInputLayout) findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.design_manager_icon_hint_enter_icon_name));
-        this.w = new WB(getApplicationContext(), (TextInputLayout) findViewById(R.id.ti_input), uq.b, this.v);
-        this.t.setPrivateImeOptions("defaultInputmode=english;");
+        w = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, v);
+        t.setPrivateImeOptions("defaultInputmode=english;");
         k();
         new Handler().postDelayed(() -> new c(getApplicationContext()).execute(), 300L);
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+    @Override
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(ImportIconActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
+        d.setScreenName(ImportIconActivity.class.getSimpleName());
+        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    /* loaded from: classes.dex */
     class a extends RecyclerView.a<a.a2> {
+
         public int c = -1;
 
-        /* loaded from: classes.dex */
         class a2 extends RecyclerView.v {
+
             public RelativeLayout t;
             public TextView u;
             public ImageView v;
 
-            public a2(View view) {
-                super(view);
-                this.t = (RelativeLayout) view.findViewById(R.id.icon_bg);
-                this.u = (TextView) view.findViewById(R.id.tv_icon_name);
-                this.v = (ImageView) view.findViewById(R.id.img);
-                this.v.setOnClickListener(v -> {
+            public a2(View itemView) {
+                super(itemView);
+                t = itemView.findViewById(R.id.icon_bg);
+                u = itemView.findViewById(R.id.tv_icon_name);
+                v = itemView.findViewById(R.id.img);
+                v.setOnClickListener(v -> {
                     if (!mB.a()) {
                         int lastSelectedPosition = ImportIconActivity.a.this.c;
                         ImportIconActivity.a.this.c = j();
@@ -179,63 +181,62 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             }
         }
 
-        public a() {
-        }
-
-        @Override // androidx.recyclerview.widget.RecyclerView.a
-        public void b(a2 aVar, int i) {
-            if (i != this.c) {
-                if (ImportIconActivity.this.p == 2) {
-                    aVar.t.setBackgroundColor(-4342339);
+        @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(a2 holder, int position) {
+            if (position != c) {
+                if (p == 2) {
+                    holder.t.setBackgroundColor(0xffbdbdbd);
                 } else {
-                    aVar.t.setBackgroundColor(-1);
+                    holder.t.setBackgroundColor(Color.WHITE);
                 }
             } else {
-                aVar.t.setBackgroundColor(-13124);
+                holder.t.setBackgroundColor(0xffffccbc);
             }
-            aVar.u.setText((CharSequence) ((Pair) ImportIconActivity.this.u.get(i)).first);
+            holder.u.setText(u.get(position).first);
             try {
-                aVar.v.setImageBitmap(iB.a((String) ((Pair) ImportIconActivity.this.u.get(i)).second, 1));
+                holder.v.setImageBitmap(iB.a(u.get(position).second, 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        @Override // androidx.recyclerview.widget.RecyclerView.a
-        public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.import_icon_list_item, viewGroup, false));
+        @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public a2 b(ViewGroup parent, int viewType) {
+            return new a2(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
         }
 
-        @Override // androidx.recyclerview.widget.RecyclerView.a
+        @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
-            return ImportIconActivity.this.u.size();
+            return u.size();
         }
     }
 
-    /* loaded from: classes.dex */
     class c extends MA {
         public c(Context context) {
             super(context);
             ImportIconActivity.this.a(this);
         }
 
-        @Override // a.a.a.MA
+        @Override
         public void a() {
-            ImportIconActivity.this.h();
-            ImportIconActivity.this.g(0);
+            h();
+            g(0);
         }
 
-        @Override // a.a.a.MA
+        @Override
         public void b() {
             publishProgress("Now processing..");
-            if (!ImportIconActivity.this.n()) {
-                ImportIconActivity.this.o();
+            if (!n()) {
+                o();
             }
         }
 
-        @Override // a.a.a.MA
+        @Override
         public void a(String str) {
-            ImportIconActivity.this.h();
+            h();
         }
 
         @Override
@@ -245,78 +246,74 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     public final void f(int i) {
-        this.t.setText((CharSequence) this.u.get(i).first);
+        t.setText(u.get(i).first);
     }
 
     public final void g(int i) {
-        if (this.p == i) {
+        if (p == i) {
             return;
         }
-        this.p = i;
-        int i2 = this.p;
-        if (i2 == 0) {
-            this.q.setBackgroundColor(-13387531);
-            this.r.setBackgroundColor(-1710619);
-            this.s.setBackgroundColor(-1710619);
-        } else if (i2 == 1) {
-            this.q.setBackgroundColor(-1710619);
-            this.r.setBackgroundColor(-13387531);
-            this.s.setBackgroundColor(-1710619);
-        } else if (i2 == 2) {
-            this.q.setBackgroundColor(-1710619);
-            this.r.setBackgroundColor(-1710619);
-            this.s.setBackgroundColor(-13387531);
+        p = i;
+        if (i == 0) {
+            q.setBackgroundColor(0xff33b8f5);
+            r.setBackgroundColor(0xffe5e5e5);
+            s.setBackgroundColor(0xffe5e5e5);
+        } else if (i == 1) {
+            q.setBackgroundColor(0xffe5e5e5);
+            r.setBackgroundColor(0xff33b8f5);
+            s.setBackgroundColor(0xffe5e5e5);
+        } else if (i == 2) {
+            q.setBackgroundColor(0xffe5e5e5);
+            r.setBackgroundColor(0xffe5e5e5);
+            s.setBackgroundColor(0xff33b8f5);
         }
-        new b(getApplicationContext()).execute(new Void[0]);
+        new b(getApplicationContext()).execute();
     }
 
     public final void l() {
-        String[] list;
-        this.u = new ArrayList<>();
-        int i = this.p;
-        String str = "black";
+        u = new ArrayList<>();
+        int i = p;
+        String color = "black";
         if (i != 0) {
             if (i == 1) {
-                str = "grey";
+                color = "grey";
             } else if (i == 2) {
-                str = "white";
+                color = "white";
             }
         }
-        String str2 = "icon_" + str;
-        for (String str3 : new File(wq.f() + File.separator + str2).list()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(str3.substring(0, str3.indexOf("_" + str)));
-            sb.append("_");
-            sb.append(str);
-            this.u.add(new Pair<>(sb.toString(), wq.f() + File.separator + str2 + File.separator + str3));
+        String iconFolderName = "icon_" + color;
+        for (String iconName : new File(wq.f() + File.separator + iconFolderName).list()) {
+            u.add(new Pair<>(
+                    iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
+                    wq.f() + File.separator + iconFolderName + File.separator + iconName
+            ));
         }
     }
 
-    /* loaded from: classes.dex */
     class b extends MA {
         public b(Context context) {
             super(context);
             ImportIconActivity.this.a(this);
-            ImportIconActivity.this.k();
+            k();
         }
 
-        @Override // a.a.a.MA
+        @Override
         public void a() {
-            ImportIconActivity.this.h();
-            ImportIconActivity.this.t.setText("");
-            ImportIconActivity.this.o.c = -1;
-            ImportIconActivity.this.o.c();
+            h();
+            t.setText("");
+            o.c = -1;
+            o.c();
         }
 
-        @Override // a.a.a.MA
+        @Override
         public void b() {
             publishProgress("Now processing..");
-            ImportIconActivity.this.l();
+            l();
         }
 
-        @Override // a.a.a.MA
+        @Override
         public void a(String str) {
-            ImportIconActivity.this.h();
+            h();
         }
 
         @Override
