@@ -1,17 +1,5 @@
 package com.besome.sketch.common;
 
-import a.a.a.KB;
-import a.a.a.MA;
-import a.a.a.Tp;
-import a.a.a.Up;
-import a.a.a.Vp;
-import a.a.a.WB;
-import a.a.a.iB;
-import a.a.a.mB;
-import a.a.a.oB;
-import a.a.a.uq;
-import a.a.a.wq;
-import a.a.a.xB;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,14 +14,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.io.File;
 import java.util.ArrayList;
+
+import a.a.a.KB;
+import a.a.a.MA;
+import a.a.a.WB;
+import a.a.a.iB;
+import a.a.a.mB;
+import a.a.a.oB;
+import a.a.a.uq;
+import a.a.a.wq;
+import a.a.a.xB;
 
 /* loaded from: classes.dex */
 public class ImportIconActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -114,7 +115,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         d().a(xB.b().a(getApplicationContext(), 2131625265));
         d().e(true);
         d().d(true);
-        this.k.setNavigationOnClickListener(new Tp(this));
+        this.k.setNavigationOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        });
         this.v = getIntent().getStringArrayListExtra("imageNames");
         this.m = (Button) findViewById(2131230804);
         this.m.setText(xB.b().a(getApplicationContext(), 2131624968));
@@ -141,7 +146,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         this.w = new WB(getApplicationContext(), (TextInputLayout) findViewById(2131231816), uq.b, this.v);
         this.t.setPrivateImeOptions("defaultInputmode=english;");
         k();
-        new Handler().postDelayed(new Up(this), 300L);
+        new Handler().postDelayed(() -> new c(getApplicationContext()).execute(), 300L);
     }
 
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
@@ -152,21 +157,31 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     /* loaded from: classes.dex */
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.a<a.a2> {
         public int c = -1;
 
         /* loaded from: classes.dex */
-        class a extends RecyclerView.v {
+        class a2 extends RecyclerView.v {
             public RelativeLayout t;
             public TextView u;
             public ImageView v;
 
-            public a(View view) {
+            public a2(View view) {
                 super(view);
                 this.t = (RelativeLayout) view.findViewById(2131231092);
                 this.u = (TextView) view.findViewById(2131232002);
                 this.v = (ImageView) view.findViewById(2131231102);
-                this.v.setOnClickListener(new Vp(this, a.this));
+                this.v.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        int lastSelectedPosition = ImportIconActivity.a.this.c;
+                        ImportIconActivity.a.this.c = j();
+                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
+                        ImportIconActivity.a.this.c(ImportIconActivity.a.this.c);
+                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
+                        ImportIconActivity.a.this.c(lastSelectedPosition);
+                        ImportIconActivity.this.f(ImportIconActivity.a.this.c);
+                    }
+                });
             }
         }
 
@@ -174,8 +189,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
-        /* renamed from: a */
-        public void b(a aVar, int i) {
+        public void b(a2 aVar, int i) {
             if (i != this.c) {
                 if (ImportIconActivity.this.p == 2) {
                     aVar.t.setBackgroundColor(-4342339);
@@ -194,8 +208,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427457, viewGroup, false));
+        public a2 b(ViewGroup viewGroup, int i) {
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427457, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
@@ -228,6 +242,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @Override // a.a.a.MA
         public void a(String str) {
             ImportIconActivity.this.h();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return a(voids);
         }
     }
 
@@ -304,6 +323,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @Override // a.a.a.MA
         public void a(String str) {
             ImportIconActivity.this.h();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return a(voids);
         }
     }
 }
