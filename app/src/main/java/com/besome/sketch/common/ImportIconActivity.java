@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,32 +70,25 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         if (mB.a()) {
             return;
         }
-        switch (view.getId()) {
-            case 2131230804:
-                if (!this.w.b() || this.o.c < 0) {
-                    return;
-                }
-                Intent intent = new Intent();
-                intent.putExtra("iconName", this.t.getText().toString());
-                intent.putExtra("iconPath", (String) this.u.get(this.o.c).second);
-                setResult(-1, intent);
-                finish();
+        int id = view.getId();
+        if (id == R.id.btn_accept) {
+            if (!this.w.b() || this.o.c < 0) {
                 return;
-            case 2131230809:
-                g(0);
-                return;
-            case 2131230810:
-                setResult(0);
-                finish();
-                return;
-            case 2131230831:
-                g(1);
-                return;
-            case 2131230863:
-                g(2);
-                return;
-            default:
-                return;
+            }
+            Intent intent = new Intent();
+            intent.putExtra("iconName", this.t.getText().toString());
+            intent.putExtra("iconPath", (String) this.u.get(this.o.c).second);
+            setResult(-1, intent);
+            finish();
+        } else if (id == R.id.btn_black) {
+            g(0);
+        } else if (id == R.id.btn_cancel) {
+            setResult(0);
+            finish();
+        } else if (id == R.id.btn_grey) {
+            g(1);
+        } else if (id == R.id.btn_white) {
+            g(2);
         }
     }
 
@@ -108,11 +102,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, androidx.core.app.ComponentActivity, android.app.Activity
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(2131427456);
-        this.k = (Toolbar) findViewById(2131231847);
+        setContentView(R.layout.import_icon);
+        this.k = (Toolbar) findViewById(R.id.toolbar);
         a(this.k);
-        findViewById(2131231370).setVisibility(8);
-        d().a(xB.b().a(getApplicationContext(), 2131625265));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
         d().e(true);
         d().d(true);
         this.k.setNavigationOnClickListener(v -> {
@@ -121,29 +115,29 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             }
         });
         this.v = getIntent().getStringArrayListExtra("imageNames");
-        this.m = (Button) findViewById(2131230804);
-        this.m.setText(xB.b().a(getApplicationContext(), 2131624968));
-        this.n = (Button) findViewById(2131230810);
-        this.n.setText(xB.b().a(getApplicationContext(), 2131624974));
+        this.m = (Button) findViewById(R.id.btn_accept);
+        this.m.setText(xB.b().a(getApplicationContext(), R.string.common_word_accept));
+        this.n = (Button) findViewById(R.id.btn_cancel);
+        this.n.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
         this.m.setOnClickListener(this);
         this.n.setOnClickListener(this);
-        this.l = (RecyclerView) findViewById(2131231101);
+        this.l = (RecyclerView) findViewById(R.id.image_list);
         this.l.setHasFixedSize(true);
         this.l.setLayoutManager(new GridLayoutManager(getBaseContext(), m()));
         this.o = new a();
         this.l.setAdapter(this.o);
-        this.q = (Button) findViewById(2131230809);
-        this.r = (Button) findViewById(2131230831);
-        this.s = (Button) findViewById(2131230863);
-        this.q.setText(xB.b().a(getApplicationContext(), 2131625269));
-        this.r.setText(xB.b().a(getApplicationContext(), 2131625270));
-        this.s.setText(xB.b().a(getApplicationContext(), 2131625271));
+        this.q = (Button) findViewById(R.id.btn_black);
+        this.r = (Button) findViewById(R.id.btn_grey);
+        this.s = (Button) findViewById(R.id.btn_white);
+        this.q.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_black));
+        this.r.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_grey));
+        this.s.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_white));
         this.q.setOnClickListener(this);
         this.r.setOnClickListener(this);
         this.s.setOnClickListener(this);
-        this.t = (EditText) findViewById(2131230990);
-        ((TextInputLayout) findViewById(2131231816)).setHint(xB.b().a(getApplicationContext(), 2131625266));
-        this.w = new WB(getApplicationContext(), (TextInputLayout) findViewById(2131231816), uq.b, this.v);
+        this.t = (EditText) findViewById(R.id.ed_input);
+        ((TextInputLayout) findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.design_manager_icon_hint_enter_icon_name));
+        this.w = new WB(getApplicationContext(), (TextInputLayout) findViewById(R.id.ti_input), uq.b, this.v);
         this.t.setPrivateImeOptions("defaultInputmode=english;");
         k();
         new Handler().postDelayed(() -> new c(getApplicationContext()).execute(), 300L);
@@ -168,9 +162,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
             public a2(View view) {
                 super(view);
-                this.t = (RelativeLayout) view.findViewById(2131231092);
-                this.u = (TextView) view.findViewById(2131232002);
-                this.v = (ImageView) view.findViewById(2131231102);
+                this.t = (RelativeLayout) view.findViewById(R.id.icon_bg);
+                this.u = (TextView) view.findViewById(R.id.tv_icon_name);
+                this.v = (ImageView) view.findViewById(R.id.img);
                 this.v.setOnClickListener(v -> {
                     if (!mB.a()) {
                         int lastSelectedPosition = ImportIconActivity.a.this.c;
@@ -209,7 +203,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
         public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427457, viewGroup, false));
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.import_icon_list_item, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
