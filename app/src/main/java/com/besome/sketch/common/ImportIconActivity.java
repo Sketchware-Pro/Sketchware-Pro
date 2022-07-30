@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
@@ -144,13 +143,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();
         new Handler().postDelayed(() -> new InitialIconLoader(getApplicationContext()).execute(), 300L);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(ImportIconActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void setIconName(int iconPosition) {
