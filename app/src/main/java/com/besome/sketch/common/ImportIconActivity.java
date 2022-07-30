@@ -293,6 +293,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             h();
             iconName.setText("");
             adapter.selectedIconPosition = -1;
+            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
             adapter.c();
         }
 
