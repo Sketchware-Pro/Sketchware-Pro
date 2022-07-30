@@ -208,7 +208,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             sounds.get(E).curSoundPosition = 0;
             E = -1;
             D = -1;
-            // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
             collectionAdapter.c();
         }
 
@@ -231,7 +231,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             }
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -372,7 +372,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         }
 
         bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), 1).show();
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -582,7 +582,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         }
 
         if (collectionAdapter != null) {
-            // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
             collectionAdapter.c();
         }
     }
@@ -606,12 +606,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.setData(images);
             collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
             categoryAdapter.currentItemId = 0;
-            // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
             categoryAdapter.c();
         }
 
         if (collectionAdapter != null) {
-            // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
             collectionAdapter.c();
         }
     }
@@ -623,7 +623,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.currentViewType = 0;
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -634,7 +634,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.currentViewType = 1;
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -645,7 +645,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.currentViewType = 2;
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -656,7 +656,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.currentViewType = 3;
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -667,7 +667,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.currentViewType = 4;
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -678,7 +678,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             collectionAdapter.currentViewType = 5;
         }
 
-        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
 
@@ -833,7 +833,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                             }
                         }
 
-                        // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
                         collectionAdapter.c();
                     }
                 }
@@ -1355,7 +1355,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                                 } else {
                                     mediaPlayer.start();
                                     scheduleSoundPlaybackTimeCounter(position);
-                                    // RecyclerView.ViewHolder#clearReturnedFromScrapFlag()
+                                    // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
                                     collectionAdapter.c();
                                 }
                             }
