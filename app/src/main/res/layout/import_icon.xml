@@ -2,7 +2,7 @@
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <include layout="@layout/toolbar" />
-    <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" android:layout_marginRight="24.0dip">
+    <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" android:layout_marginRight="24.0dip" android:importantForAutofill="noExcludeDescendants">
         <EditText android:textSize="16.0sp" android:id="@id/ed_input" android:layout_width="fill_parent" android:layout_height="40.0dip" android:lines="1" android:inputType="text" android:imeOptions="actionDone" />
     </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout android:gravity="right" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
