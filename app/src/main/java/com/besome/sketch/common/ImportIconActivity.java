@@ -47,7 +47,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private Button showWhiteIcons;
     private EditText iconName;
     private WB iconNameValidator;
-    private a adapter = null;
+    private IconAdapter adapter = null;
     /**
      * Current icons' color, where 0 stands for black, 1 for grey, and 2 for white.
      */
@@ -72,10 +72,10 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             int id = v.getId();
 
             if (id == R.id.btn_accept) {
-                if (iconNameValidator.b() && adapter.c >= 0) {
+                if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
                     Intent intent = new Intent();
                     intent.putExtra("iconName", iconName.getText().toString());
-                    intent.putExtra("iconPath", icons.get(adapter.c).second);
+                    intent.putExtra("iconPath", icons.get(adapter.selectedIconPosition).second);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
@@ -127,7 +127,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         iconsList = findViewById(R.id.image_list);
         iconsList.setHasFixedSize(true);
         iconsList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
-        adapter = new a();
+        adapter = new IconAdapter();
         iconsList.setAdapter(adapter);
         showBlackIcons = findViewById(R.id.btn_black);
         showGreyIcons = findViewById(R.id.btn_grey);
@@ -153,30 +153,30 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    class a extends RecyclerView.a<a.a2> {
+    private class IconAdapter extends RecyclerView.a<IconAdapter.ViewHolder> {
 
-        public int c = -1;
+        private int selectedIconPosition = -1;
 
-        class a2 extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.v {
 
-            public RelativeLayout t;
-            public TextView u;
-            public ImageView v;
+            public final RelativeLayout background;
+            public final TextView name;
+            public final ImageView icon;
 
-            public a2(View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.icon_bg);
-                u = itemView.findViewById(R.id.tv_icon_name);
-                v = itemView.findViewById(R.id.img);
-                v.setOnClickListener(v -> {
+                background = itemView.findViewById(R.id.icon_bg);
+                name = itemView.findViewById(R.id.tv_icon_name);
+                icon = itemView.findViewById(R.id.img);
+                icon.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        int lastSelectedPosition = ImportIconActivity.a.this.c;
-                        ImportIconActivity.a.this.c = j();
+                        int lastSelectedPosition = selectedIconPosition;
+                        selectedIconPosition = j();
                         // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        ImportIconActivity.a.this.c(ImportIconActivity.a.this.c);
+                        IconAdapter.this.c(selectedIconPosition);
                         // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        ImportIconActivity.a.this.c(lastSelectedPosition);
-                        setIconName(ImportIconActivity.a.this.c);
+                        IconAdapter.this.c(lastSelectedPosition);
+                        setIconName(selectedIconPosition);
                     }
                 });
             }
@@ -184,19 +184,19 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(a2 holder, int position) {
-            if (position != c) {
+        public void b(ViewHolder holder, int position) {
+            if (position != this.selectedIconPosition) {
                 if (iconType == 2) {
-                    holder.t.setBackgroundColor(0xffbdbdbd);
+                    holder.background.setBackgroundColor(0xffbdbdbd);
                 } else {
-                    holder.t.setBackgroundColor(Color.WHITE);
+                    holder.background.setBackgroundColor(Color.WHITE);
                 }
             } else {
-                holder.t.setBackgroundColor(0xffffccbc);
+                holder.background.setBackgroundColor(0xffffccbc);
             }
-            holder.u.setText(icons.get(position).first);
+            holder.name.setText(icons.get(position).first);
             try {
-                holder.v.setImageBitmap(iB.a(icons.get(position).second, 1));
+                holder.icon.setImageBitmap(iB.a(icons.get(position).second, 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -204,8 +204,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public a2 b(ViewGroup parent, int viewType) {
-            return new a2(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
         }
 
         @Override
@@ -215,7 +215,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    class c extends MA {
+    private class c extends MA {
         public c(Context context) {
             super(context);
             ImportIconActivity.this.a(this);
@@ -289,7 +289,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    class b extends MA {
+    private class b extends MA {
         public b(Context context) {
             super(context);
             ImportIconActivity.this.a(this);
@@ -300,7 +300,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         public void a() {
             h();
             iconName.setText("");
-            adapter.c = -1;
+            adapter.selectedIconPosition = -1;
             adapter.c();
         }
 
