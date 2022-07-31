@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -74,7 +73,7 @@ import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 
-public class ManageCollectionActivity extends BaseAppCompatActivity implements OnClickListener {
+public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
     private static final int REQUEST_CODE_SHOW_IMAGE_DETAILS = 268;
@@ -107,40 +106,47 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private String sc_id;
 
     private static String getCategoryLabel(Context context, int position) {
-        String label;
-        if (position == 0) {
-            label = Helper.getResString(R.string.common_word_image);
-        } else if (position == 1) {
-            label = Helper.getResString(R.string.common_word_sound);
-        } else if (position == 2) {
-            label = Helper.getResString(R.string.common_word_font);
-        } else if (position == 3) {
-            label = Helper.getResString(R.string.common_word_widget);
-        } else if (position == 4) {
-            label = Helper.getResString(R.string.common_word_block);
-        } else {
-            label = Helper.getResString(R.string.common_word_moreblock);
-        }
+        switch (position) {
+            case 0:
+                return Helper.getResString(R.string.common_word_image);
 
-        return label;
+            case 1:
+                return Helper.getResString(R.string.common_word_sound);
+
+            case 2:
+                return Helper.getResString(R.string.common_word_font);
+
+            case 3:
+                return Helper.getResString(R.string.common_word_widget);
+
+            case 4:
+                return Helper.getResString(R.string.common_word_block);
+
+            default:
+                return Helper.getResString(R.string.common_word_moreblock);
+        }
     }
 
     private static int getCategoryIcon(int position) {
-        if (position == 0) {
-            position = R.drawable.ic_picture_48dp;
-        } else if (position == 1) {
-            position = R.drawable.ic_sound_wave_48dp;
-        } else if (position == 2) {
-            position = R.drawable.ic_font_48dp;
-        } else if (position == 3) {
-            position = R.drawable.collage_96;
-        } else if (position == 4) {
-            position = R.drawable.block_96_blue;
-        } else {
-            position = R.drawable.more_block_96dp;
-        }
+        switch (position) {
+            case 0:
+                return R.drawable.ic_picture_48dp;
 
-        return position;
+            case 1:
+                return R.drawable.ic_sound_wave_48dp;
+
+            case 2:
+                return R.drawable.ic_font_48dp;
+
+            case 3:
+                return R.drawable.collage_96;
+
+            case 4:
+                return R.drawable.block_96_blue;
+
+            default:
+                return R.drawable.more_block_96dp;
+        }
     }
 
     private void showAddImageDialog() {
@@ -166,20 +172,27 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     }
 
     private int getBlockIcon(BlockBean block) {
-        if (block.type.equals("c")) {
-            return R.drawable.fav_block_c_96dp;
-        } else if (block.type.equals("b")) {
-            return R.drawable.fav_block_boolean_96dp;
-        } else if (block.type.equals("f")) {
-            return R.drawable.fav_block_final_96dp;
-        } else if (block.type.equals("e")) {
-            return R.drawable.fav_block_e_96dp;
-        } else if (block.type.equals("d")) {
-            return R.drawable.fav_block_number_96dp;
-        } else if (block.type.equals("s")) {
-            return R.drawable.fav_block_string_96dp;
-        } else {
-            return R.drawable.fav_block_command_96dp;
+        switch (block.type) {
+            case "c":
+                return R.drawable.fav_block_c_96dp;
+
+            case "b":
+                return R.drawable.fav_block_boolean_96dp;
+
+            case "f":
+                return R.drawable.fav_block_final_96dp;
+
+            case "e":
+                return R.drawable.fav_block_e_96dp;
+
+            case "d":
+                return R.drawable.fav_block_number_96dp;
+
+            case "s":
+                return R.drawable.fav_block_string_96dp;
+
+            default:
+                return R.drawable.fav_block_command_96dp;
         }
     }
 
@@ -302,64 +315,76 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     private void deleteSelectedToBeDeletedItems() {
         for (int i = 0; i < categoryAdapter.a(); i++) {
-            if (i == 0) {
-                for (ProjectResourceBean bean : images) {
-                    if (bean.isSelected) {
-                        Op.g().a(bean.resName, false);
-                    }
-                }
-
-                Op.g().e();
-                loadImages();
-            } else if (i == 1) {
-                for (ProjectResourceBean bean : sounds) {
-                    if (bean.isSelected) {
-                        Qp.g().a(bean.resName, false);
-                    }
-                }
-
-                Qp.g().e();
-                loadSounds();
-            } else if (i == 2) {
-                for (ProjectResourceBean bean : fonts) {
-                    if (bean.isSelected) {
-                        Np.g().a(bean.resName, false);
-                    }
-                }
-
-                Np.g().e();
-                loadFonts();
-            } else if (i == 3) {
-                for (WidgetCollectionBean bean : widgets) {
-                    if (bean.isSelected) {
-                        if (!hasDeletedWidget) {
-                            hasDeletedWidget = true;
+            switch (i) {
+                case 0:
+                    for (ProjectResourceBean bean : images) {
+                        if (bean.isSelected) {
+                            Op.g().a(bean.resName, false);
                         }
-
-                        Rp.h().a(bean.name, false);
                     }
-                }
 
-                Rp.h().e();
-                loadWidgets();
-            } else if (i == 4) {
-                for (BlockCollectionBean bean : blocks) {
-                    if (bean.isSelected) {
-                        Mp.h().a(bean.name, false);
+                    Op.g().e();
+                    loadImages();
+                    break;
+
+                case 1:
+                    for (ProjectResourceBean bean : sounds) {
+                        if (bean.isSelected) {
+                            Qp.g().a(bean.resName, false);
+                        }
                     }
-                }
 
-                Mp.h().e();
-                loadBlocks();
-            } else {
-                for (MoreBlockCollectionBean bean : moreBlocks) {
-                    if (bean.isSelected) {
-                        Pp.h().a(bean.name, false);
+                    Qp.g().e();
+                    loadSounds();
+                    break;
+
+                case 2:
+                    for (ProjectResourceBean bean : fonts) {
+                        if (bean.isSelected) {
+                            Np.g().a(bean.resName, false);
+                        }
                     }
-                }
 
-                Pp.h().e();
-                loadMoreBlocks();
+                    Np.g().e();
+                    loadFonts();
+                    break;
+
+                case 3:
+                    for (WidgetCollectionBean bean : widgets) {
+                        if (bean.isSelected) {
+                            if (!hasDeletedWidget) {
+                                hasDeletedWidget = true;
+                            }
+
+                            Rp.h().a(bean.name, false);
+                        }
+                    }
+
+                    Rp.h().e();
+                    loadWidgets();
+                    break;
+
+                case 4:
+                    for (BlockCollectionBean bean : blocks) {
+                        if (bean.isSelected) {
+                            Mp.h().a(bean.name, false);
+                        }
+                    }
+
+                    Mp.h().e();
+                    loadBlocks();
+                    break;
+
+                default:
+                    for (MoreBlockCollectionBean bean : moreBlocks) {
+                        if (bean.isSelected) {
+                            Pp.h().a(bean.name, false);
+                        }
+                    }
+
+                    Pp.h().e();
+                    loadMoreBlocks();
+                    break;
             }
         }
 
@@ -685,26 +710,36 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private void unselectToBeDeletedItems() {
         int id = getCurrentCategoryItemId();
 
-        if (id == 0) {
-            for (ProjectResourceBean bean : images) {
-                bean.isSelected = false;
-            }
-        } else if (id == 1) {
-            for (ProjectResourceBean bean : sounds) {
-                bean.isSelected = false;
-            }
-        } else if (id == 2) {
-            for (ProjectResourceBean bean : fonts) {
-                bean.isSelected = false;
-            }
-        } else if (id == 3) {
-            for (WidgetCollectionBean bean : widgets) {
-                bean.isSelected = false;
-            }
-        } else {
-            for (BlockCollectionBean bean : blocks) {
-                bean.isSelected = false;
-            }
+        switch (id) {
+            case 0:
+                for (ProjectResourceBean bean : images) {
+                    bean.isSelected = false;
+                }
+                break;
+
+            case 1:
+                for (ProjectResourceBean bean : sounds) {
+                    bean.isSelected = false;
+                }
+                break;
+
+            case 2:
+                for (ProjectResourceBean bean : fonts) {
+                    bean.isSelected = false;
+                }
+                break;
+
+            case 3:
+                for (WidgetCollectionBean bean : widgets) {
+                    bean.isSelected = false;
+                }
+                break;
+
+            default:
+                for (BlockCollectionBean bean : blocks) {
+                    bean.isSelected = false;
+                }
+                break;
         }
     }
 
@@ -775,7 +810,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v implements OnClickListener {
+        private class ViewHolder extends RecyclerView.v implements View.OnClickListener {
 
             public final ImageView icon;
             public final TextView name;
@@ -804,18 +839,30 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                         CategoryAdapter.this.c(currentItemId);
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
-                        if (currentItemId == 0) {
-                            collectionAdapter.setData(images);
-                        } else if (currentItemId == 1) {
-                            collectionAdapter.setData(sounds);
-                        } else if (currentItemId == 2) {
-                            collectionAdapter.setData(fonts);
-                        } else if (currentItemId == 3) {
-                            collectionAdapter.setData(widgets);
-                        } else if (currentItemId == 4) {
-                            collectionAdapter.setData(blocks);
-                        } else {
-                            collectionAdapter.setData(moreBlocks);
+                        switch (currentItemId) {
+                            case 0:
+                                collectionAdapter.setData(images);
+                                break;
+
+                            case 1:
+                                collectionAdapter.setData(sounds);
+                                break;
+
+                            case 2:
+                                collectionAdapter.setData(fonts);
+                                break;
+
+                            case 3:
+                                collectionAdapter.setData(widgets);
+                                break;
+
+                            case 4:
+                                collectionAdapter.setData(blocks);
+                                break;
+
+                            default:
+                                collectionAdapter.setData(moreBlocks);
+                                break;
                         }
 
                         if (collectionAdapter.currentViewType == 0) {
@@ -1118,18 +1165,24 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         @Override
         // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public RecyclerView.v b(ViewGroup parent, int viewType) {
-            if (viewType == 0) {
-                return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
-            } else if (viewType == 1) {
-                return new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
-            } else if (viewType == 2) {
-                return new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
-            } else if (viewType == 3) {
-                return new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
-            } else if (viewType == 4) {
-                return new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
-            } else {
-                return new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
+            switch (viewType) {
+                case 0:
+                    return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+
+                case 1:
+                    return new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+
+                case 2:
+                    return new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
+
+                case 3:
+                    return new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
+
+                case 4:
+                    return new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
+
+                default:
+                    return new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
             }
         }
 
@@ -1139,18 +1192,30 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             // RecyclerView.ViewHolder#getItemViewType()
             int viewType = holder.i();
 
-            if (viewType == 0) {
-                onBindViewHolder((ImageCollectionViewHolder) holder, position);
-            } else if (viewType == 1) {
-                onBindViewHolder((SoundCollectionViewHolder) holder, position);
-            } else if (viewType == 2) {
-                onBindViewHolder((FontCollectionViewHolder) holder, position);
-            } else if (viewType == 3) {
-                onBindViewHolder((WidgetCollectionViewHolder) holder, position);
-            } else if (viewType == 4) {
-                onBindViewHolder((BlockCollectionViewHolder) holder, position);
-            } else if (viewType == 5) {
-                onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
+            switch (viewType) {
+                case 0:
+                    onBindViewHolder((ImageCollectionViewHolder) holder, position);
+                    break;
+
+                case 1:
+                    onBindViewHolder((SoundCollectionViewHolder) holder, position);
+                    break;
+
+                case 2:
+                    onBindViewHolder((FontCollectionViewHolder) holder, position);
+                    break;
+
+                case 3:
+                    onBindViewHolder((WidgetCollectionViewHolder) holder, position);
+                    break;
+
+                case 4:
+                    onBindViewHolder((BlockCollectionViewHolder) holder, position);
+                    break;
+
+                case 5:
+                    onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
+                    break;
             }
         }
 
