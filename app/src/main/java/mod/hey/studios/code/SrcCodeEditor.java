@@ -360,6 +360,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         setTitle(getIntent().getStringExtra("title"));
 
         editor.setTypefaceText(Typeface.MONOSPACE);
+        editor.setPinLineNumber(true);
 
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
 
