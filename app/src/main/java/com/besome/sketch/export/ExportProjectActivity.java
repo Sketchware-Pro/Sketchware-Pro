@@ -883,8 +883,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            if (!ExportProjectActivity.this.g.a()) {
-                ExportProjectActivity.this.g.a(true);
+            if (!progressDialog.a()) {
+                progressDialog.a(true);
                 ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
                 publishProgress("Canceling process...");
                 d = true;

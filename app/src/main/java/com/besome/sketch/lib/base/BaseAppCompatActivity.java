@@ -25,7 +25,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     public Context e;
     public Zo j;
     private ZA lottieDialog;
-    private _A progressDialog;
+    protected _A progressDialog;
     private ArrayList<MA> taskList;
 
     public void a(MA var1) {
