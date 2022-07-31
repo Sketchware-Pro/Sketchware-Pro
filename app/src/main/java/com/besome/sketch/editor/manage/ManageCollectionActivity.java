@@ -72,7 +72,7 @@ import a.a.a.ef;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
-import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements OnClickListener {
 
@@ -109,17 +109,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     private static String getCategoryLabel(Context context, int position) {
         String label;
         if (position == 0) {
-            label = xB.b().a(context, R.string.common_word_image);
+            label = Helper.getResString(R.string.common_word_image);
         } else if (position == 1) {
-            label = xB.b().a(context, R.string.common_word_sound);
+            label = Helper.getResString(R.string.common_word_sound);
         } else if (position == 2) {
-            label = xB.b().a(context, R.string.common_word_font);
+            label = Helper.getResString(R.string.common_word_font);
         } else if (position == 3) {
-            label = xB.b().a(context, R.string.common_word_widget);
+            label = Helper.getResString(R.string.common_word_widget);
         } else if (position == 4) {
-            label = xB.b().a(context, R.string.common_word_block);
+            label = Helper.getResString(R.string.common_word_block);
         } else {
-            label = xB.b().a(context, R.string.common_word_moreblock);
+            label = Helper.getResString(R.string.common_word_moreblock);
         }
 
         return label;
@@ -371,7 +371,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             fab.f();
         }
 
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), 1).show();
+        bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_complete_delete), 1).show();
         // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         collectionAdapter.c();
     }
@@ -413,7 +413,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_collection));
+        d().a(Helper.getResString(R.string.design_actionbar_title_manager_collection));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -423,7 +423,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         });
 
         noItemsNote = findViewById(R.id.tv_no_collections);
-        noItemsNote.setText(xB.b().a(getApplicationContext(), R.string.event_message_no_events));
+        noItemsNote.setText(Helper.getResString(R.string.event_message_no_events));
         RecyclerView categories = findViewById(R.id.category_list);
         categories.setHasFixedSize(true);
         categories.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
@@ -441,8 +441,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
         Button delete = findViewById(R.id.btn_delete);
         Button cancel = findViewById(R.id.btn_cancel);
-        delete.setText(xB.b().a(getApplicationContext(), R.string.common_word_delete));
-        cancel.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
+        delete.setText(Helper.getResString(R.string.common_word_delete));
+        cancel.setText(Helper.getResString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
     }
@@ -972,7 +972,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             try {
                 holder.preview.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
-                holder.preview.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_description_example_sentence));
+                holder.preview.setText(Helper.getResString(R.string.design_manager_font_description_example_sentence));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1213,7 +1213,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 name = itemView.findViewById(R.id.tv_font_name);
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 preview = itemView.findViewById(R.id.tv_font_preview);
-                preview.setText(xB.b().a(getApplicationContext(), R.string.common_word_preview));
+                preview.setText(Helper.getResString(R.string.common_word_preview));
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = j();
