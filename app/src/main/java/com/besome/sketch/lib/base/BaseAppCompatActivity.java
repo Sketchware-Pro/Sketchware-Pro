@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.besome.sketch.SketchApplication;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
@@ -93,9 +92,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         super.onCreate(var1);
         e = getApplicationContext();
         j = new Zo(getApplicationContext());
-        d = ((SketchApplication) getApplication()).a();
-        d.enableAdvertisingIdCollection(true);
-        d.enableExceptionReporting(true);
+        d = new Tracker();
         taskList = new ArrayList<>();
         lottieDialog = new ZA(this);
         lC.a(getApplicationContext(), false);
