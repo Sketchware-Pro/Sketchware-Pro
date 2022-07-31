@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
-import com.besome.sketch.lib.base.BaseSessionAppCompatActivity;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import a.a.a.bB;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 
-public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements View.OnClickListener {
+public class ManageAdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_ENABLE_ADMOB = 8001;
     private static final int REQUEST_CODE_ADMOB_SETTINGS = 8002;
@@ -45,13 +45,6 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     private TextView tvInterName;
     private TextView tvInterId;
     private ProjectLibraryBean admobLibraryBean;
-
-    @Override
-    public void a(int requestCode, String idk) {
-        if (requestCode == REQUEST_CODE_ENABLE_ADMOB || requestCode == REQUEST_CODE_ADMOB_SETTINGS) {
-            n(requestCode);
-        }
-    }
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
@@ -84,22 +77,6 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         }
     }
 
-    @Override
-    public void g(int idk) {
-    }
-
-    @Override
-    public void h(int idk) {
-    }
-
-    @Override
-    public void l() {
-    }
-
-    @Override
-    public void m() {
-    }
-
     private void n() {
         if (GB.h(getApplicationContext())) {
             try {
@@ -116,15 +93,6 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
             }
         } else {
             bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
-        }
-    }
-
-    private void n(int requestCode) {
-        if (requestCode == REQUEST_CODE_ENABLE_ADMOB) {
-            libSwitch.setChecked(true);
-            admobLibraryBean.useYn = "Y";
-        } else {
-            toAdmobActivity();
         }
     }
 
@@ -178,7 +146,8 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
                 n();
             } else if (id == R.id.layout_switch) {
                 if (!libSwitch.isChecked()) {
-                    i(8001);
+                    libSwitch.setChecked(true);
+                    admobLibraryBean.useYn = "Y";
                 } else {
                     libSwitch.setChecked(!libSwitch.isChecked());
                     if ("Y".equals(admobLibraryBean.useYn) && !libSwitch.isChecked()) {
@@ -247,7 +216,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         if (itemId == R.id.menu_admob_help) {
             o();
         } else if (itemId == R.id.menu_admob_settings) {
-            i(REQUEST_CODE_ADMOB_SETTINGS);
+            toAdmobActivity();
         }
 
         return super.onOptionsItemSelected(item);
