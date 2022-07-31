@@ -653,7 +653,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Make a simple ProgressDialog show and set its OnCancelListener
             ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button
-            ExportProjectActivity.this.g.a(false);
+            progressDialog.a(false);
         }
 
         /**
