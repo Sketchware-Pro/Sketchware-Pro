@@ -12,7 +12,6 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 
-import a.a.a.EA;
 import a.a.a.MA;
 import a.a.a.ZA;
 import a.a.a.Zo;
@@ -25,57 +24,56 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     public Tracker d;
     @Deprecated
     public Context e;
-    public ZA f;
-    public _A g;
-    public ArrayList<MA> h;
-    public EA i;
     public Zo j;
+    private ZA lottieDialog;
+    private _A progressDialog;
+    private ArrayList<MA> taskList;
 
     public void a(MA var1) {
-        h.add(var1);
+        taskList.add(var1);
     }
 
-    public void a(OnCancelListener var1) {
-        if (g != null && !g.isShowing()) {
-            g.setOnCancelListener(var1);
-            g.show();
+    public void a(OnCancelListener cancelListener) {
+        if (progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog.setOnCancelListener(cancelListener);
+            progressDialog.show();
         }
     }
 
     public void a(String var1) {
-        if (g != null && g.isShowing()) {
-            g.a(var1);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.a(var1);
         }
     }
 
     public void g() {
-        for (MA task : h) {
+        for (MA task : taskList) {
             if (task.getStatus() != Status.FINISHED && !task.isCancelled()) {
                 task.cancel(true);
             }
         }
-        h.clear();
+        taskList.clear();
     }
 
     public void h() {
         try {
-            if (f != null && f.isShowing()) {
-                f.dismiss();
+            if (lottieDialog != null && lottieDialog.isShowing()) {
+                lottieDialog.dismiss();
             }
         } catch (Exception var2) {
-            f = null;
-            f = new ZA(this);
+            lottieDialog = null;
+            lottieDialog = new ZA(this);
         }
     }
 
     public void i() {
         try {
-            if (g != null && g.isShowing()) {
-                g.dismiss();
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
             }
         } catch (Exception var2) {
-            g = null;
-            g = new _A(this);
+            progressDialog = null;
+            progressDialog = new _A(this);
         }
 
     }
@@ -85,8 +83,8 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     public void k() {
-        if (f != null && !f.isShowing() && !isFinishing()) {
-            f.show();
+        if (lottieDialog != null && !lottieDialog.isShowing() && !isFinishing()) {
+            lottieDialog.show();
         }
     }
 
@@ -94,30 +92,29 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         e = getApplicationContext();
-        i = new EA(getApplicationContext());
         j = new Zo(getApplicationContext());
         d = ((SketchApplication) getApplication()).a();
         d.enableAdvertisingIdCollection(true);
         d.enableExceptionReporting(true);
-        h = new ArrayList<>();
-        f = new ZA(this);
+        taskList = new ArrayList<>();
+        lottieDialog = new ZA(this);
         lC.a(getApplicationContext(), false);
-        g = new _A(this);
+        progressDialog = new _A(this);
     }
 
     @Override
     public void onDestroy() {
         g();
-        if (f != null && f.isShowing()) {
-            f.a();
+        if (lottieDialog != null && lottieDialog.isShowing()) {
+            lottieDialog.a();
         }
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
-        if (f != null && f.isShowing()) {
-            f.b();
+        if (lottieDialog != null && lottieDialog.isShowing()) {
+            lottieDialog.b();
         }
         super.onPause();
     }
@@ -125,8 +122,8 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (f != null && f.isShowing()) {
-            f.c();
+        if (lottieDialog != null && lottieDialog.isShowing()) {
+            lottieDialog.c();
         }
     }
 }
