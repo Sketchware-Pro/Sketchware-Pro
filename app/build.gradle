@@ -117,8 +117,8 @@ dependencies {
     // TODO: use proguard-core dependency when duplicate class issue has been fixed
     minApi21Implementation "com.guardsquare:proguard-base:7.1.1"
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
-    minApi26implementation 'com.guardsquare:proguard-core:9.0.2'
-    minApi26implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
+    minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
+    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
