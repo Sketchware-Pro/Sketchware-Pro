@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -54,10 +56,10 @@ public class ViewEvents extends LinearLayout {
 
             public a2(View view) {
                 super(view);
-                this.t = (LinearLayout) view.findViewById(2131230931);
-                this.u = (ImageView) view.findViewById(2131231151);
-                this.v = (ImageView) view.findViewById(2131231198);
-                this.w = (TextView) view.findViewById(2131232195);
+                this.t = (LinearLayout) view.findViewById(R.id.container);
+                this.u = (ImageView) view.findViewById(R.id.img_icon);
+                this.v = (ImageView) view.findViewById(R.id.img_used_event);
+                this.w = (TextView) view.findViewById(R.id.tv_title);
                 view.setOnClickListener(v -> ViewEvents.this.a(j()));
             }
         }
@@ -70,10 +72,10 @@ public class ViewEvents extends LinearLayout {
         public void b(a2 aVar, int i) {
             EventBean eventBean = (EventBean) ViewEvents.this.d.get(i);
             if (eventBean.isSelected) {
-                aVar.v.setVisibility(8);
+                aVar.v.setVisibility(View.GONE);
                 mB.a(aVar.u, 1);
             } else {
-                aVar.v.setVisibility(0);
+                aVar.v.setVisibility(View.VISIBLE);
                 mB.a(aVar.u, 0);
             }
             aVar.u.setImageResource(oq.a(eventBean.eventName));
@@ -82,7 +84,7 @@ public class ViewEvents extends LinearLayout {
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
         public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427414, viewGroup, false));
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.event_grid_item, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
@@ -97,9 +99,9 @@ public class ViewEvents extends LinearLayout {
     }
 
     public final void a(Context context) {
-        wB.a(context, this, 2131427775);
+        wB.a(context, this, R.layout.view_events);
         this.d = new ArrayList<>();
-        this.e = (RecyclerView) findViewById(2131231449);
+        this.e = (RecyclerView) findViewById(R.id.list_events);
         this.e.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.b(0);
@@ -131,7 +133,7 @@ public class ViewEvents extends LinearLayout {
                     }
                 }
                 if (!str2.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
-                    EventBean eventBean = new EventBean(1, viewBean.type, viewBean.id, str2);
+                    EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, str2);
                     eventBean.isSelected = z;
                     this.d.add(eventBean);
                 }
@@ -146,7 +148,7 @@ public class ViewEvents extends LinearLayout {
             eventBean.isSelected = true;
             jC.a(this.a).a(this.b.getJavaName(), eventBean);
             this.e.getAdapter().c(i);
-            bB.a(getContext(), xB.b().a(getContext(), 2131625331), 0).show();
+            bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
         Qs qs = this.f;
         if (qs != null) {
