@@ -1,27 +1,32 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.aB;
-import a.a.a.by;
-import a.a.a.jC;
-import a.a.a.mB;
-import a.a.a.wB;
-import a.a.a.xB;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.manage.ViewSelectorActivity;
+import com.sketchware.remod.R;
+
+import a.a.a.aB;
+import a.a.a.by;
+import a.a.a.jC;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.xB;
 
 /* loaded from: classes.dex */
 public class ProjectFileSelector extends LinearLayout implements View.OnClickListener {
@@ -131,8 +136,8 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
 
             public a2(View view) {
                 super(view);
-                this.t = (TextView) view.findViewById(2131231979);
-                this.u = (TextView) view.findViewById(2131232032);
+                this.t = (TextView) view.findViewById(R.id.tv_filename);
+                this.u = (TextView) view.findViewById(R.id.tv_linked_filename);
                 view.setOnClickListener(v -> {
                     ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(j());
                     setJavaFileName(projectFileBean.getJavaName());
@@ -151,8 +156,8 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         @Override // androidx.recyclerview.widget.RecyclerView.a
         /* renamed from: a */
         public void b(a2 aVar, int i) {
-            aVar.t.setVisibility(0);
-            aVar.u.setVisibility(0);
+            aVar.t.setVisibility(View.VISIBLE);
+            aVar.u.setVisibility(View.VISIBLE);
             ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(i);
             String javaName = projectFileBean.getJavaName();
             String xmlName = projectFileBean.getXmlName();
@@ -162,7 +167,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
         public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427418, viewGroup, false));
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
@@ -179,12 +184,12 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     }
 
     public final void c(Context context) {
-        setOrientation(0);
+        setOrientation(LinearLayout.HORIZONTAL);
         b(context);
         a(context);
-        setGravity(16);
+        setGravity(Gravity.CENTER_VERTICAL);
         TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(2130903461, typedValue, true);
+        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);
         setBackgroundResource(typedValue.resourceId);
         setOnClickListener(this);
         this.e = 0;
@@ -208,10 +213,10 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
 
     public final void b(Context context) {
         this.b = new TextView(context);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, -1);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.leftMargin = (int) wB.a(context, 8.0f);
         layoutParams.weight = 1.0f;
-        this.b.setGravity(19);
+        this.b.setGravity(Gravity.LEFT | Gravity.CENTER);
         this.b.setLayoutParams(layoutParams);
         addView(this.b);
     }
@@ -220,17 +225,17 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         int a2 = (int) wB.a(context, 24.0f);
         this.c = new ImageView(context);
         this.c.setLayoutParams(new LinearLayout.LayoutParams(a2, a2));
-        this.c.setImageResource(2131165689);
+        this.c.setImageResource(R.drawable.ic_arrow_drop_down_grey600_24dp);
         addView(this.c);
     }
 
     public void b() {
         this.i = new aB((Activity) getContext());
-        this.i.b(xB.b().a(getContext(), 2131625159));
-        this.i.a(2131165928);
-        View a2 = wB.a(getContext(), 2131427417);
-        RecyclerView recyclerView = (RecyclerView) a2.findViewById(2131231058);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        this.i.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
+        this.i.a(R.drawable.java_96);
+        View a2 = wB.a(getContext(), R.layout.file_selector_popup_select_java);
+        RecyclerView recyclerView = (RecyclerView) a2.findViewById(R.id.file_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         recyclerView.setAdapter(new a());
         this.i.a(a2);
         this.i.show();
