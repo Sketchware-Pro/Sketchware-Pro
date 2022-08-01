@@ -123,13 +123,13 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         setShownText(currentXmlFileName);
     }
 
-    private class a extends RecyclerView.a<a.a2> {
+    private class JavaFileAdapter extends RecyclerView.a<JavaFileAdapter.ViewHolder> {
 
-        private class a2 extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.v {
             public TextView t;
             public TextView u;
 
-            public a2(View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 t = itemView.findViewById(R.id.tv_filename);
                 u = itemView.findViewById(R.id.tv_linked_filename);
@@ -147,7 +147,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
 
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(a2 holder, int position) {
+        public void b(ViewHolder holder, int position) {
             holder.t.setVisibility(View.VISIBLE);
             holder.u.setVisibility(View.VISIBLE);
             ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
@@ -159,8 +159,8 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
 
         @Override
         // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public a2 b(ViewGroup parent, int viewType) {
-            return new a2(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
         }
 
         @Override
@@ -230,7 +230,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         View customView = wB.a(getContext(), R.layout.file_selector_popup_select_java);
         RecyclerView recyclerView = customView.findViewById(R.id.file_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        recyclerView.setAdapter(new a());
+        recyclerView.setAdapter(new JavaFileAdapter());
         availableFilesDialog.a(customView);
         availableFilesDialog.show();
     }

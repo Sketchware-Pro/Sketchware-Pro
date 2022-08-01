@@ -45,15 +45,15 @@ public class ViewEvents extends LinearLayout {
         eventClickListener = listener;
     }
 
-    class a extends RecyclerView.a<a.a2> {
+    private class EventAdapter extends RecyclerView.a<EventAdapter.ViewHolder> {
 
-        class a2 extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.v {
             public final LinearLayout container;
             public final ImageView icon;
             public final ImageView addAvailableIcon;
             public final TextView name;
 
-            public a2(View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 container = itemView.findViewById(R.id.container);
                 icon = itemView.findViewById(R.id.img_icon);
@@ -65,7 +65,7 @@ public class ViewEvents extends LinearLayout {
 
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(a2 holder, int position) {
+        public void b(ViewHolder holder, int position) {
             EventBean eventBean = events.get(position);
             if (eventBean.isSelected) {
                 holder.addAvailableIcon.setVisibility(View.GONE);
@@ -80,8 +80,8 @@ public class ViewEvents extends LinearLayout {
 
         @Override
         // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public a2 b(ViewGroup parent, int viewType) {
-            return new a2(LayoutInflater.from(parent.getContext()).inflate(R.layout.event_grid_item, parent, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.event_grid_item, parent, false));
         }
 
         @Override
@@ -104,7 +104,7 @@ public class ViewEvents extends LinearLayout {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.b(0);
         eventsList.setLayoutManager(linearLayoutManager);
-        eventsList.setAdapter(new a());
+        eventsList.setAdapter(new EventAdapter());
         eventsList.setItemAnimator(new ci());
     }
 
