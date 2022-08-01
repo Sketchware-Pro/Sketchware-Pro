@@ -246,7 +246,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             case REQUEST_CODE_VIEW_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (projectFileSelector != null) {
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                     }
                     if (viewTabAdapter != null) {
                         viewTabAdapter.n();
@@ -285,7 +285,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             case REQUEST_CODE_LIBRARY_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (projectFileSelector != null) {
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                     }
                 }
                 break;
@@ -482,14 +482,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         viewTabAdapter.c(true);
                         xmlLayoutOrientation.setVisibility(View.VISIBLE);
                         projectFileSelector.setFileType(0);
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                     }
                 } else if (i == 1) {
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         viewTabAdapter.c(false);
                         projectFileSelector.setFileType(1);
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                         if (eventTabAdapter != null) {
                             eventTabAdapter.f();
                         }
@@ -499,7 +499,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         viewTabAdapter.c(false);
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         projectFileSelector.setFileType(1);
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                         if (componentTabAdapter != null) {
                             componentTabAdapter.d();
                         }
@@ -565,7 +565,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
-        projectFileSelector.b(outState);
+        projectFileSelector.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
         if (!j()) {
             finish();
@@ -671,7 +671,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     jC.a(sc_id).c(jC.d(sc_id));
                     jC.a(sc_id).a(jC.d(sc_id));
                 }
-                projectFileSelector.a();
+                projectFileSelector.syncState();
                 B = false;
                 dialog.dismiss();
             }
@@ -744,7 +744,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toAndroidManifestManager() {
         launchActivity(AndroidManifestInjection.class, null,
-                new Pair<>("file_name", projectFileSelector.g));
+                new Pair<>("file_name", projectFileSelector.currentJavaFileName));
     }
 
     /**
@@ -752,7 +752,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toAppCompatInjectionManager() {
         launchActivity(ManageCustomAttributeActivity.class, null,
-                new Pair<>("file_name", projectFileSelector.f));
+                new Pair<>("file_name", projectFileSelector.currentXmlFileName));
     }
 
     /**
@@ -1163,7 +1163,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             if (c != null) {
-                projectFileSelector.a(c);
+                projectFileSelector.onRestoreInstanceState(c);
                 if (c.getInt("file_selector_current_file_type") == 0) {
                     xmlLayoutOrientation.setVisibility(View.VISIBLE);
                 } else {
@@ -1171,7 +1171,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
 
-            projectFileSelector.a();
+            projectFileSelector.syncState();
             h();
             if (c == null) {
                 l();

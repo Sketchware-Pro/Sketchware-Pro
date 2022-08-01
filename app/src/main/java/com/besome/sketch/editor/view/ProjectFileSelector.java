@@ -29,104 +29,103 @@ import a.a.a.wB;
 import a.a.a.xB;
 
 public class ProjectFileSelector extends LinearLayout implements View.OnClickListener {
-    public String a;
-    public TextView b;
-    public ImageView c;
-    public by d;
-    public int e = -1;
-    public String f;
-    public String g;
-    public boolean h;
-    public aB i;
+    private String sc_id;
+    private TextView fileName;
+    private by selectedFileChangeListener;
+    private int currentFileType = -1;
+    public String currentXmlFileName;
+    public String currentJavaFileName;
+    private boolean currentFileIsCustomView;
+    private aB availableFilesDialog;
 
     public ProjectFileSelector(Context context) {
         super(context);
-        c(context);
+        initialize(context);
     }
 
     public String getFileName() {
-        if (e == 0) {
-            return f;
+        if (currentFileType == 0) {
+            return currentXmlFileName;
         } else {
-            return g;
+            return currentJavaFileName;
         }
     }
 
     public int getFileType() {
-        return e;
+        return currentFileType;
     }
 
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            if (e == 0) {
-                c();
+            if (currentFileType == 0) {
+                showAvailableViews();
             } else {
-                b();
+                showAvailableJavaFiles();
             }
         }
     }
 
     public void setFileType(int i) {
-        e = i;
-        if (e == 0) {
-            setShownText(f);
+        currentFileType = i;
+        if (currentFileType == 0) {
+            setShownText(currentXmlFileName);
         } else {
-            setShownText(g);
+            setShownText(currentJavaFileName);
         }
     }
 
     public void setJavaFileName(String fileName) {
-        g = fileName;
-        setShownText(g);
+        currentJavaFileName = fileName;
+        setShownText(currentJavaFileName);
     }
 
     public void setOnSelectedFileChangeListener(by listener) {
-        d = listener;
+        selectedFileChangeListener = listener;
     }
 
     public void setScId(String sc_id) {
-        a = sc_id;
+        this.sc_id = sc_id;
     }
 
     public void setShownText(String shownText) {
-        if (e == 1) {
-            b.setText(shownText);
+        if (currentFileType == 1) {
+            fileName.setText(shownText);
         } else if (shownText.indexOf("_drawer_") == 0) {
-            b.setText(shownText.substring(1, shownText.indexOf(".xml")));
+            fileName.setText(shownText.substring(1, shownText.indexOf(".xml")));
         } else {
-            b.setText(shownText);
+            fileName.setText(shownText);
         }
     }
 
     public void setXmlFileName(ProjectFileBean projectFileBean) {
         if (projectFileBean == null) {
-            f = "main.xml";
+            currentXmlFileName = "main.xml";
         } else {
             int fileType = projectFileBean.fileType;
             if (fileType == 0) {
-                g = projectFileBean.getJavaName();
-                f = projectFileBean.getXmlName();
-                h = false;
+                currentJavaFileName = projectFileBean.getJavaName();
+                currentXmlFileName = projectFileBean.getXmlName();
+                currentFileIsCustomView = false;
             } else if (fileType == 1) {
-                h = true;
+                currentFileIsCustomView = true;
             } else if (fileType == 2) {
-                h = true;
+                currentFileIsCustomView = true;
             }
 
-            if (e == 0) {
-                d.a(0, projectFileBean);
-            } else if (e == 1) {
-                d.a(1, projectFileBean);
+            if (currentFileType == 0) {
+                selectedFileChangeListener.a(0, projectFileBean);
+            } else if (currentFileType == 1) {
+                selectedFileChangeListener.a(1, projectFileBean);
             }
-            f = projectFileBean.getXmlName();
+            currentXmlFileName = projectFileBean.getXmlName();
         }
-        setShownText(f);
+        setShownText(currentXmlFileName);
     }
 
-    class a extends RecyclerView.a<a.a2> {
+    private class a extends RecyclerView.a<a.a2> {
 
-        class a2 extends RecyclerView.v {
+        private class a2 extends RecyclerView.v {
             public TextView t;
             public TextView u;
 
@@ -135,13 +134,13 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
                 t = itemView.findViewById(R.id.tv_filename);
                 u = itemView.findViewById(R.id.tv_linked_filename);
                 itemView.setOnClickListener(v -> {
-                    ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(j());
+                    ProjectFileBean projectFileBean = jC.b(sc_id).b().get(j());
                     setJavaFileName(projectFileBean.getJavaName());
                     if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                        ProjectFileSelector.this.f = projectFileBean.getXmlName();
+                        currentXmlFileName = projectFileBean.getXmlName();
                     }
-                    ProjectFileSelector.this.d.a(1, projectFileBean);
-                    ProjectFileSelector.this.i.dismiss();
+                    selectedFileChangeListener.a(1, projectFileBean);
+                    availableFilesDialog.dismiss();
                 });
             }
         }
@@ -151,7 +150,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         public void b(a2 holder, int position) {
             holder.t.setVisibility(View.VISIBLE);
             holder.u.setVisibility(View.VISIBLE);
-            ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(position);
+            ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
             String javaName = projectFileBean.getJavaName();
             String xmlName = projectFileBean.getXmlName();
             holder.t.setText(javaName);
@@ -167,98 +166,98 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         @Override
         // RecyclerView.Adapter#getItemCount()
         public int a() {
-            return jC.b(ProjectFileSelector.this.a).b().size();
+            return jC.b(sc_id).b().size();
         }
     }
 
-    public void b(Bundle bundle) {
-        bundle.putInt("file_selector_current_file_type", e);
-        bundle.putString("file_selector_current_xml", f);
-        bundle.putString("file_selector_current_java", g);
-        bundle.putBoolean("file_selector_is_custom_xml", h);
+    public void onSaveInstanceState(Bundle bundle) {
+        bundle.putInt("file_selector_current_file_type", currentFileType);
+        bundle.putString("file_selector_current_xml", currentXmlFileName);
+        bundle.putString("file_selector_current_java", currentJavaFileName);
+        bundle.putBoolean("file_selector_is_custom_xml", currentFileIsCustomView);
     }
 
-    public final void c(Context context) {
+    private void initialize(Context context) {
         setOrientation(LinearLayout.HORIZONTAL);
-        b(context);
-        a(context);
+        initializeFileName(context);
+        initializeDropdown(context);
         setGravity(Gravity.CENTER_VERTICAL);
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);
-        setBackgroundResource(typedValue.resourceId);
+        TypedValue background = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, background, true);
+        setBackgroundResource(background.resourceId);
         setOnClickListener(this);
-        e = 0;
-        f = "main.xml";
-        g = "MainActivity.java";
-        setShownText(f);
+        currentFileType = 0;
+        currentXmlFileName = "main.xml";
+        currentJavaFileName = "MainActivity.java";
+        setShownText(currentXmlFileName);
     }
 
-    public void a(Bundle bundle) {
-        e = bundle.getInt("file_selector_current_file_type");
-        f = bundle.getString("file_selector_current_xml");
-        g = bundle.getString("file_selector_current_java");
-        h = bundle.getBoolean("file_selector_is_custom_xml");
-        setFileType(e);
+    public void onRestoreInstanceState(Bundle bundle) {
+        currentFileType = bundle.getInt("file_selector_current_file_type");
+        currentXmlFileName = bundle.getString("file_selector_current_xml");
+        currentJavaFileName = bundle.getString("file_selector_current_java");
+        currentFileIsCustomView = bundle.getBoolean("file_selector_is_custom_xml");
+        setFileType(currentFileType);
     }
 
     public ProjectFileSelector(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        c(context);
+        initialize(context);
     }
 
-    public final void b(Context context) {
-        b = new TextView(context);
+    private void initializeFileName(Context context) {
+        fileName = new TextView(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.leftMargin = (int) wB.a(context, 8.0f);
         layoutParams.weight = 1.0f;
-        b.setGravity(Gravity.LEFT | Gravity.CENTER);
-        b.setLayoutParams(layoutParams);
-        addView(b);
+        fileName.setGravity(Gravity.LEFT | Gravity.CENTER);
+        fileName.setLayoutParams(layoutParams);
+        addView(fileName);
     }
 
-    public final void a(Context context) {
-        int a2 = (int) wB.a(context, 24.0f);
-        c = new ImageView(context);
-        c.setLayoutParams(new LinearLayout.LayoutParams(a2, a2));
-        c.setImageResource(R.drawable.ic_arrow_drop_down_grey600_24dp);
-        addView(c);
+    private void initializeDropdown(Context context) {
+        int s = (int) wB.a(context, 24.0f);
+        ImageView dropdown = new ImageView(context);
+        dropdown.setLayoutParams(new LinearLayout.LayoutParams(s, s));
+        dropdown.setImageResource(R.drawable.ic_arrow_drop_down_grey600_24dp);
+        addView(dropdown);
     }
 
-    public void b() {
-        i = new aB((Activity) getContext());
-        i.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
-        i.a(R.drawable.java_96);
+    private void showAvailableJavaFiles() {
+        availableFilesDialog = new aB((Activity) getContext());
+        availableFilesDialog.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
+        availableFilesDialog.a(R.drawable.java_96);
         View customView = wB.a(getContext(), R.layout.file_selector_popup_select_java);
         RecyclerView recyclerView = customView.findViewById(R.id.file_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         recyclerView.setAdapter(new a());
-        i.a(customView);
-        i.show();
+        availableFilesDialog.a(customView);
+        availableFilesDialog.show();
     }
 
-    public void a() {
-        if (d != null) {
+    public void syncState() {
+        if (selectedFileChangeListener != null) {
             ProjectFileBean bean;
-            if (e == 0) {
-                if (!f.equals("main.xml") && jC.b(a).b(f) == null) {
+            if (currentFileType == 0) {
+                if (!currentXmlFileName.equals("main.xml") && jC.b(sc_id).b(currentXmlFileName) == null) {
                     setXmlFileName(null);
                 }
-                bean = jC.b(a).b(f);
+                bean = jC.b(sc_id).b(currentXmlFileName);
             } else {
-                if (!g.equals("MainActivity.java") && jC.b(a).a(g) == null) {
+                if (!currentJavaFileName.equals("MainActivity.java") && jC.b(sc_id).a(currentJavaFileName) == null) {
                     setJavaFileName("MainActivity.java");
                 }
-                bean = jC.b(a).a(g);
+                bean = jC.b(sc_id).a(currentJavaFileName);
             }
-            d.a(e, bean);
+            selectedFileChangeListener.a(currentFileType, bean);
         }
     }
 
-    public void c() {
+    private void showAvailableViews() {
         Intent intent = new Intent(getContext(), ViewSelectorActivity.class);
-        intent.putExtra("sc_id", a);
-        intent.putExtra("current_xml", f);
-        intent.putExtra("is_custom_view", h);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("current_xml", currentXmlFileName);
+        intent.putExtra("is_custom_view", currentFileIsCustomView);
         ((Activity) getContext()).startActivityForResult(intent, 263);
     }
 }
