@@ -1,23 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:animateLayoutChanges="true">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
-            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
-                <LinearLayout android:orientation="vertical" android:background="#ffffffff" android:layout_width="wrap_content" android:layout_height="fill_parent">
-                    <androidx.recyclerview.widget.RecyclerView android:id="@id/category_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:splitMotionEvents="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="#ffffffff"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/category_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:splitMotionEvents="false" />
                 </LinearLayout>
-                <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
-                    <TextView android:textSize="12.0sp" android:textColor="@color/grey" android:gravity="center" android:id="@id/tv_no_collections" android:background="#fff5f5f5" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-                    <androidx.recyclerview.widget.RecyclerView android:id="@id/collection_list" android:background="#fff5f5f5" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="2.0dip" android:layout_weight="1.0" android:splitMotionEvents="false" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_no_collections"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fff5f5f5"
+                        android:gravity="center"
+                        android:textColor="@color/grey"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/collection_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:background="#fff5f5f5"
+                        android:scrollbars="vertical"
+                        android:splitMotionEvents="false" />
                 </LinearLayout>
             </LinearLayout>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton android:layout_gravity="bottom|center|right" android:id="@id/fab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="16.0dip" android:src="@drawable/ic_add_white_36dp" android:backgroundTint="@color/color_btn_ltpink_normal" app:borderWidth="0.0dip" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center|right"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/color_btn_ltpink_normal"
+                android:src="@drawable/ic_add_white_36dp"
+                app:borderWidth="0dp" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        <LinearLayout android:orientation="horizontal" android:id="@id/layout_btn_group" android:background="#ffffffff" android:padding="4.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <Button android:theme="@style/AppTheme.Button.Blue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_cancel" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="1.0" />
-            <Button android:theme="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/btn_delete" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:layout_weight="1.0" />
+
+        <LinearLayout
+            android:id="@+id/layout_btn_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffffff"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/text_size_button_material"
+                android:theme="@style/AppTheme.Button.Blue" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/text_size_button_material"
+                android:textStyle="bold"
+                android:theme="@style/AppTheme.Button.LightBlue" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

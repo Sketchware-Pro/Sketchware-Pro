@@ -1,12 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:id="@id/layout_item" android:layout_width="fill_parent" android:layout_height="64.0dip" android:layout_marginLeft="4.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="4.0dip" android:layout_marginBottom="2.0dip" android:elevation="4.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center|left" android:layout_gravity="center_vertical" android:orientation="horizontal" android:background="?selectableItemBackground" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <CheckBox android:id="@id/chk_select" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:contentDescription="@null" />
-        <LinearLayout android:gravity="center" android:id="@id/delete_img_container" android:background="@drawable/circle_bg_dark_grey_alpha" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:alpha="0.8">
-            <ImageView android:layout_gravity="center" android:id="@id/img_delete" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/ic_trashcan_white_48dp" />
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginBottom="2dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:background="?selectableItemBackground"
+        android:gravity="center|left"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/chk_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:id="@+id/delete_img_container"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:alpha="0.8"
+            android:background="@drawable/circle_bg_dark_grey_alpha"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_trashcan_white_48dp" />
         </LinearLayout>
-        <ImageView android:id="@id/img_widget" android:padding="8.0dip" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
-        <TextView android:textSize="16.0sp" android:textColor="#ff404040" android:id="@id/tv_widget_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+
+        <ImageView
+            android:id="@+id/img_widget"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/tv_widget_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#ff404040"
+            android:textSize="16sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

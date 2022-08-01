@@ -126,73 +126,35 @@ public class AndroidManifestInjector {
     }
 
     public static boolean isActivityThemeUsed(Nx nx, String projectId, String actName) {
-        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
-        String className = actName.substring(0, actName.indexOf(".java"));
-
-        for (int i = 0; i < attributes.size(); i++) {
-            HashMap<String, Object> attribute = attributes.get(i);
-            Object name = attribute.get("name");
-
-            if (name instanceof String) {
-                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
-                    Object value = attribute.get("value");
-
-                    if (value instanceof String) {
-                        if (((String) value).contains("android:theme")) {
-                            return true;
-                        }
-                    } else {
-                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
-                    }
-                }
-            }
-        }
-
-        return false;
+        return isActivityAttributeUsed("android:theme", projectId, actName);
     }
 
     public static boolean isActivityOrientationUsed(Nx nx, String projectId, String actName) {
-        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
-        String className = actName.substring(0, actName.indexOf(".java"));
-
-        for (int i = 0; i < attributes.size(); i++) {
-            HashMap<String, Object> attribute = attributes.get(i);
-            Object name = attribute.get("name");
-
-            if (name instanceof String) {
-                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
-                    Object value = attribute.get("value");
-
-                    if (value instanceof String) {
-                        if (((String) value).contains("android:screenOrientation")) {
-                            return true;
-                        }
-                    } else {
-                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
-                    }
-                }
-            } else {
-                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
-            }
-        }
-
-        return false;
+        return isActivityAttributeUsed("android:screenOrientation", projectId, actName);
     }
 
     public static boolean isActivityKeyboardUsed(Nx nx, String projectId, String actName) {
-        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
-        String className = actName.substring(0, actName.indexOf(".java"));
+        return isActivityAttributeUsed("android:windowSoftInputMode", projectId, actName);
+    }
+
+    public static boolean isActivityExportedUsed(String sc_id, String activityName) {
+        return isActivityAttributeUsed("android:exported", sc_id, activityName);
+    }
+
+    public static boolean isActivityAttributeUsed(String attribute, String sc_id, String activityName) {
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(sc_id);
+        String className = activityName.substring(0, activityName.indexOf(".java"));
 
         for (int i = 0; i < attributes.size(); i++) {
-            HashMap<String, Object> attribute = attributes.get(i);
-            Object name = attribute.get("name");
+            HashMap<String, Object> attributeMap = attributes.get(i);
+            Object name = attributeMap.get("name");
 
             if (name instanceof String) {
                 if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
-                    Object value = attribute.get("value");
+                    Object value = attributeMap.get("value");
 
                     if (value instanceof String) {
-                        if (((String) value).contains("android:windowSoftInputMode")) {
+                        if (((String) value).contains(attribute)) {
                             return true;
                         }
                     } else {

@@ -15,7 +15,7 @@ import com.besome.sketch.editor.manage.library.admob.ManageAdmobActivity;
 import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
-import com.besome.sketch.lib.base.BaseSessionAppCompatActivity;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 
 import a.a.a.MA;
@@ -26,7 +26,7 @@ import a.a.a.qu;
 import a.a.a.ru;
 import mod.hey.studios.util.Helper;
 
-public class ManageLibraryActivity extends BaseSessionAppCompatActivity implements View.OnClickListener {
+public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_ADMOB_ACTIVITY = 234;
     private static final int REQUEST_CODE_APPCOMPAT_ACTIVITY = 231;
@@ -45,29 +45,6 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
     private String originalCompatUseYn = "N";
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
-
-    @Override
-    public void a(int requestCode, String idk) {
-        if (requestCode == REQUEST_CODE_ADMOB_ACTIVITY) {
-            toAdmobActivity(admobLibraryBean);
-        }
-    }
-
-    @Override
-    public void g(int idk) {
-    }
-
-    @Override
-    public void h(int idk) {
-    }
-
-    @Override
-    public void l() {
-    }
-
-    @Override
-    public void m() {
-    }
 
     private void addLibraryItem(ProjectLibraryBean libraryBean) {
         qu libraryItemView = new qu(this);

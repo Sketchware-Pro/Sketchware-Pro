@@ -3,6 +3,7 @@ package com.besome.sketch.tools;
 import static mod.SketchwareUtil.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,7 +20,6 @@ import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.besome.sketch.lib.base.BaseActivity;
 import com.sketchware.remod.R;
 
 import mod.SketchwareUtil;
@@ -27,17 +27,16 @@ import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
 import mod.jbk.diagnostic.CompileErrorSaver;
 
-public class CompileLogActivity extends BaseActivity {
+public class CompileLogActivity extends Activity {
 
+    private static final String PREFERENCE_WRAPPED_TEXT = "wrapped_text";
+    private static final String PREFERENCE_USE_MONOSPACED_FONT = "use_monospaced_font";
+    private static final String PREFERENCE_FONT_SIZE = "font_size";
     private TextView tv_compile_log;
     private HorizontalScrollView err_hScroll;
     private ScrollView err_vScroll;
     private CompileErrorSaver compileErrorSaver;
-
     private SharedPreferences logViewerPreferences;
-    private static final String PREFERENCE_WRAPPED_TEXT = "wrapped_text";
-    private static final String PREFERENCE_USE_MONOSPACED_FONT = "use_monospaced_font";
-    private static final String PREFERENCE_FONT_SIZE = "font_size";
 
     @SuppressLint("SetTextI18n")
     @Override

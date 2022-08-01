@@ -37,7 +37,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.security.Security;
@@ -47,17 +47,14 @@ import java.util.HashMap;
 import a.a.a.Dp;
 import a.a.a.KB;
 import a.a.a.MA;
-import a.a.a.QA;
 import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.hC;
 import a.a.a.iC;
-import a.a.a.iI;
 import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.oB;
-import a.a.a.rB;
 import a.a.a.wq;
 import a.a.a.xq;
 import a.a.a.yB;
@@ -471,7 +468,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                 credentials.getKeyPassword().toCharArray(),
                                 credentials.getSigningAlgorithm()
                         );
-                    } else {
                     }
                     task.execute();
                 });
@@ -563,9 +559,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private void initializeOutputDirectories() {
         signed_apk_postfix = File.separator + "sketchware" + File.separator + "signed_apk";
         export_src_postfix = File.separator + "sketchware" + File.separator + "export_src";
-        /**
-         * /sdcard/sketchware/signed_apk
-         */
+        /* /sdcard/sketchware/signed_apk */
         String signed_apk_full_path = wq.s() + File.separator + "signed_apk";
         export_src_full_path = wq.s() + File.separator + "export_src";
 
@@ -639,15 +633,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     public class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener {
 
-        public Dp c;
+        private Dp c;
         /**
          * Boolean indicating if the user has cancelled building
          */
-        public boolean d = false;
-        public QA e = new QA();
-        public rB f = new rB();
-        public iI g = new iI();
-        public String h = null;
+        private boolean d = false;
         private boolean buildingAppBundle = false;
         private String signingKeystorePath = null;
         private char[] signingKeystorePassword = null;
@@ -663,7 +653,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Make a simple ProgressDialog show and set its OnCancelListener
             ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button
-            ExportProjectActivity.this.g.a(false);
+            progressDialog.a(false);
         }
 
         /**
@@ -893,8 +883,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            if (!ExportProjectActivity.this.g.a()) {
-                ExportProjectActivity.this.g.a(true);
+            if (!progressDialog.a()) {
+                progressDialog.a(true);
                 ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
                 publishProgress("Canceling process...");
                 d = true;
