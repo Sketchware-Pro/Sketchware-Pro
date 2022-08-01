@@ -713,7 +713,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Opens {@link LogReaderActivity}.
      */
-    public void toLogReader() {
+    void toLogReader() {
         Intent intent = new Intent(getApplicationContext(), LogReaderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
