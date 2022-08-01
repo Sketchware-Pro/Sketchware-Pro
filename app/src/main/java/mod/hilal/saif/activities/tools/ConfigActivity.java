@@ -2,10 +2,12 @@ package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
+import static mod.SketchwareUtil.toast;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,7 +27,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import mod.SketchwareUtil;
@@ -37,7 +41,10 @@ public class ConfigActivity extends Activity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
+    public static final String SETTING_USE_ROOT_FEATURES = "root-features";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
+    public static final String SETTING_ROOTED = "rooted";
+    public static final String SETTING_ROOTED_AUTOOPEN = "rooted-autoopen";
     public static final String SETTING_BACKUP_FILENAME = "backup-filename";
     public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
@@ -188,6 +195,8 @@ public class ConfigActivity extends Activity {
         settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
         settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
         settings.put(SETTING_LEGACY_CODE_EDITOR, false);
+        settings.put(SETTING_ROOTED, false);
+        settings.put(SETTING_ROOTED_AUTOOPEN, true);
         settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
         settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
@@ -195,6 +204,33 @@ public class ConfigActivity extends Activity {
         settings.put(SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, "/.sketchware/resources/block/My Block/palette.json");
         settings.put(SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, "/.sketchware/resources/block/My Block/block.json");
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+    }
+
+    public static boolean getRootAccess() {
+        Process p;
+        try {
+            // Preform su to get root privledges
+            p = Runtime.getRuntime().exec("su");
+
+            // Attempt to write a file to a root-only
+            DataOutputStream os = new DataOutputStream(p.getOutputStream());
+            os.writeBytes("echo \"Do I have root?\" >/system/sd/temporary.txt\n");
+            os.writeBytes("exit\n");
+            os.flush();
+            try {
+                p.waitFor();
+                if (p.exitValue() != 255) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            } catch (InterruptedException e) {
+                return false;
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @Override
@@ -292,6 +328,36 @@ public class ConfigActivity extends Activity {
                 "Enables old Code Editor from v6.2.0.",
                 SETTING_LEGACY_CODE_EDITOR,
                 false);
+        addTextInputPreference("[*] Superuser access (ROOT)",
+                "Brings auto-installation", v -> {
+                    String btn;
+                    String state;
+                    if (isSettingEnabled(SETTING_ROOTED)) {btn="Turn off";state="enabled";}else{btn="Turn on";state="disabled";}
+                    new AlertDialog.Builder(ConfigActivity.this)
+                            .setTitle("SuperUser Access ("+state+")")
+                            .setMessage("With this option, a number of interesting and useful functions appear, but for its operation you will need ROOT access")
+                            .setPositiveButton(btn, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (isSettingEnabled(SETTING_ROOTED)) {
+                                        // Turn off script
+                                        setSetting(SETTING_ROOTED, false);
+                                        toast("Disabled successfully!");
+                                    }else{
+                                        // Turn on script
+                                        boolean rootsuccess = getRootAccess();
+                                        if (rootsuccess) {setSetting(SETTING_ROOTED, rootsuccess);}
+                                        else {toast("Unable to get root access. Is device rooted?");}
+                                    }
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .setIcon(android.R.drawable.ic_secure)
+                            .show();
+                });
+        addSwitchPreference("[*] Automatic open (ROOT)",
+                "Just opens the app automatically after auto-installation",
+                SETTING_ROOTED_AUTOOPEN,
+                true);
         addSwitchPreference("Use new Version Control",
                 "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
