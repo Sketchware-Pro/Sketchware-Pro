@@ -2,7 +2,6 @@ package com.besome.sketch.editor.view;
 
 import a.a.a.aB;
 import a.a.a.by;
-import a.a.a.dy;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wB;
@@ -123,18 +122,26 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     }
 
     /* loaded from: classes.dex */
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.a<a.a2> {
 
         /* loaded from: classes.dex */
-        class a extends RecyclerView.v {
+        class a2 extends RecyclerView.v {
             public TextView t;
             public TextView u;
 
-            public a(View view) {
+            public a2(View view) {
                 super(view);
                 this.t = (TextView) view.findViewById(2131231979);
                 this.u = (TextView) view.findViewById(2131232032);
-                view.setOnClickListener(new dy(this, a.this));
+                view.setOnClickListener(v -> {
+                    ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(j());
+                    setJavaFileName(projectFileBean.getJavaName());
+                    if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                        ProjectFileSelector.this.f = projectFileBean.getXmlName();
+                    }
+                    ProjectFileSelector.this.d.a(1, projectFileBean);
+                    ProjectFileSelector.this.i.dismiss();
+                });
             }
         }
 
@@ -143,7 +150,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
         /* renamed from: a */
-        public void b(a aVar, int i) {
+        public void b(a2 aVar, int i) {
             aVar.t.setVisibility(0);
             aVar.u.setVisibility(0);
             ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(i);
@@ -154,8 +161,8 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427418, viewGroup, false));
+        public a2 b(ViewGroup viewGroup, int i) {
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427418, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
