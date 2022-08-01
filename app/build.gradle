@@ -58,6 +58,7 @@ android {
 
     packagingOptions {
         resources.excludes += "license/*"
+        resources.excludes += "META-INF/DEPENDENCIES"
     }
 
     compileOptions {
