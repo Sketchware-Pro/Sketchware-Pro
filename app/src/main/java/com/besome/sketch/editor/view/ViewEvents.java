@@ -18,7 +18,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.Qs;
 import a.a.a.bB;
@@ -109,33 +108,27 @@ public class ViewEvents extends LinearLayout {
     }
 
     void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
-        boolean z;
         this.sc_id = sc_id;
         this.projectFileBean = projectFileBean;
-        String[] c = oq.c(viewBean.getClassInfo());
+        String[] viewEvents = oq.c(viewBean.getClassInfo());
         events.clear();
-        if (c != null) {
-            ArrayList<EventBean> g = jC.a(sc_id).g(projectFileBean.getJavaName());
-            for (String str2 : c) {
-                Iterator<EventBean> it = g.iterator();
-                while (true) {
-                    if (!it.hasNext()) {
-                        z = false;
-                        break;
-                    }
-                    EventBean next = it.next();
-                    if (next.eventType == 1 && viewBean.id.equals(next.targetId) && str2.equals(next.eventName)) {
-                        z = true;
-                        break;
-                    }
-                }
-                if (!str2.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
-                    EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, str2);
-                    eventBean.isSelected = z;
-                    events.add(eventBean);
+        ArrayList<EventBean> alreadyAddedEvents = jC.a(sc_id).g(projectFileBean.getJavaName());
+        for (String event : viewEvents) {
+            boolean eventAlreadyInActivity = false;
+            for (EventBean bean : alreadyAddedEvents) {
+                if (bean.eventType == EventBean.EVENT_TYPE_VIEW && viewBean.id.equals(bean.targetId) && event.equals(bean.eventName)) {
+                    eventAlreadyInActivity = true;
+                    break;
                 }
             }
+
+            if (!event.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
+                EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, event);
+                eventBean.isSelected = eventAlreadyInActivity;
+                events.add(eventBean);
+            }
         }
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
         eventsList.getAdapter().c();
     }
 
