@@ -28,7 +28,6 @@ import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
 
-/* loaded from: classes.dex */
 public class ProjectFileSelector extends LinearLayout implements View.OnClickListener {
     public String a;
     public TextView b;
@@ -46,99 +45,96 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     }
 
     public String getFileName() {
-        if (this.e == 0) {
-            return this.f;
+        if (e == 0) {
+            return f;
+        } else {
+            return g;
         }
-        return this.g;
     }
 
     public int getFileType() {
-        return this.e;
+        return e;
     }
 
-    @Override // android.view.View.OnClickListener
-    public void onClick(View view) {
-        if (mB.a()) {
-            return;
-        }
-        if (this.e == 0) {
-            c();
-        } else {
-            b();
+    @Override
+    public void onClick(View v) {
+        if (!mB.a()) {
+            if (e == 0) {
+                c();
+            } else {
+                b();
+            }
         }
     }
 
     public void setFileType(int i) {
-        this.e = i;
-        if (this.e == 0) {
-            setShownText(this.f);
+        e = i;
+        if (e == 0) {
+            setShownText(f);
         } else {
-            setShownText(this.g);
+            setShownText(g);
         }
     }
 
-    public void setJavaFileName(String str) {
-        this.g = str;
-        setShownText(this.g);
+    public void setJavaFileName(String fileName) {
+        g = fileName;
+        setShownText(g);
     }
 
-    public void setOnSelectedFileChangeListener(by byVar) {
-        this.d = byVar;
+    public void setOnSelectedFileChangeListener(by listener) {
+        d = listener;
     }
 
-    public void setScId(String str) {
-        this.a = str;
+    public void setScId(String sc_id) {
+        a = sc_id;
     }
 
-    public void setShownText(String str) {
-        if (this.e == 1) {
-            this.b.setText(str);
-        } else if (str.indexOf("_drawer_") == 0) {
-            this.b.setText(str.substring(1, str.indexOf(".xml")));
+    public void setShownText(String shownText) {
+        if (e == 1) {
+            b.setText(shownText);
+        } else if (shownText.indexOf("_drawer_") == 0) {
+            b.setText(shownText.substring(1, shownText.indexOf(".xml")));
         } else {
-            this.b.setText(str);
+            b.setText(shownText);
         }
     }
 
     public void setXmlFileName(ProjectFileBean projectFileBean) {
         if (projectFileBean == null) {
-            this.f = "main.xml";
-            setShownText(this.f);
-            return;
+            f = "main.xml";
+        } else {
+            int fileType = projectFileBean.fileType;
+            if (fileType == 0) {
+                g = projectFileBean.getJavaName();
+                f = projectFileBean.getXmlName();
+                h = false;
+            } else if (fileType == 1) {
+                h = true;
+            } else if (fileType == 2) {
+                h = true;
+            }
+
+            if (e == 0) {
+                d.a(0, projectFileBean);
+            } else if (e == 1) {
+                d.a(1, projectFileBean);
+            }
+            f = projectFileBean.getXmlName();
         }
-        int i = projectFileBean.fileType;
-        if (i == 0) {
-            this.g = projectFileBean.getJavaName();
-            this.f = projectFileBean.getXmlName();
-            this.h = false;
-        } else if (i == 1) {
-            this.h = true;
-        } else if (i == 2) {
-            this.h = true;
-        }
-        int i2 = this.e;
-        if (i2 == 0) {
-            this.d.a(0, projectFileBean);
-        } else if (i2 == 1) {
-            this.d.a(1, projectFileBean);
-        }
-        this.f = projectFileBean.getXmlName();
-        setShownText(this.f);
+        setShownText(f);
     }
 
-    /* loaded from: classes.dex */
     class a extends RecyclerView.a<a.a2> {
 
-        /* loaded from: classes.dex */
         class a2 extends RecyclerView.v {
             public TextView t;
             public TextView u;
 
-            public a2(View view) {
-                super(view);
-                this.t = (TextView) view.findViewById(R.id.tv_filename);
-                this.u = (TextView) view.findViewById(R.id.tv_linked_filename);
-                view.setOnClickListener(v -> {
+            public a2(View itemView) {
+                super(itemView);
+                t = itemView.findViewById(R.id.tv_filename);
+                u = itemView.findViewById(R.id.tv_linked_filename);
+                itemView.setOnClickListener(v -> {
                     ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(j());
                     setJavaFileName(projectFileBean.getJavaName());
                     if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
@@ -150,37 +146,36 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
             }
         }
 
-        public a() {
-        }
-
-        @Override // androidx.recyclerview.widget.RecyclerView.a
-        /* renamed from: a */
-        public void b(a2 aVar, int i) {
-            aVar.t.setVisibility(View.VISIBLE);
-            aVar.u.setVisibility(View.VISIBLE);
-            ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(i);
+        @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(a2 holder, int position) {
+            holder.t.setVisibility(View.VISIBLE);
+            holder.u.setVisibility(View.VISIBLE);
+            ProjectFileBean projectFileBean = jC.b(ProjectFileSelector.this.a).b().get(position);
             String javaName = projectFileBean.getJavaName();
             String xmlName = projectFileBean.getXmlName();
-            aVar.t.setText(javaName);
-            aVar.u.setText(xmlName);
+            holder.t.setText(javaName);
+            holder.u.setText(xmlName);
         }
 
-        @Override // androidx.recyclerview.widget.RecyclerView.a
-        public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, viewGroup, false));
+        @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public a2 b(ViewGroup parent, int viewType) {
+            return new a2(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
         }
 
-        @Override // androidx.recyclerview.widget.RecyclerView.a
+        @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return jC.b(ProjectFileSelector.this.a).b().size();
         }
     }
 
     public void b(Bundle bundle) {
-        bundle.putInt("file_selector_current_file_type", this.e);
-        bundle.putString("file_selector_current_xml", this.f);
-        bundle.putString("file_selector_current_java", this.g);
-        bundle.putBoolean("file_selector_is_custom_xml", this.h);
+        bundle.putInt("file_selector_current_file_type", e);
+        bundle.putString("file_selector_current_xml", f);
+        bundle.putString("file_selector_current_java", g);
+        bundle.putBoolean("file_selector_is_custom_xml", h);
     }
 
     public final void c(Context context) {
@@ -192,18 +187,18 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         context.getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);
         setBackgroundResource(typedValue.resourceId);
         setOnClickListener(this);
-        this.e = 0;
-        this.f = "main.xml";
-        this.g = "MainActivity.java";
-        setShownText(this.f);
+        e = 0;
+        f = "main.xml";
+        g = "MainActivity.java";
+        setShownText(f);
     }
 
     public void a(Bundle bundle) {
-        this.e = bundle.getInt("file_selector_current_file_type");
-        this.f = bundle.getString("file_selector_current_xml");
-        this.g = bundle.getString("file_selector_current_java");
-        this.h = bundle.getBoolean("file_selector_is_custom_xml");
-        setFileType(this.e);
+        e = bundle.getInt("file_selector_current_file_type");
+        f = bundle.getString("file_selector_current_xml");
+        g = bundle.getString("file_selector_current_java");
+        h = bundle.getBoolean("file_selector_is_custom_xml");
+        setFileType(e);
     }
 
     public ProjectFileSelector(Context context, AttributeSet attributeSet) {
@@ -212,59 +207,58 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     }
 
     public final void b(Context context) {
-        this.b = new TextView(context);
+        b = new TextView(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.leftMargin = (int) wB.a(context, 8.0f);
         layoutParams.weight = 1.0f;
-        this.b.setGravity(Gravity.LEFT | Gravity.CENTER);
-        this.b.setLayoutParams(layoutParams);
-        addView(this.b);
+        b.setGravity(Gravity.LEFT | Gravity.CENTER);
+        b.setLayoutParams(layoutParams);
+        addView(b);
     }
 
     public final void a(Context context) {
         int a2 = (int) wB.a(context, 24.0f);
-        this.c = new ImageView(context);
-        this.c.setLayoutParams(new LinearLayout.LayoutParams(a2, a2));
-        this.c.setImageResource(R.drawable.ic_arrow_drop_down_grey600_24dp);
-        addView(this.c);
+        c = new ImageView(context);
+        c.setLayoutParams(new LinearLayout.LayoutParams(a2, a2));
+        c.setImageResource(R.drawable.ic_arrow_drop_down_grey600_24dp);
+        addView(c);
     }
 
     public void b() {
-        this.i = new aB((Activity) getContext());
-        this.i.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
-        this.i.a(R.drawable.java_96);
-        View a2 = wB.a(getContext(), R.layout.file_selector_popup_select_java);
-        RecyclerView recyclerView = (RecyclerView) a2.findViewById(R.id.file_list);
+        i = new aB((Activity) getContext());
+        i.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
+        i.a(R.drawable.java_96);
+        View customView = wB.a(getContext(), R.layout.file_selector_popup_select_java);
+        RecyclerView recyclerView = customView.findViewById(R.id.file_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         recyclerView.setAdapter(new a());
-        this.i.a(a2);
-        this.i.show();
+        i.a(customView);
+        i.show();
     }
 
     public void a() {
-        ProjectFileBean a2;
-        if (this.d == null) {
-            return;
-        }
-        if (this.e == 0) {
-            if (!this.f.equals("main.xml") && jC.b(this.a).b(this.f) == null) {
-                setXmlFileName(null);
+        if (d != null) {
+            ProjectFileBean bean;
+            if (e == 0) {
+                if (!f.equals("main.xml") && jC.b(a).b(f) == null) {
+                    setXmlFileName(null);
+                }
+                bean = jC.b(a).b(f);
+            } else {
+                if (!g.equals("MainActivity.java") && jC.b(a).a(g) == null) {
+                    setJavaFileName("MainActivity.java");
+                }
+                bean = jC.b(a).a(g);
             }
-            a2 = jC.b(this.a).b(this.f);
-        } else {
-            if (!this.g.equals("MainActivity.java") && jC.b(this.a).a(this.g) == null) {
-                setJavaFileName("MainActivity.java");
-            }
-            a2 = jC.b(this.a).a(this.g);
+            d.a(e, bean);
         }
-        this.d.a(this.e, a2);
     }
 
     public void c() {
         Intent intent = new Intent(getContext(), ViewSelectorActivity.class);
-        intent.putExtra("sc_id", this.a);
-        intent.putExtra("current_xml", this.f);
-        intent.putExtra("is_custom_view", this.h);
+        intent.putExtra("sc_id", a);
+        intent.putExtra("current_xml", f);
+        intent.putExtra("is_custom_view", h);
         ((Activity) getContext()).startActivityForResult(intent, 263);
     }
 }
