@@ -43,6 +43,11 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         initialize(context);
     }
 
+    public ProjectFileSelector(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initialize(context);
+    }
+
     public String getFileName() {
         if (currentFileType == 0) {
             return currentXmlFileName;
@@ -123,53 +128,6 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         setShownText(currentXmlFileName);
     }
 
-    private class JavaFileAdapter extends RecyclerView.a<JavaFileAdapter.ViewHolder> {
-
-        private class ViewHolder extends RecyclerView.v {
-            public final TextView javaFileName;
-            public final TextView xmlFileName;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                javaFileName = itemView.findViewById(R.id.tv_filename);
-                xmlFileName = itemView.findViewById(R.id.tv_linked_filename);
-                itemView.setOnClickListener(v -> {
-                    ProjectFileBean projectFileBean = jC.b(sc_id).b().get(j());
-                    setJavaFileName(projectFileBean.getJavaName());
-                    if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                        currentXmlFileName = projectFileBean.getXmlName();
-                    }
-                    selectedFileChangeListener.a(1, projectFileBean);
-                    availableFilesDialog.dismiss();
-                });
-            }
-        }
-
-        @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
-            holder.javaFileName.setVisibility(View.VISIBLE);
-            holder.xmlFileName.setVisibility(View.VISIBLE);
-            ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
-            String javaName = projectFileBean.getJavaName();
-            String xmlName = projectFileBean.getXmlName();
-            holder.javaFileName.setText(javaName);
-            holder.xmlFileName.setText(xmlName);
-        }
-
-        @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
-        }
-
-        @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
-            return jC.b(sc_id).b().size();
-        }
-    }
-
     public void onSaveInstanceState(Bundle bundle) {
         bundle.putInt("file_selector_current_file_type", currentFileType);
         bundle.putString("file_selector_current_xml", currentXmlFileName);
@@ -198,11 +156,6 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         currentJavaFileName = bundle.getString("file_selector_current_java");
         currentFileIsCustomView = bundle.getBoolean("file_selector_is_custom_xml");
         setFileType(currentFileType);
-    }
-
-    public ProjectFileSelector(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        initialize(context);
     }
 
     private void initializeFileName(Context context) {
@@ -259,5 +212,52 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         intent.putExtra("current_xml", currentXmlFileName);
         intent.putExtra("is_custom_view", currentFileIsCustomView);
         ((Activity) getContext()).startActivityForResult(intent, 263);
+    }
+
+    private class JavaFileAdapter extends RecyclerView.a<JavaFileAdapter.ViewHolder> {
+
+        private class ViewHolder extends RecyclerView.v {
+            public final TextView javaFileName;
+            public final TextView xmlFileName;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                javaFileName = itemView.findViewById(R.id.tv_filename);
+                xmlFileName = itemView.findViewById(R.id.tv_linked_filename);
+                itemView.setOnClickListener(v -> {
+                    ProjectFileBean projectFileBean = jC.b(sc_id).b().get(j());
+                    setJavaFileName(projectFileBean.getJavaName());
+                    if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                        currentXmlFileName = projectFileBean.getXmlName();
+                    }
+                    selectedFileChangeListener.a(1, projectFileBean);
+                    availableFilesDialog.dismiss();
+                });
+            }
+        }
+
+        @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
+            holder.javaFileName.setVisibility(View.VISIBLE);
+            holder.xmlFileName.setVisibility(View.VISIBLE);
+            ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
+            String javaName = projectFileBean.getJavaName();
+            String xmlName = projectFileBean.getXmlName();
+            holder.javaFileName.setText(javaName);
+            holder.xmlFileName.setText(xmlName);
+        }
+
+        @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
+        }
+
+        @Override
+        // RecyclerView.Adapter#getItemCount()
+        public int a() {
+            return jC.b(sc_id).b().size();
+        }
     }
 }

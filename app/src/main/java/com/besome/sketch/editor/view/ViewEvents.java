@@ -40,8 +40,63 @@ public class ViewEvents extends LinearLayout {
         initialize(context);
     }
 
+    public ViewEvents(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initialize(context);
+    }
+
+    private void initialize(Context context) {
+        wB.a(context, this, R.layout.view_events);
+        events = new ArrayList<>();
+        eventsList = findViewById(R.id.list_events);
+        eventsList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.b(0);
+        eventsList.setLayoutManager(linearLayoutManager);
+        eventsList.setAdapter(new EventAdapter());
+        eventsList.setItemAnimator(new ci());
+    }
+
     public void setOnEventClickListener(Qs listener) {
         eventClickListener = listener;
+    }
+
+    void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
+        this.sc_id = sc_id;
+        this.projectFileBean = projectFileBean;
+        String[] viewEvents = oq.c(viewBean.getClassInfo());
+        events.clear();
+        ArrayList<EventBean> alreadyAddedEvents = jC.a(sc_id).g(projectFileBean.getJavaName());
+        for (String event : viewEvents) {
+            boolean eventAlreadyInActivity = false;
+            for (EventBean bean : alreadyAddedEvents) {
+                if (bean.eventType == EventBean.EVENT_TYPE_VIEW && viewBean.id.equals(bean.targetId) && event.equals(bean.eventName)) {
+                    eventAlreadyInActivity = true;
+                    break;
+                }
+            }
+
+            if (!event.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
+                EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, event);
+                eventBean.isSelected = eventAlreadyInActivity;
+                events.add(eventBean);
+            }
+        }
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
+        eventsList.getAdapter().c();
+    }
+
+    private void createEvent(int eventPosition) {
+        EventBean eventBean = events.get(eventPosition);
+        if (!eventBean.isSelected) {
+            eventBean.isSelected = true;
+            jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
+            eventsList.getAdapter().c(eventPosition);
+            bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
+        }
+        if (eventClickListener != null) {
+            eventClickListener.a(eventBean);
+        }
     }
 
     private class EventAdapter extends RecyclerView.a<EventAdapter.ViewHolder> {
@@ -87,61 +142,6 @@ public class ViewEvents extends LinearLayout {
         // RecyclerView.Adapter#getItemCount()
         public int a() {
             return events.size();
-        }
-    }
-
-    public ViewEvents(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        initialize(context);
-    }
-
-    private void initialize(Context context) {
-        wB.a(context, this, R.layout.view_events);
-        events = new ArrayList<>();
-        eventsList = findViewById(R.id.list_events);
-        eventsList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.b(0);
-        eventsList.setLayoutManager(linearLayoutManager);
-        eventsList.setAdapter(new EventAdapter());
-        eventsList.setItemAnimator(new ci());
-    }
-
-    void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
-        this.sc_id = sc_id;
-        this.projectFileBean = projectFileBean;
-        String[] viewEvents = oq.c(viewBean.getClassInfo());
-        events.clear();
-        ArrayList<EventBean> alreadyAddedEvents = jC.a(sc_id).g(projectFileBean.getJavaName());
-        for (String event : viewEvents) {
-            boolean eventAlreadyInActivity = false;
-            for (EventBean bean : alreadyAddedEvents) {
-                if (bean.eventType == EventBean.EVENT_TYPE_VIEW && viewBean.id.equals(bean.targetId) && event.equals(bean.eventName)) {
-                    eventAlreadyInActivity = true;
-                    break;
-                }
-            }
-
-            if (!event.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
-                EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, event);
-                eventBean.isSelected = eventAlreadyInActivity;
-                events.add(eventBean);
-            }
-        }
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        eventsList.getAdapter().c();
-    }
-
-    private void createEvent(int eventPosition) {
-        EventBean eventBean = events.get(eventPosition);
-        if (!eventBean.isSelected) {
-            eventBean.isSelected = true;
-            jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            eventsList.getAdapter().c(eventPosition);
-            bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
-        }
-        if (eventClickListener != null) {
-            eventClickListener.a(eventBean);
         }
     }
 }
