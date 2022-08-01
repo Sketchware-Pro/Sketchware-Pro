@@ -38,7 +38,7 @@ public class ViewEvents extends LinearLayout {
 
     public ViewEvents(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
     public void setOnEventClickListener(Qs listener) {
@@ -59,7 +59,7 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                itemView.setOnClickListener(v -> ViewEvents.this.a(j()));
+                itemView.setOnClickListener(v -> createEvent(j()));
             }
         }
 
@@ -93,10 +93,10 @@ public class ViewEvents extends LinearLayout {
 
     public ViewEvents(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, R.layout.view_events);
         events = new ArrayList<>();
         eventsList = findViewById(R.id.list_events);
@@ -108,7 +108,7 @@ public class ViewEvents extends LinearLayout {
         eventsList.setItemAnimator(new ci());
     }
 
-    public void a(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
+    void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
         boolean z;
         this.sc_id = sc_id;
         this.projectFileBean = projectFileBean;
@@ -139,12 +139,12 @@ public class ViewEvents extends LinearLayout {
         eventsList.getAdapter().c();
     }
 
-    public final void a(int i) {
-        EventBean eventBean = events.get(i);
+    private void createEvent(int eventPosition) {
+        EventBean eventBean = events.get(eventPosition);
         if (!eventBean.isSelected) {
             eventBean.isSelected = true;
             jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            eventsList.getAdapter().c(i);
+            eventsList.getAdapter().c(eventPosition);
             bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
         if (eventClickListener != null) {
