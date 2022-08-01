@@ -978,7 +978,11 @@ public class Dp {
             parser.close();
         }
 
-        new ProGuard(configuration).execute();
+        try {
+            new ProGuard(configuration).execute();
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
 
         LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
