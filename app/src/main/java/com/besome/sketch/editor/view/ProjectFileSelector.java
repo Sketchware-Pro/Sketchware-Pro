@@ -126,13 +126,13 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     private class JavaFileAdapter extends RecyclerView.a<JavaFileAdapter.ViewHolder> {
 
         private class ViewHolder extends RecyclerView.v {
-            public TextView t;
-            public TextView u;
+            public final TextView javaFileName;
+            public final TextView xmlFileName;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.tv_filename);
-                u = itemView.findViewById(R.id.tv_linked_filename);
+                javaFileName = itemView.findViewById(R.id.tv_filename);
+                xmlFileName = itemView.findViewById(R.id.tv_linked_filename);
                 itemView.setOnClickListener(v -> {
                     ProjectFileBean projectFileBean = jC.b(sc_id).b().get(j());
                     setJavaFileName(projectFileBean.getJavaName());
@@ -148,13 +148,13 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(ViewHolder holder, int position) {
-            holder.t.setVisibility(View.VISIBLE);
-            holder.u.setVisibility(View.VISIBLE);
+            holder.javaFileName.setVisibility(View.VISIBLE);
+            holder.xmlFileName.setVisibility(View.VISIBLE);
             ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
             String javaName = projectFileBean.getJavaName();
             String xmlName = projectFileBean.getXmlName();
-            holder.t.setText(javaName);
-            holder.u.setText(xmlName);
+            holder.javaFileName.setText(javaName);
+            holder.xmlFileName.setText(xmlName);
         }
 
         @Override
