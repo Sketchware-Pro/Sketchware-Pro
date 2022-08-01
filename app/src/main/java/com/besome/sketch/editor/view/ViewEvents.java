@@ -4,7 +4,6 @@ import a.a.a.Qs;
 import a.a.a.bB;
 import a.a.a.ci;
 import a.a.a.jC;
-import a.a.a.jy;
 import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.wB;
@@ -44,22 +43,22 @@ public class ViewEvents extends LinearLayout {
     }
 
     /* loaded from: classes.dex */
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.a<a.a2> {
 
         /* loaded from: classes.dex */
-        class a extends RecyclerView.v {
+        class a2 extends RecyclerView.v {
             public LinearLayout t;
             public ImageView u;
             public ImageView v;
             public TextView w;
 
-            public a(View view) {
+            public a2(View view) {
                 super(view);
                 this.t = (LinearLayout) view.findViewById(2131230931);
                 this.u = (ImageView) view.findViewById(2131231151);
                 this.v = (ImageView) view.findViewById(2131231198);
                 this.w = (TextView) view.findViewById(2131232195);
-                view.setOnClickListener(new jy(this, a.this));
+                view.setOnClickListener(v -> ViewEvents.this.a(j()));
             }
         }
 
@@ -68,7 +67,7 @@ public class ViewEvents extends LinearLayout {
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
         /* renamed from: a */
-        public void b(a aVar, int i) {
+        public void b(a2 aVar, int i) {
             EventBean eventBean = (EventBean) ViewEvents.this.d.get(i);
             if (eventBean.isSelected) {
                 aVar.v.setVisibility(8);
@@ -82,8 +81,8 @@ public class ViewEvents extends LinearLayout {
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427414, viewGroup, false));
+        public a2 b(ViewGroup viewGroup, int i) {
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427414, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
