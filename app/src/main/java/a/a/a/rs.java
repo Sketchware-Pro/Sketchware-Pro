@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,6 +38,7 @@ import com.besome.sketch.editor.event.CollapsibleButton;
 import com.besome.sketch.editor.event.CollapsibleEventLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,20 +99,20 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public a(View view) {
                 super(view);
-                this.t = (LinearLayout) view.findViewById(2131230931);
-                this.u = (ImageView) view.findViewById(2131231151);
-                this.v = (TextView) view.findViewById(2131232193);
-                this.w = (TextView) view.findViewById(2131232192);
-                this.x = (TextView) view.findViewById(2131231972);
-                this.y = (TextView) view.findViewById(2131231970);
-                this.z = (TextView) view.findViewById(2131231971);
-                this.A = (ImageView) view.findViewById(2131231156);
-                this.B = (ImageView) view.findViewById(2131231169);
-                this.C = (LinearLayout) view.findViewById(2131231477);
-                this.D = (LinearLayout) view.findViewById(2131231048);
-                this.E = (LinearLayout) view.findViewById(2131231047);
+                this.t = (LinearLayout) view.findViewById(R.id.container);
+                this.u = (ImageView) view.findViewById(R.id.img_icon);
+                this.v = (TextView) view.findViewById(R.id.tv_target_type);
+                this.w = (TextView) view.findViewById(R.id.tv_target_id);
+                this.x = (TextView) view.findViewById(R.id.tv_event_type);
+                this.y = (TextView) view.findViewById(R.id.tv_event_name);
+                this.z = (TextView) view.findViewById(R.id.tv_event_text);
+                this.A = (ImageView) view.findViewById(R.id.img_menu);
+                this.B = (ImageView) view.findViewById(R.id.img_preview);
+                this.C = (LinearLayout) view.findViewById(R.id.ll_preview);
+                this.D = (LinearLayout) view.findViewById(R.id.event_option_layout);
+                this.E = (LinearLayout) view.findViewById(R.id.event_option);
                 this.F = new CollapsibleEventLayout(rs.this.getContext());
-                this.F.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
+                this.F.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 this.E.addView(this.F);
                 this.F.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
@@ -133,10 +136,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                             }
                         } else {
                             int id = view.getId();
-                            if (id == 2131230923) {
+                            if (id == R.id.confirm_no) {
                                 eventBean.isConfirmation = false;
                                 rs.b.this.c(rs.b.this.c);
-                            } else if (id == 2131230927) {
+                            } else if (id == R.id.confirm_yes) {
                                 int i2 = eventBean.buttonPressed;
                                 if (i2 == 0) {
                                     eventBean.isConfirmation = false;
@@ -211,7 +214,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
 
             public void E() {
-                this.D.setVisibility(0);
+                this.D.setVisibility(View.VISIBLE);
                 gB.a(this.A, -180.0f, (Animator.AnimatorListener) null);
                 gB.b(this.D, 200, null);
             }
@@ -229,12 +232,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         @Override
         public void b(a aVar, int i) {
             EventBean eventBean = this.d.get(i);
-            aVar.v.setVisibility(0);
-            aVar.C.setVisibility(0);
-            aVar.B.setVisibility(0);
+            aVar.v.setVisibility(View.VISIBLE);
+            aVar.C.setVisibility(View.VISIBLE);
+            aVar.B.setVisibility(View.VISIBLE);
             aVar.B.setImageResource(oq.a(eventBean.eventName));
             aVar.F.e();
-            if (eventBean.eventType == 5) {
+            if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
                 aVar.F.f();
             } else {
                 aVar.F.c();
@@ -248,22 +251,22 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 aVar.x.setBackgroundResource(oq.a(eventBean.eventName));
                 aVar.y.setText(eventBean.eventName);
                 aVar.z.setText(oq.a(eventBean.eventName, rs.this.getContext()));
-                aVar.u.setImageResource(2131166270);
-                aVar.B.setVisibility(8);
-                aVar.v.setVisibility(8);
+                aVar.u.setImageResource(R.drawable.widget_source);
+                aVar.B.setVisibility(View.GONE);
+                aVar.v.setVisibility(View.GONE);
             } else {
                 aVar.u.setImageResource(EventBean.getEventIconResource(i2, eventBean.targetType));
                 int i3 = eventBean.eventType;
-                if (i3 == 1) {
+                if (i3 == EventBean.EVENT_TYPE_VIEW) {
                     aVar.v.setText(ViewBean.getViewTypeName(eventBean.targetType));
-                } else if (i3 == 4) {
+                } else if (i3 == EventBean.EVENT_TYPE_DRAWER_VIEW) {
                     aVar.v.setText(ViewBean.getViewTypeName(eventBean.targetType));
-                } else if (i3 == 2) {
+                } else if (i3 == EventBean.EVENT_TYPE_COMPONENT) {
                     aVar.v.setText(ComponentBean.getComponentName(rs.this.getContext(), eventBean.targetType));
-                } else if (i3 == 5) {
-                    aVar.u.setImageResource(2131166270);
-                    aVar.v.setVisibility(8);
-                    aVar.B.setVisibility(8);
+                } else if (i3 == EventBean.EVENT_TYPE_ETC) {
+                    aVar.u.setImageResource(R.drawable.widget_source);
+                    aVar.v.setVisibility(View.GONE);
+                    aVar.B.setVisibility(View.GONE);
                 }
                 if (eventBean.targetId.equals("_fab")) {
                     aVar.w.setText("fab");
@@ -274,12 +277,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 aVar.x.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
                 aVar.y.setText(eventBean.eventName);
                 aVar.z.setText(oq.a(eventBean.eventName, rs.this.getContext()));
-                if (eventBean.eventType == 5) {
+                if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
                     aVar.z.setText(ReturnMoreblockManager.getMbTypeList(eventBean.targetId));
                 }
             }
             if (eventBean.isCollapsed) {
-                aVar.D.setVisibility(8);
+                aVar.D.setVisibility(View.GONE);
                 aVar.A.setRotation(0.0f);
                 if (eventBean.isConfirmation) {
                     aVar.F.d();
@@ -287,7 +290,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     aVar.F.a();
                 }
             } else {
-                aVar.D.setVisibility(0);
+                aVar.D.setVisibility(View.VISIBLE);
                 aVar.A.setRotation(-180.0f);
                 if (eventBean.isConfirmation) {
                     aVar.F.d();
@@ -295,38 +298,38 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     aVar.F.a();
                 }
             }
-            aVar.D.getLayoutParams().height = -2;
+            aVar.D.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
 
         public void a(ArrayList<EventBean> arrayList) {
             if (arrayList.size() == 0) {
-                rs.this.s.setVisibility(0);
+                rs.this.s.setVisibility(View.VISIBLE);
             } else {
-                rs.this.s.setVisibility(8);
+                rs.this.s.setVisibility(View.GONE);
             }
             this.d = arrayList;
         }
 
         @Override
         public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427429, viewGroup, false));
+            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fr_logic_list_item, viewGroup, false));
         }
     }
 
     public static int a(int i) {
         if (i == 4) {
-            return 2131165968;
+            return R.drawable.more_block_96dp;
         }
         if (i == 1) {
-            return 2131165974;
+            return R.drawable.multiple_devices_48;
         }
         if (i == 0) {
-            return 2131165726;
+            return R.drawable.ic_cycle_color_48dp;
         }
         if (i == 3) {
-            return 2131165737;
+            return R.drawable.ic_drawer_color_48dp;
         }
-        return i == 2 ? 2131165504 : 0;
+        return i == 2 ? R.drawable.component_96 : 0;
     }
 
     @Override
@@ -340,7 +343,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     @Override
     public void onClick(View view) {
-        if (!mB.a() && view.getId() == 2131231054) {
+        if (!mB.a() && view.getId() == R.id.fab) {
             Intent intent = new Intent(getActivity().getApplicationContext(), AddEventActivity.class);
             intent.putExtra("sc_id", this.v);
             intent.putExtra("project_file", this.f);
@@ -356,7 +359,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(2131427427, viewGroup, false);
+        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_logic_list, viewGroup, false);
         a(viewGroup2);
         setHasOptionsMenu(true);
         if (bundle != null) {
@@ -383,9 +386,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public a2(View view) {
                 super(view);
-                this.t = (ImageView) view.findViewById(2131231151);
-                this.u = (TextView) view.findViewById(2131232055);
-                this.v = view.findViewById(2131231600);
+                this.t = (ImageView) view.findViewById(R.id.img_icon);
+                this.u = (TextView) view.findViewById(R.id.tv_name);
+                this.v = view.findViewById(R.id.pointer_left);
                 view.setOnClickListener(this);
             }
 
@@ -400,11 +403,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 rsVar.a((ArrayList) rsVar.m.get(Integer.valueOf(a.this.c)));
                 a aVar3 = a.this;
                 if (aVar3.c == 4) {
-                    rs.this.t.setVisibility(0);
-                    rs.this.u.setVisibility(0);
+                    rs.this.t.setVisibility(View.VISIBLE);
+                    rs.this.u.setVisibility(View.VISIBLE);
                 } else {
-                    rs.this.t.setVisibility(8);
-                    rs.this.u.setVisibility(8);
+                    rs.this.t.setVisibility(View.GONE);
+                    rs.this.u.setVisibility(View.GONE);
                 }
                 rs.this.h.a((ArrayList) rs.this.m.get(Integer.valueOf(a.this.c)));
                 rs.this.h.c();
@@ -431,7 +434,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 a3.a(300L);
                 a3.a(new AccelerateInterpolator());
                 a3.c();
-                aVar.v.setVisibility(0);
+                aVar.v.setVisibility(View.VISIBLE);
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(1.0f);
                 aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
@@ -449,7 +452,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             a5.a(300L);
             a5.a(new DecelerateInterpolator());
             a5.c();
-            aVar.v.setVisibility(8);
+            aVar.v.setVisibility(View.GONE);
             ColorMatrix colorMatrix2 = new ColorMatrix();
             colorMatrix2.setSaturation(0.0f);
             aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
@@ -457,7 +460,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
         @Override
         public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(2131427377, viewGroup, false));
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.common_category_triangle_item, viewGroup, false));
         }
 
         @Override
@@ -477,11 +480,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public a(View view) {
                 super(view);
-                this.t = (ViewGroup) view.findViewById(2131231359);
-                this.u = (ImageView) view.findViewById(2131231181);
-                this.v = (TextView) view.findViewById(2131231893);
-                this.w = (ViewGroup) view.findViewById(2131230793);
-                this.u.setVisibility(8);
+                this.t = (ViewGroup) view.findViewById(R.id.layout_item);
+                this.u = (ImageView) view.findViewById(R.id.img_selected);
+                this.v = (TextView) view.findViewById(R.id.tv_block_name);
+                this.w = (ViewGroup) view.findViewById(R.id.block_area);
+                this.u.setVisibility(View.GONE);
                 this.t.setOnClickListener(v -> {
                     rs.c.this.c = j();
                     rs.c.a.this.c(rs.c.this.c);
@@ -523,7 +526,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
         @Override
         public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(rs.this.getContext()).inflate(2131427511, viewGroup, false));
+            return new a(LayoutInflater.from(rs.this.getContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, viewGroup, false));
         }
 
         @Override
@@ -580,11 +583,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         ArrayList<EventBean> g = jC.a(this.v).g(this.f.getJavaName());
         Iterator<Pair<String, String>> it = jC.a(this.v).i(this.f.getJavaName()).iterator();
         while (it.hasNext()) {
-            EventBean eventBean = new EventBean(5, -1, (String) it.next().first, "moreBlock");
+            EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_ETC, -1, (String) it.next().first, "moreBlock");
             eventBean.initValue();
             this.n.add(eventBean);
         }
-        EventBean eventBean2 = new EventBean(3, -1, "onCreate", "initializeLogic");
+        EventBean eventBean2 = new EventBean(EventBean.EVENT_TYPE_ACTIVITY, -1, "onCreate", "initializeLogic");
         eventBean2.initValue();
         this.q.add(eventBean2);
         Iterator<EventBean> it2 = g.iterator();
@@ -592,13 +595,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             EventBean next = it2.next();
             next.initValue();
             int i = next.eventType;
-            if (i == 1) {
+            if (i == EventBean.EVENT_TYPE_VIEW) {
                 this.o.add(next);
-            } else if (i == 2) {
+            } else if (i == EventBean.EVENT_TYPE_COMPONENT) {
                 this.p.add(next);
-            } else if (i == 3) {
+            } else if (i == EventBean.EVENT_TYPE_ACTIVITY) {
                 this.q.add(next);
-            } else if (i == 4) {
+            } else if (i == EventBean.EVENT_TYPE_DRAWER_VIEW) {
                 this.r.add(next);
             }
         }
@@ -611,11 +614,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
         }
         if (this.g.c == 4) {
-            this.t.setVisibility(0);
-            this.u.setVisibility(0);
+            this.t.setVisibility(View.VISIBLE);
+            this.u.setVisibility(View.VISIBLE);
         } else {
-            this.t.setVisibility(8);
-            this.u.setVisibility(8);
+            this.t.setVisibility(View.GONE);
+            this.u.setVisibility(View.GONE);
         }
         if (this.h == null) {
             return;
@@ -662,11 +665,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public final void b(EventBean eventBean) {
         if (jC.a(this.v).f(this.f.getJavaName(), eventBean.targetId)) {
-            bB.b(getContext(), xB.b().a(getContext(), 2131625491), 0).show();
+            bB.b(getContext(), xB.b().a(getContext(), R.string.logic_editor_message_currently_used_block), 0).show();
             return;
         }
         jC.a(this.v).n(this.f.getJavaName(), eventBean.targetId);
-        bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
+        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
         this.m.get(Integer.valueOf(this.g.c)).remove(this.h.c);
         b bVar = this.h;
         bVar.e(bVar.c);
@@ -688,16 +691,16 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     public final void a(ViewGroup viewGroup) {
-        this.s = (TextView) viewGroup.findViewById(2131232063);
-        this.k = (RecyclerView) viewGroup.findViewById(2131231046);
-        this.j = (RecyclerView) viewGroup.findViewById(2131230876);
-        this.l = (FloatingActionButton) viewGroup.findViewById(2131231054);
-        this.s.setVisibility(8);
-        this.s.setText(xB.b().a(getContext(), 2131625334));
+        this.s = (TextView) viewGroup.findViewById(R.id.tv_no_events);
+        this.k = (RecyclerView) viewGroup.findViewById(R.id.event_list);
+        this.j = (RecyclerView) viewGroup.findViewById(R.id.category_list);
+        this.l = (FloatingActionButton) viewGroup.findViewById(R.id.fab);
+        this.s.setVisibility(View.GONE);
+        this.s.setText(xB.b().a(getContext(), R.string.event_message_no_events));
         this.k.setHasFixedSize(true);
-        this.k.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        this.k.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         this.j.setHasFixedSize(true);
-        this.j.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        this.j.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         ((Bi) this.j.getItemAnimator()).a(false);
         this.g = new a();
         this.j.setAdapter(this.g);
@@ -734,10 +737,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         this.m.put(2, this.p);
         this.m.put(3, this.r);
         this.m.put(4, this.n);
-        this.t = (TextView) viewGroup.findViewById(2131232005);
-        this.t.setText(xB.b().a(getContext(), 2131625488));
-        this.u = (TextView) viewGroup.findViewById(2131232157);
-        this.u.setText(xB.b().a(getContext(), 2131625487));
+        this.t = (TextView) viewGroup.findViewById(R.id.tv_import);
+        this.t.setText(xB.b().a(getContext(), R.string.logic_button_import_more_block));
+        this.u = (TextView) viewGroup.findViewById(R.id.tv_shared);
+        this.u.setText(xB.b().a(getContext(), R.string.logic_button_explore_shared_more_block));
         this.t.setOnClickListener(v -> g());
         this.u.setOnClickListener(v -> {
             /* This is defined in a.a.a.ks, but not compilable, as Shared More Blocks classes were removed.
@@ -827,25 +830,25 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public final void b(int i) {
         aB aBVar = new aB(getActivity());
-        aBVar.b(xB.b().a(getContext(), 2131625580));
-        aBVar.a(2131165700);
-        View a2 = wB.a(getContext(), 2131427640);
-        ((TextView) a2.findViewById(2131231977)).setText(xB.b().a(getContext(), 2131625579));
-        EditText editText = (EditText) a2.findViewById(2131230990);
+        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_favorites_save_title));
+        aBVar.a(R.drawable.ic_bookmark_red_48dp);
+        View a2 = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
+        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_favorites_save_guide));
+        EditText editText = (EditText) a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
-        editText.setInputType(524289);
-        editText.setImeOptions(6);
-        NB nb = new NB(getContext(), (TextInputLayout) a2.findViewById(2131231816), Pp.h().g());
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        NB nb = new NB(getContext(), (TextInputLayout) a2.findViewById(R.id.ti_input), Pp.h().g());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), 2131625031), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (nb.b()) {
                 a(editText.getText().toString(), n.get(i));
                 mB.a(getContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getContext(), 2131624974), v -> {
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
             mB.a(getContext(), editText);
             aBVar.dismiss();
         });
@@ -856,7 +859,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         eC a2 = jC.a(this.v);
         String javaName = this.f.getJavaName();
         a2.a(javaName, eventBean.targetId + "_" + eventBean.eventName, new ArrayList<>());
-        bB.a(getContext(), xB.b().a(getContext(), 2131624937), 0).show();
+        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_reset), 0).show();
     }
 
     public final void c(MoreBlockCollectionBean moreBlockCollectionBean) {
@@ -936,18 +939,18 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public final void b(MoreBlockCollectionBean moreBlockCollectionBean) {
         aB aBVar = new aB(getActivity());
-        aBVar.b(xB.b().a(getContext(), 2131625584));
-        aBVar.a(2131165968);
-        View a2 = wB.a(getContext(), 2131427640);
-        ((TextView) a2.findViewById(2131231977)).setText(xB.b().a(getContext(), 2131625578));
-        EditText editText = (EditText) a2.findViewById(2131230990);
+        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
+        aBVar.a(R.drawable.more_block_96dp);
+        View a2 = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
+        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
+        EditText editText = (EditText) a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
-        editText.setInputType(524289);
-        editText.setImeOptions(6);
-        ZB zb = new ZB(getContext(), (TextInputLayout) a2.findViewById(2131231816), uq.b, uq.a(), jC.a(this.v).a(this.f));
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        ZB zb = new ZB(getContext(), (TextInputLayout) a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(this.v).a(this.f));
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), 2131625031), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (zb.b()) {
                 moreBlockCollectionBean.spec = editText.getText().toString() + (moreBlockCollectionBean.spec.contains(" ") ?
                         moreBlockCollectionBean.spec.substring(moreBlockCollectionBean.spec.indexOf(" ")) : "");
@@ -956,7 +959,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getContext(), 2131624974), v -> {
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
             mB.a(getContext(), editText);
             aBVar.dismiss();
         });
@@ -1001,10 +1004,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public final void f(MoreBlockCollectionBean moreBlockCollectionBean) {
         aB aBVar = new aB(getActivity());
-        aBVar.b(xB.b().a(getContext(), 2131625583));
-        aBVar.a(2131165391);
-        aBVar.a(xB.b().a(getContext(), 2131625577));
-        aBVar.b(xB.b().a(getContext(), 2131624980), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_add_variable_resource));
+        aBVar.a(R.drawable.break_warning_96_red);
+        aBVar.a(xB.b().a(getContext(), R.string.logic_more_block_desc_add_variable_resource));
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_continue), v -> {
             for (Pair<Integer, String> pair : w) {
                 eC eC = jC.a(this.v);
                 eC.c(f.getJavaName(), pair.first, pair.second);
@@ -1025,7 +1028,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             a(moreBlockCollectionBean);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1034,7 +1037,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         eC a2 = jC.a(this.v);
         String javaName = this.f.getJavaName();
         a2.k(javaName, eventBean.targetId + "_" + eventBean.eventName);
-        bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
+        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
         this.m.get(Integer.valueOf(this.g.c)).remove(this.h.c);
         b bVar = this.h;
         bVar.e(bVar.c);
@@ -1064,7 +1067,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public final void a(String str, String str2, String str3) {
         Intent intent = new Intent(getActivity(), LogicEditorActivity.class);
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", this.v);
         intent.putExtra("id", str);
         intent.putExtra("event", str2);
@@ -1075,18 +1078,18 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public static String a(Context context, int i) {
         if (i == 4) {
-            return xB.b().a(context, 2131625007);
+            return xB.b().a(context, R.string.common_word_moreblock);
         }
         if (i == 1) {
-            return xB.b().a(context, 2131625046);
+            return xB.b().a(context, R.string.common_word_view);
         }
         if (i == 0) {
-            return xB.b().a(context, 2131624969);
+            return xB.b().a(context, R.string.common_word_activity);
         }
         if (i == 3) {
-            return xB.b().a(context, 2131624991);
+            return xB.b().a(context, R.string.common_word_drawer);
         }
-        return i == 2 ? xB.b().a(context, 2131624979) : "";
+        return i == 2 ? xB.b().a(context, R.string.common_word_component) : "";
     }
 
     public final void a(String str, EventBean eventBean) {
@@ -1133,15 +1136,15 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
         if (z) {
             if (z2) {
-                bB.b(getContext(), xB.b().a(getContext(), 2131625581), 0).show();
+                bB.b(getContext(), xB.b().a(getContext(), R.string.logic_more_block_message_missed_resource_exist), 0).show();
             } else {
-                bB.a(getContext(), xB.b().a(getContext(), 2131625582), 0).show();
+                bB.a(getContext(), xB.b().a(getContext(), R.string.logic_more_block_message_resource_added), 0).show();
             }
         }
         try {
             Pp.h().a(str, b2, a3, true);
         } catch (Exception unused2) {
-            bB.b(getContext(), xB.b().a(getContext(), 2131624915), 0).show();
+            bB.b(getContext(), xB.b().a(getContext(), R.string.common_error_failed_to_save), 0).show();
         }
     }
 
@@ -1193,7 +1196,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         eC a2 = jC.a(this.v);
         String javaName = this.f.getJavaName();
         a2.a(javaName, substring + "_moreBlock", moreBlockCollectionBean.blocks);
-        bB.a(getContext(), xB.b().a(getContext(), 2131624938), 0).show();
+        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), 0).show();
         f();
     }
 }
