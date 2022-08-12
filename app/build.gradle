@@ -4,7 +4,7 @@ plugins {
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
