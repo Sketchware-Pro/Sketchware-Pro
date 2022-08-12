@@ -75,6 +75,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         selectTheme(ed, theme);
 
         ed.setTextSize(text_size);
+        
         ed.setWordwrap(word_wrap);
         ed.getProps().symbolPairAutoCompletion = auto_complete_symbol_pairs;
         ed.getComponent(EditorAutoCompletion.class).setEnabled(auto_c);
@@ -360,6 +361,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         setTitle(getIntent().getStringExtra("title"));
 
         editor.setTypefaceText(Typeface.MONOSPACE);
+        editor.setPinLineNumber(true);
 
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
 
