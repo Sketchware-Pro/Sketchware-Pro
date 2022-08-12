@@ -113,7 +113,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     //noinspection GradleDependency
     implementation "com.squareup.okio:okio:3.1.0"
-    implementation "com.google.android.material:material:1.6.1"
+    
 
     implementation "com.guardsquare:proguard-base:7.1.1"
 
