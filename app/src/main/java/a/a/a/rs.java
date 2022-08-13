@@ -77,240 +77,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     public boolean i = false;
     public oB B = new oB();
 
-    class b extends RecyclerView.a<b.a> {
-        public int c = -1;
-        public ArrayList<EventBean> d = new ArrayList<>();
-
-        class a extends RecyclerView.v {
-            public ImageView A;
-            public ImageView B;
-            public LinearLayout C;
-            public LinearLayout D;
-            public LinearLayout E;
-            public CollapsibleEventLayout F;
-            public LinearLayout t;
-            public ImageView u;
-            public TextView v;
-            public TextView w;
-            public TextView x;
-            public TextView y;
-            public TextView z;
-
-            public a(View view) {
-                super(view);
-                t = view.findViewById(R.id.container);
-                u = view.findViewById(R.id.img_icon);
-                v = view.findViewById(R.id.tv_target_type);
-                w = view.findViewById(R.id.tv_target_id);
-                x = view.findViewById(R.id.tv_event_type);
-                y = view.findViewById(R.id.tv_event_name);
-                z = view.findViewById(R.id.tv_event_text);
-                A = view.findViewById(R.id.img_menu);
-                B = view.findViewById(R.id.img_preview);
-                C = view.findViewById(R.id.ll_preview);
-                D = view.findViewById(R.id.event_option_layout);
-                E = view.findViewById(R.id.event_option);
-                F = new CollapsibleEventLayout(getContext());
-                F.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                E.addView(F);
-                F.setButtonOnClickListener(v -> {
-                    if (!mB.a()) {
-                        rs.b.this.c = j();
-                        EventBean eventBean = (rs.this.m.get(rs.this.g.c)).get(rs.b.this.c);
-                        if (view instanceof CollapsibleButton) {
-                            int i = ((CollapsibleButton) view).b;
-                            if (i == 2) {
-                                eventBean.buttonPressed = i;
-                                eventBean.isConfirmation = false;
-                                eventBean.isCollapsed = false;
-                                rs.b.this.c(rs.b.this.c);
-                                rs.this.b(rs.b.this.c);
-                            } else {
-                                eventBean.buttonPressed = i;
-                                eventBean.isConfirmation = true;
-                                rs.b.this.c(rs.b.this.c);
-                            }
-                        } else {
-                            int id = view.getId();
-                            if (id == R.id.confirm_no) {
-                                eventBean.isConfirmation = false;
-                                rs.b.this.c(rs.b.this.c);
-                            } else if (id == R.id.confirm_yes) {
-                                int i2 = eventBean.buttonPressed;
-                                if (i2 == 0) {
-                                    eventBean.isConfirmation = false;
-                                    eventBean.isCollapsed = true;
-                                    rs.this.c(eventBean);
-                                    rs.b.this.c(rs.b.this.c);
-                                } else if (i2 == 1) {
-                                    eventBean.isConfirmation = false;
-                                    if (rs.this.g.c != 4) {
-                                        rs.this.a(eventBean);
-                                    } else {
-                                        rs.this.b(eventBean);
-                                    }
-                                }
-                                rs.this.l.f();
-                            }
-                        }
-                    }
-                });
-                A.setOnClickListener(v -> {
-                    rs.b.this.c = j();
-                    EventBean eventBean = rs.this.m.get(rs.this.g.c).get(rs.b.this.c);
-                    if (eventBean.isCollapsed) {
-                        eventBean.isCollapsed = false;
-                        E();
-                    } else {
-                        eventBean.isCollapsed = true;
-                        D();
-                    }
-                });
-                view.setOnLongClickListener(v -> {
-                    rs.b.this.c = j();
-                    EventBean eventBean = rs.this.m.get(rs.this.g.c).get(rs.b.this.c);
-                    if (eventBean.isCollapsed) {
-                        eventBean.isCollapsed = false;
-                        E();
-                    } else {
-                        eventBean.isCollapsed = true;
-                        D();
-                    }
-                    return true;
-                });
-                view.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        rs.b.this.c = j();
-                        EventBean eventBean = rs.this.m.get(rs.this.g.c).get(rs.b.this.c);
-                        rs.this.a(eventBean.targetId, eventBean.eventName, z.getText().toString());
-                    }
-                });
-            }
-
-            public void D() {
-                gB.a(A, 0.0f, null);
-                gB.a(D, 200, new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        D.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-                    }
-                });
-            }
-
-            public void E() {
-                D.setVisibility(View.VISIBLE);
-                gB.a(A, -180.0f, null);
-                gB.b(D, 200, null);
-            }
-        }
-
-        public b() {
-        }
-
-        @Override
-        public int a() {
-            return d.size();
-        }
-
-        @Override
-        public void b(a aVar, int i) {
-            EventBean eventBean = d.get(i);
-            aVar.v.setVisibility(View.VISIBLE);
-            aVar.C.setVisibility(View.VISIBLE);
-            aVar.B.setVisibility(View.VISIBLE);
-            aVar.B.setImageResource(oq.a(eventBean.eventName));
-            aVar.F.e();
-            if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
-                aVar.F.f();
-            } else {
-                aVar.F.c();
-            }
-            int i2 = eventBean.eventType;
-            if (i2 == 3) {
-                if (eventBean.eventName == "initializeLogic") {
-                    aVar.F.b();
-                }
-                aVar.w.setText(eventBean.targetId);
-                aVar.x.setBackgroundResource(oq.a(eventBean.eventName));
-                aVar.y.setText(eventBean.eventName);
-                aVar.z.setText(oq.a(eventBean.eventName, getContext()));
-                aVar.u.setImageResource(R.drawable.widget_source);
-                aVar.B.setVisibility(View.GONE);
-                aVar.v.setVisibility(View.GONE);
-            } else {
-                aVar.u.setImageResource(EventBean.getEventIconResource(i2, eventBean.targetType));
-                int i3 = eventBean.eventType;
-                if (i3 == EventBean.EVENT_TYPE_VIEW) {
-                    aVar.v.setText(ViewBean.getViewTypeName(eventBean.targetType));
-                } else if (i3 == EventBean.EVENT_TYPE_DRAWER_VIEW) {
-                    aVar.v.setText(ViewBean.getViewTypeName(eventBean.targetType));
-                } else if (i3 == EventBean.EVENT_TYPE_COMPONENT) {
-                    aVar.v.setText(ComponentBean.getComponentName(getContext(), eventBean.targetType));
-                } else if (i3 == EventBean.EVENT_TYPE_ETC) {
-                    aVar.u.setImageResource(R.drawable.widget_source);
-                    aVar.v.setVisibility(View.GONE);
-                    aVar.B.setVisibility(View.GONE);
-                }
-                if (eventBean.targetId.equals("_fab")) {
-                    aVar.w.setText("fab");
-                } else {
-                    aVar.w.setText(ReturnMoreblockManager.getMbName(eventBean.targetId));
-                }
-                aVar.x.setText(EventBean.getEventTypeName(eventBean.eventType));
-                aVar.x.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
-                aVar.y.setText(eventBean.eventName);
-                aVar.z.setText(oq.a(eventBean.eventName, getContext()));
-                if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
-                    aVar.z.setText(ReturnMoreblockManager.getMbTypeList(eventBean.targetId));
-                }
-            }
-            if (eventBean.isCollapsed) {
-                aVar.D.setVisibility(View.GONE);
-                aVar.A.setRotation(0.0f);
-                if (eventBean.isConfirmation) {
-                    aVar.F.d();
-                } else {
-                    aVar.F.a();
-                }
-            } else {
-                aVar.D.setVisibility(View.VISIBLE);
-                aVar.A.setRotation(-180.0f);
-                if (eventBean.isConfirmation) {
-                    aVar.F.d();
-                } else {
-                    aVar.F.a();
-                }
-            }
-            aVar.D.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        }
-
-        public void a(ArrayList<EventBean> arrayList) {
-            if (arrayList.size() == 0) {
-                rs.this.s.setVisibility(View.VISIBLE);
-            } else {
-                rs.this.s.setVisibility(View.GONE);
-            }
-            d = arrayList;
-        }
-
-        @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fr_logic_list_item, viewGroup, false));
-        }
-    }
-
     public static int a(int i) {
         if (i == 4) {
             return R.drawable.more_block_96dp;
@@ -325,6 +91,22 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             return R.drawable.ic_drawer_color_48dp;
         }
         return i == 2 ? R.drawable.component_96 : 0;
+    }
+
+    public static String a(Context context, int i) {
+        if (i == 4) {
+            return xB.b().a(context, R.string.common_word_moreblock);
+        }
+        if (i == 1) {
+            return xB.b().a(context, R.string.common_word_view);
+        }
+        if (i == 0) {
+            return xB.b().a(context, R.string.common_word_activity);
+        }
+        if (i == 3) {
+            return xB.b().a(context, R.string.common_word_drawer);
+        }
+        return i == 2 ? xB.b().a(context, R.string.common_word_component) : "";
     }
 
     @Override
@@ -368,159 +150,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     public void onSaveInstanceState(Bundle bundle) {
         bundle.putString("sc_id", v);
         super.onSaveInstanceState(bundle);
-    }
-
-    class a extends RecyclerView.a<a.a2> {
-        public int c = -1;
-
-        class a2 extends RecyclerView.v implements View.OnClickListener {
-            public ImageView t;
-            public TextView u;
-            public View v;
-
-            public a2(View view) {
-                super(view);
-                t = view.findViewById(R.id.img_icon);
-                u = view.findViewById(R.id.tv_name);
-                v = view.findViewById(R.id.pointer_left);
-                view.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View view) {
-                a.this.c(a.this.c);
-                a.this.c = j();
-                a.this.c(a.this.c);
-                rs.this.a(rs.this.m.get(a.this.c));
-                if (a.this.c == 4) {
-                    rs.this.t.setVisibility(View.VISIBLE);
-                    rs.this.u.setVisibility(View.VISIBLE);
-                } else {
-                    rs.this.t.setVisibility(View.GONE);
-                    rs.this.u.setVisibility(View.GONE);
-                }
-                rs.this.h.a(rs.this.m.get(a.this.c));
-                rs.this.h.c();
-            }
-        }
-
-        public a() {
-        }
-
-        @Override
-        public void b(a2 aVar, int i) {
-            aVar.u.setText(rs.a(getContext(), i));
-            aVar.t.setImageResource(rs.a(i));
-            if (c == i) {
-                ef a2 = Ze.a(aVar.t);
-                a2.c(1.0f);
-                a2.d(1.0f);
-                a2.a(300L);
-                a2.a(new AccelerateInterpolator());
-                a2.c();
-                ef a3 = Ze.a(aVar.t);
-                a3.c(1.0f);
-                a3.d(1.0f);
-                a3.a(300L);
-                a3.a(new AccelerateInterpolator());
-                a3.c();
-                aVar.v.setVisibility(View.VISIBLE);
-                ColorMatrix colorMatrix = new ColorMatrix();
-                colorMatrix.setSaturation(1.0f);
-                aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-            } else {
-                ef a4 = Ze.a(aVar.t);
-                a4.c(0.8f);
-                a4.d(0.8f);
-                a4.a(300L);
-                a4.a(new DecelerateInterpolator());
-                a4.c();
-                ef a5 = Ze.a(aVar.t);
-                a5.c(0.8f);
-                a5.d(0.8f);
-                a5.a(300L);
-                a5.a(new DecelerateInterpolator());
-                a5.c();
-                aVar.v.setVisibility(View.GONE);
-                ColorMatrix colorMatrix2 = new ColorMatrix();
-                colorMatrix2.setSaturation(0.0f);
-                aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
-            }
-        }
-
-        @Override
-        public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.common_category_triangle_item, viewGroup, false));
-        }
-
-        @Override
-        public int a() {
-            return rs.this.m.size();
-        }
-    }
-
-    public class c extends RecyclerView.a<c.a> {
-        public int c = -1;
-
-        class a extends RecyclerView.v {
-            public ViewGroup t;
-            public ImageView u;
-            public TextView v;
-            public ViewGroup w;
-
-            public a(View view) {
-                super(view);
-                t = view.findViewById(R.id.layout_item);
-                u = view.findViewById(R.id.img_selected);
-                v = view.findViewById(R.id.tv_block_name);
-                w = view.findViewById(R.id.block_area);
-                u.setVisibility(View.GONE);
-                t.setOnClickListener(v -> {
-                    rs.c.this.c = j();
-                    rs.c.a.this.c(rs.c.this.c);
-                });
-                w.setOnClickListener(v -> {
-                    rs.c.this.c = j();
-                    rs.c.a.this.c(rs.c.this.c);
-                });
-            }
-
-            public final void c(int i) {
-                if (rs.this.D.size() > 0) {
-                    for (MoreBlockCollectionBean bean : rs.this.D) {
-                        bean.isSelected = false;
-                    }
-                    rs.this.D.get(i).isSelected = true;
-                    rs.this.C.c();
-                }
-            }
-        }
-
-        public c() {
-        }
-
-        @Override
-        public void b(c.a holder, int position) {
-            MoreBlockCollectionBean bean = rs.this.D.get(position);
-            if (bean.isSelected) {
-                holder.u.setVisibility(View.VISIBLE);
-            } else {
-                holder.u.setVisibility(View.GONE);
-            }
-            holder.v.setText(bean.name);
-            holder.w.removeAllViews();
-            holder.w.addView(ImportMoreblockHelper.optimizedBlockView(getContext(), bean.spec));
-        }
-
-        @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(getContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, viewGroup, false));
-        }
-
-        @Override
-        public int a() {
-            return rs.this.D.size();
-        }
     }
 
     public ProjectFileBean d() {
@@ -1034,22 +663,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         startActivity(intent);
     }
 
-    public static String a(Context context, int i) {
-        if (i == 4) {
-            return xB.b().a(context, R.string.common_word_moreblock);
-        }
-        if (i == 1) {
-            return xB.b().a(context, R.string.common_word_view);
-        }
-        if (i == 0) {
-            return xB.b().a(context, R.string.common_word_activity);
-        }
-        if (i == 3) {
-            return xB.b().a(context, R.string.common_word_drawer);
-        }
-        return i == 2 ? xB.b().a(context, R.string.common_word_component) : "";
-    }
-
     public final void a(String str, EventBean eventBean) {
         String b2 = jC.a(v).b(f.getJavaName(), eventBean.targetId);
         eC a2 = jC.a(v);
@@ -1153,5 +766,383 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         a2.a(javaName, substring + "_moreBlock", moreBlockCollectionBean.blocks);
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), 0).show();
         f();
+    }
+
+    class a extends RecyclerView.a<a.a2> {
+        public int c = -1;
+
+        @Override
+        public void b(a2 aVar, int i) {
+            aVar.u.setText(rs.a(getContext(), i));
+            aVar.t.setImageResource(rs.a(i));
+            if (c == i) {
+                ef a2 = Ze.a(aVar.t);
+                a2.c(1.0f);
+                a2.d(1.0f);
+                a2.a(300L);
+                a2.a(new AccelerateInterpolator());
+                a2.c();
+                ef a3 = Ze.a(aVar.t);
+                a3.c(1.0f);
+                a3.d(1.0f);
+                a3.a(300L);
+                a3.a(new AccelerateInterpolator());
+                a3.c();
+                aVar.v.setVisibility(View.VISIBLE);
+                ColorMatrix colorMatrix = new ColorMatrix();
+                colorMatrix.setSaturation(1.0f);
+                aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+            } else {
+                ef a4 = Ze.a(aVar.t);
+                a4.c(0.8f);
+                a4.d(0.8f);
+                a4.a(300L);
+                a4.a(new DecelerateInterpolator());
+                a4.c();
+                ef a5 = Ze.a(aVar.t);
+                a5.c(0.8f);
+                a5.d(0.8f);
+                a5.a(300L);
+                a5.a(new DecelerateInterpolator());
+                a5.c();
+                aVar.v.setVisibility(View.GONE);
+                ColorMatrix colorMatrix2 = new ColorMatrix();
+                colorMatrix2.setSaturation(0.0f);
+                aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
+            }
+        }
+
+        @Override
+        public a2 b(ViewGroup viewGroup, int i) {
+            return new a2(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.common_category_triangle_item, viewGroup, false));
+        }
+
+        @Override
+        public int a() {
+            return rs.this.m.size();
+        }
+
+        class a2 extends RecyclerView.v implements View.OnClickListener {
+            public ImageView t;
+            public TextView u;
+            public View v;
+
+            public a2(View view) {
+                super(view);
+                t = view.findViewById(R.id.img_icon);
+                u = view.findViewById(R.id.tv_name);
+                v = view.findViewById(R.id.pointer_left);
+                view.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                a.this.c(a.this.c);
+                a.this.c = j();
+                a.this.c(a.this.c);
+                rs.this.a(rs.this.m.get(a.this.c));
+                if (a.this.c == 4) {
+                    rs.this.t.setVisibility(View.VISIBLE);
+                    rs.this.u.setVisibility(View.VISIBLE);
+                } else {
+                    rs.this.t.setVisibility(View.GONE);
+                    rs.this.u.setVisibility(View.GONE);
+                }
+                rs.this.h.a(rs.this.m.get(a.this.c));
+                rs.this.h.c();
+            }
+        }
+    }
+
+    class b extends RecyclerView.a<b.a> {
+        public int c = -1;
+        public ArrayList<EventBean> d = new ArrayList<>();
+
+        @Override
+        public int a() {
+            return d.size();
+        }
+
+        @Override
+        public void b(a aVar, int i) {
+            EventBean eventBean = d.get(i);
+            aVar.v.setVisibility(View.VISIBLE);
+            aVar.C.setVisibility(View.VISIBLE);
+            aVar.B.setVisibility(View.VISIBLE);
+            aVar.B.setImageResource(oq.a(eventBean.eventName));
+            aVar.F.e();
+            if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
+                aVar.F.f();
+            } else {
+                aVar.F.c();
+            }
+            int i2 = eventBean.eventType;
+            if (i2 == 3) {
+                if (eventBean.eventName == "initializeLogic") {
+                    aVar.F.b();
+                }
+                aVar.w.setText(eventBean.targetId);
+                aVar.x.setBackgroundResource(oq.a(eventBean.eventName));
+                aVar.y.setText(eventBean.eventName);
+                aVar.z.setText(oq.a(eventBean.eventName, getContext()));
+                aVar.u.setImageResource(R.drawable.widget_source);
+                aVar.B.setVisibility(View.GONE);
+                aVar.v.setVisibility(View.GONE);
+            } else {
+                aVar.u.setImageResource(EventBean.getEventIconResource(i2, eventBean.targetType));
+                int i3 = eventBean.eventType;
+                if (i3 == EventBean.EVENT_TYPE_VIEW) {
+                    aVar.v.setText(ViewBean.getViewTypeName(eventBean.targetType));
+                } else if (i3 == EventBean.EVENT_TYPE_DRAWER_VIEW) {
+                    aVar.v.setText(ViewBean.getViewTypeName(eventBean.targetType));
+                } else if (i3 == EventBean.EVENT_TYPE_COMPONENT) {
+                    aVar.v.setText(ComponentBean.getComponentName(getContext(), eventBean.targetType));
+                } else if (i3 == EventBean.EVENT_TYPE_ETC) {
+                    aVar.u.setImageResource(R.drawable.widget_source);
+                    aVar.v.setVisibility(View.GONE);
+                    aVar.B.setVisibility(View.GONE);
+                }
+                if (eventBean.targetId.equals("_fab")) {
+                    aVar.w.setText("fab");
+                } else {
+                    aVar.w.setText(ReturnMoreblockManager.getMbName(eventBean.targetId));
+                }
+                aVar.x.setText(EventBean.getEventTypeName(eventBean.eventType));
+                aVar.x.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
+                aVar.y.setText(eventBean.eventName);
+                aVar.z.setText(oq.a(eventBean.eventName, getContext()));
+                if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
+                    aVar.z.setText(ReturnMoreblockManager.getMbTypeList(eventBean.targetId));
+                }
+            }
+            if (eventBean.isCollapsed) {
+                aVar.D.setVisibility(View.GONE);
+                aVar.A.setRotation(0.0f);
+                if (eventBean.isConfirmation) {
+                    aVar.F.d();
+                } else {
+                    aVar.F.a();
+                }
+            } else {
+                aVar.D.setVisibility(View.VISIBLE);
+                aVar.A.setRotation(-180.0f);
+                if (eventBean.isConfirmation) {
+                    aVar.F.d();
+                } else {
+                    aVar.F.a();
+                }
+            }
+            aVar.D.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+
+        public void a(ArrayList<EventBean> arrayList) {
+            if (arrayList.size() == 0) {
+                rs.this.s.setVisibility(View.VISIBLE);
+            } else {
+                rs.this.s.setVisibility(View.GONE);
+            }
+            d = arrayList;
+        }
+
+        @Override
+        public a b(ViewGroup viewGroup, int i) {
+            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fr_logic_list_item, viewGroup, false));
+        }
+
+        class a extends RecyclerView.v {
+            public ImageView A;
+            public ImageView B;
+            public LinearLayout C;
+            public LinearLayout D;
+            public LinearLayout E;
+            public CollapsibleEventLayout F;
+            public LinearLayout t;
+            public ImageView u;
+            public TextView v;
+            public TextView w;
+            public TextView x;
+            public TextView y;
+            public TextView z;
+
+            public a(View view) {
+                super(view);
+                t = view.findViewById(R.id.container);
+                u = view.findViewById(R.id.img_icon);
+                v = view.findViewById(R.id.tv_target_type);
+                w = view.findViewById(R.id.tv_target_id);
+                x = view.findViewById(R.id.tv_event_type);
+                y = view.findViewById(R.id.tv_event_name);
+                z = view.findViewById(R.id.tv_event_text);
+                A = view.findViewById(R.id.img_menu);
+                B = view.findViewById(R.id.img_preview);
+                C = view.findViewById(R.id.ll_preview);
+                D = view.findViewById(R.id.event_option_layout);
+                E = view.findViewById(R.id.event_option);
+                F = new CollapsibleEventLayout(getContext());
+                F.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                E.addView(F);
+                F.setButtonOnClickListener(v -> {
+                    if (!mB.a()) {
+                        rs.b.this.c = j();
+                        EventBean eventBean = (rs.this.m.get(rs.this.g.c)).get(rs.b.this.c);
+                        if (view instanceof CollapsibleButton) {
+                            int i = ((CollapsibleButton) view).b;
+                            if (i == 2) {
+                                eventBean.buttonPressed = i;
+                                eventBean.isConfirmation = false;
+                                eventBean.isCollapsed = false;
+                                rs.b.this.c(rs.b.this.c);
+                                rs.this.b(rs.b.this.c);
+                            } else {
+                                eventBean.buttonPressed = i;
+                                eventBean.isConfirmation = true;
+                                rs.b.this.c(rs.b.this.c);
+                            }
+                        } else {
+                            int id = view.getId();
+                            if (id == R.id.confirm_no) {
+                                eventBean.isConfirmation = false;
+                                rs.b.this.c(rs.b.this.c);
+                            } else if (id == R.id.confirm_yes) {
+                                int i2 = eventBean.buttonPressed;
+                                if (i2 == 0) {
+                                    eventBean.isConfirmation = false;
+                                    eventBean.isCollapsed = true;
+                                    rs.this.c(eventBean);
+                                    rs.b.this.c(rs.b.this.c);
+                                } else if (i2 == 1) {
+                                    eventBean.isConfirmation = false;
+                                    if (rs.this.g.c != 4) {
+                                        rs.this.a(eventBean);
+                                    } else {
+                                        rs.this.b(eventBean);
+                                    }
+                                }
+                                rs.this.l.f();
+                            }
+                        }
+                    }
+                });
+                A.setOnClickListener(v -> {
+                    rs.b.this.c = j();
+                    EventBean eventBean = rs.this.m.get(rs.this.g.c).get(rs.b.this.c);
+                    if (eventBean.isCollapsed) {
+                        eventBean.isCollapsed = false;
+                        E();
+                    } else {
+                        eventBean.isCollapsed = true;
+                        D();
+                    }
+                });
+                view.setOnLongClickListener(v -> {
+                    rs.b.this.c = j();
+                    EventBean eventBean = rs.this.m.get(rs.this.g.c).get(rs.b.this.c);
+                    if (eventBean.isCollapsed) {
+                        eventBean.isCollapsed = false;
+                        E();
+                    } else {
+                        eventBean.isCollapsed = true;
+                        D();
+                    }
+                    return true;
+                });
+                view.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        rs.b.this.c = j();
+                        EventBean eventBean = rs.this.m.get(rs.this.g.c).get(rs.b.this.c);
+                        rs.this.a(eventBean.targetId, eventBean.eventName, z.getText().toString());
+                    }
+                });
+            }
+
+            public void D() {
+                gB.a(A, 0.0f, null);
+                gB.a(D, 200, new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        D.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                    }
+                });
+            }
+
+            public void E() {
+                D.setVisibility(View.VISIBLE);
+                gB.a(A, -180.0f, null);
+                gB.b(D, 200, null);
+            }
+        }
+    }
+
+    public class c extends RecyclerView.a<c.a> {
+        public int c = -1;
+
+        @Override
+        public void b(c.a holder, int position) {
+            MoreBlockCollectionBean bean = rs.this.D.get(position);
+            if (bean.isSelected) {
+                holder.u.setVisibility(View.VISIBLE);
+            } else {
+                holder.u.setVisibility(View.GONE);
+            }
+            holder.v.setText(bean.name);
+            holder.w.removeAllViews();
+            holder.w.addView(ImportMoreblockHelper.optimizedBlockView(getContext(), bean.spec));
+        }
+
+        @Override
+        public a b(ViewGroup viewGroup, int i) {
+            return new a(LayoutInflater.from(getContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, viewGroup, false));
+        }
+
+        @Override
+        public int a() {
+            return rs.this.D.size();
+        }
+
+        class a extends RecyclerView.v {
+            public ViewGroup t;
+            public ImageView u;
+            public TextView v;
+            public ViewGroup w;
+
+            public a(View view) {
+                super(view);
+                t = view.findViewById(R.id.layout_item);
+                u = view.findViewById(R.id.img_selected);
+                v = view.findViewById(R.id.tv_block_name);
+                w = view.findViewById(R.id.block_area);
+                u.setVisibility(View.GONE);
+                t.setOnClickListener(v -> {
+                    rs.c.this.c = j();
+                    rs.c.a.this.c(rs.c.this.c);
+                });
+                w.setOnClickListener(v -> {
+                    rs.c.this.c = j();
+                    rs.c.a.this.c(rs.c.this.c);
+                });
+            }
+
+            public final void c(int i) {
+                if (rs.this.D.size() > 0) {
+                    for (MoreBlockCollectionBean bean : rs.this.D) {
+                        bean.isSelected = false;
+                    }
+                    rs.this.D.get(i).isSelected = true;
+                    rs.this.C.c();
+                }
+            }
+        }
     }
 }
