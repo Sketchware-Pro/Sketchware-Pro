@@ -37,7 +37,6 @@ import com.besome.sketch.editor.event.AddEventActivity;
 import com.besome.sketch.editor.event.CollapsibleButton;
 import com.besome.sketch.editor.event.CollapsibleEventLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -99,18 +98,18 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public a(View view) {
                 super(view);
-                t = (LinearLayout) view.findViewById(R.id.container);
-                u = (ImageView) view.findViewById(R.id.img_icon);
-                v = (TextView) view.findViewById(R.id.tv_target_type);
-                w = (TextView) view.findViewById(R.id.tv_target_id);
-                x = (TextView) view.findViewById(R.id.tv_event_type);
-                y = (TextView) view.findViewById(R.id.tv_event_name);
-                z = (TextView) view.findViewById(R.id.tv_event_text);
-                A = (ImageView) view.findViewById(R.id.img_menu);
-                B = (ImageView) view.findViewById(R.id.img_preview);
-                C = (LinearLayout) view.findViewById(R.id.ll_preview);
-                D = (LinearLayout) view.findViewById(R.id.event_option_layout);
-                E = (LinearLayout) view.findViewById(R.id.event_option);
+                t = view.findViewById(R.id.container);
+                u = view.findViewById(R.id.img_icon);
+                v = view.findViewById(R.id.tv_target_type);
+                w = view.findViewById(R.id.tv_target_id);
+                x = view.findViewById(R.id.tv_event_type);
+                y = view.findViewById(R.id.tv_event_name);
+                z = view.findViewById(R.id.tv_event_text);
+                A = view.findViewById(R.id.img_menu);
+                B = view.findViewById(R.id.img_preview);
+                C = view.findViewById(R.id.ll_preview);
+                D = view.findViewById(R.id.event_option_layout);
+                E = view.findViewById(R.id.event_option);
                 F = new CollapsibleEventLayout(getContext());
                 F.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 E.addView(F);
@@ -189,8 +188,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
 
             public void D() {
-                gB.a(A, 0.0f, (Animator.AnimatorListener) null);
-                gB.a((ViewGroup) D, 200, new Animator.AnimatorListener() {
+                gB.a(A, 0.0f, null);
+                gB.a(D, 200, new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
                     }
@@ -212,7 +211,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public void E() {
                 D.setVisibility(View.VISIBLE);
-                gB.a(A, -180.0f, (Animator.AnimatorListener) null);
+                gB.a(A, -180.0f, null);
                 gB.b(D, 200, null);
             }
         }
@@ -225,7 +224,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             return d.size();
         }
 
-        /* JADX WARN: Type inference failed for: r0v13, types: [android.widget.LinearLayout, android.widget.ImageView] */
         @Override
         public void b(a aVar, int i) {
             EventBean eventBean = d.get(i);
@@ -332,10 +330,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     @Override
     public void onActivityResult(int i, int i2, Intent intent) {
         super.onActivityResult(i, i2, intent);
-        if (i != 223) {
-            return;
+        if (i == 223) {
+            f();
         }
-        f();
     }
 
     @Override
@@ -383,8 +380,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public a2(View view) {
                 super(view);
-                t = (ImageView) view.findViewById(R.id.img_icon);
-                u = (TextView) view.findViewById(R.id.tv_name);
+                t = view.findViewById(R.id.img_icon);
+                u = view.findViewById(R.id.tv_name);
                 v = view.findViewById(R.id.pointer_left);
                 view.setOnClickListener(this);
             }
@@ -394,7 +391,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 a.this.c(a.this.c);
                 a.this.c = j();
                 a.this.c(a.this.c);
-                rs.this.a((ArrayList) rs.this.m.get(Integer.valueOf(a.this.c)));
+                rs.this.a(rs.this.m.get(a.this.c));
                 if (a.this.c == 4) {
                     rs.this.t.setVisibility(View.VISIBLE);
                     rs.this.u.setVisibility(View.VISIBLE);
@@ -402,7 +399,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     rs.this.t.setVisibility(View.GONE);
                     rs.this.u.setVisibility(View.GONE);
                 }
-                rs.this.h.a((ArrayList) rs.this.m.get(Integer.valueOf(a.this.c)));
+                rs.this.h.a(rs.this.m.get(a.this.c));
                 rs.this.h.c();
             }
         }
@@ -431,24 +428,24 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(1.0f);
                 aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-                return;
+            } else {
+                ef a4 = Ze.a(aVar.t);
+                a4.c(0.8f);
+                a4.d(0.8f);
+                a4.a(300L);
+                a4.a(new DecelerateInterpolator());
+                a4.c();
+                ef a5 = Ze.a(aVar.t);
+                a5.c(0.8f);
+                a5.d(0.8f);
+                a5.a(300L);
+                a5.a(new DecelerateInterpolator());
+                a5.c();
+                aVar.v.setVisibility(View.GONE);
+                ColorMatrix colorMatrix2 = new ColorMatrix();
+                colorMatrix2.setSaturation(0.0f);
+                aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
             }
-            ef a4 = Ze.a(aVar.t);
-            a4.c(0.8f);
-            a4.d(0.8f);
-            a4.a(300L);
-            a4.a(new DecelerateInterpolator());
-            a4.c();
-            ef a5 = Ze.a(aVar.t);
-            a5.c(0.8f);
-            a5.d(0.8f);
-            a5.a(300L);
-            a5.a(new DecelerateInterpolator());
-            a5.c();
-            aVar.v.setVisibility(View.GONE);
-            ColorMatrix colorMatrix2 = new ColorMatrix();
-            colorMatrix2.setSaturation(0.0f);
-            aVar.t.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
         }
 
         @Override
@@ -473,10 +470,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public a(View view) {
                 super(view);
-                t = (ViewGroup) view.findViewById(R.id.layout_item);
-                u = (ImageView) view.findViewById(R.id.img_selected);
-                v = (TextView) view.findViewById(R.id.tv_block_name);
-                w = (ViewGroup) view.findViewById(R.id.block_area);
+                t = view.findViewById(R.id.layout_item);
+                u = view.findViewById(R.id.img_selected);
+                v = view.findViewById(R.id.tv_block_name);
+                w = view.findViewById(R.id.block_area);
                 u.setVisibility(View.GONE);
                 t.setOnClickListener(v -> {
                     rs.c.this.c = j();
@@ -489,15 +486,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
 
             public final void c(int i) {
-                if (rs.this.D.size() <= 0) {
-                    return;
+                if (rs.this.D.size() > 0) {
+                    for (MoreBlockCollectionBean bean : rs.this.D) {
+                        bean.isSelected = false;
+                    }
+                    rs.this.D.get(i).isSelected = true;
+                    rs.this.C.c();
                 }
-                Iterator<MoreBlockCollectionBean> it = rs.this.D.iterator();
-                while (it.hasNext()) {
-                    it.next().isSelected = false;
-                }
-                rs.this.D.get(i).isSelected = true;
-                rs.this.C.c();
             }
         }
 
@@ -536,154 +531,140 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         if (y == null) {
             y = new ArrayList<>();
         }
-        Iterator<String> it = jC.d(v).m().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(str)) {
+        for (String value : jC.d(v).m()) {
+            if (value.equals(str)) {
                 return;
             }
         }
         ProjectResourceBean a2 = Op.g().a(str);
-        if (a2 == null) {
-            return;
-        }
-        boolean z = false;
-        Iterator<ProjectResourceBean> it2 = y.iterator();
-        while (true) {
-            if (it2.hasNext()) {
-                if (it2.next().resName.equals(str)) {
-                    z = true;
+        if (a2 != null) {
+            boolean z = false;
+            Iterator<ProjectResourceBean> it2 = y.iterator();
+            while (true) {
+                if (it2.hasNext()) {
+                    if (it2.next().resName.equals(str)) {
+                        z = true;
+                        break;
+                    }
+                } else {
                     break;
                 }
-            } else {
-                break;
+            }
+            if (!z) {
+                y.add(a2);
             }
         }
-        if (z) {
-            return;
-        }
-        y.add(a2);
     }
 
     public void f() {
-        if (f == null) {
-            return;
-        }
-        n.clear();
-        o.clear();
-        p.clear();
-        q.clear();
-        r.clear();
-        ArrayList<EventBean> g = jC.a(v).g(f.getJavaName());
-        Iterator<Pair<String, String>> it = jC.a(v).i(f.getJavaName()).iterator();
-        while (it.hasNext()) {
-            EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_ETC, -1, (String) it.next().first, "moreBlock");
-            eventBean.initValue();
-            n.add(eventBean);
-        }
-        EventBean eventBean2 = new EventBean(EventBean.EVENT_TYPE_ACTIVITY, -1, "onCreate", "initializeLogic");
-        eventBean2.initValue();
-        q.add(eventBean2);
-        Iterator<EventBean> it2 = g.iterator();
-        while (it2.hasNext()) {
-            EventBean next = it2.next();
-            next.initValue();
-            int i = next.eventType;
-            if (i == EventBean.EVENT_TYPE_VIEW) {
-                o.add(next);
-            } else if (i == EventBean.EVENT_TYPE_COMPONENT) {
-                p.add(next);
-            } else if (i == EventBean.EVENT_TYPE_ACTIVITY) {
-                q.add(next);
-            } else if (i == EventBean.EVENT_TYPE_DRAWER_VIEW) {
-                r.add(next);
+        if (f != null) {
+            n.clear();
+            o.clear();
+            p.clear();
+            q.clear();
+            r.clear();
+            for (Pair<String, String> moreBlock : jC.a(v).i(f.getJavaName())) {
+                EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_ETC, -1, moreBlock.first, "moreBlock");
+                eventBean.initValue();
+                n.add(eventBean);
+            }
+            EventBean eventBean2 = new EventBean(EventBean.EVENT_TYPE_ACTIVITY, -1, "onCreate", "initializeLogic");
+            eventBean2.initValue();
+            q.add(eventBean2);
+            for (EventBean eventBean : jC.a(v).g(f.getJavaName())) {
+                eventBean.initValue();
+                int i = eventBean.eventType;
+                if (i == EventBean.EVENT_TYPE_VIEW) {
+                    o.add(eventBean);
+                } else if (i == EventBean.EVENT_TYPE_COMPONENT) {
+                    p.add(eventBean);
+                } else if (i == EventBean.EVENT_TYPE_ACTIVITY) {
+                    q.add(eventBean);
+                } else if (i == EventBean.EVENT_TYPE_DRAWER_VIEW) {
+                    r.add(eventBean);
+                }
+            }
+            if (g.c == -1) {
+                h.a(m.get(0));
+                g.c = 0;
+                if (g != null) {
+                    g.c();
+                }
+            }
+            if (g.c == 4) {
+                t.setVisibility(View.VISIBLE);
+                u.setVisibility(View.VISIBLE);
+            } else {
+                t.setVisibility(View.GONE);
+                u.setVisibility(View.GONE);
+            }
+            if (h != null) {
+                if (g != null) {
+                    g.c();
+                }
+                h.a(m.get(g.c));
+                h.c();
             }
         }
-        if (this.g.c == -1) {
-            h.a(m.get(0));
-            this.g.c = 0;
-            if (this.g != null) {
-                this.g.c();
-            }
-        }
-        if (this.g.c == 4) {
-            t.setVisibility(View.VISIBLE);
-            u.setVisibility(View.VISIBLE);
-        } else {
-            t.setVisibility(View.GONE);
-            u.setVisibility(View.GONE);
-        }
-        if (h == null) {
-            return;
-        }
-        if (this.g != null) {
-            this.g.c();
-        }
-        h.a(m.get(Integer.valueOf(this.g.c)));
-        h.c();
     }
 
     public final void d(String str) {
         if (A == null) {
             A = new ArrayList<>();
         }
-        Iterator<String> it = jC.d(v).k().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(str)) {
+        for (String value : jC.d(v).k()) {
+            if (value.equals(str)) {
                 return;
             }
         }
         ProjectResourceBean a2 = Np.g().a(str);
-        if (a2 == null) {
-            return;
-        }
-        boolean z = false;
-        Iterator<ProjectResourceBean> it2 = A.iterator();
-        while (true) {
-            if (it2.hasNext()) {
-                if (it2.next().resName.equals(str)) {
-                    z = true;
+        if (a2 != null) {
+            boolean z = false;
+            Iterator<ProjectResourceBean> it2 = A.iterator();
+            while (true) {
+                if (it2.hasNext()) {
+                    if (it2.next().resName.equals(str)) {
+                        z = true;
+                        break;
+                    }
+                } else {
                     break;
                 }
-            } else {
-                break;
+            }
+            if (!z) {
+                A.add(a2);
             }
         }
-        if (z) {
-            return;
-        }
-        A.add(a2);
     }
 
     public final void b(EventBean eventBean) {
         if (jC.a(v).f(f.getJavaName(), eventBean.targetId)) {
             bB.b(getContext(), xB.b().a(getContext(), R.string.logic_editor_message_currently_used_block), 0).show();
-            return;
+        } else {
+            jC.a(v).n(f.getJavaName(), eventBean.targetId);
+            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+            m.get(g.c).remove(h.c);
+            h.e(h.c);
+            h.a(h.c, h.a());
         }
-        jC.a(v).n(f.getJavaName(), eventBean.targetId);
-        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-        m.get(Integer.valueOf(g.c)).remove(h.c);
-        h.e(h.c);
-        h.a(h.c, h.a());
     }
 
     public void c() {
-        if (f == null) {
-            return;
-        }
-        for (Map.Entry<Integer, ArrayList<EventBean>> entry : m.entrySet()) {
-            Iterator<EventBean> it = entry.getValue().iterator();
-            while (it.hasNext()) {
-                it.next().initValue();
+        if (f != null) {
+            for (Map.Entry<Integer, ArrayList<EventBean>> entry : m.entrySet()) {
+                for (EventBean bean : entry.getValue()) {
+                    bean.initValue();
+                }
             }
+            h.c();
         }
-        h.c();
     }
 
     public final void a(ViewGroup viewGroup) {
-        s = (TextView) viewGroup.findViewById(R.id.tv_no_events);
-        k = (RecyclerView) viewGroup.findViewById(R.id.event_list);
-        j = (RecyclerView) viewGroup.findViewById(R.id.category_list);
-        l = (FloatingActionButton) viewGroup.findViewById(R.id.fab);
+        s = viewGroup.findViewById(R.id.tv_no_events);
+        k = viewGroup.findViewById(R.id.event_list);
+        j = viewGroup.findViewById(R.id.category_list);
+        l = viewGroup.findViewById(R.id.fab);
         s.setVisibility(View.GONE);
         s.setText(xB.b().a(getContext(), R.string.event_message_no_events));
         k.setHasFixedSize(true);
@@ -726,9 +707,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         m.put(2, p);
         m.put(3, r);
         m.put(4, n);
-        t = (TextView) viewGroup.findViewById(R.id.tv_import);
+        t = viewGroup.findViewById(R.id.tv_import);
         t.setText(xB.b().a(getContext(), R.string.logic_button_import_more_block));
-        u = (TextView) viewGroup.findViewById(R.id.tv_shared);
+        u = viewGroup.findViewById(R.id.tv_shared);
         u.setText(xB.b().a(getContext(), R.string.logic_button_explore_shared_more_block));
         t.setOnClickListener(v -> g());
         u.setOnClickListener(v -> {
@@ -750,9 +731,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         y = new ArrayList<>();
         z = new ArrayList<>();
         A = new ArrayList<>();
-        Iterator<BlockBean> it = moreBlockCollectionBean.blocks.iterator();
-        while (it.hasNext()) {
-            BlockBean next = it.next();
+        for (BlockBean next : moreBlockCollectionBean.blocks) {
             if (next.opCode.equals("getVar")) {
                 if (next.type.equals("b")) {
                     b(0, next.spec);
@@ -823,12 +802,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         aBVar.a(R.drawable.ic_bookmark_red_48dp);
         View a2 = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
         ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_favorites_save_guide));
-        EditText editText = (EditText) a2.findViewById(R.id.ed_input);
+        EditText editText = a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        NB nb = new NB(getContext(), (TextInputLayout) a2.findViewById(R.id.ti_input), Pp.h().g());
+        NB nb = new NB(getContext(), a2.findViewById(R.id.ti_input), Pp.h().g());
         aBVar.a(a2);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (nb.b()) {
@@ -860,7 +839,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         Iterator<Pair<String, String>> it = jC.a(v).i(f.getJavaName()).iterator();
         while (true) {
             if (it.hasNext()) {
-                if (((String) it.next().first).equals(str)) {
+                if (it.next().first.equals(str)) {
                     z = true;
                     break;
                 }
@@ -881,15 +860,14 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     public final void c(String str) {
-        if (!Qp.g().b(str)) {
-            return;
-        }
-        ProjectResourceBean a2 = Qp.g().a(str);
-        try {
-            B.a(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + a2.resFullName, wq.t() + File.separator + v + File.separator + a2.resFullName);
-            jC.d(v).c.add(a2);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Qp.g().b(str)) {
+            ProjectResourceBean a2 = Qp.g().a(str);
+            try {
+                B.a(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + a2.resFullName, wq.t() + File.separator + v + File.separator + a2.resFullName);
+                jC.d(v).c.add(a2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -902,10 +880,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         if (w == null) {
             w = new ArrayList<>();
         }
-        Iterator<Pair<Integer, String>> it = jC.a(v).k(f.getJavaName()).iterator();
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
-            if (((Integer) next.first).intValue() == i && ((String) next.second).equals(str)) {
+        for (Pair<Integer, String> next : jC.a(v).k(f.getJavaName())) {
+            if (next.first == i && next.second.equals(str)) {
                 return;
             }
         }
@@ -916,13 +892,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 break;
             }
             Pair<Integer, String> next2 = it2.next();
-            if (((Integer) next2.first).intValue() == i && ((String) next2.second).equals(str)) {
+            if (next2.first == i && next2.second.equals(str)) {
                 z = true;
                 break;
             }
         }
         if (!z) {
-            w.add(new Pair<>(Integer.valueOf(i), str));
+            w.add(new Pair<>(i, str));
         }
     }
 
@@ -932,12 +908,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         aBVar.a(R.drawable.more_block_96dp);
         View a2 = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
         ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
-        EditText editText = (EditText) a2.findViewById(R.id.ed_input);
+        EditText editText = a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        ZB zb = new ZB(getContext(), (TextInputLayout) a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(v).a(f));
+        ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(v).a(f));
         aBVar.a(a2);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (zb.b()) {
@@ -959,32 +935,29 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         if (z == null) {
             z = new ArrayList<>();
         }
-        Iterator<String> it = jC.d(v).p().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(str)) {
+        for (String value : jC.d(v).p()) {
+            if (value.equals(str)) {
                 return;
             }
         }
         ProjectResourceBean a2 = Qp.g().a(str);
-        if (a2 == null) {
-            return;
-        }
-        boolean z = false;
-        Iterator<ProjectResourceBean> it2 = this.z.iterator();
-        while (true) {
-            if (it2.hasNext()) {
-                if (it2.next().resName.equals(str)) {
-                    z = true;
+        if (a2 != null) {
+            boolean z = false;
+            Iterator<ProjectResourceBean> it2 = this.z.iterator();
+            while (true) {
+                if (it2.hasNext()) {
+                    if (it2.next().resName.equals(str)) {
+                        z = true;
+                        break;
+                    }
+                } else {
                     break;
                 }
-            } else {
-                break;
+            }
+            if (!z) {
+                this.z.add(a2);
             }
         }
-        if (z) {
-            return;
-        }
-        this.z.add(a2);
     }
 
     public void a(ProjectFileBean projectFileBean) {
@@ -1027,28 +1000,26 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         String javaName = f.getJavaName();
         a2.k(javaName, eventBean.targetId + "_" + eventBean.eventName);
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-        m.get(Integer.valueOf(g.c)).remove(h.c);
+        m.get(g.c).remove(h.c);
         h.e(h.c);
         h.a(h.c, h.a());
     }
 
     public final void b(String str) {
-        if (!Op.g().b(str)) {
-            return;
-        }
-        ProjectResourceBean a2 = Op.g().a(str);
-        try {
-            B.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + v + File.separator + a2.resFullName);
-            jC.d(v).b.add(a2);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Op.g().b(str)) {
+            ProjectResourceBean a2 = Op.g().a(str);
+            try {
+                B.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + v + File.separator + a2.resFullName);
+                jC.d(v).b.add(a2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public final void a(ArrayList<EventBean> arrayList) {
-        Iterator<EventBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            it.next().initValue();
+        for (EventBean bean : arrayList) {
+            bean.initValue();
         }
     }
 
@@ -1139,10 +1110,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         if (x == null) {
             x = new ArrayList<>();
         }
-        Iterator<Pair<Integer, String>> it = jC.a(v).j(f.getJavaName()).iterator();
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
-            if (((Integer) next.first).intValue() == i && ((String) next.second).equals(str)) {
+        for (Pair<Integer, String> next : jC.a(v).j(f.getJavaName())) {
+            if (next.first == i && next.second.equals(str)) {
                 return;
             }
         }
@@ -1153,26 +1122,25 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 break;
             }
             Pair<Integer, String> next2 = it2.next();
-            if (((Integer) next2.first).intValue() == i && ((String) next2.second).equals(str)) {
+            if (next2.first == i && next2.second.equals(str)) {
                 z = true;
                 break;
             }
         }
         if (!z) {
-            x.add(new Pair<>(Integer.valueOf(i), str));
+            x.add(new Pair<>(i, str));
         }
     }
 
     public final void a(String str) {
-        if (!Np.g().b(str)) {
-            return;
-        }
-        ProjectResourceBean a2 = Np.g().a(str);
-        try {
-            B.a(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + a2.resFullName, wq.d() + File.separator + v + File.separator + a2.resFullName);
-            jC.d(v).d.add(a2);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Np.g().b(str)) {
+            ProjectResourceBean a2 = Np.g().a(str);
+            try {
+                B.a(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + a2.resFullName, wq.d() + File.separator + v + File.separator + a2.resFullName);
+                jC.d(v).d.add(a2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
