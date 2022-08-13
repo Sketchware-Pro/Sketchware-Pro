@@ -956,7 +956,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final LinearLayout optionContainer;
             public final LinearLayout options;
             public final CollapsibleEventLayout optionsLayout;
-            public final LinearLayout container;
             public final ImageView icon;
             public final TextView targetType;
             public final TextView targetId;
@@ -966,7 +965,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public ViewHolder(View view) {
                 super(view);
-                container = view.findViewById(R.id.container);
                 icon = view.findViewById(R.id.img_icon);
                 targetType = view.findViewById(R.id.tv_target_type);
                 targetId = view.findViewById(R.id.tv_target_id);
