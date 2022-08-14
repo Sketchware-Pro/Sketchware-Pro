@@ -772,52 +772,55 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         private int index = -1;
 
         @Override
-        public void b(ViewHolder aVar, int i) {
-            aVar.name.setText(rs.a(getContext(), i));
-            aVar.icon.setImageResource(rs.a(i));
-            if (index == i) {
-                ef a2 = Ze.a(aVar.icon);
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
+            holder.name.setText(rs.a(getContext(), position));
+            holder.icon.setImageResource(rs.a(position));
+            if (index == position) {
+                ef a2 = Ze.a(holder.icon);
                 a2.c(1.0f);
                 a2.d(1.0f);
                 a2.a(300L);
                 a2.a(new AccelerateInterpolator());
                 a2.c();
-                ef a3 = Ze.a(aVar.icon);
+                ef a3 = Ze.a(holder.icon);
                 a3.c(1.0f);
                 a3.d(1.0f);
                 a3.a(300L);
                 a3.a(new AccelerateInterpolator());
                 a3.c();
-                aVar.pointerLeft.setVisibility(View.VISIBLE);
+                holder.pointerLeft.setVisibility(View.VISIBLE);
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(1.0f);
-                aVar.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+                holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
             } else {
-                ef a4 = Ze.a(aVar.icon);
+                ef a4 = Ze.a(holder.icon);
                 a4.c(0.8f);
                 a4.d(0.8f);
                 a4.a(300L);
                 a4.a(new DecelerateInterpolator());
                 a4.c();
-                ef a5 = Ze.a(aVar.icon);
+                ef a5 = Ze.a(holder.icon);
                 a5.c(0.8f);
                 a5.d(0.8f);
                 a5.a(300L);
                 a5.a(new DecelerateInterpolator());
                 a5.c();
-                aVar.pointerLeft.setVisibility(View.GONE);
+                holder.pointerLeft.setVisibility(View.GONE);
                 ColorMatrix colorMatrix2 = new ColorMatrix();
                 colorMatrix2.setSaturation(0.0f);
-                aVar.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
+                holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
             }
         }
 
         @Override
-        public ViewHolder b(ViewGroup viewGroup, int i) {
-            return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.common_category_triangle_item, viewGroup, false));
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return rs.this.m.size();
         }
@@ -827,16 +830,16 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final TextView name;
             public final View pointerLeft;
 
-            public ViewHolder(View view) {
-                super(view);
-                icon = view.findViewById(R.id.img_icon);
-                name = view.findViewById(R.id.tv_name);
-                pointerLeft = view.findViewById(R.id.pointer_left);
-                view.setOnClickListener(this);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                icon = itemView.findViewById(R.id.img_icon);
+                name = itemView.findViewById(R.id.tv_name);
+                pointerLeft = itemView.findViewById(R.id.pointer_left);
+                itemView.setOnClickListener(this);
             }
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 CategoryAdapter.this.c(index);
                 index = j();
                 CategoryAdapter.this.c(index);
@@ -859,80 +862,82 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         private ArrayList<EventBean> events = new ArrayList<>();
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return events.size();
         }
 
         @Override
-        public void b(ViewHolder aVar, int i) {
-            EventBean eventBean = events.get(i);
-            aVar.targetType.setVisibility(View.VISIBLE);
-            aVar.previewContainer.setVisibility(View.VISIBLE);
-            aVar.preview.setVisibility(View.VISIBLE);
-            aVar.preview.setImageResource(oq.a(eventBean.eventName));
-            aVar.optionsLayout.e();
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
+            EventBean eventBean = events.get(position);
+            holder.targetType.setVisibility(View.VISIBLE);
+            holder.previewContainer.setVisibility(View.VISIBLE);
+            holder.preview.setVisibility(View.VISIBLE);
+            holder.preview.setImageResource(oq.a(eventBean.eventName));
+            holder.optionsLayout.e();
             if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
-                aVar.optionsLayout.f();
+                holder.optionsLayout.f();
             } else {
-                aVar.optionsLayout.c();
+                holder.optionsLayout.c();
             }
             int i2 = eventBean.eventType;
             if (i2 == 3) {
                 if (eventBean.eventName == "initializeLogic") {
-                    aVar.optionsLayout.b();
+                    holder.optionsLayout.b();
                 }
-                aVar.targetId.setText(eventBean.targetId);
-                aVar.type.setBackgroundResource(oq.a(eventBean.eventName));
-                aVar.name.setText(eventBean.eventName);
-                aVar.description.setText(oq.a(eventBean.eventName, getContext()));
-                aVar.icon.setImageResource(R.drawable.widget_source);
-                aVar.preview.setVisibility(View.GONE);
-                aVar.targetType.setVisibility(View.GONE);
+                holder.targetId.setText(eventBean.targetId);
+                holder.type.setBackgroundResource(oq.a(eventBean.eventName));
+                holder.name.setText(eventBean.eventName);
+                holder.description.setText(oq.a(eventBean.eventName, getContext()));
+                holder.icon.setImageResource(R.drawable.widget_source);
+                holder.preview.setVisibility(View.GONE);
+                holder.targetType.setVisibility(View.GONE);
             } else {
-                aVar.icon.setImageResource(EventBean.getEventIconResource(i2, eventBean.targetType));
+                holder.icon.setImageResource(EventBean.getEventIconResource(i2, eventBean.targetType));
                 int i3 = eventBean.eventType;
                 if (i3 == EventBean.EVENT_TYPE_VIEW) {
-                    aVar.targetType.setText(ViewBean.getViewTypeName(eventBean.targetType));
+                    holder.targetType.setText(ViewBean.getViewTypeName(eventBean.targetType));
                 } else if (i3 == EventBean.EVENT_TYPE_DRAWER_VIEW) {
-                    aVar.targetType.setText(ViewBean.getViewTypeName(eventBean.targetType));
+                    holder.targetType.setText(ViewBean.getViewTypeName(eventBean.targetType));
                 } else if (i3 == EventBean.EVENT_TYPE_COMPONENT) {
-                    aVar.targetType.setText(ComponentBean.getComponentName(getContext(), eventBean.targetType));
+                    holder.targetType.setText(ComponentBean.getComponentName(getContext(), eventBean.targetType));
                 } else if (i3 == EventBean.EVENT_TYPE_ETC) {
-                    aVar.icon.setImageResource(R.drawable.widget_source);
-                    aVar.targetType.setVisibility(View.GONE);
-                    aVar.preview.setVisibility(View.GONE);
+                    holder.icon.setImageResource(R.drawable.widget_source);
+                    holder.targetType.setVisibility(View.GONE);
+                    holder.preview.setVisibility(View.GONE);
                 }
                 if (eventBean.targetId.equals("_fab")) {
-                    aVar.targetId.setText("fab");
+                    holder.targetId.setText("fab");
                 } else {
-                    aVar.targetId.setText(ReturnMoreblockManager.getMbName(eventBean.targetId));
+                    holder.targetId.setText(ReturnMoreblockManager.getMbName(eventBean.targetId));
                 }
-                aVar.type.setText(EventBean.getEventTypeName(eventBean.eventType));
-                aVar.type.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
-                aVar.name.setText(eventBean.eventName);
-                aVar.description.setText(oq.a(eventBean.eventName, getContext()));
+                holder.type.setText(EventBean.getEventTypeName(eventBean.eventType));
+                holder.type.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
+                holder.name.setText(eventBean.eventName);
+                holder.description.setText(oq.a(eventBean.eventName, getContext()));
                 if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
-                    aVar.description.setText(ReturnMoreblockManager.getMbTypeList(eventBean.targetId));
+                    holder.description.setText(ReturnMoreblockManager.getMbTypeList(eventBean.targetId));
                 }
             }
             if (eventBean.isCollapsed) {
-                aVar.optionContainer.setVisibility(View.GONE);
-                aVar.menu.setRotation(0.0f);
+                holder.optionContainer.setVisibility(View.GONE);
+                holder.menu.setRotation(0.0f);
                 if (eventBean.isConfirmation) {
-                    aVar.optionsLayout.d();
+                    holder.optionsLayout.d();
                 } else {
-                    aVar.optionsLayout.a();
+                    holder.optionsLayout.a();
                 }
             } else {
-                aVar.optionContainer.setVisibility(View.VISIBLE);
-                aVar.menu.setRotation(-180.0f);
+                holder.optionContainer.setVisibility(View.VISIBLE);
+                holder.menu.setRotation(-180.0f);
                 if (eventBean.isConfirmation) {
-                    aVar.optionsLayout.d();
+                    holder.optionsLayout.d();
                 } else {
-                    aVar.optionsLayout.a();
+                    holder.optionsLayout.a();
                 }
             }
-            aVar.optionContainer.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            holder.optionContainer.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
 
         public void a(ArrayList<EventBean> arrayList) {
@@ -945,8 +950,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public ViewHolder b(ViewGroup viewGroup, int i) {
-            return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fr_logic_list_item, viewGroup, false));
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item, parent, false));
         }
 
         private class ViewHolder extends RecyclerView.v {
@@ -963,19 +969,19 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final TextView name;
             public final TextView description;
 
-            public ViewHolder(View view) {
-                super(view);
-                icon = view.findViewById(R.id.img_icon);
-                targetType = view.findViewById(R.id.tv_target_type);
-                targetId = view.findViewById(R.id.tv_target_id);
-                type = view.findViewById(R.id.tv_event_type);
-                name = view.findViewById(R.id.tv_event_name);
-                description = view.findViewById(R.id.tv_event_text);
-                menu = view.findViewById(R.id.img_menu);
-                preview = view.findViewById(R.id.img_preview);
-                previewContainer = view.findViewById(R.id.ll_preview);
-                optionContainer = view.findViewById(R.id.event_option_layout);
-                options = view.findViewById(R.id.event_option);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                icon = itemView.findViewById(R.id.img_icon);
+                targetType = itemView.findViewById(R.id.tv_target_type);
+                targetId = itemView.findViewById(R.id.tv_target_id);
+                type = itemView.findViewById(R.id.tv_event_type);
+                name = itemView.findViewById(R.id.tv_event_name);
+                description = itemView.findViewById(R.id.tv_event_text);
+                menu = itemView.findViewById(R.id.img_menu);
+                preview = itemView.findViewById(R.id.img_preview);
+                previewContainer = itemView.findViewById(R.id.ll_preview);
+                optionContainer = itemView.findViewById(R.id.event_option_layout);
+                options = itemView.findViewById(R.id.event_option);
                 optionsLayout = new CollapsibleEventLayout(getContext());
                 optionsLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 options.addView(optionsLayout);
@@ -1032,7 +1038,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                         D();
                     }
                 });
-                view.setOnLongClickListener(v -> {
+                itemView.setOnLongClickListener(v -> {
                     lastSelectedItem = j();
                     EventBean eventBean = rs.this.m.get(rs.this.g.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
@@ -1044,7 +1050,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                     return true;
                 });
-                view.setOnClickListener(v -> {
+                itemView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         lastSelectedItem = j();
                         EventBean eventBean = rs.this.m.get(rs.this.g.index).get(lastSelectedItem);
@@ -1087,6 +1093,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         private int lastSelectedItem = -1;
 
         @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(ViewHolder holder, int position) {
             MoreBlockCollectionBean bean = D.get(position);
             if (bean.isSelected) {
@@ -1100,11 +1107,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public ViewHolder b(ViewGroup viewGroup, int i) {
-            return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, viewGroup, false));
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, parent, false));
         }
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return D.size();
         }
@@ -1115,12 +1124,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final TextView name;
             public final ViewGroup blockArea;
 
-            public ViewHolder(View view) {
-                super(view);
-                item = view.findViewById(R.id.layout_item);
-                checkmark = view.findViewById(R.id.img_selected);
-                name = view.findViewById(R.id.tv_block_name);
-                blockArea = view.findViewById(R.id.block_area);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                item = itemView.findViewById(R.id.layout_item);
+                checkmark = itemView.findViewById(R.id.img_selected);
+                name = itemView.findViewById(R.id.tv_block_name);
+                blockArea = itemView.findViewById(R.id.block_area);
                 checkmark.setVisibility(View.GONE);
                 item.setOnClickListener(v -> {
                     lastSelectedItem = j();
