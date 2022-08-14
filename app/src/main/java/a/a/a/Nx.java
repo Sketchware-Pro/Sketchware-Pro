@@ -1,7 +1,5 @@
 package a.a.a;
 
-import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
-
 import java.util.ArrayList;
 
 public class Nx {
@@ -66,7 +64,7 @@ public class Nx {
         resultCode.append(a);
         for (AttributeBuilder attr : e) {
             if (e.size() <= 1 || d) {
-                resultCode.append(MinimalPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR);
+                resultCode.append(" ");
             } else {
                 resultCode.append("\r\n");
                 resultCode.append(addIndent(1));
@@ -115,9 +113,9 @@ public class Nx {
     class AttributeBuilder {
 
         public final Nx xmlBuilder;
+        private final String value;
         private String namespace;
         private String attr;
-        private final String value;
 
         public AttributeBuilder(Nx xmlBuilder, String namespace, String attr, String value) {
             this.xmlBuilder = xmlBuilder;
