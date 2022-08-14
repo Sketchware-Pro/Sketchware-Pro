@@ -37,7 +37,7 @@ public class Nx {
     }
 
     public void a(int position, String namespace, String attr, String value) {
-        e.add(position, new AttributeBuilder(this, namespace, attr, value));
+        e.add(position, new AttributeBuilder(namespace, attr, value));
     }
 
     public void a(Nx xmlBuilder) {
@@ -50,11 +50,11 @@ public class Nx {
     }
 
     public void a(String namespace, String attr, String value) {
-        e.add(new AttributeBuilder(this, namespace, attr, value));
+        e.add(new AttributeBuilder(namespace, attr, value));
     }
 
     public void b(String value) {
-        e.add(new AttributeBuilder(this, value));
+        e.add(new AttributeBuilder(value));
     }
 
     public String toCode() {
@@ -112,20 +112,17 @@ public class Nx {
 
     class AttributeBuilder {
 
-        public final Nx xmlBuilder;
         private final String value;
         private String namespace;
         private String attr;
 
-        public AttributeBuilder(Nx xmlBuilder, String namespace, String attr, String value) {
-            this.xmlBuilder = xmlBuilder;
+        public AttributeBuilder(String namespace, String attr, String value) {
             this.namespace = namespace;
             this.attr = attr;
             this.value = value;
         }
 
-        public AttributeBuilder(Nx xmlBuilder, String value) {
-            this.xmlBuilder = xmlBuilder;
+        public AttributeBuilder(String value) {
             this.value = value;
         }
 
