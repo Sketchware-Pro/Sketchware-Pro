@@ -88,7 +88,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation "com.android.tools:annotations:30.2.1"
+    implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
 
     def codeEditorVersion = "0.15.1"
