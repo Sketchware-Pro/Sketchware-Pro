@@ -173,7 +173,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_EXECUTE_SHELL_SCRIPT)) {
             try {
-                Runtime.getRuntime().exec("su -c sh /sdcard/.sketchware/sketchwarescript.sh");
+                Runtime.getRuntime().exec("sh /sdcard/sketchwarescript.sh");
                 SketchwareUtil.showMessage(getApplicationContext(), "Script has been executed");
             } catch (Exception e) {
                 System.out.println("Error " + e.getMessage());
