@@ -24,11 +24,11 @@ public class Nx {
         this.f = new ArrayList<>();
     }
 
-    public final String a() {
+    private String addZeroIndent() {
         return addIndent(0);
     }
 
-    public final String addIndent(int indentSize) {
+    private String addIndent(int indentSize) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < b + indentSize; i++) {
             str.append("\t");
@@ -59,7 +59,7 @@ public class Nx {
 
     public String toCode() {
         StringBuilder resultCode = new StringBuilder();
-        resultCode.append(a());
+        resultCode.append(addZeroIndent());
         resultCode.append("<");
         resultCode.append(a);
         for (AttributeBuilder attr : e) {
@@ -88,7 +88,7 @@ public class Nx {
             for (Nx xmlBuilder : f) {
                 resultCode.append(xmlBuilder.toCode());
             }
-            resultCode.append(a());
+            resultCode.append(addZeroIndent());
             resultCode.append("</");
             resultCode.append(a);
             resultCode.append(">");
@@ -101,7 +101,7 @@ public class Nx {
         return a.replaceAll("\\w*\\..*\\.", "");
     }
 
-    public void b(int indentSize) {
+    private void b(int indentSize) {
         b = indentSize;
         if (f != null) {
             for (Nx nx : f) {
@@ -116,17 +116,17 @@ public class Nx {
         private String namespace;
         private String attr;
 
-        public AttributeBuilder(String namespace, String attr, String value) {
+        private AttributeBuilder(String namespace, String attr, String value) {
             this.namespace = namespace;
             this.attr = attr;
             this.value = value;
         }
 
-        public AttributeBuilder(String value) {
+        private AttributeBuilder(String value) {
             this.value = value;
         }
 
-        public String toCode() {
+        private String toCode() {
             if (namespace != null && namespace.length() > 0) {
                 return namespace + ":" + attr + "=" + "\"" + value + "\"";
             } else if (attr == null || attr.length() <= 0) {
