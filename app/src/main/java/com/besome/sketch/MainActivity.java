@@ -45,6 +45,7 @@ import a.a.a.wq;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -169,6 +170,16 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
+
+        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_EXECUTE_SHELL_SCRIPT)) {
+            try {
+                Runtime.getRuntime().exec("su -c sh /sdcard/.sketchware/sketchwarescript.sh");
+                SketchwareUtil.showMessage(getApplicationContext(), "Script has been executed");
+            } catch (Exception e) {
+                System.out.println("Error " + e.getMessage());
+            }
+        }
+
 
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);

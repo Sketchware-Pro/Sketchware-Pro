@@ -44,8 +44,9 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_SHOW_EVERY_SINGLE_BLOCK = "show-every-single-block";
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
+    public static final String SETTING_EXECUTE_SHELL_SCRIPT = "execute-shell-script";
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
-    public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
+    public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "paletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
 
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
@@ -192,6 +193,7 @@ public class ConfigActivity extends Activity {
         settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
         settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         settings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
+        settings.put(SETTING_EXECUTE_SHELL_SCRIPT, false);
         settings.put(SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, "/.sketchware/resources/block/My Block/palette.json");
         settings.put(SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, "/.sketchware/resources/block/My Block/block.json");
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
@@ -299,6 +301,11 @@ public class ConfigActivity extends Activity {
         addSwitchPreference("Enable block text input highlighting",
                 "Enables syntax highlighting while editing blocks' text parameters.",
                 SETTING_USE_ASD_HIGHLIGHTER,
+                false);
+        //add execute shell script on startup switch
+        addSwitchPreference("Execute Shell Script on startup",
+                "create sketchwarescript.sh in .sketchware folder",
+                SETTING_EXECUTE_SHELL_SCRIPT,
                 false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-M-dd'T'HHmmss)\"", v -> {
