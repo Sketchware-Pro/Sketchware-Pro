@@ -1026,10 +1026,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     EventBean eventBean = rs.this.m.get(rs.this.g.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
-                        E();
+                        showOptions();
                     } else {
                         eventBean.isCollapsed = true;
-                        D();
+                        hideOptions();
                     }
                 });
                 itemView.setOnLongClickListener(v -> {
@@ -1037,10 +1037,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     EventBean eventBean = rs.this.m.get(rs.this.g.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
-                        E();
+                        showOptions();
                     } else {
                         eventBean.isCollapsed = true;
-                        D();
+                        hideOptions();
                     }
                     return true;
                 });
@@ -1053,7 +1053,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 });
             }
 
-            public void D() {
+            private void hideOptions() {
                 gB.a(menu, 0, null);
                 gB.a(optionContainer, 200, new Animator.AnimatorListener() {
                     @Override
@@ -1075,7 +1075,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 });
             }
 
-            public void E() {
+            private void showOptions() {
                 optionContainer.setVisibility(View.VISIBLE);
                 gB.a(menu, -180, null);
                 gB.b(optionContainer, 200, null);
@@ -1084,7 +1084,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private class MoreBlockAdapter extends RecyclerView.a<MoreBlockAdapter.ViewHolder> {
-        private int lastSelectedItem = -1;
 
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
@@ -1125,22 +1124,17 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 name = itemView.findViewById(R.id.tv_block_name);
                 blockArea = itemView.findViewById(R.id.block_area);
                 checkmark.setVisibility(View.GONE);
-                item.setOnClickListener(v -> {
-                    lastSelectedItem = j();
-                    ViewHolder.this.c(lastSelectedItem);
-                });
-                blockArea.setOnClickListener(v -> {
-                    lastSelectedItem = j();
-                    ViewHolder.this.c(lastSelectedItem);
-                });
+                item.setOnClickListener(v -> selectItem(j()));
+                blockArea.setOnClickListener(v -> selectItem(j()));
             }
 
-            public final void c(int i) {
+            private void selectItem(int position) {
                 if (D.size() > 0) {
                     for (MoreBlockCollectionBean bean : D) {
                         bean.isSelected = false;
                     }
-                    D.get(i).isSelected = true;
+                    D.get(position).isSelected = true;
+                    // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
                     C.c();
                 }
             }
