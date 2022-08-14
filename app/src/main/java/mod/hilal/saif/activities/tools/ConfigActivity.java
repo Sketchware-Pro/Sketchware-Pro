@@ -304,7 +304,7 @@ public class ConfigActivity extends Activity {
                 false);
         //add execute shell script on startup switch
         addSwitchPreference("Execute Shell Script on startup",
-                "create sketchwarescript.sh in .sketchware folder",
+                "create sketchwarescript.sh in internal storage root folder",
                 SETTING_EXECUTE_SHELL_SCRIPT,
                 false);
         addTextInputPreference("Backup filename format",
