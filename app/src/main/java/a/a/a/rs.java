@@ -983,8 +983,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     if (!mB.a()) {
                         lastSelectedItem = j();
                         EventBean eventBean = (rs.this.m.get(rs.this.g.index)).get(lastSelectedItem);
-                        if (view instanceof CollapsibleButton) {
-                            int i = ((CollapsibleButton) view).b;
+                        if (v instanceof CollapsibleButton) {
+                            int i = ((CollapsibleButton) v).b;
                             if (i == 2) {
                                 eventBean.buttonPressed = i;
                                 eventBean.isConfirmation = false;
@@ -997,7 +997,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                 EventAdapter.this.c(lastSelectedItem);
                             }
                         } else {
-                            int id = view.getId();
+                            int id = v.getId();
                             if (id == R.id.confirm_no) {
                                 eventBean.isConfirmation = false;
                                 EventAdapter.this.c(lastSelectedItem);
