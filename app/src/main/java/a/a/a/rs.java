@@ -778,37 +778,37 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             holder.icon.setImageResource(rs.a(position));
             if (index == position) {
                 ef a2 = Ze.a(holder.icon);
-                a2.c(1.0f);
-                a2.d(1.0f);
-                a2.a(300L);
+                a2.c(1);
+                a2.d(1);
+                a2.a(300);
                 a2.a(new AccelerateInterpolator());
                 a2.c();
                 ef a3 = Ze.a(holder.icon);
-                a3.c(1.0f);
-                a3.d(1.0f);
-                a3.a(300L);
+                a3.c(1);
+                a3.d(1);
+                a3.a(300);
                 a3.a(new AccelerateInterpolator());
                 a3.c();
                 holder.pointerLeft.setVisibility(View.VISIBLE);
                 ColorMatrix colorMatrix = new ColorMatrix();
-                colorMatrix.setSaturation(1.0f);
+                colorMatrix.setSaturation(1);
                 holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
             } else {
                 ef a4 = Ze.a(holder.icon);
                 a4.c(0.8f);
                 a4.d(0.8f);
-                a4.a(300L);
+                a4.a(300);
                 a4.a(new DecelerateInterpolator());
                 a4.c();
                 ef a5 = Ze.a(holder.icon);
                 a5.c(0.8f);
                 a5.d(0.8f);
-                a5.a(300L);
+                a5.a(300);
                 a5.a(new DecelerateInterpolator());
                 a5.c();
                 holder.pointerLeft.setVisibility(View.GONE);
                 ColorMatrix colorMatrix2 = new ColorMatrix();
-                colorMatrix2.setSaturation(0.0f);
+                colorMatrix2.setSaturation(0);
                 holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
             }
         }
@@ -877,13 +877,15 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             holder.preview.setImageResource(oq.a(eventBean.eventName));
             holder.optionsLayout.e();
             if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
+                // Show Add to Collection
                 holder.optionsLayout.f();
             } else {
+                // Hide Add to Collection
                 holder.optionsLayout.c();
             }
-            int i2 = eventBean.eventType;
-            if (i2 == 3) {
-                if (eventBean.eventName == "initializeLogic") {
+            if (eventBean.eventType == EventBean.EVENT_TYPE_ACTIVITY) {
+                if (eventBean.eventName.equals("initializeLogic")) {
+                    // Hide Delete
                     holder.optionsLayout.b();
                 }
                 holder.targetId.setText(eventBean.targetId);
@@ -894,15 +896,14 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 holder.preview.setVisibility(View.GONE);
                 holder.targetType.setVisibility(View.GONE);
             } else {
-                holder.icon.setImageResource(EventBean.getEventIconResource(i2, eventBean.targetType));
-                int i3 = eventBean.eventType;
-                if (i3 == EventBean.EVENT_TYPE_VIEW) {
+                holder.icon.setImageResource(EventBean.getEventIconResource(eventBean.eventType, eventBean.targetType));
+                if (eventBean.eventType == EventBean.EVENT_TYPE_VIEW) {
                     holder.targetType.setText(ViewBean.getViewTypeName(eventBean.targetType));
-                } else if (i3 == EventBean.EVENT_TYPE_DRAWER_VIEW) {
+                } else if (eventBean.eventType == EventBean.EVENT_TYPE_DRAWER_VIEW) {
                     holder.targetType.setText(ViewBean.getViewTypeName(eventBean.targetType));
-                } else if (i3 == EventBean.EVENT_TYPE_COMPONENT) {
+                } else if (eventBean.eventType == EventBean.EVENT_TYPE_COMPONENT) {
                     holder.targetType.setText(ComponentBean.getComponentName(getContext(), eventBean.targetType));
-                } else if (i3 == EventBean.EVENT_TYPE_ETC) {
+                } else if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
                     holder.icon.setImageResource(R.drawable.widget_source);
                     holder.targetType.setVisibility(View.GONE);
                     holder.preview.setVisibility(View.GONE);
@@ -922,20 +923,15 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
             if (eventBean.isCollapsed) {
                 holder.optionContainer.setVisibility(View.GONE);
-                holder.menu.setRotation(0.0f);
-                if (eventBean.isConfirmation) {
-                    holder.optionsLayout.d();
-                } else {
-                    holder.optionsLayout.a();
-                }
+                holder.menu.setRotation(0);
             } else {
                 holder.optionContainer.setVisibility(View.VISIBLE);
-                holder.menu.setRotation(-180.0f);
-                if (eventBean.isConfirmation) {
-                    holder.optionsLayout.d();
-                } else {
-                    holder.optionsLayout.a();
-                }
+                holder.menu.setRotation(-180);
+            }
+            if (eventBean.isConfirmation) {
+                holder.optionsLayout.d();
+            } else {
+                holder.optionsLayout.a();
             }
             holder.optionContainer.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
@@ -1003,18 +999,16 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                 EventAdapter.this.c(lastSelectedItem);
                             }
                         } else {
-                            int id = v.getId();
-                            if (id == R.id.confirm_no) {
+                            if (v.getId() == R.id.confirm_no) {
                                 eventBean.isConfirmation = false;
                                 EventAdapter.this.c(lastSelectedItem);
-                            } else if (id == R.id.confirm_yes) {
-                                int i2 = eventBean.buttonPressed;
-                                if (i2 == 0) {
+                            } else if (v.getId() == R.id.confirm_yes) {
+                                if (eventBean.buttonPressed == 0) {
                                     eventBean.isConfirmation = false;
                                     eventBean.isCollapsed = true;
                                     rs.this.c(eventBean);
                                     EventAdapter.this.c(lastSelectedItem);
-                                } else if (i2 == 1) {
+                                } else if (eventBean.buttonPressed == 1) {
                                     eventBean.isConfirmation = false;
                                     if (rs.this.g.index != 4) {
                                         rs.this.a(eventBean);
@@ -1060,7 +1054,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
 
             public void D() {
-                gB.a(menu, 0.0f, null);
+                gB.a(menu, 0, null);
                 gB.a(optionContainer, 200, new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -1083,7 +1077,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public void E() {
                 optionContainer.setVisibility(View.VISIBLE);
-                gB.a(menu, -180.0f, null);
+                gB.a(menu, -180, null);
                 gB.b(optionContainer, 200, null);
             }
         }
