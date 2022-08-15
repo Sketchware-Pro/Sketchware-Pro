@@ -347,10 +347,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         });
     }
 
-    private void e(MoreBlockCollectionBean moreBlockCollectionBean) {
-        addMoreBlockFromCollections(moreBlockCollectionBean);
-    }
-
     private void addMoreBlockFromCollectionsHandleVariables(MoreBlockCollectionBean moreBlock) {
         toBeAddedVariables = new ArrayList<>();
         toBeAddedLists = new ArrayList<>();
@@ -415,11 +411,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         } else {
             showMoreBlockAutoAddDialog(moreBlock);
         }
-    }
-
-    private void e() {
-        moreBlocksInCollections = Pp.h().f();
-        C.c();
     }
 
     private void showSaveMoreBlockToCollectionsDialog(int moreBlockPosition) {
