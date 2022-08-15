@@ -257,7 +257,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             case 223:
                 if (resultCode == RESULT_OK) {
                     if (eventTabAdapter != null) {
-                        eventTabAdapter.f();
+                        eventTabAdapter.refreshEvents();
                     }
                 }
                 break;
@@ -431,8 +431,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             } else if (i == 1) {
                 if (eventTabAdapter != null) {
                     if (projectFileBean != null) {
-                        eventTabAdapter.a(projectFileBean);
-                        eventTabAdapter.f();
+                        eventTabAdapter.setCurrentActivity(projectFileBean);
+                        eventTabAdapter.refreshEvents();
                     } else {
                         return;
                     }
@@ -479,7 +479,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         projectFileSelector.setFileType(1);
                         projectFileSelector.syncState();
                         if (eventTabAdapter != null) {
-                            eventTabAdapter.f();
+                            eventTabAdapter.refreshEvents();
                         }
                     }
                 } else {
@@ -854,7 +854,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         } else if (viewPager.getCurrentItem() == 1) {
             try {
-                current = eventTabAdapter.d().getJavaName();
+                current = eventTabAdapter.getCurrentActivity().getJavaName();
             } catch (Exception ignored) {
             }
         }
