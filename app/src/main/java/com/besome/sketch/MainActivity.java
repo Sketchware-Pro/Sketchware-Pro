@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -170,15 +171,15 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
 
-        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_EXECUTE_SHELL_SCRIPT)) {
-            try {
-                Runtime.getRuntime().exec("sh /sdcard/sketchwarescript.sh");
-                SketchwareUtil.showMessage(getApplicationContext(), "Script has been executed");
-            } catch (Exception e) {
-                System.out.println("Error " + e.getMessage());
+        AsyncTask.execute(() -> {
+            if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_EXECUTE_SHELL_SCRIPT)) {
+                try {
+                    Runtime.getRuntime().exec("sh /sdcard/sketchwarescript.sh");
+                } catch (Exception e) {
+                    System.out.println("Error " + e.getMessage());
+                }
             }
-        }
-
+        });
 
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
