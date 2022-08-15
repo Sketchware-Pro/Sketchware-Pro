@@ -42,7 +42,6 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -162,14 +161,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         ProjectResourceBean image = Op.g().a(imageName);
         if (image != null) {
             boolean alreadyToBeAdded = false;
-            Iterator<ProjectResourceBean> toBeAddedImagesIterator = toBeAddedImages.iterator();
-            while (true) {
-                if (toBeAddedImagesIterator.hasNext()) {
-                    if (toBeAddedImagesIterator.next().resName.equals(imageName)) {
-                        alreadyToBeAdded = true;
-                        break;
-                    }
-                } else {
+            for (ProjectResourceBean toBeAddedImage : toBeAddedImages) {
+                if (toBeAddedImage.resName.equals(imageName)) {
+                    alreadyToBeAdded = true;
                     break;
                 }
             }
@@ -210,9 +204,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             if (categoryAdapter.index == -1) {
                 eventAdapter.a(events.get(0));
                 categoryAdapter.index = 0;
-                if (categoryAdapter != null) {
-                    categoryAdapter.c();
-                }
+                categoryAdapter.c();
             }
             if (categoryAdapter.index == 4) {
                 importMoreBlockFromCollection.setVisibility(View.VISIBLE);
@@ -243,14 +235,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         ProjectResourceBean font = Np.g().a(fontName);
         if (font != null) {
             boolean alreadyToBeAdded = false;
-            Iterator<ProjectResourceBean> projectFonts = toBeAddedFonts.iterator();
-            while (true) {
-                if (projectFonts.hasNext()) {
-                    if (projectFonts.next().resName.equals(fontName)) {
-                        alreadyToBeAdded = true;
-                        break;
-                    }
-                } else {
+            for (ProjectResourceBean toBeAddedFont : toBeAddedFonts) {
+                if (toBeAddedFont.resName.equals(fontName)) {
+                    alreadyToBeAdded = true;
                     break;
                 }
             }
@@ -448,15 +435,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         if (moreBlock.spec.contains(" ")) {
             moreBlock.spec = moreBlock.spec.substring(0, moreBlock.spec.indexOf(' '));
         }
-        Iterator<Pair<String, String>> moreBlocks = jC.a(sc_id).i(currentActivity.getJavaName()).iterator();
         boolean duplicateNameFound = false;
-        while (true) {
-            if (moreBlocks.hasNext()) {
-                if (moreBlocks.next().first.equals(moreBlock.spec)) {
-                    duplicateNameFound = true;
-                    break;
-                }
-            } else {
+        for (Pair<String, String> projectMoreBlock : jC.a(sc_id).i(currentActivity.getJavaName())) {
+            if (projectMoreBlock.first.equals(moreBlock.spec)) {
+                duplicateNameFound = true;
                 break;
             }
         }
@@ -499,13 +481,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
         }
         boolean alreadyToBeAdded = false;
-        Iterator<Pair<Integer, String>> toBeAddedVariablesIterator = toBeAddedVariables.iterator();
-        while (true) {
-            if (!toBeAddedVariablesIterator.hasNext()) {
-                break;
-            }
-            Pair<Integer, String> variable = toBeAddedVariablesIterator.next();
-            if (variable.first == variableType && variable.second.equals(variableName)) {
+        for (Pair<Integer, String> toBeAddedVariable : toBeAddedVariables) {
+            if (toBeAddedVariable.first == variableType && toBeAddedVariable.second.equals(variableName)) {
                 alreadyToBeAdded = true;
                 break;
             }
@@ -556,14 +533,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         ProjectResourceBean sound = Qp.g().a(soundName);
         if (sound != null) {
             boolean alreadyToBeAdded = false;
-            Iterator<ProjectResourceBean> toBeAddedSoundsIterator = toBeAddedSounds.iterator();
-            while (true) {
-                if (toBeAddedSoundsIterator.hasNext()) {
-                    if (toBeAddedSoundsIterator.next().resName.equals(soundName)) {
-                        alreadyToBeAdded = true;
-                        break;
-                    }
-                } else {
+            for (ProjectResourceBean toBeAddedSound : toBeAddedSounds) {
+                if (toBeAddedSound.resName.equals(soundName)) {
+                    alreadyToBeAdded = true;
                     break;
                 }
             }
@@ -651,53 +623,47 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         String b2 = jC.a(sc_id).b(currentActivity.getJavaName(), moreBlock.targetId);
         eC a2 = jC.a(sc_id);
         String javaName = currentActivity.getJavaName();
-        ArrayList<BlockBean> a3 = a2.a(javaName, moreBlock.targetId + "_" + moreBlock.eventName);
-        Iterator<BlockBean> it = a3.iterator();
-        boolean z = false;
-        boolean z2 = false;
-        while (it.hasNext()) {
-            BlockBean next = it.next();
+        ArrayList<BlockBean> moreBlockBlocks = a2.a(javaName, moreBlock.targetId + "_" + moreBlock.eventName);
+
+        boolean hasAnyBlocks = false;
+        boolean failedToAddResourceToCollections = false;
+        for (BlockBean next : moreBlockBlocks) {
             ArrayList<Gx> paramClassInfo = next.getParamClassInfo();
             if (paramClassInfo.size() > 0) {
-                boolean z3 = z2;
-                boolean z4 = z;
                 for (int i = 0; i < paramClassInfo.size(); i++) {
                     Gx gx = paramClassInfo.get(i);
-                    String str2 = next.parameters.get(i);
-                    if (!gx.b("resource") && !gx.b("resource_bg")) {
-                        if (gx.b("sound")) {
-                            if (jC.d(sc_id).m(str2) && !Qp.g().b(str2)) {
-                                try {
-                                    Qp.g().a(sc_id, jC.d(sc_id).j(str2));
-                                } catch (Exception unused) {
-                                    z3 = true;
-                                }
-                            }
-                        } else {
-                            if (gx.b("font") && jC.d(sc_id).k(str2) && !Np.g().b(str2)) {
-                                Np.g().a(sc_id, jC.d(sc_id).e(str2));
+                    String parameter = next.parameters.get(i);
+
+                    if (gx.b("resource") || gx.b("resource_bg")) {
+                        if (jC.d(sc_id).l(parameter) && !Op.g().b(parameter)) {
+                            Op.g().a(sc_id, jC.d(sc_id).g(parameter));
+                        }
+                    } else if (gx.b("sound")) {
+                        if (jC.d(sc_id).m(parameter) && !Qp.g().b(parameter)) {
+                            try {
+                                Qp.g().a(sc_id, jC.d(sc_id).j(parameter));
+                            } catch (Exception unused) {
+                                failedToAddResourceToCollections = true;
                             }
                         }
-                    } else {
-                        if (jC.d(sc_id).l(str2) && !Op.g().b(str2)) {
-                            Op.g().a(sc_id, jC.d(sc_id).g(str2));
+                    } else if (gx.b("font")) {
+                        if (jC.d(sc_id).k(parameter) && !Np.g().b(parameter)) {
+                            Np.g().a(sc_id, jC.d(sc_id).e(parameter));
                         }
                     }
-                    z4 = true;
                 }
-                z = z4;
-                z2 = z3;
+                hasAnyBlocks = true;
             }
         }
-        if (z) {
-            if (z2) {
+        if (hasAnyBlocks) {
+            if (failedToAddResourceToCollections) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.logic_more_block_message_missed_resource_exist), 0).show();
             } else {
                 bB.a(getContext(), xB.b().a(getContext(), R.string.logic_more_block_message_resource_added), 0).show();
             }
         }
         try {
-            Pp.h().a(moreBlockName, b2, a3, true);
+            Pp.h().a(moreBlockName, b2, moreBlockBlocks, true);
         } catch (Exception unused2) {
             bB.b(getContext(), xB.b().a(getContext(), R.string.common_error_failed_to_save), 0).show();
         }
@@ -712,14 +678,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 return;
             }
         }
+
         boolean alreadyToBeAdded = false;
-        Iterator<Pair<Integer, String>> toBeAddedListsIterator = toBeAddedLists.iterator();
-        while (true) {
-            if (!toBeAddedListsIterator.hasNext()) {
-                break;
-            }
-            Pair<Integer, String> list = toBeAddedListsIterator.next();
-            if (list.first == listType && list.second.equals(listName)) {
+        for (Pair<Integer, String> toBeAddedList : toBeAddedLists) {
+            if (toBeAddedList.first == listType && toBeAddedList.second.equals(listName)) {
                 alreadyToBeAdded = true;
                 break;
             }
