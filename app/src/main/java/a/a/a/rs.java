@@ -45,14 +45,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import mod.hey.studios.moreblock.ImportMoreblockHelper;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 
 public class rs extends qA implements View.OnClickListener, MoreblockImporterDialog.CallBack {
-    private MoreBlockAdapter C;
-    private ArrayList<MoreBlockCollectionBean> moreBlocksInCollections;
     private ProjectFileBean currentActivity;
     private CategoryAdapter categoryAdapter;
     private EventAdapter eventAdapter;
@@ -488,7 +485,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void showImportMoreBlockFromCollectionsDialog() {
-        moreBlocksInCollections = Pp.h().f();
+        ArrayList<MoreBlockCollectionBean> moreBlocksInCollections = Pp.h().f();
         new MoreblockImporterDialog(getActivity(), moreBlocksInCollections, this).show();
     }
 
@@ -1066,64 +1063,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 optionContainer.setVisibility(View.VISIBLE);
                 gB.a(menu, -180, null);
                 gB.b(optionContainer, 200, null);
-            }
-        }
-    }
-
-    private class MoreBlockAdapter extends RecyclerView.a<MoreBlockAdapter.ViewHolder> {
-
-        @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
-            MoreBlockCollectionBean bean = moreBlocksInCollections.get(position);
-            if (bean.isSelected) {
-                holder.checkmark.setVisibility(View.VISIBLE);
-            } else {
-                holder.checkmark.setVisibility(View.GONE);
-            }
-            holder.name.setText(bean.name);
-            holder.blockArea.removeAllViews();
-            holder.blockArea.addView(ImportMoreblockHelper.optimizedBlockView(getContext(), bean.spec));
-        }
-
-        @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, parent, false));
-        }
-
-        @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
-            return moreBlocksInCollections.size();
-        }
-
-        private class ViewHolder extends RecyclerView.v {
-            public final ViewGroup item;
-            public final ImageView checkmark;
-            public final TextView name;
-            public final ViewGroup blockArea;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                item = itemView.findViewById(R.id.layout_item);
-                checkmark = itemView.findViewById(R.id.img_selected);
-                name = itemView.findViewById(R.id.tv_block_name);
-                blockArea = itemView.findViewById(R.id.block_area);
-                checkmark.setVisibility(View.GONE);
-                item.setOnClickListener(v -> selectItem(j()));
-                blockArea.setOnClickListener(v -> selectItem(j()));
-            }
-
-            private void selectItem(int position) {
-                if (moreBlocksInCollections.size() > 0) {
-                    for (MoreBlockCollectionBean bean : moreBlocksInCollections) {
-                        bean.isSelected = false;
-                    }
-                    moreBlocksInCollections.get(position).isSelected = true;
-                    // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-                    C.c();
-                }
             }
         }
     }
