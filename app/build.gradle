@@ -59,6 +59,7 @@ android {
     packagingOptions {
         resources.excludes += "license/*"
         resources.excludes += "META-INF/DEPENDENCIES"
+        resources.pickFirsts += "api_database/*"
     }
 
     compileOptions {
@@ -88,10 +89,10 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"], exclude: "proguard-base-7.2.2.jar")
 
-    implementation "com.android.tools:annotations:30.2.1"
+    implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
 
-    def codeEditorVersion = "0.15.1"
+    def codeEditorVersion = "0.16.3"
     def excludeAnnotation = { exclude group: "androidx.annotation", module: "annotation" }
     def editorGroupId = "io.github.Rosemoe.sora-editor"
 
@@ -102,7 +103,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
-    minApi26Implementation "com.android.tools.build:bundletool:1.9.1"
+    minApi26Implementation "com.android.tools.build:bundletool:1.11.0"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:3.3.28"

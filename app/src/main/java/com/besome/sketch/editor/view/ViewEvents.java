@@ -26,119 +26,122 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.wB;
-import mod.hey.studios.util.Helper;
+import a.a.a.xB;
 
 public class ViewEvents extends LinearLayout {
-
     private String sc_id;
     private ProjectFileBean projectFileBean;
-    private ArrayList<EventBean> eventBeanList;
-    private RecyclerView recyclerView;
+    private ArrayList<EventBean> events;
+    private RecyclerView eventsList;
     private Qs eventClickListener;
 
     public ViewEvents(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
-    public ViewEvents(Context context, AttributeSet attr) {
-        super(context, attr);
-        a(context);
+    public ViewEvents(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initialize(context);
     }
 
-    private void selectEvent(int var1) {
-        EventBean eventBean = eventBeanList.get(var1);
+    private void initialize(Context context) {
+        wB.a(context, this, R.layout.view_events);
+        events = new ArrayList<>();
+        eventsList = findViewById(R.id.list_events);
+        eventsList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.b(0);
+        eventsList.setLayoutManager(linearLayoutManager);
+        eventsList.setAdapter(new EventAdapter());
+        eventsList.setItemAnimator(new ci());
+    }
+
+    public void setOnEventClickListener(Qs listener) {
+        eventClickListener = listener;
+    }
+
+    void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
+        this.sc_id = sc_id;
+        this.projectFileBean = projectFileBean;
+        String[] viewEvents = oq.c(viewBean.getClassInfo());
+        events.clear();
+        ArrayList<EventBean> alreadyAddedEvents = jC.a(sc_id).g(projectFileBean.getJavaName());
+        for (String event : viewEvents) {
+            boolean eventAlreadyInActivity = false;
+            for (EventBean bean : alreadyAddedEvents) {
+                if (bean.eventType == EventBean.EVENT_TYPE_VIEW && viewBean.id.equals(bean.targetId) && event.equals(bean.eventName)) {
+                    eventAlreadyInActivity = true;
+                    break;
+                }
+            }
+
+            if (!event.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
+                EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, event);
+                eventBean.isSelected = eventAlreadyInActivity;
+                events.add(eventBean);
+            }
+        }
+        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
+        eventsList.getAdapter().c();
+    }
+
+    private void createEvent(int eventPosition) {
+        EventBean eventBean = events.get(eventPosition);
         if (!eventBean.isSelected) {
             eventBean.isSelected = true;
             jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            recyclerView.getAdapter().c(var1);
-            bB.a(getContext(), Helper.getResString(2131625331), 0).show();
+            eventsList.getAdapter().c(eventPosition);
+            bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
-
-        Qs var3 = eventClickListener;
-        if (var3 != null) {
-            var3.a(eventBean);
+        if (eventClickListener != null) {
+            eventClickListener.a(eventBean);
         }
-
     }
 
-    private void a(Context context) {
-        wB.a(context, this, R.layout.view_events);
-        eventBeanList = new ArrayList<>();
-        recyclerView = findViewById(R.id.list_events);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.b(0);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new EventsAdapter());
-        recyclerView.setItemAnimator(new ci());
-    }
+    private class EventAdapter extends RecyclerView.a<EventAdapter.ViewHolder> {
 
-    public void a(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
-        this.sc_id = sc_id;
-        this.projectFileBean = projectFileBean;
-        eventBeanList.clear();
-        ArrayList<EventBean> eventBeans = jC.a(sc_id).g(projectFileBean.getJavaName());
+        private class ViewHolder extends RecyclerView.v {
+            public final LinearLayout container;
+            public final ImageView icon;
+            public final ImageView addAvailableIcon;
+            public final TextView name;
 
-        for (String eventName : oq.c(viewBean.getClassInfo())) {
-            for (EventBean eventBean : eventBeans) {
-                if (!eventName.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
-                    EventBean newEvent = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, eventName);
-                    newEvent.isSelected = (eventBean.eventType == EventBean.EVENT_TYPE_VIEW) && viewBean.id.equals(eventBean.targetId) && eventName.equals(eventBean.eventName);
-                    eventBeanList.add(newEvent);
-                }
+            public ViewHolder(View itemView) {
+                super(itemView);
+                container = itemView.findViewById(R.id.container);
+                icon = itemView.findViewById(R.id.img_icon);
+                addAvailableIcon = itemView.findViewById(R.id.img_used_event);
+                name = itemView.findViewById(R.id.tv_title);
+                itemView.setOnClickListener(v -> createEvent(j()));
             }
         }
 
-        recyclerView.getAdapter().c();
-    }
-
-    public void setOnEventClickListener(Qs onEventClickListener) {
-        eventClickListener = onEventClickListener;
-    }
-
-    private class EventsAdapter extends RecyclerView.a<EventsAdapter.ViewHolder> {
-
         @Override
-        public int a() {
-            return eventBeanList.size();
-        }
-
-        @Override
-        public void b(ViewHolder viewHolder, int position) {
-            EventBean eventBean = eventBeanList.get(position);
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
+            EventBean eventBean = events.get(position);
             if (eventBean.isSelected) {
-                viewHolder.v.setVisibility(View.GONE);
-                mB.a(viewHolder.u, 1);
+                holder.addAvailableIcon.setVisibility(View.GONE);
+                mB.a(holder.icon, 1);
             } else {
-                viewHolder.v.setVisibility(View.VISIBLE);
-                mB.a(viewHolder.u, 0);
+                holder.addAvailableIcon.setVisibility(View.VISIBLE);
+                mB.a(holder.icon, 0);
             }
-
-            viewHolder.u.setImageResource(oq.a(eventBean.eventName));
-            viewHolder.w.setText(eventBean.eventName);
+            holder.icon.setImageResource(oq.a(eventBean.eventName));
+            holder.name.setText(eventBean.eventName);
         }
 
         @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.event_grid_item, parent, false));
         }
 
-        public class ViewHolder extends RecyclerView.v {
-
-            public LinearLayout t;
-            public ImageView u;
-            public ImageView v;
-            public TextView w;
-
-            public ViewHolder(View itemVIew) {
-                super(itemVIew);
-                t = itemVIew.findViewById(R.id.container);
-                u = itemVIew.findViewById(R.id.img_icon);
-                v = itemVIew.findViewById(R.id.img_used_event);
-                w = itemVIew.findViewById(R.id.tv_title);
-                itemVIew.setOnClickListener(view -> selectEvent(j()));
-            }
+        @Override
+        // RecyclerView.Adapter#getItemCount()
+        public int a() {
+            return events.size();
         }
     }
 }

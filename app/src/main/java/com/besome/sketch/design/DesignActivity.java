@@ -71,7 +71,6 @@ import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.rs;
-import a.a.a.uo;
 import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.yq;
@@ -104,7 +103,7 @@ import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 
-public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
+public class DesignActivity extends BaseAppCompatActivity implements OnClickListener {
 
     private static final int REQUEST_CODE_VIEW_MANAGER = 208;
     private static final int REQUEST_CODE_IMAGE_MANAGER = 209;
@@ -191,13 +190,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @Override
-    public void e(int i) {
-        if (i == 188) {
-            new BuildAsyncTask(getApplicationContext()).execute();
-        }
-    }
-
-    @Override
     public void finish() {
         jC.a();
         cC.a();
@@ -239,14 +231,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case 188:
-                new BuildAsyncTask(getApplicationContext()).execute();
-                break;
-
             case REQUEST_CODE_VIEW_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (projectFileSelector != null) {
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                     }
                     if (viewTabAdapter != null) {
                         viewTabAdapter.n();
@@ -269,7 +257,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             case 223:
                 if (resultCode == RESULT_OK) {
                     if (eventTabAdapter != null) {
-                        eventTabAdapter.f();
+                        eventTabAdapter.refreshEvents();
                     }
                 }
                 break;
@@ -285,7 +273,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             case REQUEST_CODE_LIBRARY_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (projectFileSelector != null) {
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                     }
                 }
                 break;
@@ -443,8 +431,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             } else if (i == 1) {
                 if (eventTabAdapter != null) {
                     if (projectFileBean != null) {
-                        eventTabAdapter.a(projectFileBean);
-                        eventTabAdapter.f();
+                        eventTabAdapter.setCurrentActivity(projectFileBean);
+                        eventTabAdapter.refreshEvents();
                     } else {
                         return;
                     }
@@ -482,16 +470,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         viewTabAdapter.c(true);
                         xmlLayoutOrientation.setVisibility(View.VISIBLE);
                         projectFileSelector.setFileType(0);
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                     }
                 } else if (i == 1) {
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         viewTabAdapter.c(false);
                         projectFileSelector.setFileType(1);
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                         if (eventTabAdapter != null) {
-                            eventTabAdapter.f();
+                            eventTabAdapter.refreshEvents();
                         }
                     }
                 } else {
@@ -499,7 +487,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         viewTabAdapter.c(false);
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         projectFileSelector.setFileType(1);
-                        projectFileSelector.a();
+                        projectFileSelector.syncState();
                         if (componentTabAdapter != null) {
                             componentTabAdapter.d();
                         }
@@ -565,7 +553,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
-        projectFileSelector.b(outState);
+        projectFileSelector.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
         if (!j()) {
             finish();
@@ -671,7 +659,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     jC.a(sc_id).c(jC.d(sc_id));
                     jC.a(sc_id).a(jC.d(sc_id));
                 }
-                projectFileSelector.a();
+                projectFileSelector.syncState();
                 B = false;
                 dialog.dismiss();
             }
@@ -725,7 +713,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Opens {@link LogReaderActivity}.
      */
-    public void toLogReader() {
+    void toLogReader() {
         Intent intent = new Intent(getApplicationContext(), LogReaderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
@@ -744,7 +732,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toAndroidManifestManager() {
         launchActivity(AndroidManifestInjection.class, null,
-                new Pair<>("file_name", projectFileSelector.g));
+                new Pair<>("file_name", projectFileSelector.currentJavaFileName));
     }
 
     /**
@@ -752,7 +740,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toAppCompatInjectionManager() {
         launchActivity(ManageCustomAttributeActivity.class, null,
-                new Pair<>("file_name", projectFileSelector.f));
+                new Pair<>("file_name", projectFileSelector.currentXmlFileName));
     }
 
     /**
@@ -866,7 +854,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         } else if (viewPager.getCurrentItem() == 1) {
             try {
-                current = eventTabAdapter.d().getJavaName();
+                current = eventTabAdapter.getCurrentActivity().getJavaName();
             } catch (Exception ignored) {
             }
         }
@@ -1163,7 +1151,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             if (c != null) {
-                projectFileSelector.a(c);
+                projectFileSelector.onRestoreInstanceState(c);
                 if (c.getInt("file_selector_current_file_type") == 0) {
                     xmlLayoutOrientation.setVisibility(View.VISIBLE);
                 } else {
@@ -1171,7 +1159,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
 
-            projectFileSelector.a();
+            projectFileSelector.syncState();
             h();
             if (c == null) {
                 l();

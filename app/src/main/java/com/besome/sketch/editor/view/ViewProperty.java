@@ -40,7 +40,6 @@ import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class ViewProperty extends LinearLayout implements Kw {
@@ -157,7 +156,7 @@ public class ViewProperty extends LinearLayout implements Kw {
             } else if (selectedGroupId == 2) {
                 propertyLayout.setVisibility(GONE);
                 viewEvent.setVisibility(VISIBLE);
-                viewEvent.a(sc_id, projectFile, viewBean);
+                viewEvent.setData(sc_id, projectFile, viewBean);
             }
         }
     }
