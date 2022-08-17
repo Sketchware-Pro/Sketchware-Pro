@@ -58,6 +58,7 @@ android {
 
     packagingOptions {
         resources.excludes += "license/*"
+        resources.excludes += "META-INF/DEPENDENCIES"
         resources.pickFirsts += "api_database/*"
     }
 
@@ -86,7 +87,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"], exclude: "proguard-base-7.2.2.jar")
 
     implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
@@ -115,7 +116,11 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.squareup.okio:okio:3.1.0"
 
-    implementation "com.guardsquare:proguard-base:7.1.1"
+    // TODO: use proguard-core dependency when duplicate class issue has been fixed
+    minApi21Implementation "com.guardsquare:proguard-base:7.1.1"
+    minApi26Implementation files('libs/proguard-base-7.2.2.jar')
+    minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
+    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
