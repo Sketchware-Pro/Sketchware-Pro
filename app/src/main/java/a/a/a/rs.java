@@ -63,7 +63,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private ArrayList<EventBean> drawerViewEvents;
     private TextView noEvents;
     private TextView importMoreBlockFromCollection;
-    private TextView sharedMoreBlocks;
     private String sc_id;
     private ArrayList<Pair<Integer, String>> toBeAddedVariables;
     private ArrayList<Pair<Integer, String>> toBeAddedLists;
@@ -210,10 +209,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
             if (categoryAdapter.index == 4) {
                 importMoreBlockFromCollection.setVisibility(View.VISIBLE);
-                sharedMoreBlocks.setVisibility(View.VISIBLE);
             } else {
                 importMoreBlockFromCollection.setVisibility(View.GONE);
-                sharedMoreBlocks.setVisibility(View.GONE);
             }
             if (eventAdapter != null) {
                 if (categoryAdapter != null) {
@@ -321,16 +318,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         events.put(4, moreBlocks);
         importMoreBlockFromCollection = parent.findViewById(R.id.tv_import);
         importMoreBlockFromCollection.setText(xB.b().a(getContext(), R.string.logic_button_import_more_block));
-        sharedMoreBlocks = parent.findViewById(R.id.tv_shared);
-        sharedMoreBlocks.setText(xB.b().a(getContext(), R.string.logic_button_explore_shared_more_block));
         importMoreBlockFromCollection.setOnClickListener(v -> showImportMoreBlockFromCollectionsDialog());
-        sharedMoreBlocks.setOnClickListener(v -> {
-            /* This is defined in a.a.a.ks, but not compilable, as Shared More Blocks classes were removed.
-            Intent intent = new Intent(getActivity(), com.besome.sketch.shared.moreblocks.SharedMoreBlocksListActivity.class);
-            intent.setFlags(536870912);
-            startActivityForResult(intent, 464);
-            */
-        });
     }
 
     private void addMoreBlockFromCollectionsHandleVariables(MoreBlockCollectionBean moreBlock) {
@@ -794,10 +782,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 initializeEvents(events.get(index));
                 if (index == 4) {
                     importMoreBlockFromCollection.setVisibility(View.VISIBLE);
-                    sharedMoreBlocks.setVisibility(View.VISIBLE);
                 } else {
                     importMoreBlockFromCollection.setVisibility(View.GONE);
-                    sharedMoreBlocks.setVisibility(View.GONE);
                 }
                 eventAdapter.a(events.get(index));
                 eventAdapter.c();
