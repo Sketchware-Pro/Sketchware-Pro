@@ -49,6 +49,8 @@ import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 
 public class rs extends qA implements View.OnClickListener, MoreblockImporterDialog.CallBack {
+    private static final int REQUEST_CODE_ADD_EVENT = 223;
+
     private ProjectFileBean currentActivity;
     private CategoryAdapter categoryAdapter;
     private EventAdapter eventAdapter;
@@ -105,7 +107,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 223) {
+        if (requestCode == REQUEST_CODE_ADD_EVENT) {
             refreshEvents();
         }
     }
@@ -117,7 +119,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             intent.putExtra("sc_id", sc_id);
             intent.putExtra("project_file", currentActivity);
             intent.putExtra("category_index", categoryAdapter.index);
-            startActivityForResult(intent, 223);
+            startActivityForResult(intent, REQUEST_CODE_ADD_EVENT);
         }
     }
 
