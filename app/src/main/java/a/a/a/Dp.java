@@ -306,7 +306,7 @@ public class Dp {
      * @return Similar to {@link Dp#getClasspath()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
      */
     public String getProGuardClasspath() {
-        Collection<String> localLibraryJarsWithFullModeOff = new LinkedList<>();
+        Collection<String> localLibraryJarsWithFullModeOn = new LinkedList<>();
 
         for (HashMap<String, Object> localLibrary : mll.list) {
             Object nameObject = localLibrary.get("name");
@@ -316,8 +316,8 @@ public class Dp {
                 String name = (String) nameObject;
                 String jarPath = (String) jarPathObject;
 
-                if (localLibrary.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(name)) {
-                    localLibraryJarsWithFullModeOff.add(jarPath);
+                if (localLibrary.containsKey("jarPath") && proguard.libIsProguardFMEnabled(name)) {
+                    localLibraryJarsWithFullModeOn.add(jarPath);
                 }
             }
         }
@@ -326,9 +326,9 @@ public class Dp {
         StringBuilder classpath = new StringBuilder();
         normalClasspathLoop:
         for (String classpathPart : normalClasspath.split(":")) {
-            for (String jarPathToExclude : localLibraryJarsWithFullModeOff) {
+            for (String jarPathToExclude : localLibraryJarsWithFullModeOn) {
                 if (classpathPart.equals(jarPathToExclude)) {
-                    localLibraryJarsWithFullModeOff.remove(jarPathToExclude);
+                    localLibraryJarsWithFullModeOn.remove(jarPathToExclude);
                     continue normalClasspathLoop;
                 }
             }
