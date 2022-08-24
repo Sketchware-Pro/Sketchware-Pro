@@ -89,15 +89,15 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"], exclude: "proguard-base-7.2.2.jar")
 
+    implementation "androidx.annotation:annotation:1.4.0"
     implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
 
     def codeEditorVersion = "0.16.3"
-    def excludeAnnotation = { exclude group: "androidx.annotation", module: "annotation" }
     def editorGroupId = "io.github.Rosemoe.sora-editor"
 
-    implementation "$editorGroupId:editor:$codeEditorVersion", excludeAnnotation
-    implementation "$editorGroupId:language-java:$codeEditorVersion", excludeAnnotation
+    implementation "$editorGroupId:editor:$codeEditorVersion"
+    implementation "$editorGroupId:language-java:$codeEditorVersion"
     implementation "$editorGroupId:language-textmate:$codeEditorVersion"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
@@ -106,7 +106,7 @@ dependencies {
     minApi26Implementation "com.android.tools.build:bundletool:1.11.0"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:3.3.28"
+    implementation "com.android.tools:r8:3.3.75"
 
     implementation "com.google.code.gson:gson:2.9.0"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
