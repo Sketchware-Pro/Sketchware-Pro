@@ -371,8 +371,8 @@ public class yq {
                         "super.onCreate();", "SketchLogger.startLogging();\n" +
                                 "        super.onCreate();").replace(
                         "Process.killProcess(Process.myPid());",
-                        "                SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
-                                "                SketchLogger.stopLogging();\n" + "Process.killProcess(Process.myPid());"
+                        "SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
+                                "                    Process.killProcess(Process.myPid());"
                 );
             }
 
