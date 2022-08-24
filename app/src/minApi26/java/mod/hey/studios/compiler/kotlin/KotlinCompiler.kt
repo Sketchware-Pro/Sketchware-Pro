@@ -89,7 +89,7 @@ class KotlinCompiler(
     private fun areWarningsEnabled(): Boolean {
         return builder.build_settings.getValue(
             BuildSettings.SETTING_NO_WARNINGS,
-            BuildSettings.SETTING_GENERIC_VALUE_FALSE
+            BuildSettings.SETTING_GENERIC_VALUE_TRUE
         ) != BuildSettings.SETTING_GENERIC_VALUE_TRUE
     }
 

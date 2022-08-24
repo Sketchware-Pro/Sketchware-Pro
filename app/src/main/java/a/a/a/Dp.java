@@ -533,7 +533,7 @@ public class Dp {
                     BuildSettings.SETTING_JAVA_VERSION_1_7));
             args.add("-nowarn");
             if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
-                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+                    BuildSettings.SETTING_GENERIC_VALUE_TRUE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
                 args.add("-deprecation");
             }
             args.add("-d");
