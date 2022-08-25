@@ -236,7 +236,7 @@ public class wq {
         return "resource" + File.separator + sc_id + File.separator + "res.zip";
     }
 
-    public static String f() {
+    public static String getExtractedIconPackStoreLocation() {
         return getAbsolutePathOf(k);
     }
 
