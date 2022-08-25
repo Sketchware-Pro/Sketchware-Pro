@@ -90,7 +90,6 @@ import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.build.BuildSettingsDialog;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
-import mod.hey.studios.project.DesignActRunnable;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
 import mod.hey.studios.project.proguard.ProguardHandler;
@@ -1085,7 +1084,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          * @param progressText The new text to display as progress
          */
         public void setProgress(String progressText) {
-            runOnUiThread(new DesignActRunnable(dialog, progressText));
+            runOnUiThread(() -> {
+                if (dialog.isShowing()) {
+                    dialog.a(progressText);
+                }
+            });
         }
 
         /**
