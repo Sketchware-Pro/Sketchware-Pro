@@ -23,19 +23,19 @@ public class ZA extends Dialog {
     }
 
     public void cancelAnimation() {
-        if (animationView != null & animationView.h()) {
+        if (animationView != null && animationView.h()) {
             animationView.e();
         }
     }
 
     public void pauseAnimation() {
-        if (animationView != null & animationView.h()) {
+        if (animationView != null && animationView.h()) {
             animationView.i();
         }
     }
 
     public void resumeAnimation() {
-        if (animationView != null & !animationView.h()) {
+        if (animationView != null && !animationView.h()) {
             animationView.l();
         }
     }
