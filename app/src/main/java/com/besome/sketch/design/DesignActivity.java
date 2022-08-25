@@ -1203,7 +1203,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void b() {
-            publishProgress("Now processing..");
             jC.d(sc_id).v();
             jC.d(sc_id).w();
             jC.d(sc_id).u();
@@ -1240,7 +1239,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void b() {
-            publishProgress("Now saving..");
             jC.d(sc_id).a();
             jC.b(sc_id).m();
             jC.a(sc_id).j();
@@ -1277,7 +1275,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void b() {
-            publishProgress("Now saving..");
             jC.d(sc_id).a();
             jC.b(sc_id).m();
             jC.a(sc_id).j();

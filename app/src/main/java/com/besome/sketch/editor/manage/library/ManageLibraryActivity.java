@@ -340,7 +340,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         @Override
         public void b() {
             try {
-                publishProgress("Now processing..");
                 saveLibraryConfiguration();
             } catch (Exception e) {
                 e.printStackTrace();

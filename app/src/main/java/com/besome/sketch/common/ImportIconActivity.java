@@ -264,7 +264,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void b() {
-            publishProgress("Now processing..");
             if (!doExtractedIconsExist()) {
                 extractIcons();
             }
@@ -299,7 +298,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void b() {
-            publishProgress("Now processing..");
             listIcons();
         }
 
