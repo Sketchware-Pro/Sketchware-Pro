@@ -196,8 +196,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     break;
 
                 case 2:
-                    // what? why?
-                    admobLibraryBean.isEnabled();
                     toAdmobActivity(admobLibraryBean);
                     break;
 
