@@ -207,181 +207,181 @@ public class oq {
     public static String a(String eventName, Context context) {
         switch (eventName) {
             case "initializeLogic":
-                return Helper.getResString(2131625330);
+                return Helper.getResString(R.string.event_initialize);
 
             case "onBackPressed":
-                return Helper.getResString(2131625354);
+                return Helper.getResString(R.string.event_onbackpressed);
 
             case "onPostCreate":
-                return Helper.getResString(2131625379);
+                return Helper.getResString(R.string.event_onpostcreated);
 
             case "onStart":
-                return Helper.getResString(2131625385);
+                return Helper.getResString(R.string.event_onstart);
 
             case "onStop":
-                return Helper.getResString(2131625387);
+                return Helper.getResString(R.string.event_onstop);
 
             case "onDestroy":
-                return Helper.getResString(2131625365);
+                return Helper.getResString(R.string.event_ondestroy);
 
             case "onResume":
-                return Helper.getResString(2131625382);
+                return Helper.getResString(R.string.event_onresume);
 
             case "onPause":
-                return Helper.getResString(2131625376);
+                return Helper.getResString(R.string.event_onpause);
 
             case "onPageStarted":
-                return Helper.getResString(2131625375);
+                return Helper.getResString(R.string.event_onpagestarted);
 
             case "onPageFinished":
-                return Helper.getResString(2131625374);
+                return Helper.getResString(R.string.event_onpagefinished);
 
             case "moreBlock":
-                return Helper.getResString(2131625325);
+                return Helper.getResString(R.string.event_definefunc);
 
             case "onClick":
-                return Helper.getResString(2131625361);
+                return Helper.getResString(R.string.event_onclick);
 
             case "onCheckedChange":
-                return Helper.getResString(2131625357);
+                return Helper.getResString(R.string.event_oncheckchanged);
 
             case "onItemSelected":
-                return Helper.getResString(2131625373);
+                return Helper.getResString(R.string.event_onitemselected);
 
             case "onItemClicked":
-                return Helper.getResString(2131625371);
+                return Helper.getResString(R.string.event_onitemclicked);
 
             case "onItemLongClicked":
-                return Helper.getResString(2131625372);
+                return Helper.getResString(R.string.event_onitemlongclicked);
 
             case "onTextChanged":
-                return Helper.getResString(2131625389);
+                return Helper.getResString(R.string.event_ontextchanged);
 
             case "onProgressChanged":
-                return Helper.getResString(2131625380);
+                return Helper.getResString(R.string.event_onprogresschanged);
 
             case "onStartTrackingTouch":
-                return Helper.getResString(2131625386);
+                return Helper.getResString(R.string.event_onstarttrackingtouch);
 
             case "onStopTrackingTouch":
-                return Helper.getResString(2131625388);
+                return Helper.getResString(R.string.event_onstoptrackingtouch);
 
             case "onAnimationStart":
-                return Helper.getResString(2131625353);
+                return Helper.getResString(R.string.event_onanimationstart);
 
             case "onAnimationEnd":
-                return Helper.getResString(2131625352);
+                return Helper.getResString(R.string.event_onanimationend);
 
             case "onAnimationCancel":
-                return Helper.getResString(2131625351);
+                return Helper.getResString(R.string.event_onanimationcancel);
 
             case "onBindCustomView":
-                return Helper.getResString(2131625355);
+                return Helper.getResString(R.string.event_onbindcustomview);
 
             case "onDateChange":
-                return Helper.getResString(2131625363);
+                return Helper.getResString(R.string.event_ondatechange);
 
             case "onChildAdded":
-                return Helper.getResString(2131625358);
+                return Helper.getResString(R.string.event_onchildadded);
 
             case "onChildChanged":
-                return Helper.getResString(2131625359);
+                return Helper.getResString(R.string.event_onchildchanged);
 
             case "onChildRemoved":
-                return Helper.getResString(2131625360);
+                return Helper.getResString(R.string.event_onchildremoved);
 
             case "onCancelled":
-                return Helper.getResString(2131625356);
+                return Helper.getResString(R.string.event_oncancelled);
 
             case "onSensorChanged":
-                return Helper.getResString(2131625383);
+                return Helper.getResString(R.string.event_onsensorchanged);
 
             case "onCreateUserComplete":
-                return Helper.getResString(2131625362);
+                return Helper.getResString(R.string.event_oncreateusercomplete);
 
             case "onSignInUserComplete":
-                return Helper.getResString(2131625384);
+                return Helper.getResString(R.string.event_onsigninusercomplete);
 
             case "onResetPasswordEmailSent":
-                return Helper.getResString(2131625381);
+                return Helper.getResString(R.string.event_onresetpasswordemailsent);
 
             case "onInterstitialAdLoaded":
-                return Helper.getResString(2131625349);
+                return Helper.getResString(R.string.event_onadloaded);
 
             case "onInterstitialAdFailedToLoad":
-                return Helper.getResString(2131625348);
+                return Helper.getResString(R.string.event_onadfailedtoload);
 
             case "onBannerAdOpened":
-                return Helper.getResString(2131625350);
+                return Helper.getResString(R.string.event_onadopened);
 
             case "onBannerAdClosed":
-                return Helper.getResString(2131625347);
+                return Helper.getResString(R.string.event_onadclosed);
 
             case "onUploadProgress":
-                return Helper.getResString(2131625390);
+                return Helper.getResString(R.string.event_onuploadprogress);
 
             case "onDownloadProgress":
-                return Helper.getResString(2131625366);
+                return Helper.getResString(R.string.event_ondownloadprogress);
 
             case "onUploadSuccess":
-                return Helper.getResString(2131625391);
+                return Helper.getResString(R.string.event_onuploadsuccess);
 
             case "onDownloadSuccess":
-                return Helper.getResString(2131625367);
+                return Helper.getResString(R.string.event_ondownloadsuccess);
 
             case "onDeleteSuccess":
-                return Helper.getResString(2131625364);
+                return Helper.getResString(R.string.event_ondeletesuccess);
 
             case "onFailure":
-                return Helper.getResString(2131625368);
+                return Helper.getResString(R.string.event_onfailure);
 
             case "onPictureTaken":
-                return Helper.getResString(2131625377);
+                return Helper.getResString(R.string.event_onpicturetaken);
 
             case "onPictureTakenCancel":
-                return Helper.getResString(2131625378);
+                return Helper.getResString(R.string.event_onpicturetakencancel);
 
             case "onFilesPicked":
-                return Helper.getResString(2131625369);
+                return Helper.getResString(R.string.event_onfilespicked);
 
             case "onFilesPickedCancel":
-                return Helper.getResString(2131625370);
+                return Helper.getResString(R.string.event_onfilespickedcancel);
 
             case "onResponse":
-                return Helper.getResString(2131625344);
+                return Helper.getResString(R.string.event_on_response);
 
             case "onErrorResponse":
-                return Helper.getResString(2131625340);
+                return Helper.getResString(R.string.event_on_error_response);
 
             case "onSpeechResult":
-                return Helper.getResString(2131625346);
+                return Helper.getResString(R.string.event_on_speech_result);
 
             case "onSpeechError":
-                return Helper.getResString(2131625345);
+                return Helper.getResString(R.string.event_on_speech_error);
 
             case "onConnected":
-                return Helper.getResString(2131625335);
+                return Helper.getResString(R.string.event_on_connected);
 
             case "onDataReceived":
-                return Helper.getResString(2131625338);
+                return Helper.getResString(R.string.event_on_data_received);
 
             case "onDataSent":
-                return Helper.getResString(2131625339);
+                return Helper.getResString(R.string.event_on_data_sent);
 
             case "onConnectionError":
-                return Helper.getResString(2131625336);
+                return Helper.getResString(R.string.event_on_connection_error);
 
             case "onConnectionStopped":
-                return Helper.getResString(2131625337);
+                return Helper.getResString(R.string.event_on_connection_stopped);
 
             case "onMapReady":
-                return Helper.getResString(2131625342);
+                return Helper.getResString(R.string.event_on_map_ready);
 
             case "onMarkerClicked":
-                return Helper.getResString(2131625343);
+                return Helper.getResString(R.string.event_on_marker_clicked);
 
             case "onLocationChanged":
-                return Helper.getResString(2131625341);
+                return Helper.getResString(R.string.event_on_location_changed);
 
             default:
                 return ManageEvent.e(eventName);
