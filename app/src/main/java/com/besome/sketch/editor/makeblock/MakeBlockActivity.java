@@ -22,11 +22,9 @@ import mod.hey.studios.util.Helper;
 
 public class MakeBlockActivity extends BaseAppCompatActivity {
 
-    public Toolbar k;
-    public String l;
-    public ProjectFileBean m;
-    public LinearLayout n;
-    public dt o;
+    private String sc_id;
+    private ProjectFileBean project;
+    private dt makeBlock;
 
     private void goBackDialog() {
         aB dialog = new aB(this);
@@ -46,7 +44,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (o.a()) {
+        if (makeBlock.a()) {
             super.onBackPressed();
         } else {
             goBackDialog();
@@ -63,24 +61,24 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
         setContentView(R.layout.make_block);
         if (savedInstanceState == null) {
-            l = getIntent().getStringExtra("sc_id");
-            m = getIntent().getParcelableExtra("project_file");
+            sc_id = getIntent().getStringExtra("sc_id");
+            project = getIntent().getParcelableExtra("project_file");
         } else {
-            l = savedInstanceState.getString("sc_id");
-            m = savedInstanceState.getParcelable("project_file");
+            sc_id = savedInstanceState.getString("sc_id");
+            project = savedInstanceState.getParcelable("project_file");
         }
 
-        k = findViewById(R.id.toolbar);
-        a(k);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().a(Helper.getResString(R.string.logic_editor_more_block_actionbar_title_create_more_block));
         d().e(true);
         d().d(true);
-        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        o = new dt(this);
-        o.setFuncNameValidator(jC.a(l).a(m));
-        n = findViewById(R.id.makeblock_view);
-        n.addView(o);
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        makeBlock = new dt(this);
+        makeBlock.setFuncNameValidator(jC.a(sc_id).a(project));
+        LinearLayout makeBlock = findViewById(R.id.makeblock_view);
+        makeBlock.addView(this.makeBlock);
     }
 
     @Override
@@ -93,11 +91,11 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.moreblock_create) {
-            if (o.a()) return false;
+            if (makeBlock.a()) return false;
 
-            if (o.b()) {
+            if (makeBlock.b()) {
                 Intent intent = new Intent();
-                Pair<String, String> blockInformation = o.getBlockInformation();
+                Pair<String, String> blockInformation = makeBlock.getBlockInformation();
                 intent.putExtra("block_name", blockInformation.first);
                 intent.putExtra("block_spec", blockInformation.second);
                 setResult(RESULT_OK, intent);
@@ -119,8 +117,8 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", l);
-        outState.putParcelable("project_file", m);
+        outState.putString("sc_id", sc_id);
+        outState.putParcelable("project_file", project);
         super.onSaveInstanceState(outState);
     }
 }
