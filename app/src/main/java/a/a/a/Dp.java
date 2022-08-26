@@ -16,7 +16,6 @@ import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
-import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
@@ -62,6 +61,7 @@ import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
@@ -80,7 +80,7 @@ public class Dp {
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
     private final File aapt2Binary;
     public BuildSettings build_settings;
-    private BuildAsyncTask buildingDialog;
+    private BuildProgressReceiver progressReceiver;
     private final Context context;
     public yq yq;
     public FilePathUtil fpu;
@@ -137,14 +137,9 @@ public class Dp {
         settings = new ProjectSettings(yqVar.sc_id);
     }
 
-    public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
+    public Dp(BuildProgressReceiver buildAsyncTask, Context context, yq yqVar) {
         this(context, yqVar);
-        buildingDialog = buildAsyncTask;
-    }
-
-    public Dp(Context context, yq yq, boolean buildAppBundle) {
-        this(context, yq);
-        this.buildAppBundle = buildAppBundle;
+        progressReceiver = buildAsyncTask;
     }
 
     /**
@@ -158,7 +153,7 @@ public class Dp {
                 this,
                 aapt2Binary,
                 buildAppBundle,
-                buildingDialog);
+                progressReceiver);
         compiler.compile();
         LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
@@ -306,7 +301,7 @@ public class Dp {
      * @return Similar to {@link Dp#getClasspath()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
      */
     public String getProGuardClasspath() {
-        Collection<String> localLibraryJarsWithFullModeOff = new LinkedList<>();
+        Collection<String> localLibraryJarsWithFullModeOn = new LinkedList<>();
 
         for (HashMap<String, Object> localLibrary : mll.list) {
             Object nameObject = localLibrary.get("name");
@@ -316,8 +311,8 @@ public class Dp {
                 String name = (String) nameObject;
                 String jarPath = (String) jarPathObject;
 
-                if (localLibrary.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(name)) {
-                    localLibraryJarsWithFullModeOff.add(jarPath);
+                if (localLibrary.containsKey("jarPath") && proguard.libIsProguardFMEnabled(name)) {
+                    localLibraryJarsWithFullModeOn.add(jarPath);
                 }
             }
         }
@@ -326,9 +321,9 @@ public class Dp {
         StringBuilder classpath = new StringBuilder();
         normalClasspathLoop:
         for (String classpathPart : normalClasspath.split(":")) {
-            for (String jarPathToExclude : localLibraryJarsWithFullModeOff) {
+            for (String jarPathToExclude : localLibraryJarsWithFullModeOn) {
                 if (classpathPart.equals(jarPathToExclude)) {
-                    localLibraryJarsWithFullModeOff.remove(jarPathToExclude);
+                    localLibraryJarsWithFullModeOn.remove(jarPathToExclude);
                     continue normalClasspathLoop;
                 }
             }
@@ -533,7 +528,7 @@ public class Dp {
                     BuildSettings.SETTING_JAVA_VERSION_1_7));
             args.add("-nowarn");
             if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
-                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+                    BuildSettings.SETTING_GENERIC_VALUE_TRUE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
                 args.add("-deprecation");
             }
             args.add("-d");
@@ -766,18 +761,14 @@ public class Dp {
 
         String baseAssetsPath = "libs" + File.separator;
         if (hasFileChanged(baseAssetsPath + androidJarArchiveName, androidJarPath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in android.jar...");
-            }
+            progressReceiver.onProgress("Extracting built-in android.jar...");
             /* Delete android.jar */
             fileUtil.c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
             /* Extract android.jar.zip to android.jar */
             new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         if (hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in libraries' DEX files...");
-            }
+            progressReceiver.onProgress("Extracting built-in libraries' DEX files...");
             /* Delete the directory */
             fileUtil.b(dexsDirectoryPath);
             /* Create the directories */
@@ -786,9 +777,7 @@ public class Dp {
             new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
         if (hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in libraries' resources...");
-            }
+            progressReceiver.onProgress("Extracting built-in libraries' resources...");
             /* Delete the directory */
             fileUtil.b(libsDirectoryPath);
             /* Create the directories */
@@ -798,9 +787,7 @@ public class Dp {
         }
         hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
         if (hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in signing keys...");
-            }
+            progressReceiver.onProgress("Extracting built-in signing keys...");
             /* Delete the directory */
             fileUtil.b(testkeyDirectoryPath);
             /* Create the directories */
@@ -978,7 +965,11 @@ public class Dp {
             parser.close();
         }
 
-        new ProGuard(configuration).execute();
+        try {
+            new ProGuard(configuration).execute();
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
 
         LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
@@ -1022,5 +1013,9 @@ public class Dp {
         }
 
         LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+    }
+
+    public void setBuildAppBundle(boolean buildAppBundle) {
+        this.buildAppBundle = buildAppBundle;
     }
 }

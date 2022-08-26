@@ -185,7 +185,6 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         @Override
         public void b() {
             try {
-                publishProgress("Now processing..");
                 myCollectionFontsFragment.g();
             } catch (Exception e) {
                 e.printStackTrace();

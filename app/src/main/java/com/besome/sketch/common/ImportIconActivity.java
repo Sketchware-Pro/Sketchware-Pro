@@ -58,11 +58,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     private boolean doExtractedIconsExist() {
-        return new oB().e(wq.f());
+        return new oB().e(wq.getExtractedIconPackStoreLocation());
     }
 
     private void extractIcons() {
-        KB.a(this, "icons" + File.separator + "icon_pack.zip", wq.f());
+        KB.a(this, "icons" + File.separator + "icon_pack.zip", wq.getExtractedIconPackStoreLocation());
     }
 
     @Override
@@ -180,10 +180,10 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             }
         }
         String iconFolderName = "icon_" + color;
-        for (String iconName : new File(wq.f() + File.separator + iconFolderName).list()) {
+        for (String iconName : new File(wq.getExtractedIconPackStoreLocation() + File.separator + iconFolderName).list()) {
             icons.add(new Pair<>(
                     iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
-                    wq.f() + File.separator + iconFolderName + File.separator + iconName
+                    wq.getExtractedIconPackStoreLocation() + File.separator + iconFolderName + File.separator + iconName
             ));
         }
     }
@@ -264,7 +264,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void b() {
-            publishProgress("Now processing..");
             if (!doExtractedIconsExist()) {
                 extractIcons();
             }
@@ -299,7 +298,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void b() {
-            publishProgress("Now processing..");
             listIcons();
         }
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.besome.sketch.SketchApplication;
-import com.besome.sketch.design.DesignActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +17,7 @@ import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
@@ -38,13 +38,13 @@ public class ResourceCompiler {
     private static final String TAG = "AppBuilder";
     private final boolean willBuildAppBundle;
     private final File aaptFile;
-    private final DesignActivity.BuildAsyncTask buildingDialog;
+    private final BuildProgressReceiver progressReceiver;
     private final Dp dp;
 
-    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, DesignActivity.BuildAsyncTask dialog) {
+    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, BuildProgressReceiver receiver) {
         this.willBuildAppBundle = willBuildAppBundle;
         aaptFile = aapt;
-        buildingDialog = dialog;
+        progressReceiver = receiver;
         this.dp = dp;
     }
 
@@ -55,7 +55,7 @@ public class ResourceCompiler {
         resourceCompiler.setProgressListener(new Compiler.ProgressListener() {
             @Override
             void onProgressUpdate(String newProgress) {
-                if (buildingDialog != null) buildingDialog.setProgress(newProgress);
+                if (progressReceiver != null) progressReceiver.onProgress(newProgress);
             }
         });
         resourceCompiler.compile();

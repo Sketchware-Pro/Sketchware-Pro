@@ -3,6 +3,8 @@ package a.a.a;
 import android.content.Context;
 import android.os.Environment;
 
+import com.besome.sketch.SketchApplication;
+
 import java.io.File;
 
 public class wq {
@@ -33,7 +35,6 @@ public class wq {
     public static final String h = ".sketchware" + File.separator + "temp" + File.separator + "fonts";
     public static final String i = ".sketchware" + File.separator + "temp" + File.separator + "proj";
     public static final String j = ".sketchware" + File.separator + "temp" + File.separator + "data";
-    public static final String k = ".sketchware" + File.separator + "temp" + File.separator + "iconpack";
     public static final String l = ".sketchware" + File.separator + "resources";
     public static final String m = ".sketchware" + File.separator + "resources" + File.separator + "icons";
     public static final String n = ".sketchware" + File.separator + "resources" + File.separator + "images";
@@ -236,8 +237,8 @@ public class wq {
         return "resource" + File.separator + sc_id + File.separator + "res.zip";
     }
 
-    public static String f() {
-        return getAbsolutePathOf(k);
+    public static String getExtractedIconPackStoreLocation() {
+        return new File(SketchApplication.getContext().getCacheDir(), "iconpack").getAbsolutePath();
     }
 
     public static String g() {

@@ -103,7 +103,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     public void onDestroy() {
         g();
         if (lottieDialog != null && lottieDialog.isShowing()) {
-            lottieDialog.a();
+            lottieDialog.cancelAnimation();
         }
         super.onDestroy();
     }
@@ -111,7 +111,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         if (lottieDialog != null && lottieDialog.isShowing()) {
-            lottieDialog.b();
+            lottieDialog.pauseAnimation();
         }
         super.onPause();
     }
@@ -120,7 +120,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (lottieDialog != null && lottieDialog.isShowing()) {
-            lottieDialog.c();
+            lottieDialog.resumeAnimation();
         }
     }
 }

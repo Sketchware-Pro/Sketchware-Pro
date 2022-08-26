@@ -69,6 +69,7 @@ import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 
@@ -217,12 +218,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
             new KB().a(exportedSourcesZipPath, toCompress, toExclude);
             project_metadata.e();
-            runOnUiThread(() -> e(exportedFilename));
+            runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
         } catch (Exception e) {
             runOnUiThread(() -> {
                 Log.e("ProjectExporter", "While trying to export project's sources: "
                         + e.getMessage(), e);
-                b(Log.getStackTraceString(e));
+                showErrorOccurredDialog(Log.getStackTraceString(e));
                 layout_export_src.setVisibility(View.GONE);
                 loading_export_src.setVisibility(View.GONE);
                 btn_export_src.setVisibility(View.VISIBLE);
@@ -506,7 +507,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
             }.start();
         });
-        btn_send_src.setOnClickListener(v -> q());
+        btn_send_src.setOnClickListener(v -> shareExportedSourceCode());
     }
 
     /**
@@ -568,7 +569,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         file_utility.f(export_src_full_path);
     }
 
-    public final void q() {
+    private void shareExportedSourceCode() {
         if (export_src_filename.length() > 0) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
@@ -592,7 +593,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     /**
      * Set content of exported source views
      */
-    public final void e(String exportedSrcFilename) {
+    private void initializeAfterExportedSourceViews(String exportedSrcFilename) {
         export_src_filename = exportedSrcFilename;
         loading_export_src.e();
         loading_export_src.setVisibility(View.GONE);
@@ -605,7 +606,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      *
      * @param errorMessage The dialog's error message
      */
-    public final void b(String errorMessage) {
+    private void showErrorOccurredDialog(String errorMessage) {
         aB dialog = new aB(this);
         dialog.a(R.drawable.break_warning_96_red);
         dialog.b(Helper.getResString(R.string.common_error_an_error_occurred));
@@ -631,13 +632,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    public class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener {
+    private class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
 
-        private Dp c;
-        /**
-         * Boolean indicating if the user has cancelled building
-         */
-        private boolean d = false;
+        private Dp dp;
+        private boolean canceled = false;
         private boolean buildingAppBundle = false;
         private String signingKeystorePath = null;
         private char[] signingKeystorePassword = null;
@@ -661,7 +659,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void b() {
-            if (d) {
+            if (canceled) {
                 cancel(true);
                 return;
             }
@@ -686,7 +684,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 eCVar.g();
                 eCVar.e();
                 iCVar.i();
-                if (d) {
+                if (canceled) {
                     cancel(true);
                     return;
                 }
@@ -697,12 +695,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     }
                 }
                 project_metadata.c(a);
-                if (d) {
+                if (canceled) {
                     cancel(true);
                     return;
                 }
                 project_metadata.a(a, wq.e("600"));
-                if (d) {
+                if (canceled) {
                     cancel(true);
                     return;
                 }
@@ -714,82 +712,83 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
                 kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
                 project_metadata.b(hCVar, eCVar, iCVar, true);
-                if (d) {
+                if (canceled) {
                     cancel(true);
                     return;
                 }
-                c = new Dp(a, project_metadata, buildingAppBundle);
+                dp = new Dp(this, a, project_metadata);
+                dp.setBuildAppBundle(true);
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");
-                c.maybeExtractAapt2();
-                if (d) {
+                dp.maybeExtractAapt2();
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 /* Check built-in libraries */
                 publishProgress("Extracting built-in libraries...");
-                c.getBuiltInLibrariesReady();
-                if (d) {
+                dp.getBuiltInLibrariesReady();
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 publishProgress("AAPT2 is running...");
-                c.compileResources();
-                if (d) {
+                dp.compileResources();
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
-                KotlinCompilerBridge.compileKotlinCodeIfPossible(this, c);
-                if (d) {
+                KotlinCompilerBridge.compileKotlinCodeIfPossible(this, dp);
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 publishProgress("Java is compiling...");
-                c.compileJavaCode();
-                if (d) {
+                dp.compileJavaCode();
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 /* Encrypt Strings in classes if enabled */
                 StringfogHandler stringfogHandler = new StringfogHandler(project_metadata.sc_id);
-                stringfogHandler.start(null, c);
-                if (d) {
+                stringfogHandler.start(this, dp);
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 /* Obfuscate classes if enabled */
                 ProguardHandler proguardHandler = new ProguardHandler(project_metadata.sc_id);
-                proguardHandler.start(null, c);
-                if (d) {
+                proguardHandler.start(this, dp);
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 /* Create DEX file(s) */
-                publishProgress(c.getDxRunningText());
-                c.createDexFilesFromClasses();
-                if (d) {
+                publishProgress(dp.getDxRunningText());
+                dp.createDexFilesFromClasses();
+                if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 /* Merge DEX file(s) with libraries' dexes */
                 publishProgress("Merging libraries' DEX files...");
-                c.getDexFilesReady();
-                if (d) {
+                dp.getDexFilesReady();
+                if (canceled) {
                     onCancelled();
                     return;
                 }
 
                 if (buildingAppBundle) {
-                    AppBundleCompiler compiler = new AppBundleCompiler(c);
+                    AppBundleCompiler compiler = new AppBundleCompiler(dp);
                     publishProgress("Creating app module...");
                     compiler.createModuleMainArchive();
                     publishProgress("Building app bundle...");
@@ -831,8 +830,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     }
                 } else {
                     publishProgress("Building APK...");
-                    c.buildApk();
-                    if (d) {
+                    dp.buildApk();
+                    if (canceled) {
                         cancel(true);
                         return;
                     }
@@ -841,7 +840,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     if (signWithTestkey) {
                         ZipSigner signer = new ZipSigner();
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(c.yq.unsignedUnalignedApkPath, c.yq.unalignedSignedApkPath);
+                        signer.signZip(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
                     } else if (isResultJarSigningEnabled()) {
                         Security.addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
                         CustomKeySigner.signZip(
@@ -851,30 +850,28 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                 signingAliasName,
                                 signingKeystorePassword,
                                 signingAlgorithm,
-                                c.yq.unsignedUnalignedApkPath,
-                                c.yq.unalignedSignedApkPath
+                                dp.yq.unsignedUnalignedApkPath,
+                                dp.yq.unalignedSignedApkPath
                         );
                     } else {
-                        FileUtil.copyFile(c.yq.unsignedUnalignedApkPath, c.yq.unalignedSignedApkPath);
+                        FileUtil.copyFile(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
                     }
-                    if (d) {
+                    if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Aligning APK...");
-                    c.runZipalign(c.yq.unalignedSignedApkPath, getCorrectResultFilename(c.yq.releaseApkPath));
+                    dp.runZipalign(dp.yq.unalignedSignedApkPath, getCorrectResultFilename(dp.yq.releaseApkPath));
                 }
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
                         "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
-                    runOnUiThread(() -> ExportProjectActivity.this.b(
-                            "Either an incorrect password was entered, " +
-                                    "or your key store is corrupt."));
+                    runOnUiThread(() -> showErrorOccurredDialog(
+                            "Either an incorrect password was entered, or your key store is corrupt."));
                 } else {
                     Log.e("AppExporter", throwable.getMessage(), throwable);
-                    runOnUiThread(() ->
-                            ExportProjectActivity.this.b(Log.getStackTraceString(throwable)));
+                    runOnUiThread(() -> showErrorOccurredDialog(Log.getStackTraceString(throwable)));
                 }
 
                 cancel(true);
@@ -887,14 +884,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 progressDialog.a(true);
                 ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
                 publishProgress("Canceling process...");
-                d = true;
+                canceled = true;
             }
         }
 
         @Override
         public void onCancelled() {
             super.onCancelled();
-            c = null;
+            dp = null;
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();
@@ -964,7 +961,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();
-            ExportProjectActivity.this.b(str);
+            showErrorOccurredDialog(str);
             layout_apk_path.setVisibility(View.GONE);
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
@@ -1029,8 +1026,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
         }
 
-        public void publicPublishProgress(String... values) {
-            publishProgress(values);
+        @Override
+        public void onProgress(String progress) {
+            publishProgress(progress);
         }
     }
 }

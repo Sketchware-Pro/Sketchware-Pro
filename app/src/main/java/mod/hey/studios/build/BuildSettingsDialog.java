@@ -52,7 +52,7 @@ public class BuildSettingsDialog {
                 addInputPref(BuildSettings.SETTING_ANDROID_JAR_PATH, "", "Custom android.jar", EditorInfo.TYPE_CLASS_TEXT, contentView),
                 addInputPref(BuildSettings.SETTING_CLASSPATH, "", "Classpath (separated by :)", EditorInfo.TYPE_CLASS_TEXT, contentView),
                 addSingleChoicePref(BuildSettings.SETTING_DEXER, new String[]{"Dx", "D8"}, "Dx", "Dexer", contentView),
-                addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, new String[]{"1.7", "1.8", "1.9", "10", "11"}, "1.7", "Java version", contentView),
+                addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, BuildSettingsDialogBridge.getAvailableJavaVersions(), "1.7", "Java version", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, true, "Hide warnings in error log", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, true, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", 12, contentView)
@@ -116,11 +116,10 @@ public class BuildSettingsDialog {
             radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (!isChecked) return;
 
-                if (key.equals(BuildSettings.SETTING_JAVA_VERSION) && choice.equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
-                    SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8+ code");
-                } else if (key.equals(BuildSettings.SETTING_DEXER) && choice.equals(BuildSettings.SETTING_DEXER_D8) && Build.VERSION.SDK_INT < 26) {
-                    SketchwareUtil.toast("Your Android version isn't compatible with D8 (requires Android 8+).\nIf you proceed to use it, compilation will fail",
-                            Toast.LENGTH_LONG);
+                if (key.equals(BuildSettings.SETTING_JAVA_VERSION)) {
+                    BuildSettingsDialogBridge.handleJavaVersionChange(choice);
+                } else if (key.equals(BuildSettings.SETTING_DEXER)) {
+                    BuildSettingsDialogBridge.handleDexerChange(choice);
                 }
             });
         }

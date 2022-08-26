@@ -45,10 +45,10 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             app:tabGravity="fill"
-            app:tabIndicator="@drawable/about_tab_indicator"
             app:tabIndicatorFullWidth="false"
             app:tabInlineLabel="true"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
+            app:tabContentStart="56dp"
             app:tabSelectedTextColor="@color/color_primary"
             app:tabTextColor="#424242"
             app:tabUnboundedRipple="true" />

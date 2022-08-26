@@ -196,8 +196,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     break;
 
                 case 2:
-                    // what? why?
-                    admobLibraryBean.isEnabled();
                     toAdmobActivity(admobLibraryBean);
                     break;
 
@@ -340,7 +338,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         @Override
         public void b() {
             try {
-                publishProgress("Now processing..");
                 saveLibraryConfiguration();
             } catch (Exception e) {
                 e.printStackTrace();

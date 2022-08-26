@@ -118,6 +118,10 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                                 extension = easyWayMimeType.split("/")[1];
                             }
 
+                            if (extension.isEmpty()) {
+                                extension = "ttf";
+                            }
+
                             File temporaryFile = File.createTempFile("font", "." + extension);
                             fontUri = Uri.fromFile(temporaryFile);
                             try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {

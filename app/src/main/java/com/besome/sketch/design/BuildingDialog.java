@@ -1,7 +1,8 @@
-package a.a.a;
+package com.besome.sketch.design;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,20 +12,22 @@ import com.sketchware.remod.R;
 
 import mod.hey.studios.util.Helper;
 
-public class Ep extends Dialog {
+public class BuildingDialog extends Dialog {
 
     private final TextView tvProgress;
     private final QuizBoard quizBoard;
     private boolean cancelOnBackPressed;
 
-    public Ep(Context context) {
+    public BuildingDialog(Context context) {
         super(context, R.style.progress);
-        requestWindowFeature(1);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.build_progress_msg_box);
+
         LinearLayout quizLayout = findViewById(R.id.layout_quiz);
         quizBoard = new QuizBoard(getContext());
         quizLayout.addView(quizBoard);
-        ((LottieAnimationView) findViewById(R.id.animation_view)).setScale(2.0F);
+        LottieAnimationView animationView = findViewById(R.id.animation_view);
+        animationView.setScale(2);
         setTitle(Helper.getResString(R.string.common_message_progress));
         tvProgress = findViewById(R.id.tv_progress);
         tvProgress.setText(Helper.getResString(R.string.common_message_loading));
@@ -32,15 +35,15 @@ public class Ep extends Dialog {
         super.setCancelable(true);
     }
 
-    public void a(String text) {
+    public void setProgress(String text) {
         tvProgress.setText(text);
     }
 
-    public void a(boolean cancellable) {
-        cancelOnBackPressed = cancellable;
+    public void setIsCancelableOnBackPressed(boolean cancelable) {
+        cancelOnBackPressed = cancelable;
     }
 
-    public boolean a() {
+    public boolean isCancelableOnBackPressed() {
         return cancelOnBackPressed;
     }
 
