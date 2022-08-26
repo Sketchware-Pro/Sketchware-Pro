@@ -142,11 +142,6 @@ public class Dp {
         progressReceiver = buildAsyncTask;
     }
 
-    public Dp(Context context, yq yq, boolean buildAppBundle) {
-        this(context, yq);
-        this.buildAppBundle = buildAppBundle;
-    }
-
     /**
      * Compile resources and log time needed.
      *
@@ -766,18 +761,14 @@ public class Dp {
 
         String baseAssetsPath = "libs" + File.separator;
         if (hasFileChanged(baseAssetsPath + androidJarArchiveName, androidJarPath)) {
-            if (progressReceiver != null) {
-                progressReceiver.onProgress("Extracting built-in android.jar...");
-            }
+            progressReceiver.onProgress("Extracting built-in android.jar...");
             /* Delete android.jar */
             fileUtil.c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
             /* Extract android.jar.zip to android.jar */
             new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         if (hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
-            if (progressReceiver != null) {
-                progressReceiver.onProgress("Extracting built-in libraries' DEX files...");
-            }
+            progressReceiver.onProgress("Extracting built-in libraries' DEX files...");
             /* Delete the directory */
             fileUtil.b(dexsDirectoryPath);
             /* Create the directories */
@@ -786,9 +777,7 @@ public class Dp {
             new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
         if (hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
-            if (progressReceiver != null) {
-                progressReceiver.onProgress("Extracting built-in libraries' resources...");
-            }
+            progressReceiver.onProgress("Extracting built-in libraries' resources...");
             /* Delete the directory */
             fileUtil.b(libsDirectoryPath);
             /* Create the directories */
@@ -798,9 +787,7 @@ public class Dp {
         }
         hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
         if (hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
-            if (progressReceiver != null) {
-                progressReceiver.onProgress("Extracting built-in signing keys...");
-            }
+            progressReceiver.onProgress("Extracting built-in signing keys...");
             /* Delete the directory */
             fileUtil.b(testkeyDirectoryPath);
             /* Create the directories */
@@ -1026,5 +1013,9 @@ public class Dp {
         }
 
         LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+    }
+
+    public void setBuildAppBundle(boolean buildAppBundle) {
+        this.buildAppBundle = buildAppBundle;
     }
 }
