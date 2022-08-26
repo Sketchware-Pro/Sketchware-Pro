@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.design;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,13 +12,13 @@ import com.sketchware.remod.R;
 
 import mod.hey.studios.util.Helper;
 
-public class Ep extends Dialog {
+public class BuildingDialog extends Dialog {
 
     private final TextView tvProgress;
     private final QuizBoard quizBoard;
     private boolean cancelOnBackPressed;
 
-    public Ep(Context context) {
+    public BuildingDialog(Context context) {
         super(context, R.style.progress);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.build_progress_msg_box);
@@ -35,15 +35,15 @@ public class Ep extends Dialog {
         super.setCancelable(true);
     }
 
-    public void a(String text) {
+    public void setProgress(String text) {
         tvProgress.setText(text);
     }
 
-    public void a(boolean cancellable) {
-        cancelOnBackPressed = cancellable;
+    public void setIsCancelableOnBackPressed(boolean cancelable) {
+        cancelOnBackPressed = cancelable;
     }
 
-    public boolean a() {
+    public boolean isCancelableOnBackPressed() {
         return cancelOnBackPressed;
     }
 

@@ -55,7 +55,6 @@ import java.util.HashMap;
 
 import a.a.a.DB;
 import a.a.a.Dp;
-import a.a.a.Ep;
 import a.a.a.GB;
 import a.a.a.MA;
 import a.a.a.Xf;
@@ -878,15 +877,15 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     public class BuildAsyncTask extends MA implements OnCancelListener {
 
-        private final Ep dialog;
+        private final BuildingDialog dialog;
         private boolean canceled = false;
 
         public BuildAsyncTask(Context context) {
             super(context);
             DesignActivity.this.a((MA) this);
-            dialog = new Ep(DesignActivity.this);
+            dialog = new BuildingDialog(DesignActivity.this);
             maybeShow();
-            dialog.a(false);
+            dialog.setIsCancelableOnBackPressed(false);
         }
 
         /**
@@ -1086,7 +1085,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void setProgress(String progressText) {
             runOnUiThread(() -> {
                 if (dialog.isShowing()) {
-                    dialog.a(progressText);
+                    dialog.setProgress(progressText);
                 }
             });
         }
@@ -1103,8 +1102,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            if (!dialog.a()) {
-                dialog.a(true);
+            if (!dialog.isCancelableOnBackPressed()) {
+                dialog.setIsCancelableOnBackPressed(true);
                 maybeShow();
                 publishProgress("Canceling build...");
                 canceled = true;
