@@ -66,39 +66,31 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id) {
-            case R.id.btn_left:
-                if (index == 0) {
-                    index = presets.size() - 1;
-                } else {
-                    index = index - 1;
-                }
+        if (id == R.id.btn_left) {
+            if (index == 0) {
+                index = presets.size() - 1;
+            } else {
+                index = index - 1;
+            }
 
-                applyPresetData(presets.get(index).presetName);
-                break;
+            applyPresetData(presets.get(index).presetName);
+        } else if (id == R.id.btn_right) {
+            if (index == presets.size() - 1) {
+                index = 0;
+            } else {
+                ++index;
+            }
 
-            case R.id.btn_right:
-                if (index == presets.size() - 1) {
-                    index = 0;
-                } else {
-                    ++index;
-                }
-
-                applyPresetData(presets.get(index).presetName);
-                break;
-
-            case R.id.common_dialog_cancel_button:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-
-            case R.id.common_dialog_ok_button:
-                if (!inEditMode) {
-                    close();
-                } else {
-                    confirmBeforeClose();
-                }
-                break;
+            applyPresetData(presets.get(index).presetName);
+        } else if (id == R.id.common_dialog_cancel_button) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if (id == R.id.common_dialog_ok_button) {
+            if (!inEditMode) {
+                close();
+            } else {
+                confirmBeforeClose();
+            }
         }
     }
 
