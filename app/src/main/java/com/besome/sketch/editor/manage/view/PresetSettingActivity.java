@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -55,12 +56,12 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
 
     private void o() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(2131625758));
-        dialog.a(2131165733);
+        dialog.b(Helper.getResString(R.string.preset_setting_title));
+        dialog.a(R.drawable.ic_detail_setting_48dp);
         dialog.setCancelable(false);
-        dialog.a(Helper.getResString(2131625757));
-        dialog.b(Helper.getResString(2131625010), v -> n());
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.preset_setting_edit_warning));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> n());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -68,7 +69,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case 2131230835:
+            case R.id.btn_left:
                 if (y == 0) {
                     y = z.size() - 1;
                 } else {
@@ -78,7 +79,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
                 applyPresetData(z.get(y).presetName);
                 break;
 
-            case 2131230848:
+            case R.id.btn_right:
                 if (y == z.size() - 1) {
                     y = 0;
                 } else {
@@ -88,12 +89,12 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
                 applyPresetData(z.get(y).presetName);
                 break;
 
-            case 2131230909:
+            case R.id.common_dialog_cancel_button:
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
 
-            case 2131230914:
+            case R.id.common_dialog_ok_button:
                 if (!A) {
                     n();
                 } else {
@@ -106,19 +107,19 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
     @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
-        setContentView(2131427561);
-        e(Helper.getResString(2131625758));
+        setContentView(R.layout.manage_screen_activity_add_view_preset_setting);
+        e(Helper.getResString(R.string.preset_setting_title));
         requestCode = getIntent().getIntExtra("request_code", RESULT_OK);
         if (getIntent().hasExtra("edit_mode")) {
             A = true;
         }
 
-        t = findViewById(2131230835);
+        t = findViewById(R.id.btn_left);
         t.setOnClickListener(this);
-        u = findViewById(2131230848);
+        u = findViewById(R.id.btn_right);
         u.setOnClickListener(this);
-        v = findViewById(2131231104);
-        w = findViewById(2131231863);
+        v = findViewById(R.id.img_activity);
+        w = findViewById(R.id.tv_activity_name);
         if (requestCode == 276) {
             z = rq.d();
         } else if (requestCode == 277) {
@@ -127,8 +128,8 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
             z = rq.c();
         }
 
-        d(Helper.getResString(2131625002));
-        b(Helper.getResString(2131624974));
+        d(Helper.getResString(R.string.common_word_import));
+        b(Helper.getResString(R.string.common_word_cancel));
         r.setOnClickListener(this);
         s.setOnClickListener(this);
         applyPresetData(z.get(y).presetName);
