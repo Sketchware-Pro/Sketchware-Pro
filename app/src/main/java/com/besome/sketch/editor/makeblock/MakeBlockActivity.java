@@ -12,12 +12,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.sketchware.remod.R;
 
 import a.a.a.aB;
 import a.a.a.dt;
 import a.a.a.jC;
 import a.a.a.mB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class MakeBlockActivity extends BaseAppCompatActivity {
@@ -30,17 +30,17 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
     private void goBackDialog() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(0x7f0e061d));
-        dialog.a(2131165604);
-        dialog.a(Helper.getResString(2131625500));
-        dialog.b(Helper.getResString(2131625000), view -> {
+        dialog.b(Helper.getResString(R.string.logic_editor_more_block_dialog_message_confirm_goback));
+        dialog.a(R.drawable.exit_96);
+        dialog.a(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
+        dialog.b(Helper.getResString(R.string.common_word_goback), view -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 finish();
             }
 
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -61,7 +61,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
             finish();
         }
 
-        setContentView(2131427505);
+        setContentView(R.layout.make_block);
         if (savedInstanceState == null) {
             l = getIntent().getStringExtra("sc_id");
             m = getIntent().getParcelableExtra("project_file");
@@ -70,29 +70,29 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
             m = savedInstanceState.getParcelable("project_file");
         }
 
-        k = findViewById(2131231847);
+        k = findViewById(R.id.toolbar);
         a(k);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(Helper.getResString(2131625498));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(Helper.getResString(R.string.logic_editor_more_block_actionbar_title_create_more_block));
         d().e(true);
         d().d(true);
         k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         o = new dt(this);
         o.setFuncNameValidator(jC.a(l).a(m));
-        n = findViewById(2131231488);
+        n = findViewById(R.id.makeblock_view);
         n.addView(o);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(2131492883, menu);
-        menu.findItem(2131231546).setTitle(Helper.getResString(2131624983));
+        getMenuInflater().inflate(R.menu.moreblock_menu, menu);
+        menu.findItem(R.id.moreblock_create).setTitle(Helper.getResString(R.string.common_word_create));
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == 2131231546) {
+        if (menuItem.getItemId() == R.id.moreblock_create) {
             if (o.a()) return false;
 
             if (o.b()) {
