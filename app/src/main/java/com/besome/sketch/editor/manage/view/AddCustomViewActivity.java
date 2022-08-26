@@ -41,34 +41,28 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
     @Override
     public void onClick(View v) {
         Intent intent;
-        switch (v.getId()) {
-            case R.id.common_dialog_ok_button:
-                if (!viewNameValidator.b()) {
-                    return;
-                }
+        int id = v.getId();
+        if (id == R.id.common_dialog_ok_button) {
+            if (!viewNameValidator.b()) {
+                return;
+            }
 
-                intent = new Intent();
-                intent.putExtra("project_file", new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW, t.getText().toString()));
-                if (x != null) {
-                    intent.putExtra("preset_views", getPresetData(x));
-                }
+            intent = new Intent();
+            intent.putExtra("project_file", new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW, t.getText().toString()));
+            if (x != null) {
+                intent.putExtra("preset_views", getPresetData(x));
+            }
 
-                setResult(RESULT_OK, intent);
-                bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_add_complete), 0).show();
-                finish();
-                break;
-
-            case R.id.common_dialog_default_button:
-                intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
-                intent.putExtra("request_code", REQ_CD_PRESET_ACTIVITY);
-                startActivityForResult(intent, REQ_CD_PRESET_ACTIVITY);
-                break;
-
-            case R.id.common_dialog_cancel_button:
-                finish();
-                break;
+            setResult(RESULT_OK, intent);
+            bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_add_complete), 0).show();
+            finish();
+        } else if (id == R.id.common_dialog_default_button) {
+            intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
+            intent.putExtra("request_code", REQ_CD_PRESET_ACTIVITY);
+            startActivityForResult(intent, REQ_CD_PRESET_ACTIVITY);
+        } else if (id == R.id.common_dialog_cancel_button) {
+            finish();
         }
-
     }
 
     @Override
