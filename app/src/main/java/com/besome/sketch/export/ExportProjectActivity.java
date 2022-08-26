@@ -759,7 +759,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Encrypt Strings in classes if enabled */
                 StringfogHandler stringfogHandler = new StringfogHandler(project_metadata.sc_id);
-                stringfogHandler.start(null, c);
+                stringfogHandler.start(this, c);
                 if (d) {
                     cancel(true);
                     return;
@@ -767,7 +767,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Obfuscate classes if enabled */
                 ProguardHandler proguardHandler = new ProguardHandler(project_metadata.sc_id);
-                proguardHandler.start(null, c);
+                proguardHandler.start(this, c);
                 if (d) {
                     cancel(true);
                     return;

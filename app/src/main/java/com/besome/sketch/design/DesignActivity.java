@@ -876,7 +876,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
+    private class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
 
         private final BuildingDialog dialog;
         private boolean canceled = false;
