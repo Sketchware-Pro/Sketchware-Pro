@@ -41,12 +41,12 @@
         android:layout_toRightOf="@+id/layout_palette"
         android:background="#fff0f0ff"
         android:forceDarkAllowed="false"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"/>
 
     <com.besome.sketch.editor.view.ViewDummy
         android:id="@+id/dummy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <com.besome.sketch.editor.view.ViewProperties
         android:id="@+id/properties"
