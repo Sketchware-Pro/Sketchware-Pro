@@ -2,6 +2,7 @@ package a.a.a;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,12 +20,14 @@ public class Ep extends Dialog {
 
     public Ep(Context context) {
         super(context, R.style.progress);
-        requestWindowFeature(1);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.build_progress_msg_box);
+
         LinearLayout quizLayout = findViewById(R.id.layout_quiz);
         quizBoard = new QuizBoard(getContext());
         quizLayout.addView(quizBoard);
-        ((LottieAnimationView) findViewById(R.id.animation_view)).setScale(2.0F);
+        LottieAnimationView animationView = findViewById(R.id.animation_view);
+        animationView.setScale(2);
         setTitle(Helper.getResString(R.string.common_message_progress));
         tvProgress = findViewById(R.id.tv_progress);
         tvProgress.setText(Helper.getResString(R.string.common_message_loading));
