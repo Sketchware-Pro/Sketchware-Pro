@@ -16,7 +16,6 @@ import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
-import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
@@ -62,6 +61,7 @@ import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
@@ -80,7 +80,7 @@ public class Dp {
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
     private final File aapt2Binary;
     public BuildSettings build_settings;
-    private BuildAsyncTask buildingDialog;
+    private BuildProgressReceiver progressReceiver;
     private final Context context;
     public yq yq;
     public FilePathUtil fpu;
@@ -137,9 +137,9 @@ public class Dp {
         settings = new ProjectSettings(yqVar.sc_id);
     }
 
-    public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
+    public Dp(BuildProgressReceiver buildAsyncTask, Context context, yq yqVar) {
         this(context, yqVar);
-        buildingDialog = buildAsyncTask;
+        progressReceiver = buildAsyncTask;
     }
 
     public Dp(Context context, yq yq, boolean buildAppBundle) {
@@ -158,7 +158,7 @@ public class Dp {
                 this,
                 aapt2Binary,
                 buildAppBundle,
-                buildingDialog);
+                progressReceiver);
         compiler.compile();
         LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
@@ -766,8 +766,8 @@ public class Dp {
 
         String baseAssetsPath = "libs" + File.separator;
         if (hasFileChanged(baseAssetsPath + androidJarArchiveName, androidJarPath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in android.jar...");
+            if (progressReceiver != null) {
+                progressReceiver.onProgress("Extracting built-in android.jar...");
             }
             /* Delete android.jar */
             fileUtil.c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
@@ -775,8 +775,8 @@ public class Dp {
             new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         if (hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in libraries' DEX files...");
+            if (progressReceiver != null) {
+                progressReceiver.onProgress("Extracting built-in libraries' DEX files...");
             }
             /* Delete the directory */
             fileUtil.b(dexsDirectoryPath);
@@ -786,8 +786,8 @@ public class Dp {
             new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
         if (hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in libraries' resources...");
+            if (progressReceiver != null) {
+                progressReceiver.onProgress("Extracting built-in libraries' resources...");
             }
             /* Delete the directory */
             fileUtil.b(libsDirectoryPath);
@@ -798,8 +798,8 @@ public class Dp {
         }
         hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
         if (hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
-            if (buildingDialog != null) {
-                buildingDialog.setProgress("Extracting built-in signing keys...");
+            if (progressReceiver != null) {
+                progressReceiver.onProgress("Extracting built-in signing keys...");
             }
             /* Delete the directory */
             fileUtil.b(testkeyDirectoryPath);
