@@ -3,6 +3,7 @@ package com.besome.sketch.editor.manage.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -40,14 +41,13 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        Intent intent;
         int id = v.getId();
         if (id == R.id.common_dialog_ok_button) {
             if (!viewNameValidator.b()) {
                 return;
             }
 
-            intent = new Intent();
+            Intent intent = new Intent();
             intent.putExtra("project_file", new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW, t.getText().toString()));
             if (x != null) {
                 intent.putExtra("preset_views", getPresetData(x));
@@ -57,7 +57,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
             bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_add_complete), 0).show();
             finish();
         } else if (id == R.id.common_dialog_default_button) {
-            intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
+            Intent intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
             intent.putExtra("request_code", REQ_CD_PRESET_ACTIVITY);
             startActivityForResult(intent, REQ_CD_PRESET_ACTIVITY);
         } else if (id == R.id.common_dialog_cancel_button) {
@@ -73,14 +73,15 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
         f(R.drawable.new_window_96);
         d(Helper.getResString(R.string.common_word_add));
         b(Helper.getResString(R.string.common_word_cancel));
-        ArrayList<String> v = getIntent().getStringArrayListExtra("screen_names");
+
+        ArrayList<String> alreadyInUseNames = getIntent().getStringArrayListExtra("screen_names");
         t = findViewById(R.id.ed_input);
         ((TextInputLayout) findViewById(R.id.ti_input)).setHint(Helper.getResString(R.string.design_manager_view_hint_enter_view_name));
-        TextView u = findViewById(R.id.tv_desc);
-        u.setText(Helper.getResString(R.string.design_manager_view_description_guide_use_custom_view));
-        viewNameValidator = new YB(this, findViewById(R.id.ti_input), uq.b, v);
+        TextView description = findViewById(R.id.tv_desc);
+        description.setText(Helper.getResString(R.string.design_manager_view_description_guide_use_custom_view));
+        viewNameValidator = new YB(this, findViewById(R.id.ti_input), uq.b, alreadyInUseNames);
         t.setPrivateImeOptions("defaultInputmode=english;");
-        t.setImeOptions(5);
+        t.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         t.setLines(1);
         super.r.setOnClickListener(this);
         super.s.setOnClickListener(this);
