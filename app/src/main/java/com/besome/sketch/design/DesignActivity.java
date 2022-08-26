@@ -96,6 +96,7 @@ import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
@@ -875,7 +876,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public class BuildAsyncTask extends MA implements OnCancelListener {
+    public class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
 
         private final BuildingDialog dialog;
         private boolean canceled = false;
@@ -1135,8 +1136,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        public void publicPublishProgress(String... values) {
-            publishProgress(values);
+        @Override
+        public void onProgress(String progress) {
+            publishProgress(progress);
         }
     }
 

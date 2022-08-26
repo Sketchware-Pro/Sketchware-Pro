@@ -69,6 +69,7 @@ import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 
@@ -631,7 +632,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    public class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener {
+    private class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
 
         private Dp c;
         /**
@@ -1029,8 +1030,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
         }
 
-        public void publicPublishProgress(String... values) {
-            publishProgress(values);
+        @Override
+        public void onProgress(String progress) {
+            publishProgress(progress);
         }
     }
 }
