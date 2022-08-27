@@ -36,15 +36,13 @@ public class CollectErrorActivity extends Activity {
 
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle(xB.b().a(getApplicationContext(), R.string.common_error_an_error_occurred))
-                    .setMessage("An error occurred while running application.\n" +
-                            "\n" +
-                            "Do you want to report this error log so that we can fix it?\n" +
+                    .setMessage("An error occurred while running Sketchware Pro. " +
+                            "Do you want to report this error log so that we can fix it? " +
                             "No personal information will be included.")
-                    .setPositiveButton("send", null)
-                    .setNegativeButton("no", (dialogInterface, which) -> finish())
+                    .setPositiveButton("Send", null)
+                    .setNegativeButton("Cancel", (dialogInterface, which) -> finish())
                     .setNeutralButton("Show error", null) // null to set proper onClick listeners later without dismissing the AlertDialog
                     .show();
-
 
             TextView messageView = dialog.findViewById(android.R.id.message);
 
