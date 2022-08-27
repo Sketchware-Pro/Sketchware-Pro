@@ -95,6 +95,10 @@ public class Lx {
             content += "implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n";
         }
 
+        if(metadata.isDynamicLinkUsed) {
+            content += "implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'\r\n";
+        }
+
         return j(content + "}\r\n");
     }
 
