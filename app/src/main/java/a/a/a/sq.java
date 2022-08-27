@@ -142,7 +142,7 @@ public class sq {
             }
         }
 
-        if (property != "property_layout_width" && property != "property_layout_height") {
+        if (!property.equals("property_layout_width") && !property.equals("property_layout_height")) {
             return "";
         } else {
             return value + "dp";
