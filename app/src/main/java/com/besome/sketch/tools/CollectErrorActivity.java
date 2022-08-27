@@ -22,6 +22,7 @@ import a.a.a.GB;
 import a.a.a.xB;
 import mod.RequestNetwork;
 import mod.RequestNetworkController;
+import mod.SketchwareUtil;
 
 public class CollectErrorActivity extends Activity {
     private final String webUrl = "webhook url here";
@@ -87,7 +88,7 @@ public class CollectErrorActivity extends Activity {
                 requestNetwork.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
 
                 if (!listener.hasFailed()) {
-                    Toast.makeText(getApplicationContext(), "Sending crash logs...", Toast.LENGTH_SHORT).show();
+                    SketchwareUtil.toast("Sending crash logs…", Toast.LENGTH_LONG);
                 }
             });
         }
@@ -99,14 +100,14 @@ public class CollectErrorActivity extends Activity {
 
         @Override
         public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
-            Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
+            SketchwareUtil.toast("Report sent!");
             finish();
         }
 
         @Override
         public void onErrorResponse(String tag, String message) {
             failed = true;
-            Toast.makeText(getApplicationContext(), "Couldn't report the error. You can try reporting the crash manually in our Discord server.", Toast.LENGTH_LONG).show();
+            SketchwareUtil.toast("Couldn't report the error. You can try reporting the crash manually in our Discord server.", Toast.LENGTH_LONG);
         }
 
         public boolean hasFailed() {
