@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:id="@id/scroll_view" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <RadioGroup android:orientation="vertical" android:id="@id/rg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginRight="8.0dip" android:layout_marginBottom="8.0dip" />
-        <LinearLayout android:orientation="vertical" android:id="@id/content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip" android:layout_marginBottom="8.0dip" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/scroll_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@id/rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8.0dip"
+            android:layout_marginRight="8.0dip"
+            android:layout_marginBottom="8.0dip"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:id="@id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8.0dip"
+            android:layout_marginRight="16.0dip"
+            android:layout_marginBottom="8.0dip"
+            android:orientation="vertical" />
     </LinearLayout>
 </ScrollView>
