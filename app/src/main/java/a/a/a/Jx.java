@@ -354,8 +354,7 @@ public class Jx {
                 sb.append("_ad_unit_id = \"").append(buildConfig.isDebugBuild ? "ca-app-pub-3940256099942544/1033173712" : buildConfig.interstitialAdUnitId).append("\";");
             }
             if (fieldsWithStaticInitializers.contains(Lx.getComponentFieldCode("RewardedVideoAd"))) {
-                sb.append("//Well, you have to set ad unit id with command block for now!").append(EOL);
-                sb.append("_reward_ad_unit_id = \"ca-app-pub-3940256099942544/5224354917\";").append(EOL);
+                sb.append("_reward_ad_unit_id = \"").append(buildConfig.isDebugBuild ? "ca-app-pub-3940256099942544/5224354917" : buildConfig.rewardAdUnitId).append("\";");
             }
 
             if (buildConfig.isDebugBuild) {
