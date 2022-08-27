@@ -69,6 +69,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity android:name="com.besome.sketch.tools.CompileLogActivity" />
+        <activity android:name="com.besome.sketch.tools.CollectErrorActivity" />
         <activity
             android:name="com.besome.sketch.tools.NewKeyStoreActivity"
             android:configChanges="orientation|screenSize" />
