@@ -1,18 +1,18 @@
 package com.besome.sketch.editor.view.palette;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.sketchware.remod.R;
 
 import a.a.a.wB;
-import a.a.a.xB;
 import dev.aldi.sayuti.editor.view.palette.IconBadgeView;
 import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
 import dev.aldi.sayuti.editor.view.palette.IconCardView;
@@ -65,7 +65,7 @@ public class PaletteWidget extends LinearLayout {
     }
 
     private int getDip(int var1) {
-        return (int) TypedValue.applyDimension(1, (float) var1, getContext().getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) var1, getContext().getResources().getDisplayMetrics());
     }
 
     public View a(PaletteWidget.a layoutType, String tag) {
@@ -177,17 +177,16 @@ public class PaletteWidget extends LinearLayout {
         this.a.removeAllViews();
     }
 
-    @SuppressLint("ResourceType")
     private void initialize(Context context) {
-        wB.a(context, this, 2131427610);
-        a = findViewById(2131231307);
-        b = findViewById(2131232333);
-        c = findViewById(2131230979);
-        d = findViewById(2131232028);
-        e = findViewById(2131232288);
-        d.setText(Helper.getResString(2131626466));
-        e.setText(Helper.getResString(2131626468));
-        f = findViewById(2131231695);
+        wB.a(context, this, R.layout.palette_widget);
+        a = findViewById(R.id.layout);
+        b = findViewById(R.id.widget);
+        c = findViewById(R.id.divider);
+        d = findViewById(R.id.tv_layout);
+        e = findViewById(R.id.tv_widget);
+        d.setText(Helper.getResString(R.string.view_panel_title_layouts));
+        e.setText(Helper.getResString(R.string.view_panel_title_widgets));
+        f = findViewById(R.id.scv);
     }
 
     public void b() {
@@ -197,12 +196,12 @@ public class PaletteWidget extends LinearLayout {
     public void extraTitle(String title, int var2) {
         LinearLayout var3 = var2 == 0 ? a : b;
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LayoutParams(-1, getDip(1)));
+        linearLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDip(1)));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setBackgroundColor(Color.parseColor("#12000000"));
         var3.addView(linearLayout);
         TextView textView = new TextView(getContext());
-        LayoutParams layoutParams = new LayoutParams(-2, -2);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(getDip(4), getDip(4), getDip(4), getDip(4));
         textView.setLayoutParams(layoutParams);
         textView.setText(title);
