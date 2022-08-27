@@ -44,7 +44,6 @@ public class PaletteFavorite extends LinearLayout {
         wB.a(context, this, R.layout.palette_favorite);
         collectionWidgets = findViewById(R.id.widget);
         scrollView = findViewById(R.id.scv);
-        ((TextView) findViewById(R.id.tv_shared_views)).setText(Helper.getResString(R.string.shared_views_list_title_shared_views));
     }
 
     public void setScrollEnabled(boolean scrollEnabled) {
