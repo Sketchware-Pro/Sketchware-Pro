@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -44,10 +45,10 @@ public class PaletteFavorite extends LinearLayout {
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, 2131427607);
-        a = findViewById(2131232333);
-        b = findViewById(2131231695);
-        ((TextView) findViewById(2131232162)).setText(Helper.getResString(2131626360));
+        wB.a(context, this, R.layout.palette_favorite);
+        a = findViewById(R.id.widget);
+        b = findViewById(R.id.scv);
+        ((TextView) findViewById(R.id.tv_shared_views)).setText(Helper.getResString(R.string.shared_views_list_title_shared_views));
     }
 
     public void setScrollEnabled(boolean scrollEnabled) {
