@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
-
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.sketchware.remod.R;
@@ -16,13 +14,11 @@ import java.util.ArrayList;
 
 import a.a.a.uy;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class PaletteFavorite extends LinearLayout {
-    public LinearLayout a;
-    public CustomScrollView b;
-    public CardView c;
+    private LinearLayout collectionWidgets;
+    private CustomScrollView scrollView;
 
     public PaletteFavorite(Context context) {
         super(context);
@@ -36,26 +32,26 @@ public class PaletteFavorite extends LinearLayout {
 
     public View a(String name, ArrayList<ViewBean> viewBeans) {
         uy favoriteWidget = new uy(getContext(), name, viewBeans);
-        a.addView(favoriteWidget);
+        collectionWidgets.addView(favoriteWidget);
         return favoriteWidget;
     }
 
     public void a() {
-        a.removeAllViews();
+        collectionWidgets.removeAllViews();
     }
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.palette_favorite);
-        a = findViewById(R.id.widget);
-        b = findViewById(R.id.scv);
+        collectionWidgets = findViewById(R.id.widget);
+        scrollView = findViewById(R.id.scv);
         ((TextView) findViewById(R.id.tv_shared_views)).setText(Helper.getResString(R.string.shared_views_list_title_shared_views));
     }
 
     public void setScrollEnabled(boolean scrollEnabled) {
         if (scrollEnabled) {
-            b.b();
+            scrollView.b();
         } else {
-            b.a();
+            scrollView.a();
         }
     }
 }
