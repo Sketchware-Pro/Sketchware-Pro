@@ -241,6 +241,10 @@ public class wq {
         return new File(SketchApplication.getContext().getCacheDir(), "iconpack").getAbsolutePath();
     }
 
+    public static boolean isFontExist(String sc_id, String fontName) {
+        return new File(p + "/" + sc_id + "/" + fontName).exists();
+    }
+
     public static String g() {
         return getAbsolutePathOf(n);
     }

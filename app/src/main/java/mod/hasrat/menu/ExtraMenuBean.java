@@ -36,6 +36,7 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
+import a.a.a.wq;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
@@ -128,12 +129,13 @@ public class ExtraMenuBean {
         fontList.add(0, "default_font");
 
         for (String fontName : fontList) {
-            RadioButton radioButton = logicEditor.b(fontName);
-            radioGroup.addView(radioButton);
-            if (fontName.equals(menu.getArgValue())) {
-                radioButton.setChecked(true);
+            if (wq.isFontExist(logicEditor.B, fontName)) {
+                RadioButton radioButton = logicEditor.b(fontName);
+                radioGroup.addView(radioButton);
+                if (fontName.equals(menu.getArgValue())) {
+                    radioButton.setChecked(true);
+                }
             }
-
             LinearLayout fontLayout = logicEditor.d(fontName);
             fontLayout.setOnClickListener(view -> {
                 int indexOfChild = contentLayout.indexOfChild(view);
