@@ -64,17 +64,17 @@ finish();
                         finish();
                     }
             });
-            dialogBuilder.setNeutralButton("Show error", new DialogInterface.OnClickListener() {
+            dialogBuilder.setNeutralButton("Show error", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialoginterface, int which) {
+                    public void onClick(View v) {
                         // do nothing because it's gonna be overrided later to stop dialog to dismiss when button is clicked to show error
                     }
             });
             dialog = dialogBuilder.create();
             dialog.show();
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new DialogInterface.OnClickListener() {
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
 	            @Override
-	            public void onClick(DialogInterface dialog, int which) {
+	            public void onClick(View v) {
 		        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
 		        messageView.setTextIsSelectable(true);
 		        messageView.setText(error);
