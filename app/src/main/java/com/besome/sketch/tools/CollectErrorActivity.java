@@ -106,7 +106,7 @@ public class CollectErrorActivity extends Activity {
         @Override
         public void onErrorResponse(String tag, String message) {
             failed = true;
-            Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Couldn't report the error. You can try reporting the crash manually in our Discord server.", Toast.LENGTH_LONG).show();
         }
 
         public boolean hasFailed() {
