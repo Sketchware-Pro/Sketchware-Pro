@@ -190,21 +190,23 @@ public class PaletteWidget extends LinearLayout {
         widgetsContainer.removeAllViews();
     }
 
-    public void extraTitle(String title, int var2) {
-        LinearLayout var3 = var2 == 0 ? layoutContainer : widgetsContainer;
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(1)));
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setBackgroundColor(Color.parseColor("#12000000"));
-        var3.addView(linearLayout);
-        TextView textView = new TextView(getContext());
+    public void extraTitle(String title, int targetType) {
+        LinearLayout target = targetType == 0 ? layoutContainer : widgetsContainer;
+
+        LinearLayout divider = new LinearLayout(getContext());
+        divider.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(1)));
+        divider.setOrientation(LinearLayout.HORIZONTAL);
+        divider.setBackgroundColor(Color.parseColor("#12000000"));
+        target.addView(divider);
+
+        TextView titleView = new TextView(getContext());
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-        textView.setLayoutParams(layoutParams);
-        textView.setText(title);
-        textView.setTextSize(12.0F);
-        textView.setTextColor(Color.parseColor("#FF009688"));
-        var3.addView(textView);
+        titleView.setLayoutParams(layoutParams);
+        titleView.setText(title);
+        titleView.setTextSize(12);
+        titleView.setTextColor(Color.parseColor("#FF009688"));
+        target.addView(titleView);
     }
 
     public View extraWidget(String tag, String title, String name) {
@@ -373,12 +375,11 @@ public class PaletteWidget extends LinearLayout {
         } else {
             scrollView.a();
         }
-
     }
 
-    public void setWidgetVisible(int var1) {
-        widgetsContainer.setVisibility(var1);
-        titleWidgets.setVisibility(var1);
+    public void setWidgetVisible(int visibility) {
+        widgetsContainer.setVisibility(visibility);
+        titleWidgets.setVisibility(visibility);
     }
 
     public enum a {
