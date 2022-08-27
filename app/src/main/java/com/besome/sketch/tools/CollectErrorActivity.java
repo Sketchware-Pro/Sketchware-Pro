@@ -1,5 +1,6 @@
 package com.besome.sketch.tools;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -26,8 +27,11 @@ import mod.RequestNetworkController;
 import mod.SketchwareUtil;
 
 public class CollectErrorActivity extends Activity {
+    @SuppressLint("SetTextI18n")
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         RequestNetwork requestNetwork = new RequestNetwork(this);
         WebhookListener listener = new WebhookListener();
         Intent intent = getIntent();
@@ -75,7 +79,7 @@ public class CollectErrorActivity extends Activity {
                 if ((content + "\n```\n" + error + "```").length() > 2000) {
                     map.put("content", content);
                     requestNetwork.setParams(map, RequestNetworkController.REQUEST_BODY);
-                    requestNetwork.startRequestNetwork("POST", BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(map), listener);
+                    requestNetwork.startRequestNetwork(RequestNetworkController.POST, BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(map), listener);
                     map = new HashMap<>();
                     map.put("content", "```\n" + error + "```");
                 } else {
@@ -84,7 +88,7 @@ public class CollectErrorActivity extends Activity {
                     //idk why it's needed every time before starting request, without this the webhook doesn't get sent
                 }
                 requestNetwork.setParams(map, RequestNetworkController.REQUEST_BODY);
-                requestNetwork.startRequestNetwork("POST", BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(map), listener);
+                requestNetwork.startRequestNetwork(RequestNetworkController.POST, BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(map), listener);
 
                 if (!listener.hasFailed()) {
                     SketchwareUtil.toast("Sending crash logs…", Toast.LENGTH_LONG);
