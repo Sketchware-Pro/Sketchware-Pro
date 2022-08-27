@@ -22,7 +22,6 @@ import a.a.a.GB;
 import a.a.a.xB;
 import mod.RequestNetwork;
 import mod.RequestNetworkController;
-import mod.SketchwareUtil;
 
 public class CollectErrorActivity extends Activity {
     private final String webUrl = "webhook url here";
@@ -30,18 +29,7 @@ public class CollectErrorActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RequestNetwork requestNetwork = new RequestNetwork(this);
-        RequestNetwork.RequestListener listener = new RequestNetwork.RequestListener() {
-            @Override
-            public void onResponse(String tag, String message, HashMap<String, Object> param3) {
-                Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
-                finish();
-            }
-
-            @Override
-            public void onErrorResponse(String tag, String message) {
-                Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
-            }
-        };
+        WebhookListener listener = new WebhookListener();
         Intent intent = getIntent();
         if (intent != null) {
             final String error = intent.getStringExtra("error");
@@ -99,8 +87,32 @@ public class CollectErrorActivity extends Activity {
                 }
                 requestNetwork.setParams(map, RequestNetworkController.REQUEST_BODY);
                 requestNetwork.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
-                Toast.makeText(getApplicationContext(), "Sending crash logs...", Toast.LENGTH_SHORT).show();
+
+                if (!listener.hasFailed()) {
+                    Toast.makeText(getApplicationContext(), "Sending crash logs...", Toast.LENGTH_SHORT).show();
+                }
             });
+        }
+    }
+
+    private class WebhookListener implements RequestNetwork.RequestListener {
+
+        private boolean failed = false;
+
+        @Override
+        public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
+            Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        @Override
+        public void onErrorResponse(String tag, String message) {
+            failed = true;
+            Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
+        }
+
+        public boolean hasFailed() {
+            return failed;
         }
     }
 }
