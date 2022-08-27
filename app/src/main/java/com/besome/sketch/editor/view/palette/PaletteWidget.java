@@ -47,12 +47,12 @@ import mod.hey.studios.util.Helper;
 
 public class PaletteWidget extends LinearLayout {
 
-    public LinearLayout a;
-    public LinearLayout b;
-    public View c;
-    public TextView d;
-    public TextView e;
-    public CustomScrollView f;
+    private LinearLayout layoutContainer;
+    private LinearLayout widgetsContainer;
+    private View divider;
+    private TextView titleLayouts;
+    private TextView titleWidgets;
+    private CustomScrollView scrollView;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -95,7 +95,7 @@ public class PaletteWidget extends LinearLayout {
             layout.setTag(tag);
         }
 
-        a.addView(layout);
+        layoutContainer.addView(layout);
         return layout;
     }
 
@@ -169,32 +169,32 @@ public class PaletteWidget extends LinearLayout {
 
         iconBase.setText(text);
         iconBase.setName(resourceName);
-        b.addView(iconBase);
+        widgetsContainer.addView(iconBase);
         return iconBase;
     }
 
     public void a() {
-        this.a.removeAllViews();
+        layoutContainer.removeAllViews();
     }
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.palette_widget);
-        a = findViewById(R.id.layout);
-        b = findViewById(R.id.widget);
-        c = findViewById(R.id.divider);
-        d = findViewById(R.id.tv_layout);
-        e = findViewById(R.id.tv_widget);
-        d.setText(Helper.getResString(R.string.view_panel_title_layouts));
-        e.setText(Helper.getResString(R.string.view_panel_title_widgets));
-        f = findViewById(R.id.scv);
+        layoutContainer = findViewById(R.id.layout);
+        widgetsContainer = findViewById(R.id.widget);
+        divider = findViewById(R.id.divider);
+        titleLayouts = findViewById(R.id.tv_layout);
+        titleWidgets = findViewById(R.id.tv_widget);
+        titleLayouts.setText(Helper.getResString(R.string.view_panel_title_layouts));
+        titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
+        scrollView = findViewById(R.id.scv);
     }
 
     public void b() {
-        b.removeAllViews();
+        widgetsContainer.removeAllViews();
     }
 
     public void extraTitle(String title, int var2) {
-        LinearLayout var3 = var2 == 0 ? a : b;
+        LinearLayout var3 = var2 == 0 ? layoutContainer : widgetsContainer;
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDip(1)));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -316,7 +316,7 @@ public class PaletteWidget extends LinearLayout {
 
         iconBase.setText(title);
         iconBase.setName(name);
-        b.addView(iconBase);
+        widgetsContainer.addView(iconBase);
         return iconBase;
     }
 
@@ -360,28 +360,28 @@ public class PaletteWidget extends LinearLayout {
             iconBase.setTag(tag);
         }
 
-        a.addView(iconBase);
+        layoutContainer.addView(iconBase);
         return iconBase;
     }
 
     public void setLayoutVisible(int visibility) {
-        a.setVisibility(visibility);
-        c.setVisibility(visibility);
-        d.setVisibility(visibility);
+        layoutContainer.setVisibility(visibility);
+        divider.setVisibility(visibility);
+        titleLayouts.setVisibility(visibility);
     }
 
     public void setScrollEnabled(boolean scrollEnabled) {
         if (scrollEnabled) {
-            f.b();
+            scrollView.b();
         } else {
-            f.a();
+            scrollView.a();
         }
 
     }
 
     public void setWidgetVisible(int var1) {
-        b.setVisibility(var1);
-        e.setVisibility(var1);
+        widgetsContainer.setVisibility(var1);
+        titleWidgets.setVisibility(var1);
     }
 
     public enum a {
