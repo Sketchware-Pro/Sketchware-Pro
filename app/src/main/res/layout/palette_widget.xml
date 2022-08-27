@@ -1,13 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.besome.sketch.lib.ui.CustomScrollView android:id="@id/scv" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <TextView android:textSize="12.0sp" android:textColor="#ff009688" android:id="@id/tv_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="4.0dip" />
-            <LinearLayout android:orientation="vertical" android:id="@id/layout" android:paddingRight="4.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-            <LinearLayout android:orientation="horizontal" android:id="@id/divider" android:background="#12000000" android:layout_width="fill_parent" android:layout_height="1.0dip" />
-            <TextView android:textSize="12.0sp" android:textColor="#ff009688" android:id="@id/tv_widget" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="4.0dip" />
-            <LinearLayout android:orientation="vertical" android:id="@id/widget" android:paddingRight="4.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.besome.sketch.lib.ui.CustomScrollView
+        android:id="@+id/scv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:textColor="#ff009688"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp" />
+
+            <LinearLayout
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#12000000"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/tv_widget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:textColor="#ff009688"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:id="@+id/widget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp" />
         </LinearLayout>
     </com.besome.sketch.lib.ui.CustomScrollView>
 </LinearLayout>
