@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.R;
+
 import a.a.a.mB;
 import a.a.a.wB;
 
@@ -58,7 +60,7 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(2130771982, 2130771983);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
     public void l() {
@@ -72,17 +74,17 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
-        super.setContentView(2131427378);
-        overridePendingTransition(2130771982, 2130771983);
-        p = findViewById(2131230913);
-        k = findViewById(2131230910);
-        l = findViewById(2131230911);
-        m = findViewById(2131230908);
-        o = findViewById(2131230916);
-        n = findViewById(2131230915);
-        q = findViewById(2131230912);
-        r = findViewById(2131230914);
-        s = findViewById(2131230909);
+        super.setContentView(R.layout.common_dialog_layout);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        p = findViewById(R.id.common_dialog_icon);
+        k = findViewById(R.id.common_dialog_container);
+        l = findViewById(R.id.common_dialog_content);
+        m = findViewById(R.id.common_dialog_button_layout);
+        o = findViewById(R.id.common_dialog_tv_title);
+        n = findViewById(R.id.common_dialog_title_layout);
+        q = findViewById(R.id.common_dialog_default_button);
+        r = findViewById(R.id.common_dialog_ok_button);
+        s = findViewById(R.id.common_dialog_cancel_button);
         k.setOnClickListener(view -> {
             if (!mB.a()) {
                 finish();
