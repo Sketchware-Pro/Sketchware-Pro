@@ -64,9 +64,9 @@ finish();
                         finish();
                     }
             });
-            dialogBuilder.setNeutralButton("Show error", new View.OnClickListener() {
+            dialogBuilder.setNeutralButton("Show error", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(DialogInterface dialog, int which) {
                         // do nothing because it's gonna be overrided later to stop dialog to dismiss when button is clicked to show error
                     }
             });
@@ -80,9 +80,9 @@ finish();
 		        messageView.setText(error);
 	            }
             });
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new DialogInterface.OnClickListener() {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         map.put("username", "Crash Reporter");
                         map.put("avatar_url", "https://i.postimg.cc/FRZTV4jY/Sketchware-Pro.png");
                         StringBuilder content = new StringBuilder("```\nSKETCHWARE ver=" + GB.d(getApplicationContext())
@@ -109,7 +109,7 @@ finish();
                             reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
                             reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                         }
-                        Toast.makeText(getApplicationContext(), "Sending report...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Sending crash logs...", Toast.LENGTH_SHORT).show();
                     }
                 });
         }
