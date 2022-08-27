@@ -1028,7 +1028,7 @@ public class ManageEvent {
     }
 
     /**
-     * @return Code of extra listeners, used in {@link a.a.a.Lx#d(String, String, String)}
+     * @return Code of extra listeners, used in {@link a.a.a.Lx#getListenerCode(String, String, String)}
      */
     public static String g(String listenerName, String targetId, String listenerLogic) {
         switch (listenerName) {
@@ -1071,7 +1071,7 @@ public class ManageEvent {
                         "};";
 
             case "FragmentStatePagerAdapter":
-                String className = Lx.a(targetId + "Fragment");
+                String className = Lx.getAdapterName(targetId + "Fragment");
                 return "public class " + className + " extends FragmentStatePagerAdapter {\r\n" +
                         "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
                         "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +

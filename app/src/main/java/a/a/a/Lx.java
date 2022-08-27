@@ -25,7 +25,7 @@ public class Lx {
     /**
      * @return Content of a <code>build.gradle</code> file for the module ':app', with indentation
      */
-    public static String a(int compileSdkVersion, int minSdkVersion, int targetSdkVersion, jq metadata) {
+    public static String getBuildGradleString(int compileSdkVersion, int minSdkVersion, int targetSdkVersion, jq metadata) {
         String content = "plugins {\r\n" +
                 "id 'com.android.application'\r\n" +
                 "}\r\n" +
@@ -101,7 +101,7 @@ public class Lx {
     /**
      * @return Code to be added to <code>onActivityResult</code> for a component
      */
-    public static String a(int componentId, String componentName, String onSuccessLogic, String onCancelledLogic) {
+    public static String getOnActivityResultCode(int componentId, String componentName, String onSuccessLogic, String onCancelledLogic) {
         String componentLogic;
         switch (componentId) {
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
@@ -150,7 +150,7 @@ public class Lx {
     /**
      * @return Code to initialize a widget
      */
-    public static String a(ViewBean bean) {
+    public static String getViewInitializerString(ViewBean bean) {
         String type;
         if (!bean.convert.isEmpty()) {
             type = bean.convert;
@@ -165,7 +165,7 @@ public class Lx {
      * @param widgetName The list widget's name
      * @return The adapter's class name (e.g. List_filesAdapter from list_files)
      */
-    public static String a(String widgetName) {
+    public static String getAdapterName(String widgetName) {
         return widgetName.substring(0, 1).toUpperCase() +
                 widgetName.substring(1) +
                 "Adapter";
@@ -174,7 +174,7 @@ public class Lx {
     /**
      * @return A component request code constant declaration
      */
-    public static String a(String componentName, int value) {
+    public static String getRequestCodeConstant(String componentName, int value) {
         return "public final int REQ_CD_" + componentName.toUpperCase() + " = " + value + ";";
     }
 
@@ -625,7 +625,7 @@ public class Lx {
                             fieldDeclaration = "";
                             break;
                         case "FragmentStatePagerAdapter":
-                            fieldDeclaration += " " + a(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
+                            fieldDeclaration += " " + getAdapterName(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
                             break;
                         case "RewardedVideoAd":
                             fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
@@ -818,12 +818,12 @@ public class Lx {
      * @return Code of an adapter for a ListView
      */
     public static String getListAdapterCode(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
-        String className = a(widgetName);
+        String className = getAdapterName(widgetName);
 
         String initializers = "";
         StringBuilder initializersBuilder = new StringBuilder(initializers);
         for (ViewBean bean : views) {
-            initializersBuilder.append(a(bean)).append("\r\n");
+            initializersBuilder.append(getViewInitializerString(bean)).append("\r\n");
         }
         initializers = initializersBuilder.toString();
 
@@ -932,7 +932,7 @@ public class Lx {
         }
     }
 
-    public static void a(StringBuilder stringBuilder, int indentSize) {
+    public static void appendIndent(StringBuilder stringBuilder, int indentSize) {
         for (int i = 0; i < indentSize; ++i) {
             stringBuilder.append('\t');
         }
@@ -1055,7 +1055,7 @@ public class Lx {
                 "}\r\n";
     }
 
-    public static String b(String eventName, String viewType, String viewId) {
+    public static String getDefaultActivityLifecycleCode(String eventName, String viewType, String viewId) {
         boolean isMapView = viewType.equals("MapView");
         boolean isAdView = viewType.equals("AdView");
         StringBuilder code = new StringBuilder();
@@ -1155,7 +1155,7 @@ public class Lx {
     /**
      * @return Initializer for a Component that'd appear in <code>_initialize(Bundle)</code>
      */
-    public static String b(String componentNameId, String componentName, String... parameters) {
+    public static String gteComponentInitializerCode(String componentNameId, String componentName, String... parameters) {
         switch (componentNameId) {
             case "SharedPreferences":
                 String preferenceFilename = "";
@@ -1219,7 +1219,7 @@ public class Lx {
                 return componentName + " = new TimePickerDialog(this, " + componentName + "_listener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, false);";
 
             case "FragmentStatePagerAdapter":
-                return componentName + " = new " + a(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
+                return componentName + " = new " + getAdapterName(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
 
             case "Videos":
                 return "file_" + componentName + " = FileUtil.createNewPictureFile(getApplicationContext());\r\n"
@@ -1647,7 +1647,7 @@ public class Lx {
     /**
      * @return Line declaring a field required for <code>componentName</code>
      */
-    public static String d(String componentName) {
+    public static String getComponentFieldCode(String componentName) {
         switch (componentName) {
             case "FirebaseDB":
                 return "private FirebaseDatabase _firebase = FirebaseDatabase.getInstance();";
@@ -1669,7 +1669,7 @@ public class Lx {
         }
     }
 
-    public static String d(String eventName, String componentName, String eventLogic) {
+    public static String getListenerCode(String eventName, String componentName, String eventLogic) {
         switch (eventName) {
             case "onClickListener":
                 return componentName + ".setOnClickListener(new View.OnClickListener() {\r\n" +
@@ -3088,7 +3088,7 @@ public class Lx {
                 if (var4) {
                     if (codeBit == '\n') {
                         formattedCode.append(codeBit);
-                        a(formattedCode, var7);
+                        appendIndent(formattedCode, var7);
                         var11 = false;
                         var16 = codeIndex;
                     } else {
@@ -3209,7 +3209,7 @@ public class Lx {
                             }
 
                             formattedCode.append(codeBit);
-                            a(formattedCode, var7);
+                            appendIndent(formattedCode, var7);
                             var11 = false;
                             var16 = codeIndex;
                         }
@@ -3240,16 +3240,16 @@ public class Lx {
     }
 
     public static String pagerAdapter(String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic) {
-        String adapterName = a(pagerName);
+        String adapterName = getAdapterName(pagerName);
         Iterator<ViewBean> viewIterator = pagerItemViews.iterator();
 
         StringBuilder viewsInitializer;
         if (viewIterator.hasNext()) {
-            viewsInitializer = new StringBuilder(a(viewIterator.next()))
+            viewsInitializer = new StringBuilder(getViewInitializerString(viewIterator.next()))
                     .append("\r\n");
             while (viewIterator.hasNext()) {
                 viewsInitializer
-                        .append(a(viewIterator.next()))
+                        .append(getViewInitializerString(viewIterator.next()))
                         .append("\r\n");
             }
         } else {
@@ -3319,16 +3319,16 @@ public class Lx {
     }
 
     public static String recyclerViewAdapter(String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
-        String adapterName = a(recyclerViewName);
+        String adapterName = getAdapterName(recyclerViewName);
         Iterator<ViewBean> viewIterator = itemViews.iterator();
 
         StringBuilder viewsInitializer;
         if (viewIterator.hasNext()) {
-            viewsInitializer = new StringBuilder(a(viewIterator.next()))
+            viewsInitializer = new StringBuilder(getViewInitializerString(viewIterator.next()))
                     .append("\r\n");
             while (viewIterator.hasNext()) {
                 viewsInitializer
-                        .append(a(viewIterator.next()))
+                        .append(getViewInitializerString(viewIterator.next()))
                         .append("\r\n");
             }
         } else {

@@ -121,7 +121,7 @@ public class Hx {
 
     public void a(String eventName, String viewType, String viewId) {
         if (!j.containsKey(eventName)) {
-            j.put(eventName, Lx.b(eventName, viewType, viewId));
+            j.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, viewId));
         }
     }
 
@@ -334,7 +334,7 @@ public class Hx {
         }
 
         private String getCode() {
-            return Lx.a(componentId, componentName, onSuccessCode, onCancelledCode);
+            return Lx.getOnActivityResultCode(componentId, componentName, onSuccessCode, onCancelledCode);
         }
     }
 
@@ -439,7 +439,7 @@ public class Hx {
                 }
                 sb.append(code);
             }
-            return Lx.d(a, str, sb.toString());
+            return Lx.getListenerCode(a, str, sb.toString());
         }
     }
 }
