@@ -14,7 +14,7 @@ import android.view.View;
 import java.util.HashMap;
 
 import com.google.gson.*;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.RequestNetwork;
 import mod.RequestNetworkController;
@@ -36,23 +36,23 @@ public class CollectErrorActivity extends Activity {
         super.onCreate(savedInstanceState);
         reqnet = new RequestNetwork(this);
         listener = new RequestNetwork.RequestListener() {
-		@Override
-		public void onResponse(String tag, String message, HashMap<String, Object> param3) {
-                        Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
-                        finish();
-		}
-                @Override
-                public void onErrorResponse(String tag, String message) {
-                    Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
-		}
+            @Override
+		    public void onResponse(String tag, String message, HashMap<String, Object> param3) {
+                  Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
+finish();
+		    }
+           @Override
+            public void onErrorResponse(String tag, String message) {
+                Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
+		    }
         };
         Intent intent = getIntent();
         if (intent != null) {
             final String error = intent.getStringExtra("error");
-            AlertDialog dialog = new AlertDialog.Builder(this);
-            dialog.setTitle(xB.b().a(getApplicationContext(), Resources.string.common_error_an_error_occurred));
-            dialog.setMessage("An error occurred while running application.\n\nDo you want to report this error log so that we can fix it?\nNo personal information will be included.");
-            dialog.setPositiveButton("send", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            dialogBuilder.setTitle(xB.b().a(getApplicationContext(), R.string.common_error_an_error_occurred));
+            dialogBuilder.setMessage("An error occurred while running application.\n\nDo you want to report this error log so that we can fix it?\nNo personal information will be included.");
+            dialogBuilder.setPositiveButton("send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     // left blank intentionally
