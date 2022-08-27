@@ -72,15 +72,15 @@ finish();
             });
             dialog = dialogBuilder.create();
             dialog.show();
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new DialogInterface.OnClickListener() {
 	            @Override
-	            public void onClick(View v) {
+	            public void onClick(DialogInterface dialog, int which) {
 		        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
 		        messageView.setTextIsSelectable(true);
 		        messageView.setText(error);
 	            }
             });
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         map.put("username", "Crash Reporter");
