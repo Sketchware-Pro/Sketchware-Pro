@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -73,13 +74,13 @@ public class ProjectLibraryBean implements Parcelable {
     public static int getLibraryIcon(int i) {
         switch (i) {
             case 0:
-                return 2131166245;
+                return R.drawable.widget_firebase;
             case 1:
-                return 2131165505;
+                return R.drawable.connected_96;
             case 2:
-                return 2131166234;
+                return R.drawable.widget_admob;
             case 3:
-                return 2131166247;
+                return R.drawable.widget_google_map;
             default:
                 return 0;
         }
@@ -88,13 +89,13 @@ public class ProjectLibraryBean implements Parcelable {
     public static int getLibraryResDesc(int i) {
         switch (i) {
             case 0:
-                return 2131625204;
+                return R.string.design_library_description_firebase;
             case 1:
-                return 2131625203;
+                return R.string.design_library_description_appcompat_and_design;
             case 2:
-                return 2131625202;
+                return R.string.design_library_description_admob;
             case 3:
-                return 2131625205;
+                return R.string.design_library_description_google_map;
             default:
                 return 0;
         }
@@ -103,13 +104,13 @@ public class ProjectLibraryBean implements Parcelable {
     public static int getLibraryResName(int i) {
         switch (i) {
             case 0:
-                return 2131625234;
+                return R.string.design_library_firebase_title_firebase;
             case 1:
-                return 2131625251;
+                return R.string.design_library_title_appcompat_and_design;
             case 2:
-                return 2131625194;
+                return R.string.design_library_admob_title_admob;
             case 3:
-                return 2131625241;
+                return R.string.design_library_google_map_title;
             default:
                 return 0;
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -17,14 +18,12 @@ import mod.hey.studios.util.Helper;
 
 public class PresetSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    private boolean A = false;
-    private ImageView t;
-    private ImageView u;
-    private ImageView v;
-    private TextView w;
+    private boolean inEditMode = false;
+    private ImageView activity;
+    private TextView activityName;
     private int requestCode;
-    private int y = 0;
-    private ArrayList<ProjectFileBean> z;
+    private int index = 0;
+    private ArrayList<ProjectFileBean> presets;
 
     private void applyPresetData(String presetName) {
         int resDrawable;
@@ -42,95 +41,87 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
                 resDrawable = -1;
         }
 
-        v.setImageResource(resDrawable);
-        w.setText(presetName);
+        activity.setImageResource(resDrawable);
+        activityName.setText(presetName);
     }
 
-    private void n() {
+    private void close() {
         Intent intent = new Intent();
-        intent.putExtra("preset_data", z.get(y));
+        intent.putExtra("preset_data", presets.get(index));
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private void o() {
+    private void confirmBeforeClose() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(2131625758));
-        dialog.a(2131165733);
+        dialog.b(Helper.getResString(R.string.preset_setting_title));
+        dialog.a(R.drawable.ic_detail_setting_48dp);
         dialog.setCancelable(false);
-        dialog.a(Helper.getResString(2131625757));
-        dialog.b(Helper.getResString(2131625010), v -> n());
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.preset_setting_edit_warning));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> close());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        switch (id) {
-            case 2131230835:
-                if (y == 0) {
-                    y = z.size() - 1;
-                } else {
-                    y = y - 1;
-                }
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.btn_left) {
+            if (index == 0) {
+                index = presets.size() - 1;
+            } else {
+                index = index - 1;
+            }
 
-                applyPresetData(z.get(y).presetName);
-                break;
+            applyPresetData(presets.get(index).presetName);
+        } else if (id == R.id.btn_right) {
+            if (index == presets.size() - 1) {
+                index = 0;
+            } else {
+                ++index;
+            }
 
-            case 2131230848:
-                if (y == z.size() - 1) {
-                    y = 0;
-                } else {
-                    ++y;
-                }
-
-                applyPresetData(z.get(y).presetName);
-                break;
-
-            case 2131230909:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-
-            case 2131230914:
-                if (!A) {
-                    n();
-                } else {
-                    o();
-                }
-                break;
+            applyPresetData(presets.get(index).presetName);
+        } else if (id == R.id.common_dialog_cancel_button) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if (id == R.id.common_dialog_ok_button) {
+            if (!inEditMode) {
+                close();
+            } else {
+                confirmBeforeClose();
+            }
         }
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
-        setContentView(2131427561);
-        e(Helper.getResString(2131625758));
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.manage_screen_activity_add_view_preset_setting);
+        e(Helper.getResString(R.string.preset_setting_title));
         requestCode = getIntent().getIntExtra("request_code", RESULT_OK);
         if (getIntent().hasExtra("edit_mode")) {
-            A = true;
+            inEditMode = true;
         }
 
-        t = findViewById(2131230835);
-        t.setOnClickListener(this);
-        u = findViewById(2131230848);
-        u.setOnClickListener(this);
-        v = findViewById(2131231104);
-        w = findViewById(2131231863);
+        ImageView left = findViewById(R.id.btn_left);
+        left.setOnClickListener(this);
+        ImageView right = findViewById(R.id.btn_right);
+        right.setOnClickListener(this);
+        activity = findViewById(R.id.img_activity);
+        activityName = findViewById(R.id.tv_activity_name);
         if (requestCode == 276) {
-            z = rq.d();
+            presets = rq.d();
         } else if (requestCode == 277) {
-            z = rq.b();
+            presets = rq.b();
         } else {
-            z = rq.c();
+            presets = rq.c();
         }
 
-        d(Helper.getResString(2131625002));
-        b(Helper.getResString(2131624974));
+        d(Helper.getResString(R.string.common_word_import));
+        b(Helper.getResString(R.string.common_word_cancel));
         r.setOnClickListener(this);
         s.setOnClickListener(this);
-        applyPresetData(z.get(y).presetName);
+        applyPresetData(presets.get(index).presetName);
     }
 }

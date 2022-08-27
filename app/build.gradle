@@ -32,6 +32,8 @@ android {
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
 
         buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v6.4.0-SNAPSHOT-${getCommitHash()}\"")
+
+        buildConfigField("String", "CRASH_REPORT_WEBHOOK_URL", "\"https://discord.com/api/webhooks/1013129494237810701/RBnbEADfie4hYHOxnwSN703MeTZKqMtipE00X-EkSSS8wlo1tGcfY8gdD4j6Jm-cjflz\"")
     }
 
     flavorDimensions "api"

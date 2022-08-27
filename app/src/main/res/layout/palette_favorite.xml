@@ -1,44 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:id="@id/cv_shared_views"
-        android:layout_width="0dp"
-        android:layout_height="0dp">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8.0dip">
-
-            <ImageView
-                android:layout_width="24.0dip"
-                android:layout_height="24.0dip"
-                android:layout_marginBottom="4.0dip"
-                android:src="@drawable/globe_96" />
-
-            <TextView
-                android:id="@id/tv_shared_views"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_primary"
-                android:textSize="12.0sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
     <com.besome.sketch.lib.ui.CustomScrollView
-        android:id="@id/scv"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:id="@+id/scv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@id/widget"
-            android:layout_width="fill_parent"
+            android:id="@+id/widget"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </com.besome.sketch.lib.ui.CustomScrollView>

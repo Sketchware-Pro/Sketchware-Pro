@@ -1,18 +1,19 @@
 package com.besome.sketch.editor.view.palette;
 
-import android.annotation.SuppressLint;
+import static mod.SketchwareUtil.dpToPx;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.sketchware.remod.R;
 
 import a.a.a.wB;
-import a.a.a.xB;
 import dev.aldi.sayuti.editor.view.palette.IconBadgeView;
 import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
 import dev.aldi.sayuti.editor.view.palette.IconCardView;
@@ -47,12 +48,12 @@ import mod.hey.studios.util.Helper;
 
 public class PaletteWidget extends LinearLayout {
 
-    public LinearLayout a;
-    public LinearLayout b;
-    public View c;
-    public TextView d;
-    public TextView e;
-    public CustomScrollView f;
+    private LinearLayout layoutContainer;
+    private LinearLayout widgetsContainer;
+    private View divider;
+    private TextView titleLayouts;
+    private TextView titleWidgets;
+    private CustomScrollView scrollView;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -62,10 +63,6 @@ public class PaletteWidget extends LinearLayout {
     public PaletteWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
-    }
-
-    private int getDip(int var1) {
-        return (int) TypedValue.applyDimension(1, (float) var1, getContext().getResources().getDisplayMetrics());
     }
 
     public View a(PaletteWidget.a layoutType, String tag) {
@@ -95,7 +92,7 @@ public class PaletteWidget extends LinearLayout {
             layout.setTag(tag);
         }
 
-        a.addView(layout);
+        layoutContainer.addView(layout);
         return layout;
     }
 
@@ -169,46 +166,47 @@ public class PaletteWidget extends LinearLayout {
 
         iconBase.setText(text);
         iconBase.setName(resourceName);
-        b.addView(iconBase);
+        widgetsContainer.addView(iconBase);
         return iconBase;
     }
 
     public void a() {
-        this.a.removeAllViews();
+        layoutContainer.removeAllViews();
     }
 
-    @SuppressLint("ResourceType")
     private void initialize(Context context) {
-        wB.a(context, this, 2131427610);
-        a = findViewById(2131231307);
-        b = findViewById(2131232333);
-        c = findViewById(2131230979);
-        d = findViewById(2131232028);
-        e = findViewById(2131232288);
-        d.setText(Helper.getResString(2131626466));
-        e.setText(Helper.getResString(2131626468));
-        f = findViewById(2131231695);
+        wB.a(context, this, R.layout.palette_widget);
+        layoutContainer = findViewById(R.id.layout);
+        widgetsContainer = findViewById(R.id.widget);
+        divider = findViewById(R.id.divider);
+        titleLayouts = findViewById(R.id.tv_layout);
+        titleWidgets = findViewById(R.id.tv_widget);
+        titleLayouts.setText(Helper.getResString(R.string.view_panel_title_layouts));
+        titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
+        scrollView = findViewById(R.id.scv);
     }
 
     public void b() {
-        b.removeAllViews();
+        widgetsContainer.removeAllViews();
     }
 
-    public void extraTitle(String title, int var2) {
-        LinearLayout var3 = var2 == 0 ? a : b;
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LayoutParams(-1, getDip(1)));
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setBackgroundColor(Color.parseColor("#12000000"));
-        var3.addView(linearLayout);
-        TextView textView = new TextView(getContext());
-        LayoutParams layoutParams = new LayoutParams(-2, -2);
-        layoutParams.setMargins(getDip(4), getDip(4), getDip(4), getDip(4));
-        textView.setLayoutParams(layoutParams);
-        textView.setText(title);
-        textView.setTextSize(12.0F);
-        textView.setTextColor(Color.parseColor("#FF009688"));
-        var3.addView(textView);
+    public void extraTitle(String title, int targetType) {
+        LinearLayout target = targetType == 0 ? layoutContainer : widgetsContainer;
+
+        LinearLayout divider = new LinearLayout(getContext());
+        divider.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(1)));
+        divider.setOrientation(LinearLayout.HORIZONTAL);
+        divider.setBackgroundColor(Color.parseColor("#12000000"));
+        target.addView(divider);
+
+        TextView titleView = new TextView(getContext());
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        titleView.setLayoutParams(layoutParams);
+        titleView.setText(title);
+        titleView.setTextSize(12);
+        titleView.setTextColor(Color.parseColor("#FF009688"));
+        target.addView(titleView);
     }
 
     public View extraWidget(String tag, String title, String name) {
@@ -317,7 +315,7 @@ public class PaletteWidget extends LinearLayout {
 
         iconBase.setText(title);
         iconBase.setName(name);
-        b.addView(iconBase);
+        widgetsContainer.addView(iconBase);
         return iconBase;
     }
 
@@ -361,28 +359,27 @@ public class PaletteWidget extends LinearLayout {
             iconBase.setTag(tag);
         }
 
-        a.addView(iconBase);
+        layoutContainer.addView(iconBase);
         return iconBase;
     }
 
     public void setLayoutVisible(int visibility) {
-        a.setVisibility(visibility);
-        c.setVisibility(visibility);
-        d.setVisibility(visibility);
+        layoutContainer.setVisibility(visibility);
+        divider.setVisibility(visibility);
+        titleLayouts.setVisibility(visibility);
     }
 
     public void setScrollEnabled(boolean scrollEnabled) {
         if (scrollEnabled) {
-            f.b();
+            scrollView.b();
         } else {
-            f.a();
+            scrollView.a();
         }
-
     }
 
-    public void setWidgetVisible(int var1) {
-        b.setVisibility(var1);
-        e.setVisibility(var1);
+    public void setWidgetVisible(int visibility) {
+        widgetsContainer.setVisibility(visibility);
+        titleWidgets.setVisibility(visibility);
     }
 
     public enum a {

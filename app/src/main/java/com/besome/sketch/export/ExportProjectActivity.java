@@ -717,7 +717,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
                 dp = new Dp(this, a, project_metadata);
-                dp.setBuildAppBundle(true);
+                dp.setBuildAppBundle(buildingAppBundle);
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");
