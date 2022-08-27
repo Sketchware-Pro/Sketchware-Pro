@@ -19,9 +19,6 @@ import mod.RequestNetwork;
 import mod.RequestNetworkController;
 
 public class CollectErrorActivity extends Activity {
-
-    private HashMap<String, Object> map = new HashMap<>();
-
     private RequestNetwork reqnet;
     private RequestNetwork.RequestListener listener;
     private final String webUrl = "webhook url here";
@@ -63,32 +60,28 @@ public class CollectErrorActivity extends Activity {
                 messageView.setText(error);
             });
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                map.put("username", "Crash Reporter");
-                map.put("avatar_url", "https://i.postimg.cc/FRZTV4jY/Sketchware-Pro.png");
                 StringBuilder content = new StringBuilder("```\nSKETCHWARE ver=" + GB.d(getApplicationContext())
                         + "\nLocale=" + GB.g(getApplicationContext())
                         + "\nVERSION.RELEASE: " + Build.VERSION.RELEASE
                         + "\nBRAND: " + Build.BRAND
                         + "\nMANUFACTURER: " + Build.MANUFACTURER
                         + "\nMODEL: " + Build.MODEL);
-                StringBuilder length = new StringBuilder(content + "\r\n\n" + error);
-                map = new HashMap<>();
-                if (length.length() > 2000) {
+
+                HashMap<String, Object> map = new HashMap<>();
+                if ((content + "\r\n\n" + error).length() > 2000) {
                     map.put("content", content + "\n```");
                     reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
                     reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                     map = new HashMap<>();
                     map.put("content", "```\n" + error + "\n```");
-                    reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
-                    reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                 } else {
                     content.append("\r\n\n" + error);
                     content.append("\n```");
                     map.put("content", content.toString());
                     //idk why it's needed every time before starting request, without this the webhook doesn't get sent
-                    reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
-                    reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                 }
+                reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                 Toast.makeText(getApplicationContext(), "Sending crash logs...", Toast.LENGTH_SHORT).show();
             });
         }
