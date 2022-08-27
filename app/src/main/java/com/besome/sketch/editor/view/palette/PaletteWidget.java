@@ -1,9 +1,10 @@
 package com.besome.sketch.editor.view.palette;
 
+import static mod.SketchwareUtil.dpToPx;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -62,10 +63,6 @@ public class PaletteWidget extends LinearLayout {
     public PaletteWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
-    }
-
-    private int getDip(int var1) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) var1, getContext().getResources().getDisplayMetrics());
     }
 
     public View a(PaletteWidget.a layoutType, String tag) {
@@ -196,13 +193,13 @@ public class PaletteWidget extends LinearLayout {
     public void extraTitle(String title, int var2) {
         LinearLayout var3 = var2 == 0 ? layoutContainer : widgetsContainer;
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDip(1)));
+        linearLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(1)));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setBackgroundColor(Color.parseColor("#12000000"));
         var3.addView(linearLayout);
         TextView textView = new TextView(getContext());
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(getDip(4), getDip(4), getDip(4), getDip(4));
+        layoutParams.setMargins(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
         textView.setLayoutParams(layoutParams);
         textView.setText(title);
         textView.setTextSize(12.0F);
