@@ -97,6 +97,8 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.jbk.build.BuildProgressReceiver;
+import mod.jbk.code.CodeEditorColorSchemes;
+import mod.jbk.code.CodeEditorLanguages;
 import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
@@ -678,10 +680,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         progress.show();
 
         new Thread(() -> {
-            final String source = new yq(getApplicationContext(), sc_id).getFileSrc(projectFileSelector.getFileName(), jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            String filename = projectFileSelector.getFileName();
+            final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
-                    .setTitle(projectFileSelector.getFileName())
+                    .setTitle(filename)
                     .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
 
@@ -692,11 +695,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 CodeEditor editor = new CodeEditor(DesignActivity.this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
                 editor.setEditable(false);
-                editor.setEditorLanguage(new JavaLanguage());
-                editor.setColorScheme(new EditorColorScheme());
                 editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
+
+                if (filename.endsWith(".xml")) {
+                    editor.setColorScheme(CodeEditorColorSchemes.GITHUB);
+                    editor.setEditorLanguage(CodeEditorLanguages.XML);
+                } else {
+                    editor.setColorScheme(new EditorColorScheme());
+                    editor.setEditorLanguage(new JavaLanguage());
+                }
 
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.setView(editor,
