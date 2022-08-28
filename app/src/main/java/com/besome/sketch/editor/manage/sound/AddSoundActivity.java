@@ -1,17 +1,5 @@
 package com.besome.sketch.editor.manage.sound;
 
-import a.a.a.Bv;
-import a.a.a.Cv;
-import a.a.a.Dv;
-import a.a.a.Ev;
-import a.a.a.Gv;
-import a.a.a.HB;
-import a.a.a.Qp;
-import a.a.a.WB;
-import a.a.a.bB;
-import a.a.a.uq;
-import a.a.a.xB;
-import a.a.a.yy;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -27,18 +15,30 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import androidx.fragment.app.FragmentActivity;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.analytics.HitBuilders;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import a.a.a.HB;
+import a.a.a.Qp;
+import a.a.a.WB;
+import a.a.a.bB;
+import a.a.a.uq;
+import a.a.a.xB;
+import a.a.a.yy;
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
     public CheckBox A;
     public EditText B;
@@ -168,7 +168,30 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         this.B.setPrivateImeOptions("defaultInputmode=english;");
         this.H.setEnabled(false);
         this.H.setOnClickListener(this);
-        this.L.setOnSeekBarChangeListener(new Bv(this));
+        this.L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (I != null && I.isPlaying() && J != null) {
+                    J.cancel();
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (I != null) {
+                    I.seekTo(seekBar.getProgress() * 100);
+                    if (I.isPlaying()) {
+                        r();
+                    }
+                } else {
+                    seekBar.setProgress(0);
+                }
+            }
+        });
         this.z.setOnClickListener(this);
         this.r.setOnClickListener(this);
         this.s.setOnClickListener(this);
@@ -217,36 +240,42 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (this.A.isChecked()) {
             try {
                 Qp.g().a(this.t, projectResourceBean);
-            } catch (yy e) {
-                String message = e.getMessage();
-                int hashCode = message.hashCode();
-                if (hashCode == -2111590760) {
-                    if (message.equals("fail_to_copy")) {
-                        c = 2;
+            } catch (Exception e) {
+                // The bytecode is lying. Checked exceptions suck.
+                //noinspection ConstantConditions
+                if (e instanceof yy) {
+                    String message = e.getMessage();
+                    int hashCode = message.hashCode();
+                    if (hashCode == -2111590760) {
+                        if (message.equals("fail_to_copy")) {
+                            c = 2;
+                        }
+                        c = 65535;
+                    } else if (hashCode != -1587253668) {
+                        if (hashCode == -105163457 && message.equals("duplicate_name")) {
+                            c = 0;
+                        }
+                        c = 65535;
+                    } else {
+                        if (message.equals("file_no_exist")) {
+                            c = 1;
+                        }
+                        c = 65535;
                     }
-                    c = 65535;
-                } else if (hashCode != -1587253668) {
-                    if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                        c = 0;
+                    if (c == 0) {
+                        bB.b(this, xB.b().a(this, 2131624903), 1).show();
+                        return;
+                    } else if (c == 1) {
+                        bB.b(this, xB.b().a(this, 2131624905), 1).show();
+                        return;
+                    } else if (c != 2) {
+                        return;
+                    } else {
+                        bB.b(this, xB.b().a(this, 2131624904), 1).show();
+                        return;
                     }
-                    c = 65535;
                 } else {
-                    if (message.equals("file_no_exist")) {
-                        c = 1;
-                    }
-                    c = 65535;
-                }
-                if (c == 0) {
-                    bB.b(this, xB.b().a(this, 2131624903), 1).show();
-                    return;
-                } else if (c == 1) {
-                    bB.b(this, xB.b().a(this, 2131624905), 1).show();
-                    return;
-                } else if (c != 2) {
-                    return;
-                } else {
-                    bB.b(this, xB.b().a(this, 2131624904), 1).show();
-                    return;
+                    throw e;
                 }
             }
         }
@@ -268,7 +297,20 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     public final void r() {
         this.J = new Timer();
-        this.K = new Gv(this);
+        this.K = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(() -> {
+                    if (I == null) {
+                        J.cancel();
+                    } else {
+                        int currentPosition = I.getCurrentPosition() / 1000;
+                        E.setText(String.format("%d : %02d", currentPosition / 60, currentPosition % 60));
+                        L.setProgress(I.getCurrentPosition() / 100);
+                    }
+                });
+            }
+        };
         this.J.schedule(this.K, 100L, 100L);
     }
 
@@ -295,8 +337,27 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             }
             this.I = new MediaPlayer();
             this.I.setAudioStreamType(3);
-            this.I.setOnPreparedListener(new Cv(this, a2));
-            this.I.setOnCompletionListener(new Dv(this));
+            this.I.setOnPreparedListener(mp -> {
+                H.setImageResource(2131165805);
+                H.setEnabled(true);
+                L.setMax(mp.getDuration() / 100);
+                L.setProgress(0);
+
+                int duration = mp.getDuration() / 1000;
+                F.setText(String.format("%d : %02d", duration / 60, duration % 60));
+
+                int lastIndexOfSlash = a2.lastIndexOf("/");
+                D.setText(a2.substring(lastIndexOfSlash + 1));
+
+                mp.start();
+                r();
+            });
+            this.I.setOnCompletionListener(mp -> {
+                J.cancel();
+                H.setImageResource(2131165812);
+                L.setProgress(0);
+                E.setText("0 : 00");
+            });
             this.I.setDataSource(this, uri);
             this.I.prepare();
             this.N = true;
@@ -328,7 +389,12 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         try {
             mediaMetadataRetriever.setDataSource(str);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with((FragmentActivity) this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into((DrawableRequestBuilder<byte[]>) new Ev(this, imageView));
+                Glide.with((FragmentActivity) this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        imageView.setImageDrawable(glideDrawable);
+                    }
+                });
             } else {
                 Glide.with((FragmentActivity) this).load((Integer) 2131165520).centerCrop().into(imageView);
             }
