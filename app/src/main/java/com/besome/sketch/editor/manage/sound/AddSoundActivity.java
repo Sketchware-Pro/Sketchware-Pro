@@ -214,12 +214,11 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void saveSound() {
-        char c;
         if (isSoundValid(soundNameValidator)) {
-            String obj = soundName.getText().toString();
-            String a2 = HB.a(this, soundUri);
-            if (a2 != null) {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
+            String soundName = this.soundName.getText().toString();
+            String soundFilePath = HB.a(this, soundUri);
+            if (soundFilePath != null) {
+                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, soundName, soundFilePath);
                 projectResourceBean.savedPos = 1;
                 projectResourceBean.isNew = true;
                 if (addToCollection.isChecked()) {
@@ -230,44 +229,32 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                         //noinspection ConstantConditions
                         if (e instanceof yy) {
                             String message = e.getMessage();
-                            int hashCode = message.hashCode();
-                            if (hashCode == -2111590760) {
-                                if (message.equals("fail_to_copy")) {
-                                    c = 2;
-                                }
-                                c = 65535;
-                            } else if (hashCode != -1587253668) {
-                                if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                                    c = 0;
-                                }
-                                c = 65535;
-                            } else {
-                                if (message.equals("file_no_exist")) {
-                                    c = 1;
-                                }
-                                c = 65535;
-                            }
-                            if (c == 0) {
-                                bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
-                                return;
-                            } else if (c == 1) {
-                                bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
-                                return;
-                            } else if (c != 2) {
-                                return;
-                            } else {
-                                bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
-                                return;
+
+                            switch (message) {
+                                case "duplicate_name":
+                                    bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
+                                    break;
+
+                                case "file_no_exist":
+                                    bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
+                                    break;
+
+                                case "fail_to_copy":
+                                    bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
+                                    break;
+
+                                default:
                             }
                         } else {
                             throw e;
                         }
                     }
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("project_resource", projectResourceBean);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
                 }
-                Intent intent = new Intent();
-                intent.putExtra("project_resource", projectResourceBean);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
             }
         }
     }
