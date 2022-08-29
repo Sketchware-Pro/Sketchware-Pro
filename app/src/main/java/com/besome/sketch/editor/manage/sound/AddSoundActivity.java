@@ -113,21 +113,17 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.common_dialog_cancel_button:
-                finish();
-                return;
-            case R.id.common_dialog_ok_button:
-                p();
-                return;
-            case R.id.play:
-                o();
-                return;
-            case R.id.select_file:
-                z.setEnabled(false);
-                n();
-                return;
-            default:
+        int id = v.getId();
+
+        if (id == R.id.common_dialog_cancel_button) {
+            finish();
+        } else if (id == R.id.common_dialog_ok_button) {
+            p();
+        } else if (id == R.id.play) {
+            o();
+        } else if (id == R.id.select_file) {
+            z.setEnabled(false);
+            n();
         }
     }
 
