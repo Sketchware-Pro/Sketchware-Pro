@@ -2,7 +2,6 @@ package com.besome.sketch.editor.manage.sound;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -391,15 +390,13 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             // Seems like that display name is a filename
             return name;
         } else {
+            Optional<String> optionalFilenameExtension = SketchwareUtil.doSingleStringContentQuery(input, MediaStore.MediaColumns.MIME_TYPE);
             String filenameExtension;
-            try (Cursor cursor = getContentResolver().query(input, new String[]{MediaStore.MediaColumns.MIME_TYPE},
-                    null, null, null)) {
-                if (cursor.moveToFirst() && !cursor.isNull(0)) {
-                    filenameExtension = cursor.getString(0).split("/")[1];
-                } else {
-                    // Failed to find out filename extension :/
-                    filenameExtension = "";
-                }
+            if (optionalFilenameExtension.isPresent()) {
+                filenameExtension = optionalFilenameExtension.get().split("/")[1];
+            } else {
+                // Failed to find out filename extension :/
+                filenameExtension = "";
             }
 
             return name + '.' + filenameExtension;

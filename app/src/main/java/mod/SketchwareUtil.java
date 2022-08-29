@@ -137,8 +137,12 @@ public class SketchwareUtil {
      * @return An optional display name of a document picked with Storage access framework.
      */
     public static Optional<String> getSafDocumentDisplayName(Uri uri) {
+        return doSingleStringContentQuery(uri, DocumentsContract.Document.COLUMN_DISPLAY_NAME);
+    }
+
+    public static Optional<String> doSingleStringContentQuery(Uri uri, String columnName) {
         try (Cursor cursor = getContext().getContentResolver().query(uri,
-                new String[]{DocumentsContract.Document.COLUMN_DISPLAY_NAME}, null, null, null)) {
+                new String[]{columnName}, null, null, null)) {
             if (cursor.moveToFirst() && !cursor.isNull(0)) {
                 return Optional.of(cursor.getString(0));
             } else {
