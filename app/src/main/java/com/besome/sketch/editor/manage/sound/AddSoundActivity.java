@@ -357,7 +357,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void setAlbumCover(String sourceFilePath, ImageView target) {
-        try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        try {
             mediaMetadataRetriever.setDataSource(sourceFilePath);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                 Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
@@ -372,6 +373,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         } catch (IllegalArgumentException e) {
             Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(target);
         }
+        mediaMetadataRetriever.release();
     }
 
     private boolean isSoundValid(WB wb) {
