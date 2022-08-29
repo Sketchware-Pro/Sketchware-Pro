@@ -295,8 +295,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void playSound(Uri uri) {
-        String a2 = HB.a(this, uri);
-        if (a2 != null) {
+        String soundFilePath = HB.a(this, uri);
+        if (soundFilePath != null) {
             soundUri = uri;
             try {
                 if (nowPlayingPlayer != null) {
@@ -318,8 +318,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                     int duration = mp.getDuration() / 1000;
                     nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
 
-                    int lastIndexOfSlash = a2.lastIndexOf("/");
-                    nowPlayingFilename.setText(a2.substring(lastIndexOfSlash + 1));
+                    int lastIndexOfSlash = soundFilePath.lastIndexOf("/");
+                    nowPlayingFilename.setText(soundFilePath.substring(lastIndexOfSlash + 1));
 
                     mp.start();
                     startNowPlayingProgressUpdater();
@@ -338,12 +338,12 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 guide.setVisibility(View.GONE);
                 try {
                     if (soundName.getText() == null || soundName.getText().length() <= 0) {
-                        int lastIndexOf = a2.lastIndexOf("/");
-                        int lastIndexOf2 = a2.lastIndexOf(".");
+                        int lastIndexOf = soundFilePath.lastIndexOf("/");
+                        int lastIndexOf2 = soundFilePath.lastIndexOf(".");
                         if (lastIndexOf2 <= 0) {
-                            lastIndexOf2 = a2.length();
+                            lastIndexOf2 = soundFilePath.length();
                         }
-                        soundName.setText(a2.substring(lastIndexOf + 1, lastIndexOf2));
+                        soundName.setText(soundFilePath.substring(lastIndexOf + 1, lastIndexOf2));
                     }
                 } catch (Exception unused) {
                 }
@@ -356,21 +356,21 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    private void setAlbumCover(String str, ImageView imageView) {
+    private void setAlbumCover(String sourceFilePath, ImageView target) {
         try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
-            mediaMetadataRetriever.setDataSource(str);
+            mediaMetadataRetriever.setDataSource(sourceFilePath);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                 Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
                     @Override
                     public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        imageView.setImageDrawable(glideDrawable);
+                        target.setImageDrawable(glideDrawable);
                     }
                 });
             } else {
-                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(imageView);
+                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(target);
             }
-        } catch (IllegalArgumentException unused) {
-            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(imageView);
+        } catch (IllegalArgumentException e) {
+            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(target);
         }
     }
 
