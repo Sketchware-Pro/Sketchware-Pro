@@ -59,7 +59,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private RelativeLayout selectFile;
     private Timer timer = new Timer();
     private Uri soundUri = null;
-    private boolean nowPlaying = false;
+    private boolean isSoundPlayable = false;
 
     @Override
     public void finish() {
@@ -76,19 +76,19 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         super.finish();
     }
 
-    public final void n() {
+    private void pickSound() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("audio/*");
         startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 218);
     }
 
-    public final void o() {
+    private void playOrPause() {
         if (nowPlayingPlayer.isPlaying()) {
-            q();
+            pauseNowPlaying();
             return;
         }
         nowPlayingPlayer.start();
-        r();
+        startNowPlayingProgressUpdater();
         playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
     }
 
@@ -100,7 +100,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             selectFile.setEnabled(true);
             Uri intentData;
             if (resultCode == Activity.RESULT_OK && (intentData = data.getData()) != null) {
-                a(intentData);
+                playSound(intentData);
             }
         }
     }
@@ -112,12 +112,12 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (id == R.id.common_dialog_cancel_button) {
             finish();
         } else if (id == R.id.common_dialog_ok_button) {
-            p();
+            saveSound();
         } else if (id == R.id.play) {
-            o();
+            playOrPause();
         } else if (id == R.id.select_file) {
             selectFile.setEnabled(false);
-            n();
+            pickSound();
         }
     }
 
@@ -174,7 +174,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 if (nowPlayingPlayer != null) {
                     nowPlayingPlayer.seekTo(seekBar.getProgress() * 100);
                     if (nowPlayingPlayer.isPlaying()) {
-                        r();
+                        startNowPlayingProgressUpdater();
                     }
                 } else {
                     seekBar.setProgress(0);
@@ -194,16 +194,16 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             if (projectResourceBean.isNew) {
                 a2 = projectResourceBean.resFullName;
             } else {
-                a2 = a(projectResourceBean);
+                a2 = getSoundFilePath(projectResourceBean);
             }
-            a(Uri.fromFile(new File(a2)));
+            playSound(Uri.fromFile(new File(a2)));
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        q();
+        pauseNowPlaying();
     }
 
     @Override
@@ -213,9 +213,9 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public final void p() {
+    private void saveSound() {
         char c;
-        if (!a(soundNameValidator)) {
+        if (!isSoundValid(soundNameValidator)) {
             return;
         }
         String obj = soundName.getText().toString();
@@ -274,7 +274,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         finish();
     }
 
-    public final void q() {
+    private void pauseNowPlaying() {
         if (nowPlayingPlayer == null || !nowPlayingPlayer.isPlaying()) {
             return;
         }
@@ -283,7 +283,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
-    public final void r() {
+    private void startNowPlayingProgressUpdater() {
         timer = new Timer();
         nowPlayingProgressUpdater = new TimerTask() {
             @Override
@@ -302,13 +302,13 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         timer.schedule(nowPlayingProgressUpdater, 100L, 100L);
     }
 
-    public final String a(ProjectResourceBean projectResourceBean) {
+    private String getSoundFilePath(ProjectResourceBean projectResourceBean) {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
         return soundsDirectory + File.separator + projectResourceBean.resName + substring;
     }
 
-    public final void a(Uri uri) {
+    private void playSound(Uri uri) {
         String a2 = HB.a(this, uri);
         if (a2 == null) {
             return;
@@ -338,7 +338,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 nowPlayingFilename.setText(a2.substring(lastIndexOfSlash + 1));
 
                 mp.start();
-                r();
+                startNowPlayingProgressUpdater();
             });
             nowPlayingPlayer.setOnCompletionListener(mp -> {
                 timer.cancel();
@@ -348,8 +348,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             });
             nowPlayingPlayer.setDataSource(this, uri);
             nowPlayingPlayer.prepare();
-            nowPlaying = true;
-            a(HB.a(this, soundUri), albumCover);
+            isSoundPlayable = true;
+            setAlbumCover(HB.a(this, soundUri), albumCover);
             nowPlayingContainer.setVisibility(View.VISIBLE);
             guide.setVisibility(View.GONE);
             try {
@@ -365,14 +365,14 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             } catch (Exception unused) {
             }
         } catch (Exception e) {
-            nowPlaying = false;
+            isSoundPlayable = false;
             nowPlayingContainer.setVisibility(View.GONE);
             guide.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
 
-    public final void a(String str, ImageView imageView) {
+    private void setAlbumCover(String str, ImageView imageView) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(str);
@@ -392,11 +392,11 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         mediaMetadataRetriever.release();
     }
 
-    public boolean a(WB wb) {
+    private boolean isSoundValid(WB wb) {
         if (!wb.b()) {
             return false;
         }
-        if (nowPlaying && soundUri != null) {
+        if (isSoundPlayable && soundUri != null) {
             return true;
         }
         selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
