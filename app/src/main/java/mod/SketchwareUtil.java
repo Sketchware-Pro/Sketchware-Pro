@@ -3,13 +3,17 @@ package mod;
 import static com.besome.sketch.SketchApplication.getContext;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.provider.DocumentsContract;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.util.Optional;
 import java.util.Random;
 
 import a.a.a.bB;
@@ -129,4 +133,17 @@ public class SketchwareUtil {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
 
+    /**
+     * @return An optional display name of a document picked with Storage access framework.
+     */
+    public static Optional<String> getSafDocumentDisplayName(Uri uri) {
+        try (Cursor cursor = getContext().getContentResolver().query(uri,
+                new String[]{DocumentsContract.Document.COLUMN_DISPLAY_NAME}, null, null, null)) {
+            if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                return Optional.of(cursor.getString(0));
+            } else {
+                return Optional.empty();
+            }
+        }
+    }
 }
