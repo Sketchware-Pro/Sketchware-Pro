@@ -18,8 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentActivity;
-
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
@@ -29,6 +27,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -41,6 +40,7 @@ import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.xB;
 import a.a.a.yy;
+
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
     public CheckBox A;
     public EditText B;
@@ -69,17 +69,15 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     @Override
     public void finish() {
-        Timer timer = this.J;
-        if (timer != null) {
-            timer.cancel();
+        if (J != null) {
+            J.cancel();
         }
-        MediaPlayer mediaPlayer = this.I;
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                this.I.stop();
+        if (I != null) {
+            if (I.isPlaying()) {
+                I.stop();
             }
-            this.I.release();
-            this.I = null;
+            I.release();
+            I = null;
         }
         super.finish();
     }
@@ -91,32 +89,31 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     public final void o() {
-        if (this.I.isPlaying()) {
+        if (I.isPlaying()) {
             q();
             return;
         }
-        this.I.start();
+        I.start();
         r();
-        this.H.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+        H.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        RelativeLayout relativeLayout;
-        Uri data;
-        super.onActivityResult(i, i2, intent);
-        if (i == 218 && (relativeLayout = this.z) != null) {
-            relativeLayout.setEnabled(true);
-            if (i2 != Activity.RESULT_OK || (data = intent.getData()) == null) {
-                return;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 218 && z != null) {
+            z.setEnabled(true);
+            Uri intentData;
+            if (resultCode == Activity.RESULT_OK && (intentData = data.getData()) != null) {
+                a(intentData);
             }
-            a(data);
         }
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.common_dialog_cancel_button:
                 finish();
                 return;
@@ -127,50 +124,50 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 o();
                 return;
             case R.id.select_file:
-                this.z.setEnabled(false);
+                z.setEnabled(false);
                 n();
                 return;
             default:
-                return;
         }
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
+    public void onCreate(Bundle savedInstanceState) {
         String a2;
-        super.onCreate(bundle);
+        super.onCreate(savedInstanceState);
         e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
         setContentView(R.layout.manage_sound_add);
         d(xB.b().a(this, R.string.common_word_save));
         b(xB.b().a(this, R.string.common_word_cancel));
+
         Intent intent = getIntent();
-        this.P = intent.getStringArrayListExtra("sound_names");
-        this.t = intent.getStringExtra("sc_id");
-        this.u = intent.getStringExtra("dir_path");
-        this.v = intent.getIntExtra("request_code", -1);
-        this.D = (TextView) findViewById(R.id.file_name);
-        this.E = (TextView) findViewById(R.id.current_time);
-        this.F = (TextView) findViewById(R.id.file_length);
-        this.w = (LinearLayout) findViewById(R.id.layout_check);
-        this.x = (LinearLayout) findViewById(R.id.layout_control);
-        this.y = (LinearLayout) findViewById(R.id.layout_guide);
-        this.A = (CheckBox) findViewById(R.id.chk_collection);
-        this.C = (TextView) findViewById(R.id.tv_collection);
-        this.z = (RelativeLayout) findViewById(R.id.select_file);
-        this.H = (ImageView) findViewById(R.id.play);
-        this.G = (ImageView) findViewById(R.id.img_album);
-        this.L = (SeekBar) findViewById(R.id.seek);
-        this.w.setVisibility(View.VISIBLE);
-        this.x.setVisibility(View.GONE);
-        this.C.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
-        this.Q = (EasyDeleteEditText) findViewById(R.id.ed_input);
-        this.B = this.Q.getEditText();
-        this.Q.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
-        this.O = new WB(this, this.Q.getTextInputLayout(), uq.b, this.P);
-        this.B.setPrivateImeOptions("defaultInputmode=english;");
-        this.H.setEnabled(false);
-        this.H.setOnClickListener(this);
-        this.L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        P = intent.getStringArrayListExtra("sound_names");
+        t = intent.getStringExtra("sc_id");
+        u = intent.getStringExtra("dir_path");
+        v = intent.getIntExtra("request_code", -1);
+        D = findViewById(R.id.file_name);
+        E = findViewById(R.id.current_time);
+        F = findViewById(R.id.file_length);
+        w = findViewById(R.id.layout_check);
+        x = findViewById(R.id.layout_control);
+        y = findViewById(R.id.layout_guide);
+        A = findViewById(R.id.chk_collection);
+        C = findViewById(R.id.tv_collection);
+        z = findViewById(R.id.select_file);
+        H = findViewById(R.id.play);
+        G = findViewById(R.id.img_album);
+        L = findViewById(R.id.seek);
+        w.setVisibility(View.VISIBLE);
+        x.setVisibility(View.GONE);
+        C.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
+        Q = findViewById(R.id.ed_input);
+        B = Q.getEditText();
+        Q.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
+        O = new WB(this, Q.getTextInputLayout(), uq.b, P);
+        B.setPrivateImeOptions("defaultInputmode=english;");
+        H.setEnabled(false);
+        H.setOnClickListener(this);
+        L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             }
@@ -194,16 +191,16 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 }
             }
         });
-        this.z.setOnClickListener(this);
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
-        if (this.v == 270) {
+        z.setOnClickListener(this);
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
+        if (v == 270) {
             e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound));
-            ProjectResourceBean projectResourceBean = (ProjectResourceBean) intent.getParcelableExtra("project_resource");
-            this.O = new WB(this, this.Q.getTextInputLayout(), uq.b, new ArrayList());
-            this.B.setText(projectResourceBean.resName);
-            this.B.setEnabled(false);
-            this.A.setEnabled(false);
+            ProjectResourceBean projectResourceBean = intent.getParcelableExtra("project_resource");
+            O = new WB(this, Q.getTextInputLayout(), uq.b, new ArrayList<>());
+            B.setText(projectResourceBean.resName);
+            B.setEnabled(false);
+            A.setEnabled(false);
             if (projectResourceBean.isNew) {
                 a2 = projectResourceBean.resFullName;
             } else {
@@ -222,26 +219,26 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(AddSoundActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
+        d.setScreenName(AddSoundActivity.class.getSimpleName());
+        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public final void p() {
         char c;
-        if (!a(this.O)) {
+        if (!a(O)) {
             return;
         }
-        String obj = this.B.getText().toString();
-        String a2 = HB.a(this, this.M);
+        String obj = B.getText().toString();
+        String a2 = HB.a(this, M);
         if (a2 == null) {
             return;
         }
         ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
         projectResourceBean.savedPos = 1;
         projectResourceBean.isNew = true;
-        if (this.A.isChecked()) {
+        if (A.isChecked()) {
             try {
-                Qp.g().a(this.t, projectResourceBean);
+                Qp.g().a(t, projectResourceBean);
             } catch (Exception e) {
                 // The bytecode is lying. Checked exceptions suck.
                 //noinspection ConstantConditions
@@ -288,18 +285,17 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     public final void q() {
-        MediaPlayer mediaPlayer = this.I;
-        if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
+        if (I == null || !I.isPlaying()) {
             return;
         }
-        this.J.cancel();
-        this.I.pause();
-        this.H.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+        J.cancel();
+        I.pause();
+        H.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
     public final void r() {
-        this.J = new Timer();
-        this.K = new TimerTask() {
+        J = new Timer();
+        K = new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(() -> {
@@ -313,13 +309,13 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 });
             }
         };
-        this.J.schedule(this.K, 100L, 100L);
+        J.schedule(K, 100L, 100L);
     }
 
     public final String a(ProjectResourceBean projectResourceBean) {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
-        return this.u + File.separator + projectResourceBean.resName + substring;
+        return u + File.separator + projectResourceBean.resName + substring;
     }
 
     public final void a(Uri uri) {
@@ -327,19 +323,19 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (a2 == null) {
             return;
         }
-        this.M = uri;
+        M = uri;
         try {
-            if (this.I != null) {
-                if (this.K != null) {
-                    this.K.cancel();
+            if (I != null) {
+                if (K != null) {
+                    K.cancel();
                 }
-                if (this.I.isPlaying()) {
-                    this.I.stop();
+                if (I.isPlaying()) {
+                    I.stop();
                 }
             }
-            this.I = new MediaPlayer();
-            this.I.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            this.I.setOnPreparedListener(mp -> {
+            I = new MediaPlayer();
+            I.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            I.setOnPreparedListener(mp -> {
                 H.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
                 H.setEnabled(true);
                 L.setMax(mp.getDuration() / 100);
@@ -354,20 +350,20 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 mp.start();
                 r();
             });
-            this.I.setOnCompletionListener(mp -> {
+            I.setOnCompletionListener(mp -> {
                 J.cancel();
                 H.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
                 L.setProgress(0);
                 E.setText("0 : 00");
             });
-            this.I.setDataSource(this, uri);
-            this.I.prepare();
-            this.N = true;
-            a(HB.a(this, this.M), this.G);
-            this.x.setVisibility(View.VISIBLE);
-            this.y.setVisibility(View.GONE);
+            I.setDataSource(this, uri);
+            I.prepare();
+            N = true;
+            a(HB.a(this, M), G);
+            x.setVisibility(View.VISIBLE);
+            y.setVisibility(View.GONE);
             try {
-                if (this.B.getText() != null && this.B.getText().length() > 0) {
+                if (B.getText() != null && B.getText().length() > 0) {
                     return;
                 }
                 int lastIndexOf = a2.lastIndexOf("/");
@@ -375,13 +371,13 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 if (lastIndexOf2 <= 0) {
                     lastIndexOf2 = a2.length();
                 }
-                this.B.setText(a2.substring(lastIndexOf + 1, lastIndexOf2));
+                B.setText(a2.substring(lastIndexOf + 1, lastIndexOf2));
             } catch (Exception unused) {
             }
         } catch (Exception e) {
-            this.N = false;
-            this.x.setVisibility(View.GONE);
-            this.y.setVisibility(View.VISIBLE);
+            N = false;
+            x.setVisibility(View.GONE);
+            y.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
@@ -391,17 +387,17 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         try {
             mediaMetadataRetriever.setDataSource(str);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with((FragmentActivity) this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
                     @Override
                     public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         imageView.setImageDrawable(glideDrawable);
                     }
                 });
             } else {
-                Glide.with((FragmentActivity) this).load((Integer) R.drawable.default_album_art_200dp).centerCrop().into(imageView);
+                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(imageView);
             }
         } catch (IllegalArgumentException unused) {
-            Glide.with((FragmentActivity) this).load((Integer) R.drawable.default_album_art_200dp).centerCrop().into(imageView);
+            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(imageView);
         }
         mediaMetadataRetriever.release();
     }
@@ -410,10 +406,10 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (!wb.b()) {
             return false;
         }
-        if (this.N && this.M != null) {
+        if (N && M != null) {
             return true;
         }
-        this.z.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+        z.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 }
