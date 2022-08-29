@@ -2,11 +2,13 @@ package com.besome.sketch.editor.manage.sound;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -29,6 +31,7 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,6 +42,8 @@ import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.xB;
 import a.a.a.yy;
+import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_SOUND_PICKER = 218;
@@ -295,64 +300,52 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void playSound(Uri uri) {
-        String soundFilePath = HB.a(this, uri);
-        if (soundFilePath != null) {
-            soundUri = uri;
-            try {
-                if (nowPlayingPlayer != null) {
-                    if (nowPlayingProgressUpdater != null) {
-                        nowPlayingProgressUpdater.cancel();
-                    }
-                    if (nowPlayingPlayer.isPlaying()) {
-                        nowPlayingPlayer.stop();
-                    }
+        soundUri = uri;
+        try {
+            if (nowPlayingPlayer != null) {
+                if (nowPlayingProgressUpdater != null) {
+                    nowPlayingProgressUpdater.cancel();
                 }
-                nowPlayingPlayer = new MediaPlayer();
-                nowPlayingPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                nowPlayingPlayer.setOnPreparedListener(mp -> {
-                    playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
-                    playPause.setEnabled(true);
-                    nowPlayingProgressBar.setMax(mp.getDuration() / 100);
-                    nowPlayingProgressBar.setProgress(0);
-
-                    int duration = mp.getDuration() / 1000;
-                    nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
-
-                    int lastIndexOfSlash = soundFilePath.lastIndexOf("/");
-                    nowPlayingFilename.setText(soundFilePath.substring(lastIndexOfSlash + 1));
-
-                    mp.start();
-                    startNowPlayingProgressUpdater();
-                });
-                nowPlayingPlayer.setOnCompletionListener(mp -> {
-                    timer.cancel();
-                    playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
-                    nowPlayingProgressBar.setProgress(0);
-                    nowPlayingProgress.setText("0 : 00");
-                });
-                nowPlayingPlayer.setDataSource(this, uri);
-                nowPlayingPlayer.prepare();
-                isSoundPlayable = true;
-                setAlbumCover(HB.a(this, soundUri), albumCover);
-                nowPlayingContainer.setVisibility(View.VISIBLE);
-                guide.setVisibility(View.GONE);
-                try {
-                    if (soundName.getText() == null || soundName.getText().length() <= 0) {
-                        int lastIndexOf = soundFilePath.lastIndexOf("/");
-                        int lastIndexOf2 = soundFilePath.lastIndexOf(".");
-                        if (lastIndexOf2 <= 0) {
-                            lastIndexOf2 = soundFilePath.length();
-                        }
-                        soundName.setText(soundFilePath.substring(lastIndexOf + 1, lastIndexOf2));
-                    }
-                } catch (Exception unused) {
+                if (nowPlayingPlayer.isPlaying()) {
+                    nowPlayingPlayer.stop();
                 }
-            } catch (Exception e) {
-                isSoundPlayable = false;
-                nowPlayingContainer.setVisibility(View.GONE);
-                guide.setVisibility(View.VISIBLE);
-                e.printStackTrace();
             }
+            nowPlayingPlayer = new MediaPlayer();
+            nowPlayingPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            nowPlayingPlayer.setOnPreparedListener(mp -> {
+                playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                playPause.setEnabled(true);
+                nowPlayingProgressBar.setMax(mp.getDuration() / 100);
+                nowPlayingProgressBar.setProgress(0);
+
+                int duration = mp.getDuration() / 1000;
+                nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
+
+                nowPlayingFilename.setText(getFilenameOfPickedFile(soundUri));
+
+                mp.start();
+                startNowPlayingProgressUpdater();
+            });
+            nowPlayingPlayer.setOnCompletionListener(mp -> {
+                timer.cancel();
+                playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+                nowPlayingProgressBar.setProgress(0);
+                nowPlayingProgress.setText("0 : 00");
+            });
+            nowPlayingPlayer.setDataSource(this, uri);
+            nowPlayingPlayer.prepare();
+            isSoundPlayable = true;
+            setAlbumCover(HB.a(this, soundUri), albumCover);
+            nowPlayingContainer.setVisibility(View.VISIBLE);
+            guide.setVisibility(View.GONE);
+            if (soundName.getText() == null || soundName.getText().length() <= 0) {
+                soundName.setText(FileUtil.getFileNameNoExtension(getFilenameOfPickedFile(soundUri)));
+            }
+        } catch (Exception e) {
+            isSoundPlayable = false;
+            nowPlayingContainer.setVisibility(View.GONE);
+            guide.setVisibility(View.VISIBLE);
+            e.printStackTrace();
         }
     }
 
@@ -385,5 +378,31 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         }
         selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
+    }
+
+    private String getFilenameOfPickedFile(Uri input) {
+        Optional<String> displayName = SketchwareUtil.getSafDocumentDisplayName(input);
+
+        //noinspection SimplifyOptionalCallChains
+        if (!displayName.isPresent()) return "Unknown filename";
+        String name = displayName.get();
+
+        if (name.contains(".")) {
+            // Seems like that display name is a filename
+            return name;
+        } else {
+            String filenameExtension;
+            try (Cursor cursor = getContentResolver().query(input, new String[]{MediaStore.MediaColumns.MIME_TYPE},
+                    null, null, null)) {
+                if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                    filenameExtension = cursor.getString(0).split("/")[1];
+                } else {
+                    // Failed to find out filename extension :/
+                    filenameExtension = "";
+                }
+            }
+
+            return name + '.' + filenameExtension;
+        }
     }
 }
