@@ -85,11 +85,11 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private void playOrPause() {
         if (nowPlayingPlayer.isPlaying()) {
             pauseNowPlaying();
-            return;
+        } else {
+            nowPlayingPlayer.start();
+            startNowPlayingProgressUpdater();
+            playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
         }
-        nowPlayingPlayer.start();
-        startNowPlayingProgressUpdater();
-        playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
     }
 
     @Override
@@ -123,7 +123,6 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        String a2;
         super.onCreate(savedInstanceState);
         e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
         setContentView(R.layout.manage_sound_add);
@@ -191,12 +190,13 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             soundName.setText(projectResourceBean.resName);
             soundName.setEnabled(false);
             addToCollection.setEnabled(false);
+            String soundPath;
             if (projectResourceBean.isNew) {
-                a2 = projectResourceBean.resFullName;
+                soundPath = projectResourceBean.resFullName;
             } else {
-                a2 = getSoundFilePath(projectResourceBean);
+                soundPath = getSoundFilePath(projectResourceBean);
             }
-            playSound(Uri.fromFile(new File(a2)));
+            playSound(Uri.fromFile(new File(soundPath)));
         }
     }
 
@@ -215,72 +215,69 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     private void saveSound() {
         char c;
-        if (!isSoundValid(soundNameValidator)) {
-            return;
-        }
-        String obj = soundName.getText().toString();
-        String a2 = HB.a(this, soundUri);
-        if (a2 == null) {
-            return;
-        }
-        ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
-        projectResourceBean.savedPos = 1;
-        projectResourceBean.isNew = true;
-        if (addToCollection.isChecked()) {
-            try {
-                Qp.g().a(sc_id, projectResourceBean);
-            } catch (Exception e) {
-                // The bytecode is lying. Checked exceptions suck.
-                //noinspection ConstantConditions
-                if (e instanceof yy) {
-                    String message = e.getMessage();
-                    int hashCode = message.hashCode();
-                    if (hashCode == -2111590760) {
-                        if (message.equals("fail_to_copy")) {
-                            c = 2;
+        if (isSoundValid(soundNameValidator)) {
+            String obj = soundName.getText().toString();
+            String a2 = HB.a(this, soundUri);
+            if (a2 != null) {
+                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
+                projectResourceBean.savedPos = 1;
+                projectResourceBean.isNew = true;
+                if (addToCollection.isChecked()) {
+                    try {
+                        Qp.g().a(sc_id, projectResourceBean);
+                    } catch (Exception e) {
+                        // The bytecode is lying. Checked exceptions suck.
+                        //noinspection ConstantConditions
+                        if (e instanceof yy) {
+                            String message = e.getMessage();
+                            int hashCode = message.hashCode();
+                            if (hashCode == -2111590760) {
+                                if (message.equals("fail_to_copy")) {
+                                    c = 2;
+                                }
+                                c = 65535;
+                            } else if (hashCode != -1587253668) {
+                                if (hashCode == -105163457 && message.equals("duplicate_name")) {
+                                    c = 0;
+                                }
+                                c = 65535;
+                            } else {
+                                if (message.equals("file_no_exist")) {
+                                    c = 1;
+                                }
+                                c = 65535;
+                            }
+                            if (c == 0) {
+                                bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
+                                return;
+                            } else if (c == 1) {
+                                bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
+                                return;
+                            } else if (c != 2) {
+                                return;
+                            } else {
+                                bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
+                                return;
+                            }
+                        } else {
+                            throw e;
                         }
-                        c = 65535;
-                    } else if (hashCode != -1587253668) {
-                        if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                            c = 0;
-                        }
-                        c = 65535;
-                    } else {
-                        if (message.equals("file_no_exist")) {
-                            c = 1;
-                        }
-                        c = 65535;
                     }
-                    if (c == 0) {
-                        bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
-                        return;
-                    } else if (c == 1) {
-                        bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
-                        return;
-                    } else if (c != 2) {
-                        return;
-                    } else {
-                        bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
-                        return;
-                    }
-                } else {
-                    throw e;
                 }
+                Intent intent = new Intent();
+                intent.putExtra("project_resource", projectResourceBean);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
         }
-        Intent intent = new Intent();
-        intent.putExtra("project_resource", projectResourceBean);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
     }
 
     private void pauseNowPlaying() {
-        if (nowPlayingPlayer == null || !nowPlayingPlayer.isPlaying()) {
-            return;
+        if (nowPlayingPlayer != null && nowPlayingPlayer.isPlaying()) {
+            timer.cancel();
+            nowPlayingPlayer.pause();
+            playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
-        timer.cancel();
-        nowPlayingPlayer.pause();
-        playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
     private void startNowPlayingProgressUpdater() {
@@ -310,71 +307,68 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     private void playSound(Uri uri) {
         String a2 = HB.a(this, uri);
-        if (a2 == null) {
-            return;
-        }
-        soundUri = uri;
-        try {
-            if (nowPlayingPlayer != null) {
-                if (nowPlayingProgressUpdater != null) {
-                    nowPlayingProgressUpdater.cancel();
-                }
-                if (nowPlayingPlayer.isPlaying()) {
-                    nowPlayingPlayer.stop();
-                }
-            }
-            nowPlayingPlayer = new MediaPlayer();
-            nowPlayingPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            nowPlayingPlayer.setOnPreparedListener(mp -> {
-                playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
-                playPause.setEnabled(true);
-                nowPlayingProgressBar.setMax(mp.getDuration() / 100);
-                nowPlayingProgressBar.setProgress(0);
-
-                int duration = mp.getDuration() / 1000;
-                nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
-
-                int lastIndexOfSlash = a2.lastIndexOf("/");
-                nowPlayingFilename.setText(a2.substring(lastIndexOfSlash + 1));
-
-                mp.start();
-                startNowPlayingProgressUpdater();
-            });
-            nowPlayingPlayer.setOnCompletionListener(mp -> {
-                timer.cancel();
-                playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
-                nowPlayingProgressBar.setProgress(0);
-                nowPlayingProgress.setText("0 : 00");
-            });
-            nowPlayingPlayer.setDataSource(this, uri);
-            nowPlayingPlayer.prepare();
-            isSoundPlayable = true;
-            setAlbumCover(HB.a(this, soundUri), albumCover);
-            nowPlayingContainer.setVisibility(View.VISIBLE);
-            guide.setVisibility(View.GONE);
+        if (a2 != null) {
+            soundUri = uri;
             try {
-                if (soundName.getText() != null && soundName.getText().length() > 0) {
-                    return;
+                if (nowPlayingPlayer != null) {
+                    if (nowPlayingProgressUpdater != null) {
+                        nowPlayingProgressUpdater.cancel();
+                    }
+                    if (nowPlayingPlayer.isPlaying()) {
+                        nowPlayingPlayer.stop();
+                    }
                 }
-                int lastIndexOf = a2.lastIndexOf("/");
-                int lastIndexOf2 = a2.lastIndexOf(".");
-                if (lastIndexOf2 <= 0) {
-                    lastIndexOf2 = a2.length();
+                nowPlayingPlayer = new MediaPlayer();
+                nowPlayingPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                nowPlayingPlayer.setOnPreparedListener(mp -> {
+                    playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                    playPause.setEnabled(true);
+                    nowPlayingProgressBar.setMax(mp.getDuration() / 100);
+                    nowPlayingProgressBar.setProgress(0);
+
+                    int duration = mp.getDuration() / 1000;
+                    nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
+
+                    int lastIndexOfSlash = a2.lastIndexOf("/");
+                    nowPlayingFilename.setText(a2.substring(lastIndexOfSlash + 1));
+
+                    mp.start();
+                    startNowPlayingProgressUpdater();
+                });
+                nowPlayingPlayer.setOnCompletionListener(mp -> {
+                    timer.cancel();
+                    playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+                    nowPlayingProgressBar.setProgress(0);
+                    nowPlayingProgress.setText("0 : 00");
+                });
+                nowPlayingPlayer.setDataSource(this, uri);
+                nowPlayingPlayer.prepare();
+                isSoundPlayable = true;
+                setAlbumCover(HB.a(this, soundUri), albumCover);
+                nowPlayingContainer.setVisibility(View.VISIBLE);
+                guide.setVisibility(View.GONE);
+                try {
+                    if (soundName.getText() == null || soundName.getText().length() <= 0) {
+                        int lastIndexOf = a2.lastIndexOf("/");
+                        int lastIndexOf2 = a2.lastIndexOf(".");
+                        if (lastIndexOf2 <= 0) {
+                            lastIndexOf2 = a2.length();
+                        }
+                        soundName.setText(a2.substring(lastIndexOf + 1, lastIndexOf2));
+                    }
+                } catch (Exception unused) {
                 }
-                soundName.setText(a2.substring(lastIndexOf + 1, lastIndexOf2));
-            } catch (Exception unused) {
+            } catch (Exception e) {
+                isSoundPlayable = false;
+                nowPlayingContainer.setVisibility(View.GONE);
+                guide.setVisibility(View.VISIBLE);
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            isSoundPlayable = false;
-            nowPlayingContainer.setVisibility(View.GONE);
-            guide.setVisibility(View.VISIBLE);
-            e.printStackTrace();
         }
     }
 
     private void setAlbumCover(String str, ImageView imageView) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        try {
+        try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
             mediaMetadataRetriever.setDataSource(str);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                 Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
@@ -389,7 +383,6 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         } catch (IllegalArgumentException unused) {
             Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(imageView);
         }
-        mediaMetadataRetriever.release();
     }
 
     private boolean isSoundValid(WB wb) {
