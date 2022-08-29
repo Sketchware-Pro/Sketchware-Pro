@@ -41,6 +41,8 @@ import a.a.a.xB;
 import a.a.a.yy;
 
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
+    private static final int REQUEST_CODE_SOUND_PICKER = 218;
+
     private CheckBox addToCollection;
     private EditText soundName;
     private TextView nowPlayingFilename;
@@ -79,7 +81,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private void pickSound() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("audio/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 218);
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), REQUEST_CODE_SOUND_PICKER);
     }
 
     private void playOrPause() {
@@ -96,7 +98,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 218 && selectFile != null) {
+        if (requestCode == REQUEST_CODE_SOUND_PICKER && selectFile != null) {
             selectFile.setEnabled(true);
             Uri intentData;
             if (resultCode == Activity.RESULT_OK && (intentData = data.getData()) != null) {
