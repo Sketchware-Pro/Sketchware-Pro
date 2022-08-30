@@ -25,7 +25,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -215,13 +214,6 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     public void onPause() {
         super.onPause();
         pauseNowPlaying();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(AddSoundActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void saveSound() {
