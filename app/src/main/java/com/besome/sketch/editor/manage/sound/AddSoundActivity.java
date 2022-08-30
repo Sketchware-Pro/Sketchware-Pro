@@ -29,12 +29,14 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import a.a.a.HB;
 import a.a.a.Qp;
 import a.a.a.WB;
 import a.a.a.bB;
@@ -67,6 +69,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private Timer timer = new Timer();
     private Uri soundUri = null;
     private boolean isSoundPlayable = false;
+    private boolean editingSound = false;
 
     @Override
     public void finish() {
@@ -203,6 +206,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             } else {
                 soundPath = getSoundFilePath(projectResourceBean);
             }
+            editingSound = true;
             playSound(Uri.fromFile(new File(soundPath)));
         }
     }
@@ -340,7 +344,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             nowPlayingPlayer.setDataSource(this, uri);
             nowPlayingPlayer.prepare();
             isSoundPlayable = true;
-            setAlbumCover(HB.a(this, soundUri), albumCover);
+            setAlbumCover();
             nowPlayingContainer.setVisibility(View.VISIBLE);
             guide.setVisibility(View.GONE);
             if (soundName.getText() == null || soundName.getText().length() <= 0) {
@@ -354,22 +358,26 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    private void setAlbumCover(String sourceFilePath, ImageView target) {
+    private void setAlbumCover() throws FileNotFoundException, UnsupportedEncodingException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
-            mediaMetadataRetriever.setDataSource(sourceFilePath);
+            if (editingSound) {
+                mediaMetadataRetriever.setDataSource(URLDecoder.decode(soundUri.getPath(), "UTF-8"));
+            } else {
+                mediaMetadataRetriever.setDataSource(getContentResolver().openFileDescriptor(soundUri, "r").getFileDescriptor());
+            }
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                 Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
                     @Override
                     public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        target.setImageDrawable(glideDrawable);
+                        albumCover.setImageDrawable(glideDrawable);
                     }
                 });
             } else {
-                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(target);
+                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(albumCover);
             }
         } catch (IllegalArgumentException e) {
-            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(target);
+            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(albumCover);
         }
         mediaMetadataRetriever.release();
     }
