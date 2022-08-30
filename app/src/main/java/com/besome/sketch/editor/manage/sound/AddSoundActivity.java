@@ -330,7 +330,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 int duration = mp.getDuration() / 1000;
                 nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
 
-                nowPlayingFilename.setText(getFilenameOfPickedFile(soundUri));
+                nowPlayingFilename.setText(editingSound ? soundUri.getLastPathSegment() : getFilenameOfPickedFile(soundUri));
 
                 mp.start();
                 startNowPlayingProgressUpdater();
