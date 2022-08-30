@@ -2,19 +2,27 @@ package mod;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import a.a.a.bB;
 import mod.jbk.util.LogUtil;
@@ -149,5 +157,27 @@ public class SketchwareUtil {
                 return Optional.empty();
             }
         }
+    }
+
+    public static void copySafDocumentToTempFile(Uri document, Activity context, String tempFileExtension, Consumer<File> tempFileConsumer, Consumer<IOException> exceptionHandler) {
+        new Thread(() -> {
+            try (ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(document, "r");
+                 FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
+                File temporaryFile = File.createTempFile("document", "." + tempFileExtension);
+                try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {
+                    try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
+                        byte[] buffer = new byte[4096];
+                        int length;
+                        while ((length = inputStream.read(buffer)) > 0) {
+                            bufferedOutputStream.write(buffer, 0, length);
+                        }
+                    }
+                }
+
+                context.runOnUiThread(() -> tempFileConsumer.accept(temporaryFile));
+            } catch (IOException e) {
+                exceptionHandler.accept(e);
+            }
+        }).start();
     }
 }
