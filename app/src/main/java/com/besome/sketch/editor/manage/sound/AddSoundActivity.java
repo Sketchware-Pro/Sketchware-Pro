@@ -43,6 +43,7 @@ import a.a.a.xB;
 import a.a.a.yy;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.util.LogUtil;
 
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_SOUND_PICKER = 218;
@@ -222,46 +223,51 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private void saveSound() {
         if (isSoundValid(soundNameValidator)) {
             String soundName = this.soundName.getText().toString();
-            String soundFilePath = HB.a(this, soundUri);
-            if (soundFilePath != null) {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, soundName, soundFilePath);
-                projectResourceBean.savedPos = 1;
-                projectResourceBean.isNew = true;
-                if (addToCollection.isChecked()) {
-                    try {
-                        Qp.g().a(sc_id, projectResourceBean);
-                    } catch (Exception e) {
-                        // The bytecode is lying. Checked exceptions suck.
-                        //noinspection ConstantConditions
-                        if (e instanceof yy) {
-                            String message = e.getMessage();
 
-                            switch (message) {
-                                case "duplicate_name":
-                                    bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
-                                    break;
+            SketchwareUtil.copySafDocumentToTempFile(soundUri, this, FileUtil.getFileExtension(getFilenameOfPickedFile(soundUri)),
+                    tempFile -> {
+                        String soundFilePath = tempFile.getAbsolutePath();
+                        ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, soundName, soundFilePath);
+                        projectResourceBean.savedPos = 1;
+                        projectResourceBean.isNew = true;
+                        if (addToCollection.isChecked()) {
+                            try {
+                                Qp.g().a(sc_id, projectResourceBean);
+                            } catch (Exception e) {
+                                // The bytecode is lying. Checked exceptions suck.
+                                //noinspection ConstantConditions
+                                if (e instanceof yy) {
+                                    String message = e.getMessage();
 
-                                case "file_no_exist":
-                                    bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
-                                    break;
+                                    switch (message) {
+                                        case "duplicate_name":
+                                            bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
+                                            break;
 
-                                case "fail_to_copy":
-                                    bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
-                                    break;
+                                        case "file_no_exist":
+                                            bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
+                                            break;
 
-                                default:
+                                        case "fail_to_copy":
+                                            bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
+                                            break;
+
+                                        default:
+                                    }
+                                } else {
+                                    throw e;
+                                }
                             }
                         } else {
-                            throw e;
+                            Intent intent = new Intent();
+                            intent.putExtra("project_resource", projectResourceBean);
+                            setResult(Activity.RESULT_OK, intent);
+                            finish();
                         }
-                    }
-                } else {
-                    Intent intent = new Intent();
-                    intent.putExtra("project_resource", projectResourceBean);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
-            }
+                    }, e -> {
+                        SketchwareUtil.toastError("Error while loading sound: " + e.getMessage());
+                        LogUtil.e("AddSoundActivity", "Failed to load sound", e);
+                    });
         }
     }
 
