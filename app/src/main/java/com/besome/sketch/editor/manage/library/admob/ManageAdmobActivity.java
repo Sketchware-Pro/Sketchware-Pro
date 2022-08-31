@@ -45,6 +45,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private TextView tvInterName;
     private TextView tvInterId;
     private ProjectLibraryBean admobLibraryBean;
+    private String sc_id;
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
@@ -165,6 +166,12 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_manage_admob);
 
+        if (savedInstanceState == null) {
+            sc_id = getIntent().getStringExtra("sc_id");
+        } else {
+            sc_id = savedInstanceState.getString("sc_id");
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
@@ -220,6 +227,12 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
     private void configureLibrary() {
