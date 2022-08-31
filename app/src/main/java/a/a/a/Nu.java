@@ -19,15 +19,16 @@ import java.util.ArrayList;
 import mod.hey.studios.util.Helper;
 
 public class Nu extends LinearLayout implements Uu, OnClickListener {
-    public String a = "";
-    public String b = "";
-    public ArrayList<String> c = new ArrayList<>();
-    public TextView d;
-    public TextView e;
-    public TextView f;
-    public TextView g;
-    private String rewardAdUnit = "";
-    private TextView tvRewardName, tvRewardNameTitle;
+    private final ArrayList<String> adUnits = new ArrayList<>();
+    private String bannerAdUnitId = "";
+    private TextView bannerAdName;
+    private TextView bannerAdUnitIdView;
+    private String interstitialAdUnitId = "";
+    private TextView interstitialAdName;
+    private TextView interstitialAdUnitIdView;
+    private String rewardedAdUnitId = "";
+    private TextView rewardedAdName;
+    private TextView rewardedAdUnitIdView;
 
     public Nu(Context context) {
         super(context);
@@ -51,7 +52,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         ViewGroup viewGroup = rootView.findViewById(R.id.rg_content);
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_select_unit_title));
 
-        for (String adUnit : c) {
+        for (String adUnit : adUnits) {
             viewGroup.addView(addRadioButton(adUnit));
         }
 
@@ -65,7 +66,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
                     } else if (position == 1) {
                         c(radioButton.getText().toString());
                     } else {
-                        setRewardAdUnit(radioButton.getText().toString());
+                        setRewardedAdUnitId(radioButton.getText().toString());
                     }
                     break;
                 }
@@ -79,12 +80,12 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_set_unit);
         gB.b(this, 600, 200, null);
-        d = findViewById(R.id.tv_banner_name);
-        e = findViewById(R.id.tv_banner_id);
-        f = findViewById(R.id.tv_inter_name);
-        g = findViewById(R.id.tv_inter_id);
-        tvRewardName = findViewById(R.id.tv_reward_name);
-        tvRewardNameTitle = findViewById(R.id.tv_reward_name_title);
+        bannerAdName = findViewById(R.id.tv_banner_name);
+        bannerAdUnitIdView = findViewById(R.id.tv_banner_id);
+        interstitialAdName = findViewById(R.id.tv_inter_name);
+        interstitialAdUnitIdView = findViewById(R.id.tv_inter_id);
+        rewardedAdUnitIdView = findViewById(R.id.tv_reward_name);
+        rewardedAdName = findViewById(R.id.tv_reward_name_title);
         ((TextView) findViewById(R.id.tv_banner_title)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
         ((TextView) findViewById(R.id.tv_banner_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_banner_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
@@ -102,49 +103,49 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
 
     @Override
     public void a(ProjectLibraryBean projectLibraryBean) {
-        projectLibraryBean.reserved1 = a;
-        projectLibraryBean.reserved2 = b;
-        projectLibraryBean.reserved3 = rewardAdUnit;
+        projectLibraryBean.reserved1 = bannerAdUnitId;
+        projectLibraryBean.reserved2 = interstitialAdUnitId;
+        projectLibraryBean.reserved3 = rewardedAdUnitId;
     }
 
-    private void setRewardAdUnit(String adUnit) {
+    private void setRewardedAdUnitId(String adUnit) {
         if (!adUnit.isEmpty()) {
-            rewardAdUnit = adUnit;
+            rewardedAdUnitId = adUnit;
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
-                tvRewardNameTitle.setText(adUnit.substring(0, indexOfColon));
-                tvRewardName.setText(adUnit.substring(indexOfColon + 3));
+                rewardedAdName.setText(adUnit.substring(0, indexOfColon));
+                rewardedAdUnitIdView.setText(adUnit.substring(indexOfColon + 3));
             } else {
-                tvRewardNameTitle.setText("");
-                tvRewardName.setText(adUnit);
+                rewardedAdName.setText("");
+                rewardedAdUnitIdView.setText(adUnit);
             }
         }
     }
 
     private void b(String adUnit) {
         if (!adUnit.isEmpty()) {
-            a = adUnit;
+            bannerAdUnitId = adUnit;
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
-                d.setText(adUnit.substring(0, indexOfColon));
-                e.setText(adUnit.substring(indexOfColon + 3));
+                bannerAdName.setText(adUnit.substring(0, indexOfColon));
+                bannerAdUnitIdView.setText(adUnit.substring(indexOfColon + 3));
             } else {
-                d.setText("");
-                e.setText(adUnit);
+                bannerAdName.setText("");
+                bannerAdUnitIdView.setText(adUnit);
             }
         }
     }
 
     private void c(String adUnit) {
         if (!adUnit.isEmpty()) {
-            b = adUnit;
+            interstitialAdUnitId = adUnit;
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
-                f.setText(adUnit.substring(0, indexOfColon));
-                g.setText(adUnit.substring(indexOfColon + 3));
+                interstitialAdName.setText(adUnit.substring(0, indexOfColon));
+                interstitialAdUnitIdView.setText(adUnit.substring(indexOfColon + 3));
             } else {
-                f.setText("");
-                g.setText(adUnit);
+                interstitialAdName.setText("");
+                interstitialAdUnitIdView.setText(adUnit);
             }
         }
     }
@@ -156,7 +157,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
 
     @Override
     public boolean isValid() {
-        if (!a.isEmpty() && !b.isEmpty()) {
+        if (!bannerAdUnitId.isEmpty() && !interstitialAdUnitId.isEmpty()) {
             return true;
         } else {
             bB.a(getContext(), Helper.getResString(R.string.design_library_admob_message_select_ad_unit), 1).show();
@@ -181,12 +182,12 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     public void setData(ProjectLibraryBean projectLibraryBean) {
         if (projectLibraryBean.adUnits.size() > 0) {
             for (AdUnitBean adUnitBean : projectLibraryBean.adUnits) {
-                c.add(adUnitBean.name + " : " + adUnitBean.id);
+                adUnits.add(adUnitBean.name + " : " + adUnitBean.id);
             }
         }
 
         b(projectLibraryBean.reserved1);
         c(projectLibraryBean.reserved2);
-        setRewardAdUnit(projectLibraryBean.reserved3);
+        setRewardedAdUnitId(projectLibraryBean.reserved3);
     }
 }
