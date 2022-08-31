@@ -29,8 +29,6 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Timer;
@@ -350,11 +348,11 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    private void setAlbumCover() throws FileNotFoundException, UnsupportedEncodingException {
+    private void setAlbumCover() throws FileNotFoundException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             if (editingSound) {
-                mediaMetadataRetriever.setDataSource(URLDecoder.decode(soundUri.getPath(), "UTF-8"));
+                mediaMetadataRetriever.setDataSource(soundUri.getPath());
             } else {
                 mediaMetadataRetriever.setDataSource(getContentResolver().openFileDescriptor(soundUri, "r").getFileDescriptor());
             }
