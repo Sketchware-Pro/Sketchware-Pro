@@ -154,7 +154,7 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_AUTH:
                 return "https://docs.sketchware.io/docs/component-firebase-auth.html";
                 case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
-                 return "https://sketchware-pro/docs/components/Firebase/cloud-messaging";
+                 return "https://sketchware-pro.now.sh/docs/components/Firebase/cloud-messaging";
                  
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                  return "https://sketchware-pro.vercel.app/docs/components/Firebase/dynamic-links";
