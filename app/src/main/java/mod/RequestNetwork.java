@@ -45,6 +45,10 @@ public class RequestNetwork {
         RequestNetworkController.getInstance().execute(this, method, url, tag, requestListener);
     }
 
+    public void startRequestNetworkSynchronized(String method, String url, String tag, RequestListener requestListener) {
+        RequestNetworkController.getInstance().executeSynchronized(this, method, url, tag, requestListener);
+    }
+
     public interface RequestListener {
         public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders);
 

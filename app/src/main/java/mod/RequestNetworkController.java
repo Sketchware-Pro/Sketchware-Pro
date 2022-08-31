@@ -8,6 +8,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -97,6 +98,14 @@ public class RequestNetworkController {
     }
 
     public void execute(final RequestNetwork requestNetwork, String method, String url, final String tag, final RequestNetwork.RequestListener requestListener) {
+        execute0(requestNetwork, method, url, tag, requestListener, true);
+    }
+
+    public void executeSynchronized(final RequestNetwork requestNetwork, String method, String url, final String tag, final RequestNetwork.RequestListener requestListener) {
+        execute0(requestNetwork, method, url, tag, requestListener, false);
+    }
+
+    private void execute0(final RequestNetwork requestNetwork, String method, String url, final String tag, final RequestNetwork.RequestListener requestListener, boolean async) {
         Request.Builder reqBuilder = new Request.Builder();
         Headers.Builder headerBuilder = new Headers.Builder();
 
@@ -154,33 +163,46 @@ public class RequestNetworkController {
 
             Request req = reqBuilder.build();
 
-            getClient().newCall(req).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, final IOException e) {
-                    requestNetwork.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            requestListener.onErrorResponse(tag, e.getMessage());
-                        }
-                    });
+            Consumer<IOException> onFailureHandler = e ->
+                    requestNetwork.getActivity().runOnUiThread(() -> requestListener.onErrorResponse(tag, e.getMessage()));
+            Consumer<Response> onResponseHandler = response -> {
+                final String responseBody;
+                try {
+                    responseBody = response.body().string().trim();
+                } catch (IOException e) {
+                    requestListener.onErrorResponse(tag, e.getMessage());
+                    return;
                 }
+                requestNetwork.getActivity().runOnUiThread(() -> {
+                    Headers b = response.headers();
+                    HashMap<String, Object> map = new HashMap<>();
+                    for (String s : b.names()) {
+                        map.put(s, b.get(s) != null ? b.get(s) : "null");
+                    }
+                    requestListener.onResponse(tag, responseBody, map);
+                });
+            };
 
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    final String responseBody = response.body().string().trim();
-                    requestNetwork.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Headers b = response.headers();
-                            HashMap<String, Object> map = new HashMap<>();
-                            for (String s : b.names()) {
-                                map.put(s, b.get(s) != null ? b.get(s) : "null");
-                            }
-                            requestListener.onResponse(tag, responseBody, map);
-                        }
-                    });
+            Call call = getClient().newCall(req);
+            if (async) {
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, final IOException e) {
+                        onFailureHandler.accept(e);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) {
+                        onResponseHandler.accept(response);
+                    }
+                });
+            } else {
+                try {
+                    onResponseHandler.accept(call.execute());
+                } catch (IOException e) {
+                    onFailureHandler.accept(e);
                 }
-            });
+            }
         } catch (Exception e) {
             requestListener.onErrorResponse(tag, e.getMessage());
         }
