@@ -169,7 +169,7 @@ public class Lx {
      * @param widgetName The list widget's name
      * @return The adapter's class name (e.g. List_filesAdapter from list_files)
      */
-    public static String getAdapterName(String widgetName) {
+    public static String a(String widgetName) {
         return widgetName.substring(0, 1).toUpperCase() +
                 widgetName.substring(1) +
                 "Adapter";
@@ -629,7 +629,7 @@ public class Lx {
                             fieldDeclaration = "";
                             break;
                         case "FragmentStatePagerAdapter":
-                            fieldDeclaration += " " + getAdapterName(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
+                            fieldDeclaration += " " + a(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
                             break;
                         case "RewardedVideoAd":
                             fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
@@ -822,7 +822,7 @@ public class Lx {
      * @return Code of an adapter for a ListView
      */
     public static String getListAdapterCode(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
-        String className = getAdapterName(widgetName);
+        String className = a(widgetName);
 
         String initializers = "";
         StringBuilder initializersBuilder = new StringBuilder(initializers);
@@ -1223,7 +1223,7 @@ public class Lx {
                 return componentName + " = new TimePickerDialog(this, " + componentName + "_listener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, false);";
 
             case "FragmentStatePagerAdapter":
-                return componentName + " = new " + getAdapterName(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
+                return componentName + " = new " + a(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
 
             case "Videos":
                 return "file_" + componentName + " = FileUtil.createNewPictureFile(getApplicationContext());\r\n"
@@ -3244,7 +3244,7 @@ public class Lx {
     }
 
     public static String pagerAdapter(String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic) {
-        String adapterName = getAdapterName(pagerName);
+        String adapterName = a(pagerName);
         Iterator<ViewBean> viewIterator = pagerItemViews.iterator();
 
         StringBuilder viewsInitializer;
@@ -3323,7 +3323,7 @@ public class Lx {
     }
 
     public static String recyclerViewAdapter(String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
-        String adapterName = getAdapterName(recyclerViewName);
+        String adapterName = a(recyclerViewName);
         Iterator<ViewBean> viewIterator = itemViews.iterator();
 
         StringBuilder viewsInitializer;
