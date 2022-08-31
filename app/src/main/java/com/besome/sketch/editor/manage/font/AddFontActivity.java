@@ -44,8 +44,8 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private WB fontNameValidator;
     private ImageView selectFile;
 
-    private void addToCollectionIfNeeded() {
-        if (shouldAddToCollectionElseShowAnimation(fontNameValidator)) {
+    private void saveFont() {
+        if (isFontValid(fontNameValidator)) {
             String fontName = this.fontName.getText().toString();
             String pickedFontFilePath = HB.a(this, fontUri);
             if (pickedFontFilePath != null) {
@@ -74,18 +74,16 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
                                 default:
                             }
-
-                            return;
                         } else {
                             throw e;
                         }
                     }
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("resource_bean", resourceBean);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
-
-                Intent intent = new Intent();
-                intent.putExtra("resource_bean", resourceBean);
-                setResult(RESULT_OK, intent);
-                finish();
             }
         }
     }
@@ -129,7 +127,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         if (id == R.id.common_dialog_cancel_button) {
             finish();
         } else if (id == R.id.common_dialog_ok_button) {
-            addToCollectionIfNeeded();
+            saveFont();
         } else if (id == R.id.select_file) {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -172,7 +170,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         }
     }
 
-    private boolean shouldAddToCollectionElseShowAnimation(WB wb) {
+    private boolean isFontValid(WB wb) {
         if (!wb.b()) {
             return false;
         }
