@@ -2,6 +2,7 @@ package a.a.a;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,10 +37,10 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     private RadioButton addRadioButton(String text) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText(text);
-        LayoutParams layoutParams = new LayoutParams(-1, -2);
-        layoutParams.topMargin = (int) wB.a(getContext(), 4.0F);
-        layoutParams.bottomMargin = (int) wB.a(getContext(), 4.0F);
-        radioButton.setGravity(19);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.topMargin = (int) wB.a(getContext(), 4F);
+        layoutParams.bottomMargin = (int) wB.a(getContext(), 4F);
+        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
     }
@@ -55,7 +56,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         }
 
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -71,12 +72,12 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
             }
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
-    private void initialize(Context var1) {
-        wB.a(var1, this, R.layout.manage_library_admob_set_unit);
+    private void initialize(Context context) {
+        wB.a(context, this, R.layout.manage_library_admob_set_unit);
         gB.b(this, 600, 200, null);
         d = findViewById(R.id.tv_banner_name);
         e = findViewById(R.id.tv_banner_id);
@@ -164,8 +165,8 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     }
 
     @Override
-    public void onClick(View var1) {
-        int id = var1.getId();
+    public void onClick(View v) {
+        int id = v.getId();
 
         if (id == R.id.img_select_banner || id == R.id.tv_banner_edit) {
             setAdUnit(0);
