@@ -64,7 +64,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         dialog.show();
     }
 
-    private void deleteADUnit(int position) {
+    private void deleteAdUnit(int position) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_delete_adunit_title));
         dialog.a(R.drawable.delete_96);
@@ -158,7 +158,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
                 tvName = itemView.findViewById(R.id.tv_name);
                 tvUnitId = itemView.findViewById(R.id.tv_unit_id);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgDelete.setOnClickListener(view -> deleteADUnit(j()));
+                imgDelete.setOnClickListener(view -> deleteAdUnit(j()));
             }
         }
     }
