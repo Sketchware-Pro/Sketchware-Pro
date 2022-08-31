@@ -19,7 +19,6 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
-import a.a.a.HB;
 import a.a.a.Np;
 import a.a.a.WB;
 import a.a.a.bB;
@@ -47,43 +46,42 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private void saveFont() {
         if (isFontValid(fontNameValidator)) {
             String fontName = this.fontName.getText().toString();
-            String pickedFontFilePath = HB.a(this, fontUri);
-            if (pickedFontFilePath != null) {
-                ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
-                resourceBean.savedPos = 1;
-                resourceBean.isNew = true;
-                if (addOrAddedToCollection.isChecked()) {
-                    try {
-                        Np.g().a(sc_id, resourceBean);
-                    } catch (Exception e) {
-                        // Well, (parts of) the bytecode's lying, yy can be thrown.
-                        //noinspection ConstantConditions
-                        if (e instanceof yy) {
-                            switch (e.getMessage()) {
-                                case "duplicate_name":
-                                    bB.b(this, Helper.getResString(R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
-                                    break;
+            String pickedFontFilePath = fontUri.getPath();
+            ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
+            resourceBean.savedPos = 1;
+            resourceBean.isNew = true;
 
-                                case "file_no_exist":
-                                    bB.b(this, Helper.getResString(R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
-                                    break;
+            if (addOrAddedToCollection.isChecked()) {
+                try {
+                    Np.g().a(sc_id, resourceBean);
+                } catch (Exception e) {
+                    // Well, (parts of) the bytecode's lying, yy can be thrown.
+                    //noinspection ConstantConditions
+                    if (e instanceof yy) {
+                        switch (e.getMessage()) {
+                            case "duplicate_name":
+                                bB.b(this, Helper.getResString(R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
+                                break;
 
-                                case "fail_to_copy":
-                                    bB.b(this, Helper.getResString(R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
-                                    break;
+                            case "file_no_exist":
+                                bB.b(this, Helper.getResString(R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
+                                break;
 
-                                default:
-                            }
-                        } else {
-                            throw e;
+                            case "fail_to_copy":
+                                bB.b(this, Helper.getResString(R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
+                                break;
+
+                            default:
                         }
+                    } else {
+                        throw e;
                     }
-                } else {
-                    Intent intent = new Intent();
-                    intent.putExtra("resource_bean", resourceBean);
-                    setResult(RESULT_OK, intent);
-                    finish();
                 }
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra("resource_bean", resourceBean);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         }
     }
