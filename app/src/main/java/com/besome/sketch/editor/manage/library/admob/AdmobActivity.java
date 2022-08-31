@@ -191,18 +191,16 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_open_doc:
-                p();
-                break;
-            case R.id.cv_console:
-                o();
-                break;
-            case R.id.tv_nextbtn:
-                n();
-                break;
-            case R.id.tv_prevbtn:
-                onBackPressed();
+        int id = v.getId();
+
+        if (id == R.id.btn_open_doc) {
+            p();
+        } else if (id == R.id.cv_console) {
+            o();
+        } else if (id == R.id.tv_nextbtn) {
+            n();
+        } else if (id == R.id.tv_prevbtn) {
+            onBackPressed();
         }
     }
 
