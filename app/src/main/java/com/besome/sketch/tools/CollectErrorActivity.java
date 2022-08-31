@@ -67,7 +67,7 @@ public class CollectErrorActivity extends Activity {
 
                 long fileSizeInBytes = new File(info.applicationInfo.sourceDir).length();
 
-                String content = "Sketchware Pro " + info.versionName + " (" + info.versionCode + ")\n"
+                String deviceInfo = "Sketchware Pro " + info.versionName + " (" + info.versionCode + ")\n"
                         + "base.apk size: " + Formatter.formatFileSize(this, fileSizeInBytes) + " (" + fileSizeInBytes + " B)\n"
                         + "Locale: " + GB.g(getApplicationContext()) + "\n"
                         + "SDK version: " + Build.VERSION.SDK_INT + "\n"
@@ -75,24 +75,46 @@ public class CollectErrorActivity extends Activity {
                         + "Manufacturer: " + Build.MANUFACTURER + "\n"
                         + "Model: " + Build.MODEL + "\n";
 
-                HashMap<String, Object> map = new HashMap<>();
-                if ((content + "\n```\n" + error + "```").length() > 2000) {
-                    map.put("content", content);
-                    requestNetwork.setParams(map, RequestNetworkController.REQUEST_BODY);
-                    requestNetwork.startRequestNetwork(RequestNetworkController.POST, BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(map), listener);
-                    map = new HashMap<>();
-                    map.put("content", "```\n" + error + "```");
-                } else {
-                    content += "\n```\n" + error + "```";
-                    map.put("content", content);
-                    //idk why it's needed every time before starting request, without this the webhook doesn't get sent
-                }
-                requestNetwork.setParams(map, RequestNetworkController.REQUEST_BODY);
-                requestNetwork.startRequestNetwork(RequestNetworkController.POST, BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(map), listener);
+                new Thread(() -> {
+                    String stackTrace = error;
+                    String webhookContent;
+                    int i = 0;
+                    do {
+                        int maxLength = i == 0 ?
+                                2000 - deviceInfo.length() - 5 /* \n```\n */ - 3 /* ``` */
+                                : 2000 - 5 /* \n```\n */ - 3 /* ``` */;
+                        webhookContent = i == 0 ? deviceInfo : "";
+                        webhookContent += "\n```\n";
 
-                if (!listener.hasFailed()) {
-                    SketchwareUtil.toast("Sending crash logs…", Toast.LENGTH_LONG);
-                }
+                        if (stackTrace.length() > maxLength) {
+                            String toProcess = stackTrace.substring(0, maxLength);
+                            int lastNewlineIndex = toProcess.lastIndexOf('\n');
+
+                            if (lastNewlineIndex != -1) {
+                                webhookContent += toProcess.substring(0, lastNewlineIndex + 1);
+                                stackTrace = stackTrace.substring(lastNewlineIndex + 1, stackTrace.length() - 1);
+                            } else {
+                                webhookContent += toProcess;
+                                stackTrace = stackTrace.substring(maxLength);
+                            }
+                        } else {
+                            webhookContent += stackTrace;
+                            stackTrace = "";
+                        }
+
+                        webhookContent += "```";
+
+                        HashMap<String, Object> params = new HashMap<>();
+                        params.put("content", webhookContent);
+                        requestNetwork.setParams(params, RequestNetworkController.REQUEST_BODY);
+                        requestNetwork.startRequestNetworkSynchronized(RequestNetworkController.POST, BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(params), listener);
+                        i++;
+                    } while (!stackTrace.isEmpty());
+
+                    if (!listener.hasFailed()) {
+                        runOnUiThread(() -> SketchwareUtil.toast("Sending crash logs…", Toast.LENGTH_LONG));
+                    }
+                }).start();
             });
         }
     }
