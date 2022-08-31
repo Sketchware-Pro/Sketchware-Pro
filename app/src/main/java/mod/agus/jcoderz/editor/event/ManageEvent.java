@@ -1071,7 +1071,7 @@ public class ManageEvent {
                         "};";
 
             case "FragmentStatePagerAdapter":
-                String className = Lx.getAdapterName(targetId + "Fragment");
+                String className = Lx.a(targetId + "Fragment");
                 return "public class " + className + " extends FragmentStatePagerAdapter {\r\n" +
                         "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
                         "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +
