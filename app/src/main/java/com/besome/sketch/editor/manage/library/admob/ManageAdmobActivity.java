@@ -272,6 +272,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private void toAdmobActivity() {
         Intent intent = new Intent(getApplicationContext(), AdmobActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("admob", admobLibraryBean);
         startActivityForResult(intent, 236);
     }
