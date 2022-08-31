@@ -62,9 +62,9 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     if (position == 0) {
-                        b(radioButton.getText().toString());
+                        setBannerAdUnit(radioButton.getText().toString());
                     } else if (position == 1) {
-                        c(radioButton.getText().toString());
+                        setInterstitialAdUnit(radioButton.getText().toString());
                     } else {
                         setRewardedAdUnitId(radioButton.getText().toString());
                     }
@@ -108,21 +108,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         projectLibraryBean.reserved3 = rewardedAdUnitId;
     }
 
-    private void setRewardedAdUnitId(String adUnit) {
-        if (!adUnit.isEmpty()) {
-            rewardedAdUnitId = adUnit;
-            if (adUnit.contains(" : ")) {
-                int indexOfColon = adUnit.indexOf(" : ");
-                rewardedAdName.setText(adUnit.substring(0, indexOfColon));
-                rewardedAdUnitIdView.setText(adUnit.substring(indexOfColon + 3));
-            } else {
-                rewardedAdName.setText("");
-                rewardedAdUnitIdView.setText(adUnit);
-            }
-        }
-    }
-
-    private void b(String adUnit) {
+    private void setBannerAdUnit(String adUnit) {
         if (!adUnit.isEmpty()) {
             bannerAdUnitId = adUnit;
             if (adUnit.contains(" : ")) {
@@ -136,7 +122,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         }
     }
 
-    private void c(String adUnit) {
+    private void setInterstitialAdUnit(String adUnit) {
         if (!adUnit.isEmpty()) {
             interstitialAdUnitId = adUnit;
             if (adUnit.contains(" : ")) {
@@ -146,6 +132,20 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
             } else {
                 interstitialAdName.setText("");
                 interstitialAdUnitIdView.setText(adUnit);
+            }
+        }
+    }
+
+    private void setRewardedAdUnitId(String adUnit) {
+        if (!adUnit.isEmpty()) {
+            rewardedAdUnitId = adUnit;
+            if (adUnit.contains(" : ")) {
+                int indexOfColon = adUnit.indexOf(" : ");
+                rewardedAdName.setText(adUnit.substring(0, indexOfColon));
+                rewardedAdUnitIdView.setText(adUnit.substring(indexOfColon + 3));
+            } else {
+                rewardedAdName.setText("");
+                rewardedAdUnitIdView.setText(adUnit);
             }
         }
     }
@@ -186,8 +186,8 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
             }
         }
 
-        b(projectLibraryBean.reserved1);
-        c(projectLibraryBean.reserved2);
+        setBannerAdUnit(projectLibraryBean.reserved1);
+        setInterstitialAdUnit(projectLibraryBean.reserved2);
         setRewardedAdUnitId(projectLibraryBean.reserved3);
     }
 }
