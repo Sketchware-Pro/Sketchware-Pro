@@ -49,103 +49,88 @@ import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 
 public class AdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
-    public final int k = 0;
-    public final int l = 1;
-    public final int m = 2;
-    public final int n = 3;
-    public TextView A;
-    public ImageView B;
-    public ImageView D;
-    public TextView E;
-    public TextView F;
-    public LinearLayout G;
-    public String[] H;
-    public String[] I;
-    public int J = 0;
-    public Uu K;
-    public Button N;
-    public Button O;
-    public TextView C;
-    public String o;
-    public String p;
-    public String q;
-    public String r;
-    public String s;
-    public String t;
-    public String u;
-    public String v;
-    public String w;
-    public CardView x;
-    public TextView y;
-    public TextView z;
-    private ProjectLibraryBean L;
-    private ArrayList<HashMap<String, Object>> P = new ArrayList<>();
-    private ProjectsAdapter Q;
+    private TextView nextStep;
+    private ImageView back;
+    private TextView stepTitle;
+    private TextView stepDescription;
+    private LinearLayout stepContainer;
+    private String[] stepTitles;
+    private String[] stepDescriptions;
+    private int stepPosition = 0;
+    private Uu step;
+    private ProjectLibraryBean adMobSettings;
+    private Button goToDocumentation;
+    private Button importFromOtherProject;
+    private ArrayList<HashMap<String, Object>> projects = new ArrayList<>();
+    private ProjectsAdapter adapter;
+    private String sc_id;
+    private CardView goToConsole;
+    private TextView previousStep;
+    private TextView topTitle;
 
     private void f(int position) {
         if (position == 3) {
-            z.setText(Helper.getResString(R.string.common_word_review));
-            A.setText(Helper.getResString(R.string.common_word_save));
+            topTitle.setText(Helper.getResString(R.string.common_word_review));
+            nextStep.setText(Helper.getResString(R.string.common_word_save));
         } else {
-            z.setText(xB.b().a(this, R.string.common_word_step, position + 1));
-            A.setText(Helper.getResString(R.string.common_word_next));
+            topTitle.setText(xB.b().a(this, R.string.common_word_step, position + 1));
+            nextStep.setText(Helper.getResString(R.string.common_word_next));
         }
 
         if (position == 0) {
-            B.setVisibility(View.VISIBLE);
-            y.setVisibility(View.GONE);
+            back.setVisibility(View.VISIBLE);
+            previousStep.setVisibility(View.GONE);
         } else {
-            B.setVisibility(View.GONE);
-            y.setVisibility(View.VISIBLE);
+            back.setVisibility(View.GONE);
+            previousStep.setVisibility(View.VISIBLE);
         }
 
-        E.setText(H[position]);
-        F.setText(I[position]);
-        G.removeAllViews();
+        stepTitle.setText(stepTitles[position]);
+        stepDescription.setText(stepDescriptions[position]);
+        stepContainer.removeAllViews();
         switch (position) {
             case 0:
                 Iu setAdUnitItem = new Iu(this);
-                G.addView(setAdUnitItem);
-                setAdUnitItem.setData(L);
-                K = setAdUnitItem;
+                stepContainer.addView(setAdUnitItem);
+                setAdUnitItem.setData(adMobSettings);
+                step = setAdUnitItem;
                 break;
 
             case 1:
-                x.setVisibility(View.GONE);
+                goToConsole.setVisibility(View.GONE);
                 Nu var4 = new Nu(this);
-                G.addView(var4);
-                var4.setData(L);
-                K = var4;
+                stepContainer.addView(var4);
+                var4.setData(adMobSettings);
+                step = var4;
                 break;
 
             case 2:
-                x.setVisibility(View.GONE);
+                goToConsole.setVisibility(View.GONE);
                 Tu var3 = new Tu(this);
-                G.addView(var3);
-                var3.setData(L);
-                K = var3;
+                stepContainer.addView(var3);
+                var3.setData(adMobSettings);
+                step = var3;
                 break;
 
             case 3:
-                x.setVisibility(View.GONE);
+                goToConsole.setVisibility(View.GONE);
                 Ku var2 = new Ku(this);
-                G.addView(var2);
-                var2.setData(L);
-                K = var2;
+                stepContainer.addView(var2);
+                var2.setData(adMobSettings);
+                step = var2;
                 break;
         }
 
-        if (K.getDocUrl().isEmpty()) {
-            N.setVisibility(View.GONE);
+        if (step.getDocUrl().isEmpty()) {
+            goToDocumentation.setVisibility(View.GONE);
         } else {
-            N.setVisibility(View.VISIBLE);
+            goToDocumentation.setVisibility(View.VISIBLE);
         }
 
         if (position > 0) {
-            O.setVisibility(View.GONE);
+            importFromOtherProject.setVisibility(View.GONE);
         } else {
-            O.setVisibility(View.VISIBLE);
+            importFromOtherProject.setVisibility(View.VISIBLE);
         }
 
     }
@@ -157,39 +142,39 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     }
 
     private void m() {
-        P = new ArrayList<>();
+        projects = new ArrayList<>();
 
         for (HashMap<String, Object> stringObjectHashMap : lC.a()) {
             String var3 = yB.c(stringObjectHashMap, "sc_id");
-            if (!w.equals(var3)) {
+            if (!sc_id.equals(var3)) {
                 iC var4 = new iC(var3);
                 var4.i();
                 if (var4.b().useYn.equals("Y")) {
                     stringObjectHashMap.put("admob_setting", var4.b().clone());
-                    P.add(stringObjectHashMap);
+                    projects.add(stringObjectHashMap);
                 }
             }
         }
 
-        if (P.size() > 0) {
+        if (projects.size() > 0) {
             //noinspection Java8ListSort
-            Collections.sort(P, new ProjectComparator());
+            Collections.sort(projects, new ProjectComparator());
         }
 
-        Q.c();
+        adapter.c();
     }
 
     private void n() {
-        if (K.isValid()) {
-            K.a(L);
-            int position = J;
+        if (step.isValid()) {
+            step.a(adMobSettings);
+            int position = stepPosition;
             if (position < 3) {
                 ++position;
-                J = position;
+                stepPosition = position;
                 f(position);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra("admob", L);
+                intent.putExtra("admob", adMobSettings);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
@@ -198,10 +183,10 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        int position = J;
+        int position = stepPosition;
         if (position > 0) {
             --position;
-            J = position;
+            stepPosition = position;
             f(position);
         } else {
             setResult(RESULT_CANCELED);
@@ -252,67 +237,67 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
         setContentView(R.layout.manage_library_admob);
         if (savedInstanceState != null) {
-            w = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         } else {
-            w = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         }
 
-        H = new String[]{
+        stepTitles = new String[]{
                 Helper.getResString(R.string.design_library_admob_setting_step1_title),
                 Helper.getResString(R.string.design_library_admob_setting_step2_title),
                 Helper.getResString(R.string.design_library_admob_setting_step3_title),
                 Helper.getResString(R.string.design_library_admob_setting_step4_title)
         };
-        I = new String[]{
+        stepDescriptions = new String[]{
                 Helper.getResString(R.string.design_library_admob_setting_step1_desc),
                 Helper.getResString(R.string.design_library_admob_setting_step2_desc),
                 Helper.getResString(R.string.design_library_admob_setting_step3_desc),
                 Helper.getResString(R.string.design_library_admob_setting_step4_desc)
         };
-        x = findViewById(R.id.cv_console);
-        x.setOnClickListener(this);
-        C = findViewById(R.id.tv_goto_console);
-        C.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
-        y = findViewById(R.id.tv_prevbtn);
-        y.setText(Helper.getResString(R.string.common_word_prev));
-        y.setOnClickListener(this);
-        D = findViewById(R.id.icon);
-        D.setImageResource(R.drawable.widget_admob);
-        z = findViewById(R.id.tv_toptitle);
-        A = findViewById(R.id.tv_nextbtn);
-        A.setText(Helper.getResString(R.string.common_word_next));
-        A.setOnClickListener(this);
-        B = findViewById(R.id.img_backbtn);
-        B.setOnClickListener(Helper.getBackPressedClickListener(this));
-        E = findViewById(R.id.tv_step_title);
-        F = findViewById(R.id.tv_step_desc);
-        N = findViewById(R.id.btn_open_doc);
-        N.setText(Helper.getResString(R.string.common_word_go_to_documentation));
-        N.setOnClickListener(this);
-        O = findViewById(R.id.btn_import);
-        O.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
-        O.setOnClickListener(view -> s());
-        G = findViewById(R.id.layout_container);
+        goToConsole = findViewById(R.id.cv_console);
+        goToConsole.setOnClickListener(this);
+        TextView goToConsole = findViewById(R.id.tv_goto_console);
+        goToConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
+        previousStep = findViewById(R.id.tv_prevbtn);
+        previousStep.setText(Helper.getResString(R.string.common_word_prev));
+        previousStep.setOnClickListener(this);
+        ImageView icon = findViewById(R.id.icon);
+        icon.setImageResource(R.drawable.widget_admob);
+        topTitle = findViewById(R.id.tv_toptitle);
+        nextStep = findViewById(R.id.tv_nextbtn);
+        nextStep.setText(Helper.getResString(R.string.common_word_next));
+        nextStep.setOnClickListener(this);
+        back = findViewById(R.id.img_backbtn);
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        stepTitle = findViewById(R.id.tv_step_title);
+        stepDescription = findViewById(R.id.tv_step_desc);
+        goToDocumentation = findViewById(R.id.btn_open_doc);
+        goToDocumentation.setText(Helper.getResString(R.string.common_word_go_to_documentation));
+        goToDocumentation.setOnClickListener(this);
+        importFromOtherProject = findViewById(R.id.btn_import);
+        importFromOtherProject.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
+        importFromOtherProject.setOnClickListener(view -> s());
+        stepContainer = findViewById(R.id.layout_container);
     }
 
     @Override
     public void onPostCreate(Bundle var1) {
         super.onPostCreate(var1);
-        L = getIntent().getParcelableExtra("admob");
-        f(J);
+        adMobSettings = getIntent().getParcelableExtra("admob");
+        f(stepPosition);
     }
 
     @Override
     public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", w);
+        var1.putString("sc_id", sc_id);
         super.onSaveInstanceState(var1);
     }
 
     private void p() {
-        if (!K.getDocUrl().isEmpty()) {
+        if (!step.getDocUrl().isEmpty()) {
             if (GB.h(this)) {
                 try {
-                    Uri var1 = Uri.parse(K.getDocUrl());
+                    Uri var1 = Uri.parse(step.getDocUrl());
                     Intent var2 = new Intent(Intent.ACTION_VIEW);
                     var2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     var2.setData(var1);
@@ -339,18 +324,18 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         RecyclerView recyclerView = rootView.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Q = new ProjectsAdapter();
-        recyclerView.setAdapter(Q);
+        adapter = new ProjectsAdapter();
+        recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new ci());
         m();
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
-                if (Q.c >= 0) {
-                    HashMap<String, Object> projectMap = P.get(Q.c);
-                    L = (ProjectLibraryBean) projectMap.get("admob_setting");
-                    J = 3;
-                    f(J);
+                if (adapter.c >= 0) {
+                    HashMap<String, Object> projectMap = projects.get(adapter.c);
+                    adMobSettings = (ProjectLibraryBean) projectMap.get("admob_setting");
+                    stepPosition = 3;
+                    f(stepPosition);
                     dialog.dismiss();
                 }
             }
@@ -388,12 +373,12 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
         @Override
         public int a() {
-            return P.size();
+            return projects.size();
         }
 
         @Override
         public void b(ViewHolder viewHolder, int position) {
-            HashMap<String, Object> projectMap = P.get(position);
+            HashMap<String, Object> projectMap = projects.get(position);
             String var4 = yB.c(projectMap, "sc_id");
             String iconDir = wq.e() + File.separator + var4;
             viewHolder.u.setImageResource(R.drawable.default_icon);
@@ -453,14 +438,14 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             }
 
             private void c(int index) {
-                if (P.size() > 0) {
+                if (projects.size() > 0) {
 
-                    for (HashMap<String, Object> stringObjectHashMap : P) {
+                    for (HashMap<String, Object> stringObjectHashMap : projects) {
                         stringObjectHashMap.put("selected", false);
                     }
 
-                    P.get(index).put("selected", true);
-                    Q.c();
+                    projects.get(index).put("selected", true);
+                    adapter.c();
                 }
             }
         }
