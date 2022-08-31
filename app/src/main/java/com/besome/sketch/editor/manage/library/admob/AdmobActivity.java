@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.manage.library.admob;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
@@ -23,6 +23,7 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +48,6 @@ import a.a.a.xB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class AdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     public final int k = 0;
@@ -85,11 +85,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     private void f(int position) {
         if (position == 3) {
-            z.setText(Helper.getResString(2131625029));
-            A.setText(Helper.getResString(2131625031));
+            z.setText(Helper.getResString(R.string.common_word_review));
+            A.setText(Helper.getResString(R.string.common_word_save));
         } else {
-            z.setText(xB.b().a(this, 2131625040, position + 1));
-            A.setText(Helper.getResString(2131625008));
+            z.setText(xB.b().a(this, R.string.common_word_step, position + 1));
+            A.setText(Helper.getResString(R.string.common_word_next));
         }
 
         if (position == 0) {
@@ -153,7 +153,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(2130771982, 2130771983);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
     private void m() {
@@ -190,7 +190,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("admob", L);
-                setResult(-1, intent);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         }
@@ -204,7 +204,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             J = position;
             f(position);
         } else {
-            setResult(0);
+            setResult(RESULT_CANCELED);
             finish();
         }
     }
@@ -212,16 +212,16 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void onClick(View var1) {
         switch (var1.getId()) {
-            case 2131230841:
+            case R.id.btn_open_doc:
                 p();
                 break;
-            case 2131230944:
+            case R.id.cv_console:
                 o();
                 break;
-            case 2131232059:
+            case R.id.tv_nextbtn:
                 n();
                 break;
-            case 2131232081:
+            case R.id.tv_prevbtn:
                 onBackPressed();
         }
     }
@@ -229,7 +229,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private void o() {
         if (GB.h(this)) {
             try {
-                Intent intent = new Intent("android.intent.action.VIEW");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(Uri.parse("https://apps.admob.com/v2/home"));
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -241,17 +241,16 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 u();
             }
         } else {
-            bB.a(this, Helper.getResString(2131624932), 0).show();
+            bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
         }
     }
 
 
-    @SuppressLint("ResourceType")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(2130771982, 2130771983);
-        setContentView(2131427532);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        setContentView(R.layout.manage_library_admob);
         if (savedInstanceState != null) {
             w = savedInstanceState.getString("sc_id");
         } else {
@@ -259,41 +258,41 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         H = new String[]{
-                Helper.getResString(2131625185),
-                Helper.getResString(2131625187),
-                Helper.getResString(2131625189),
-                Helper.getResString(2131625191)
+                Helper.getResString(R.string.design_library_admob_setting_step1_title),
+                Helper.getResString(R.string.design_library_admob_setting_step2_title),
+                Helper.getResString(R.string.design_library_admob_setting_step3_title),
+                Helper.getResString(R.string.design_library_admob_setting_step4_title)
         };
         I = new String[]{
-                Helper.getResString(2131625184),
-                Helper.getResString(2131625186),
-                Helper.getResString(2131625188),
-                Helper.getResString(2131625190)
+                Helper.getResString(R.string.design_library_admob_setting_step1_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step2_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step3_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step4_desc)
         };
-        x = findViewById(2131230944);
+        x = findViewById(R.id.cv_console);
         x.setOnClickListener(this);
-        C = findViewById(2131231987);
-        C.setText(Helper.getResString(2131625161));
-        y = findViewById(2131232081);
-        y.setText(Helper.getResString(2131625014));
+        C = findViewById(R.id.tv_goto_console);
+        C.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
+        y = findViewById(R.id.tv_prevbtn);
+        y.setText(Helper.getResString(R.string.common_word_prev));
         y.setOnClickListener(this);
-        D = findViewById(2131231090);
-        D.setImageResource(2131166234);
-        z = findViewById(2131232257);
-        A = findViewById(2131232059);
-        A.setText(Helper.getResString(2131625008));
+        D = findViewById(R.id.icon);
+        D.setImageResource(R.drawable.widget_admob);
+        z = findViewById(R.id.tv_toptitle);
+        A = findViewById(R.id.tv_nextbtn);
+        A.setText(Helper.getResString(R.string.common_word_next));
         A.setOnClickListener(this);
-        B = findViewById(2131231113);
+        B = findViewById(R.id.img_backbtn);
         B.setOnClickListener(Helper.getBackPressedClickListener(this));
-        E = findViewById(2131232179);
-        F = findViewById(2131232176);
-        N = findViewById(2131230841);
-        N.setText(Helper.getResString(2131624999));
+        E = findViewById(R.id.tv_step_title);
+        F = findViewById(R.id.tv_step_desc);
+        N = findViewById(R.id.btn_open_doc);
+        N.setText(Helper.getResString(R.string.common_word_go_to_documentation));
         N.setOnClickListener(this);
-        O = findViewById(2131230832);
-        O.setText(Helper.getResString(2131625201));
+        O = findViewById(R.id.btn_import);
+        O.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
         O.setOnClickListener(view -> s());
-        G = findViewById(2131231331);
+        G = findViewById(R.id.layout_container);
     }
 
     @Override
@@ -314,7 +313,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             if (GB.h(this)) {
                 try {
                     Uri var1 = Uri.parse(K.getDocUrl());
-                    Intent var2 = new Intent("android.intent.action.VIEW");
+                    Intent var2 = new Intent(Intent.ACTION_VIEW);
                     var2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     var2.setData(var1);
                     var2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -326,7 +325,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     u();
                 }
             } else {
-                bB.a(this, Helper.getResString(2131624932), 0).show();
+                bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
             }
 
         }
@@ -334,10 +333,10 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     private void s() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(2131625252));
-        dialog.a(2131166234);
-        View rootView = wB.a(this, 2131427550);
-        RecyclerView recyclerView = rootView.findViewById(2131231440);
+        dialog.b(Helper.getResString(R.string.design_library_title_select_project));
+        dialog.a(R.drawable.widget_admob);
+        View rootView = wB.a(this, R.layout.manage_library_popup_project_selector);
+        RecyclerView recyclerView = rootView.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Q = new ProjectsAdapter();
@@ -345,7 +344,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         recyclerView.setItemAnimator(new ci());
         m();
         dialog.a(rootView);
-        dialog.b(Helper.getResString(2131625035), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
                 if (Q.c >= 0) {
                     HashMap<String, Object> projectMap = P.get(Q.c);
@@ -357,24 +356,24 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             }
 
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void u() {
         aB dialog = new aB(this);
-        dialog.a(2131165415);
-        dialog.b(Helper.getResString(2131626412));
-        dialog.a(Helper.getResString(2131625629));
-        dialog.b(Helper.getResString(2131625010), view -> {
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(R.string.common_word_ok), view -> {
             if (!mB.a()) {
-                Intent intent = new Intent("android.intent.action.VIEW");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -393,12 +392,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         @Override
-        @SuppressLint("ResourceType")
         public void b(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = P.get(position);
             String var4 = yB.c(projectMap, "sc_id");
             String iconDir = wq.e() + File.separator + var4;
-            viewHolder.u.setImageResource(2131165521);
+            viewHolder.u.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
@@ -421,7 +419,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
         public class ViewHolder extends v implements View.OnClickListener {
@@ -434,22 +432,21 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             public TextView y;
             public ImageView z;
 
-            @SuppressLint("ResourceType")
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(2131231613);
-                v = itemView.findViewById(2131231614);
-                u = itemView.findViewById(2131231151);
-                w = itemView.findViewById(2131230780);
-                x = itemView.findViewById(2131231579);
-                y = itemView.findViewById(2131231618);
-                z = itemView.findViewById(2131231181);
+                t = itemView.findViewById(R.id.project_layout);
+                v = itemView.findViewById(R.id.project_name);
+                u = itemView.findViewById(R.id.img_icon);
+                w = itemView.findViewById(R.id.app_name);
+                x = itemView.findViewById(R.id.package_name);
+                y = itemView.findViewById(R.id.project_version);
+                z = itemView.findViewById(R.id.img_selected);
                 t.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-                if (!mB.a() && view.getId() == 2131231613) {
+                if (!mB.a() && view.getId() == R.id.project_layout) {
                     ProjectsAdapter.this.c = ProjectsAdapter.ViewHolder.this.j();
                     c(ProjectsAdapter.this.c);
                 }
