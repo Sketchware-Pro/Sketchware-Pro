@@ -90,35 +90,37 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         stepContainer.removeAllViews();
         switch (position) {
             case 0:
-                Iu setAdUnitItem = new Iu(this);
-                stepContainer.addView(setAdUnitItem);
-                setAdUnitItem.setData(adMobSettings);
-                step = setAdUnitItem;
+                Iu addAdUnitsStep = new Iu(this);
+                stepContainer.addView(addAdUnitsStep);
+                addAdUnitsStep.setData(adMobSettings);
+                step = addAdUnitsStep;
                 break;
 
             case 1:
                 goToConsole.setVisibility(View.GONE);
-                Nu var4 = new Nu(this);
-                stepContainer.addView(var4);
-                var4.setData(adMobSettings);
-                step = var4;
+                Nu assignAdUnitsStep = new Nu(this);
+                stepContainer.addView(assignAdUnitsStep);
+                assignAdUnitsStep.setData(adMobSettings);
+                step = assignAdUnitsStep;
                 break;
 
             case 2:
                 goToConsole.setVisibility(View.GONE);
-                Tu var3 = new Tu(this);
-                stepContainer.addView(var3);
-                var3.setData(adMobSettings);
-                step = var3;
+                Tu testDevicesStep = new Tu(this);
+                stepContainer.addView(testDevicesStep);
+                testDevicesStep.setData(adMobSettings);
+                step = testDevicesStep;
                 break;
 
             case 3:
                 goToConsole.setVisibility(View.GONE);
-                Ku var2 = new Ku(this);
-                stepContainer.addView(var2);
-                var2.setData(adMobSettings);
-                step = var2;
+                Ku reviewStep = new Ku(this);
+                stepContainer.addView(reviewStep);
+                reviewStep.setData(adMobSettings);
+                step = reviewStep;
                 break;
+
+            default:
         }
 
         if (step.getDocUrl().isEmpty()) {
@@ -132,7 +134,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         } else {
             importFromOtherProject.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
@@ -145,12 +146,12 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         projects = new ArrayList<>();
 
         for (HashMap<String, Object> stringObjectHashMap : lC.a()) {
-            String var3 = yB.c(stringObjectHashMap, "sc_id");
-            if (!sc_id.equals(var3)) {
-                iC var4 = new iC(var3);
-                var4.i();
-                if (var4.b().useYn.equals("Y")) {
-                    stringObjectHashMap.put("admob_setting", var4.b().clone());
+            String projectSc_id = yB.c(stringObjectHashMap, "sc_id");
+            if (!sc_id.equals(projectSc_id)) {
+                iC iC = new iC(projectSc_id);
+                iC.i();
+                if (iC.b().useYn.equals("Y")) {
+                    stringObjectHashMap.put("admob_setting", iC.b().clone());
                     projects.add(stringObjectHashMap);
                 }
             }
@@ -167,11 +168,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private void n() {
         if (step.isValid()) {
             step.a(adMobSettings);
-            int position = stepPosition;
-            if (position < 3) {
-                ++position;
-                stepPosition = position;
-                f(position);
+            if (stepPosition < 3) {
+                f(++stepPosition);
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("admob", adMobSettings);
@@ -183,11 +181,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        int position = stepPosition;
-        if (position > 0) {
-            --position;
-            stepPosition = position;
-            f(position);
+        if (stepPosition > 0) {
+            f(--stepPosition);
         } else {
             setResult(RESULT_CANCELED);
             finish();
@@ -195,8 +190,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void onClick(View var1) {
-        switch (var1.getId()) {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btn_open_doc:
                 p();
                 break;
@@ -229,7 +224,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
         }
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -281,38 +275,36 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void onPostCreate(Bundle var1) {
-        super.onPostCreate(var1);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         adMobSettings = getIntent().getParcelableExtra("admob");
         f(stepPosition);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", sc_id);
-        super.onSaveInstanceState(var1);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
     private void p() {
         if (!step.getDocUrl().isEmpty()) {
             if (GB.h(this)) {
                 try {
-                    Uri var1 = Uri.parse(step.getDocUrl());
-                    Intent var2 = new Intent(Intent.ACTION_VIEW);
-                    var2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    var2.setData(var1);
-                    var2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    var2.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    var2.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                    startActivity(var2);
-                } catch (Exception var3) {
-                    var3.printStackTrace();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setData(Uri.parse(step.getDocUrl()));
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
                     u();
                 }
             } else {
                 bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
             }
-
         }
     }
 
@@ -339,7 +331,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     dialog.dismiss();
                 }
             }
-
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
@@ -362,7 +353,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.show();
     }
 
-
     public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
 
         public int c;
@@ -379,8 +369,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         @Override
         public void b(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projects.get(position);
-            String var4 = yB.c(projectMap, "sc_id");
-            String iconDir = wq.e() + File.separator + var4;
+            String projectSc_id = yB.c(projectMap, "sc_id");
+            String iconDir = wq.e() + File.separator + projectSc_id;
             viewHolder.u.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
@@ -396,8 +386,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             viewHolder.w.setText(yB.c(projectMap, "my_app_name"));
             viewHolder.v.setText(yB.c(projectMap, "my_ws_name"));
             viewHolder.x.setText(yB.c(projectMap, "my_sc_pkg_name"));
-            var4 = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
-            viewHolder.y.setText(var4);
+            projectSc_id = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
+            viewHolder.y.setText(projectSc_id);
 
             viewHolder.z.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
         }
@@ -450,5 +440,4 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             }
         }
     }
-
 }
