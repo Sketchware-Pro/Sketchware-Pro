@@ -679,10 +679,10 @@ public class Jx {
     }
 
     /**
-     * @see Lx#gteComponentInitializerCode(String, String, String...)
+     * @see Lx#getComponentInitializerCode(String, String, String...)
      */
     private String getComponentBeanInitializer(ComponentBean componentBean) {
-        return Lx.gteComponentInitializerCode(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
+        return Lx.getComponentInitializerCode(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
     private void handleAppCompat() {

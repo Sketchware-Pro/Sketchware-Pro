@@ -1159,7 +1159,7 @@ public class Lx {
     /**
      * @return Initializer for a Component that'd appear in <code>_initialize(Bundle)</code>
      */
-    public static String gteComponentInitializerCode(String componentNameId, String componentName, String... parameters) {
+    public static String getComponentInitializerCode(String componentNameId, String componentName, String... parameters) {
         switch (componentNameId) {
             case "SharedPreferences":
                 String preferenceFilename = "";
