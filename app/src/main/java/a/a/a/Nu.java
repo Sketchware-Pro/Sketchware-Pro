@@ -2,7 +2,6 @@ package a.a.a;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -166,21 +165,14 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
 
     @Override
     public void onClick(View var1) {
-        switch (var1.getId()) {
-            case R.id.img_select_banner:
-            case R.id.tv_banner_edit:
-                setAdUnit(0);
-                break;
+        int id = var1.getId();
 
-            case R.id.img_select_inter:
-            case R.id.tv_inter_edit:
-                setAdUnit(1);
-                break;
-
-            case R.id.img_select_reward:
-            case R.id.tv_reward_edit:
-                setAdUnit(2);
-                break;
+        if (id == R.id.img_select_banner || id == R.id.tv_banner_edit) {
+            setAdUnit(0);
+        } else if (id == R.id.img_select_inter || id == R.id.tv_inter_edit) {
+            setAdUnit(1);
+        } else if (id == R.id.img_select_reward || id == R.id.tv_reward_edit) {
+            setAdUnit(2);
         }
     }
 
