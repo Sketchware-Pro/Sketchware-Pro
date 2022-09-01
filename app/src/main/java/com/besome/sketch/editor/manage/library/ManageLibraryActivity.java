@@ -65,25 +65,25 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         switch (libraryBean.libType) {
-            case 0:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
                 firebaseLibraryBean = libraryBean;
                 break;
 
-            case 1:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
                 compatLibraryBean = libraryBean;
                 break;
 
-            case 2:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
                 admobLibraryBean = libraryBean;
                 break;
 
-            case 3:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
                 googleMapLibraryBean = libraryBean;
                 break;
         }
 
-        for (int index = 0; index < libraryItemLayout.getChildCount(); index++) {
-            qu libraryItemView = (qu) libraryItemLayout.getChildAt(index);
+        for (int i = 0; i < libraryItemLayout.getChildCount(); i++) {
+            qu libraryItemView = (qu) libraryItemLayout.getChildAt(i);
             if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
                 libraryItemView.setData(libraryBean);
                 if (libraryItemView instanceof ru) {
@@ -187,19 +187,19 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         if (!mB.a()) {
             int vTag = (Integer) v.getTag();
             switch (vTag) {
-                case 0:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
                     toFirebaseActivity(firebaseLibraryBean);
                     break;
 
-                case 1:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
                     toCompatActivity(compatLibraryBean, firebaseLibraryBean);
                     break;
 
-                case 2:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
                     toAdmobActivity(admobLibraryBean);
                     break;
 
-                case 3:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
                     toGoogleMapActivity(googleMapLibraryBean);
                     break;
             }
@@ -236,25 +236,25 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         if (savedInstanceState == null) {
             compatLibraryBean = jC.c(sc_id).c();
             if (compatLibraryBean == null) {
-                compatLibraryBean = new ProjectLibraryBean(1);
+                compatLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT);
             }
             originalCompatUseYn = compatLibraryBean.useYn;
 
             firebaseLibraryBean = jC.c(sc_id).d();
             if (firebaseLibraryBean == null) {
-                firebaseLibraryBean = new ProjectLibraryBean(0);
+                firebaseLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE);
             }
             originalFirebaseUseYn = firebaseLibraryBean.useYn;
 
             admobLibraryBean = jC.c(sc_id).b();
             if (admobLibraryBean == null) {
-                admobLibraryBean = new ProjectLibraryBean(2);
+                admobLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB);
             }
             originalAdmobUseYn = admobLibraryBean.useYn;
 
             googleMapLibraryBean = jC.c(sc_id).e();
             if (googleMapLibraryBean == null) {
-                googleMapLibraryBean = new ProjectLibraryBean(3);
+                googleMapLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP);
             }
             originalGoogleMapUseYn = googleMapLibraryBean.useYn;
         } else {
