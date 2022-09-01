@@ -24,7 +24,6 @@ import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.qu;
-import a.a.a.ru;
 import mod.hey.studios.util.Helper;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -87,9 +86,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             qu libraryItemView = (qu) libraryItemLayout.getChildAt(i);
             if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
                 libraryItemView.setData(libraryBean);
-                if (libraryItemView instanceof ru) {
-                    libraryItemView.setData(libraryBean);
-                }
             }
         }
     }

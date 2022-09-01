@@ -4438,7 +4438,6 @@
     <public name="manage_library_base_item" id="0x7f0b00d1" type="layout" />
     <public name="manage_library_common_item" id="0x7f0b00d2" type="layout" />
     <public name="manage_library_firebase" id="0x7f0b00d3" type="layout" />
-    <public name="manage_library_firebase_item" id="0x7f0b00d4" type="layout" />
     <public name="manage_library_firebase_preview" id="0x7f0b00d5" type="layout" />
     <public name="manage_library_firebase_project_settings" id="0x7f0b00d6" type="layout" />
     <public name="manage_library_firebase_set_env" id="0x7f0b00d7" type="layout" />

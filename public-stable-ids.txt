@@ -4477,7 +4477,6 @@ com.sketchware.remod:layout/manage_library_admob_test_device = 0x7f0b00d0
 com.sketchware.remod:layout/manage_library_base_item = 0x7f0b00d1
 com.sketchware.remod:layout/manage_library_common_item = 0x7f0b00d2
 com.sketchware.remod:layout/manage_library_firebase = 0x7f0b00d3
-com.sketchware.remod:layout/manage_library_firebase_item = 0x7f0b00d4
 com.sketchware.remod:layout/manage_library_firebase_preview = 0x7f0b00d5
 com.sketchware.remod:layout/manage_library_firebase_project_settings = 0x7f0b00d6
 com.sketchware.remod:layout/manage_library_firebase_set_env = 0x7f0b00d7
