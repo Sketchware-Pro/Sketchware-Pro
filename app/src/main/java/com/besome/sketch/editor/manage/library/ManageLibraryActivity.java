@@ -164,9 +164,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     initializeLibrary(data.getParcelableExtra("google_map"));
                     break;
 
-                case 505:
-                    toAdmobActivity(admobLibraryBean);
-                    break;
+                default:
             }
         }
     }
