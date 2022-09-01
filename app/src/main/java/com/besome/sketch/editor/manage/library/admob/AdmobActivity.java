@@ -68,7 +68,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private TextView previousStep;
     private TextView topTitle;
 
-    private void f(int position) {
+    private void showStep(int position) {
         if (position == 3) {
             topTitle.setText(Helper.getResString(R.string.common_word_review));
             nextStep.setText(Helper.getResString(R.string.common_word_save));
@@ -142,7 +142,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
-    private void m() {
+    private void loadProjects() {
         projects = new ArrayList<>();
 
         for (HashMap<String, Object> stringObjectHashMap : lC.a()) {
@@ -165,11 +165,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         adapter.c();
     }
 
-    private void n() {
+    private void nextStep() {
         if (step.isValid()) {
             step.a(adMobSettings);
             if (stepPosition < 3) {
-                f(++stepPosition);
+                showStep(++stepPosition);
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("admob", adMobSettings);
@@ -182,7 +182,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         if (stepPosition > 0) {
-            f(--stepPosition);
+            showStep(--stepPosition);
         } else {
             setResult(RESULT_CANCELED);
             finish();
@@ -194,17 +194,17 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         int id = v.getId();
 
         if (id == R.id.btn_open_doc) {
-            p();
+            goToDocumentation();
         } else if (id == R.id.cv_console) {
-            o();
+            goToConsole();
         } else if (id == R.id.tv_nextbtn) {
-            n();
+            nextStep();
         } else if (id == R.id.tv_prevbtn) {
             onBackPressed();
         }
     }
 
-    private void o() {
+    private void goToConsole() {
         if (GB.h(this)) {
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -216,7 +216,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
-                u();
+                showGoogleChromeNotice();
             }
         } else {
             bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
@@ -268,7 +268,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         goToDocumentation.setOnClickListener(this);
         importFromOtherProject = findViewById(R.id.btn_import);
         importFromOtherProject.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
-        importFromOtherProject.setOnClickListener(view -> s());
+        importFromOtherProject.setOnClickListener(view -> showImportFromOtherProjectDialog());
         stepContainer = findViewById(R.id.layout_container);
     }
 
@@ -276,7 +276,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         adMobSettings = getIntent().getParcelableExtra("admob");
-        f(stepPosition);
+        showStep(stepPosition);
     }
 
     @Override
@@ -285,7 +285,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         super.onSaveInstanceState(outState);
     }
 
-    private void p() {
+    private void goToDocumentation() {
         if (!step.getDocUrl().isEmpty()) {
             if (GB.h(this)) {
                 try {
@@ -298,7 +298,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    u();
+                    showGoogleChromeNotice();
                 }
             } else {
                 bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
@@ -306,7 +306,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
     }
 
-    private void s() {
+    private void showImportFromOtherProjectDialog() {
         aB dialog = new aB(this);
         dialog.b(Helper.getResString(R.string.design_library_title_select_project));
         dialog.a(R.drawable.widget_admob);
@@ -317,7 +317,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         adapter = new ProjectsAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new ci());
-        m();
+        loadProjects();
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
@@ -325,7 +325,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     HashMap<String, Object> projectMap = projects.get(adapter.c);
                     adMobSettings = (ProjectLibraryBean) projectMap.get("admob_setting");
                     stepPosition = 3;
-                    f(stepPosition);
+                    showStep(stepPosition);
                     dialog.dismiss();
                 }
             }
@@ -334,7 +334,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.show();
     }
 
-    private void u() {
+    private void showGoogleChromeNotice() {
         aB dialog = new aB(this);
         dialog.a(R.drawable.chrome_96);
         dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
