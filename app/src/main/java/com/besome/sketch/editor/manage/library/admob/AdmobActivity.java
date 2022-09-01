@@ -321,8 +321,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
-                if (adapter.c >= 0) {
-                    HashMap<String, Object> projectMap = projects.get(adapter.c);
+                if (adapter.selectedProjectIndex >= 0) {
+                    HashMap<String, Object> projectMap = projects.get(adapter.selectedProjectIndex);
                     adMobSettings = (ProjectLibraryBean) projectMap.get("admob_setting");
                     stepPosition = 3;
                     showStep(stepPosition);
@@ -351,13 +351,9 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.show();
     }
 
-    public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
+    private class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
 
-        public int c;
-
-        public ProjectsAdapter() {
-            c = -1;
-        }
+        private int selectedProjectIndex = -1;
 
         @Override
         public int a() {
@@ -369,7 +365,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             HashMap<String, Object> projectMap = projects.get(position);
             String projectSc_id = yB.c(projectMap, "sc_id");
             String iconDir = wq.e() + File.separator + projectSc_id;
-            viewHolder.u.setImageResource(R.drawable.default_icon);
+            viewHolder.icon.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
@@ -378,16 +374,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
                 }
 
-                viewHolder.u.setImageURI(iconUri);
+                viewHolder.icon.setImageURI(iconUri);
             }
 
-            viewHolder.w.setText(yB.c(projectMap, "my_app_name"));
-            viewHolder.v.setText(yB.c(projectMap, "my_ws_name"));
-            viewHolder.x.setText(yB.c(projectMap, "my_sc_pkg_name"));
-            projectSc_id = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
-            viewHolder.y.setText(projectSc_id);
+            viewHolder.appName.setText(yB.c(projectMap, "my_app_name"));
+            viewHolder.projectName.setText(yB.c(projectMap, "my_ws_name"));
+            viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            viewHolder.version.setText(String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code")));
 
-            viewHolder.z.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
+            viewHolder.checkmark.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
         }
 
         @Override
@@ -395,44 +390,42 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        public class ViewHolder extends v implements View.OnClickListener {
+        private class ViewHolder extends v implements View.OnClickListener {
 
-            public LinearLayout t;
-            public CircleImageView u;
-            public TextView v;
-            public TextView w;
-            public TextView x;
-            public TextView y;
-            public ImageView z;
+            private final CircleImageView icon;
+            private final TextView projectName;
+            private final TextView appName;
+            private final TextView packageName;
+            private final TextView version;
+            private final ImageView checkmark;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.project_layout);
-                v = itemView.findViewById(R.id.project_name);
-                u = itemView.findViewById(R.id.img_icon);
-                w = itemView.findViewById(R.id.app_name);
-                x = itemView.findViewById(R.id.package_name);
-                y = itemView.findViewById(R.id.project_version);
-                z = itemView.findViewById(R.id.img_selected);
-                t.setOnClickListener(this);
+                LinearLayout projectLayout = itemView.findViewById(R.id.project_layout);
+                projectName = itemView.findViewById(R.id.project_name);
+                icon = itemView.findViewById(R.id.img_icon);
+                appName = itemView.findViewById(R.id.app_name);
+                packageName = itemView.findViewById(R.id.package_name);
+                version = itemView.findViewById(R.id.project_version);
+                checkmark = itemView.findViewById(R.id.img_selected);
+                projectLayout.setOnClickListener(this);
             }
 
             @Override
-            public void onClick(View view) {
-                if (!mB.a() && view.getId() == R.id.project_layout) {
-                    ProjectsAdapter.this.c = ProjectsAdapter.ViewHolder.this.j();
-                    c(ProjectsAdapter.this.c);
+            public void onClick(View v) {
+                if (!mB.a() && v.getId() == R.id.project_layout) {
+                    selectedProjectIndex = j();
+                    selectProject(selectedProjectIndex);
                 }
             }
 
-            private void c(int index) {
+            private void selectProject(int i) {
                 if (projects.size() > 0) {
-
                     for (HashMap<String, Object> stringObjectHashMap : projects) {
                         stringObjectHashMap.put("selected", false);
                     }
 
-                    projects.get(index).put("selected", true);
+                    projects.get(i).put("selected", true);
                     adapter.c();
                 }
             }
