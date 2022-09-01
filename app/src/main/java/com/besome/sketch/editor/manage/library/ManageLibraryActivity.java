@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.library;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +16,8 @@ import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
+
+import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.aB;
@@ -173,7 +174,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     public void onBackPressed() {
         k();
         try {
-            new Handler().postDelayed(() -> new SaveLibraryTask(getBaseContext()).execute(), 500L);
+            new Handler().postDelayed(() -> new SaveLibraryTask(this).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
             h();
@@ -303,29 +304,32 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         dialog.show();
     }
 
-    public class SaveLibraryTask extends MA {
+    private static class SaveLibraryTask extends MA {
 
-        public SaveLibraryTask(Context context) {
-            super(context);
-            ManageLibraryActivity.this.a(this);
+        private final WeakReference<ManageLibraryActivity> activity;
+
+        public SaveLibraryTask(ManageLibraryActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.a(this);
         }
 
         @Override
         public void a() {
-            h();
+            activity.get().h();
             Intent intent = new Intent();
-            intent.putExtra("sc_id", sc_id);
-            intent.putExtra("firebase", firebaseLibraryBean);
-            intent.putExtra("compat", compatLibraryBean);
-            intent.putExtra("admob", admobLibraryBean);
-            intent.putExtra("google_map", googleMapLibraryBean);
-            setResult(RESULT_OK, intent);
-            finish();
+            intent.putExtra("sc_id", activity.get().sc_id);
+            intent.putExtra("firebase", activity.get().firebaseLibraryBean);
+            intent.putExtra("compat", activity.get().compatLibraryBean);
+            intent.putExtra("admob", activity.get().admobLibraryBean);
+            intent.putExtra("google_map", activity.get().googleMapLibraryBean);
+            activity.get().setResult(RESULT_OK, intent);
+            activity.get().finish();
         }
 
         @Override
         public void a(String idk) {
-            h();
+            activity.get().h();
         }
 
         @Override
@@ -336,7 +340,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         @Override
         public void b() {
             try {
-                saveLibraryConfiguration();
+                activity.get().saveLibraryConfiguration();
             } catch (Exception e) {
                 e.printStackTrace();
             }
