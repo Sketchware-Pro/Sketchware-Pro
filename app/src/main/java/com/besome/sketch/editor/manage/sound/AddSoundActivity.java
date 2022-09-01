@@ -2,7 +2,7 @@ package com.besome.sketch.editor.manage.sound;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.AudioManager;
+import android.media.AudioAttributes;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -310,7 +310,10 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 }
             }
             nowPlayingPlayer = new MediaPlayer();
-            nowPlayingPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            nowPlayingPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build());
             nowPlayingPlayer.setOnPreparedListener(mp -> {
                 playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
                 playPause.setEnabled(true);
