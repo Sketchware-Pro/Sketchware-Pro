@@ -112,8 +112,8 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
-                if (projectAdapter.c >= 0) {
-                    HashMap<String, Object> projectMap = projectsList.get(projectAdapter.c);
+                if (projectAdapter.selectedProjectIndex >= 0) {
+                    HashMap<String, Object> projectMap = projectsList.get(projectAdapter.selectedProjectIndex);
                     googleMapLibraryBean = (ProjectLibraryBean) projectMap.get("google_map");
                     configure();
                     dialog.dismiss();
@@ -235,8 +235,8 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         editApiKey.setText(googleMapLibraryBean.data);
     }
 
-    public class ProjectAdapter extends RecyclerView.a<ProjectAdapter.ViewHolder> {
-        public int c = -1;
+    private class ProjectAdapter extends RecyclerView.a<ProjectAdapter.ViewHolder> {
+        private int selectedProjectIndex = -1;
 
         @Override
         public int a() {
@@ -284,36 +284,36 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        public class ViewHolder extends v implements View.OnClickListener {
-            public LinearLayout projectLayout;
-            public CircleImageView imgIcon;
-            public TextView projectName;
-            public TextView appName;
-            public TextView pkgName;
-            public TextView projectVersion;
-            public ImageView imgSelected;
+        private class ViewHolder extends v implements View.OnClickListener {
+            public final LinearLayout projectLayout;
+            public final CircleImageView imgIcon;
+            public final TextView projectName;
+            public final TextView appName;
+            public final TextView pkgName;
+            public final TextView projectVersion;
+            public final ImageView imgSelected;
 
-            public ViewHolder(View view) {
-                super(view);
-                projectLayout = view.findViewById(R.id.project_layout);
-                projectName = view.findViewById(R.id.project_name);
-                imgIcon = view.findViewById(R.id.img_icon);
-                appName = view.findViewById(R.id.app_name);
-                pkgName = view.findViewById(R.id.package_name);
-                projectVersion = view.findViewById(R.id.project_version);
-                imgSelected = view.findViewById(R.id.img_selected);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                projectLayout = itemView.findViewById(R.id.project_layout);
+                projectName = itemView.findViewById(R.id.project_name);
+                imgIcon = itemView.findViewById(R.id.img_icon);
+                appName = itemView.findViewById(R.id.app_name);
+                pkgName = itemView.findViewById(R.id.package_name);
+                projectVersion = itemView.findViewById(R.id.project_version);
+                imgSelected = itemView.findViewById(R.id.img_selected);
                 projectLayout.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    ProjectAdapter.this.c = ViewHolder.this.j();
-                    c(ProjectAdapter.this.c);
+                    selectedProjectIndex = j();
+                    selectProject(selectedProjectIndex);
                 }
             }
 
-            private void c(int index) {
+            private void selectProject(int index) {
                 if (projectsList.size() > 0) {
                     for (HashMap<String, Object> projectMap : projectsList) {
                         projectMap.put("selected", false);
