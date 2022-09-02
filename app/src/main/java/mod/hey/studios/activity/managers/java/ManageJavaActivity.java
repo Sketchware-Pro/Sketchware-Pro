@@ -1,5 +1,6 @@
 package mod.hey.studios.activity.managers.java;
 
+import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
@@ -524,12 +525,13 @@ public class ManageJavaActivity extends Activity {
 
             if (isFolder(position)) {
                 icon.setImageResource(R.drawable.ic_folder_48dp);
-            } else {
-                if (getFileName(position).endsWith(".java")) {
-                    icon.setImageResource(R.drawable.java_96);
-                } else if (getFileName(position).endsWith(".kt")) {
-                    // TODO: set Kotlin icon here
-                }
+                icon.setPadding(0, 0, 0, 0);
+            } else if (getFileName(position).endsWith(".java")) {
+                icon.setImageResource(R.drawable.java_96);
+                icon.setPadding(0, 0, 0, 0);
+            } else if (getFileName(position).endsWith(".kt")) {
+                icon.setImageResource(R.drawable.kotlin_full_color_mark);
+                icon.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
             }
 
             Helper.applyRipple(ManageJavaActivity.this, more);
