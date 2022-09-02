@@ -21,7 +21,7 @@
             android:src="@drawable/rename_96_blue" />
 
         <TextView
-            android:id="@id/dialog_create_new_file_layoutTitle"
+            android:id="@+id/dialog_create_new_file_layoutTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create a new file"
@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <RadioGroup
-        android:id="@id/dialog_radio_filetype"
+        android:id="@+id/dialog_radio_filetype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -39,20 +39,20 @@
         android:paddingTop="5dp">
 
         <RadioButton
-            android:id="@id/radio_button_folder"
+            android:id="@+id/radio_button_folder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="Folder" />
 
         <RadioButton
-            android:id="@id/dialog_radio_filetype_class"
+            android:id="@+id/dialog_radio_filetype_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Class" />
 
         <RadioButton
-            android:id="@id/dialog_radio_filetype_activity"
+            android:id="@+id/dialog_radio_filetype_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Activity" />
@@ -61,14 +61,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0"
+        android:layout_weight="1"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp">
 
         <EditText
-            android:id="@id/dialog_edittext_name"
+            android:id="@+id/dialog_edittext_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
@@ -90,7 +90,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:id="@id/dialog_text_cancel"
+            android:id="@+id/dialog_text_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
@@ -99,7 +99,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@id/dialog_text_save"
+            android:id="@+id/dialog_text_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
