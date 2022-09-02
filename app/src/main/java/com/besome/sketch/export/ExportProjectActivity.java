@@ -783,7 +783,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 publishProgress("Merging libraries' DEX files...");
                 dp.getDexFilesReady();
                 if (canceled) {
-                    onCancelled();
+                    cancel(true);
                     return;
                 }
 
