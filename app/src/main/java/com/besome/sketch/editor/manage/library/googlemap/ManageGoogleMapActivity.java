@@ -157,21 +157,17 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_import:
-                importLibrarySettings();
-                break;
+        int id = v.getId();
 
-            case R.id.btn_open_doc:
-                openDoc();
-                break;
-
-            case R.id.layout_switch:
-                libSwitch.setChecked(!libSwitch.isChecked());
-                if ("Y".equals(googleMapLibraryBean.useYn) && !libSwitch.isChecked()) {
-                    configureLibrary();
-                }
-                break;
+        if (id == R.id.btn_import) {
+            importLibrarySettings();
+        } else if (id == R.id.btn_open_doc) {
+            openDoc();
+        } else if (id == R.id.layout_switch) {
+            libSwitch.setChecked(!libSwitch.isChecked());
+            if ("Y".equals(googleMapLibraryBean.useYn) && !libSwitch.isChecked()) {
+                configureLibrary();
+            }
         }
     }
 
