@@ -47,16 +47,12 @@ import mod.hey.studios.util.Helper;
 
 public class ManageGoogleMapActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public Toolbar toolbar;
-    public String sc_id;
-    public LinearLayout switchLayout;
-    public Switch libSwitch;
-    public EditText editApiKey;
-    public Button btnImport;
-    public Button btnOpenDoc;
-    public ProjectLibraryBean googleMapLibraryBean;
-    public ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
-    public ProjectAdapter projectAdapter;
+    private String sc_id;
+    private Switch libSwitch;
+    private EditText editApiKey;
+    private ProjectLibraryBean googleMapLibraryBean;
+    private ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
+    private ProjectAdapter projectAdapter;
 
     private void initializeProjectList() {
         projectsList = new ArrayList<>();
@@ -183,7 +179,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_manage_googlemap);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         if (savedInstanceState == null) {
@@ -198,17 +194,17 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        switchLayout = findViewById(R.id.layout_switch);
+        LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
         libSwitch = findViewById(R.id.switch_lib);
         editApiKey = findViewById(R.id.ed_api_key);
         ((TextView) findViewById(R.id.tv_api_key)).setText(Helper.getResString(R.string.design_library_google_map_title_api_key));
         ((TextView) findViewById(R.id.tv_desc)).setText(Helper.getResString(R.string.design_library_google_maps_description_operate_normally));
         ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        btnImport = findViewById(R.id.btn_import);
+        Button btnImport = findViewById(R.id.btn_import);
         btnImport.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
         btnImport.setOnClickListener(this);
-        btnOpenDoc = findViewById(R.id.btn_open_doc);
+        Button btnOpenDoc = findViewById(R.id.btn_open_doc);
         btnOpenDoc.setText(Helper.getResString(R.string.design_library_google_map_button_open_doc));
         btnOpenDoc.setOnClickListener(this);
         configure();
