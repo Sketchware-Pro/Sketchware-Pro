@@ -1,7 +1,6 @@
 package mod.hey.studios.activity.managers.java;
 
 import static mod.SketchwareUtil.dpToPx;
-import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -326,12 +325,7 @@ public class ManageJavaActivity extends Activity {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(
-                        (int) getDip(16),
-                        0,
-                        (int) getDip(16),
-                        (int) getDip(10)
-                );
+                params.setMargins(dpToPx(16), 0, dpToPx(16), dpToPx(10));
                 renameOccurrences.setLayoutParams(params);
             }
             /* Little "hack" to change margin of filename */
