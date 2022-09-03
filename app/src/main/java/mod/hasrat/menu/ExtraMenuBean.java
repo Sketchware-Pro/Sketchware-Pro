@@ -128,10 +128,10 @@ public class ExtraMenuBean {
         fontList.add(0, "default_font");
 
         for (String fontName : fontList) {
-            RadioButton radioButton = logicEditor.b(fontName);
-            radioGroup.addView(radioButton);
+            RadioButton var8 = logicEditor.b(fontName);
+            radioGroup.addView(var8);
             if (fontName.equals(menu.getArgValue())) {
-                radioButton.setChecked(true);
+                var8.setChecked(true);
             }
 
             LinearLayout fontLayout = logicEditor.d(fontName);
@@ -144,77 +144,78 @@ public class ExtraMenuBean {
 
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
+            int var2 = radioGroup.getChildCount();
 
-            for (int i = 0; i < radioGroup.getChildCount(); ++i) {
-                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-                if (radioButton.isChecked()) {
-                    logicEditor.a(menu, radioButton.getTag());
+            for (int var3 = 0; var3 < var2; ++var3) {
+                RadioButton var4 = (RadioButton) radioGroup.getChildAt(var3);
+                if (var4.isChecked()) {
+                    logicEditor.a(menu, var4.getTag());
                     break;
                 }
             }
 
-            dialog.dismiss();
+            this.c.dismiss();
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
-    public void defineMenuSelector(Ss menu) {
-        String menuType = menu.b;
-        String menuName = menu.getMenuName();
+    public void defineMenuSelector(Ss ss) {
+        String menuType = ss.b;
+        String menuName = ss.getMenuName();
 
         switch (menuType) {
             case "d":
-                logicEditor.a(menu, true);
+                logicEditor.a(ss, true);
                 break;
 
             case "s":
                 switch (menuName) {
                     case "intentData":
-                        logicEditor.e(menu);
+                        logicEditor.e(ss);
                         return;
 
                     case "url":
-                        logicEditor.c(menu);
+                        logicEditor.c(ss);
                         return;
 
                     case "inputCode":
-                        codeMenu(menu);
+                        codeMenu(ss);
                         return;
 
                     case "import":
-                        asdDialog(menu, "Enter the path without import & semicolon");
+                        asdDialog(ss, "Enter the path without import & semicolon");
                         return;
 
                     default:
-                        asdDialog(menu, null);
+                        asdDialog(ss, null);
                 }
                 break;
 
             case "m":
                 switch (menuName) {
                     case "resource":
-                        logicEditor.a(menu, "property_image");
+                        logicEditor.a(ss, "property_image");
                         return;
 
                     case "resource_bg":
-                        logicEditor.a(menu, "property_background_resource");
+                        logicEditor.a(ss, "property_background_resource");
                         return;
 
                     case "sound":
-                        logicEditor.h(menu);
+                        logicEditor.h(ss);
                         return;
 
                     case "font":
-                        selectFont(menu);
+                        selectFont(ss);
                         return;
 
                     case "typeface":
-                        logicEditor.i(menu);
+                        logicEditor.i(ss);
                         return;
 
                     case "color":
-                        logicEditor.b(menu);
+                        logicEditor.b(ss);
                         return;
 
                     case "view":
@@ -260,16 +261,16 @@ public class ExtraMenuBean {
                     case "codeview":
                     case "datepicker":
                     case "timepicker":
-                        logicEditor.f(menu);
+                        logicEditor.f(ss);
                         return;
 
                     case "Assets":
                     case "NativeLib":
-                        pathSelectorMenu(menu);
+                        pathSelectorMenu(ss);
                         return;
 
                     default:
-                        defaultMenus(menu);
+                        defaultMenus(ss);
                 }
                 break;
         }
