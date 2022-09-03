@@ -129,7 +129,7 @@ public class ExtraMenuBean {
         fontList.add(0, "default_font");
 
         for (String fontName : fontList) {
-            if (wq.isFontExist(logicEditor.B, fontName + ".ttf")) {
+            if (wq.isFontExist(logicEditor.B, fontName)) {
                 RadioButton radioButton = logicEditor.b(fontName);
                 radioGroup.addView(radioButton);
                 if (fontName.equals(menu.getArgValue())) {
