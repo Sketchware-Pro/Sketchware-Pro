@@ -156,7 +156,9 @@ public class ExtraMenuBean {
 
             this.c.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> {
+            dialog.dismiss();
+        });
         dialog.show();
     }
 
