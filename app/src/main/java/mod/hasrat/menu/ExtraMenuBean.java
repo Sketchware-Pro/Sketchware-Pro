@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
@@ -27,18 +25,14 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.Ss;
-import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
-import a.a.a.xB;
-import a.a.a.xq;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
@@ -120,34 +114,6 @@ public class ExtraMenuBean {
         }
     }
 
-    private void selectFont(Ss menu) {
-        aB dialog = new aB(logicEditor);
-        dialog.b(Helper.getResString(R.string.logic_editor_title_select_font));
-        dialog.a(R.drawablw.abc_96_color);
-        View rootView = wB.a(logicEditor, R.layout.property_popup_selector_color);
-        RadioGroup radioGroup = rootView.findViewById(R.id.rg);
-        LinearLayout contentLayout = rootView.findViewById(R.id.content);
-        ArrayList<String> fontList = jC.d(logicEditor.B).k();
-        fontList.add(0, "default_font");
-
-        for (String fontName : fontList) {
-            RadioButton var8 = logicEditor.b(fontName);
-            radioGroup.addView(var8);
-            if (fontName.equals(menu.getArgValue())) {
-                var8.setChecked(true);
-            }
-
-            LinearLayout fontLayout = logicEditor.d(fontName);
-            fontLayout.setOnClickListener(new Mr(logicEditor, contentLayout, radioGroup));
-            contentLayout.addView(fontLayout);
-        }
-
-        dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), new Nr(logicEditor, radioGroup, menu, dialog));
-        dialog.a(Helper.getResString(R.string.common_word_cancel), new Or(logicEditor, dialog));
-        dialog.show();
-    }
-
     public void defineMenuSelector(Ss ss) {
         String menuType = ss.b;
         String menuName = ss.getMenuName();
@@ -195,7 +161,7 @@ public class ExtraMenuBean {
                         return;
 
                     case "font":
-                        selectFont(ss);
+                        logicEditor.d(ss);
                         return;
 
                     case "typeface":
