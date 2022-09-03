@@ -121,7 +121,7 @@ public class ExtraMenuBean {
     private void selectFont(Ss menu) {
         aB dialog = new aB(logicEditor);
         dialog.b(Helper.getResString(R.string.logic_editor_title_select_font));
-        dialog.a(R.drawable.abc_96_color);
+        dialog.a(R.drawablw.abc_96_color);
         View rootView = wB.a(logicEditor, R.layout.property_popup_selector_color);
         RadioGroup radioGroup = rootView.findViewById(R.id.rg);
         LinearLayout contentLayout = rootView.findViewById(R.id.content);
