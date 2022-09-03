@@ -27,6 +27,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,8 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
+import a.a.a.xB;
+import a.a.a.xq;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
@@ -135,30 +138,13 @@ public class ExtraMenuBean {
             }
 
             LinearLayout fontLayout = logicEditor.d(fontName);
-            fontLayout.setOnClickListener(view -> {
-                int indexOfChild = contentLayout.indexOfChild(view);
-                ((RadioButton) radioGroup.getChildAt(indexOfChild)).setChecked(true);
-            });
+            fontLayout.setOnClickListener(new Mr(logicEditor, contentLayout, radioGroup));
             contentLayout.addView(fontLayout);
         }
 
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
-            int var2 = radioGroup.getChildCount();
-
-            for (int var3 = 0; var3 < var2; ++var3) {
-                RadioButton var4 = (RadioButton) radioGroup.getChildAt(var3);
-                if (var4.isChecked()) {
-                    logicEditor.a(menu, var4.getTag());
-                    break;
-                }
-            }
-
-            this.c.dismiss();
-        });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> {
-            dialog.dismiss();
-        });
+        dialog.b(Helper.getResString(R.string.common_word_select), new Nr(logicEditor, radioGroup, menu, dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), new Or(logicEditor, dialog));
         dialog.show();
     }
 
