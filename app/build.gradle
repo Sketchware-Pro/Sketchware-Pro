@@ -95,7 +95,7 @@ dependencies {
     implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
 
-    def codeEditorVersion = "0.16.3"
+    def codeEditorVersion = '0.17.0'
     def editorGroupId = "io.github.Rosemoe.sora-editor"
 
     implementation "$editorGroupId:editor:$codeEditorVersion"

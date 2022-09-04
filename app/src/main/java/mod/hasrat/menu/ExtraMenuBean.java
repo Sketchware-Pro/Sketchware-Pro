@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
@@ -31,12 +29,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.Ss;
-import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
-import a.a.a.wq;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
@@ -118,105 +114,62 @@ public class ExtraMenuBean {
         }
     }
 
-    private void selectFont(Ss menu) {
-        aB dialog = new aB(logicEditor);
-        dialog.b(Helper.getResString(R.string.logic_editor_title_select_font));
-        dialog.a(R.drawable.abc_96_color);
-        View rootView = wB.a(logicEditor, R.layout.property_popup_selector_color);
-        RadioGroup radioGroup = rootView.findViewById(R.id.rg);
-        LinearLayout contentLayout = rootView.findViewById(R.id.content);
-        ArrayList<String> fontList = jC.d(logicEditor.B).k();
-        fontList.add(0, "default_font");
-
-        for (String fontName : fontList) {
-            if (wq.isFontExist(logicEditor.B, fontName + ".ttf")) {
-                RadioButton radioButton = logicEditor.b(fontName);
-                radioGroup.addView(radioButton);
-                if (fontName.equals(menu.getArgValue())) {
-                    radioButton.setChecked(true);
-                }
-            }
-            LinearLayout fontLayout = logicEditor.d(fontName);
-            fontLayout.setOnClickListener(view -> {
-                int indexOfChild = contentLayout.indexOfChild(view);
-                ((RadioButton) radioGroup.getChildAt(indexOfChild)).setChecked(true);
-            });
-            contentLayout.addView(fontLayout);
-        }
-
-        dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
-
-            for (int i = 0; i < radioGroup.getChildCount(); ++i) {
-                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-                if (radioButton.isChecked()) {
-                    logicEditor.a(menu, radioButton.getTag());
-                    break;
-                }
-            }
-
-            dialog.dismiss();
-        });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.show();
-    }
-
-    public void defineMenuSelector(Ss menu) {
-        String menuType = menu.b;
-        String menuName = menu.getMenuName();
+    public void defineMenuSelector(Ss ss) {
+        String menuType = ss.b;
+        String menuName = ss.getMenuName();
 
         switch (menuType) {
             case "d":
-                logicEditor.a(menu, true);
+                logicEditor.a(ss, true);
                 break;
 
             case "s":
                 switch (menuName) {
                     case "intentData":
-                        logicEditor.e(menu);
+                        logicEditor.e(ss);
                         return;
 
                     case "url":
-                        logicEditor.c(menu);
+                        logicEditor.c(ss);
                         return;
 
                     case "inputCode":
-                        codeMenu(menu);
+                        codeMenu(ss);
                         return;
 
                     case "import":
-                        asdDialog(menu, "Enter the path without import & semicolon");
+                        asdDialog(ss, "Enter the path without import & semicolon");
                         return;
 
                     default:
-                        asdDialog(menu, null);
+                        asdDialog(ss, null);
                 }
                 break;
 
             case "m":
                 switch (menuName) {
                     case "resource":
-                        logicEditor.a(menu, "property_image");
+                        logicEditor.a(ss, "property_image");
                         return;
 
                     case "resource_bg":
-                        logicEditor.a(menu, "property_background_resource");
+                        logicEditor.a(ss, "property_background_resource");
                         return;
 
                     case "sound":
-                        logicEditor.h(menu);
+                        logicEditor.h(ss);
                         return;
 
                     case "font":
-                        selectFont(menu);
+                        logicEditor.d(ss);
                         return;
 
                     case "typeface":
-                        logicEditor.i(menu);
+                        logicEditor.i(ss);
                         return;
 
                     case "color":
-                        logicEditor.b(menu);
+                        logicEditor.b(ss);
                         return;
 
                     case "view":
@@ -262,16 +215,16 @@ public class ExtraMenuBean {
                     case "codeview":
                     case "datepicker":
                     case "timepicker":
-                        logicEditor.f(menu);
+                        logicEditor.f(ss);
                         return;
 
                     case "Assets":
                     case "NativeLib":
-                        pathSelectorMenu(menu);
+                        pathSelectorMenu(ss);
                         return;
 
                     default:
-                        defaultMenus(menu);
+                        defaultMenus(ss);
                 }
                 break;
         }
