@@ -40,6 +40,7 @@ import com.sketchware.remod.R;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -459,7 +460,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     btnExportAppBundle.setVisibility(View.GONE);
                     layoutExportAppBundle.setVisibility(View.GONE);
 
-                    BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
+                    BuildingAsyncTask task = new BuildingAsyncTask(this);
                     task.enableAppBundleBuild();
                     if (credentials != null) {
                         if (credentials.isForSigningWithTestkey()) {
@@ -543,7 +544,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 loading_sign_apk.setVisibility(View.VISIBLE);
                 loading_sign_apk.j();
 
-                BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
+                BuildingAsyncTask task = new BuildingAsyncTask(this);
                 if (credentials != null) {
                     if (credentials.isForSigningWithTestkey()) {
                         task.setSignWithTestkey(true);
@@ -640,7 +641,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    private class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
+    private static class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
+        private final WeakReference<ExportProjectActivity> activity;
+        private final yq project_metadata;
+        private final LottieAnimationView loading_sign_apk;
 
         private Dp dp;
         private boolean canceled = false;
@@ -652,14 +656,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private String signingAlgorithm = null;
         private boolean signWithTestkey = false;
 
-        public BuildingAsyncTask(Context context) {
-            super(context);
+        public BuildingAsyncTask(ExportProjectActivity exportProjectActivity) {
+            super(exportProjectActivity);
+            activity = new WeakReference<>(exportProjectActivity);
+            project_metadata = exportProjectActivity.project_metadata;
+            loading_sign_apk = exportProjectActivity.loading_sign_apk;
             // Register as AsyncTask with dialog to Activity
-            ExportProjectActivity.this.a((MA) this);
+            activity.get().a((MA) this);
             // Make a simple ProgressDialog show and set its OnCancelListener
-            ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
+            activity.get().a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button
-            progressDialog.a(false);
+            activity.get().progressDialog.a(false);
         }
 
         /**
@@ -671,6 +678,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 cancel(true);
                 return;
             }
+
+            String sc_id = activity.get().sc_id;
 
             try {
                 publishProgress("Deleting temporary files...");
@@ -805,8 +814,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     /* Sign the generated .aab file */
                     publishProgress("Signing app bundle...");
 
-                    String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(
-                                    ExportProjectActivity.this, sc_id)
+                    String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(activity.get(), sc_id)
                             .getAbsolutePath();
                     String signedAppBundleDirectoryPath = FileUtil.getExternalStorageDir()
                             + File.separator + "sketchware"
@@ -875,11 +883,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
                         "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
-                    runOnUiThread(() -> showErrorOccurredDialog(
+                    activity.get().runOnUiThread(() -> activity.get().showErrorOccurredDialog(
                             "Either an incorrect password was entered, or your key store is corrupt."));
                 } else {
                     Log.e("AppExporter", throwable.getMessage(), throwable);
-                    runOnUiThread(() -> showErrorOccurredDialog(Log.getStackTraceString(throwable)));
+                    activity.get().runOnUiThread(() -> activity.get().showErrorOccurredDialog(Log.getStackTraceString(throwable)));
                 }
 
                 cancel(true);
@@ -888,9 +896,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            if (!progressDialog.a()) {
-                progressDialog.a(true);
-                ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
+            if (!activity.get().progressDialog.a()) {
+                activity.get().progressDialog.a(true);
+                activity.get().a((DialogInterface.OnCancelListener) this);
                 publishProgress("Canceling process...");
                 canceled = true;
             }
@@ -900,21 +908,21 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         public void onCancelled() {
             super.onCancelled();
             dp = null;
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
-            i();
-            layout_apk_path.setVisibility(View.GONE);
+            activity.get().i();
+            activity.get().layout_apk_path.setVisibility(View.GONE);
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
             }
             loading_sign_apk.setVisibility(View.GONE);
-            btn_sign_apk.setVisibility(View.VISIBLE);
+            activity.get().btn_sign_apk.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onPreExecute() {
             super.onPreExecute();
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            activity.get().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         @Override
@@ -926,7 +934,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         public void onProgressUpdate(String... strArr) {
             super.onProgressUpdate(strArr);
             // Update the ProgressDialog's text
-            ExportProjectActivity.this.a(strArr[0]);
+            activity.get().a(strArr[0]);
         }
 
         @Override
@@ -939,18 +947,18 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void a() {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
-            i();
+            activity.get().i();
 
             if (new File(getCorrectResultFilename(project_metadata.releaseApkPath)).exists()) {
-                f(getCorrectResultFilename(project_metadata.projectName + "_release.apk"));
+                activity.get().f(getCorrectResultFilename(project_metadata.projectName + "_release.apk"));
             }
 
             String aabFilename = getCorrectResultFilename(project_metadata.projectName + ".aab");
             if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(),
                     "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
-                aB dialog = new aB(ExportProjectActivity.this);
+                aB dialog = new aB(activity.get());
                 dialog.a(R.drawable.open_box_48);
                 dialog.b("Finished exporting AAB");
                 dialog.a("You can find the generated, signed AAB file at:\n" +
@@ -966,16 +974,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void a(String str) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
-            i();
-            showErrorOccurredDialog(str);
-            layout_apk_path.setVisibility(View.GONE);
+            activity.get().i();
+            activity.get().showErrorOccurredDialog(str);
+            activity.get().layout_apk_path.setVisibility(View.GONE);
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
             }
             loading_sign_apk.setVisibility(View.GONE);
-            btn_sign_apk.setVisibility(View.VISIBLE);
+            activity.get().btn_sign_apk.setVisibility(View.VISIBLE);
         }
 
         public void enableAppBundleBuild() {
