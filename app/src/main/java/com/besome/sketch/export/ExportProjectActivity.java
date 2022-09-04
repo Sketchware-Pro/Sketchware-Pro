@@ -825,22 +825,20 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         ZipSigner signer = new ZipSigner();
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
                         signer.signZip(createdBundlePath, outputPath);
+                    } else if (isResultJarSigningEnabled()) {
+                        Security.addProvider(new BouncyCastleProvider());
+                        CustomKeySigner.signZip(
+                                new ZipSigner(),
+                                signingKeystorePath,
+                                signingKeystorePassword,
+                                signingAliasName,
+                                signingAliasPassword,
+                                signingAlgorithm,
+                                createdBundlePath,
+                                outputPath
+                        );
                     } else {
-                        if (isResultJarSigningEnabled()) {
-                            Security.addProvider(new BouncyCastleProvider());
-                            CustomKeySigner.signZip(
-                                    new ZipSigner(),
-                                    signingKeystorePath,
-                                    signingKeystorePassword,
-                                    signingAliasName,
-                                    signingAliasPassword,
-                                    signingAlgorithm,
-                                    createdBundlePath,
-                                    outputPath
-                            );
-                        } else {
-                            FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
-                        }
+                        FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
                     }
                 } else {
                     publishProgress("Building APK...");
