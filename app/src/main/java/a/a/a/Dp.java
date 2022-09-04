@@ -1,5 +1,9 @@
 package a.a.a;
 
+import static android.system.OsConstants.S_IRUSR;
+import static android.system.OsConstants.S_IWUSR;
+import static android.system.OsConstants.S_IXUSR;
+
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -7,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
+import android.system.Os;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
@@ -74,10 +79,6 @@ import proguard.ProGuard;
 public class Dp {
 
     public static final String TAG = "AppBuilder";
-    /**
-     * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
-     */
-    private final String[] makeExecutableCommand = {"chmod", "700", ""};
     private final File aapt2Binary;
     public BuildSettings build_settings;
     private BuildProgressReceiver progressReceiver;
@@ -85,7 +86,6 @@ public class Dp {
     public yq yq;
     public FilePathUtil fpu;
     private final oB fileUtil;
-    private final Fp commandExecutor;
     public ManageLocalLibrary mll;
     public Kp builtInLibraryManager;
     public String androidJarPath;
@@ -128,7 +128,6 @@ public class Dp {
         yq = yqVar;
         fpu = new FilePathUtil();
         fileUtil = new oB(false);
-        commandExecutor = new Fp();
         mll = new ManageLocalLibrary(yqVar.sc_id);
         builtInLibraryManager = new Kp();
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
@@ -726,8 +725,7 @@ public class Dp {
         }
         try {
             if (hasFileChanged(aapt2PathInAssets, aapt2Binary.getAbsolutePath())) {
-                makeExecutableCommand[2] = aapt2Binary.getAbsolutePath();
-                commandExecutor.a(makeExecutableCommand);
+                Os.chmod(aapt2Binary.getAbsolutePath(), S_IRUSR | S_IWUSR | S_IXUSR);
             }
         } catch (Exception e) {
             LogUtil.e(TAG, "Failed to extract AAPT2 binaries", e);
