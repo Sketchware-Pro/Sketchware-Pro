@@ -2,7 +2,6 @@ package com.besome.sketch.export;
 
 import static mod.SketchwareUtil.getDip;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -644,7 +643,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private static class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
         private final WeakReference<ExportProjectActivity> activity;
         private final yq project_metadata;
-        private final LottieAnimationView loading_sign_apk;
+        private final WeakReference<LottieAnimationView> loading_sign_apk;
 
         private Dp dp;
         private boolean canceled = false;
@@ -660,7 +659,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             super(exportProjectActivity);
             activity = new WeakReference<>(exportProjectActivity);
             project_metadata = exportProjectActivity.project_metadata;
-            loading_sign_apk = exportProjectActivity.loading_sign_apk;
+            loading_sign_apk = new WeakReference<>(exportProjectActivity.loading_sign_apk);
             // Register as AsyncTask with dialog to Activity
             activity.get().a((MA) this);
             // Make a simple ProgressDialog show and set its OnCancelListener
@@ -912,6 +911,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Dismiss the ProgressDialog
             activity.get().i();
             activity.get().layout_apk_path.setVisibility(View.GONE);
+            LottieAnimationView loading_sign_apk = this.loading_sign_apk.get();
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
             }
@@ -979,6 +979,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             activity.get().i();
             activity.get().showErrorOccurredDialog(str);
             activity.get().layout_apk_path.setVisibility(View.GONE);
+            LottieAnimationView loading_sign_apk = this.loading_sign_apk.get();
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
             }
