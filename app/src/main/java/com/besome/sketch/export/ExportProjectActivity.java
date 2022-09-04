@@ -462,13 +462,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                     task.enableAppBundleBuild();
                     if (credentials != null) {
-                        task.configureResultJarSigning(
-                                wq.j(),
-                                credentials.getKeyStorePassword().toCharArray(),
-                                credentials.getKeyAlias(),
-                                credentials.getKeyPassword().toCharArray(),
-                                credentials.getSigningAlgorithm()
-                        );
+                        if (credentials.isForSigningWithTestkey()) {
+                            task.setSignWithTestkey(true);
+                        } else {
+                            task.configureResultJarSigning(
+                                    wq.j(),
+                                    credentials.getKeyStorePassword().toCharArray(),
+                                    credentials.getKeyAlias(),
+                                    credentials.getKeyPassword().toCharArray(),
+                                    credentials.getSigningAlgorithm()
+                            );
+                        }
                     }
                     task.execute();
                 });
@@ -541,13 +545,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                 if (credentials != null) {
-                    task.configureResultJarSigning(
-                            wq.j(),
-                            credentials.getKeyStorePassword().toCharArray(),
-                            credentials.getKeyAlias(),
-                            credentials.getKeyPassword().toCharArray(),
-                            credentials.getSigningAlgorithm()
-                    );
+                    if (credentials.isForSigningWithTestkey()) {
+                        task.setSignWithTestkey(true);
+                    } else {
+                        task.configureResultJarSigning(
+                                wq.j(),
+                                credentials.getKeyStorePassword().toCharArray(),
+                                credentials.getKeyAlias(),
+                                credentials.getKeyPassword().toCharArray(),
+                                credentials.getSigningAlgorithm()
+                        );
+                    }
                 } else {
                     task.disableResultJarSigning();
                 }
