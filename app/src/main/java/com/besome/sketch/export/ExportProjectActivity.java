@@ -1025,10 +1025,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
 
         private String getCorrectResultFilename(String oldFormatFilename) {
-            if (buildingAppBundle && !isResultJarSigningEnabled()) {
-                return oldFormatFilename.replace(".aab", ".unsigned.aab");
-            } else if (!buildingAppBundle && !isResultJarSigningEnabled()) {
-                return oldFormatFilename.replace("_release", "_release.unsigned");
+            if (!isResultJarSigningEnabled() && !signWithTestkey) {
+                if (buildingAppBundle) {
+                    return oldFormatFilename.replace(".aab", ".unsigned.aab");
+                } else {
+                    return oldFormatFilename.replace("_release", "_release.unsigned");
+                }
             } else {
                 return oldFormatFilename;
             }
