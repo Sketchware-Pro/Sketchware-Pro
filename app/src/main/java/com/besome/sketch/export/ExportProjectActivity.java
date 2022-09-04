@@ -813,8 +813,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     /* Sign the generated .aab file */
                     publishProgress("Signing app bundle...");
 
-                    String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(activity.get(), sc_id)
-                            .getAbsolutePath();
+                    String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(project_metadata).getAbsolutePath();
                     String signedAppBundleDirectoryPath = FileUtil.getExternalStorageDir()
                             + File.separator + "sketchware"
                             + File.separator + "signed_aab";
