@@ -842,7 +842,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
                         signer.signZip(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
                     } else if (isResultJarSigningEnabled()) {
-                        Security.addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
+                        Security.addProvider(new BouncyCastleProvider());
                         CustomKeySigner.signZip(
                                 new ZipSigner(),
                                 wq.j(),
