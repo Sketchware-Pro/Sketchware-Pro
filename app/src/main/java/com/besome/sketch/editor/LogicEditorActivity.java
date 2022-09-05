@@ -91,7 +91,6 @@ import com.besome.sketch.editor.manage.ShowBlockCollectionActivity;
 import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.shared.moreblocks.SharedMoreBlocksListActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
 import com.google.android.gms.analytics.HitBuilders;
@@ -2969,10 +2968,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     } else if (view.getTag().equals("blockImport")) {
                         I();
                         break label45;
-                    } else if (view.getTag().equals("sharedMoreBlock")) {
-                        intent = new Intent(getApplicationContext(), SharedMoreBlocksListActivity.class);
-                        intent.setFlags(536870912);
-                        i = 464;
                     } else {
                         break label45;
                     }
