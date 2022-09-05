@@ -1,84 +1,41 @@
 package com.besome.sketch.editor;
 
-import a.a.a.Br;
-import a.a.a.Cr;
 import a.a.a.DB;
-import a.a.a.Dr;
-import a.a.a.Er;
 import a.a.a.FB;
-import a.a.a.Fr;
 import a.a.a.Fx;
 import a.a.a.GB;
-import a.a.a.Gr;
 import a.a.a.Gx;
-import a.a.a.Hr;
-import a.a.a.Ir;
-import a.a.a.Jr;
-import a.a.a.Kr;
-import a.a.a.Lr;
 import a.a.a.Lx;
 import a.a.a.MA;
 import a.a.a.Mp;
-import a.a.a.Mr;
 import a.a.a.NB;
 import a.a.a.Np;
-import a.a.a.Nr;
 import a.a.a.Op;
-import a.a.a.Or;
 import a.a.a.Pp;
-import a.a.a.Pr;
 import a.a.a.Qp;
-import a.a.a.Rr;
 import a.a.a.Rs;
-import a.a.a.Sr;
 import a.a.a.Ss;
-import a.a.a.Tr;
 import a.a.a.Ts;
-import a.a.a.Ur;
 import a.a.a.Us;
-import a.a.a.Vr;
 import a.a.a.Vs;
-import a.a.a.Yr;
 import a.a.a.ZB;
-import a.a.a.Zr;
 import a.a.a.Zx;
-import a.a.a._r;
 import a.a.a.aB;
-import a.a.a.as;
 import a.a.a.bB;
 import a.a.a.bC;
-import a.a.a.bs;
-import a.a.a.cs;
-import a.a.a.ds;
 import a.a.a.eC;
-import a.a.a.es;
 import a.a.a.jC;
 import a.a.a.kC;
 import a.a.a.kq;
-import a.a.a.kr;
-import a.a.a.lr;
 import a.a.a.mB;
-import a.a.a.mr;
-import a.a.a.nr;
 import a.a.a.oB;
-import a.a.a.or;
-import a.a.a.pr;
-import a.a.a.qr;
-import a.a.a.rr;
 import a.a.a.sq;
-import a.a.a.sr;
-import a.a.a.tr;
 import a.a.a.uq;
-import a.a.a.ur;
-import a.a.a.vr;
 import a.a.a.wB;
 import a.a.a.wq;
-import a.a.a.wr;
 import a.a.a.xB;
 import a.a.a.xq;
-import a.a.a.xr;
 import a.a.a.yq;
-import a.a.a.yr;
 import a.a.a.yy;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -206,13 +163,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public boolean X = false;
     public View Y = null;
     public final Handler Z = new Handler();
-    public Runnable aa = new Yr(this);
+    public Runnable aa = this::r;
     public boolean da = false;
     public boolean ea = false;
     public boolean ha = false;
     public boolean ia = false;
 
-    public class a extends RecyclerView.a<a2> {
+    public class a extends RecyclerView.a<a.a2> {
         public int c = -1;
         public final LogicEditorActivity d;
 
@@ -232,8 +189,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 this.v = (TextView) view.findViewById(2131231893);
                 this.w = (ViewGroup) view.findViewById(2131230793);
                 this.u.setVisibility(8);
-                this.t.setOnClickListener(new ds(this, aVar));
-                this.w.setOnClickListener(new es(this, aVar));
+                this.t.setOnClickListener(v -> {
+                    a.this.c = j();
+                    c(a.this.c);
+                });
+                this.w.setOnClickListener(v -> {
+                    a.this.c = j();
+                    c(a.this.c);
+                });
             }
 
             public final void c(int i) {
@@ -309,6 +272,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             publishProgress("Now saving..");
             this.c.E();
         }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return a(voids);
+        }
     }
 
     public final void A() {
@@ -379,65 +347,82 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         this.o.b();
     }
 
-    /* JADX WARN: Code restructure failed: missing block: B:12:0x0042, code lost:
-        if (r0.getCurrentParentData() != null) goto L15;
-     */
-    /* JADX WARN: Code restructure failed: missing block: B:22:0x006b, code lost:
-        if (r0.getCurrentParentData() != null) goto L15;
-     */
-    /* JADX WARN: Code restructure failed: missing block: B:23:0x006d, code lost:
-        r0 = r0.getCurrentParentData();
-     */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     public final void B() {
-        BlockBean currentOriginalParent;
-        if (this.u) {
-            return;
-        }
-        HistoryBlockBean i = bC.d(this.B).i(s());
-        if (i == null) {
-            C();
-            return;
-        }
-        int actionType = i.getActionType();
-        if (actionType == 0) {
-            int[] iArr = new int[2];
-            this.o.getLocationOnScreen(iArr);
-            a(i.getAddedData(), i.getCurrentX() + iArr[0], i.getCurrentY() + iArr[1], true);
-        } else if (actionType != 1) {
-            if (actionType == 2) {
-                ArrayList<BlockBean> removedData = i.getRemovedData();
-                int size = removedData.size();
-                while (true) {
-                    size--;
-                    if (size < 0) {
-                        break;
+        if (!this.u) {
+            HistoryBlockBean var1 = bC.d(this.B).i(this.s());
+            if (var1 == null) {
+                this.C();
+            } else {
+                label58: {
+                    BlockBean var5;
+                    label57: {
+                        int var2 = var1.getActionType();
+                        int[] var3;
+                        if (var2 == 0) {
+                            var3 = new int[2];
+                            this.o.getLocationOnScreen(var3);
+                            this.a(var1.getAddedData(), var1.getCurrentX() + var3[0], var1.getCurrentY() + var3[1], true);
+                            if (var1.getCurrentParentData() == null) {
+                                break label58;
+                            }
+                        } else {
+                            if (var2 == 1) {
+                                var5 = var1.getCurrentUpdateData();
+                                break label57;
+                            }
+
+                            if (var2 != 2) {
+                                if (var2 != 3) {
+                                    break label58;
+                                }
+
+                                Iterator var4 = var1.getAfterMoveData().iterator();
+
+                                while(var4.hasNext()) {
+                                    BlockBean var7 = (BlockBean)var4.next();
+                                    this.o.a(var7, true);
+                                }
+
+                                var3 = new int[2];
+                                this.o.getLocationOnScreen(var3);
+                                this.a(var1.getAfterMoveData(), var1.getCurrentX() + var3[0], var1.getCurrentY() + var3[1], true);
+                                if (var1.getCurrentParentData() != null) {
+                                    this.a(var1.getCurrentParentData(), true);
+                                }
+
+                                if (var1.getCurrentOriginalParent() == null) {
+                                    break label58;
+                                }
+
+                                var5 = var1.getCurrentOriginalParent();
+                                break label57;
+                            }
+
+                            ArrayList var6 = var1.getRemovedData();
+                            var2 = var6.size();
+
+                            while(true) {
+                                --var2;
+                                if (var2 < 0) {
+                                    if (var1.getCurrentParentData() == null) {
+                                        break label58;
+                                    }
+                                    break;
+                                }
+
+                                this.o.a((BlockBean)var6.get(var2), false);
+                            }
+                        }
+
+                        var5 = var1.getCurrentParentData();
                     }
-                    this.o.a(removedData.get(size), false);
+
+                    this.a(var5, true);
                 }
-            } else if (actionType == 3) {
-                Iterator<BlockBean> it = i.getAfterMoveData().iterator();
-                while (it.hasNext()) {
-                    this.o.a(it.next(), true);
-                }
-                int[] iArr2 = new int[2];
-                this.o.getLocationOnScreen(iArr2);
-                a(i.getAfterMoveData(), i.getCurrentX() + iArr2[0], i.getCurrentY() + iArr2[1], true);
-                if (i.getCurrentParentData() != null) {
-                    a(i.getCurrentParentData(), true);
-                }
-                if (i.getCurrentOriginalParent() != null) {
-                    currentOriginalParent = i.getCurrentOriginalParent();
-                }
+
+                this.C();
             }
-            C();
-        } else {
-            currentOriginalParent = i.getCurrentUpdateData();
         }
-        a(currentOriginalParent, true);
-        C();
     }
 
     public void C() {
@@ -465,8 +450,27 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ZB zb = new ZB(this.e, (TextInputLayout) a2.findViewById(2131231816), uq.b, uq.a(), jC.a(this.B).a(this.M));
         editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131624970), new mr(this, zb, radioGroup, editText, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new nr(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131624970), v -> {
+            if (zb.b()) {
+                int i = 1;
+                int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+                if (checkedRadioButtonId != 2131231653) {
+                    if (checkedRadioButtonId == 2131231657) {
+                        i = 2;
+                    } else if (checkedRadioButtonId == 2131231654) {
+                        i = 3;
+                    }
+                }
+
+                a(i, editText.getText().toString());
+                mB.a(getApplicationContext(), editText);
+                aBVar.dismiss();
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -485,8 +489,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ((TextView) a2.findViewById(2131231654)).setText(xB.b().a(getApplicationContext(), 2131625590));
         ZB zb = new ZB(getApplicationContext(), (TextInputLayout) a2.findViewById(2131231816), uq.b, uq.a(), jC.a(this.B).a(this.M));
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131624970), new bs(this, radioGroup, editText, zb, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new cs(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131624970), v -> {
+            int i;
+            if (radioGroup.getCheckedRadioButtonId() == 2131231651) {
+                i = 0;
+            } else {
+                if (radioGroup.getCheckedRadioButtonId() != 2131231653) {
+                    if (radioGroup.getCheckedRadioButtonId() == 2131231657) {
+                        i = 2;
+                    } else if (radioGroup.getCheckedRadioButtonId() == 2131231654) {
+                        i = 3;
+                    }
+                }
+                i = 1;
+            }
+            String obj = editText.getText().toString();
+            if (!zb.b()) {
+                return;
+            }
+            b(i, obj);
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -507,8 +535,28 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e((String) it.next().second));
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625026), new or(this, viewGroup, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new pr(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625026), v -> {
+            int childCount = viewGroup.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
+                }
+                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    if (!o.b(radioButton.getText().toString())) {
+                        if (!jC.a(B).b(M.getJavaName(), radioButton.getText().toString(), C + "_" + D)) {
+                            l(radioButton.getText().toString());
+                        }
+                    }
+                    Toast.makeText(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625492), 0).show();
+                    return;
+                }
+                i++;
+            }
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
@@ -527,78 +575,118 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e);
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625026), new kr(this, viewGroup, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new lr(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625026), v -> {
+            int childCount = viewGroup.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
+                }
+                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    if (!o.c(radioButton.getText().toString())) {
+                        if (!jC.a(B).c(M.getJavaName(), radioButton.getText().toString(), C + "_" + D)) {
+                            m(radioButton.getText().toString());
+                        }
+                    }
+                    Toast.makeText(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625493), 0).show();
+                    return;
+                }
+                i++;
+            }
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
     public void L() {
         try {
-            new Handler().postDelayed(new Zr(this), 500L);
+            new Handler().postDelayed(() -> new b(this, getApplicationContext()).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /* JADX WARN: Code restructure failed: missing block: B:23:0x0072, code lost:
-        if (r0.getPrevParentData() != null) goto L19;
-     */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     public final void M() {
-        BlockBean prevOriginalParent;
-        if (this.u) {
-            return;
-        }
-        HistoryBlockBean j = bC.d(this.B).j(s());
-        if (j == null) {
-            C();
-            return;
-        }
-        int actionType = j.getActionType();
-        if (actionType == 0) {
-            ArrayList<BlockBean> addedData = j.getAddedData();
-            int size = addedData.size();
-            while (true) {
-                size--;
-                if (size < 0) {
-                    break;
+        if (!this.u) {
+            HistoryBlockBean var1 = bC.d(this.B).j(this.s());
+            if (var1 == null) {
+                this.C();
+            } else {
+                label59: {
+                    BlockBean var5;
+                    label58: {
+                        int var2 = var1.getActionType();
+                        ArrayList var3;
+                        if (var2 == 0) {
+                            var3 = var1.getAddedData();
+                            var2 = var3.size();
+
+                            while(true) {
+                                --var2;
+                                if (var2 < 0) {
+                                    if (var1.getPrevParentData() == null) {
+                                        break label59;
+                                    }
+
+                                    var1.getPrevParentData().print();
+                                    break;
+                                }
+
+                                this.o.a((BlockBean)var3.get(var2), false);
+                            }
+                        } else {
+                            if (var2 == 1) {
+                                var5 = var1.getPrevUpdateData();
+                                break label58;
+                            }
+
+                            if (var2 != 2) {
+                                if (var2 != 3) {
+                                    break label59;
+                                }
+
+                                Iterator var6 = var1.getBeforeMoveData().iterator();
+
+                                while(var6.hasNext()) {
+                                    BlockBean var8 = (BlockBean)var6.next();
+                                    this.o.a(var8, true);
+                                }
+
+                                int[] var7 = new int[2];
+                                this.o.getLocationOnScreen(var7);
+                                this.a(var1.getBeforeMoveData(), var1.getPrevX() + var7[0], var1.getPrevY() + var7[1], true);
+                                if (var1.getPrevParentData() != null) {
+                                    this.a(var1.getPrevParentData(), true);
+                                }
+
+                                if (var1.getPrevOriginalParent() == null) {
+                                    break label59;
+                                }
+
+                                var5 = var1.getPrevOriginalParent();
+                                break label58;
+                            }
+
+                            var3 = var1.getRemovedData();
+                            int[] var4 = new int[2];
+                            this.o.getLocationOnScreen(var4);
+                            this.a(var3, var1.getCurrentX() + var4[0], var1.getCurrentY() + var4[1], true);
+                            if (var1.getPrevParentData() == null) {
+                                break label59;
+                            }
+                        }
+
+                        var5 = var1.getPrevParentData();
+                    }
+
+                    this.a(var5, true);
                 }
-                this.o.a(addedData.get(size), false);
+
+                this.C();
             }
-            if (j.getPrevParentData() != null) {
-                j.getPrevParentData().print();
-                prevOriginalParent = j.getPrevParentData();
-            }
-            C();
-        } else if (actionType != 1) {
-            if (actionType == 2) {
-                ArrayList<BlockBean> removedData = j.getRemovedData();
-                int[] iArr = new int[2];
-                this.o.getLocationOnScreen(iArr);
-                a(removedData, j.getCurrentX() + iArr[0], j.getCurrentY() + iArr[1], true);
-            } else if (actionType == 3) {
-                Iterator<BlockBean> it = j.getBeforeMoveData().iterator();
-                while (it.hasNext()) {
-                    this.o.a(it.next(), true);
-                }
-                int[] iArr2 = new int[2];
-                this.o.getLocationOnScreen(iArr2);
-                a(j.getBeforeMoveData(), j.getPrevX() + iArr2[0], j.getPrevY() + iArr2[1], true);
-                if (j.getPrevParentData() != null) {
-                    a(j.getPrevParentData(), true);
-                }
-                if (j.getPrevOriginalParent() != null) {
-                    prevOriginalParent = j.getPrevOriginalParent();
-                }
-            }
-            C();
-        } else {
-            prevOriginalParent = j.getPrevUpdateData();
         }
-        a(prevOriginalParent, true);
-        C();
     }
 
     public Rs a(Rs rs, int i, int i2, boolean z) {
@@ -671,8 +759,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final ArrayList<BlockBean> a(ArrayList<BlockBean> arrayList, int i, int i2, boolean z) {
-        Integer valueOf;
-        HashMap hashMap = new HashMap();
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
         ArrayList<BlockBean> arrayList2 = new ArrayList<>();
         Iterator<BlockBean> it = arrayList.iterator();
         while (it.hasNext()) {
@@ -720,7 +807,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 String str2 = next3.parameters.get(i4);
                 if (str2 != null && str2.length() > 0 && str2.charAt(0) == '@') {
                     int intValue = Integer.valueOf(str2.substring(1)).intValue();
-                    if (Integer.valueOf(hashMap.containsKey(Integer.valueOf(intValue)) ? ((Integer) hashMap.get(Integer.valueOf(intValue))).intValue() : 0).intValue() >= 0) {
+                    int valueOf;
+                    if ((valueOf = Integer.valueOf(hashMap.containsKey(Integer.valueOf(intValue)) ? ((Integer) hashMap.get(Integer.valueOf(intValue))).intValue() : 0).intValue()) >= 0) {
                         next3.parameters.set(i4, '@' + String.valueOf(valueOf));
                     } else {
                         next3.parameters.set(i4, "");
@@ -827,73 +915,86 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         C();
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:14:0x0073  */
-    /* JADX WARN: Removed duplicated region for block: B:15:0x0077  */
-    /* JADX WARN: Removed duplicated region for block: B:20:0x0086  */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     public final void a(Ss ss, String str) {
-        xB b2;
-        Context applicationContext;
-        int i;
-        Iterator<String> it;
-        aB aBVar = new aB(this);
-        if (!str.equals("property_image")) {
-            if (str.equals("property_background_resource")) {
-                b2 = xB.b();
-                applicationContext = getApplicationContext();
-                i = 2131625562;
-            }
-            aBVar.a(2131165811);
-            View a2 = wB.a((Context) this, 2131427641);
-            RadioGroup radioGroup = (RadioGroup) a2.findViewById(2131231667);
-            LinearLayout linearLayout = (LinearLayout) a2.findViewById(2131230932);
-            ArrayList<String> m = jC.d(this.B).m();
-            if (!xq.a(this.B) || xq.b(this.B)) {
-                if ("property_image" != str) {
-                    m.add(0, "default_image");
-                } else if ("property_background_resource" == str) {
-                    m.add(0, "NONE");
+        aB var3;
+        label54: {
+            var3 = new aB(this);
+            xB var4;
+            Context var5;
+            int var6;
+            if (str.equals("property_image")) {
+                var4 = xB.b();
+                var5 = this.getApplicationContext();
+                var6 = 2131625561;
+            } else {
+                if (!str.equals("property_background_resource")) {
+                    break label54;
                 }
+
+                var4 = xB.b();
+                var5 = this.getApplicationContext();
+                var6 = 2131625562;
             }
-            it = m.iterator();
-            while (it.hasNext()) {
-                String next = it.next();
-                RadioButton c = c(next);
-                radioGroup.addView(c);
-                if (next.equals(ss.getArgValue())) {
-                    c.setChecked(true);
+
+            var3.b(var4.a(var5, var6));
+        }
+
+        var3.a(2131165811);
+        View var12 = wB.a(this, 2131427641);
+        RadioGroup var7 = (RadioGroup)var12.findViewById(2131231667);
+        LinearLayout var11 = (LinearLayout)var12.findViewById(2131230932);
+        ArrayList var8 = jC.d(this.B).m();
+        if (xq.a(this.B) || xq.b(this.B)) {
+            if ("property_image" == str) {
+                var8.add(0, "default_image");
+            } else if ("property_background_resource" == str) {
+                var8.add(0, "NONE");
+            }
+        }
+
+        Iterator var13 = var8.iterator();
+
+        while(var13.hasNext()) {
+            str = (String)var13.next();
+            RadioButton var9 = this.c(str);
+            var7.addView(var9);
+            if (str.equals(ss.getArgValue())) {
+                var9.setChecked(true);
+            }
+
+            LinearLayout var10;
+            if ((xq.a(this.B) || xq.b(this.B)) && !str.equals("default_image") && !"NONE".equals(str)) {
+                var10 = this.a(str, false);
+            } else {
+                var10 = this.a(str, true);
+            }
+
+            var10.setOnClickListener(v -> {
+                RadioButton button = (RadioButton) var7.getChildAt(var11.indexOfChild(v));
+                button.setChecked(true);
+            });
+            var11.addView(var10);
+        }
+
+        var3.a(var12);
+        var3.b(xB.b().a(this.getApplicationContext(), 2131625031), v -> {
+            int childCount = var7.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
                 }
-                LinearLayout a3 = ((xq.a(this.B) || xq.b(this.B)) && !next.equals("default_image") && !"NONE".equals(next)) ? a(next, false) : a(next, true);
-                a3.setOnClickListener(new Er(this, linearLayout, radioGroup));
-                linearLayout.addView(a3);
+                RadioButton radioButton = (RadioButton) var7.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    a(ss, radioButton.getTag());
+                    break;
+                }
+                i++;
             }
-            aBVar.a(a2);
-            aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new Gr(this, radioGroup, ss, aBVar));
-            aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Hr(this, aBVar));
-            aBVar.show();
-        }
-        b2 = xB.b();
-        applicationContext = getApplicationContext();
-        i = 2131625561;
-        aBVar.b(b2.a(applicationContext, i));
-        aBVar.a(2131165811);
-        View a22 = wB.a((Context) this, 2131427641);
-        RadioGroup radioGroup2 = (RadioGroup) a22.findViewById(2131231667);
-        LinearLayout linearLayout2 = (LinearLayout) a22.findViewById(2131230932);
-        ArrayList<String> m2 = jC.d(this.B).m();
-        if (!xq.a(this.B)) {
-        }
-        if ("property_image" != str) {
-        }
-        it = m2.iterator();
-        while (it.hasNext()) {
-        }
-        aBVar.a(a22);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new Gr(this, radioGroup2, ss, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Hr(this, aBVar));
-        aBVar.show();
+            var3.dismiss();
+        });
+        var3.a(xB.b().a(this.getApplicationContext(), 2131624974), v -> var3.dismiss());
+        var3.show();
     }
 
     public void a(Ss ss, boolean z) {
@@ -912,8 +1013,37 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new xr(this, editText, z, ss, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new yr(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), v -> {
+            String text = editText.getText().toString();
+            emptyStringSetter:
+            {
+                if (z) {
+                    try {
+                        double d = Double.parseDouble(text);
+                        if (!Double.isNaN(d) && !Double.isInfinite(d)) {
+                            break emptyStringSetter;
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                } else if (text.length() > 0) {
+                    if (text.charAt(0) == '@') {
+                        text = " " + text;
+                        break emptyStringSetter;
+                    }
+                }
+
+                text = "";
+            }
+
+            a(ss, (Object) text);
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -1767,8 +1897,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         try {
             Mp.h().a(str, arrayList2, true);
             this.O.a(str, arrayList2).setOnTouchListener(this);
-        } catch (yy e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // The bytecode is lying. Checked exceptions suck.
+            //noinspection ConstantConditions
+            if (e instanceof yy) {
+                e.printStackTrace();
+            } else {
+                throw e;
+            }
         }
     }
 
@@ -1826,7 +1962,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         View a2 = wB.a((Context) this, 2131427373);
         a2.setAnimation(AnimationUtils.loadAnimation(this, 2130771968));
         Zx zx = new Zx(a2, this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false);
-        zx.a(new Dr(this, ss));
+        zx.a(i -> {
+            if (i == 0) {
+                a(ss, (Object) "Color.TRANSPARENT");
+            } else {
+                a(ss, (Object) String.format("0x%08X", i & (Color.WHITE)));
+            }
+        });
         zx.setAnimationStyle(2130771968);
         zx.showAtLocation(a2, 17, 0, 0);
     }
@@ -1844,8 +1986,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(6);
         ZB zb = new ZB(getBaseContext(), (TextInputLayout) a2.findViewById(2131231816), uq.b, uq.a(), jC.a(this.B).a(this.M));
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new Sr(this, zb, moreBlockCollectionBean, editText, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Tr(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), v -> {
+            if (zb.b()) {
+                String spec = moreBlockCollectionBean.spec;
+                String substring = spec.contains(" ") ? spec.substring(spec.indexOf(" ")) : "";
+                moreBlockCollectionBean.spec = editText.getText().toString() + substring;
+                d(moreBlockCollectionBean);
+                mB.a(getApplicationContext(), editText);
+                aBVar.dismiss();
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -1922,8 +2076,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(6);
         NB nb = new NB(this, (TextInputLayout) a2.findViewById(2131231816), Mp.h().g());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new _r(this, nb, editText, rs, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new as(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), v -> {
+            if (nb.b()) {
+                a(editText.getText().toString(), rs);
+                mB.a(getApplicationContext(), editText);
+                aBVar.dismiss();
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -1939,8 +2102,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(6);
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new vr(this, ss, editText, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new wr(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), v -> {
+            a(ss, (Object) editText.getText().toString());
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -2060,12 +2230,30 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 b2.setChecked(true);
             }
             LinearLayout d = d(next);
-            d.setOnClickListener(new Mr(this, linearLayout, radioGroup));
+            d.setOnClickListener(v -> {
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(linearLayout.indexOfChild(v));
+                radioButton.setChecked(true);
+            });
             linearLayout.addView(d);
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), new Nr(this, radioGroup, ss, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Or(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), v -> {
+            int childCount = radioGroup.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
+                }
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    a(ss, radioButton.getTag());
+                    break;
+                }
+                i++;
+            }
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
@@ -2165,8 +2353,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setInputType(524289);
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new sr(this, ss, editText, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new tr(this, editText, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), v -> {
+            a(ss, (Object) editText.getText().toString());
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> {
+            mB.a(getApplicationContext(), editText);
+            aBVar.dismiss();
+        });
         aBVar.show();
     }
 
@@ -2249,8 +2444,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         asdAll.a(a2);
         asdAll.carry(this, ss, viewGroup);
-        asdAll.b(xB.b().a(getApplicationContext(), 2131625035), new Br(this, viewGroup, ss, asdAll));
-        asdAll.a(xB.b().a(getApplicationContext(), 2131624974), new Cr(this, asdAll));
+        asdAll.b(xB.b().a(getApplicationContext(), 2131625035), v -> {
+            int childCount2 = viewGroup.getChildCount();
+            int j = 0;
+            while (true) {
+                if (j >= childCount2) {
+                    break;
+                }
+                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(j);
+                if (radioButton.isChecked()) {
+                    a(ss, radioButton.getTag());
+                    break;
+                }
+                j++;
+            }
+            asdAll.dismiss();
+        });
+        asdAll.a(xB.b().a(getApplicationContext(), 2131624974), v -> asdAll.dismiss());
         asdAll.show();
     }
 
@@ -2259,8 +2469,26 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.b(xB.b().a(getApplicationContext(), 2131625583));
         aBVar.a(2131165391);
         aBVar.a(xB.b().a(getApplicationContext(), 2131625577));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131624980), new Ur(this, moreBlockCollectionBean, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Vr(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131624980), v -> {
+            for (Pair<Integer, String> integerStringPair : ja) {
+                jC.a(B).c(M.getJavaName(), integerStringPair.first, integerStringPair.second);
+            }
+            for (Pair<Integer, String> integerStringPair : ka) {
+                jC.a(B).b(M.getJavaName(), integerStringPair.first, integerStringPair.second);
+            }
+            for (ProjectResourceBean projectResourceBean : la) {
+                g(projectResourceBean.resName);
+            }
+            for (ProjectResourceBean projectResourceBean : ma) {
+                h(projectResourceBean.resName);
+            }
+            for (ProjectResourceBean projectResourceBean : na) {
+                f(projectResourceBean.resName);
+            }
+            a(moreBlockCollectionBean);
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
@@ -2348,49 +2576,37 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         (z ? this.fa : this.ga).start();
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:13:0x003a  */
-    /* JADX WARN: Removed duplicated region for block: B:14:0x0059  */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     public final void h(int i) {
-        ObjectAnimator ofFloat;
-        boolean z = this.X;
-        if (2 == i) {
-            if (!z) {
-                this.J.setTranslationX((int) wB.a((Context) this, 320.0f));
-                this.J.setTranslationY(0.0f);
+        label24: {
+            label23: {
+                boolean var2 = this.X;
                 if (2 == i) {
-                    this.U = ObjectAnimator.ofFloat(this.J, "TranslationX", 0.0f);
-                    ofFloat = ObjectAnimator.ofFloat(this.J, "TranslationX", (int) wB.a((Context) this, 320.0f));
-                } else {
-                    this.U = ObjectAnimator.ofFloat(this.J, "TranslationY", 0.0f);
-                    ofFloat = ObjectAnimator.ofFloat(this.J, "TranslationY", (int) wB.a((Context) this, 240.0f));
+                    if (!var2) {
+                        this.J.setTranslationX((float)((int)wB.a(this, 320.0F)));
+                        break label23;
+                    }
+                } else if (!var2) {
+                    this.J.setTranslationX(0.0F);
+                    this.J.setTranslationY((float)((int)wB.a(this, 240.0F)));
+                    break label24;
                 }
-                this.V = ofFloat;
-                this.U.setDuration(500L);
-                this.U.setInterpolator(new DecelerateInterpolator());
-                this.V.setDuration(300L);
-                this.V.setInterpolator(new DecelerateInterpolator());
-                this.W = true;
+
+                this.J.setTranslationX(0.0F);
             }
-        } else if (!z) {
-            this.J.setTranslationX(0.0f);
-            this.J.setTranslationY((int) wB.a((Context) this, 240.0f));
-            if (2 == i) {
-            }
-            this.V = ofFloat;
-            this.U.setDuration(500L);
-            this.U.setInterpolator(new DecelerateInterpolator());
-            this.V.setDuration(300L);
-            this.V.setInterpolator(new DecelerateInterpolator());
-            this.W = true;
+
+            this.J.setTranslationY(0.0F);
         }
-        this.J.setTranslationX(0.0f);
-        this.J.setTranslationY(0.0f);
+
+        ObjectAnimator var3;
         if (2 == i) {
+            this.U = ObjectAnimator.ofFloat(this.J, "TranslationX", new float[]{0.0F});
+            var3 = ObjectAnimator.ofFloat(this.J, "TranslationX", new float[]{(float)((int)wB.a(this, 320.0F))});
+        } else {
+            this.U = ObjectAnimator.ofFloat(this.J, "TranslationY", new float[]{0.0F});
+            var3 = ObjectAnimator.ofFloat(this.J, "TranslationY", new float[]{(float)((int)wB.a(this, 240.0F))});
         }
-        this.V = ofFloat;
+
+        this.V = var3;
         this.U.setDuration(500L);
         this.U.setInterpolator(new DecelerateInterpolator());
         this.V.setDuration(300L);
@@ -2417,7 +2633,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         } else {
             soundPool = new SoundPool(1, 3, 0);
         }
-        soundPool.setOnLoadCompleteListener(new Ir(this));
+        soundPool.setOnLoadCompleteListener((soundPool1, sampleId, status) -> {
+            if (soundPool1 != null) {
+                soundPool1.play(sampleId, 1, 1, 1, 0, 1);
+            }
+        });
         Iterator<String> it = jC.d(this.B).p().iterator();
         while (it.hasNext()) {
             String next = it.next();
@@ -2426,11 +2646,27 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (next.equals(ss.getArgValue())) {
                 e.setChecked(true);
             }
-            e.setOnClickListener(new Jr(this, soundPool));
+            e.setOnClickListener(v -> {
+                soundPool.load(jC.d(B).i(((RadioButton) v).getText().toString()), 1);
+            });
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), new Kr(this, radioGroup, ss, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Lr(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), v -> {
+            int childCount = radioGroup.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
+                }
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    a(ss, (Object) radioButton.getText().toString());
+                    break;
+                }
+                i++;
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
@@ -2478,8 +2714,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), new Pr(this, radioGroup, ss, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Rr(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625031), v -> {
+            int childCount = radioGroup.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
+                }
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    a(ss, (Object) radioButton.getText().toString());
+                    break;
+                }
+                i++;
+            }
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
@@ -2621,8 +2872,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.b(xB.b().a(getApplicationContext(), 2131625484));
         aBVar.a(2131165669);
         aBVar.a(xB.b().a(getApplicationContext(), 2131625483));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131624986), new qr(this, str, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new rr(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131624986), v -> {
+            Mp.h().a(str, true);
+            O.a(str);
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), v -> aBVar.dismiss());
         aBVar.show();
     }
 
@@ -2697,26 +2952,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             } else if (view.getTag().equals("listRemove")) {
                 J();
             } else {
-                if (view.getTag().equals("blockAdd")) {
-                    intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
-                    intent.putExtra("sc_id", this.B);
-                    intent.putExtra("project_file", this.M);
-                    intent.setFlags(536870912);
-                    i = 222;
-                } else if (view.getTag().equals("componentAdd")) {
-                    intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
-                    intent.putExtra("sc_id", this.B);
-                    intent.putExtra("project_file", this.M);
-                    intent.putExtra("filename", this.M.getJavaName());
-                    i = 224;
-                } else if (view.getTag().equals("blockImport")) {
-                    I();
-                } else if (view.getTag().equals("sharedMoreBlock")) {
-                    intent = new Intent(getApplicationContext(), SharedMoreBlocksListActivity.class);
-                    intent.setFlags(536870912);
-                    i = 464;
+                label45:
+                {
+                    if (view.getTag().equals("blockAdd")) {
+                        intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
+                        intent.putExtra("sc_id", this.B);
+                        intent.putExtra("project_file", this.M);
+                        intent.setFlags(536870912);
+                        i = 222;
+                    } else if (view.getTag().equals("componentAdd")) {
+                        intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
+                        intent.putExtra("sc_id", this.B);
+                        intent.putExtra("project_file", this.M);
+                        intent.putExtra("filename", this.M.getJavaName());
+                        i = 224;
+                    } else if (view.getTag().equals("blockImport")) {
+                        I();
+                        break label45;
+                    } else if (view.getTag().equals("sharedMoreBlock")) {
+                        intent = new Intent(getApplicationContext(), SharedMoreBlocksListActivity.class);
+                        intent.setFlags(536870912);
+                        i = 464;
+                    } else {
+                        break label45;
+                    }
+                    startActivityForResult(intent, i);
                 }
-                startActivityForResult(intent, i);
             }
         }
         int id = view.getId();
@@ -2760,14 +3021,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         this.M = (ProjectFileBean) parcelable;
         this.H = new DB(this.e, "P1");
-        this.T = (int) wB.a(getBaseContext(), this.T);
+        this.T = (int) wB.a(getBaseContext(), (float) this.T);
         Toolbar toolbar = (Toolbar) findViewById(2131231847);
         this.k = toolbar;
         a(toolbar);
         findViewById(2131231370).setVisibility(8);
         d().d(true);
         d().e(true);
-        this.k.setNavigationOnClickListener(new ur(this));
+        this.k.setNavigationOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        });
         this.k.setPopupTheme(2131689886);
         this.G = new DB(this.e, "P12").a("P12I0", true);
         this.A = ViewConfiguration.get(this.e).getScaledTouchSlop();
@@ -2804,7 +3069,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         this.K = (LinearLayout) findViewById(2131230782);
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(2131231055);
         this.L = floatingActionButton;
-        floatingActionButton.setOnClickListener(new Fr(this));
+        floatingActionButton.setOnClickListener(v -> e(!X));
         this.N = (LogicTopMenu) findViewById(2131231852);
         this.O = (LogicEditorDrawer) findViewById(2131231674);
         this.R = findViewById(2131232313);
@@ -2859,45 +3124,69 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public void onPostCreate(Bundle bundle) {
-        String a2;
-        Rs rs;
         super.onPostCreate(bundle);
+        String var2;
+        String var8;
         if (this.D.equals("moreBlock")) {
-            String b2 = jC.a(this.B).b(this.M.getJavaName(), this.C);
-            a2 = xB.b().a(getApplicationContext(), 2131626025) + " " + ReturnMoreblockManager.getLogicEditorTitle(b2);
+            var2 = jC.a(this.B).b(this.M.getJavaName(), this.C);
+            var8 = xB.b().a(this.getApplicationContext(), 2131626025);
+            StringBuilder var3 = new StringBuilder();
+            var3.append(var8);
+            var3.append(" ");
+            var3.append(ReturnMoreblockManager.getLogicEditorTitle(var2));
+            var8 = var3.toString();
+        } else if (this.C.equals("_fab")) {
+            var8 = xB.b().a(this.getApplicationContext(), "fab", this.D);
         } else {
-            a2 = this.C.equals("_fab") ? xB.b().a(getApplicationContext(), "fab", this.D) : xB.b().a(getApplicationContext(), this.C, this.D);
+            var8 = xB.b().a(this.getApplicationContext(), this.C, this.D);
         }
-        this.E = a2;
-        this.o.a(a2, this.D);
-        ArrayList<String> c = FB.c(this.E);
-        int i = 0;
-        for (int i2 = 0; i2 < c.size(); i2++) {
-            String str = c.get(i2);
-            if (str.charAt(0) == '%') {
-                if (str.charAt(1) == 'b') {
-                    rs = new Rs(this.e, i + 1, str.substring(3), "b", "getArg");
-                } else if (str.charAt(1) == 'd') {
-                    rs = new Rs(this.e, i + 1, str.substring(3), "d", "getArg");
-                } else if (str.charAt(1) == 's') {
-                    rs = new Rs(this.e, i + 1, str.substring(3), "s", "getArg");
-                } else if (str.charAt(1) == 'm') {
-                    String substring = str.substring(str.lastIndexOf(".") + 1);
-                    String substring2 = str.substring(str.indexOf(".") + 1, str.lastIndexOf("."));
-                    rs = new Rs(this.e, i + 1, substring, kq.a(substring2), kq.b(substring2), "getArg");
+
+        this.E = var8;
+        this.o.a(this.E, this.D);
+        ArrayList var10 = FB.c(this.E);
+        int var4 = 0;
+
+        int var6;
+        for(int var5 = 0; var4 < var10.size(); var5 = var6) {
+            var2 = (String)var10.get(var4);
+            var6 = var5;
+            if (var2.charAt(0) == '%') {
+                label44: {
+                    Rs var9;
+                    if (var2.charAt(1) == 'b') {
+                        var9 = new Rs(super.e, var5 + 1, var2.substring(3), "b", "getArg");
+                    } else if (var2.charAt(1) == 'd') {
+                        var9 = new Rs(super.e, var5 + 1, var2.substring(3), "d", "getArg");
+                    } else if (var2.charAt(1) == 's') {
+                        var9 = new Rs(super.e, var5 + 1, var2.substring(3), "s", "getArg");
+                    } else {
+                        var6 = var5;
+                        if (var2.charAt(1) != 'm') {
+                            break label44;
+                        }
+
+                        var8 = var2.substring(var2.lastIndexOf(".") + 1);
+                        String var7 = var2.substring(var2.indexOf(".") + 1, var2.lastIndexOf("."));
+                        var2 = kq.a(var7);
+                        var9 = new Rs(super.e, var5 + 1, var8, var2, kq.b(var7), "getArg");
+                    }
+
+                    var9.setBlockType(1);
+                    this.o.addView(var9);
+                    this.o.getRoot().a((Ts)this.o.getRoot().V.get(var5), var9);
+                    var9.setOnTouchListener(this);
+                    var6 = var5 + 1;
                 }
-                rs.setBlockType(1);
-                this.o.addView(rs);
-                this.o.getRoot().a((Ts) this.o.getRoot().V.get(i), rs);
-                rs.setOnTouchListener(this);
-                i++;
             }
+
+            ++var4;
         }
+
         this.o.getRoot().k();
-        g(getResources().getConfiguration().orientation);
-        a(0, -1147626);
-        A();
-        z();
+        this.g(this.getResources().getConfiguration().orientation);
+        this.a(0, -1147626);
+        this.A();
+        this.z();
     }
 
     @Override
@@ -2934,7 +3223,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Rs p2;
         Rs p3;
         BlockBean blockBean2;
-        int[] iArr;
         int actionMasked = motionEvent.getActionMasked();
         if (motionEvent.getPointerId(motionEvent.getActionIndex()) > 0) {
             return true;
@@ -2942,9 +3230,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (actionMasked == 0) {
             this.u = false;
             this.Z.postDelayed(this.aa, ViewConfiguration.getLongPressTimeout() / 2);
-            view.getLocationOnScreen(new int[2]);
-            this.s = iArr[0];
-            this.t = iArr[1];
+            int[] locationOnScreen = new int[2];
+            view.getLocationOnScreen(locationOnScreen);
+            this.s = locationOnScreen[0];
+            this.t = locationOnScreen[1];
             this.q = motionEvent.getRawX();
             this.r = motionEvent.getRawY();
             this.Y = view;
