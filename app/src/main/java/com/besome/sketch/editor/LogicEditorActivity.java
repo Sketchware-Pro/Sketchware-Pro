@@ -68,6 +68,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -242,32 +243,31 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public class b extends MA {
-        public final LogicEditorActivity c;
+    private static class b extends MA {
+        private final WeakReference<LogicEditorActivity> activity;
 
-        /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-        public b(LogicEditorActivity logicEditorActivity, Context context) {
-            super(context);
-            this.c = logicEditorActivity;
+        public b(LogicEditorActivity logicEditorActivity) {
+            super(logicEditorActivity);
+            this.activity = new WeakReference<>(logicEditorActivity);
             logicEditorActivity.a(this);
         }
 
         @Override
         public void a() {
-            this.c.h();
-            this.c.finish();
+            this.activity.get().h();
+            this.activity.get().finish();
         }
 
         @Override
         public void a(String str) {
-            Toast.makeText(this.a, xB.b().a(this.c.getApplicationContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
-            this.c.h();
+            Toast.makeText(this.a, xB.b().a(this.activity.get().getApplicationContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
+            this.activity.get().h();
         }
 
         @Override
         public void b() {
             publishProgress("Now saving..");
-            this.c.E();
+            this.activity.get().E();
         }
 
         @Override
@@ -587,7 +587,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void L() {
         try {
-            new Handler().postDelayed(() -> new b(this, getApplicationContext()).execute(), 500L);
+            new Handler().postDelayed(() -> new b(this).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
         }
