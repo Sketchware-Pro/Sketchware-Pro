@@ -18,7 +18,6 @@ import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -41,7 +40,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.BlockCollectionBean;
@@ -113,7 +111,6 @@ import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.logic.SourceCodeDialog;
-import mod.hey.studios.moreblock.ImportMoreblockHelper;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hilal.saif.asd.asdforall.AsdAll;
@@ -146,7 +143,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public ViewLogicEditor n;
     public ArrayList<ProjectResourceBean> na;
     public BlockPane o;
-    public a oa;
     public ViewDummy p;
     public ArrayList<MoreBlockCollectionBean> pa;
     public Rs w;
@@ -176,72 +172,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public boolean ea = false;
     public boolean ha = false;
     public boolean ia = false;
-
-    public class a extends RecyclerView.a<a.a2> {
-        public int c = -1;
-        public final LogicEditorActivity d;
-
-        public class a2 extends RecyclerView.v {
-            public ViewGroup t;
-            public ImageView u;
-            public TextView v;
-            public ViewGroup w;
-            public final a x;
-
-            /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-            public a2(a aVar, View view) {
-                super(view);
-                this.x = aVar;
-                this.t = (ViewGroup) view.findViewById(R.id.layout_item);
-                this.u = (ImageView) view.findViewById(R.id.img_selected);
-                this.v = (TextView) view.findViewById(R.id.tv_block_name);
-                this.w = (ViewGroup) view.findViewById(R.id.block_area);
-                this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(v -> {
-                    a.this.c = j();
-                    c(a.this.c);
-                });
-                this.w.setOnClickListener(v -> {
-                    a.this.c = j();
-                    c(a.this.c);
-                });
-            }
-
-            public final void c(int i) {
-                if (this.x.d.pa.size() <= 0) {
-                    return;
-                }
-                for (MoreBlockCollectionBean moreBlockCollectionBean : this.x.d.pa) {
-                    moreBlockCollectionBean.isSelected = false;
-                }
-                this.x.d.pa.get(i).isSelected = true;
-                this.x.d.oa.c();
-            }
-        }
-
-        public a(LogicEditorActivity logicEditorActivity) {
-            this.d = logicEditorActivity;
-        }
-
-        @Override
-        public int a() {
-            return this.d.pa.size();
-        }
-
-        @Override
-        public void b(a2 a2Var, int i) {
-            MoreBlockCollectionBean moreBlockCollectionBean = this.d.pa.get(i);
-            a2Var.u.setVisibility(moreBlockCollectionBean.isSelected ? View.VISIBLE : View.GONE);
-            a2Var.v.setText(moreBlockCollectionBean.name);
-            a2Var.w.removeAllViews();
-            a2Var.w.addView(ImportMoreblockHelper.optimizedBlockView(this.d.getBaseContext(), moreBlockCollectionBean.spec));
-        }
-
-        @Override
-        public a2 b(ViewGroup viewGroup, int i) {
-            return new a2(this, LayoutInflater.from(this.d.getBaseContext()).inflate(R.layout.manage_collection_popup_import_more_block_list_item, viewGroup, false));
-        }
-    }
 
     private static class b extends MA {
         private final WeakReference<LogicEditorActivity> activity;
@@ -3632,11 +3562,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ofFloat2.setDuration(300L);
         this.ga.setInterpolator(new DecelerateInterpolator());
         this.ha = true;
-    }
-
-    public final void w() {
-        this.pa = Pp.h().f();
-        this.oa.c();
     }
 
     public final void x() {
