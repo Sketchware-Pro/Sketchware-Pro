@@ -119,7 +119,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public ProjectFileBean M;
     public LogicTopMenu N;
     public LogicEditorDrawer O;
-    public View R;
     public ObjectAnimator U;
     public ObjectAnimator V;
     public ObjectAnimator ba;
@@ -3067,7 +3066,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         floatingActionButton.setOnClickListener(v -> e(!X));
         this.N = (LogicTopMenu) findViewById(2131231852);
         this.O = (LogicEditorDrawer) findViewById(2131231674);
-        this.R = findViewById(2131232313);
         this.j.h();
         this.extraPaletteBlock = new ExtraPaletteBlock(this);
     }
