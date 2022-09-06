@@ -1,5 +1,77 @@
 package com.besome.sketch.editor;
 
+import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.os.Vibrator;
+import android.text.InputType;
+import android.util.Pair;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.beans.BlockCollectionBean;
+import com.besome.sketch.beans.HistoryBlockBean;
+import com.besome.sketch.beans.MoreBlockCollectionBean;
+import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.component.ComponentAddActivity;
+import com.besome.sketch.editor.logic.BlockPane;
+import com.besome.sketch.editor.logic.LogicTopMenu;
+import com.besome.sketch.editor.logic.PaletteBlock;
+import com.besome.sketch.editor.logic.PaletteSelector;
+import com.besome.sketch.editor.makeblock.MakeBlockActivity;
+import com.besome.sketch.editor.manage.ShowBlockCollectionActivity;
+import com.besome.sketch.editor.view.ViewDummy;
+import com.besome.sketch.editor.view.ViewLogicEditor;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Key;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import a.a.a.DB;
 import a.a.a.FB;
 import a.a.a.Fx;
@@ -37,75 +109,7 @@ import a.a.a.xB;
 import a.a.a.xq;
 import a.a.a.yq;
 import a.a.a.yy;
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.media.AudioAttributes;
-import android.media.SoundPool;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.os.Vibrator;
-import android.text.InputType;
-import android.util.Pair;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import com.besome.sketch.beans.BlockBean;
-import com.besome.sketch.beans.BlockCollectionBean;
-import com.besome.sketch.beans.HistoryBlockBean;
-import com.besome.sketch.beans.MoreBlockCollectionBean;
-import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.editor.component.ComponentAddActivity;
-import com.besome.sketch.editor.logic.BlockPane;
-import com.besome.sketch.editor.logic.LogicTopMenu;
-import com.besome.sketch.editor.logic.PaletteBlock;
-import com.besome.sketch.editor.logic.PaletteSelector;
-import com.besome.sketch.editor.makeblock.MakeBlockActivity;
-import com.besome.sketch.editor.manage.ShowBlockCollectionActivity;
-import com.besome.sketch.editor.view.ViewDummy;
-import com.besome.sketch.editor.view.ViewLogicEditor;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Key;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.logic.SourceCodeDialog;
 import mod.hey.studios.moreblock.ImportMoreblockHelper;
@@ -206,9 +210,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 if (this.x.d.pa.size() <= 0) {
                     return;
                 }
-                Iterator<MoreBlockCollectionBean> it = this.x.d.pa.iterator();
-                while (it.hasNext()) {
-                    it.next().isSelected = false;
+                for (MoreBlockCollectionBean moreBlockCollectionBean : this.x.d.pa) {
+                    moreBlockCollectionBean.isSelected = false;
                 }
                 this.x.d.pa.get(i).isSelected = true;
                 this.x.d.oa.c();
@@ -226,17 +229,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         @Override
         public void b(a2 a2Var, int i) {
-            ImageView imageView;
-            int i2;
             MoreBlockCollectionBean moreBlockCollectionBean = this.d.pa.get(i);
-            if (moreBlockCollectionBean.isSelected) {
-                imageView = a2Var.u;
-                i2 = View.VISIBLE;
-            } else {
-                imageView = a2Var.u;
-                i2 = View.GONE;
-            }
-            imageView.setVisibility(i2);
+            a2Var.u.setVisibility(moreBlockCollectionBean.isSelected ? View.VISIBLE : View.GONE);
             a2Var.v.setText(moreBlockCollectionBean.name);
             a2Var.w.removeAllViews();
             a2Var.w.addView(ImportMoreblockHelper.optimizedBlockView(this.d.getBaseContext(), moreBlockCollectionBean.spec));
@@ -286,7 +280,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Rs rs;
         Rs rs2;
         Rs rs3;
-        HashMap hashMap = new HashMap();
+        HashMap<Integer, Rs> hashMap = new HashMap<>();
         ArrayList<BlockBean> a2 = jC.a(this.B).a(this.M.getJavaName(), this.C + "_" + this.D);
         if (a2 == null) {
             return;
@@ -312,21 +306,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 z = false;
             }
         }
-        Iterator<BlockBean> it2 = a2.iterator();
-        while (it2.hasNext()) {
-            BlockBean next2 = it2.next();
-            Rs rs4 = (Rs) hashMap.get(Integer.valueOf(next2.id));
+        for (BlockBean next2 : a2) {
+            Rs rs4 = hashMap.get(Integer.valueOf(next2.id));
             if (rs4 != null) {
                 int i = next2.subStack1;
-                if (i >= 0 && (rs3 = (Rs) hashMap.get(Integer.valueOf(i))) != null) {
+                if (i >= 0 && (rs3 = hashMap.get(Integer.valueOf(i))) != null) {
                     rs4.e(rs3);
                 }
                 int i2 = next2.subStack2;
-                if (i2 >= 0 && (rs2 = (Rs) hashMap.get(Integer.valueOf(i2))) != null) {
+                if (i2 >= 0 && (rs2 = hashMap.get(Integer.valueOf(i2))) != null) {
                     rs4.f(rs2);
                 }
                 int i3 = next2.nextBlock;
-                if (i3 >= 0 && (rs = (Rs) hashMap.get(Integer.valueOf(i3))) != null) {
+                if (i3 >= 0 && (rs = hashMap.get(Integer.valueOf(i3))) != null) {
                     rs4.b(rs);
                 }
                 int size = next2.parameters.size();
@@ -334,7 +326,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     String str = next2.parameters.get(i4);
                     if (str != null && str.length() > 0) {
                         if (str.charAt(0) == '@') {
-                            Rs rs5 = (Rs) hashMap.get(Integer.valueOf(Integer.valueOf(str.substring(1)).intValue()));
+                            Rs rs5 = hashMap.get(Integer.valueOf(Integer.valueOf(str.substring(1)).intValue()));
                             if (rs5 != null) {
                                 rs4.a((Ts) rs4.V.get(i4), rs5);
                             }
@@ -356,9 +348,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (var1 == null) {
                 this.C();
             } else {
-                label58: {
+                label58:
+                {
                     BlockBean var5;
-                    label57: {
+                    label57:
+                    {
                         int var2 = var1.getActionType();
                         int[] var3;
                         if (var2 == 0) {
@@ -379,10 +373,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                     break label58;
                                 }
 
-                                Iterator var4 = var1.getAfterMoveData().iterator();
-
-                                while(var4.hasNext()) {
-                                    BlockBean var7 = (BlockBean)var4.next();
+                                for (BlockBean var7 : var1.getAfterMoveData()) {
                                     this.o.a(var7, true);
                                 }
 
@@ -401,10 +392,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                 break label57;
                             }
 
-                            ArrayList var6 = var1.getRemovedData();
+                            ArrayList<BlockBean> var6 = var1.getRemovedData();
                             var2 = var6.size();
 
-                            while(true) {
+                            while (true) {
                                 --var2;
                                 if (var2 < 0) {
                                     if (var1.getCurrentParentData() == null) {
@@ -413,7 +404,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                     break;
                                 }
 
-                                this.o.a((BlockBean)var6.get(var2), false);
+                                this.o.a(var6.get(var2), false);
                             }
                         }
 
@@ -533,18 +524,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         View a2 = wB.a((Context) this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = (ViewGroup) a2.findViewById(R.id.rg_content);
         new ArrayList();
-        Iterator<Pair<Integer, String>> it = jC.a(this.B).j(this.M.getJavaName()).iterator();
-        while (it.hasNext()) {
-            viewGroup.addView(e((String) it.next().second));
+        for (Pair<Integer, String> list : jC.a(this.B).j(this.M.getJavaName())) {
+            viewGroup.addView(e((String) list.second));
         }
         aBVar.a(a2);
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_remove), v -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
-            while (true) {
-                if (i >= childCount) {
-                    break;
-                }
+            while (i < childCount) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     if (!o.b(radioButton.getText().toString())) {
@@ -570,9 +557,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         View a2 = wB.a((Context) this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = (ViewGroup) a2.findViewById(R.id.rg_content);
         new ArrayList();
-        Iterator<Pair<Integer, String>> it = jC.a(this.B).k(this.M.getJavaName()).iterator();
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
+        for (Pair<Integer, String> next : jC.a(this.B).k(this.M.getJavaName())) {
             RadioButton e = e((String) next.second);
             e.setTag(next.first);
             viewGroup.addView(e);
@@ -581,10 +566,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_remove), v -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
-            while (true) {
-                if (i >= childCount) {
-                    break;
-                }
+            while (i < childCount) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     if (!o.c(radioButton.getText().toString())) {
@@ -617,16 +599,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (var1 == null) {
                 this.C();
             } else {
-                label59: {
+                label59:
+                {
                     BlockBean var5;
-                    label58: {
+                    label58:
+                    {
                         int var2 = var1.getActionType();
-                        ArrayList var3;
+                        ArrayList<BlockBean> var3;
                         if (var2 == 0) {
                             var3 = var1.getAddedData();
                             var2 = var3.size();
 
-                            while(true) {
+                            while (true) {
                                 --var2;
                                 if (var2 < 0) {
                                     if (var1.getPrevParentData() == null) {
@@ -637,7 +621,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                     break;
                                 }
 
-                                this.o.a((BlockBean)var3.get(var2), false);
+                                this.o.a((BlockBean) var3.get(var2), false);
                             }
                         } else {
                             if (var2 == 1) {
@@ -650,10 +634,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                     break label59;
                                 }
 
-                                Iterator var6 = var1.getBeforeMoveData().iterator();
-
-                                while(var6.hasNext()) {
-                                    BlockBean var8 = (BlockBean)var6.next();
+                                for (BlockBean var8 : var1.getBeforeMoveData()) {
                                     this.o.a(var8, true);
                                 }
 
@@ -764,17 +745,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final ArrayList<BlockBean> a(ArrayList<BlockBean> arrayList, int i, int i2, boolean z) {
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         ArrayList<BlockBean> arrayList2 = new ArrayList<>();
-        Iterator<BlockBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            BlockBean next = it.next();
+        for (BlockBean next : arrayList) {
             String str = next.id;
             if (str != null && !str.equals("")) {
                 arrayList2.add(next.clone());
             }
         }
-        Iterator<BlockBean> it2 = arrayList2.iterator();
-        while (it2.hasNext()) {
-            BlockBean next2 = it2.next();
+        for (BlockBean next2 : arrayList2) {
             if (Integer.valueOf(next2.id).intValue() >= 99000000) {
                 Integer valueOf2 = Integer.valueOf(next2.id);
                 BlockPane blockPane = this.o;
@@ -797,9 +774,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 hashMap.remove(Integer.valueOf(blockBean.id));
             }
         }
-        Iterator<BlockBean> it3 = arrayList2.iterator();
-        while (it3.hasNext()) {
-            BlockBean next3 = it3.next();
+        for (BlockBean next3 : arrayList2) {
             if (hashMap.containsKey(Integer.valueOf(next3.id))) {
                 next3.id = String.valueOf(hashMap.get(Integer.valueOf(next3.id)));
             } else {
@@ -844,9 +819,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 b2.setOnTouchListener(this);
             }
         }
-        Iterator<BlockBean> it4 = arrayList2.iterator();
-        while (it4.hasNext()) {
-            BlockBean next4 = it4.next();
+        for (BlockBean next4 : arrayList2) {
             String str4 = next4.id;
             if (str4 != null && !str4.equals("")) {
                 a(next4, false);
@@ -890,17 +863,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             this.x = 2;
         } else if (this.w.ja == ((Integer) rs.getTag()).intValue()) {
             this.x = 3;
-        } else if (!this.w.V.contains(rs)) {
-        } else {
+        } else if (this.w.V.contains(rs)) {
             this.x = 5;
             this.y = this.w.V.indexOf(rs);
         }
     }
 
     public void a(Rs rs, float f, float f2) {
-        Iterator<View> it = rs.V.iterator();
-        while (it.hasNext()) {
-            View next = it.next();
+        for (View next : rs.V) {
             if ((next instanceof Ss) && next.getX() < f && next.getX() + next.getWidth() > f && next.getY() < f2 && next.getY() + next.getHeight() > f2) {
                 new ExtraMenuBean(this).defineMenuSelector((Ss) next);
                 return;
@@ -920,7 +890,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void a(Ss ss, String str) {
         aB var3;
-        label54: {
+        label54:
+        {
             var3 = new aB(this);
             xB var4;
             Context var5;
@@ -944,9 +915,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         var3.a(R.drawable.ic_picture_48dp);
         View var12 = wB.a(this, R.layout.property_popup_selector_color);
-        RadioGroup var7 = (RadioGroup)var12.findViewById(R.id.rg);
-        LinearLayout var11 = (LinearLayout)var12.findViewById(R.id.content);
-        ArrayList var8 = jC.d(this.B).m();
+        RadioGroup var7 = (RadioGroup) var12.findViewById(R.id.rg);
+        LinearLayout var11 = (LinearLayout) var12.findViewById(R.id.content);
+        ArrayList<String> var8 = jC.d(this.B).m();
         if (xq.a(this.B) || xq.b(this.B)) {
             if ("property_image" == str) {
                 var8.add(0, "default_image");
@@ -955,10 +926,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
 
-        Iterator var13 = var8.iterator();
-
-        while(var13.hasNext()) {
-            str = (String)var13.next();
+        for (String value : var8) {
+            str = value;
             RadioButton var9 = this.c(str);
             var7.addView(var9);
             if (str.equals(ss.getArgValue())) {
@@ -1716,22 +1685,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                     break;
                                 case '\'':
                                 case '(':
-                                    Iterator<String> it = jC.d(this.B).m().iterator();
-                                    while (it.hasNext()) {
-                                        str2.equals(it.next());
+                                    for (String value : jC.d(this.B).m()) {
+                                        str2.equals(value);
                                     }
                                     break;
                                 case ')':
-                                    Iterator<String> it2 = jC.b(this.B).d().iterator();
-                                    while (it2.hasNext()) {
-                                        String next = it2.next();
+                                    for (String next : jC.b(this.B).d()) {
                                         str2.equals(next.substring(0, next.indexOf(".java")));
                                     }
                                     break;
                                 case '*':
-                                    Iterator<String> it3 = jC.d(this.B).p().iterator();
-                                    while (it3.hasNext()) {
-                                        str2.equals(it3.next());
+                                    for (String value : jC.d(this.B).p()) {
+                                        str2.equals(value);
                                     }
                                     break;
                                 case '+':
@@ -1864,10 +1829,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ArrayList<String> arrayList;
         ArrayList<Rs> allChildren = rs.getAllChildren();
         ArrayList<BlockBean> arrayList2 = new ArrayList<>();
-        Iterator<Rs> it = allChildren.iterator();
-        while (it.hasNext()) {
+        for (Rs child : allChildren) {
             BlockBean blockBean = new BlockBean();
-            BlockBean bean = it.next().getBean();
+            BlockBean bean = child.getBean();
             blockBean.copy(bean);
             blockBean.id = String.format("99%06d", Integer.valueOf(bean.id));
             int i = bean.subStack1;
@@ -1883,9 +1847,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 blockBean.nextBlock = i3 + 99000000;
             }
             blockBean.parameters.clear();
-            Iterator<String> it2 = bean.parameters.iterator();
-            while (it2.hasNext()) {
-                String next = it2.next();
+            for (String next : bean.parameters) {
                 if (next.length() <= 1 || next.charAt(0) != '@') {
                     arrayList = blockBean.parameters;
                 } else {
@@ -2042,9 +2004,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (this.ka == null) {
             this.ka = new ArrayList<>();
         }
-        Iterator<Pair<Integer, String>> it = jC.a(this.B).j(this.M.getJavaName()).iterator();
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
+        for (Pair<Integer, String> next : jC.a(this.B).j(this.M.getJavaName())) {
             if (((Integer) next.first).intValue() == i && ((String) next.second).equals(str)) {
                 return;
             }
@@ -2189,9 +2149,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (this.ja == null) {
             this.ja = new ArrayList<>();
         }
-        Iterator<Pair<Integer, String>> it = jC.a(this.B).k(this.M.getJavaName()).iterator();
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
+        for (Pair<Integer, String> next : jC.a(this.B).k(this.M.getJavaName())) {
             if (((Integer) next.first).intValue() == i && ((String) next.second).equals(str)) {
                 return;
             }
@@ -2224,9 +2182,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (xq.a(this.B) || xq.b(this.B)) {
             k.add(0, "default_font");
         }
-        Iterator<String> it = k.iterator();
-        while (it.hasNext()) {
-            String next = it.next();
+        for (String next : k) {
             RadioButton b2 = b(next);
             radioGroup.addView(b2);
             if (next.equals(ss.getArgValue())) {
@@ -2266,9 +2222,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         this.la = new ArrayList<>();
         this.ma = new ArrayList<>();
         this.na = new ArrayList<>();
-        Iterator<BlockBean> it = moreBlockCollectionBean.blocks.iterator();
-        while (it.hasNext()) {
-            BlockBean next = it.next();
+        for (BlockBean next : moreBlockCollectionBean.blocks) {
             if (next.opCode.equals("getVar")) {
                 if (next.type.equals("b")) {
                     d(0, next.spec);
@@ -2427,9 +2381,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             xmlName = ProjectFileBean.getXmlName(str);
         }
         asdAll.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_view));
-        Iterator<Pair<Integer, String>> it = jC.a(this.B).d(xmlName, ss.getClassInfo().a()).iterator();
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
+        for (Pair<Integer, String> next : jC.a(this.B).d(xmlName, ss.getClassInfo().a())) {
             viewGroup.addView(d(ViewBean.getViewTypeName(((Integer) next.first).intValue()), (String) next.second));
         }
         int childCount = viewGroup.getChildCount();
@@ -2580,17 +2532,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void h(int i) {
-        label24: {
-            label23: {
+        label24:
+        {
+            label23:
+            {
                 boolean var2 = this.X;
                 if (2 == i) {
                     if (!var2) {
-                        this.J.setTranslationX((float)((int)wB.a(this, 320.0F)));
+                        this.J.setTranslationX((float) ((int) wB.a(this, 320.0F)));
                         break label23;
                     }
                 } else if (!var2) {
                     this.J.setTranslationX(0.0F);
-                    this.J.setTranslationY((float)((int)wB.a(this, 240.0F)));
+                    this.J.setTranslationY((float) ((int) wB.a(this, 240.0F)));
                     break label24;
                 }
 
@@ -2602,11 +2556,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         ObjectAnimator var3;
         if (2 == i) {
-            this.U = ObjectAnimator.ofFloat(this.J, "TranslationX", new float[]{0.0F});
-            var3 = ObjectAnimator.ofFloat(this.J, "TranslationX", new float[]{(float)((int)wB.a(this, 320.0F))});
+            this.U = ObjectAnimator.ofFloat(this.J, "TranslationX", 0.0F);
+            var3 = ObjectAnimator.ofFloat(this.J, "TranslationX", (float) ((int) wB.a(this, 320.0F)));
         } else {
-            this.U = ObjectAnimator.ofFloat(this.J, "TranslationY", new float[]{0.0F});
-            var3 = ObjectAnimator.ofFloat(this.J, "TranslationY", new float[]{(float)((int)wB.a(this, 240.0F))});
+            this.U = ObjectAnimator.ofFloat(this.J, "TranslationY", 0.0F);
+            var3 = ObjectAnimator.ofFloat(this.J, "TranslationY", (float) ((int) wB.a(this, 240.0F)));
         }
 
         this.V = var3;
@@ -2641,9 +2595,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 soundPool1.play(sampleId, 1, 1, 1, 0, 1);
             }
         });
-        Iterator<String> it = jC.d(this.B).p().iterator();
-        while (it.hasNext()) {
-            String next = it.next();
+        for (String next : jC.d(this.B).p()) {
             RadioButton e = e(next);
             radioGroup.addView(e);
             if (next.equals(ss.getArgValue())) {
@@ -2741,9 +2693,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (this.na == null) {
             this.na = new ArrayList<>();
         }
-        Iterator<String> it = jC.d(this.B).k().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(str)) {
+        for (String value : jC.d(this.B).k()) {
+            if (value.equals(str)) {
                 return;
             }
         }
@@ -2773,9 +2724,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (this.la == null) {
             this.la = new ArrayList<>();
         }
-        Iterator<String> it = jC.d(this.B).m().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(str)) {
+        for (String value : jC.d(this.B).m()) {
+            if (value.equals(str)) {
                 return;
             }
         }
@@ -2805,9 +2755,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (this.ma == null) {
             this.ma = new ArrayList<>();
         }
-        Iterator<String> it = jC.d(this.B).p().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(str)) {
+        for (String value : jC.d(this.B).p()) {
+            if (value.equals(str)) {
                 return;
             }
         }
@@ -2914,8 +2863,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return;
             }
             a(7, 0xff2ca5e2);
-        } else if (i != 463 || i2 != Activity.RESULT_OK || !intent.getBooleanExtra("req_update_design_activity", false)) {
-        } else {
+        } else if (i == 463 && i2 == Activity.RESULT_OK && intent.getBooleanExtra("req_update_design_activity", false)) {
             z();
         }
     }
@@ -3128,11 +3076,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (this.D.equals("moreBlock")) {
             var2 = jC.a(this.B).b(this.M.getJavaName(), this.C);
             var8 = xB.b().a(this.getApplicationContext(), R.string.root_spec_common_define);
-            StringBuilder var3 = new StringBuilder();
-            var3.append(var8);
-            var3.append(" ");
-            var3.append(ReturnMoreblockManager.getLogicEditorTitle(var2));
-            var8 = var3.toString();
+            var8 = var8 + " " + ReturnMoreblockManager.getLogicEditorTitle(var2);
         } else if (this.C.equals("_fab")) {
             var8 = xB.b().a(this.getApplicationContext(), "fab", this.D);
         } else {
@@ -3145,11 +3089,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         int var4 = 0;
 
         int var6;
-        for(int var5 = 0; var4 < var10.size(); var5 = var6) {
-            var2 = (String)var10.get(var4);
+        for (int var5 = 0; var4 < var10.size(); var5 = var6) {
+            var2 = (String) var10.get(var4);
             var6 = var5;
             if (var2.charAt(0) == '%') {
-                label44: {
+                label44:
+                {
                     Rs var9;
                     if (var2.charAt(1) == 'b') {
                         var9 = new Rs(super.e, var5 + 1, var2.substring(3), "b", "getArg");
@@ -3171,7 +3116,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
                     var9.setBlockType(1);
                     this.o.addView(var9);
-                    this.o.getRoot().a((Ts)this.o.getRoot().V.get(var5), var9);
+                    this.o.getRoot().a((Ts) this.o.getRoot().V.get(var5), var9);
                     var9.setOnTouchListener(this);
                     var6 = var5 + 1;
                 }
@@ -3383,9 +3328,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                     ArrayList<Rs> allChildren = rs5.getAllChildren();
                     ArrayList<BlockBean> arrayList = new ArrayList<>();
-                    Iterator<Rs> it = allChildren.iterator();
-                    while (it.hasNext()) {
-                        arrayList.add(it.next().getBean().clone());
+                    for (Rs allChild : allChildren) {
+                        arrayList.add(allChild.getBean().clone());
                     }
                     b(rs5);
                     if (rs6 != null) {
@@ -3454,9 +3398,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 p2.k();
                 ArrayList<Rs> allChildren2 = rs10.getAllChildren();
                 ArrayList<BlockBean> arrayList2 = new ArrayList<>();
-                Iterator<Rs> it2 = allChildren2.iterator();
-                while (it2.hasNext()) {
-                    BlockBean clone2 = it2.next().getBean().clone();
+                for (Rs rs : allChildren2) {
+                    BlockBean clone2 = rs.getBean().clone();
                     clone2.id = String.valueOf(Integer.valueOf(clone2.id).intValue() + 99000000);
                     int i2 = clone2.nextBlock;
                     if (i2 > 0) {
@@ -3556,16 +3499,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     BlockBean clone6 = a7 != null ? a7.getBean().clone() : null;
                     ArrayList<Rs> allChildren3 = rs13.getAllChildren();
                     ArrayList<BlockBean> arrayList3 = new ArrayList<>();
-                    Iterator<Rs> it3 = allChildren3.iterator();
-                    while (it3.hasNext()) {
-                        arrayList3.add(it3.next().getBean().clone());
+                    for (Rs rs : allChildren3) {
+                        arrayList3.add(rs.getBean().clone());
                     }
                     int[] iArr14 = this.v;
                     a(rs13, iArr14[0], iArr14[1], true);
                     ArrayList<BlockBean> arrayList4 = new ArrayList<>();
-                    Iterator<Rs> it4 = allChildren3.iterator();
-                    while (it4.hasNext()) {
-                        arrayList4.add(it4.next().getBean().clone());
+                    for (Rs rs : allChildren3) {
+                        arrayList4.add(rs.getBean().clone());
                     }
                     BlockBean clone7 = rs14 != null ? rs14.getBean().clone() : null;
                     if (a7 != null) {
@@ -3714,9 +3655,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void z() {
         ArrayList<BlockCollectionBean> f = Mp.h().f();
         this.O.a();
-        Iterator<BlockCollectionBean> it = f.iterator();
-        while (it.hasNext()) {
-            BlockCollectionBean next = it.next();
+        for (BlockCollectionBean next : f) {
             this.O.a(next.name, next.blocks).setOnTouchListener(this);
         }
     }
