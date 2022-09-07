@@ -3023,67 +3023,63 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void q() {
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:21:0x00ce  */
-    /* JADX WARN: Removed duplicated region for block: B:22:0x00e3  */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     public void r() {
-        ViewLogicEditor viewLogicEditor;
-        int[] iArr;
-        if (this.Y == null) {
-            return;
-        }
-        this.m.setDragEnabled(false);
-        this.n.setScrollEnabled(false);
-        this.O.setDragEnabled(false);
-        if (this.ia) {
-            g(false);
-        }
-        if (this.G) {
-            this.F.vibrate(100L);
-        }
-        this.u = true;
-        if (((Rs) this.Y).getBlockType() == 0) {
-            a((Rs) this.Y);
-            f(true);
-            h(true);
-            this.p.a((Rs) this.Y);
-            this.o.a((Rs) this.Y, 8);
-            this.o.c((Rs) this.Y);
-        } else if (((Rs) this.Y).getBlockType() == 2) {
-            f(false);
-            h(true);
-            this.p.a((Rs) this.Y);
-            BlockPane blockPane = this.o;
-            View view = this.Y;
-            blockPane.a((Rs) view, ((Us) view).getData());
-            float f = this.q - this.s;
-            float f2 = this.r - this.t;
-            this.p.a(this.Y, f, f2, f, f2, this.S, this.T);
+        if (this.Y != null) {
+            this.m.setDragEnabled(false);
+            this.n.setScrollEnabled(false);
+            this.O.setDragEnabled(false);
+            if (this.ia) {
+                this.g(false);
+            }
+
+            if (this.G) {
+                this.F.vibrate(100L);
+            }
+
+            BlockPane var1;
+            label28:
+            {
+                this.u = true;
+                if (((Rs) this.Y).getBlockType() == 0) {
+                    this.a((Rs) this.Y);
+                    this.f(true);
+                    this.h(true);
+                    this.p.a((Rs) this.Y);
+                    this.o.a((Rs) this.Y, 8);
+                    this.o.c((Rs) this.Y);
+                } else {
+                    if (((Rs) this.Y).getBlockType() == 2) {
+                        this.f(false);
+                        this.h(true);
+                        this.p.a((Rs) this.Y);
+                        var1 = this.o;
+                        View var2 = this.Y;
+                        var1.a((Rs) var2, ((Us) var2).getData());
+                        break label28;
+                    }
+
+                    this.p.a((Rs) this.Y);
+                }
+
+                this.o.a((Rs) this.Y);
+            }
+
+            float var3 = this.q - this.s;
+            float var4 = this.r - this.t;
+            this.p.a(this.Y, var3, var4, var3, var4, (float) this.S, (float) this.T);
             this.p.a(this.v);
-            viewLogicEditor = this.n;
-            iArr = this.v;
-            if (viewLogicEditor.a(iArr[0], iArr[1])) {
+            ViewLogicEditor var7 = this.n;
+            int[] var6 = this.v;
+            if (var7.a((float) var6[0], (float) var6[1])) {
+                this.p.setAllow(true);
+                var1 = this.o;
+                Rs var5 = (Rs) this.Y;
+                int[] var8 = this.v;
+                var1.c(var5, var8[0], var8[1]);
+            } else {
                 this.p.setAllow(false);
                 this.o.d();
-                return;
             }
-            this.p.setAllow(true);
-            int[] iArr2 = this.v;
-            this.o.c((Rs) this.Y, iArr2[0], iArr2[1]);
-            return;
-        } else {
-            this.p.a((Rs) this.Y);
-        }
-        this.o.a((Rs) this.Y);
-        float f3 = this.q - this.s;
-        float f22 = this.r - this.t;
-        this.p.a(this.Y, f3, f22, f3, f22, this.S, this.T);
-        this.p.a(this.v);
-        viewLogicEditor = this.n;
-        iArr = this.v;
-        if (viewLogicEditor.a(iArr[0], iArr[1])) {
         }
     }
 
