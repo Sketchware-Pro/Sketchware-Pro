@@ -43,6 +43,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.BlockCollectionBean;
+import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.HistoryBlockBean;
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -949,794 +950,344 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.show();
     }
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
-    /* JADX WARN: Code restructure failed: missing block: B:303:0x0648, code lost:
-        if (r3 == false) goto L110;
-     */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
     public final void a(BlockBean blockBean, boolean z) {
-        Rs a2;
-        Rs a3;
-        Rs a4;
-        char c;
-        eC a5;
-        eC a6;
-        eC a7;
-        eC a8;
-        eC a9;
-        String str;
-        Rs a10;
-        Rs a11 = this.o.a(blockBean.id);
-        if (a11 != null) {
-            a11.ia = -1;
-            a11.ja = -1;
-            a11.ha = -1;
-            int size = blockBean.parameters.size();
-            for (int i = 0; i < size; i++) {
-                String str2 = blockBean.parameters.get(i);
-                if (str2 != null) {
-                    if (str2.length() > 0 && str2.charAt(0) == '@') {
-                        int intValue = Integer.valueOf(str2.substring(1)).intValue();
-                        if (intValue > 0 && (a10 = this.o.a(intValue)) != null) {
-                            a11.a((Ts) a11.V.get(i), a10);
-                        }
-                    } else if (a11.V.get(i) instanceof Ss) {
-                        Ss ss = (Ss) a11.V.get(i);
-                        String javaName = this.M.getJavaName();
-                        String xmlName = this.M.getXmlName();
-                        if (this.D.equals("onBindCustomView") && (str = jC.a(this.B).c(this.M.getXmlName(), this.C).customView) != null) {
-                            xmlName = ProjectFileBean.getXmlName(str);
-                        }
-                        if (str2.length() > 0 && ss.b == "m") {
-                            String str3 = ss.c;
-                            int i2 = 23;
-                            int i3 = 25;
-                            int i4 = 2;
-                            switch (str3.hashCode()) {
-                                case -2004438503:
-                                    if (str3.equals("spinner")) {
-                                        c = 15;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1991117057:
-                                    if (str3.equals("tablayout")) {
-                                        c = '7';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1811660373:
-                                    if (str3.equals("soundpool")) {
-                                        c = 27;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1677313857:
-                                    if (str3.equals("requestnetwork")) {
-                                        c = '\"';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1668293067:
-                                    if (str3.equals("patternview")) {
-                                        c = ';';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1655966961:
-                                    if (str3.equals("activity")) {
-                                        c = ')';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1558241498:
-                                    if (str3.equals("objectanimator")) {
-                                        c = 28;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1557883842:
-                                    if (str3.equals("viewpager")) {
-                                        c = '8';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1421968056:
-                                    if (str3.equals("adview")) {
-                                        c = '\r';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1420973643:
-                                    if (str3.equals("progressdialog")) {
-                                        c = ',';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1332085432:
-                                    if (str3.equals("dialog")) {
-                                        c = 25;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1228095996:
-                                    if (str3.equals("datepickerdialog")) {
-                                        c = '-';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1197746358:
-                                    if (str3.equals("texttospeech")) {
-                                        c = '#';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1183762788:
-                                    if (str3.equals("intent")) {
-                                        c = 20;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -1002626734:
-                                    if (str3.equals("textview")) {
-                                        c = '\b';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -961721768:
-                                    if (str3.equals("locationmanager")) {
-                                        c = '&';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -889473228:
-                                    if (str3.equals("switch")) {
-                                        c = 17;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -877150592:
-                                    if (str3.equals("imageview")) {
-                                        c = '\n';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -823676088:
-                                    if (str3.equals("varInt")) {
-                                        c = 0;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -823666294:
-                                    if (str3.equals("varStr")) {
-                                        c = 2;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -709456819:
-                                    if (str3.equals("searchview")) {
-                                        c = '3';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -563351033:
-                                    if (str3.equals("firebase")) {
-                                        c = 29;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -431674753:
-                                    if (str3.equals("bottomnavigation")) {
-                                        c = '9';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -351639837:
-                                    if (str3.equals("calendarview")) {
-                                        c = '\f';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -341064690:
-                                    if (str3.equals("resource")) {
-                                        c = '(';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -290065014:
-                                    if (str3.equals("speechtotext")) {
-                                        c = '$';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case -178324674:
-                                    if (str3.equals("calendar")) {
-                                        c = 22;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 2988580:
-                                    if (str3.equals("actv")) {
-                                        c = '4';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 3143036:
-                                    if (str3.equals("file")) {
-                                        c = 21;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 3322014:
-                                    if (str3.equals("list")) {
-                                        c = 6;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 3619493:
-                                    if (str3.equals("view")) {
-                                        c = 7;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 24646380:
-                                    if (str3.equals("radiobutton")) {
-                                        c = '0';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 62092335:
-                                    if (str3.equals("firebaseauth")) {
-                                        c = 30;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 103652369:
-                                    if (str3.equals("mactv")) {
-                                        c = '5';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 109627663:
-                                    if (str3.equals("sound")) {
-                                        c = '*';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 110364485:
-                                    if (str3.equals("timer")) {
-                                        c = 23;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 181944945:
-                                    if (str3.equals("listInt")) {
-                                        c = 3;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 181948382:
-                                    if (str3.equals("listMap")) {
-                                        c = 5;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 181954739:
-                                    if (str3.equals("listStr")) {
-                                        c = 4;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 235637425:
-                                    if (str3.equals("varBool")) {
-                                        c = 1;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 319075051:
-                                    if (str3.equals("gridview")) {
-                                        c = '6';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 325741829:
-                                    if (str3.equals("gyroscope")) {
-                                        c = ' ';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 344557910:
-                                    if (str3.equals("ratingbar")) {
-                                        c = '1';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 452783582:
-                                    if (str3.equals("videoad")) {
-                                        c = '+';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 485199813:
-                                    if (str3.equals("mediaplayer")) {
-                                        c = 26;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 595233003:
-                                    if (str3.equals("notification")) {
-                                        c = '/';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 690484860:
-                                    if (str3.equals("bluetoothconnect")) {
-                                        c = '%';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 837734913:
-                                    if (str3.equals("mapview")) {
-                                        c = 19;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1105738265:
-                                    if (str3.equals("vibrator")) {
-                                        c = 24;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1131540166:
-                                    if (str3.equals("progressbar")) {
-                                        c = 18;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1224424441:
-                                    if (str3.equals("webview")) {
-                                        c = 16;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1234536982:
-                                    if (str3.equals("resource_bg")) {
-                                        c = '\'';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1322145871:
-                                    if (str3.equals("interstitialad")) {
-                                        c = '!';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1333959072:
-                                    if (str3.equals("videoview")) {
-                                        c = '2';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1346661443:
-                                    if (str3.equals("listview")) {
-                                        c = 14;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1536891843:
-                                    if (str3.equals("checkbox")) {
-                                        c = '\t';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1719159444:
-                                    if (str3.equals("firebasestorage")) {
-                                        c = 31;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1907714723:
-                                    if (str3.equals("timepickerdialog")) {
-                                        c = '.';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 1971813019:
-                                    if (str3.equals("seekbar")) {
-                                        c = 11;
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 2085227356:
-                                    if (str3.equals("sidebar")) {
-                                        c = '<';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                case 2113752264:
-                                    if (str3.equals("badgeview")) {
-                                        c = ':';
-                                        break;
-                                    }
-                                    c = 65535;
-                                    break;
-                                default:
-                                    c = 65535;
-                                    break;
-                            }
-                            switch (c) {
-                                case 0:
-                                    a5 = jC.a(this.B);
-                                    i4 = 1;
-                                    a5.f(javaName, i4, str2);
-                                    break;
-                                case 1:
-                                    jC.a(this.B).f(javaName, 0, str2);
-                                    break;
-                                case 2:
-                                    a5 = jC.a(this.B);
-                                    a5.f(javaName, i4, str2);
-                                    break;
-                                case 3:
-                                    a6 = jC.a(this.B);
-                                    i4 = 1;
-                                    a6.e(javaName, i4, str2);
-                                    break;
-                                case 4:
-                                    a6 = jC.a(this.B);
-                                    a6.e(javaName, i4, str2);
-                                    break;
-                                case 6:
-                                    boolean e = jC.a(this.B).e(javaName, 1, str2);
-                                    if (!e) {
-                                        e = jC.a(this.B).e(javaName, 2, str2);
-                                        break;
-                                    }
-                                    break;
-                                case 5:
-                                    a6 = jC.a(this.B);
-                                    i4 = 3;
-                                    a6.e(javaName, i4, str2);
-                                    break;
-                                case 7:
-                                    jC.a(this.B).h(xmlName, str2);
-                                    break;
-                                case '\b':
-                                    jC.a(this.B).g(xmlName, str2);
-                                    break;
-                                case '\t':
-                                    jC.a(this.B).e(xmlName, str2);
-                                    break;
-                                case '\n':
-                                    a7 = jC.a(this.B);
-                                    i2 = 6;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 11:
-                                    a7 = jC.a(this.B);
-                                    i2 = 14;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '\f':
-                                    a7 = jC.a(this.B);
-                                    i2 = 15;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '\r':
-                                    a7 = jC.a(this.B);
-                                    i2 = 17;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 14:
-                                    a7 = jC.a(this.B);
-                                    i2 = 9;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 15:
-                                    a7 = jC.a(this.B);
-                                    i2 = 10;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 16:
-                                    a7 = jC.a(this.B);
-                                    i2 = 7;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 17:
-                                    a7 = jC.a(this.B);
-                                    i2 = 13;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 18:
-                                    a7 = jC.a(this.B);
-                                    i2 = 8;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 19:
-                                    a7 = jC.a(this.B);
-                                    i2 = 18;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case 20:
-                                    a8 = jC.a(this.B);
-                                    i4 = 1;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 21:
-                                    a8 = jC.a(this.B);
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 22:
-                                    a8 = jC.a(this.B);
-                                    i4 = 3;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 23:
-                                    a8 = jC.a(this.B);
-                                    i4 = 5;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 24:
-                                    a8 = jC.a(this.B);
-                                    i4 = 4;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 25:
-                                    a8 = jC.a(this.B);
-                                    i4 = 7;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 26:
-                                    a8 = jC.a(this.B);
-                                    i4 = 8;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 27:
-                                    a8 = jC.a(this.B);
-                                    i4 = 9;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 28:
-                                    a8 = jC.a(this.B);
-                                    i4 = 10;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 29:
-                                    a8 = jC.a(this.B);
-                                    i4 = 6;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 30:
-                                    a8 = jC.a(this.B);
-                                    i4 = 12;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case 31:
-                                    a8 = jC.a(this.B);
-                                    i4 = 14;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case ' ':
-                                    a8 = jC.a(this.B);
-                                    i4 = 11;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '!':
-                                    a8 = jC.a(this.B);
-                                    i4 = 13;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '\"':
-                                    a8 = jC.a(this.B);
-                                    i4 = 17;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '#':
-                                    a8 = jC.a(this.B);
-                                    i4 = 18;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '$':
-                                    a8 = jC.a(this.B);
-                                    i4 = 19;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '%':
-                                    a8 = jC.a(this.B);
-                                    i4 = 20;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '&':
-                                    a8 = jC.a(this.B);
-                                    i4 = 21;
-                                    a8.d(javaName, i4, str2);
-                                    break;
-                                case '\'':
-                                case '(':
-                                    for (String value : jC.d(this.B).m()) {
-                                        str2.equals(value);
-                                    }
-                                    break;
-                                case ')':
-                                    for (String next : jC.b(this.B).d()) {
-                                        str2.equals(next.substring(0, next.indexOf(".java")));
-                                    }
-                                    break;
-                                case '*':
-                                    for (String value : jC.d(this.B).p()) {
-                                        str2.equals(value);
-                                    }
-                                    break;
-                                case '+':
-                                    a9 = jC.a(this.B);
-                                    i3 = 22;
-                                    a9.d(xmlName, i3, str2);
-                                    break;
-                                case ',':
-                                    jC.a(this.B).d(xmlName, 23, str2);
-                                    break;
-                                case '-':
-                                    jC.a(this.B).d(xmlName, 24, str2);
-                                    break;
-                                case '.':
-                                    a9 = jC.a(this.B);
-                                    a9.d(xmlName, i3, str2);
-                                    break;
-                                case '/':
-                                    a9 = jC.a(this.B);
-                                    i3 = 26;
-                                    a9.d(xmlName, i3, str2);
-                                    break;
-                                case '0':
-                                    a7 = jC.a(this.B);
-                                    i2 = 19;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '1':
-                                    a7 = jC.a(this.B);
-                                    i2 = 20;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '2':
-                                    a7 = jC.a(this.B);
-                                    i2 = 21;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '3':
-                                    a7 = jC.a(this.B);
-                                    i2 = 22;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '4':
-                                    a7 = jC.a(this.B);
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '5':
-                                    jC.a(this.B).g(xmlName, 24, str2);
-                                    break;
-                                case '6':
-                                    jC.a(this.B).g(xmlName, 25, str2);
-                                    break;
-                                case '7':
-                                    a7 = jC.a(this.B);
-                                    i2 = 30;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '8':
-                                    a7 = jC.a(this.B);
-                                    i2 = 31;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '9':
-                                    a7 = jC.a(this.B);
-                                    i2 = 32;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case ':':
-                                    a7 = jC.a(this.B);
-                                    i2 = 33;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case ';':
-                                    a7 = jC.a(this.B);
-                                    i2 = 34;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                case '<':
-                                    a7 = jC.a(this.B);
-                                    i2 = 35;
-                                    a7.g(xmlName, i2, str2);
-                                    break;
-                                default:
-                                    this.extraPaletteBlock.e(ss.c, str2);
-                                    break;
+        Rs block = o.a(blockBean.id);
+        if (block != null) {
+            block.ia = -1;
+            block.ja = -1;
+            block.ha = -1;
+
+            for (int i = 0; i < blockBean.parameters.size(); i++) {
+                String parameter = (String) blockBean.parameters.get(i);
+                if (parameter != null) {
+                    if (parameter.length() > 0 && parameter.charAt(0) == '@') {
+                        int blockId = Integer.parseInt(parameter.substring(1));
+                        if (blockId > 0) {
+                            Rs parameterBlock = o.a(blockId);
+                            if (parameterBlock != null) {
+                                block.a((Ts) block.V.get(i), parameterBlock);
                             }
                         }
-                        ss.setArgValue(str2);
-                        a11.m();
+                    } else {
+                        if (block.V.get(i) instanceof Ss) {
+                            Ss ss = (Ss) block.V.get(i);
+                            String javaName = M.getJavaName();
+                            String xmlName = M.getXmlName();
+                            if (D.equals("onBindCustomView")) {
+                                String customView = jC.a(B).c(M.getXmlName(), C).customView;
+                                if (customView != null) {
+                                    xmlName = ProjectFileBean.getXmlName(customView);
+                                }
+                            }
+
+                            if (parameter.length() > 0) {
+                                if (ss.b.equals("m")) {
+                                    switch (ss.c) {
+                                        case "varInt":
+                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_INTEGER, parameter);
+                                            break;
+
+                                        case "varBool":
+                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_BOOLEAN, parameter);
+                                            break;
+
+                                        case "varStr":
+                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_STRING, parameter);
+                                            break;
+
+                                        case "listInt":
+                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_INTEGER, parameter);
+                                            break;
+
+                                        case "listStr":
+                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
+                                            break;
+
+                                        case "listMap":
+                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_MAP, parameter);
+                                            break;
+
+                                        case "list":
+                                            boolean b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_INTEGER, parameter);
+                                            if (!b) {
+                                                b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
+                                            }
+
+                                            if (!b) {
+                                                jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_MAP, parameter);
+                                            }
+                                            break;
+
+                                        case "view":
+                                            jC.a(B).h(xmlName, parameter);
+                                            break;
+
+                                        case "textview":
+                                            jC.a(B).g(xmlName, parameter);
+                                            break;
+
+                                        case "checkbox":
+                                            jC.a(B).e(xmlName, parameter);
+                                            break;
+
+                                        case "imageview":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW, parameter);
+                                            break;
+
+                                        case "seekbar":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SEEKBAR, parameter);
+                                            break;
+
+                                        case "calendarview":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW, parameter);
+                                            break;
+
+                                        case "adview":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_ADVIEW, parameter);
+                                            break;
+
+                                        case "listview":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_LISTVIEW, parameter);
+                                            break;
+
+                                        case "spinner":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SPINNER, parameter);
+                                            break;
+
+                                        case "webview":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_WEBVIEW, parameter);
+                                            break;
+
+                                        case "switch":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SWITCH, parameter);
+                                            break;
+
+                                        case "progressbar":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR, parameter);
+                                            break;
+
+                                        case "mapview":
+                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_MAPVIEW, parameter);
+                                            break;
+
+                                        case "intent":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_INTENT, parameter);
+                                            break;
+
+                                        case "file":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_SHAREDPREF, parameter);
+                                            break;
+
+                                        case "calendar":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_CALENDAR, parameter);
+                                            break;
+
+                                        case "timer":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_TIMERTASK, parameter);
+                                            break;
+
+                                        case "vibrator":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_VIBRATOR, parameter);
+                                            break;
+
+                                        case "dialog":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_DIALOG, parameter);
+                                            break;
+
+                                        case "mediaplayer":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_MEDIAPLAYER, parameter);
+                                            break;
+
+                                        case "soundpool":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_SOUNDPOOL, parameter);
+                                            break;
+
+                                        case "objectanimator":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR, parameter);
+                                            break;
+
+                                        case "firebase":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE, parameter);
+                                            break;
+
+                                        case "firebaseauth":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH, parameter);
+                                            break;
+
+                                        case "firebasestorage":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE, parameter);
+                                            break;
+
+                                        case "gyroscope":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_GYROSCOPE, parameter);
+                                            break;
+
+                                        case "interstitialad":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD, parameter);
+                                            break;
+
+                                        case "requestnetwork":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK, parameter);
+                                            break;
+
+                                        case "texttospeech":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH, parameter);
+                                            break;
+
+                                        case "speechtotext":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT, parameter);
+                                            break;
+
+                                        case "bluetoothconnect":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT, parameter);
+                                            break;
+
+                                        case "locationmanager":
+                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER, parameter);
+                                            break;
+
+                                        case "resource_bg":
+                                        case "resource":
+                                            for (String str : jC.d(B).m()) {
+                                                // Like this in vanilla Sketchware. Don't ask me why.
+                                                //noinspection StatementWithEmptyBody
+                                                if (parameter.equals(str)) {
+                                                }
+                                            }
+                                            break;
+
+                                        case "activity":
+                                            for (String str : jC.b(this.B).d()) {
+                                                // Like this in vanilla Sketchware. Don't ask me why.
+                                                //noinspection StatementWithEmptyBody
+                                                if (parameter.equals(str.substring(str.indexOf(".java")))) {
+                                                }
+                                            }
+                                            break;
+
+                                        case "sound":
+                                            for (String str : jC.d(this.B).p()) {
+                                                // Like this in vanilla Sketchware. Don't ask me why.
+                                                //noinspection StatementWithEmptyBody
+                                                if (parameter.equals(str)) {
+                                                }
+                                            }
+                                            break;
+
+                                        case "videoad":
+                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD, parameter);
+                                            break;
+
+                                        case "progressdialog":
+                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG, parameter);
+                                            break;
+
+                                        case "datepickerdialog":
+                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG, parameter);
+                                            break;
+
+                                        case "timepickerdialog":
+                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG, parameter);
+                                            break;
+
+                                        case "notification":
+                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_NOTIFICATION, parameter);
+                                            break;
+
+                                        case "radiobutton":
+                                            jC.a(B).g(xmlName, 19, parameter);
+                                            break;
+
+                                        case "ratingbar":
+                                            jC.a(B).g(xmlName, 20, parameter);
+                                            break;
+
+                                        case "videoview":
+                                            jC.a(B).g(xmlName, 21, parameter);
+                                            break;
+
+                                        case "searchview":
+                                            jC.a(B).g(xmlName, 22, parameter);
+                                            break;
+
+                                        case "actv":
+                                            jC.a(B).g(xmlName, 23, parameter);
+                                            break;
+
+                                        case "mactv":
+                                            jC.a(B).g(xmlName, 24, parameter);
+                                            break;
+
+                                        case "gridview":
+                                            jC.a(B).g(xmlName, 25, parameter);
+                                            break;
+
+                                        case "tablayout":
+                                            jC.a(B).g(xmlName, 30, parameter);
+                                            break;
+
+                                        case "viewpager":
+                                            jC.a(B).g(xmlName, 31, parameter);
+                                            break;
+
+                                        case "bottomnavigation":
+                                            jC.a(B).g(xmlName, 32, parameter);
+                                            break;
+
+                                        case "badgeview":
+                                            jC.a(B).g(xmlName, 33, parameter);
+                                            break;
+
+                                        case "patternview":
+                                            jC.a(B).g(xmlName, 34, parameter);
+                                            break;
+
+                                        case "sidebar":
+                                            jC.a(B).g(xmlName, 35, parameter);
+                                            break;
+
+                                        default:
+                                            extraPaletteBlock.e(ss.c, parameter);
+                                    }
+                                }
+                            }
+
+                            ss.setArgValue(parameter);
+                            block.m();
+                        }
                     }
                 }
             }
-            int i5 = blockBean.subStack1;
-            if (i5 >= 0 && (a4 = this.o.a(i5)) != null) {
-                a11.e(a4);
+
+            int subStack1RootBlockId = blockBean.subStack1;
+            if (subStack1RootBlockId >= 0) {
+                Rs subStack1RootBlock = o.a(subStack1RootBlockId);
+                if (subStack1RootBlock != null) {
+                    block.e(subStack1RootBlock);
+                }
             }
-            int i6 = blockBean.subStack2;
-            if (i6 >= 0 && (a3 = this.o.a(i6)) != null) {
-                a11.f(a3);
+
+            int subStack2RootBlockId = blockBean.subStack2;
+            if (subStack2RootBlockId >= 0) {
+                Rs subStack2RootBlock = o.a(subStack2RootBlockId);
+                if (subStack2RootBlock != null) {
+                    block.f(subStack2RootBlock);
+                }
             }
-            int i7 = blockBean.nextBlock;
-            if (i7 >= 0 && (a2 = this.o.a(i7)) != null) {
-                a11.b(a2);
+
+            int nextBlockId = blockBean.nextBlock;
+            if (nextBlockId >= 0) {
+                Rs nextBlock = o.a(nextBlockId);
+                if (nextBlock != null) {
+                    block.b(nextBlock);
+                }
             }
-            a11.m();
-            if (!z) {
-                return;
+
+            block.m();
+            if (z) {
+                block.p().k();
+                o.b();
             }
-            a11.p().k();
-            this.o.b();
         }
     }
 
