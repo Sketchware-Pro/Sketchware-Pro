@@ -1028,7 +1028,7 @@ public class ManageEvent {
     }
 
     /**
-     * @return Code of extra listeners, used in {@link a.a.a.Lx#d(String, String, String)}
+     * @return Code of extra listeners, used in {@link a.a.a.Lx#getListenerCode(String, String, String)}
      */
     public static String g(String listenerName, String targetId, String listenerLogic) {
         switch (listenerName) {

@@ -1,6 +1,5 @@
 package mod.hey.studios.project.proguard;
 
-import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import a.a.a.Dp;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuildProgressReceiver;
 
 public class ProguardHandler {
 
@@ -210,9 +210,9 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
-    public void start(BuildAsyncTask dialog, Dp dp) throws IOException {
+    public void start(BuildProgressReceiver progressReceiver, Dp dp) throws IOException {
         if (isProguardEnabled()) {
-            if (dialog != null) dialog.setProgress("ProGuarding classes...");
+            progressReceiver.onProgress("ProGuarding classes...");
             dp.runProguard();
         }
     }

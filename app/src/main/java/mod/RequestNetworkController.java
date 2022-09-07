@@ -1,16 +1,18 @@
 package mod;
 
-import android.annotation.SuppressLint;
-
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -27,13 +29,20 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RequestNetworkController {
-
     public static final String GET = "GET";
+    public static final String POST = "POST";
+    public static final String PUT = "PUT";
+    public static final String DELETE = "DELETE";
+
     public static final int REQUEST_PARAM = 0;
+    public static final int REQUEST_BODY = 1;
+
     private static final int SOCKET_TIMEOUT = 15000;
     private static final int READ_TIMEOUT = 25000;
-    private static RequestNetworkController mInstance;
+
     protected OkHttpClient client;
+
+    private static RequestNetworkController mInstance;
 
     public static synchronized RequestNetworkController getInstance() {
         if (mInstance == null) {
@@ -49,14 +58,14 @@ public class RequestNetworkController {
             try {
                 final TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {
-                            @SuppressLint("TrustAllX509TrustManager")
                             @Override
-                            public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                            public void checkClientTrusted(X509Certificate[] chain, String authType)
+                                    throws CertificateException {
                             }
 
-                            @SuppressLint("TrustAllX509TrustManager")
                             @Override
-                            public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                            public void checkServerTrusted(X509Certificate[] chain, String authType)
+                                    throws CertificateException {
                             }
 
                             @Override
@@ -73,8 +82,13 @@ public class RequestNetworkController {
                 builder.connectTimeout(SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
                 builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
                 builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
-                builder.hostnameVerifier((hostname, session) -> true);
-            } catch (Exception ignored) {
+                builder.hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                });
+            } catch (Exception e) {
             }
 
             client = builder.build();
@@ -84,6 +98,14 @@ public class RequestNetworkController {
     }
 
     public void execute(final RequestNetwork requestNetwork, String method, String url, final String tag, final RequestNetwork.RequestListener requestListener) {
+        execute0(requestNetwork, method, url, tag, requestListener, true);
+    }
+
+    public void executeSynchronized(final RequestNetwork requestNetwork, String method, String url, final String tag, final RequestNetwork.RequestListener requestListener) {
+        execute0(requestNetwork, method, url, tag, requestListener, false);
+    }
+
+    private void execute0(final RequestNetwork requestNetwork, String method, String url, final String tag, final RequestNetwork.RequestListener requestListener, boolean async) {
         Request.Builder reqBuilder = new Request.Builder();
         Headers.Builder headerBuilder = new Headers.Builder();
 
@@ -141,25 +163,46 @@ public class RequestNetworkController {
 
             Request req = reqBuilder.build();
 
-            getClient().newCall(req).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, final IOException e) {
+            Consumer<IOException> onFailureHandler = e ->
                     requestNetwork.getActivity().runOnUiThread(() -> requestListener.onErrorResponse(tag, e.getMessage()));
+            Consumer<Response> onResponseHandler = response -> {
+                final String responseBody;
+                try {
+                    responseBody = response.body().string().trim();
+                } catch (IOException e) {
+                    requestListener.onErrorResponse(tag, e.getMessage());
+                    return;
                 }
+                requestNetwork.getActivity().runOnUiThread(() -> {
+                    Headers b = response.headers();
+                    HashMap<String, Object> map = new HashMap<>();
+                    for (String s : b.names()) {
+                        map.put(s, b.get(s) != null ? b.get(s) : "null");
+                    }
+                    requestListener.onResponse(tag, responseBody, map);
+                });
+            };
 
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    final String responseBody = response.body().string().trim();
-                    requestNetwork.getActivity().runOnUiThread(() -> {
-                        Headers b = response.headers();
-                        HashMap<String, Object> map = new HashMap<>();
-                        for (String s : b.names()) {
-                            map.put(s, b.get(s) != null ? b.get(s) : "null");
-                        }
-                        requestListener.onResponse(tag, responseBody, map);
-                    });
+            Call call = getClient().newCall(req);
+            if (async) {
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, final IOException e) {
+                        onFailureHandler.accept(e);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) {
+                        onResponseHandler.accept(response);
+                    }
+                });
+            } else {
+                try {
+                    onResponseHandler.accept(call.execute());
+                } catch (IOException e) {
+                    onFailureHandler.accept(e);
                 }
-            });
+            }
         } catch (Exception e) {
             requestListener.onErrorResponse(tag, e.getMessage());
         }

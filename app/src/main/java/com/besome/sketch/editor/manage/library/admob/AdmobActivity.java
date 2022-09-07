@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.manage.library.admob;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
@@ -23,6 +23,7 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,150 +48,132 @@ import a.a.a.xB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class AdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    private TextView nextStep;
+    private ImageView back;
+    private TextView stepTitle;
+    private TextView stepDescription;
+    private LinearLayout stepContainer;
+    private String[] stepTitles;
+    private String[] stepDescriptions;
+    private int stepPosition = 0;
+    private Uu step;
+    private ProjectLibraryBean adMobSettings;
+    private Button goToDocumentation;
+    private Button importFromOtherProject;
+    private ArrayList<HashMap<String, Object>> projects = new ArrayList<>();
+    private ProjectsAdapter adapter;
+    private String sc_id;
+    private CardView goToConsole;
+    private TextView previousStep;
+    private TextView topTitle;
 
-    public final int k = 0;
-    public final int l = 1;
-    public final int m = 2;
-    public final int n = 3;
-    public TextView A;
-    public ImageView B;
-    public ImageView D;
-    public TextView E;
-    public TextView F;
-    public LinearLayout G;
-    public String[] H;
-    public String[] I;
-    public int J = 0;
-    public Uu K;
-    public Button N;
-    public Button O;
-    public TextView C;
-    public String o;
-    public String p;
-    public String q;
-    public String r;
-    public String s;
-    public String t;
-    public String u;
-    public String v;
-    public String w;
-    public CardView x;
-    public TextView y;
-    public TextView z;
-    private ProjectLibraryBean L;
-    private ArrayList<HashMap<String, Object>> P = new ArrayList<>();
-    private ProjectsAdapter Q;
-
-    private void f(int position) {
+    private void showStep(int position) {
         if (position == 3) {
-            z.setText(Helper.getResString(2131625029));
-            A.setText(Helper.getResString(2131625031));
+            topTitle.setText(Helper.getResString(R.string.common_word_review));
+            nextStep.setText(Helper.getResString(R.string.common_word_save));
         } else {
-            z.setText(xB.b().a(this, 2131625040, position + 1));
-            A.setText(Helper.getResString(2131625008));
+            topTitle.setText(xB.b().a(this, R.string.common_word_step, position + 1));
+            nextStep.setText(Helper.getResString(R.string.common_word_next));
         }
 
         if (position == 0) {
-            B.setVisibility(View.VISIBLE);
-            y.setVisibility(View.GONE);
+            back.setVisibility(View.VISIBLE);
+            previousStep.setVisibility(View.GONE);
         } else {
-            B.setVisibility(View.GONE);
-            y.setVisibility(View.VISIBLE);
+            back.setVisibility(View.GONE);
+            previousStep.setVisibility(View.VISIBLE);
         }
 
-        E.setText(H[position]);
-        F.setText(I[position]);
-        G.removeAllViews();
+        stepTitle.setText(stepTitles[position]);
+        stepDescription.setText(stepDescriptions[position]);
+        stepContainer.removeAllViews();
         switch (position) {
             case 0:
-                Iu setAdUnitItem = new Iu(this);
-                G.addView(setAdUnitItem);
-                setAdUnitItem.setData(L);
-                K = setAdUnitItem;
+                Iu addAdUnitsStep = new Iu(this);
+                stepContainer.addView(addAdUnitsStep);
+                addAdUnitsStep.setData(adMobSettings);
+                step = addAdUnitsStep;
                 break;
 
             case 1:
-                x.setVisibility(View.GONE);
-                Nu var4 = new Nu(this);
-                G.addView(var4);
-                var4.setData(L);
-                K = var4;
+                goToConsole.setVisibility(View.GONE);
+                Nu assignAdUnitsStep = new Nu(this);
+                stepContainer.addView(assignAdUnitsStep);
+                assignAdUnitsStep.setData(adMobSettings);
+                step = assignAdUnitsStep;
                 break;
 
             case 2:
-                x.setVisibility(View.GONE);
-                Tu var3 = new Tu(this);
-                G.addView(var3);
-                var3.setData(L);
-                K = var3;
+                goToConsole.setVisibility(View.GONE);
+                Tu testDevicesStep = new Tu(this);
+                stepContainer.addView(testDevicesStep);
+                testDevicesStep.setData(adMobSettings);
+                step = testDevicesStep;
                 break;
 
             case 3:
-                x.setVisibility(View.GONE);
-                Ku var2 = new Ku(this);
-                G.addView(var2);
-                var2.setData(L);
-                K = var2;
+                goToConsole.setVisibility(View.GONE);
+                Ku reviewStep = new Ku(this);
+                stepContainer.addView(reviewStep);
+                reviewStep.setData(adMobSettings);
+                step = reviewStep;
                 break;
+
+            default:
         }
 
-        if (K.getDocUrl().isEmpty()) {
-            N.setVisibility(View.GONE);
+        if (step.getDocUrl().isEmpty()) {
+            goToDocumentation.setVisibility(View.GONE);
         } else {
-            N.setVisibility(View.VISIBLE);
+            goToDocumentation.setVisibility(View.VISIBLE);
         }
 
         if (position > 0) {
-            O.setVisibility(View.GONE);
+            importFromOtherProject.setVisibility(View.GONE);
         } else {
-            O.setVisibility(View.VISIBLE);
+            importFromOtherProject.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(2130771982, 2130771983);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
-    private void m() {
-        P = new ArrayList<>();
+    private void loadProjects() {
+        projects = new ArrayList<>();
 
         for (HashMap<String, Object> stringObjectHashMap : lC.a()) {
-            String var3 = yB.c(stringObjectHashMap, "sc_id");
-            if (!w.equals(var3)) {
-                iC var4 = new iC(var3);
-                var4.i();
-                if (var4.b().useYn.equals("Y")) {
-                    stringObjectHashMap.put("admob_setting", var4.b().clone());
-                    P.add(stringObjectHashMap);
+            String projectSc_id = yB.c(stringObjectHashMap, "sc_id");
+            if (!sc_id.equals(projectSc_id)) {
+                iC iC = new iC(projectSc_id);
+                iC.i();
+                if (iC.b().useYn.equals("Y")) {
+                    stringObjectHashMap.put("admob_setting", iC.b().clone());
+                    projects.add(stringObjectHashMap);
                 }
             }
         }
 
-        if (P.size() > 0) {
+        if (projects.size() > 0) {
             //noinspection Java8ListSort
-            Collections.sort(P, new ProjectComparator());
+            Collections.sort(projects, new ProjectComparator());
         }
 
-        Q.c();
+        adapter.c();
     }
 
-    private void n() {
-        if (K.isValid()) {
-            K.a(L);
-            int position = J;
-            if (position < 3) {
-                ++position;
-                J = position;
-                f(position);
+    private void nextStep() {
+        if (step.isValid()) {
+            step.a(adMobSettings);
+            if (stepPosition < 3) {
+                showStep(++stepPosition);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra("admob", L);
-                setResult(-1, intent);
+                intent.putExtra("admob", adMobSettings);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         }
@@ -198,38 +181,33 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        int position = J;
-        if (position > 0) {
-            --position;
-            J = position;
-            f(position);
+        if (stepPosition > 0) {
+            showStep(--stepPosition);
         } else {
-            setResult(0);
+            setResult(RESULT_CANCELED);
             finish();
         }
     }
 
     @Override
-    public void onClick(View var1) {
-        switch (var1.getId()) {
-            case 2131230841:
-                p();
-                break;
-            case 2131230944:
-                o();
-                break;
-            case 2131232059:
-                n();
-                break;
-            case 2131232081:
-                onBackPressed();
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.btn_open_doc) {
+            goToDocumentation();
+        } else if (id == R.id.cv_console) {
+            goToConsole();
+        } else if (id == R.id.tv_nextbtn) {
+            nextStep();
+        } else if (id == R.id.tv_prevbtn) {
+            onBackPressed();
         }
     }
 
-    private void o() {
+    private void goToConsole() {
         if (GB.h(this)) {
             try {
-                Intent intent = new Intent("android.intent.action.VIEW");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(Uri.parse("https://apps.admob.com/v2/home"));
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -238,167 +216,156 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
-                u();
+                showGoogleChromeNotice();
             }
         } else {
-            bB.a(this, Helper.getResString(2131624932), 0).show();
+            bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
         }
     }
 
-
-    @SuppressLint("ResourceType")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(2130771982, 2130771983);
-        setContentView(2131427532);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        setContentView(R.layout.manage_library_admob);
         if (savedInstanceState != null) {
-            w = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         } else {
-            w = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         }
 
-        H = new String[]{
-                Helper.getResString(2131625185),
-                Helper.getResString(2131625187),
-                Helper.getResString(2131625189),
-                Helper.getResString(2131625191)
+        stepTitles = new String[]{
+                Helper.getResString(R.string.design_library_admob_setting_step1_title),
+                Helper.getResString(R.string.design_library_admob_setting_step2_title),
+                Helper.getResString(R.string.design_library_admob_setting_step3_title),
+                Helper.getResString(R.string.design_library_admob_setting_step4_title)
         };
-        I = new String[]{
-                Helper.getResString(2131625184),
-                Helper.getResString(2131625186),
-                Helper.getResString(2131625188),
-                Helper.getResString(2131625190)
+        stepDescriptions = new String[]{
+                Helper.getResString(R.string.design_library_admob_setting_step1_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step2_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step3_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step4_desc)
         };
-        x = findViewById(2131230944);
-        x.setOnClickListener(this);
-        C = findViewById(2131231987);
-        C.setText(Helper.getResString(2131625161));
-        y = findViewById(2131232081);
-        y.setText(Helper.getResString(2131625014));
-        y.setOnClickListener(this);
-        D = findViewById(2131231090);
-        D.setImageResource(2131166234);
-        z = findViewById(2131232257);
-        A = findViewById(2131232059);
-        A.setText(Helper.getResString(2131625008));
-        A.setOnClickListener(this);
-        B = findViewById(2131231113);
-        B.setOnClickListener(Helper.getBackPressedClickListener(this));
-        E = findViewById(2131232179);
-        F = findViewById(2131232176);
-        N = findViewById(2131230841);
-        N.setText(Helper.getResString(2131624999));
-        N.setOnClickListener(this);
-        O = findViewById(2131230832);
-        O.setText(Helper.getResString(2131625201));
-        O.setOnClickListener(view -> s());
-        G = findViewById(2131231331);
+        goToConsole = findViewById(R.id.cv_console);
+        goToConsole.setOnClickListener(this);
+        TextView goToConsole = findViewById(R.id.tv_goto_console);
+        goToConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
+        previousStep = findViewById(R.id.tv_prevbtn);
+        previousStep.setText(Helper.getResString(R.string.common_word_prev));
+        previousStep.setOnClickListener(this);
+        ImageView icon = findViewById(R.id.icon);
+        icon.setImageResource(R.drawable.widget_admob);
+        topTitle = findViewById(R.id.tv_toptitle);
+        nextStep = findViewById(R.id.tv_nextbtn);
+        nextStep.setText(Helper.getResString(R.string.common_word_next));
+        nextStep.setOnClickListener(this);
+        back = findViewById(R.id.img_backbtn);
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        stepTitle = findViewById(R.id.tv_step_title);
+        stepDescription = findViewById(R.id.tv_step_desc);
+        goToDocumentation = findViewById(R.id.btn_open_doc);
+        goToDocumentation.setText(Helper.getResString(R.string.common_word_go_to_documentation));
+        goToDocumentation.setOnClickListener(this);
+        importFromOtherProject = findViewById(R.id.btn_import);
+        importFromOtherProject.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
+        importFromOtherProject.setOnClickListener(view -> showImportFromOtherProjectDialog());
+        stepContainer = findViewById(R.id.layout_container);
     }
 
     @Override
-    public void onPostCreate(Bundle var1) {
-        super.onPostCreate(var1);
-        L = getIntent().getParcelableExtra("admob");
-        f(J);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        adMobSettings = getIntent().getParcelableExtra("admob");
+        showStep(stepPosition);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", w);
-        super.onSaveInstanceState(var1);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
-    private void p() {
-        if (!K.getDocUrl().isEmpty()) {
+    private void goToDocumentation() {
+        if (!step.getDocUrl().isEmpty()) {
             if (GB.h(this)) {
                 try {
-                    Uri var1 = Uri.parse(K.getDocUrl());
-                    Intent var2 = new Intent("android.intent.action.VIEW");
-                    var2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    var2.setData(var1);
-                    var2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    var2.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    var2.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                    startActivity(var2);
-                } catch (Exception var3) {
-                    var3.printStackTrace();
-                    u();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setData(Uri.parse(step.getDocUrl()));
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showGoogleChromeNotice();
                 }
             } else {
-                bB.a(this, Helper.getResString(2131624932), 0).show();
+                bB.a(this, Helper.getResString(R.string.common_message_check_network), 0).show();
             }
-
         }
     }
 
-    private void s() {
+    private void showImportFromOtherProjectDialog() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(2131625252));
-        dialog.a(2131166234);
-        View rootView = wB.a(this, 2131427550);
-        RecyclerView recyclerView = rootView.findViewById(2131231440);
+        dialog.b(Helper.getResString(R.string.design_library_title_select_project));
+        dialog.a(R.drawable.widget_admob);
+        View rootView = wB.a(this, R.layout.manage_library_popup_project_selector);
+        RecyclerView recyclerView = rootView.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Q = new ProjectsAdapter();
-        recyclerView.setAdapter(Q);
+        adapter = new ProjectsAdapter();
+        recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new ci());
-        m();
+        loadProjects();
         dialog.a(rootView);
-        dialog.b(Helper.getResString(2131625035), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
-                if (Q.c >= 0) {
-                    HashMap<String, Object> projectMap = P.get(Q.c);
-                    L = (ProjectLibraryBean) projectMap.get("admob_setting");
-                    J = 3;
-                    f(J);
+                if (adapter.selectedProjectIndex >= 0) {
+                    HashMap<String, Object> projectMap = projects.get(adapter.selectedProjectIndex);
+                    adMobSettings = (ProjectLibraryBean) projectMap.get("admob_setting");
+                    stepPosition = 3;
+                    showStep(stepPosition);
                     dialog.dismiss();
                 }
             }
-
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
-    private void u() {
+    private void showGoogleChromeNotice() {
         aB dialog = new aB(this);
-        dialog.a(2131165415);
-        dialog.b(Helper.getResString(2131626412));
-        dialog.a(Helper.getResString(2131625629));
-        dialog.b(Helper.getResString(2131625010), view -> {
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(R.string.common_word_ok), view -> {
             if (!mB.a()) {
-                Intent intent = new Intent("android.intent.action.VIEW");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
+    private class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
 
-    public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
-
-        public int c;
-
-        public ProjectsAdapter() {
-            c = -1;
-        }
+        private int selectedProjectIndex = -1;
 
         @Override
         public int a() {
-            return P.size();
+            return projects.size();
         }
 
         @Override
-        @SuppressLint("ResourceType")
         public void b(ViewHolder viewHolder, int position) {
-            HashMap<String, Object> projectMap = P.get(position);
-            String var4 = yB.c(projectMap, "sc_id");
-            String iconDir = wq.e() + File.separator + var4;
-            viewHolder.u.setImageResource(2131165521);
+            HashMap<String, Object> projectMap = projects.get(position);
+            String projectSc_id = yB.c(projectMap, "sc_id");
+            String iconDir = wq.e() + File.separator + projectSc_id;
+            viewHolder.icon.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
@@ -407,66 +374,61 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
                 }
 
-                viewHolder.u.setImageURI(iconUri);
+                viewHolder.icon.setImageURI(iconUri);
             }
 
-            viewHolder.w.setText(yB.c(projectMap, "my_app_name"));
-            viewHolder.v.setText(yB.c(projectMap, "my_ws_name"));
-            viewHolder.x.setText(yB.c(projectMap, "my_sc_pkg_name"));
-            var4 = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
-            viewHolder.y.setText(var4);
+            viewHolder.appName.setText(yB.c(projectMap, "my_app_name"));
+            viewHolder.projectName.setText(yB.c(projectMap, "my_ws_name"));
+            viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            viewHolder.version.setText(String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code")));
 
-            viewHolder.z.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
+            viewHolder.checkmark.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
         }
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        public class ViewHolder extends v implements View.OnClickListener {
+        private class ViewHolder extends v implements View.OnClickListener {
 
-            public LinearLayout t;
-            public CircleImageView u;
-            public TextView v;
-            public TextView w;
-            public TextView x;
-            public TextView y;
-            public ImageView z;
+            private final CircleImageView icon;
+            private final TextView projectName;
+            private final TextView appName;
+            private final TextView packageName;
+            private final TextView version;
+            private final ImageView checkmark;
 
-            @SuppressLint("ResourceType")
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(2131231613);
-                v = itemView.findViewById(2131231614);
-                u = itemView.findViewById(2131231151);
-                w = itemView.findViewById(2131230780);
-                x = itemView.findViewById(2131231579);
-                y = itemView.findViewById(2131231618);
-                z = itemView.findViewById(2131231181);
-                t.setOnClickListener(this);
+                LinearLayout projectLayout = itemView.findViewById(R.id.project_layout);
+                projectName = itemView.findViewById(R.id.project_name);
+                icon = itemView.findViewById(R.id.img_icon);
+                appName = itemView.findViewById(R.id.app_name);
+                packageName = itemView.findViewById(R.id.package_name);
+                version = itemView.findViewById(R.id.project_version);
+                checkmark = itemView.findViewById(R.id.img_selected);
+                projectLayout.setOnClickListener(this);
             }
 
             @Override
-            public void onClick(View view) {
-                if (!mB.a() && view.getId() == 2131231613) {
-                    ProjectsAdapter.this.c = ProjectsAdapter.ViewHolder.this.j();
-                    c(ProjectsAdapter.this.c);
+            public void onClick(View v) {
+                if (!mB.a() && v.getId() == R.id.project_layout) {
+                    selectedProjectIndex = j();
+                    selectProject(selectedProjectIndex);
                 }
             }
 
-            private void c(int index) {
-                if (P.size() > 0) {
-
-                    for (HashMap<String, Object> stringObjectHashMap : P) {
+            private void selectProject(int i) {
+                if (projects.size() > 0) {
+                    for (HashMap<String, Object> stringObjectHashMap : projects) {
                         stringObjectHashMap.put("selected", false);
                     }
 
-                    P.get(index).put("selected", true);
-                    Q.c();
+                    projects.get(i).put("selected", true);
+                    adapter.c();
                 }
             }
         }
     }
-
 }

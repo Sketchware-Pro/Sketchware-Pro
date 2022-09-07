@@ -47,6 +47,8 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
+import mod.jbk.code.CodeEditorColorSchemes;
+import mod.jbk.code.CodeEditorLanguages;
 
 @SuppressLint("SetTextI18n")
 public class AndroidManifestInjection extends Activity {
@@ -56,7 +58,6 @@ public class AndroidManifestInjection extends Activity {
     private ListView act_list;
     private String sc_id;
     private String activityName;
-    private AlertDialog.Builder dia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -501,8 +502,7 @@ public class AndroidManifestInjection extends Activity {
         progress.show();
 
         new Thread(() -> {
-            final String l = sc_id;
-            final String source = new yq(getApplicationContext(), l).getFileSrc("AndroidManifest.xml", jC.b(l), jC.a(l), jC.c(l));
+            final String source = new yq(getApplicationContext(), sc_id).getFileSrc("AndroidManifest.xml", jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                     .setTitle("AndroidManifest.xml")
@@ -515,8 +515,8 @@ public class AndroidManifestInjection extends Activity {
                 CodeEditor editor = new CodeEditor(this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
                 editor.setEditable(false);
-                editor.setEditorLanguage(new JavaLanguage());
-                editor.setColorScheme(new EditorColorScheme());
+                editor.setColorScheme(CodeEditorColorSchemes.GITHUB);
+                editor.setEditorLanguage(CodeEditorLanguages.XML);
                 editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
@@ -596,17 +596,12 @@ public class AndroidManifestInjection extends Activity {
                 startActivity(intent);
             });
             linearLayout.setOnLongClickListener(v -> {
-                dia = new AlertDialog.Builder(AndroidManifestInjection.this);
-
-                dia.setTitle((String) _data.get(position).get("act_name"));
-
-                dia.setMessage("do you want to delete all attributes related to this activity?");
-
-                dia.setPositiveButton("Yes", (dialog, which) -> deleteActivity(position));
-
-                dia.setNegativeButton("No", null);
-                dia.show();
-
+                new AlertDialog.Builder(AndroidManifestInjection.this)
+                        .setTitle((String) _data.get(position).get("act_name"))
+                        .setMessage("Delete all attributes related to this activity?")
+                        .setPositiveButton(R.string.common_word_delete, (dialog, which) -> deleteActivity(position))
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .show();
                 return true;
             });
 

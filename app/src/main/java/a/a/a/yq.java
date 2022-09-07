@@ -309,7 +309,7 @@ public class yq {
      */
     public void h() {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
-                Lx.a(28, 21, 28, N));
+                Lx.getBuildGradleString(28, 21, 28, N));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
         fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("3.4.2", "4.3.3"));
     }
@@ -341,7 +341,7 @@ public class yq {
      */
     public void a(Context context) {
         boolean logcatEnabled = N.isDebugBuild && new BuildSettings(sc_id).getValue(
-                BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+                BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_TRUE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
         String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/java/";
         if (!new File(javaDir, "DebugActivity.java").exists()) {
@@ -371,8 +371,8 @@ public class yq {
                         "super.onCreate();", "SketchLogger.startLogging();\n" +
                                 "        super.onCreate();").replace(
                         "Process.killProcess(Process.myPid());",
-                        "                SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
-                                "                SketchLogger.stopLogging();\n" + "Process.killProcess(Process.myPid());"
+                        "SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
+                                "                    Process.killProcess(Process.myPid());"
                 );
             }
 

@@ -22,30 +22,25 @@ public class ZA extends Dialog {
         super.setCancelable(false);
     }
 
-    public void a() {
-        if (animationView != null & animationView.h()) {
+    public void cancelAnimation() {
+        if (animationView != null && animationView.h()) {
             animationView.e();
         }
     }
 
-    public void b() {
-        if (animationView != null & animationView.h()) {
+    public void pauseAnimation() {
+        if (animationView != null && animationView.h()) {
             animationView.i();
         }
     }
 
-    public void c() {
-        if (animationView != null & !animationView.h()) {
+    public void resumeAnimation() {
+        if (animationView != null && !animationView.h()) {
             animationView.l();
         }
     }
 
     public void d() {
         super.setCancelable(true);
-    }
-
-    @Override
-    public void show() {
-        super.show();
     }
 }

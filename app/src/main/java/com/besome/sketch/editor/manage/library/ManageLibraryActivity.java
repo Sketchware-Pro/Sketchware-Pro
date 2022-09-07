@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.library;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,18 +14,19 @@ import com.besome.sketch.editor.manage.library.admob.ManageAdmobActivity;
 import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
-import com.besome.sketch.lib.base.BaseSessionAppCompatActivity;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
+
+import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.qu;
-import a.a.a.ru;
 import mod.hey.studios.util.Helper;
 
-public class ManageLibraryActivity extends BaseSessionAppCompatActivity implements View.OnClickListener {
+public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_ADMOB_ACTIVITY = 234;
     private static final int REQUEST_CODE_APPCOMPAT_ACTIVITY = 231;
@@ -45,29 +45,6 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
     private String originalCompatUseYn = "N";
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
-
-    @Override
-    public void a(int requestCode, String idk) {
-        if (requestCode == REQUEST_CODE_ADMOB_ACTIVITY) {
-            toAdmobActivity(admobLibraryBean);
-        }
-    }
-
-    @Override
-    public void g(int idk) {
-    }
-
-    @Override
-    public void h(int idk) {
-    }
-
-    @Override
-    public void l() {
-    }
-
-    @Override
-    public void m() {
-    }
 
     private void addLibraryItem(ProjectLibraryBean libraryBean) {
         qu libraryItemView = new qu(this);
@@ -88,30 +65,27 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         switch (libraryBean.libType) {
-            case 0:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
                 firebaseLibraryBean = libraryBean;
                 break;
 
-            case 1:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
                 compatLibraryBean = libraryBean;
                 break;
 
-            case 2:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
                 admobLibraryBean = libraryBean;
                 break;
 
-            case 3:
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
                 googleMapLibraryBean = libraryBean;
                 break;
         }
 
-        for (int index = 0; index < libraryItemLayout.getChildCount(); index++) {
-            qu libraryItemView = (qu) libraryItemLayout.getChildAt(index);
+        for (int i = 0; i < libraryItemLayout.getChildCount(); i++) {
+            qu libraryItemView = (qu) libraryItemLayout.getChildAt(i);
             if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
                 libraryItemView.setData(libraryBean);
-                if (libraryItemView instanceof ru) {
-                    libraryItemView.setData(libraryBean);
-                }
             }
         }
     }
@@ -187,9 +161,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
                     initializeLibrary(data.getParcelableExtra("google_map"));
                     break;
 
-                case 505:
-                    toAdmobActivity(admobLibraryBean);
-                    break;
+                default:
             }
         }
     }
@@ -198,7 +170,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
     public void onBackPressed() {
         k();
         try {
-            new Handler().postDelayed(() -> new SaveLibraryTask(getBaseContext()).execute(), 500L);
+            new Handler().postDelayed(() -> new SaveLibraryTask(this).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
             h();
@@ -210,21 +182,19 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         if (!mB.a()) {
             int vTag = (Integer) v.getTag();
             switch (vTag) {
-                case 0:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
                     toFirebaseActivity(firebaseLibraryBean);
                     break;
 
-                case 1:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
                     toCompatActivity(compatLibraryBean, firebaseLibraryBean);
                     break;
 
-                case 2:
-                    // what? why?
-                    admobLibraryBean.isEnabled();
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
                     toAdmobActivity(admobLibraryBean);
                     break;
 
-                case 3:
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
                     toGoogleMapActivity(googleMapLibraryBean);
                     break;
             }
@@ -261,25 +231,25 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         if (savedInstanceState == null) {
             compatLibraryBean = jC.c(sc_id).c();
             if (compatLibraryBean == null) {
-                compatLibraryBean = new ProjectLibraryBean(1);
+                compatLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT);
             }
             originalCompatUseYn = compatLibraryBean.useYn;
 
             firebaseLibraryBean = jC.c(sc_id).d();
             if (firebaseLibraryBean == null) {
-                firebaseLibraryBean = new ProjectLibraryBean(0);
+                firebaseLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE);
             }
             originalFirebaseUseYn = firebaseLibraryBean.useYn;
 
             admobLibraryBean = jC.c(sc_id).b();
             if (admobLibraryBean == null) {
-                admobLibraryBean = new ProjectLibraryBean(2);
+                admobLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB);
             }
             originalAdmobUseYn = admobLibraryBean.useYn;
 
             googleMapLibraryBean = jC.c(sc_id).e();
             if (googleMapLibraryBean == null) {
-                googleMapLibraryBean = new ProjectLibraryBean(3);
+                googleMapLibraryBean = new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP);
             }
             originalGoogleMapUseYn = googleMapLibraryBean.useYn;
         } else {
@@ -330,29 +300,32 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         dialog.show();
     }
 
-    public class SaveLibraryTask extends MA {
+    private static class SaveLibraryTask extends MA {
 
-        public SaveLibraryTask(Context context) {
-            super(context);
-            ManageLibraryActivity.this.a(this);
+        private final WeakReference<ManageLibraryActivity> activity;
+
+        public SaveLibraryTask(ManageLibraryActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.a(this);
         }
 
         @Override
         public void a() {
-            h();
+            activity.get().h();
             Intent intent = new Intent();
-            intent.putExtra("sc_id", sc_id);
-            intent.putExtra("firebase", firebaseLibraryBean);
-            intent.putExtra("compat", compatLibraryBean);
-            intent.putExtra("admob", admobLibraryBean);
-            intent.putExtra("google_map", googleMapLibraryBean);
-            setResult(RESULT_OK, intent);
-            finish();
+            intent.putExtra("sc_id", activity.get().sc_id);
+            intent.putExtra("firebase", activity.get().firebaseLibraryBean);
+            intent.putExtra("compat", activity.get().compatLibraryBean);
+            intent.putExtra("admob", activity.get().admobLibraryBean);
+            intent.putExtra("google_map", activity.get().googleMapLibraryBean);
+            activity.get().setResult(RESULT_OK, intent);
+            activity.get().finish();
         }
 
         @Override
         public void a(String idk) {
-            h();
+            activity.get().h();
         }
 
         @Override
@@ -363,8 +336,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         @Override
         public void b() {
             try {
-                publishProgress("Now processing..");
-                saveLibraryConfiguration();
+                activity.get().saveLibraryConfiguration();
             } catch (Exception e) {
                 e.printStackTrace();
             }

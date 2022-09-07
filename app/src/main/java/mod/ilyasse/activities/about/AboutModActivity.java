@@ -212,7 +212,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData.startRequestNetwork(RequestNetworkController.GET,
                 "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
                 requestDataListener);
-        rippleRound(fab, "#7289DA", "#FFFFFF", 90);
+        rippleRound(fab, "#5865F2", "#FFFFFF", 90);
 
         String toSelect = getIntent().getStringExtra("select");
         if ("changelog".equals(toSelect)) {
@@ -371,7 +371,7 @@ public class AboutModActivity extends AppCompatActivity {
                     majorChanges.setTextSize(14);
                 }
 
-                majorChanges.setText("<placeholder for actual major changes text>");
+                majorChanges.setText("Major changes to Sketchware Pro will appear here.");
                 viewContainer.addView(majorChanges);
             }
             container.addView(v, 0);

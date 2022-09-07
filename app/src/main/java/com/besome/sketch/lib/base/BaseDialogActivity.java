@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.R;
+
 import a.a.a.mB;
 import a.a.a.wB;
 
@@ -24,7 +26,7 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
 
     public void a(boolean var1) {
         if (var1) {
-            k.setOnClickListener(view -> {
+            k.setOnClickListener(v -> {
                 if (!mB.a()) {
                     finish();
                 }
@@ -34,31 +36,31 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
         }
     }
 
-    public void b(String var1) {
-        s.setText(var1.toUpperCase());
+    public void b(String cancelText) {
+        s.setText(cancelText.toUpperCase());
     }
 
-    public void c(String var1) {
-        q.setText(var1.toUpperCase());
+    public void c(String defaultText) {
+        q.setText(defaultText.toUpperCase());
     }
 
-    public void d(String var1) {
-        r.setText(var1.toUpperCase());
+    public void d(String okText) {
+        r.setText(okText.toUpperCase());
     }
 
-    public void e(String var1) {
-        o.setText(var1);
+    public void e(String title) {
+        o.setText(title);
     }
 
-    public void f(int var1) {
-        p.setImageResource(var1);
+    public void f(int iconResId) {
+        p.setImageResource(iconResId);
         p.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(2130771982, 2130771983);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
     public void l() {
@@ -70,20 +72,20 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
-        super.setContentView(2131427378);
-        overridePendingTransition(2130771982, 2130771983);
-        p = findViewById(2131230913);
-        k = findViewById(2131230910);
-        l = findViewById(2131230911);
-        m = findViewById(2131230908);
-        o = findViewById(2131230916);
-        n = findViewById(2131230915);
-        q = findViewById(2131230912);
-        r = findViewById(2131230914);
-        s = findViewById(2131230909);
-        k.setOnClickListener(view -> {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.setContentView(R.layout.common_dialog_layout);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        p = findViewById(R.id.common_dialog_icon);
+        k = findViewById(R.id.common_dialog_container);
+        l = findViewById(R.id.common_dialog_content);
+        m = findViewById(R.id.common_dialog_button_layout);
+        o = findViewById(R.id.common_dialog_tv_title);
+        n = findViewById(R.id.common_dialog_title_layout);
+        q = findViewById(R.id.common_dialog_default_button);
+        r = findViewById(R.id.common_dialog_ok_button);
+        s = findViewById(R.id.common_dialog_cancel_button);
+        k.setOnClickListener(v -> {
             if (!mB.a()) {
                 finish();
             }
@@ -92,7 +94,7 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public void setContentView(int var1) {
-        wB.a(this, l, var1);
+    public void setContentView(int layoutResID) {
+        wB.a(this, l, layoutResID);
     }
 }

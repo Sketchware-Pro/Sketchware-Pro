@@ -12,41 +12,39 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.sketchware.remod.R;
 
 import a.a.a.aB;
 import a.a.a.dt;
 import a.a.a.jC;
 import a.a.a.mB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class MakeBlockActivity extends BaseAppCompatActivity {
 
-    public Toolbar k;
-    public String l;
-    public ProjectFileBean m;
-    public LinearLayout n;
-    public dt o;
+    private String sc_id;
+    private ProjectFileBean project;
+    private dt makeBlock;
 
     private void goBackDialog() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(0x7f0e061d));
-        dialog.a(2131165604);
-        dialog.a(Helper.getResString(2131625500));
-        dialog.b(Helper.getResString(2131625000), view -> {
+        dialog.b(Helper.getResString(R.string.logic_editor_more_block_dialog_message_confirm_goback));
+        dialog.a(R.drawable.exit_96);
+        dialog.a(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
+        dialog.b(Helper.getResString(R.string.common_word_goback), view -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 finish();
             }
 
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     @Override
     public void onBackPressed() {
-        if (o.a()) {
+        if (makeBlock.a()) {
             super.onBackPressed();
         } else {
             goBackDialog();
@@ -61,43 +59,43 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
             finish();
         }
 
-        setContentView(2131427505);
+        setContentView(R.layout.make_block);
         if (savedInstanceState == null) {
-            l = getIntent().getStringExtra("sc_id");
-            m = getIntent().getParcelableExtra("project_file");
+            sc_id = getIntent().getStringExtra("sc_id");
+            project = getIntent().getParcelableExtra("project_file");
         } else {
-            l = savedInstanceState.getString("sc_id");
-            m = savedInstanceState.getParcelable("project_file");
+            sc_id = savedInstanceState.getString("sc_id");
+            project = savedInstanceState.getParcelable("project_file");
         }
 
-        k = findViewById(2131231847);
-        a(k);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(Helper.getResString(2131625498));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        a(toolbar);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(Helper.getResString(R.string.logic_editor_more_block_actionbar_title_create_more_block));
         d().e(true);
         d().d(true);
-        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        o = new dt(this);
-        o.setFuncNameValidator(jC.a(l).a(m));
-        n = findViewById(2131231488);
-        n.addView(o);
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        makeBlock = new dt(this);
+        makeBlock.setFuncNameValidator(jC.a(sc_id).a(project));
+        LinearLayout makeBlock = findViewById(R.id.makeblock_view);
+        makeBlock.addView(this.makeBlock);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(2131492883, menu);
-        menu.findItem(2131231546).setTitle(Helper.getResString(2131624983));
+        getMenuInflater().inflate(R.menu.moreblock_menu, menu);
+        menu.findItem(R.id.moreblock_create).setTitle(Helper.getResString(R.string.common_word_create));
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == 2131231546) {
-            if (o.a()) return false;
+        if (menuItem.getItemId() == R.id.moreblock_create) {
+            if (makeBlock.a()) return false;
 
-            if (o.b()) {
+            if (makeBlock.b()) {
                 Intent intent = new Intent();
-                Pair<String, String> blockInformation = o.getBlockInformation();
+                Pair<String, String> blockInformation = makeBlock.getBlockInformation();
                 intent.putExtra("block_name", blockInformation.first);
                 intent.putExtra("block_spec", blockInformation.second);
                 setResult(RESULT_OK, intent);
@@ -119,8 +117,8 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", l);
-        outState.putParcelable("project_file", m);
+        outState.putString("sc_id", sc_id);
+        outState.putParcelable("project_file", project);
         super.onSaveInstanceState(outState);
     }
 }
