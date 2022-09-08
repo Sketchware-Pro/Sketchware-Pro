@@ -3,7 +3,6 @@ package a.a.a;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,7 +64,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         dialog.show();
     }
 
-    private void deleteADUnit(int position) {
+    private void deleteAdUnit(int position) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_delete_adunit_title));
         dialog.a(R.drawable.delete_96);
@@ -113,8 +112,8 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.layout_manual_add_ad_unit) {
+    public void onClick(View v) {
+        if (v.getId() == R.id.layout_manual_add_ad_unit) {
             createAdUnit();
         }
     }
@@ -125,14 +124,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         adUnitsAdapter.c();
     }
 
-    public class AdUnitsAdapter extends androidx.recyclerview.widget.RecyclerView.a<AdUnitsAdapter.ViewHolder> {
-
-        public int layoutPosition;
-
-        public AdUnitsAdapter() {
-            layoutPosition = -1;
-        }
-
+    private class AdUnitsAdapter extends RecyclerView.a<AdUnitsAdapter.ViewHolder> {
         @Override
         public int a() {
             if (adUnitBeanArrayList.size() == 0) {
@@ -156,20 +148,17 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_adunit_item, parent, false));
         }
 
-        public class ViewHolder extends RecyclerView.v {
-            public TextView tvName;
-            public TextView tvUnitId;
-            public ImageView imgDelete;
+        private class ViewHolder extends RecyclerView.v {
+            public final TextView tvName;
+            public final TextView tvUnitId;
+            public final ImageView imgDelete;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 tvName = itemView.findViewById(R.id.tv_name);
                 tvUnitId = itemView.findViewById(R.id.tv_unit_id);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgDelete.setOnClickListener(view -> {
-                    layoutPosition = j();
-                    deleteADUnit(j());
-                });
+                imgDelete.setOnClickListener(view -> deleteAdUnit(j()));
             }
         }
     }

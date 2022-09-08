@@ -40,6 +40,7 @@ captures/
 .idea/shelf/
 .idea/assetWizardSettings.xml
 .idea/compiler.xml
+.idea/deploymentTargetDropDown.xml
 .idea/discord.xml
 .idea/gradle.xml
 .idea/misc.xml

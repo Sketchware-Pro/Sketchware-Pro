@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:paddingBottom="24.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <TextView android:textSize="14.0sp" android:textStyle="italic" android:id="@id/tv_desc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="24.0dip" android:layout_marginBottom="8.0dip" />
-        <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" android:layout_marginTop="16.0dip" android:layout_marginRight="24.0dip">
-            <EditText android:textSize="16.0sp" android:id="@id/ed_input" android:layout_width="fill_parent" android:layout_height="40.0dip" android:lines="1" android:inputType="text" android:imeOptions="actionDone" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="24dp"
+            android:importantForAutofill="noExcludeDescendants">
+
+            <EditText
+                android:id="@+id/ed_input"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </ScrollView>

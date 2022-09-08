@@ -1,7 +1,5 @@
 package a.a.a;
 
-import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
-
 import java.util.ArrayList;
 
 public class Nx {
@@ -26,11 +24,11 @@ public class Nx {
         this.f = new ArrayList<>();
     }
 
-    public final String a() {
+    private String addZeroIndent() {
         return addIndent(0);
     }
 
-    public final String addIndent(int indentSize) {
+    private String addIndent(int indentSize) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < b + indentSize; i++) {
             str.append("\t");
@@ -39,7 +37,7 @@ public class Nx {
     }
 
     public void a(int position, String namespace, String attr, String value) {
-        e.add(position, new AttributeBuilder(this, namespace, attr, value));
+        e.add(position, new AttributeBuilder(namespace, attr, value));
     }
 
     public void a(Nx xmlBuilder) {
@@ -52,21 +50,21 @@ public class Nx {
     }
 
     public void a(String namespace, String attr, String value) {
-        e.add(new AttributeBuilder(this, namespace, attr, value));
+        e.add(new AttributeBuilder(namespace, attr, value));
     }
 
     public void b(String value) {
-        e.add(new AttributeBuilder(this, value));
+        e.add(new AttributeBuilder(value));
     }
 
     public String toCode() {
         StringBuilder resultCode = new StringBuilder();
-        resultCode.append(a());
+        resultCode.append(addZeroIndent());
         resultCode.append("<");
         resultCode.append(a);
         for (AttributeBuilder attr : e) {
             if (e.size() <= 1 || d) {
-                resultCode.append(MinimalPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR);
+                resultCode.append(" ");
             } else {
                 resultCode.append("\r\n");
                 resultCode.append(addIndent(1));
@@ -90,7 +88,7 @@ public class Nx {
             for (Nx xmlBuilder : f) {
                 resultCode.append(xmlBuilder.toCode());
             }
-            resultCode.append(a());
+            resultCode.append(addZeroIndent());
             resultCode.append("</");
             resultCode.append(a);
             resultCode.append(">");
@@ -103,7 +101,7 @@ public class Nx {
         return a.replaceAll("\\w*\\..*\\.", "");
     }
 
-    public void b(int indentSize) {
+    private void b(int indentSize) {
         b = indentSize;
         if (f != null) {
             for (Nx nx : f) {
@@ -114,24 +112,21 @@ public class Nx {
 
     class AttributeBuilder {
 
-        public final Nx xmlBuilder;
+        private final String value;
         private String namespace;
         private String attr;
-        private final String value;
 
-        public AttributeBuilder(Nx xmlBuilder, String namespace, String attr, String value) {
-            this.xmlBuilder = xmlBuilder;
+        private AttributeBuilder(String namespace, String attr, String value) {
             this.namespace = namespace;
             this.attr = attr;
             this.value = value;
         }
 
-        public AttributeBuilder(Nx xmlBuilder, String value) {
-            this.xmlBuilder = xmlBuilder;
+        private AttributeBuilder(String value) {
             this.value = value;
         }
 
-        public String toCode() {
+        private String toCode() {
             if (namespace != null && namespace.length() > 0) {
                 return namespace + ":" + attr + "=" + "\"" + value + "\"";
             } else if (attr == null || attr.length() <= 0) {

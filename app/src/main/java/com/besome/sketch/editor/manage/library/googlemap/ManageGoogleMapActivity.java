@@ -26,6 +26,7 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,16 +47,12 @@ import mod.hey.studios.util.Helper;
 
 public class ManageGoogleMapActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public Toolbar toolbar;
-    public String sc_id;
-    public LinearLayout switchLayout;
-    public Switch libSwitch;
-    public EditText editApiKey;
-    public Button btnImport;
-    public Button btnOpenDoc;
-    public ProjectLibraryBean googleMapLibraryBean;
-    public ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
-    public ProjectAdapter projectAdapter;
+    private String sc_id;
+    private Switch libSwitch;
+    private EditText editApiKey;
+    private ProjectLibraryBean googleMapLibraryBean;
+    private ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
+    private ProjectAdapter projectAdapter;
 
     private void initializeProjectList() {
         projectsList = new ArrayList<>();
@@ -84,7 +81,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         if (GB.h(getApplicationContext())) {
             try {
                 Uri documentationUrl = Uri.parse("https://developers.google.com/maps/documentation/android-sdk/signup");
-                Intent openDocIntent = new Intent("android.intent.action.VIEW");
+                Intent openDocIntent = new Intent(Intent.ACTION_VIEW);
                 openDocIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 openDocIntent.setData(documentationUrl);
                 openDocIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -96,16 +93,16 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                 downloadChromeDialog();
             }
         } else {
-            bB.a(getApplicationContext(), Helper.getResString(2131624932), 0).show();
+            bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), 0).show();
         }
     }
 
     private void importLibrarySettings() {
         final aB dialog = new aB(this);
-        dialog.b(Helper.getResString(2131625252));
-        dialog.a(2131166247);
-        View rootView = wB.a(this, 2131427550);
-        RecyclerView projectRecyclerView = rootView.findViewById(2131231440);
+        dialog.b(Helper.getResString(R.string.design_library_title_select_project));
+        dialog.a(R.drawable.widget_google_map);
+        View rootView = wB.a(this, R.layout.manage_library_popup_project_selector);
+        RecyclerView projectRecyclerView = rootView.findViewById(R.id.list);
         projectRecyclerView.setHasFixedSize(true);
         projectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         projectAdapter = new ProjectAdapter();
@@ -113,34 +110,34 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         projectRecyclerView.setItemAnimator(new ci());
         initializeProjectList();
         dialog.a(rootView);
-        dialog.b(Helper.getResString(2131625035), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             if (!mB.a()) {
-                if (projectAdapter.c >= 0) {
-                    HashMap<String, Object> projectMap = projectsList.get(projectAdapter.c);
+                if (projectAdapter.selectedProjectIndex >= 0) {
+                    HashMap<String, Object> projectMap = projectsList.get(projectAdapter.selectedProjectIndex);
                     googleMapLibraryBean = (ProjectLibraryBean) projectMap.get("google_map");
                     configure();
                     dialog.dismiss();
                 }
             }
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void downloadChromeDialog() {
         final aB dialog = new aB(this);
-        dialog.a(2131165415);
-        dialog.b(Helper.getResString(2131626412));
-        dialog.a(Helper.getResString(2131625629));
-        dialog.b(Helper.getResString(2131625010), v -> {
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
-                Intent intent = new Intent("android.intent.action.VIEW");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -160,31 +157,27 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case 2131230832:
-                importLibrarySettings();
-                break;
+        int id = v.getId();
 
-            case 2131230841:
-                openDoc();
-                break;
-
-            case 2131231408:
-                libSwitch.setChecked(!libSwitch.isChecked());
-                if ("Y".equals(googleMapLibraryBean.useYn) && !libSwitch.isChecked()) {
-                    configureLibrary();
-                }
-                break;
+        if (id == R.id.btn_import) {
+            importLibrarySettings();
+        } else if (id == R.id.btn_open_doc) {
+            openDoc();
+        } else if (id == R.id.layout_switch) {
+            libSwitch.setChecked(!libSwitch.isChecked());
+            if ("Y".equals(googleMapLibraryBean.useYn) && !libSwitch.isChecked()) {
+                configureLibrary();
+            }
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427548);
-        toolbar = findViewById(2131231847);
+        setContentView(R.layout.manage_library_manage_googlemap);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(2131231370).setVisibility(View.GONE);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
             googleMapLibraryBean = getIntent().getParcelableExtra("google_map");
@@ -197,18 +190,18 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        switchLayout = findViewById(2131231408);
+        LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
-        libSwitch = findViewById(2131231775);
-        editApiKey = findViewById(2131230986);
-        ((TextView) findViewById(2131231875)).setText(Helper.getResString(2131625242));
-        ((TextView) findViewById(2131231944)).setText(Helper.getResString(2131625243));
-        ((TextView) findViewById(2131231965)).setText(Helper.getResString(2131625249));
-        btnImport = findViewById(2131230832);
-        btnImport.setText(Helper.getResString(2131625201));
+        libSwitch = findViewById(R.id.switch_lib);
+        editApiKey = findViewById(R.id.ed_api_key);
+        ((TextView) findViewById(R.id.tv_api_key)).setText(Helper.getResString(R.string.design_library_google_map_title_api_key));
+        ((TextView) findViewById(R.id.tv_desc)).setText(Helper.getResString(R.string.design_library_google_maps_description_operate_normally));
+        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        Button btnImport = findViewById(R.id.btn_import);
+        btnImport.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
         btnImport.setOnClickListener(this);
-        btnOpenDoc = findViewById(2131230841);
-        btnOpenDoc.setText(Helper.getResString(2131625240));
+        Button btnOpenDoc = findViewById(R.id.btn_open_doc);
+        btnOpenDoc.setText(Helper.getResString(R.string.design_library_google_map_button_open_doc));
         btnOpenDoc.setOnClickListener(this);
         configure();
     }
@@ -222,15 +215,15 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
 
     private void configureLibrary() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(2131625047));
-        dialog.a(2131165524);
-        dialog.a(Helper.getResString(2131625246));
+        dialog.b(Helper.getResString(R.string.common_word_warning));
+        dialog.a(R.drawable.delete_96);
+        dialog.a(Helper.getResString(R.string.design_library_message_confirm_uncheck_google_map));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(2131624986), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             libSwitch.setChecked(false);
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(2131624974), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
             libSwitch.setChecked(true);
             dialog.dismiss();
         });
@@ -242,8 +235,8 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         editApiKey.setText(googleMapLibraryBean.data);
     }
 
-    public class ProjectAdapter extends RecyclerView.a<ProjectAdapter.ViewHolder> {
-        public int c = -1;
+    private class ProjectAdapter extends RecyclerView.a<ProjectAdapter.ViewHolder> {
+        private int selectedProjectIndex = -1;
 
         @Override
         public int a() {
@@ -254,7 +247,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         public void b(ViewHolder viewHolder, int index) {
             HashMap<String, Object> projectMap = projectsList.get(index);
             String sc_id = yB.c(projectMap, "sc_id");
-            viewHolder.imgIcon.setImageResource(2131165521);
+            viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
@@ -288,39 +281,39 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
 
         @Override
         public ViewHolder b(ViewGroup parent, int index) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        public class ViewHolder extends v implements View.OnClickListener {
-            public LinearLayout projectLayout;
-            public CircleImageView imgIcon;
-            public TextView projectName;
-            public TextView appName;
-            public TextView pkgName;
-            public TextView projectVersion;
-            public ImageView imgSelected;
+        private class ViewHolder extends v implements View.OnClickListener {
+            public final LinearLayout projectLayout;
+            public final CircleImageView imgIcon;
+            public final TextView projectName;
+            public final TextView appName;
+            public final TextView pkgName;
+            public final TextView projectVersion;
+            public final ImageView imgSelected;
 
-            public ViewHolder(View view) {
-                super(view);
-                projectLayout = view.findViewById(2131231613);
-                projectName = view.findViewById(2131231614);
-                imgIcon = view.findViewById(2131231151);
-                appName = view.findViewById(2131230780);
-                pkgName = view.findViewById(2131231579);
-                projectVersion = view.findViewById(2131231618);
-                imgSelected = view.findViewById(2131231181);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                projectLayout = itemView.findViewById(R.id.project_layout);
+                projectName = itemView.findViewById(R.id.project_name);
+                imgIcon = itemView.findViewById(R.id.img_icon);
+                appName = itemView.findViewById(R.id.app_name);
+                pkgName = itemView.findViewById(R.id.package_name);
+                projectVersion = itemView.findViewById(R.id.project_version);
+                imgSelected = itemView.findViewById(R.id.img_selected);
                 projectLayout.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
-                if (!mB.a() && v.getId() == 2131231613) {
-                    ProjectAdapter.this.c = ViewHolder.this.j();
-                    c(ProjectAdapter.this.c);
+                if (!mB.a() && v.getId() == R.id.project_layout) {
+                    selectedProjectIndex = j();
+                    selectProject(selectedProjectIndex);
                 }
             }
 
-            private void c(int index) {
+            private void selectProject(int index) {
                 if (projectsList.size() > 0) {
                     for (HashMap<String, Object> projectMap : projectsList) {
                         projectMap.put("selected", false);

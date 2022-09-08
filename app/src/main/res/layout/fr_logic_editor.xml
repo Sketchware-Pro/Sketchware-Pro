@@ -7,6 +7,10 @@
             <com.besome.sketch.editor.view.ViewLogicEditor android:id="@id/editor" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="4.0dip" />
         </LinearLayout>
     </RelativeLayout>
-    <com.besome.sketch.editor.view.ViewDummy android:id="@id/dummy" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+    <com.besome.sketch.editor.view.ViewDummy
+        android:id="@id/dummy"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
     <ImageView android:id="@id/icon_delete" android:paddingBottom="8.0dip" android:layout_width="50.0dip" android:layout_height="58.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/icon_delete" android:scaleType="fitXY" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" android:contentDescription="@null" android:translationY="66.0dip" android:layout_marginStart="8.0dip" android:layout_alignParentStart="true" />
 </RelativeLayout>

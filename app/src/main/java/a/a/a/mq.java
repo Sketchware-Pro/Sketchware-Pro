@@ -445,6 +445,7 @@ public class mq {
      */
     public static ArrayList<String> getImportsByTypeName(String name) {
         ArrayList<String> importList = new ArrayList<>();
+        ComponentsHandler.getImports(name, importList);
 
         switch (name) {
             case "Map":
@@ -857,7 +858,6 @@ public class mq {
                 return importList;
 
             default:
-                ComponentsHandler.getImports(name, importList);
                 return importList;
         }
     }

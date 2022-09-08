@@ -109,7 +109,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
         args.add("-nowarn");
 
-        if (!buildSettings.getValue(BuildSettings.SETTING_NO_WARNINGS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
+        if (!buildSettings.getValue(BuildSettings.SETTING_NO_WARNINGS, BuildSettings.SETTING_GENERIC_VALUE_TRUE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             args.add("-deprecation");
         }

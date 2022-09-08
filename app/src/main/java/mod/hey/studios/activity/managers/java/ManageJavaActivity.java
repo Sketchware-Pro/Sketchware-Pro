@@ -1,6 +1,6 @@
 package mod.hey.studios.activity.managers.java;
 
-import static mod.SketchwareUtil.getDip;
+import static mod.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -325,12 +325,7 @@ public class ManageJavaActivity extends Activity {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(
-                        (int) getDip(16),
-                        0,
-                        (int) getDip(16),
-                        (int) getDip(10)
-                );
+                params.setMargins(dpToPx(16), 0, dpToPx(16), dpToPx(10));
                 renameOccurrences.setLayoutParams(params);
             }
             /* Little "hack" to change margin of filename */
@@ -524,12 +519,13 @@ public class ManageJavaActivity extends Activity {
 
             if (isFolder(position)) {
                 icon.setImageResource(R.drawable.ic_folder_48dp);
-            } else {
-                if (getFileName(position).endsWith(".java")) {
-                    icon.setImageResource(R.drawable.java_96);
-                } else if (getFileName(position).endsWith(".kt")) {
-                    // TODO: set Kotlin icon here
-                }
+                icon.setPadding(0, 0, 0, 0);
+            } else if (getFileName(position).endsWith(".java")) {
+                icon.setImageResource(R.drawable.java_96);
+                icon.setPadding(0, 0, 0, 0);
+            } else if (getFileName(position).endsWith(".kt")) {
+                icon.setImageResource(R.drawable.kotlin_full_color_mark);
+                icon.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
             }
 
             Helper.applyRipple(ManageJavaActivity.this, more);

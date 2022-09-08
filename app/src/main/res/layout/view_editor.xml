@@ -1,15 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:id="@id/layout_palette" android:background="@drawable/palette_bg" android:layout_width="120.0dip" android:layout_height="fill_parent">
-        <LinearLayout android:orientation="horizontal" android:id="@id/palette_group" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <com.besome.sketch.editor.view.palette.PaletteWidget android:id="@id/palette_widget" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-            <com.besome.sketch.editor.view.palette.PaletteFavorite android:id="@id/palette_favorite" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_palette"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/palette_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/palette_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.besome.sketch.editor.view.palette.PaletteWidget
+                android:id="@+id/palette_widget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.besome.sketch.editor.view.palette.PaletteFavorite
+                android:id="@+id/palette_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
-    <FrameLayout android:id="@id/shape" android:background="#fff0f0ff" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_toRightOf="@id/layout_palette" />
-    <com.besome.sketch.editor.view.ViewDummy android:id="@id/dummy" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.besome.sketch.editor.view.ViewProperties android:id="@id/properties" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:translationY="150.0dip" />
-    <ImageView android:id="@id/icon_delete" android:paddingBottom="8.0dip" android:layout_width="50.0dip" android:layout_height="58.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/icon_delete" android:scaleType="fitXY" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" android:contentDescription="@null" android:translationY="66.0dip" android:layout_marginStart="8.0dip" android:layout_alignParentStart="true" />
+
+    <FrameLayout
+        android:id="@+id/shape"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/layout_palette"
+        android:background="#fff0f0ff"
+        android:forceDarkAllowed="false"
+        tools:ignore="UnusedAttribute"/>
+
+    <com.besome.sketch.editor.view.ViewDummy
+        android:id="@+id/dummy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.besome.sketch.editor.view.ViewProperties
+        android:id="@+id/properties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:translationY="150dp" />
+
+    <ImageView
+        android:id="@+id/icon_delete"
+        android:layout_width="50dp"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:contentDescription="@null"
+        android:paddingBottom="8dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_delete"
+        android:translationY="66dp" />
 </RelativeLayout>

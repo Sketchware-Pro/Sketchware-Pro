@@ -32,6 +32,8 @@ android {
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
 
         buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v6.4.0-SNAPSHOT-${getCommitHash()}\"")
+
+        buildConfigField("String", "CRASH_REPORT_WEBHOOK_URL", "\"https://discord.com/api/webhooks/1013129494237810701/RBnbEADfie4hYHOxnwSN703MeTZKqMtipE00X-EkSSS8wlo1tGcfY8gdD4j6Jm-cjflz\"")
     }
 
     flavorDimensions "api"
@@ -58,6 +60,8 @@ android {
 
     packagingOptions {
         resources.excludes += "license/*"
+        resources.excludes += "META-INF/DEPENDENCIES"
+        resources.pickFirsts += "api_database/*"
     }
 
     compileOptions {
@@ -85,35 +89,40 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"], exclude: "proguard-base-7.2.2.jar")
 
-    implementation "com.android.tools:annotations:30.2.1"
+    implementation "androidx.annotation:annotation:1.4.0"
+    implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
 
-    def codeEditorVersion = "0.15.1"
-    def excludeAnnotation = { exclude group: "androidx.annotation", module: "annotation" }
+    def codeEditorVersion = "0.16.3"
     def editorGroupId = "io.github.Rosemoe.sora-editor"
 
-    implementation "$editorGroupId:editor:$codeEditorVersion", excludeAnnotation
-    implementation "$editorGroupId:language-java:$codeEditorVersion", excludeAnnotation
+    implementation "$editorGroupId:editor:$codeEditorVersion"
+    implementation "$editorGroupId:language-java:$codeEditorVersion"
     implementation "$editorGroupId:language-textmate:$codeEditorVersion"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
-    minApi26Implementation "com.android.tools.build:bundletool:1.9.1"
+    minApi26Implementation "com.android.tools.build:bundletool:1.11.0"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:3.3.28"
+    implementation "com.android.tools:r8:3.3.75"
 
     implementation "com.google.code.gson:gson:2.9.0"
+    implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
 
     //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     //noinspection GradleDependency
     implementation "com.squareup.okio:okio:3.1.0"
 
-    implementation "com.guardsquare:proguard-base:7.1.1"
+    // TODO: use proguard-core dependency when duplicate class issue has been fixed
+    minApi21Implementation "com.guardsquare:proguard-base:7.1.1"
+    minApi26Implementation files('libs/proguard-base-7.2.2.jar')
+    minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
+    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"

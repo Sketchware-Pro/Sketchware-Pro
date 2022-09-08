@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,22 +17,16 @@ import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.sketchware.remod.R;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import a.a.a.HB;
 import a.a.a.Np;
 import a.a.a.WB;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
-import a.a.a.xB;
 import a.a.a.yy;
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
@@ -51,44 +43,41 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private WB fontNameValidator;
     private ImageView selectFile;
 
-    private void addToCollectionIfNeeded() {
-        if (shouldAddToCollectionElseShowAnimation(fontNameValidator)) {
+    private void saveFont() {
+        if (isFontValid(fontNameValidator)) {
             String fontName = this.fontName.getText().toString();
-            String pickedFontFilePath = HB.a(this, fontUri);
-            if (pickedFontFilePath != null) {
-                ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
-                resourceBean.savedPos = 1;
-                resourceBean.isNew = true;
-                if (addOrAddedToCollection.isChecked()) {
-                    try {
-                        Np.g().a(sc_id, resourceBean);
-                    } catch (Exception e) {
-                        // Well, (parts of) the bytecode's lying, yy can be thrown.
-                        //noinspection ConstantConditions
-                        if (e instanceof yy) {
-                            switch (e.getMessage()) {
-                                case "duplicate_name":
-                                    bB.b(this, Helper.getResString(R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
-                                    break;
+            String pickedFontFilePath = fontUri.getPath();
+            ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
+            resourceBean.savedPos = 1;
+            resourceBean.isNew = true;
 
-                                case "file_no_exist":
-                                    bB.b(this, Helper.getResString(R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
-                                    break;
+            if (addOrAddedToCollection.isChecked()) {
+                try {
+                    Np.g().a(sc_id, resourceBean);
+                } catch (Exception e) {
+                    // Well, (parts of) the bytecode's lying, yy can be thrown.
+                    //noinspection ConstantConditions
+                    if (e instanceof yy) {
+                        switch (e.getMessage()) {
+                            case "duplicate_name":
+                                bB.b(this, Helper.getResString(R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
+                                break;
 
-                                case "fail_to_copy":
-                                    bB.b(this, Helper.getResString(R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
-                                    break;
+                            case "file_no_exist":
+                                bB.b(this, Helper.getResString(R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
+                                break;
 
-                                default:
-                            }
+                            case "fail_to_copy":
+                                bB.b(this, Helper.getResString(R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
+                                break;
 
-                            return;
-                        } else {
-                            throw e;
+                            default:
                         }
+                    } else {
+                        throw e;
                     }
                 }
-
+            } else {
                 Intent intent = new Intent();
                 intent.putExtra("resource_bean", resourceBean);
                 setResult(RESULT_OK, intent);
@@ -103,59 +92,29 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
         if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK) {
             Uri intentData = data.getData();
-            new Thread(() -> {
+
+            String filenameExtension = FileUtil.getFileExtension(SketchwareUtil.getSafDocumentDisplayName(intentData).orElse(".ttf"));
+            SketchwareUtil.copySafDocumentToTempFile(intentData, this, filenameExtension, tempFontFile -> {
+                fontUri = Uri.fromFile(tempFontFile);
                 try {
-                    try (ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(intentData, "r")) {
-                        try (FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
-                            String extension;
-                            String easyWayMimeType = getContentResolver().getType(intentData);
-
-                            // Workaround for Android 5 which doesn't detect .ttf or .jar files'
-                            // MIME type (but which did for .apk files!)
-                            if (easyWayMimeType.equals("application/octet-stream")) {
-                                extension = MimeTypeMap.getFileExtensionFromUrl(intentData.toString());
-                            } else {
-                                extension = easyWayMimeType.split("/")[1];
-                            }
-
-                            File temporaryFile = File.createTempFile("font", "." + extension);
-                            fontUri = Uri.fromFile(temporaryFile);
-                            try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {
-                                try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
-                                    byte[] buffer = new byte[4096];
-                                    int length;
-                                    while ((length = inputStream.read(buffer)) > 0) {
-                                        bufferedOutputStream.write(buffer, 0, length);
-                                    }
-                                }
-                            }
-
-                            validFontPicked = true;
-                            runOnUiThread(() -> {
-                                try {
-                                    Typeface typeface = Typeface.createFromFile(temporaryFile);
-                                    if (typeface.equals(Typeface.DEFAULT)) {
-                                        SketchwareUtil.toastError("Warning: Font doesn't seem to be valid");
-                                    }
-                                    fontPreview.setTypeface(typeface);
-                                    fontName.requestFocus();
-                                    fontPreview.setVisibility(View.VISIBLE);
-                                } catch (Exception e) {
-                                    validFontPicked = false;
-                                    fontPreview.setVisibility(View.GONE);
-                                    SketchwareUtil.toast("Couldn't load font: " + e.getMessage());
-                                    LogUtil.e("AddFontActivity", "Failed to load font", e);
-                                }
-                            });
-                        }
+                    validFontPicked = true;
+                    Typeface typeface = Typeface.createFromFile(tempFontFile);
+                    if (typeface.equals(Typeface.DEFAULT)) {
+                        SketchwareUtil.toastError("Warning: Font doesn't seem to be valid");
                     }
-                } catch (IOException e) {
-                    runOnUiThread(() -> {
-                        SketchwareUtil.toastError("Error while loading font: " + e.getMessage());
-                        LogUtil.e("AddFontActivity", "Failed to load font", e);
-                    });
+                    fontPreview.setTypeface(typeface);
+                    fontName.requestFocus();
+                    fontPreview.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    validFontPicked = false;
+                    fontPreview.setVisibility(View.GONE);
+                    SketchwareUtil.toast("Couldn't load font: " + e.getMessage());
+                    LogUtil.e("AddFontActivity", "Failed to load font", e);
                 }
-            }).start();
+            }, e -> {
+                SketchwareUtil.toastError("Error while loading font: " + e.getMessage());
+                LogUtil.e("AddFontActivity", "Failed to load font", e);
+            });
         }
     }
 
@@ -166,7 +125,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         if (id == R.id.common_dialog_cancel_button) {
             finish();
         } else if (id == R.id.common_dialog_ok_button) {
-            addToCollectionIfNeeded();
+            saveFont();
         } else if (id == R.id.select_file) {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -209,7 +168,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         }
     }
 
-    private boolean shouldAddToCollectionElseShowAnimation(WB wb) {
+    private boolean isFontValid(WB wb) {
         if (!wb.b()) {
             return false;
         }

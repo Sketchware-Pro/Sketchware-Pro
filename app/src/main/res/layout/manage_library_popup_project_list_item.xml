@@ -1,27 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="4.0dip" android:layout_marginBottom="2.0dip" android:elevation="8.0dip" app:cardBackgroundColor="#ffffffff">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <LinearLayout android:orientation="horizontal" android:id="@id/project_layout" android:background="?selectableItemBackground" android:layout_width="fill_parent" android:layout_height="64.0dip">
-                <RelativeLayout android:layout_width="70.0dip" android:layout_height="fill_parent">
-                    <RelativeLayout android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_centerInParent="true">
-                        <View android:background="@drawable/circle_bg_white" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_centerInParent="true" android:contentDescription="@null" />
-                        <com.besome.sketch.lib.ui.CircleImageView android:id="@id/img_icon" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/android_icon" android:layout_centerInParent="true" android:contentDescription="@null" />
-                    </RelativeLayout>
-                </RelativeLayout>
-                <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-                    <LinearLayout android:gravity="center|left" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_centerVertical="true">
-                        <TextView android:textSize="14.0sp" android:textColor="#ff404040" android:id="@id/project_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="40.0dip">
-                            <TextView android:textSize="12.0sp" android:textColor="#ff9a9a9a" android:id="@id/app_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                            <TextView android:textSize="10.0sp" android:textColor="#ff9a9a9a" android:id="@id/project_version" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" />
-                        </LinearLayout>
-                        <TextView android:textSize="12.0sp" android:textColor="#ff9a9a9a" android:id="@id/package_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="2dp"
+        android:elevation="8dp"
+        app:cardBackgroundColor="#ffffffff">
+
+        <LinearLayout
+            android:id="@+id/project_layout"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?selectableItemBackground"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:padding="9dp">
+
+                <View
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle_bg_white"
+                    android:contentDescription="@null" />
+
+                <com.besome.sketch.lib.ui.CircleImageView
+                    android:id="@+id/img_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/android_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center|left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/project_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff404040"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="40dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/app_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#ff9a9a9a"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/project_version"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:textColor="#ff9a9a9a"
+                            android:textSize="10sp" />
                     </LinearLayout>
-                    <ImageView android:layout_gravity="right" android:id="@id/img_selected" android:padding="8.0dip" android:visibility="gone" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/ic_checkmark_green_48dp" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
-                </RelativeLayout>
-            </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/package_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff9a9a9a"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_selected"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_checkmark_green_48dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

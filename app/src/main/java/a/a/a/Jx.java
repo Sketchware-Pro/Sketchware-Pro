@@ -350,12 +350,11 @@ public class Jx {
             }
             sb.append("MobileAds.initialize(this);");
             sb.append(EOL);
-            if (fieldsWithStaticInitializers.contains(Lx.d("InterstitialAd"))) {
+            if (fieldsWithStaticInitializers.contains(Lx.getComponentFieldCode("InterstitialAd"))) {
                 sb.append("_ad_unit_id = \"").append(buildConfig.isDebugBuild ? "ca-app-pub-3940256099942544/1033173712" : buildConfig.interstitialAdUnitId).append("\";");
             }
-            if (fieldsWithStaticInitializers.contains(Lx.d("RewardedVideoAd"))) {
-                sb.append("//Well, you have to set ad unit id with command block for now!").append(EOL);
-                sb.append("_reward_ad_unit_id = \"ca-app-pub-3940256099942544/5224354917\";").append(EOL);
+            if (fieldsWithStaticInitializers.contains(Lx.getComponentFieldCode("RewardedVideoAd"))) {
+                sb.append("_reward_ad_unit_id = \"").append(buildConfig.isDebugBuild ? "ca-app-pub-3940256099942544/5224354917" : buildConfig.rewardAdUnitId).append("\";");
             }
 
             if (buildConfig.isDebugBuild) {
@@ -680,10 +679,10 @@ public class Jx {
     }
 
     /**
-     * @see Lx#b(String, String, String...)
+     * @see Lx#getComponentInitializerCode(String, String, String...)
      */
     private String getComponentBeanInitializer(ComponentBean componentBean) {
-        return Lx.b(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
+        return Lx.getComponentInitializerCode(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
     private void handleAppCompat() {
@@ -917,7 +916,7 @@ public class Jx {
                 case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
                 case 31:
                     int incrementedValue = startValue + 1;
-                    filePickerRequestCodes.add(Lx.a(next.componentId, incrementedValue));
+                    filePickerRequestCodes.add(Lx.getRequestCodeConstant(next.componentId, incrementedValue));
                     startValue = incrementedValue;
                     break;
             }
@@ -982,19 +981,19 @@ public class Jx {
             }
         }
         if (hasTimer) {
-            fieldsWithStaticInitializers.add(Lx.d("Timer"));
+            fieldsWithStaticInitializers.add(Lx.getComponentFieldCode("Timer"));
         }
         if (hasFirebaseDB) {
-            fieldsWithStaticInitializers.add(Lx.d("FirebaseDB"));
+            fieldsWithStaticInitializers.add(Lx.getComponentFieldCode("FirebaseDB"));
         }
         if (hasFirebaseStorage) {
-            fieldsWithStaticInitializers.add(Lx.d("FirebaseStorage"));
+            fieldsWithStaticInitializers.add(Lx.getComponentFieldCode("FirebaseStorage"));
         }
         if (hasInterstitialAd) {
-            fieldsWithStaticInitializers.add(Lx.d("InterstitialAd"));
+            fieldsWithStaticInitializers.add(Lx.getComponentFieldCode("InterstitialAd"));
         }
         if (hasRewardedVideoAd) {
-            fieldsWithStaticInitializers.add(Lx.d("RewardedVideoAd"));
+            fieldsWithStaticInitializers.add(Lx.getComponentFieldCode("RewardedVideoAd"));
         }
     }
 

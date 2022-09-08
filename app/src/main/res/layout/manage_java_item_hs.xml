@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="10.0dip" android:paddingTop="8.0dip" android:paddingRight="4.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <ImageView android:id="@id/icon" android:padding="5.0dip" android:focusable="false" android:layout_width="40.0dip" android:layout_height="40.0dip" android:scaleType="fitCenter" />
-        <TextView android:textSize="16.0sp" android:textColor="#ff212121" android:id="@id/title" android:padding="8.0dip" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="MainActivity.java" android:layout_weight="1.0" />
-        <ImageView android:id="@id/more" android:padding="8.0dip" android:focusable="false" android:layout_width="38.0dip" android:layout_height="38.0dip" android:src="@drawable/ic_more_vert_grey600_24dp" android:scaleType="fitCenter" />
-    </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingTop="8dp"
+    android:paddingRight="4dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:focusable="false"
+        android:padding="5dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:focusable="false"
+        android:padding="8dp"
+        android:textColor="#ff212121"
+        android:textSize="16sp"
+        tools:text="MainActivity.java" />
+
+    <ImageView
+        android:id="@+id/more"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:focusable="false"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_more_vert_grey600_24dp" />
 </LinearLayout>

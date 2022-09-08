@@ -1,7 +1,5 @@
 package mod.jbk.build.compiler.bundle;
 
-import android.content.Context;
-
 import com.android.tools.build.bundletool.commands.BuildBundleCommand;
 import com.android.tools.build.bundletool.flags.FlagParser;
 
@@ -49,8 +47,7 @@ public class AppBundleCompiler {
         return sc_id + ".aab";
     }
 
-    public static File getDefaultAppBundleOutputFile(Context context, String sc_id) {
-        yq projectMetadata = new yq(context, sc_id);
+    public static File getDefaultAppBundleOutputFile(yq projectMetadata) {
         return new File(projectMetadata.binDirectoryPath, projectMetadata.projectName + ".aab");
     }
 
