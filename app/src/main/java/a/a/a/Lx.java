@@ -3072,172 +3072,102 @@ public class Lx {
     public static String j(String code) {
         StringBuilder formattedCode = new StringBuilder(4096);
         char[] codeChars = code.toCharArray();
-        boolean var4 = false;
-        boolean var5 = false;
-        boolean var6 = false;
-        int var7 = 0;
-        boolean var8 = false;
+        boolean processingSingleLineComment = false;
+        boolean processingMultiLineComment = false;
+        boolean processingEscape = false;
+        int openBraces = 0;
+        boolean processingChar = false;
+        boolean processingString = false;
 
-        int var20;
-        int codeIndex = 0;
-        for (boolean var9 = false; codeIndex < codeChars.length; var7 = var20) {
-            boolean var17;
-            boolean var18;
-            int var19;
-            label81:
-            {
-                char codeBit = codeChars[codeIndex];
-                boolean var11;
-                int var16;
-                if (var4) {
-                    if (codeBit == '\n') {
+        for (int i = 0; i < codeChars.length; i++) {
+            char codeBit = codeChars[i];
+            if (processingSingleLineComment) {
+                if (codeBit == '\n') {
+                    formattedCode.append(codeBit);
+                    appendIndent(formattedCode, openBraces);
+                    processingSingleLineComment = false;
+                } else {
+                    formattedCode.append(codeBit);
+                }
+            } else {
+                if (processingMultiLineComment) {
+                    if (codeBit == '*') {
+                        char nextChar = codeChars[i + 1];
+                        if (nextChar == '/') {
+                            formattedCode.append(codeBit);
+                            formattedCode.append(nextChar);
+                            processingMultiLineComment = false;
+                            continue;
+                        }
+                    }
+
+                    formattedCode.append(codeBit);
+                } else if (processingEscape) {
+                    formattedCode.append(codeBit);
+                    processingEscape = false;
+                } else if (codeBit == '\\') {
+                    formattedCode.append(codeBit);
+                    processingEscape = true;
+                } else if (processingChar) {
+                    if (codeBit == '\'') {
                         formattedCode.append(codeBit);
-                        appendIndent(formattedCode, var7);
-                        var11 = false;
-                        var16 = codeIndex;
+                        processingChar = false;
                     } else {
                         formattedCode.append(codeBit);
-                        var11 = true;
-                        var16 = codeIndex;
+                    }
+                } else if (processingString) {
+                    if (codeBit == '"') {
+                        formattedCode.append(codeBit);
+                        processingString = false;
+                    } else {
+                        formattedCode.append(codeBit);
                     }
                 } else {
-                    if (var5) {
-                        label78:
-                        {
-                            if (codeBit == '*') {
-                                var20 = codeIndex + 1;
-                                char var14 = codeChars[var20];
-                                if (var14 == '/') {
-                                    formattedCode.append(codeBit);
-                                    formattedCode.append(var14);
-                                    var5 = false;
-                                    var11 = false;
-                                    var16 = var20;
-                                    break label78;
-                                }
-                            }
-
+                    if (codeBit == '/') {
+                        char nextChar = codeChars[i + 1];
+                        if (nextChar == '/') {
                             formattedCode.append(codeBit);
-                            var11 = false;
-                            var16 = codeIndex;
+                            formattedCode.append(nextChar);
+                            processingSingleLineComment = true;
+                            continue;
                         }
-                    } else if (var6) {
-                        formattedCode.append(codeBit);
-                        var6 = false;
-                        var11 = false;
-                        var16 = codeIndex;
-                    } else if (codeBit == '\\') {
-                        formattedCode.append(codeBit);
-                        var6 = true;
-                        var11 = false;
-                        var16 = codeIndex;
-                    } else if (var8) {
-                        if (codeBit == '\'') {
+
+                        if (nextChar == '*') {
                             formattedCode.append(codeBit);
-                            var8 = false;
-                            var11 = false;
-                            var16 = codeIndex;
-                        } else {
-                            formattedCode.append(codeBit);
-                            var11 = false;
-                            var16 = codeIndex;
-                        }
-                    } else if (var9) {
-                        if (codeBit == '"') {
-                            formattedCode.append(codeBit);
-                            var9 = false;
-                            var11 = false;
-                            var16 = codeIndex;
-                        } else {
-                            formattedCode.append(codeBit);
-                            var11 = false;
-                            var16 = codeIndex;
-                        }
-                    } else {
-                        label87:
-                        {
-                            if (codeBit == '/') {
-                                var20 = codeIndex + 1;
-                                char var14 = codeChars[var20];
-                                if (var14 == '/') {
-                                    formattedCode.append(codeBit);
-                                    formattedCode.append(var14);
-                                    var16 = var20;
-                                    var11 = true;
-                                    break label87;
-                                }
-
-                                if (var14 == '*') {
-                                    formattedCode.append(codeBit);
-                                    formattedCode.append(var14);
-                                    var5 = true;
-                                    var11 = false;
-                                    var16 = var20;
-                                    break label87;
-                                }
-                            }
-
-                            if (codeBit != '\n') {
-                                if (codeBit == '\'') {
-                                    var8 = true;
-                                }
-
-                                if (codeBit == '"') {
-                                    var9 = true;
-                                }
-
-                                if (codeBit == '{') {
-                                    var20 = var7 + 1;
-                                } else {
-                                    var20 = var7;
-                                }
-
-                                var7 = var20;
-                                if (codeBit == '}') {
-                                    --var20;
-                                    var7 = var20;
-                                    if (formattedCode.charAt(formattedCode.length() - 1) == '\t') {
-                                        formattedCode.deleteCharAt(formattedCode.length() - 1);
-                                        var7 = var20;
-                                    }
-                                }
-
-                                formattedCode.append(codeBit);
-                                var20 = codeIndex;
-                                var5 = var8;
-                                codeIndex = var7;
-                                var18 = false;
-                                var6 = false;
-                                var19 = var20;
-                                break label81;
-                            }
-
-                            formattedCode.append(codeBit);
-                            appendIndent(formattedCode, var7);
-                            var11 = false;
-                            var16 = codeIndex;
+                            formattedCode.append(nextChar);
+                            processingMultiLineComment = true;
+                            continue;
                         }
                     }
+
+                    if (codeBit != '\n') {
+                        if (codeBit == '\'') {
+                            processingChar = true;
+                        }
+
+                        if (codeBit == '"') {
+                            processingString = true;
+                        }
+
+                        if (codeBit == '{') {
+                            openBraces += 1;
+                        }
+
+                        if (codeBit == '}') {
+                            openBraces -= 1;
+                            if (formattedCode.charAt(formattedCode.length() - 1) == '\t') {
+                                formattedCode.deleteCharAt(formattedCode.length() - 1);
+                            }
+                        }
+
+                        formattedCode.append(codeBit);
+                        continue;
+                    }
+
+                    formattedCode.append(codeBit);
+                    appendIndent(formattedCode, openBraces);
                 }
-
-                var17 = var5;
-                boolean var13 = var6;
-                var5 = var8;
-                var19 = var16;
-                var4 = var11;
-                var6 = var17;
-                var18 = var13;
-                codeIndex = var7;
             }
-
-            var20 = codeIndex;
-            var17 = var18;
-            var18 = var6;
-            int var21 = var19 + 1;
-            var8 = var5;
-            var6 = var17;
-            var5 = var18;
-            codeIndex = var21;
         }
 
         return formattedCode.toString();
