@@ -1,7 +1,10 @@
 package com.besome.sketch.editor;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -110,8 +113,11 @@ import a.a.a.xq;
 import a.a.a.yq;
 import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.Magnifier;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.hasrat.menu.ExtraMenuBean;
-import mod.hey.studios.logic.SourceCodeDialog;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hilal.saif.asd.asdforall.AsdAll;
@@ -3024,14 +3030,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void showSourceCode() {
-        yq yqVar = new yq(this, this.B);
-        yqVar.a(jC.c(this.B), jC.b(this.B), jC.a(this.B), false);
-        String a2 = new Fx(this.M.getActivityName(), yqVar.N, "", this.o.getBlocks()).a();
-        try {
-            a2 = Lx.j(a2, false);
-        } catch (Exception e) {
-        }
-        SourceCodeDialog.show(this, a2);
+        yq yq = new yq(this, this.B);
+        yq.a(jC.c(this.B), jC.b(this.B), jC.a(this.B), false);
+        String code = new Fx(this.M.getActivityName(), yq.N, "", this.o.getBlocks()).a();
+
+        CodeEditor codeEditor = new CodeEditor(this);
+        codeEditor.setColorScheme(new EditorColorScheme());
+        codeEditor.setEditable(false);
+        codeEditor.setEditorLanguage(new JavaLanguage());
+        codeEditor.setText(Lx.j(code, false));
+        codeEditor.setTextSize(12);
+        codeEditor.setTypefaceText(Typeface.MONOSPACE);
+        codeEditor.setWordwrap(false);
+        codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Source code")
+                .setIcon(R.drawable.code_icon)
+                .setPositiveButton(R.string.common_word_close, null)
+                .create();
+
+        dialog.setView(codeEditor,
+                (int) getDip(24),
+                (int) getDip(8),
+                (int) getDip(24),
+                (int) getDip(8));
+        dialog.show();
     }
 
     public final void t() {
