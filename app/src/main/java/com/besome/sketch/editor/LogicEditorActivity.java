@@ -3028,7 +3028,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         yqVar.a(jC.c(this.B), jC.b(this.B), jC.a(this.B), false);
         String a2 = new Fx(this.M.getActivityName(), yqVar.N, "", this.o.getBlocks()).a();
         try {
-            a2 = Lx.j(a2);
+            a2 = Lx.j(a2, false);
         } catch (Exception e) {
         }
         SourceCodeDialog.show(this, a2);

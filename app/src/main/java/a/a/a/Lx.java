@@ -99,7 +99,7 @@ public class Lx {
             content += "implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'\r\n";
         }
 
-        return j(content + "}\r\n");
+        return j(content + "}\r\n", false);
     }
 
     /**
@@ -3069,7 +3069,7 @@ public class Lx {
     /**
      * @return Formatted code
      */
-    public static String j(String code) {
+    public static String j(String code, boolean indentMultiLineComments) {
         StringBuilder formattedCode = new StringBuilder(4096);
         char[] codeChars = code.toCharArray();
         boolean processingSingleLineComment = false;
@@ -3103,6 +3103,10 @@ public class Lx {
                     }
 
                     formattedCode.append(codeBit);
+
+                    if (indentMultiLineComments && codeBit == '\n') {
+                        appendIndent(formattedCode, openBraces);
+                    }
                 } else if (processingEscape) {
                     formattedCode.append(codeBit);
                     processingEscape = false;

@@ -39,6 +39,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import a.a.a.Lx;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -175,164 +176,6 @@ public class SrcCodeEditor extends AppCompatActivity {
         for (int i = 0; i < tabAmount; ++i) {
             code.append('\t');
         }
-    }
-
-    public static String j(String codeString) {
-        StringBuilder formattedCode = new StringBuilder(4096);
-        char[] code = codeString.toCharArray();
-        boolean var5 = false;
-        boolean var6 = false;
-        boolean var7 = false;
-        int var8 = 0;
-        boolean var9 = false;
-
-        int var19;
-        int index = 0;
-        for (boolean var10 = false; index < code.length; index = var19) {
-            int var13;
-            boolean var14;
-            boolean var15;
-            boolean var16;
-            boolean var17;
-            int var18;
-            label82:
-            {
-                char codeBit = code[index];
-                if (var5) {
-                    if (codeBit == '\n') {
-                        formattedCode.append(codeBit);
-                        a(formattedCode, var8);
-                        var5 = false;
-                    } else {
-                        formattedCode.append(codeBit);
-                    }
-                } else if (var6) {
-                    label79:
-                    {
-                        if (codeBit == '*') {
-                            int var40 = index + 1;
-                            char var41 = code[var40];
-                            if (var41 == '/') {
-                                formattedCode.append(codeBit);
-                                formattedCode.append(var41);
-                                index = var40;
-                                var6 = false;
-                                break label79;
-                            }
-                        }
-
-                        formattedCode.append(codeBit);
-
-                        // Add indents for commented lines
-                        if (codeBit == '\n') {
-                            a(formattedCode, var8);
-                        }
-                    }
-                } else if (var7) {
-                    formattedCode.append(codeBit);
-                    var7 = false;
-                } else if (codeBit == '\\') {
-                    formattedCode.append(codeBit);
-                    var7 = true;
-                } else if (var9) {
-                    if (codeBit == '\'') {
-                        formattedCode.append(codeBit);
-                        var9 = false;
-                    } else {
-                        formattedCode.append(codeBit);
-                    }
-                } else if (var10) {
-                    if (codeBit == '\"') {
-                        formattedCode.append(codeBit);
-                        var10 = false;
-                    } else {
-                        formattedCode.append(codeBit);
-                    }
-                } else {
-                    label88:
-                    {
-                        if (codeBit == '/') {
-                            int var27 = index + 1;
-                            char var28 = code[var27];
-                            if (var28 == '/') {
-                                formattedCode.append(codeBit);
-                                formattedCode.append(var28);
-                                var5 = true;
-                                index = var27;
-                                break label88;
-                            }
-
-                            if (var28 == '*') {
-                                formattedCode.append(codeBit);
-                                formattedCode.append(var28);
-                                var6 = true;
-                                index = var27;
-                                break label88;
-                            }
-                        }
-
-                        if (codeBit != '\n') {
-                            boolean var20;
-                            if (codeBit == '\'') {
-                                var20 = true;
-                            } else {
-                                var20 = var9;
-                            }
-
-                            boolean var21;
-                            if (codeBit == '\"') {
-                                var21 = true;
-                            } else {
-                                var21 = var10;
-                            }
-
-                            int var22;
-                            if (codeBit == '{') {
-                                var22 = var8 + 1;
-                            } else {
-                                var22 = var8;
-                            }
-
-                            if (codeBit == '}') {
-                                var22--;
-                                if (formattedCode.charAt(-1 + formattedCode.length()) == '\t') {
-                                    formattedCode.deleteCharAt(-1 + formattedCode.length());
-                                }
-                            }
-
-                            formattedCode.append(codeBit);
-                            var18 = var22;
-                            var10 = var21;
-                            var13 = index;
-                            var14 = var5;
-                            var15 = var6;
-                            var16 = var7;
-                            var17 = var20;
-                            break label82;
-                        }
-
-                        formattedCode.append(codeBit);
-                        a(formattedCode, var8);
-                    }
-                }
-
-                var13 = index;
-                var14 = var5;
-                var15 = var6;
-                var16 = var7;
-                var17 = var9;
-                var18 = var8;
-            }
-
-            var19 = var13 + 1;
-            var8 = var18;
-            var9 = var17;
-            var7 = var16;
-            var6 = var15;
-            var5 = var14;
-        }
-
-        return formattedCode.toString();
     }
 
     public static String paste(Activity act) {
@@ -476,7 +319,7 @@ public class SrcCodeEditor extends AppCompatActivity {
                     String ss = b.toString();
 
                     try {
-                        ss = j(ss);
+                        ss = Lx.j(ss, true);
                     } catch (Exception e) {
                         err = true;
                         SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
