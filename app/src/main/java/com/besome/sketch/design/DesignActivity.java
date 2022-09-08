@@ -1094,6 +1094,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED) && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {
+                        publishProgress("Installing via ROOT...");
+                    }
                     installBuiltApk();
                 } catch (MissingFileException e) {
                     runOnUiThread(() -> {
