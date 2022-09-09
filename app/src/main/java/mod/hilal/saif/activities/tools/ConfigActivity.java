@@ -325,41 +325,14 @@ public class ConfigActivity extends Activity {
                 "Enables old Code Editor from v6.2.0.",
                 SETTING_LEGACY_CODE_EDITOR,
                 false);
-        addTextInputPreference("[*] Superuser access (ROOT)",
-                "Brings auto-installation", v -> {
-                    String btn;
-                    String state;
-                    if (isSettingEnabled(SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
-                        btn = "Turn off";
-                        state = "enabled";
-                    } else {
-                        btn = "Turn on";
-                        state = "disabled";
-                    }
-                    new AlertDialog.Builder(ConfigActivity.this)
-                            .setTitle("SuperUser Access (" + state + ")")
-                            .setMessage("With this option, a number of interesting and useful functions appear, but for its operation you will need ROOT access")
-                            .setPositiveButton(btn, (dialog, which) -> {
-                                if (isSettingEnabled(SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
-                                    // Turn off script
-                                    setSetting(SETTING_ROOT_AUTO_INSTALL_PROJECTS, false);
-                                    SketchwareUtil.toast("Disabled successfully!");
-                                } else {
-                                    // Turn on script
-                                    boolean rootsuccess = getRootAccess();
-                                    if (rootsuccess) {
-                                        setSetting(SETTING_ROOT_AUTO_INSTALL_PROJECTS, rootsuccess);
-                                    } else {
-                                        SketchwareUtil.toast("Unable to get root access. Is device rooted?");
-                                    }
-                                }
-                            })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .setIcon(android.R.drawable.ic_secure)
-                            .show();
-                });
-        addSwitchPreference("[*] Automatic open (ROOT)",
-                "Just opens the app automatically after auto-installation",
+        addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
+                SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
+            if (isChecked) {
+                // TODO: Implement root access check
+            }
+        });
+        addSwitchPreference("Launch projects after installing",
+                "Opens projects automatically after auto-installation using root.",
                 SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
                 true);
         addSwitchPreference("Use new Version Control",
