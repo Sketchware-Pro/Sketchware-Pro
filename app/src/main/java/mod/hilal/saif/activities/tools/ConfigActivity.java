@@ -39,10 +39,9 @@ public class ConfigActivity extends Activity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
-    public static final String SETTING_USE_ROOT_FEATURES = "root-features";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
-    public static final String SETTING_ROOTED = "rooted";
-    public static final String SETTING_ROOTED_AUTOOPEN = "rooted-autoopen";
+    public static final String SETTING_ROOT_AUTO_INSTALL_PROJECTS = "root-auto-install-projects";
+    public static final String SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING = "root-auto-open-after-installing";
     public static final String SETTING_BACKUP_FILENAME = "backup-filename";
     public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
@@ -193,8 +192,8 @@ public class ConfigActivity extends Activity {
         settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
         settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
         settings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        settings.put(SETTING_ROOTED, false);
-        settings.put(SETTING_ROOTED_AUTOOPEN, true);
+        settings.put(SETTING_ROOT_AUTO_INSTALL_PROJECTS, false);
+        settings.put(SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING, true);
         settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
         settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
@@ -329,7 +328,7 @@ public class ConfigActivity extends Activity {
                 "Brings auto-installation", v -> {
                     String btn;
                     String state;
-                    if (isSettingEnabled(SETTING_ROOTED)) {
+                    if (isSettingEnabled(SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
                         btn = "Turn off";
                         state = "enabled";
                     } else {
@@ -340,15 +339,15 @@ public class ConfigActivity extends Activity {
                             .setTitle("SuperUser Access (" + state + ")")
                             .setMessage("With this option, a number of interesting and useful functions appear, but for its operation you will need ROOT access")
                             .setPositiveButton(btn, (dialog, which) -> {
-                                if (isSettingEnabled(SETTING_ROOTED)) {
+                                if (isSettingEnabled(SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
                                     // Turn off script
-                                    setSetting(SETTING_ROOTED, false);
+                                    setSetting(SETTING_ROOT_AUTO_INSTALL_PROJECTS, false);
                                     SketchwareUtil.toast("Disabled successfully!");
                                 } else {
                                     // Turn on script
                                     boolean rootsuccess = getRootAccess();
                                     if (rootsuccess) {
-                                        setSetting(SETTING_ROOTED, rootsuccess);
+                                        setSetting(SETTING_ROOT_AUTO_INSTALL_PROJECTS, rootsuccess);
                                     } else {
                                         SketchwareUtil.toast("Unable to get root access. Is device rooted?");
                                     }
@@ -360,7 +359,7 @@ public class ConfigActivity extends Activity {
                 });
         addSwitchPreference("[*] Automatic open (ROOT)",
                 "Just opens the app automatically after auto-installation",
-                SETTING_ROOTED_AUTOOPEN,
+                SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
                 true);
         addSwitchPreference("Use new Version Control",
                 "Enables custom version code and name for projects.",

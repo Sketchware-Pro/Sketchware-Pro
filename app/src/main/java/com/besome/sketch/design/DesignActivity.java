@@ -240,7 +240,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Opens the debug APK to install.
      */
     private void installBuiltApk() {
-        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED)) {
+        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
             // Simple installation of package
             Intent intent = new Intent(Intent.ACTION_VIEW);
             if (Build.VERSION.SDK_INT >= 24) {
@@ -264,7 +264,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     proc.waitFor();
                     SystemClock.sleep(2500);
                     SketchwareUtil.toast("Package installed successfuly!");
-                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
                         openApp(getApplicationContext(), q.packageName);
                     }
                 } catch (Exception e) {
@@ -1089,7 +1089,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED) && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS) && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
                         publishProgress("Installing via ROOT...");
                     }
                     installBuiltApk();
