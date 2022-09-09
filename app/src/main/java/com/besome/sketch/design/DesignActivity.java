@@ -16,7 +16,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -29,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -52,9 +52,12 @@ import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
+import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import a.a.a.DB;
 import a.a.a.Dp;
@@ -255,22 +258,29 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
             startActivity(intent);
         } else {
-            // Package installation via ROOT
             File apkUri = new File(q.finalToInstallApkPath);
-            if (apkUri.exists()) {
-                long length = apkUri.length();
-                try {
-                    Process proc = Runtime.getRuntime().exec("su -c cat " + apkUri + " | pm install -d -t -S " + length);
-                    proc.waitFor();
-                    SystemClock.sleep(2500);
-                    SketchwareUtil.toast("Package installed successfuly!");
-                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
-                        openApp(getApplicationContext(), q.packageName);
+            long length = apkUri.length();
+            Shell.getShell(shell -> {
+                if (shell.isRoot()) {
+                    List<String> stdout = new LinkedList<>();
+                    List<String> stderr = new LinkedList<>();
+
+                    Shell.Result result = shell.newJob().to(stdout, stderr).add("cat " + apkUri + " | pm install -d -t -S " + length).exec();
+                    if (result.isSuccess()) {
+                        SketchwareUtil.toast("Package installed successfuly!");
+                        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
+                            openApp(getApplicationContext(), q.packageName);
+                        }
+                    } else {
+                        String sharedErrorMessage = "Failed to install package, result code: " + result.getCode() + ". ";
+                        SketchwareUtil.toastError(sharedErrorMessage + "Logs are available in /Internal storage/.sketchware/debug.txt", Toast.LENGTH_LONG);
+                        LogUtil.e("DesignActivity", sharedErrorMessage + "stdout: " + stdout + ", stderr: " + stderr);
                     }
-                } catch (Exception e) {
-                    SketchwareUtil.toast(e.toString());
+                } else {
+                    SketchwareUtil.toastError("No root access granted. Continuing using default package install prompt.");
+                    // TODO: Implement default package install prompt
                 }
-            }
+            });
         }
     }
 
