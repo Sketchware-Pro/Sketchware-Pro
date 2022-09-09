@@ -267,7 +267,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     Shell.Result result = shell.newJob().to(stdout, stderr).add("cat " + apkUri + " | pm install -d -t -S " + length).exec();
                     if (result.isSuccess()) {
-                        SketchwareUtil.toast("Package installed successfuly!");
+                        SketchwareUtil.toast("Package installed successfully!");
                         if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
                             openApp(getApplicationContext(), q.packageName);
                         }
@@ -1099,8 +1099,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS) && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
-                        publishProgress("Installing via ROOT...");
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
+                        publishProgress("Installing APK...");
                     }
                     installBuiltApk();
                 } catch (MissingFileException e) {
