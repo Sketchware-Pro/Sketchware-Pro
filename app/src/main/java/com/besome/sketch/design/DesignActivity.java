@@ -5,12 +5,10 @@ import static mod.SketchwareUtil.getDip;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -217,29 +215,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     /**
-     * Open another app.
-     *
-     * @param context     current Context, like Activity, App, or Service
-     * @param packageName the full package name of the app to open
-     * @return true if likely successful, false if unsuccessful
-     */
-    public static boolean openApp(Context context, String packageName) {
-        PackageManager manager = context.getPackageManager();
-        try {
-            Intent i = manager.getLaunchIntentForPackage(packageName);
-            if (i == null) {
-                return false;
-                //throw new ActivityNotFoundException();
-            }
-            i.addCategory(Intent.CATEGORY_LAUNCHER);
-            context.startActivity(i);
-            return true;
-        } catch (ActivityNotFoundException e) {
-            return false;
-        }
-    }
-
-    /**
      * Opens the debug APK to install.
      */
     private void installBuiltApk() {
@@ -269,7 +244,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     if (result.isSuccess()) {
                         SketchwareUtil.toast("Package installed successfully!");
                         if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
-                            openApp(getApplicationContext(), q.packageName);
+                            Intent launcher = getPackageManager().getLaunchIntentForPackage(q.packageName);
+                            if (launcher != null) {
+                                startActivity(launcher);
+                            } else {
+                                SketchwareUtil.toastError("Couldn't launch project, either not installed or not with launcher activity.");
+                            }
                         }
                     } else {
                         String sharedErrorMessage = "Failed to install package, result code: " + result.getCode() + ". ";
