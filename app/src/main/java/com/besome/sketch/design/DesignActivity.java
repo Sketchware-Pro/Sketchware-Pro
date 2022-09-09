@@ -228,22 +228,23 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     List<String> stdout = new LinkedList<>();
                     List<String> stderr = new LinkedList<>();
 
-                    Shell.Result result = shell.newJob().to(stdout, stderr).add("cat " + apkUri + " | pm install -d -t -S " + length).exec();
-                    if (result.isSuccess()) {
-                        SketchwareUtil.toast("Package installed successfully!");
-                        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
-                            Intent launcher = getPackageManager().getLaunchIntentForPackage(q.packageName);
-                            if (launcher != null) {
-                                startActivity(launcher);
-                            } else {
-                                SketchwareUtil.toastError("Couldn't launch project, either not installed or not with launcher activity.");
+                    Shell.cmd("cat " + apkUri + " | pm install -d -t -S " + length).to(stdout, stderr).submit(result -> {
+                        if (result.isSuccess()) {
+                            SketchwareUtil.toast("Package installed successfully!");
+                            if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
+                                Intent launcher = getPackageManager().getLaunchIntentForPackage(q.packageName);
+                                if (launcher != null) {
+                                    startActivity(launcher);
+                                } else {
+                                    SketchwareUtil.toastError("Couldn't launch project, either not installed or not with launcher activity.");
+                                }
                             }
+                        } else {
+                            String sharedErrorMessage = "Failed to install package, result code: " + result.getCode() + ". ";
+                            SketchwareUtil.toastError(sharedErrorMessage + "Logs are available in /Internal storage/.sketchware/debug.txt", Toast.LENGTH_LONG);
+                            LogUtil.e("DesignActivity", sharedErrorMessage + "stdout: " + stdout + ", stderr: " + stderr);
                         }
-                    } else {
-                        String sharedErrorMessage = "Failed to install package, result code: " + result.getCode() + ". ";
-                        SketchwareUtil.toastError(sharedErrorMessage + "Logs are available in /Internal storage/.sketchware/debug.txt", Toast.LENGTH_LONG);
-                        LogUtil.e("DesignActivity", sharedErrorMessage + "stdout: " + stdout + ", stderr: " + stderr);
-                    }
+                    });
                 } else {
                     SketchwareUtil.toastError("No root access granted. Continuing using default package install prompt.");
                     requestPackageInstallerInstall();
@@ -1082,9 +1083,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
-                        publishProgress("Installing APK...");
-                    }
                     installBuiltApk();
                 } catch (MissingFileException e) {
                     runOnUiThread(() -> {
