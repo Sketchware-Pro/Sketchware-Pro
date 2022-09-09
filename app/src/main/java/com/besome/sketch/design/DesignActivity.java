@@ -1,19 +1,24 @@
 package com.besome.sketch.design;
 
 import static mod.SketchwareUtil.getDip;
+import static mod.SketchwareUtil.toast;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -26,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -50,7 +56,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import a.a.a.DB;
@@ -96,6 +104,7 @@ import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
@@ -209,22 +218,61 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
     }
 
+    /** Open another app.
+     * @param context current Context, like Activity, App, or Service
+     * @param packageName the full package name of the app to open
+     * @return true if likely successful, false if unsuccessful
+     */
+    public static boolean openApp(Context context, String packageName) {
+        PackageManager manager = context.getPackageManager();
+        try {
+            Intent i = manager.getLaunchIntentForPackage(packageName);
+            if (i == null) {
+                return false;
+                //throw new ActivityNotFoundException();
+            }
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            context.startActivity(i);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            return false;
+        }
+    }
+
     /**
      * Opens the debug APK to install.
      */
     private void installBuiltApk() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT >= 24) {
-            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        } else {
-            intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
-        }
+        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED)) {
+            // Simple installation of package
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            if (Build.VERSION.SDK_INT >= 24) {
+                Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            } else {
+                intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
+            }
 
-        startActivity(intent);
+            startActivity(intent);
+        }else{
+            // Package installation via ROOT
+            File apkUri = new File(q.finalToInstallApkPath);
+            if(apkUri.exists()){
+                long length = apkUri.length();
+                try {
+                    Process proc = Runtime.getRuntime().exec("su -c cat " + apkUri + " | pm install -d -t -S " + length);
+                    proc.waitFor();
+                    SystemClock.sleep(2500);
+                    SketchwareUtil.toast("Package installed successfuly!");
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {openApp(getApplicationContext(), q.packageName);}
+                } catch (Exception e) {
+                    SketchwareUtil.toast(e.toString());
+                }
+            }
+        }
     }
 
     @Override
@@ -403,7 +451,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         d().e(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
-
         // Replaced empty anonymous class with null
         getSupportFragmentManager().a((Xf.c) null);
         drawer = findViewById(R.id.drawer_layout);
@@ -1043,6 +1090,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED) && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {
+                        publishProgress("Installing via ROOT...");
+                    }
                     installBuiltApk();
                 } catch (MissingFileException e) {
                     runOnUiThread(() -> {
