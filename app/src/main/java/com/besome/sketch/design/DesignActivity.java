@@ -219,19 +219,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void installBuiltApk() {
         if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
-            // Simple installation of package
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (Build.VERSION.SDK_INT >= 24) {
-                Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-            } else {
-                intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
-            }
-
-            startActivity(intent);
+            requestPackageInstallerInstall();
         } else {
             File apkUri = new File(q.finalToInstallApkPath);
             long length = apkUri.length();
@@ -258,10 +246,25 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
                 } else {
                     SketchwareUtil.toastError("No root access granted. Continuing using default package install prompt.");
-                    // TODO: Implement default package install prompt
+                    requestPackageInstallerInstall();
                 }
             });
         }
+    }
+
+    private void requestPackageInstallerInstall() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT >= 24) {
+            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
+        }
+
+        startActivity(intent);
     }
 
     @Override
