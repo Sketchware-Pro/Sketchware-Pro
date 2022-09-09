@@ -228,7 +228,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     List<String> stdout = new LinkedList<>();
                     List<String> stderr = new LinkedList<>();
 
-                    Shell.cmd("cat " + apkUri + " | pm install -d -t -S " + length).to(stdout, stderr).submit(result -> {
+                    Shell.cmd("cat " + apkUri + " | pm install -S " + length).to(stdout, stderr).submit(result -> {
                         if (result.isSuccess()) {
                             SketchwareUtil.toast("Package installed successfully!");
                             if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING)) {
