@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -428,6 +429,10 @@ public class ConfigActivity extends Activity {
     }
 
     private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
+        addSwitchPreference(title, subtitle, keyName, defaultValue, null);
+    }
+
+    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
         LinearLayout preferenceRoot = new LinearLayout(this);
         preferenceRoot.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -520,8 +525,12 @@ public class ConfigActivity extends Activity {
 
         preferenceRoot.setOnClickListener(v -> switchView.setChecked(!switchView.isChecked()));
 
-        switchView.setOnCheckedChangeListener((buttonView, isChecked) ->
-                ConfigActivity.setSetting(keyName, isChecked));
+        switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ConfigActivity.setSetting(keyName, isChecked);
+            if (onCheckedChangeListener != null) {
+                onCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
+            }
+        });
 
         if (setting_map.containsKey(keyName)) {
             Object value = setting_map.get(keyName);
