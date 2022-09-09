@@ -2,12 +2,10 @@ package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
-import static mod.SketchwareUtil.toast;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -91,8 +89,8 @@ public class ConfigActivity extends Activity {
             return toReturnAndSetIfNotFound;
         }
     }
-    
-    
+
+
     public static String getBackupFileName() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
@@ -221,8 +219,7 @@ public class ConfigActivity extends Activity {
                 p.waitFor();
                 if (p.exitValue() != 255) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
             } catch (InterruptedException e) {
@@ -332,21 +329,28 @@ public class ConfigActivity extends Activity {
                 "Brings auto-installation", v -> {
                     String btn;
                     String state;
-                    if (isSettingEnabled(SETTING_ROOTED)) {btn="Turn off";state="enabled";}else{btn="Turn on";state="disabled";}
+                    if (isSettingEnabled(SETTING_ROOTED)) {
+                        btn = "Turn off";
+                        state = "enabled";
+                    } else {
+                        btn = "Turn on";
+                        state = "disabled";
+                    }
                     new AlertDialog.Builder(ConfigActivity.this)
-                            .setTitle("SuperUser Access ("+state+")")
+                            .setTitle("SuperUser Access (" + state + ")")
                             .setMessage("With this option, a number of interesting and useful functions appear, but for its operation you will need ROOT access")
-                            .setPositiveButton(btn, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (isSettingEnabled(SETTING_ROOTED)) {
-                                        // Turn off script
-                                        setSetting(SETTING_ROOTED, false);
-                                        toast("Disabled successfully!");
-                                    }else{
-                                        // Turn on script
-                                        boolean rootsuccess = getRootAccess();
-                                        if (rootsuccess) {setSetting(SETTING_ROOTED, rootsuccess);}
-                                        else {toast("Unable to get root access. Is device rooted?");}
+                            .setPositiveButton(btn, (dialog, which) -> {
+                                if (isSettingEnabled(SETTING_ROOTED)) {
+                                    // Turn off script
+                                    setSetting(SETTING_ROOTED, false);
+                                    SketchwareUtil.toast("Disabled successfully!");
+                                } else {
+                                    // Turn on script
+                                    boolean rootsuccess = getRootAccess();
+                                    if (rootsuccess) {
+                                        setSetting(SETTING_ROOTED, rootsuccess);
+                                    } else {
+                                        SketchwareUtil.toast("Unable to get root access. Is device rooted?");
                                     }
                                 }
                             })

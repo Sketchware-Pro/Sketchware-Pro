@@ -1,11 +1,9 @@
 package com.besome.sketch.design;
 
 import static mod.SketchwareUtil.getDip;
-import static mod.SketchwareUtil.toast;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -31,7 +29,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -56,9 +53,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import a.a.a.DB;
@@ -218,8 +213,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
     }
 
-    /** Open another app.
-     * @param context current Context, like Activity, App, or Service
+    /**
+     * Open another app.
+     *
+     * @param context     current Context, like Activity, App, or Service
      * @param packageName the full package name of the app to open
      * @return true if likely successful, false if unsuccessful
      */
@@ -257,17 +254,19 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
 
             startActivity(intent);
-        }else{
+        } else {
             // Package installation via ROOT
             File apkUri = new File(q.finalToInstallApkPath);
-            if(apkUri.exists()){
+            if (apkUri.exists()) {
                 long length = apkUri.length();
                 try {
                     Process proc = Runtime.getRuntime().exec("su -c cat " + apkUri + " | pm install -d -t -S " + length);
                     proc.waitFor();
                     SystemClock.sleep(2500);
                     SketchwareUtil.toast("Package installed successfuly!");
-                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {openApp(getApplicationContext(), q.packageName);}
+                    if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {
+                        openApp(getApplicationContext(), q.packageName);
+                    }
                 } catch (Exception e) {
                     SketchwareUtil.toast(e.toString());
                 }
