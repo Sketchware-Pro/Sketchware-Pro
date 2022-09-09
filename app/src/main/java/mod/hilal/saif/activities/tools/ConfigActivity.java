@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
+import com.topjohnwu.superuser.Shell;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -204,32 +205,6 @@ public class ConfigActivity extends Activity {
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
     }
 
-    public static boolean getRootAccess() {
-        Process p;
-        try {
-            // Preform su to get root privledges
-            p = Runtime.getRuntime().exec("su");
-
-            // Attempt to write a file to a root-only
-            DataOutputStream os = new DataOutputStream(p.getOutputStream());
-            os.writeBytes("echo \"Do I have root?\" >/system/sd/temporary.txt\n");
-            os.writeBytes("exit\n");
-            os.flush();
-            try {
-                p.waitFor();
-                if (p.exitValue() != 255) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (InterruptedException e) {
-                return false;
-            }
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -328,7 +303,12 @@ public class ConfigActivity extends Activity {
         addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
                 SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
             if (isChecked) {
-                // TODO: Implement root access check
+                Shell.getShell(shell -> {
+                    if (!shell.isRoot()) {
+                        SketchwareUtil.toastError("Couldn't acquire root access");
+                        buttonView.setChecked(false);
+                    }
+                });
             }
         });
         addSwitchPreference("Launch projects after installing",
