@@ -413,18 +413,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ZB zb = new ZB(getApplicationContext(), (TextInputLayout) a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(this.B).a(this.M));
         aBVar.a(a2);
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_add), v -> {
-            int i;
+            int i = 1;
             if (radioGroup.getCheckedRadioButtonId() == R.id.rb_boolean) {
                 i = 0;
-            } else {
-                if (radioGroup.getCheckedRadioButtonId() != R.id.rb_int) {
-                    if (radioGroup.getCheckedRadioButtonId() == R.id.rb_string) {
-                        i = 2;
-                    } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_map) {
-                        i = 3;
-                    }
+            } else if (radioGroup.getCheckedRadioButtonId() != R.id.rb_int) {
+                if (radioGroup.getCheckedRadioButtonId() == R.id.rb_string) {
+                    i = 2;
+                } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_map) {
+                    i = 3;
                 }
-                i = 1;
             }
             String obj = editText.getText().toString();
             if (!zb.b()) {
