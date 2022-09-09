@@ -549,6 +549,7 @@ public class ConfigActivity extends Activity {
             }
         } else {
             setting_map.put(keyName, defaultValue);
+            switchView.setChecked(defaultValue);
             FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
         }
         applyDesign(preferenceRoot);
