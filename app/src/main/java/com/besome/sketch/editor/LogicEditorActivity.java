@@ -2295,8 +2295,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public void onClick(View view) {
-        Intent intent;
-        int i;
         if (mB.a()) {
             return;
         }
@@ -2309,29 +2307,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 G();
             } else if (view.getTag().equals("listRemove")) {
                 J();
-            } else {
-                label45:
-                {
-                    if (view.getTag().equals("blockAdd")) {
-                        intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
-                        intent.putExtra("sc_id", this.B);
-                        intent.putExtra("project_file", this.M);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        i = 222;
-                    } else if (view.getTag().equals("componentAdd")) {
-                        intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
-                        intent.putExtra("sc_id", this.B);
-                        intent.putExtra("project_file", this.M);
-                        intent.putExtra("filename", this.M.getJavaName());
-                        i = 224;
-                    } else if (view.getTag().equals("blockImport")) {
-                        I();
-                        break label45;
-                    } else {
-                        break label45;
-                    }
-                    startActivityForResult(intent, i);
-                }
+            } else if (view.getTag().equals("blockAdd")) {
+                Intent intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
+                intent.putExtra("sc_id", this.B);
+                intent.putExtra("project_file", this.M);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivityForResult(intent, 222);
+            } else if (view.getTag().equals("componentAdd")) {
+                Intent intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
+                intent.putExtra("sc_id", this.B);
+                intent.putExtra("project_file", this.M);
+                intent.putExtra("filename", this.M.getJavaName());
+                startActivityForResult(intent, 224);
+            } else if (view.getTag().equals("blockImport")) {
+                I();
             }
         }
         int id = view.getId();
