@@ -62,7 +62,6 @@ import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -2642,11 +2641,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return false;
             }
         } else {
-            HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
-            eventBuilder.setCategory("editor");
-            eventBuilder.setAction("block");
-            eventBuilder.setLabel("Block drop");
-            this.d.send(eventBuilder.build());
             this.Y = null;
             this.Z.removeCallbacks(this.aa);
             if (!this.u) {
