@@ -830,9 +830,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         LinearLayout var11 = var12.findViewById(R.id.content);
         ArrayList<String> var8 = jC.d(this.B).m();
         if (xq.a(this.B) || xq.b(this.B)) {
-            if ("property_image" == str) {
+            if ("property_image".equals(str)) {
                 var8.add(0, "default_image");
-            } else if ("property_background_resource" == str) {
+            } else if ("property_background_resource".equals(str)) {
                 var8.add(0, "NONE");
             }
         }
@@ -2054,9 +2054,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (next.equals(ss.getArgValue())) {
                 e.setChecked(true);
             }
-            e.setOnClickListener(v -> {
-                soundPool.load(jC.d(B).i(((RadioButton) v).getText().toString()), 1);
-            });
+            e.setOnClickListener(v -> soundPool.load(jC.d(B).i(((RadioButton) v).getText().toString()), 1));
         }
         aBVar.a(a2);
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
@@ -2107,7 +2105,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void i(Ss ss) {
-        Pair<Integer, String>[] a2;
         aB aBVar = new aB(this);
         aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_typeface));
         aBVar.a(R.drawable.abc_96_color);
@@ -2326,9 +2323,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             g(false);
             return;
         }
-        boolean z = this.X;
-        if (z) {
-            e(!z);
+        if (X) {
+            e(false);
             return;
         }
         k();
