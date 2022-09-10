@@ -1,23 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:id="@id/layout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <include layout="@layout/toolbar" />
-            <com.besome.sketch.editor.view.ViewLogicEditor android:id="@id/editor" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="4.0dip" />
+
+            <com.besome.sketch.editor.view.ViewLogicEditor
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:background="#ffffffff" />
         </LinearLayout>
-        <com.besome.sketch.editor.LogicEditorDrawer android:id="@id/right_drawer" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentTop="true" android:translationX="200.0dip" android:layout_alignParentEnd="true" />
-        <LinearLayout android:orientation="vertical" android:id="@id/layout_palette" android:layout_width="wrap_content" android:layout_height="wrap_content">
-            <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@id/fab_toggle_palette" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="@dimen/action_button_margin" android:src="@drawable/block_flled_white" />
-            <LinearLayout android:orientation="horizontal" android:id="@id/area_palette" android:layout_width="wrap_content" android:layout_height="wrap_content" android:elevation="16.0dip">
-                <com.besome.sketch.editor.logic.PaletteBlock android:id="@id/palette_block" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+        <com.besome.sketch.editor.LogicEditorDrawer
+            android:id="@+id/right_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:translationX="200dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_palette"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_toggle_palette"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/action_button_margin"
+                android:src="@drawable/block_flled_white" />
+
+            <LinearLayout
+                android:id="@+id/area_palette"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="16dp"
+                android:orientation="horizontal">
+
+                <com.besome.sketch.editor.logic.PaletteBlock
+                    android:id="@+id/palette_block"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>
-        <com.besome.sketch.editor.logic.LogicTopMenu android:id="@id/top_menu" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:translationY="-48.0dip" android:layout_alignParentStart="true" />
-        <com.besome.sketch.editor.view.ViewDummy android:id="@id/dummy" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+        <com.besome.sketch.editor.logic.LogicTopMenu
+            android:id="@+id/top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:translationY="-48dp" />
+
+        <com.besome.sketch.editor.view.ViewDummy
+            android:id="@+id/dummy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <View android:id="@id/view_ads_boader" android:background="@color/color_primary" android:layout_width="0.0dip" android:layout_height="0.0dip" />
-        <LinearLayout android:orientation="vertical" android:id="@id/layout_ads" android:background="@color/light_grey" android:layout_width="0.0dip" android:layout_height="0.0dip" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view_ads_boader"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/color_primary" />
+
+        <LinearLayout
+            android:id="@+id/layout_ads"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/light_grey"
+            android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>
