@@ -271,79 +271,46 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void B() {
-        if (!this.u) {
-            HistoryBlockBean var1 = bC.d(this.B).i(this.s());
-            if (var1 == null) {
-                this.C();
-            } else {
-                label58:
-                {
-                    BlockBean var5;
-                    label57:
-                    {
-                        int var2 = var1.getActionType();
-                        int[] var3;
-                        if (var2 == 0) {
-                            var3 = new int[2];
-                            this.o.getLocationOnScreen(var3);
-                            this.a(var1.getAddedData(), var1.getCurrentX() + var3[0], var1.getCurrentY() + var3[1], true);
-                            if (var1.getCurrentParentData() == null) {
-                                break label58;
-                            }
-                        } else {
-                            if (var2 == 1) {
-                                var5 = var1.getCurrentUpdateData();
-                                break label57;
-                            }
+        if (!u) {
+            HistoryBlockBean historyBlockBean = bC.d(B).i(s());
+            if (historyBlockBean != null) {
+                int actionType = historyBlockBean.getActionType();
+                if (actionType == HistoryBlockBean.ACTION_TYPE_ADD) {
+                    int[] locationOnScreen = new int[2];
+                    o.getLocationOnScreen(locationOnScreen);
+                    a(historyBlockBean.getAddedData(), historyBlockBean.getCurrentX() + locationOnScreen[0], historyBlockBean.getCurrentY() + locationOnScreen[1], true);
+                    if (historyBlockBean.getCurrentParentData() != null) {
+                        a(historyBlockBean.getCurrentParentData(), true);
+                    }
+                } else if (actionType == HistoryBlockBean.ACTION_TYPE_UPDATE) {
+                    a(historyBlockBean.getCurrentUpdateData(), true);
+                } else if (actionType == HistoryBlockBean.ACTION_TYPE_REMOVE) {
+                    ArrayList<BlockBean> removedData = historyBlockBean.getRemovedData();
 
-                            if (var2 != 2) {
-                                if (var2 != 3) {
-                                    break label58;
-                                }
-
-                                for (BlockBean var7 : var1.getAfterMoveData()) {
-                                    this.o.a(var7, true);
-                                }
-
-                                var3 = new int[2];
-                                this.o.getLocationOnScreen(var3);
-                                this.a(var1.getAfterMoveData(), var1.getCurrentX() + var3[0], var1.getCurrentY() + var3[1], true);
-                                if (var1.getCurrentParentData() != null) {
-                                    this.a(var1.getCurrentParentData(), true);
-                                }
-
-                                if (var1.getCurrentOriginalParent() == null) {
-                                    break label58;
-                                }
-
-                                var5 = var1.getCurrentOriginalParent();
-                                break label57;
-                            }
-
-                            ArrayList<BlockBean> var6 = var1.getRemovedData();
-                            var2 = var6.size();
-
-                            while (true) {
-                                --var2;
-                                if (var2 < 0) {
-                                    if (var1.getCurrentParentData() == null) {
-                                        break label58;
-                                    }
-                                    break;
-                                }
-
-                                this.o.a(var6.get(var2), false);
-                            }
-                        }
-
-                        var5 = var1.getCurrentParentData();
+                    for (int i = removedData.size() - 1; i >= 0; i--) {
+                        o.a(removedData.get(i), false);
+                    }
+                    if (historyBlockBean.getCurrentParentData() != null) {
+                        a(historyBlockBean.getCurrentParentData(), true);
+                    }
+                } else if (actionType == HistoryBlockBean.ACTION_TYPE_MOVE) {
+                    for (BlockBean afterMoveData : historyBlockBean.getAfterMoveData()) {
+                        o.a(afterMoveData, true);
                     }
 
-                    this.a(var5, true);
-                }
+                    int[] locationOnScreen = new int[2];
+                    o.getLocationOnScreen(locationOnScreen);
+                    a(historyBlockBean.getAfterMoveData(), historyBlockBean.getCurrentX() + locationOnScreen[0], historyBlockBean.getCurrentY() + locationOnScreen[1], true);
+                    if (historyBlockBean.getCurrentParentData() != null) {
+                        a(historyBlockBean.getCurrentParentData(), true);
+                    }
 
-                this.C();
+                    if (historyBlockBean.getCurrentOriginalParent() != null) {
+                        a(historyBlockBean.getCurrentOriginalParent(), true);
+                    }
+                }
             }
+            invalidateOptionsMenu();
         }
     }
 
