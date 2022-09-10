@@ -117,6 +117,7 @@ import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -434,7 +435,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -468,7 +469,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -841,7 +842,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             var3.dismiss();
         });
-        var3.a(xB.b().a(this.getApplicationContext(), R.string.common_word_cancel), v -> var3.dismiss());
+        var3.a(xB.b().a(this.getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(var3));
         var3.show();
     }
 
@@ -1638,7 +1639,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1840,7 +1841,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             asdAll.dismiss();
         });
-        asdAll.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> asdAll.dismiss());
+        asdAll.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(asdAll));
         asdAll.show();
     }
 
@@ -1868,7 +1869,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(moreBlockCollectionBean);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -2026,7 +2027,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             RadioButton checkedRadioButton = (RadioButton) radioGroup.getChildAt(radioGroup.getCheckedRadioButtonId());
             a(ss, (Object) checkedRadioButton.getText().toString());
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> dialog.dismiss());
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -2088,7 +2089,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -2232,7 +2233,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             O.a(str);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
