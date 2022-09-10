@@ -2495,21 +2495,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.menu_block_helper:
-                e(false);
-                g(!this.ia);
-                break;
-            case R.id.menu_logic_redo:
-                B();
-                break;
-            case R.id.menu_logic_undo:
-                M();
-                break;
-            case R.id.menu_logic_showsource:
-                showSourceCode();
-                break;
+        int itemId = menuItem.getItemId();
+
+        if (itemId == R.id.menu_block_helper) {
+            e(false);
+            g(!this.ia);
+        } else if (itemId == R.id.menu_logic_redo) {
+            B();
+        } else if (itemId == R.id.menu_logic_undo) {
+            M();
+        } else if (itemId == R.id.menu_logic_showsource) {
+            showSourceCode();
         }
+
         return super.onOptionsItemSelected(menuItem);
     }
 
