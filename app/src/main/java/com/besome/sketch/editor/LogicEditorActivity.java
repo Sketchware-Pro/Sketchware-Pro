@@ -124,7 +124,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public Vibrator F;
     public boolean G;
     public DB H;
-    public LinearLayout I;
     public LinearLayout J;
     public LinearLayout K;
     public FloatingActionButton L;
@@ -2413,7 +2412,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         this.p = findViewById(R.id.dummy);
         this.n = findViewById(R.id.editor);
         this.o = n.getBlockPane();
-        this.I = findViewById(R.id.layout_ads);
         this.J = findViewById(R.id.layout_palette);
         this.K = findViewById(R.id.area_palette);
         this.L = findViewById(R.id.fab_toggle_palette);
