@@ -1331,10 +1331,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
-    public final RadioButton b(String str) {
+    private RadioButton getFontRadioButton(String fontName) {
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText("");
-        radioButton.setTag(str);
+        radioButton.setTag(fontName);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (wB.a(this, 1.0f) * 60.0f));
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
@@ -1622,7 +1622,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             fontNames.add(0, "default_font");
         }
         for (String fontName : fontNames) {
-            RadioButton font = b(fontName);
+            RadioButton font = getFontRadioButton(fontName);
             radioGroup.addView(font);
             if (fontName.equals(ss.getArgValue())) {
                 font.setChecked(true);
