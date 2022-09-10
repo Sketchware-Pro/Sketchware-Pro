@@ -1994,51 +1994,45 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void h(Ss ss) {
-        SoundPool soundPool;
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_sound));
-        aBVar.a(R.drawable.music_48);
-        View a2 = wB.a(this, R.layout.property_popup_selector_single);
-        RadioGroup radioGroup = a2.findViewById(R.id.rg_content);
-        AudioAttributes.Builder builder = new AudioAttributes.Builder();
-        builder.setUsage(AudioAttributes.USAGE_MEDIA);
-        builder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
-        AudioAttributes build = builder.build();
-        SoundPool.Builder builder2 = new SoundPool.Builder();
-        builder2.setMaxStreams(1);
-        builder2.setAudioAttributes(build);
-        soundPool = builder2.build();
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_sound));
+        dialog.a(R.drawable.music_48);
+
+        View customView = wB.a(this, R.layout.property_popup_selector_single);
+        RadioGroup radioGroup = customView.findViewById(R.id.rg_content);
+        SoundPool soundPool = new SoundPool.Builder()
+                .setMaxStreams(1)
+                .setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build())
+                .build();
         soundPool.setOnLoadCompleteListener((soundPool1, sampleId, status) -> {
             if (soundPool1 != null) {
                 soundPool1.play(sampleId, 1, 1, 1, 0, 1);
             }
         });
-        for (String next : jC.d(this.B).p()) {
-            RadioButton e = e(next);
-            radioGroup.addView(e);
-            if (next.equals(ss.getArgValue())) {
-                e.setChecked(true);
+
+        for (String soundName : jC.d(this.B).p()) {
+            RadioButton sound = e(soundName);
+            radioGroup.addView(sound);
+            if (soundName.equals(ss.getArgValue())) {
+                sound.setChecked(true);
             }
-            e.setOnClickListener(v -> soundPool.load(jC.d(B).i(((RadioButton) v).getText().toString()), 1));
+            sound.setOnClickListener(v -> soundPool.load(jC.d(B).i(sound.getText().toString()), 1));
         }
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
-            int childCount = radioGroup.getChildCount();
-            int i = 0;
-            while (true) {
-                if (i >= childCount) {
-                    break;
-                }
+        dialog.a(customView);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     a(ss, (Object) radioButton.getText().toString());
                     break;
                 }
-                i++;
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> aBVar.dismiss());
-        aBVar.show();
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> dialog.dismiss());
+        dialog.show();
     }
 
     public final void h(String str) {
