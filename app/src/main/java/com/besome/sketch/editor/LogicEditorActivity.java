@@ -176,10 +176,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public boolean ha = false;
     public boolean ia = false;
 
-    private static class b extends MA {
+    private static class ProjectSaver extends MA {
         private final WeakReference<LogicEditorActivity> activity;
 
-        public b(LogicEditorActivity logicEditorActivity) {
+        public ProjectSaver(LogicEditorActivity logicEditorActivity) {
             super(logicEditorActivity);
             this.activity = new WeakReference<>(logicEditorActivity);
             logicEditorActivity.a(this);
@@ -474,7 +474,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void L() {
         try {
-            new Handler().postDelayed(() -> new b(this).execute(), 500L);
+            new Handler().postDelayed(() -> new ProjectSaver(this).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
         }
