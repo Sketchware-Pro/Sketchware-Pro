@@ -1599,48 +1599,41 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void d(Ss ss) {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_font));
-        aBVar.a(R.drawable.abc_96_color);
-        View a2 = wB.a(this, R.layout.property_popup_selector_color);
-        RadioGroup radioGroup = a2.findViewById(R.id.rg);
-        LinearLayout linearLayout = a2.findViewById(R.id.content);
-        ArrayList<String> k = jC.d(this.B).k();
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_font));
+        dialog.a(R.drawable.abc_96_color);
+
+        View customView = wB.a(this, R.layout.property_popup_selector_color);
+        RadioGroup radioGroup = customView.findViewById(R.id.rg);
+        LinearLayout linearLayout = customView.findViewById(R.id.content);
+        ArrayList<String> fontNames = jC.d(this.B).k();
         if (xq.a(this.B) || xq.b(this.B)) {
-            k.add(0, "default_font");
+            fontNames.add(0, "default_font");
         }
-        for (String next : k) {
-            RadioButton b2 = b(next);
-            radioGroup.addView(b2);
-            if (next.equals(ss.getArgValue())) {
-                b2.setChecked(true);
+        for (String fontName : fontNames) {
+            RadioButton font = b(fontName);
+            radioGroup.addView(font);
+            if (fontName.equals(ss.getArgValue())) {
+                font.setChecked(true);
             }
-            LinearLayout d = d(next);
-            d.setOnClickListener(v -> {
-                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(linearLayout.indexOfChild(v));
-                radioButton.setChecked(true);
-            });
-            linearLayout.addView(d);
+            LinearLayout fontPreview = d(fontName);
+            fontPreview.setOnClickListener(v -> font.setChecked(true));
+            linearLayout.addView(fontPreview);
         }
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
-            int childCount = radioGroup.getChildCount();
-            int i = 0;
-            while (true) {
-                if (i >= childCount) {
-                    break;
-                }
+
+        dialog.a(customView);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     a(ss, radioButton.getTag());
                     break;
                 }
-                i++;
             }
-            aBVar.dismiss();
+            dialog.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public final void d(MoreBlockCollectionBean moreBlockCollectionBean) {
