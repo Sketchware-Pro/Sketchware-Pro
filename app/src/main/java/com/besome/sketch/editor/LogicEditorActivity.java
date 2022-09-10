@@ -2035,18 +2035,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(R.drawable.music_48);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_content);
-        if (Build.VERSION.SDK_INT >= 21) {
-            AudioAttributes.Builder builder = new AudioAttributes.Builder();
-            builder.setUsage(AudioAttributes.USAGE_MEDIA);
-            builder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
-            AudioAttributes build = builder.build();
-            SoundPool.Builder builder2 = new SoundPool.Builder();
-            builder2.setMaxStreams(1);
-            builder2.setAudioAttributes(build);
-            soundPool = builder2.build();
-        } else {
-            soundPool = new SoundPool(1, 3, 0);
-        }
+        AudioAttributes.Builder builder = new AudioAttributes.Builder();
+        builder.setUsage(AudioAttributes.USAGE_MEDIA);
+        builder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
+        AudioAttributes build = builder.build();
+        SoundPool.Builder builder2 = new SoundPool.Builder();
+        builder2.setMaxStreams(1);
+        builder2.setAudioAttributes(build);
+        soundPool = builder2.build();
         soundPool.setOnLoadCompleteListener((soundPool1, sampleId, status) -> {
             if (soundPool1 != null) {
                 soundPool1.play(sampleId, 1, 1, 1, 0, 1);
