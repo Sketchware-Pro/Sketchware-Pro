@@ -447,7 +447,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(R.drawable.delete_96);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
-        new ArrayList();
         for (Pair<Integer, String> list : jC.a(this.B).j(this.M.getJavaName())) {
             viewGroup.addView(e(list.second));
         }
@@ -480,7 +479,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(R.drawable.delete_96);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
-        new ArrayList();
         for (Pair<Integer, String> next : jC.a(this.B).k(this.M.getJavaName())) {
             RadioButton e = e(next.second);
             e.setTag(next.first);
@@ -1838,7 +1836,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         AsdAll asdAll = new AsdAll(this);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
-        new ArrayList();
         String xmlName = this.M.getXmlName();
         if (this.D.equals("onBindCustomView") && (str = jC.a(this.B).c(this.M.getXmlName(), this.C).customView) != null) {
             xmlName = ProjectFileBean.getXmlName(str);
@@ -2545,7 +2542,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     } else if (var2.charAt(1) == 's') {
                         var9 = new Rs(super.e, var5 + 1, var2.substring(3), "s", "getArg");
                     } else {
-                        var6 = var5;
                         if (var2.charAt(1) != 'm') {
                             break label44;
                         }
