@@ -1555,7 +1555,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         TextView preview = new TextView(this);
         preview.setLayoutParams(layoutParams);
         preview.setText("Preview");
-        preview.setTypeface(!fontName.equalsIgnoreCase("default_font") ? Typeface.createFromFile(jC.d(this.B).d(fontName)) : Typeface.DEFAULT);
+
+        Typeface typeface;
+        if (fontName.equalsIgnoreCase("default_font")) {
+            typeface = Typeface.DEFAULT;
+        } else {
+            try {
+                typeface = Typeface.createFromFile(jC.d(B).d(fontName));
+            } catch (RuntimeException e) {
+                typeface = Typeface.DEFAULT;
+                preview.setText("Couldn't load font");
+            }
+        }
+
+        preview.setTypeface(typeface);
         linearLayout.addView(preview);
         return linearLayout;
     }
