@@ -361,45 +361,45 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.show();
     }
 
-    public final void H() {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_add_new_variable));
-        aBVar.a(R.drawable.add_96_blue);
-        View a2 = wB.a(this, R.layout.logic_popup_add_variable);
-        RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
-        EditText editText = a2.findViewById(R.id.ed_input);
-        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.logic_editor_hint_enter_variable_name));
+    private void showAddNewVariableDialog() {
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_add_new_variable));
+        dialog.a(R.drawable.add_96_blue);
+
+        View customView = wB.a(this, R.layout.logic_popup_add_variable);
+        RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
+        EditText editText = customView.findViewById(R.id.ed_input);
+        ((TextInputLayout) customView.findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.logic_editor_hint_enter_variable_name));
         editText.setPrivateImeOptions("defaultInputmode=english;");
-        ((TextView) a2.findViewById(R.id.rb_boolean)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_boolean));
-        ((TextView) a2.findViewById(R.id.rb_int)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_number));
-        ((TextView) a2.findViewById(R.id.rb_string)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_string));
-        ((TextView) a2.findViewById(R.id.rb_map)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_map));
-        ZB zb = new ZB(getApplicationContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(this.B).a(this.M));
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_add), v -> {
-            int i = 1;
+        ((TextView) customView.findViewById(R.id.rb_boolean)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_boolean));
+        ((TextView) customView.findViewById(R.id.rb_int)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_number));
+        ((TextView) customView.findViewById(R.id.rb_string)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_string));
+        ((TextView) customView.findViewById(R.id.rb_map)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_map));
+        ZB nameValidator = new ZB(getApplicationContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(this.B).a(this.M));
+        dialog.a(customView);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_add), v -> {
+            int variableType = 1;
             if (radioGroup.getCheckedRadioButtonId() == R.id.rb_boolean) {
-                i = 0;
+                variableType = 0;
             } else if (radioGroup.getCheckedRadioButtonId() != R.id.rb_int) {
                 if (radioGroup.getCheckedRadioButtonId() == R.id.rb_string) {
-                    i = 2;
+                    variableType = 2;
                 } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_map) {
-                    i = 3;
+                    variableType = 3;
                 }
             }
-            String obj = editText.getText().toString();
-            if (!zb.b()) {
-                return;
+
+            if (nameValidator.b()) {
+                b(variableType, editText.getText().toString());
+                mB.a(getApplicationContext(), editText);
+                dialog.dismiss();
             }
-            b(i, obj);
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
             mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
+            dialog.dismiss();
         });
-        aBVar.show();
+        dialog.show();
     }
 
     public final void I() {
@@ -2302,7 +2302,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         if (view.getTag() != null) {
             if (view.getTag().equals("variableAdd")) {
-                H();
+                showAddNewVariableDialog();
             } else if (view.getTag().equals("variableRemove")) {
                 K();
             } else if (view.getTag().equals("listAdd")) {
