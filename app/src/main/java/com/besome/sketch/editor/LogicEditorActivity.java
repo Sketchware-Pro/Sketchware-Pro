@@ -1541,24 +1541,22 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return this.N.c(f, f2);
     }
 
-    public final LinearLayout d(String str) {
-        float a2 = wB.a(this, 1.0f);
+    private LinearLayout getFontPreview(String fontName) {
         LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (a2 * 60.0f)));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (wB.a(this, 1.0f) * 60.0f)));
         linearLayout.setGravity(Gravity.CENTER | Gravity.LEFT);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        TextView textView = new TextView(this);
+        TextView name = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
-        textView.setLayoutParams(layoutParams);
-        textView.setText(str);
-        linearLayout.addView(textView);
-        TextView textView2 = new TextView(this);
-        new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT).weight = 1.0f;
-        textView2.setLayoutParams(layoutParams);
-        textView2.setText("Preview");
-        textView2.setTypeface(!str.equalsIgnoreCase("default_font") ? Typeface.createFromFile(jC.d(this.B).d(str)) : Typeface.DEFAULT);
-        linearLayout.addView(textView2);
+        name.setLayoutParams(layoutParams);
+        name.setText(fontName);
+        linearLayout.addView(name);
+        TextView preview = new TextView(this);
+        preview.setLayoutParams(layoutParams);
+        preview.setText("Preview");
+        preview.setTypeface(!fontName.equalsIgnoreCase("default_font") ? Typeface.createFromFile(jC.d(this.B).d(fontName)) : Typeface.DEFAULT);
+        linearLayout.addView(preview);
         return linearLayout;
     }
 
@@ -1616,7 +1614,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (fontName.equals(ss.getArgValue())) {
                 font.setChecked(true);
             }
-            LinearLayout fontPreview = d(fontName);
+            LinearLayout fontPreview = getFontPreview(fontName);
             fontPreview.setOnClickListener(v -> font.setChecked(true));
             linearLayout.addView(fontPreview);
         }
