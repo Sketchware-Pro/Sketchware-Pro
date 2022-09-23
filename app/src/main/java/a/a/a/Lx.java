@@ -3158,7 +3158,7 @@ public class Lx {
                             openBraces += 1;
                         }
 
-                        if (codeBit == '}') {
+                        if (codeBit == '}' && openBraces > 0) {
                             openBraces -= 1;
                             if (formattedCode.charAt(formattedCode.length() - 1) == '\t') {
                                 formattedCode.deleteCharAt(formattedCode.length() - 1);
