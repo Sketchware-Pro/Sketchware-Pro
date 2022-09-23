@@ -171,10 +171,10 @@ public class LogicClickListener implements View.OnClickListener {
             viewGroup.addView(getRemoveVariableCheckBox(bools.get(i)));
         }
 
-        ArrayList<String> ints = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_INTEGER);
-        for (int i = 0, intsSize = ints.size(); i < intsSize; i++) {
+        ArrayList<String> numbers = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_NUMBER);
+        for (int i = 0, intsSize = numbers.size(); i < intsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Number (" + intsSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(ints.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(numbers.get(i)));
         }
 
         ArrayList<String> strs = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_STRING);
@@ -282,10 +282,10 @@ public class LogicClickListener implements View.OnClickListener {
         View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
 
-        ArrayList<String> listInts = getUsedList(ExtraMenuBean.LIST_TYPE_INTEGER);
-        for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
+        ArrayList<String> listNumbers = getUsedList(ExtraMenuBean.LIST_TYPE_NUMBER);
+        for (int i = 0, listIntSize = listNumbers.size(); i < listIntSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Integer (" + listIntSize + ")"));
-            viewGroup.addView(getRemoveListCheckBox(listInts.get(i)));
+            viewGroup.addView(getRemoveListCheckBox(listNumbers.get(i)));
         }
 
         ArrayList<String> listStrs = getUsedList(ExtraMenuBean.LIST_TYPE_STRING);

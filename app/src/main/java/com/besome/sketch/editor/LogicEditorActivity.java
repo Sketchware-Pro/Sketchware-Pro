@@ -930,7 +930,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                 if (ss.b.equals("m")) {
                                     switch (ss.c) {
                                         case "varInt":
-                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_INTEGER, parameter);
+                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_NUMBER, parameter);
                                             break;
 
                                         case "varBool":
@@ -942,7 +942,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                             break;
 
                                         case "listInt":
-                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_INTEGER, parameter);
+                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
                                             break;
 
                                         case "listStr":
@@ -954,7 +954,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                             break;
 
                                         case "list":
-                                            boolean b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_INTEGER, parameter);
+                                            boolean b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
                                             if (!b) {
                                                 b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
                                             }

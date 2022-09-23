@@ -50,11 +50,11 @@ import mod.hilal.saif.asd.old.AsdOldDialog;
 public class ExtraMenuBean {
 
     public static final int VARIABLE_TYPE_BOOLEAN = 0;
-    public static final int VARIABLE_TYPE_INTEGER = 1;
+    public static final int VARIABLE_TYPE_NUMBER = 1;
     public static final int VARIABLE_TYPE_MAP = 3;
     public static final int VARIABLE_TYPE_STRING = 2;
 
-    public static final int LIST_TYPE_INTEGER = 1;
+    public static final int LIST_TYPE_NUMBER = 1;
     public static final int LIST_TYPE_MAP = 3;
     public static final int LIST_TYPE_STRING = 2;
 
@@ -240,7 +240,7 @@ public class ExtraMenuBean {
         switch (menuName) {
             case "varInt":
                 title = Helper.getResString(R.string.logic_editor_title_select_variable_number);
-                menus = getVarMenus(VARIABLE_TYPE_INTEGER);
+                menus = getVarMenus(VARIABLE_TYPE_NUMBER);
                 break;
 
             case "varBool":
@@ -260,7 +260,7 @@ public class ExtraMenuBean {
 
             case "listInt":
                 title = Helper.getResString(R.string.logic_editor_title_select_list_number);
-                menus = getListMenus(LIST_TYPE_INTEGER);
+                menus = getListMenus(LIST_TYPE_NUMBER);
                 break;
 
             case "listStr":
