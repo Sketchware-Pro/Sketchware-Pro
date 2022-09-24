@@ -30,6 +30,7 @@ import a.a.a.uq;
 import a.a.a.wB;
 import mod.SketchwareUtil;
 import mod.hasrat.dialog.SketchDialog;
+import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.util.Helper;
 
 public class LogicClickListener implements View.OnClickListener {
@@ -164,25 +165,25 @@ public class LogicClickListener implements View.OnClickListener {
         View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
 
-        ArrayList<String> bools = getUsedVariable(0);
+        ArrayList<String> bools = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_BOOLEAN);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Boolean (" + boolsSize + ")"));
             viewGroup.addView(getRemoveVariableCheckBox(bools.get(i)));
         }
 
-        ArrayList<String> ints = getUsedVariable(1);
-        for (int i = 0, intsSize = ints.size(); i < intsSize; i++) {
+        ArrayList<String> numbers = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_NUMBER);
+        for (int i = 0, intsSize = numbers.size(); i < intsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Number (" + intsSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(ints.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(numbers.get(i)));
         }
 
-        ArrayList<String> strs = getUsedVariable(2);
+        ArrayList<String> strs = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_STRING);
         for (int i = 0, strsSize = strs.size(); i < strsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("String (" + strsSize + ")"));
             viewGroup.addView(getRemoveVariableCheckBox(strs.get(i)));
         }
 
-        ArrayList<String> maps = getUsedVariable(3);
+        ArrayList<String> maps = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_MAP);
         for (int i = 0, mapSize = maps.size(); i < mapSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Map (" + mapSize + ")"));
             viewGroup.addView(getRemoveVariableCheckBox(maps.get(i)));
@@ -281,19 +282,19 @@ public class LogicClickListener implements View.OnClickListener {
         View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
 
-        ArrayList<String> listInts = getUsedList(1);
-        for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
+        ArrayList<String> listNumbers = getUsedList(ExtraMenuBean.LIST_TYPE_NUMBER);
+        for (int i = 0, listIntSize = listNumbers.size(); i < listIntSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Integer (" + listIntSize + ")"));
-            viewGroup.addView(getRemoveListCheckBox(listInts.get(i)));
+            viewGroup.addView(getRemoveListCheckBox(listNumbers.get(i)));
         }
 
-        ArrayList<String> listStrs = getUsedList(2);
+        ArrayList<String> listStrs = getUsedList(ExtraMenuBean.LIST_TYPE_STRING);
         for (int i = 0, listStrSize = listStrs.size(); i < listStrSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List String (" + listStrSize + ")"));
             viewGroup.addView(getRemoveListCheckBox(listStrs.get(i)));
         }
 
-        ArrayList<String> listMaps = getUsedList(3);
+        ArrayList<String> listMaps = getUsedList(ExtraMenuBean.LIST_TYPE_MAP);
         for (int i = 0, listMapSize = listMaps.size(); i < listMapSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Map (" + listMapSize + ")"));
             viewGroup.addView(getRemoveListCheckBox(listMaps.get(i)));

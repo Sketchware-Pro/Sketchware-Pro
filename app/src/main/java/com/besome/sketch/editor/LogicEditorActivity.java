@@ -930,7 +930,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                 if (ss.b.equals("m")) {
                                     switch (ss.c) {
                                         case "varInt":
-                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_INTEGER, parameter);
+                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_NUMBER, parameter);
                                             break;
 
                                         case "varBool":
@@ -942,7 +942,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                             break;
 
                                         case "listInt":
-                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_INTEGER, parameter);
+                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
                                             break;
 
                                         case "listStr":
@@ -954,7 +954,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                             break;
 
                                         case "list":
-                                            boolean b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_INTEGER, parameter);
+                                            boolean b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
                                             if (!b) {
                                                 b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
                                             }
@@ -2294,44 +2294,43 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public void onClick(View view) {
-        if (mB.a()) {
-            return;
-        }
-        if (view.getTag() != null) {
-            if (view.getTag().equals("variableAdd")) {
-                showAddNewVariableDialog();
-            } else if (view.getTag().equals("variableRemove")) {
-                K();
-            } else if (view.getTag().equals("listAdd")) {
-                G();
-            } else if (view.getTag().equals("listRemove")) {
-                J();
-            } else if (view.getTag().equals("blockAdd")) {
-                Intent intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
-                intent.putExtra("sc_id", this.B);
-                intent.putExtra("project_file", this.M);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(intent, 222);
-            } else if (view.getTag().equals("componentAdd")) {
-                Intent intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
-                intent.putExtra("sc_id", this.B);
-                intent.putExtra("project_file", this.M);
-                intent.putExtra("filename", this.M.getJavaName());
-                startActivityForResult(intent, 224);
-            } else if (view.getTag().equals("blockImport")) {
-                I();
+    public void onClick(View v) {
+        if (!mB.a()) {
+            Object tag = v.getTag();
+            if (tag != null) {
+                if (tag.equals("variableAdd")) {
+                    showAddNewVariableDialog();
+                } else if (tag.equals("variableRemove")) {
+                    K();
+                } else if (tag.equals("listAdd")) {
+                    G();
+                } else if (tag.equals("listRemove")) {
+                    J();
+                } else if (tag.equals("blockAdd")) {
+                    Intent intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
+                    intent.putExtra("sc_id", this.B);
+                    intent.putExtra("project_file", this.M);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivityForResult(intent, 222);
+                } else if (tag.equals("componentAdd")) {
+                    Intent intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
+                    intent.putExtra("sc_id", this.B);
+                    intent.putExtra("project_file", this.M);
+                    intent.putExtra("filename", this.M.getJavaName());
+                    startActivityForResult(intent, 224);
+                } else if (tag.equals("blockImport")) {
+                    I();
+                }
+            }
+            int id = v.getId();
+            if (id == R.id.btn_accept) {
+                setResult(Activity.RESULT_OK, new Intent());
+                finish();
+            } else if (id == R.id.btn_cancel) {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
             }
         }
-        int id = view.getId();
-        if (id == R.id.btn_accept) {
-            setResult(Activity.RESULT_OK, new Intent());
-        } else if (id != R.id.btn_cancel) {
-            return;
-        } else {
-            setResult(0);
-        }
-        finish();
     }
 
     @Override
