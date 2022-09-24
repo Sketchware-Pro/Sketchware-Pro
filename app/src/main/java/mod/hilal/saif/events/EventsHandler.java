@@ -58,20 +58,24 @@ public class EventsHandler {
 
         for (int i = cachedCustomEvents.size() - 1; i >= 0; i--) {
             HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-            Object var = customEvent.get("var");
+            if (customEvent != null) {
+                Object var = customEvent.get("var");
 
-            if (var instanceof String) {
-                if (var.equals("")) {
-                    Object name = customEvent.get("name");
+                if (var instanceof String) {
+                    if (var.equals("")) {
+                        Object name = customEvent.get("name");
 
-                    if (name instanceof String) {
-                        array.add((String) name);
-                    } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        if (name instanceof String) {
+                            array.add((String) name);
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        }
                     }
+                } else {
+                    SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
                 }
             } else {
-                SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
+                SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
             }
         }
 
@@ -98,20 +102,24 @@ public class EventsHandler {
 
         for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
             HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-            Object var = customEvent.get("var");
+            if (customEvent != null) {
+                Object var = customEvent.get("var");
 
-            if (var instanceof String) {
-                if (gx.a((String) var)) {
-                    Object name = customEvent.get("name");
+                if (var instanceof String) {
+                    if (gx.a((String) var)) {
+                        Object name = customEvent.get("name");
 
-                    if (name instanceof String) {
-                        list.add((String) name);
-                    } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        if (name instanceof String) {
+                            list.add((String) name);
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        }
                     }
+                } else {
+                    SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
                 }
             } else {
-                SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
+                SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
             }
         }
     }
@@ -133,22 +141,26 @@ public class EventsHandler {
 
         for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
             HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-            Object var = customEvent.get("var");
+            if (customEvent != null) {
+                Object var = customEvent.get("var");
 
-            if (var instanceof String) {
-                if (gx.a((String) var)) {
-                    Object listener = customEvent.get("listener");
+                if (var instanceof String) {
+                    if (gx.a((String) var)) {
+                        Object listener = customEvent.get("listener");
 
-                    if (listener instanceof String) {
-                        if (!list.contains((String) listener)) {
-                            list.add((String) listener);
+                        if (listener instanceof String) {
+                            if (!list.contains((String) listener)) {
+                                list.add((String) listener);
+                            }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid listener data type in Custom Event #" + (i + 1));
                         }
-                    } else {
-                        SketchwareUtil.toastError("Found invalid listener data type in Custom Event #" + (i + 1));
                     }
+                } else {
+                    SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
                 }
             } else {
-                SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
+                SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
             }
         }
     }
@@ -177,20 +189,24 @@ public class EventsHandler {
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object listener = customEvent.get("listener");
+                    if (customEvent != null) {
+                        Object listener = customEvent.get("listener");
 
-                    if (listener instanceof String) {
-                        if (name.equals(listener)) {
-                            Object eventName = customEvent.get("name");
+                        if (listener instanceof String) {
+                            if (name.equals(listener)) {
+                                Object eventName = customEvent.get("name");
 
-                            if (eventName instanceof String) {
-                                list.add((String) eventName);
-                            } else {
-                                SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                                if (eventName instanceof String) {
+                                    list.add((String) eventName);
+                                } else {
+                                    SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                                }
                             }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid listener data type in Custom Event #" + (i + 1));
                         }
                     } else {
-                        SketchwareUtil.toastError("Found invalid listener data type in Custom Event #" + (i + 1));
+                        SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
                     }
                 }
                 break;
@@ -233,25 +249,29 @@ public class EventsHandler {
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object eventName = customEvent.get("name");
+                    if (customEvent != null) {
+                        Object eventName = customEvent.get("name");
 
-                    if (eventName instanceof String) {
-                        if (name.equals(eventName)) {
-                            Object icon = customEvent.get("icon");
+                        if (eventName instanceof String) {
+                            if (name.equals(eventName)) {
+                                Object icon = customEvent.get("icon");
 
-                            if (icon instanceof String) {
-                                try {
-                                    return Integer.parseInt((String) icon);
-                                } catch (NumberFormatException e) {
+                                if (icon instanceof String) {
+                                    try {
+                                        return Integer.parseInt((String) icon);
+                                    } catch (NumberFormatException e) {
+                                        SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
+                                        return R.drawable.android_icon;
+                                    }
+                                } else {
                                     SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
-                                    return R.drawable.android_icon;
                                 }
-                            } else {
-                                SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
                             }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                         }
                     } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
                     }
                 }
 
@@ -294,20 +314,24 @@ public class EventsHandler {
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object eventName = customEvent.get("name");
+                    if (customEvent != null) {
+                        Object eventName = customEvent.get("name");
 
-                    if (eventName instanceof String) {
-                        if (name.equals(eventName)) {
-                            Object description = customEvent.get("description");
+                        if (eventName instanceof String) {
+                            if (name.equals(eventName)) {
+                                Object description = customEvent.get("description");
 
-                            if (description instanceof String) {
-                                return (String) description;
-                            } else {
-                                SketchwareUtil.toastError("Found invalid description data type in Custom Event #" + (i + 1));
+                                if (description instanceof String) {
+                                    return (String) description;
+                                } else {
+                                    SketchwareUtil.toastError("Found invalid description data type in Custom Event #" + (i + 1));
+                                }
                             }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                         }
                     } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
                     }
                 }
 
@@ -378,20 +402,24 @@ public class EventsHandler {
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object eventName = customEvent.get("name");
+                    if (customEvent != null) {
+                        Object eventName = customEvent.get("name");
 
-                    if (eventName instanceof String) {
-                        if (name.equals(eventName)) {
-                            Object code = customEvent.get("code");
+                        if (eventName instanceof String) {
+                            if (name.equals(eventName)) {
+                                Object code = customEvent.get("code");
 
-                            if (code instanceof String) {
-                                return String.format(((String) code).replace("###", targetId), param);
-                            } else {
-                                SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
+                                if (code instanceof String) {
+                                    return String.format(((String) code).replace("###", targetId), param);
+                                } else {
+                                    SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
+                                }
                             }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                         }
                     } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
                     }
                 }
 
@@ -422,20 +450,24 @@ public class EventsHandler {
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object eventName = customEvent.get("name");
+                    if (customEvent != null) {
+                        Object eventName = customEvent.get("name");
 
-                    if (eventName instanceof String) {
-                        if (name.equals(eventName)) {
-                            Object parameters = customEvent.get("parameters");
+                        if (eventName instanceof String) {
+                            if (name.equals(eventName)) {
+                                Object parameters = customEvent.get("parameters");
 
-                            if (parameters instanceof String) {
-                                return (String) parameters;
-                            } else {
-                                SketchwareUtil.toastError("Found invalid parameters data type in Custom Event #" + (i + 1));
+                                if (parameters instanceof String) {
+                                    return (String) parameters;
+                                } else {
+                                    SketchwareUtil.toastError("Found invalid parameters data type in Custom Event #" + (i + 1));
+                                }
                             }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                         }
                     } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
                     }
                 }
 
@@ -478,20 +510,24 @@ public class EventsHandler {
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object eventName = customEvent.get("name");
+                    if (customEvent != null) {
+                        Object eventName = customEvent.get("name");
 
-                    if (eventName instanceof String) {
-                        if (event.equals(eventName)) {
-                            Object headerSpec = customEvent.get("headerSpec");
+                        if (eventName instanceof String) {
+                            if (event.equals(eventName)) {
+                                Object headerSpec = customEvent.get("headerSpec");
 
-                            if (headerSpec instanceof String) {
-                                return ((String) headerSpec).replace("###", name);
-                            } else {
-                                SketchwareUtil.toastError("Found invalid header spec data type in Custom Event #" + (i + 1));
+                                if (headerSpec instanceof String) {
+                                    return ((String) headerSpec).replace("###", name);
+                                } else {
+                                    SketchwareUtil.toastError("Found invalid header spec data type in Custom Event #" + (i + 1));
+                                }
                             }
+                        } else {
+                            SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                         }
                     } else {
-                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
+                        SketchwareUtil.toastError("Found invalid (null) Custom Event at position " + i);
                     }
                 }
 
