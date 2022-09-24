@@ -2028,8 +2028,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         dialog.a(customView);
         dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
-            RadioButton checkedRadioButton = (RadioButton) radioGroup.getChildAt(radioGroup.getCheckedRadioButtonId());
+            RadioButton checkedRadioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
             a(ss, (Object) checkedRadioButton.getText().toString());
+            dialog.dismiss();
         });
         dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
