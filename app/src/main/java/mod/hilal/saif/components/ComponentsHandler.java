@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -165,7 +166,7 @@ public class ComponentsHandler {
     //√ give id and return icon
     public static int icon(int id) {
         if (id == 36) {
-            return 2131165726;
+            return R.drawable.ic_cycle_color_48dp;
         }
 
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
@@ -200,7 +201,7 @@ public class ComponentsHandler {
             }
         }
 
-        return 2131165469;
+        return R.drawable.color_new_96;
     }
 
     /**
