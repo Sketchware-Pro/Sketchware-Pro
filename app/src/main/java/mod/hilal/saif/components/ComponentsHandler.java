@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
 
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import a.a.a.Lx;
+import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -209,114 +211,11 @@ public class ComponentsHandler {
     //remove lines: 2303 to 2307
     //call this method using v0 as id and move result to v0
     public static String description(int id) {
-        switch (id) {
-            case ComponentBean.COMPONENT_TYPE_INTENT:
-                return "Intent is used to start a new Activity";
-
-            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
-                return "File is used to save data locally";
-
-            case ComponentBean.COMPONENT_TYPE_CALENDAR:
-                return "Calendar is used to calculate date and time";
-
-            case ComponentBean.COMPONENT_TYPE_VIBRATOR:
-                return "Vibrator is used to vibrate the device";
-
-            case ComponentBean.COMPONENT_TYPE_TIMERTASK:
-                return "Timer is used to delay a certain actions";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                return "Firebase Realtime Database is Google's cloud-based NoSQL database, where you can save and sync data realtime";
-
-            case ComponentBean.COMPONENT_TYPE_DIALOG:
-                return "Dialog is used to create a pop-up";
-
-            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER:
-                return "MediaPlayer is used to play big sound files";
-
-            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL:
-                return "SoundPool is used to play short sound effects";
-
-            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR:
-                return "ObjectAnimator is used to animate certain properties of a View";
-
-            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
-                return "The gyroscope measures the rate of rotation in rad/s around a device's x, y and z axis";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
-                return "Firebase Auth allows online user authentication";
-
-            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
-                return "Interstitial Ad lets you show fullscreen advertisements";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                return "Firebase Storage is built for app developers who need to store and serve user-generated content";
-
-            case ComponentBean.COMPONENT_TYPE_CAMERA:
-                return "Camera is used to take a picture";
-
-            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                return "FilePicker is used to select raw and media files, such as images, sounds and text";
-
-            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
-                return "RequestNetwork is used to make Web API calls";
-
-            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH:
-                return "TextToSpeech is used to convert text to speech";
-
-            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
-                return "SpeechToText is used to convert speech to text";
-
-            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                return "BluetoothConnect is used to connect to another device via Bluetooth";
-
-            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
-                return "LocationManager is used to get data from the current location";
-
-            case 22:
-                return "RewardedVideoAd is used to show AdMob video advertisements";
-
-            case 23:
-                return "ProgressDialog is a pop-up dialog with progress style";
-
-            case 24:
-                return "DatePickerDialog is used to pick a date";
-
-            case 25:
-                return "TimePickerDialog is used to pick a time";
-
-            case 26:
-                return "Notification is used to create a notification";
-
-            case 27:
-                return "FragmentAdapter is used with TabLayout and ViewPager to manage each page";
-
-            case 28:
-                return "Firebase Phone is used with Firebase Auth to sign into your app with a phone number";
-
-            case 29:
-                return "Dynamic Links are smart URLs that allow you to send existing and potential users to any location within your app";
-
-            case 30:
-                return "Firebase Cloud Messaging is used to send and receive push notifications";
-
-            case 31:
-                return "Firebase Google Sign is used with Firebase Auth to sign into your app with a Google account";
-
-            case 32:
-                return "OneSignal is the market leader in customer engagement, powering mobile push, web push, email, and in-app messages";
-
-            case 33:
-                return "You can monetize your App with Facebook Ads Banner.";
-
-            case 34:
-                return "You can monetize your App with Facebook Ads.";
-
-            case 36:
-                return "AsyncTask is used to perform heavy tasks in the background while keeping the UI thread and application more responsive. (Deprecated)";
-
-            default:
-                return description2(id);
+        int componentBeanDescriptionResId = ComponentBean.getDescStrResource(id);
+        if (componentBeanDescriptionResId != 0) {
+            return xB.b().a(SketchApplication.getContext(), componentBeanDescriptionResId);
+        } else {
+            return description2(id);
         }
     }
 
