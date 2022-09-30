@@ -452,7 +452,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         if (isChecked) {
                             toAdd.add(which);
                         } else {
-                            toAdd.remove(which);
+                            toAdd.remove((Integer) which);
                         }
                     })
                     .setPositiveButton("Import", (dialog, which) -> {
