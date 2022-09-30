@@ -144,7 +144,7 @@ public class BlocksManager extends AppCompatActivity {
                     _createPallette(name.getText().toString(), colour.getText().toString());
                     insert_n = -1;
                     dialog.dismiss();
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                     colour.setError("Malformed hexadecimal color");
                     colour.requestFocus();
                 }
@@ -292,7 +292,7 @@ public class BlocksManager extends AppCompatActivity {
                 Color.parseColor(colour.getText().toString());
                 _editPallete(_p, name.getText().toString(), colour.getText().toString());
                 dialog.dismiss();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                 colour.setError("Malformed hexadecimal color");
                 colour.requestFocus();
             }
@@ -363,7 +363,7 @@ public class BlocksManager extends AppCompatActivity {
                 Color.parseColor(colour.getText().toString());
                 _createPallette(name.getText().toString(), colour.getText().toString());
                 dialog.dismiss();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                 colour.setError("Malformed hexadecimal color");
                 colour.requestFocus();
             }
@@ -508,7 +508,16 @@ public class BlocksManager extends AppCompatActivity {
             title.setText(pallet_listmap.get(position).get("name").toString());
             sub.setText("Blocks: " + (long) (_getN(position + 9)));
             card2_sub.setText("Blocks: " + (long) (_getN(-1)));
-            color.setBackgroundColor(Color.parseColor((String) palettes.get(position).get("color")));
+
+            int backgroundColor;
+            try {
+                backgroundColor = Color.parseColor((String) palettes.get(position).get("color"));
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+                SketchwareUtil.toastError("Invalid background color in Palette #" + (position + 1));
+                backgroundColor = Color.WHITE;
+            }
+            color.setBackgroundColor(backgroundColor);
+
             _a(background);
             background.setOnLongClickListener(v -> {
                 final String moveUp = "Move up";
