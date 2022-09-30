@@ -3133,6 +3133,7 @@ public class Lx {
                         if (nextChar == '/') {
                             formattedCode.append(codeBit);
                             formattedCode.append(nextChar);
+                            i += 1;
                             processingSingleLineComment = true;
                             continue;
                         }
@@ -3140,6 +3141,7 @@ public class Lx {
                         if (nextChar == '*') {
                             formattedCode.append(codeBit);
                             formattedCode.append(nextChar);
+                            i += 1;
                             processingMultiLineComment = true;
                             continue;
                         }
