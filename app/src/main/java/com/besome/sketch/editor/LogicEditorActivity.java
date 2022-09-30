@@ -2450,56 +2450,53 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public void onPostCreate(Bundle bundle) {
         super.onPostCreate(bundle);
-        String var2;
-        String var8;
+
+        String title;
         if (this.D.equals("moreBlock")) {
-            var2 = jC.a(this.B).b(this.M.getJavaName(), this.C);
-            var8 = xB.b().a(this.getApplicationContext(), R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(var2);
+            title = xB.b().a(this.getApplicationContext(), R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(this.B).b(this.M.getJavaName(), this.C));
         } else if (this.C.equals("_fab")) {
-            var8 = xB.b().a(this.getApplicationContext(), "fab", this.D);
+            title = xB.b().a(this.getApplicationContext(), "fab", this.D);
         } else {
-            var8 = xB.b().a(this.getApplicationContext(), this.C, this.D);
+            title = xB.b().a(this.getApplicationContext(), this.C, this.D);
         }
+        this.E = title;
 
-        this.E = var8;
         this.o.a(this.E, this.D);
-        ArrayList<String> var10 = FB.c(this.E);
-        int var4 = 0;
 
-        int var6;
-        for (int var5 = 0; var4 < var10.size(); var5 = var6) {
-            var2 = var10.get(var4);
-            var6 = var5;
-            if (var2.charAt(0) == '%') {
+        ArrayList<String> spec = FB.c(this.E);
+        int blockId = 0;
+        for (int i = 0; i < spec.size(); i++) {
+            String specBit = spec.get(i);
+            int var6 = blockId;
+            if (specBit.charAt(0) == '%') {
                 label44:
                 {
-                    Rs var9;
-                    if (var2.charAt(1) == 'b') {
-                        var9 = new Rs(super.e, var5 + 1, var2.substring(3), "b", "getArg");
-                    } else if (var2.charAt(1) == 'd') {
-                        var9 = new Rs(super.e, var5 + 1, var2.substring(3), "d", "getArg");
-                    } else if (var2.charAt(1) == 's') {
-                        var9 = new Rs(super.e, var5 + 1, var2.substring(3), "s", "getArg");
+                    Rs block;
+                    if (specBit.charAt(1) == 'b') {
+                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "b", "getArg");
+                    } else if (specBit.charAt(1) == 'd') {
+                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "d", "getArg");
+                    } else if (specBit.charAt(1) == 's') {
+                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "s", "getArg");
                     } else {
-                        if (var2.charAt(1) != 'm') {
+                        if (specBit.charAt(1) != 'm') {
                             break label44;
                         }
 
-                        var8 = var2.substring(var2.lastIndexOf(".") + 1);
-                        String var7 = var2.substring(var2.indexOf(".") + 1, var2.lastIndexOf("."));
-                        var2 = kq.a(var7);
-                        var9 = new Rs(super.e, var5 + 1, var8, var2, kq.b(var7), "getArg");
+                        String var7 = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
+                        String type = kq.a(var7);
+                        block = new Rs(super.e, blockId + 1, type.substring(type.lastIndexOf(".") + 1), type, kq.b(var7), "getArg");
                     }
 
-                    var9.setBlockType(1);
-                    this.o.addView(var9);
-                    this.o.getRoot().a((Ts) this.o.getRoot().V.get(var5), var9);
-                    var9.setOnTouchListener(this);
-                    var6 = var5 + 1;
+                    block.setBlockType(1);
+                    this.o.addView(block);
+                    this.o.getRoot().a((Ts) this.o.getRoot().V.get(blockId), block);
+                    block.setOnTouchListener(this);
+                    var6 = blockId + 1;
                 }
             }
 
-            ++var4;
+            blockId = var6;
         }
 
         this.o.getRoot().k();
