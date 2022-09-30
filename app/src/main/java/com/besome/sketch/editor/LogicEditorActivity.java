@@ -2467,36 +2467,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         int blockId = 0;
         for (int i = 0; i < spec.size(); i++) {
             String specBit = spec.get(i);
-            int var6 = blockId;
             if (specBit.charAt(0) == '%') {
                 label44:
                 {
                     Rs block;
                     if (specBit.charAt(1) == 'b') {
-                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "b", "getArg");
+                        block = new Rs(super.e, ++blockId, specBit.substring(3), "b", "getArg");
                     } else if (specBit.charAt(1) == 'd') {
-                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "d", "getArg");
+                        block = new Rs(super.e, ++blockId, specBit.substring(3), "d", "getArg");
                     } else if (specBit.charAt(1) == 's') {
-                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "s", "getArg");
+                        block = new Rs(super.e, ++blockId, specBit.substring(3), "s", "getArg");
                     } else {
                         if (specBit.charAt(1) != 'm') {
                             break label44;
                         }
 
-                        String var7 = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
-                        String type = kq.a(var7);
-                        block = new Rs(super.e, blockId + 1, type.substring(type.lastIndexOf(".") + 1), type, kq.b(var7), "getArg");
+                        String selector = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
+                        String type = kq.a(selector);
+                        block = new Rs(super.e, ++blockId, type.substring(type.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
                     }
 
                     block.setBlockType(1);
                     this.o.addView(block);
                     this.o.getRoot().a((Ts) this.o.getRoot().V.get(blockId), block);
                     block.setOnTouchListener(this);
-                    var6 = blockId + 1;
                 }
             }
-
-            blockId = var6;
         }
 
         this.o.getRoot().k();
