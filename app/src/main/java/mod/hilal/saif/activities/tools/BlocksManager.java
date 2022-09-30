@@ -510,10 +510,11 @@ public class BlocksManager extends AppCompatActivity {
             card2_sub.setText("Blocks: " + (long) (_getN(-1)));
 
             int backgroundColor;
+            String paletteColorValue = (String) palettes.get(position).get("color");
             try {
-                backgroundColor = Color.parseColor((String) palettes.get(position).get("color"));
+                backgroundColor = Color.parseColor(paletteColorValue);
             } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                SketchwareUtil.toastError("Invalid background color in Palette #" + (position + 1));
+                SketchwareUtil.toastError("Invalid background color '" + paletteColorValue + "' in Palette #" + (position + 1));
                 backgroundColor = Color.WHITE;
             }
             color.setBackgroundColor(backgroundColor);
