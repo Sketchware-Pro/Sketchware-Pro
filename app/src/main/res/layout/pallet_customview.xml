@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -58,18 +59,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:text="Operator 2"
                     android:textColor="#ff757575"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="Operator 2" />
 
                 <TextView
                     android:id="@+id/sub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:text="Blocks : 22"
                     android:textColor="#ffbdbdbd"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    tools:text="Blocks: 22" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
