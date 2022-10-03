@@ -66,7 +66,7 @@ public class AppBundleCompiler {
                 .setModulesPaths(ImmutableList.of(mainModule))
                 .setOverwriteOutput(true)
                 .setOutputPath(appBundlePath);
-        if (mDp.proguard.isDebugFilesEnabled()) {
+        if (mDp.proguard.isProguardEnabled() && mDp.proguard.isDebugFilesEnabled()) {
             Path mapping = Paths.get(mDp.yq.proGuardMappingPath);
             LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
             builder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);
