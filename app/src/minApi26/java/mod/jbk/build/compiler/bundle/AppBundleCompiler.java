@@ -1,13 +1,15 @@
 package mod.jbk.build.compiler.bundle;
 
 import com.android.tools.build.bundletool.commands.BuildBundleCommand;
-import com.android.tools.build.bundletool.flags.FlagParser;
+import com.google.common.collect.ImmutableList;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -53,22 +55,25 @@ public class AppBundleCompiler {
 
     public void buildBundle() throws zy {
         long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> flags = new ArrayList<>();
-        flags.add("--modules=" + mainModuleArchive.getAbsolutePath());
-        flags.add("--overwrite");
-        flags.add("--output=" + appBundle.getAbsolutePath());
+
+        LogUtil.d(TAG, "About to run BuildBundleCommand");
+
+        Path mainModule = mainModuleArchive.toPath();
+        Path appBundlePath = appBundle.toPath();
+        LogUtil.d(TAG, "Converting main module " + mainModule + " to " + appBundlePath);
+
+        BuildBundleCommand.Builder builder = BuildBundleCommand.builder()
+                .setModulesPaths(ImmutableList.of(mainModule))
+                .setOverwriteOutput(true)
+                .setOutputPath(appBundlePath);
         if (mDp.proguard.isDebugFilesEnabled()) {
-            /* Add ProGuard mapping if available for automatic import to ProGuard mappings in Google Play */
-            File mapping = new File(mDp.yq.proGuardMappingPath);
-            if (mapping.exists()) {
-                flags.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
-                        mapping.getAbsolutePath());
-            }
+            Path mapping = Paths.get(mDp.yq.proGuardMappingPath);
+            LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
+            builder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);
         }
 
-        LogUtil.d(TAG, "Running BuildBundleCommand with these flags: " + flags);
         try {
-            BuildBundleCommand.fromFlags(new FlagParser().parse(flags.toArray(new String[0]))).execute();
+            builder.build().execute();
         } catch (Exception e) {
             throw new zy("Failed to build bundle: " + e.getMessage());
         }
