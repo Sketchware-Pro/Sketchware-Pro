@@ -1,5 +1,6 @@
 package mod.jbk.build.compiler.bundle;
 
+import com.android.bundle.Config;
 import com.android.tools.build.bundletool.commands.BuildBundleCommand;
 import com.google.common.collect.ImmutableList;
 
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -39,6 +42,8 @@ public class AppBundleCompiler {
     private final File mainModuleArchive;
     private final File appBundle;
 
+    private final List<String> uncompressedModuleMainPaths = new LinkedList<>();
+
     public AppBundleCompiler(Dp dp) {
         mDp = dp;
         mainModuleArchive = new File(dp.yq.binDirectoryPath, MODULE_ARCHIVE_FILE_NAME);
@@ -65,7 +70,12 @@ public class AppBundleCompiler {
         BuildBundleCommand.Builder builder = BuildBundleCommand.builder()
                 .setModulesPaths(ImmutableList.of(mainModule))
                 .setOverwriteOutput(true)
-                .setOutputPath(appBundlePath);
+                .setOutputPath(appBundlePath)
+                .setBundleConfig(Config.BundleConfig.newBuilder()
+                        .setCompression(Config.Compression.newBuilder()
+                                .addAllUncompressedGlob(uncompressedModuleMainPaths).build()
+                        ).build()
+                );
         if (mDp.proguard.isProguardEnabled() && mDp.proguard.isDebugFilesEnabled()) {
             Path mapping = Paths.get(mDp.yq.proGuardMappingPath);
             LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
@@ -73,7 +83,9 @@ public class AppBundleCompiler {
         }
 
         try {
-            builder.build().execute();
+            BuildBundleCommand command = builder.build();
+            LogUtil.d(TAG, "Now running " + command);
+            command.execute();
         } catch (Exception e) {
             throw new zy("Failed to build bundle: " + e.getMessage());
         }
@@ -144,6 +156,7 @@ public class AppBundleCompiler {
                                     toCompress.setCompressedSize(entry.getCompressedSize());
                                     toCompress.setSize(entry.getSize());
                                     toCompress.setCrc(entry.getCrc());
+                                    uncompressedModuleMainPaths.add(entry.getName());
                                 }
 
                                 zipOutputStream.putNextEntry(toCompress);

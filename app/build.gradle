@@ -106,6 +106,8 @@ dependencies {
     implementation "com.github.angads25:filepicker:1.1.1"
 
     minApi26Implementation "com.android.tools.build:bundletool:1.11.2"
+    //noinspection GradleDependency copied from above dependency for not just runtime access
+    minApi26Implementation "com.google.protobuf:protobuf-java:3.10.0"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:3.3.75"
