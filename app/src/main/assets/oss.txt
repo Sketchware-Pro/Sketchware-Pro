@@ -109,6 +109,23 @@ Libraries added with Sketchware Pro
     MIT License
     No changes made to v1.0 (revision 942d4351a1b0a42a09a5137b6054e1b6d193fc60)
 
+* bundletool
+
+	https://github.com/google/bundletool
+	Apache-2.0 License
+	No changes made to v1.11.2
+
+* OkHttp
+
+	https://github.com/square/okhttp/tree/okhttp_4.10.x
+	Apache-2.0 License
+	No changes made to v4.10.0
+
+	* Okio
+
+		https://github.com/square/okio
+		Apache-2.0 License
+		No changes made to v3.1.0
 
 Full license texts
 
