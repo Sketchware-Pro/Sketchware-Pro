@@ -21,6 +21,7 @@ public class ItemRecyclerView extends ListView implements sy {
     private boolean hasSelection;
     private boolean hasFixed;
     private ViewBean viewBean;
+    private final Rect onDrawRect = new Rect(0, 0, 0, 0);
 
     public ItemRecyclerView(Context context) {
         super(context);
@@ -68,7 +69,8 @@ public class ItemRecyclerView extends ListView implements sy {
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
             paint.setColor(0x9599d5d0);
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            onDrawRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(onDrawRect, paint);
         } else {
             paint.setColor(0x60000000);
             int measuredWidth = getMeasuredWidth();
