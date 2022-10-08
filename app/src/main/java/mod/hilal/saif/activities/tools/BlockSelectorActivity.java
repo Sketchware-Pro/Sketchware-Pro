@@ -373,7 +373,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             }
         }
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get("name").toString().equals("typeview")) {
+            if ("typeview".equals(data.get(i).get("name"))) {
                 _refresh_display();
                 return;
             }
@@ -398,12 +398,11 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         arrayList.add("WebView");
         arrayList.add("MapView");
         arrayList.add("ProgressBar");
-        map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("name", "typeview");
         map.put("title", "select type :");
         map.put("data", arrayList);
         data.add(0, map);
-        map = new HashMap<>();
         _save_item();
         _refresh_display();
     }
