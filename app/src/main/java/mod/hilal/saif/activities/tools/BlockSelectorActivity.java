@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.button.MaterialButton;
@@ -51,7 +53,6 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     private int current_item = 0;
     private ArrayList<HashMap<String, Object>> data = new ArrayList<>();
     private LinearLayout delete;
-    private AlertDialog.Builder dialog_warn;
     private LinearLayout edit;
     private boolean isNewGroup = false;
     private TextView label;
@@ -62,7 +63,6 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     private Spinner spinner1;
     private EditText title;
     private EditText value;
-    private AlertDialog.Builder warn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,8 +90,6 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         listview1 = findViewById(R.id.listv);
         value = findViewById(R.id.val);
         LinearLayout add_value = findViewById(R.id.add_val);
-        dialog_warn = new AlertDialog.Builder(this);
-        warn = new AlertDialog.Builder(this);
         fixbug();
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         add_value.setOnClickListener(this);
@@ -114,7 +112,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
         listview1.setOnItemLongClickListener((parent, view, position, id) -> {
             if (current_item != 0) {
-                dialog_warn.setTitle(contents.get(position))
+                new AlertDialog.Builder(this).setTitle(contents.get(position))
                         .setMessage("Delete this item?")
                         .setPositiveButton("Delete", (dialog, which) -> {
                             contents.remove(position);
@@ -127,7 +125,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                             ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", contents.get(position)));
                             SketchwareUtil.toast("Copied to clipboard");
                         })
-                        .create().show();
+                        .show();
             }
             return true;
         });
@@ -252,7 +250,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             }
         } else if (id == R.id.dele) {
             if (current_item != 0) {
-                warn.setMessage("Remove this menu and its items?")
+                new AlertDialog.Builder(this).setMessage("Remove this menu and its items?")
                         .setPositiveButton("Remove", (dialog, which) -> {
                             data.remove(spinner1.getSelectedItemPosition());
                             _save_item();
@@ -314,9 +312,9 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     public void openFileExplorerImport() {
         DialogProperties dialogProperties = new DialogProperties();
-        dialogProperties.selection_mode = 0;
-        dialogProperties.selection_type = 0;
-        File file = new File(FileUtil.getExternalStorageDir());
+        dialogProperties.selection_mode = DialogConfigs.SINGLE_MODE;
+        dialogProperties.selection_type = DialogConfigs.FILE_SELECT;
+        File file = Environment.getExternalStorageDirectory();
         dialogProperties.root = file;
         dialogProperties.error_dir = file;
         dialogProperties.offset = file;
