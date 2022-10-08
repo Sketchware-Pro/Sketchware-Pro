@@ -556,7 +556,7 @@ public class LibraryDownloader {
                     // fall-through to shared error toast
                 }
 
-                SketchwareUtil.toastError("Custom Repositories configuration file couldn't be read from. Using default repositories for now", Toast.LENGTH_LONG);
+                SketchwareUtil.showFailedToParseJsonDialog(context, CONFIGURED_REPOSITORIES_FILE, "Custom Repositories", v -> _getRepository());
             } else {
                 FileUtil.writeFile(CONFIGURED_REPOSITORIES_FILE.getAbsolutePath(), DEFAULT_REPOSITORIES_FILE_CONTENT);
             }
