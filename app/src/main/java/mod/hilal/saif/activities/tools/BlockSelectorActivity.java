@@ -31,6 +31,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,33 +88,33 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427817);
+        setContentView(R.layout.menu_activity);
         initialize(savedInstanceState);
         initializeLogic();
     }
 
     private void initialize(Bundle bundle) {
-        background = findViewById(2131232594);
-        toolbar = findViewById(2131231847);
-        card = findViewById(2131232597);
-        linear13 = findViewById(2131232598);
-        bottom = findViewById(2131230798);
-        back_icon = findViewById(2131232600);
-        page_title = findViewById(2131232596);
-        label = findViewById(2131232601);
-        container = findViewById(2131232602);
-        spinner1 = findViewById(2131232603);
-        delete = findViewById(2131232604);
-        edit = findViewById(2131232605);
-        add = findViewById(2131230754);
-        name = findViewById(2131231561);
-        title = findViewById(2131231837);
-        cancel = findViewById(2131232610);
-        save = findViewById(2131232528);
-        listview1 = findViewById(2131232612);
-        cardview1 = findViewById(2131232562);
-        value = findViewById(2131232614);
-        add_value = findViewById(2131232615);
+        background = findViewById(R.id.back);
+        toolbar = findViewById(R.id.toolbar);
+        card = findViewById(R.id.card);
+        linear13 = findViewById(R.id.lin13);
+        bottom = findViewById(R.id.bottom);
+        back_icon = findViewById(R.id.back_i);
+        page_title = findViewById(R.id.pageti);
+        label = findViewById(R.id.label);
+        container = findViewById(R.id.contai);
+        spinner1 = findViewById(R.id.spinner);
+        delete = findViewById(R.id.dele);
+        edit = findViewById(R.id.edi);
+        add = findViewById(R.id.add);
+        name = findViewById(R.id.name);
+        title = findViewById(R.id.title);
+        cancel = findViewById(R.id.canc);
+        save = findViewById(R.id.save);
+        listview1 = findViewById(R.id.listv);
+        cardview1 = findViewById(R.id.cardv);
+        value = findViewById(R.id.val);
+        add_value = findViewById(R.id.add_val);
         dialog_warn = new AlertDialog.Builder(this);
         warn = new AlertDialog.Builder(this);
         //fixbug();
@@ -160,7 +161,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         });
 
         options_menu = new ImageView(this);
-        options_menu.setImageResource(2131165791);
+        options_menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
         options_menu.setPadding((int) SketchwareUtil.getDip(9),
                 (int) SketchwareUtil.getDip(9),
                 (int) SketchwareUtil.getDip(9),
@@ -260,7 +261,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         AutoTransition autoTransition = new AutoTransition();
         autoTransition.setDuration(200L);
         switch (v.getId()) {
-            case 2131230754://add
+            case R.id.add:
                 _fabVisibility(false);
                 TransitionManager.beginDelayedTransition(background, autoTransition);
                 name.setText("");
@@ -272,7 +273,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 listview1.setEnabled(false);
                 break;
 
-            case 2131232615://add_value
+            case R.id.add_val:
                 if (current_item != 0) {
                     if (value.getText().toString().isEmpty()) {
                         SketchwareUtil.toast("Enter a value");
@@ -288,7 +289,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 SketchwareUtil.toastError("This menu can't be modified.");
                 break;
 
-            case 2131232604://delete
+            case R.id.dele:
                 if (current_item != 0) {
                     warn.setMessage("Remove this menu and its items?")
                             .setPositiveButton("Remove", (dialog, which) -> {
@@ -306,7 +307,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 SketchwareUtil.toastError("This menu can't be deleted.");
                 break;
 
-            case 2131232605://edit
+            case R.id.edi:
                 if (current_item != 0) {
                     _fabVisibility(false);
                     name.setText(map.get("name").toString());
@@ -321,11 +322,11 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 SketchwareUtil.toastError("This menu can't be modified.");
                 break;
 
-            case 2131232528://save
+            case R.id.save:
                 save();
                 break;
 
-            case 2131232610://cancel
+            case R.id.canc:
                 _fabVisibility(true);
                 TransitionManager.beginDelayedTransition(background, autoTransition);
                 Helper.setViewsVisibility(false, options_menu, add, edit, delete);
@@ -469,7 +470,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         title.setText(map.get("title").toString());
         contents = (ArrayList<String>) map.get("data");
         Parcelable onSaveInstanceState = listview1.onSaveInstanceState();
-        listview1.setAdapter(new ArrayAdapter<>(getBaseContext(), 17367043, contents));
+        listview1.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, contents));
         ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
         listview1.onRestoreInstanceState(onSaveInstanceState);
     }
@@ -497,7 +498,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         for (int i = 0; i < data.size(); i++) {
             display.add(data.get(i).get("name").toString());
         }
-        spinner1.setAdapter(new ArrayAdapter<>(getBaseContext(), 17367049, display));
+        spinner1.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, display));
         ((BaseAdapter) spinner1.getAdapter()).notifyDataSetChanged();
     }
 }
