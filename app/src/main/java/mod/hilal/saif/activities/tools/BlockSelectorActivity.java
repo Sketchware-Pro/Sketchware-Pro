@@ -24,12 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -46,13 +44,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     private final ArrayList<String> display = new ArrayList<>();
     private LinearLayout add;
-    private LinearLayout add_value;
-    private ImageView back_icon;
     private LinearLayout background;
     private LinearLayout bottom;
-    private MaterialButton cancel;
-    private CardView card;
-    private CardView cardview1;
     private LinearLayout container;
     private ArrayList<String> contents = new ArrayList<>();
     private int current_item = 0;
@@ -60,28 +53,14 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     private LinearLayout delete;
     private AlertDialog.Builder dialog_warn;
     private LinearLayout edit;
-    private ImageView imageview1;
-    private ImageView imageview2;
-    private ImageView imageview3;
-    private ImageView imageview5;
     private boolean isNewGroup = false;
     private TextView label;
-    private LinearLayout linear11;
-    private TextInputLayout linear12;
-    private LinearLayout linear13;
-    private LinearLayout linear15;
-    private LinearLayout linear7;
-    private LinearLayout linear8;
     private ListView listview1;
     private HashMap<String, Object> map = new HashMap<>();
     private EditText name;
-    private TextInputLayout name_lay;
     private ImageView options_menu;
-    private TextView page_title;
-    private MaterialButton save;
     private Spinner spinner1;
     private EditText title;
-    private LinearLayout toolbar;
     private EditText value;
     private AlertDialog.Builder warn;
 
@@ -89,18 +68,15 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
-        initialize(savedInstanceState);
+        initialize();
         initializeLogic();
     }
 
-    private void initialize(Bundle bundle) {
+    private void initialize() {
         background = findViewById(R.id.back);
-        toolbar = findViewById(R.id.toolbar);
-        card = findViewById(R.id.card);
-        linear13 = findViewById(R.id.lin13);
+        LinearLayout toolbar = findViewById(R.id.toolbar);
         bottom = findViewById(R.id.bottom);
-        back_icon = findViewById(R.id.back_i);
-        page_title = findViewById(R.id.pageti);
+        ImageView back_icon = findViewById(R.id.back_i);
         label = findViewById(R.id.label);
         container = findViewById(R.id.contai);
         spinner1 = findViewById(R.id.spinner);
@@ -109,12 +85,11 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         add = findViewById(R.id.add);
         name = findViewById(R.id.name);
         title = findViewById(R.id.title);
-        cancel = findViewById(R.id.canc);
-        save = findViewById(R.id.save);
+        MaterialButton cancel = findViewById(R.id.canc);
+        MaterialButton save = findViewById(R.id.save);
         listview1 = findViewById(R.id.listv);
-        cardview1 = findViewById(R.id.cardv);
         value = findViewById(R.id.val);
-        add_value = findViewById(R.id.add_val);
+        LinearLayout add_value = findViewById(R.id.add_val);
         dialog_warn = new AlertDialog.Builder(this);
         warn = new AlertDialog.Builder(this);
         //fixbug();
