@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.sketchware.remod.R;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +26,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 
+import a.a.a.aB;
 import a.a.a.bB;
+import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
 public class SketchwareUtil {
@@ -182,5 +187,22 @@ public class SketchwareUtil {
                 exceptionHandler.accept(e);
             }
         }).start();
+    }
+
+    /**
+     * @param componentLabel Label of component that failed to be parsed, e.g. Block selector menus
+     */
+    public static void showFailedToParseJsonDialog(Activity context, File json, String componentLabel, Consumer<Void> afterRenameLogic) {
+        aB dialog = new aB(context);
+        dialog.b("Couldn't get " + componentLabel);
+        dialog.a("Failed to parse " + componentLabel + " from file " + json + ". Fix by renaming old file to " + json.getName() + ".bak? " +
+                "If not, no " + componentLabel + " will be used.");
+        dialog.b("Rename", v -> {
+            FileUtil.renameFile(json.getAbsolutePath(), json.getAbsolutePath() + ".bak");
+            afterRenameLogic.accept(null);
+            dialog.dismiss();
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 }

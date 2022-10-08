@@ -367,7 +367,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                     // fall-through to shared handler
                 }
 
-                SketchwareUtil.toastError("Couldn't parse Block selector menus, using none.");
+                SketchwareUtil.showFailedToParseJsonDialog(this, BLOCK_SELECTOR_MENUS_FILE,
+                        "Block selector menus", v -> _readFile());
                 data = new ArrayList<>();
             }
         }
