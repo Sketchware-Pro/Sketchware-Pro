@@ -194,6 +194,7 @@ public class SketchwareUtil {
      */
     public static void showFailedToParseJsonDialog(Activity context, File json, String componentLabel, Consumer<Void> afterRenameLogic) {
         aB dialog = new aB(context);
+        dialog.a(R.drawable.break_warning_96_red);
         dialog.b("Couldn't get " + componentLabel);
         dialog.a("Failed to parse " + componentLabel + " from file " + json + ". Fix by renaming old file to " + json.getName() + ".bak? " +
                 "If not, no " + componentLabel + " will be used.");
