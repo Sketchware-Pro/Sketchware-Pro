@@ -108,7 +108,7 @@ public class ConfigActivity extends Activity {
                 }
             }
         }
-        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-M-dd'T'HHmmss)";
+        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)";
     }
 
     public static boolean isLegacyCeEnabled() {
@@ -324,7 +324,7 @@ public class ConfigActivity extends Activity {
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
         addTextInputPreference("Backup filename format",
-                "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-M-dd'T'HHmmss)\"", v -> {
+                "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
                     final LinearLayout container = new LinearLayout(this);
                     container.setPadding(
                             (int) getDip(20),
@@ -346,7 +346,7 @@ public class ConfigActivity extends Activity {
                             " - $timeInMs - Time during backup in milliseconds\n" +
                             "\n" +
                             "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
-                            "$time(yyyy-M-dd'T'HHmmss)\n");
+                            "$time(yyyy-MM-dd'T'HHmmss)\n");
                     container.addView(tilBackupFormat);
 
                     final EditText backupFilename = new EditText(this);
