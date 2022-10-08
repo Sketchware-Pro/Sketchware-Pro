@@ -260,81 +260,71 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         AutoTransition autoTransition = new AutoTransition();
         autoTransition.setDuration(200L);
-        switch (v.getId()) {
-            case R.id.add:
+        int id = v.getId();
+
+        if (id == R.id.add) {
+            _fabVisibility(false);
+            TransitionManager.beginDelayedTransition(background, autoTransition);
+            name.setText("");
+            title.setText("");
+            isNewGroup = true;
+            Helper.setViewsVisibility(true, options_menu, add, edit);
+            Helper.setViewsVisibility(false, label, delete, container);
+            spinner1.setEnabled(false);
+            listview1.setEnabled(false);
+        } else if (id == R.id.add_val) {
+            if (current_item != 0) {
+                if (value.getText().toString().isEmpty()) {
+                    SketchwareUtil.toast("Enter a value");
+                    return;
+                }
+                contents.add(value.getText().toString());
+                map.put("data", contents);
+                _save_item();
+                _showItem(current_item);
+                value.setText("");
+                return;
+            }
+            SketchwareUtil.toastError("This menu can't be modified.");
+        } else if (id == R.id.dele) {
+            if (current_item != 0) {
+                warn.setMessage("Remove this menu and its items?")
+                        .setPositiveButton("Remove", (dialog, which) -> {
+                            data.remove(spinner1.getSelectedItemPosition());
+                            _save_item();
+                            _refresh_display();
+                            _fabVisibility(true);
+                            isNewGroup = false;
+                            spinner1.setSelection(0);
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create().show();
+                return;
+            }
+            SketchwareUtil.toastError("This menu can't be deleted.");
+        } else if (id == R.id.edi) {
+            if (current_item != 0) {
                 _fabVisibility(false);
+                name.setText(map.get("name").toString());
+                title.setText(map.get("title").toString());
                 TransitionManager.beginDelayedTransition(background, autoTransition);
-                name.setText("");
-                title.setText("");
-                isNewGroup = true;
-                Helper.setViewsVisibility(true, options_menu, add, edit);
-                Helper.setViewsVisibility(false, label, delete, container);
+                container.setVisibility(View.VISIBLE);
+                Helper.setViewsVisibility(true, options_menu, add, edit, delete);
                 spinner1.setEnabled(false);
                 listview1.setEnabled(false);
-                break;
-
-            case R.id.add_val:
-                if (current_item != 0) {
-                    if (value.getText().toString().isEmpty()) {
-                        SketchwareUtil.toast("Enter a value");
-                        return;
-                    }
-                    contents.add(value.getText().toString());
-                    map.put("data", contents);
-                    _save_item();
-                    _showItem(current_item);
-                    value.setText("");
-                    return;
-                }
-                SketchwareUtil.toastError("This menu can't be modified.");
-                break;
-
-            case R.id.dele:
-                if (current_item != 0) {
-                    warn.setMessage("Remove this menu and its items?")
-                            .setPositiveButton("Remove", (dialog, which) -> {
-                                data.remove(spinner1.getSelectedItemPosition());
-                                _save_item();
-                                _refresh_display();
-                                _fabVisibility(true);
-                                isNewGroup = false;
-                                spinner1.setSelection(0);
-                            })
-                            .setNegativeButton("Cancel", null)
-                            .create().show();
-                    return;
-                }
-                SketchwareUtil.toastError("This menu can't be deleted.");
-                break;
-
-            case R.id.edi:
-                if (current_item != 0) {
-                    _fabVisibility(false);
-                    name.setText(map.get("name").toString());
-                    title.setText(map.get("title").toString());
-                    TransitionManager.beginDelayedTransition(background, autoTransition);
-                    container.setVisibility(View.VISIBLE);
-                    Helper.setViewsVisibility(true, options_menu, add, edit, delete);
-                    spinner1.setEnabled(false);
-                    listview1.setEnabled(false);
-                    return;
-                }
-                SketchwareUtil.toastError("This menu can't be modified.");
-                break;
-
-            case R.id.save:
-                save();
-                break;
-
-            case R.id.canc:
-                _fabVisibility(true);
-                TransitionManager.beginDelayedTransition(background, autoTransition);
-                Helper.setViewsVisibility(false, options_menu, add, edit, delete);
-                Helper.setViewsVisibility(true, container, label);
-                spinner1.setEnabled(true);
-                listview1.setEnabled(true);
-                isNewGroup = false;
-                break;
+                return;
+            }
+            SketchwareUtil.toastError("This menu can't be modified.");
+        } else if (id == R.id.save) {
+            save();
+        } else if (id == R.id.canc) {
+            _fabVisibility(true);
+            TransitionManager.beginDelayedTransition(background, autoTransition);
+            Helper.setViewsVisibility(false, options_menu, add, edit, delete);
+            Helper.setViewsVisibility(true, container, label);
+            spinner1.setEnabled(true);
+            listview1.setEnabled(true);
+            isNewGroup = false;
         }
     }
 
