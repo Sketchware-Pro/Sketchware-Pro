@@ -92,7 +92,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         LinearLayout add_value = findViewById(R.id.add_val);
         dialog_warn = new AlertDialog.Builder(this);
         warn = new AlertDialog.Builder(this);
-        //fixbug();
+        fixbug();
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         add_value.setOnClickListener(this);
         delete.setOnClickListener(this);
@@ -403,12 +403,11 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     }
 
     private void fixbug() {
-        //TODO: Fix this method to not throw NPEs (??? did I change anything?)
         ViewGroup viewGroup = (ViewGroup) name.getParent().getParent().getParent();
-        ((ViewGroup) name.getParent()).removeView(name);
-        ((ViewGroup) title.getParent()).removeView(title);
         viewGroup.removeView((ViewGroup) name.getParent().getParent());
         viewGroup.removeView((ViewGroup) title.getParent().getParent());
+        ((ViewGroup) name.getParent()).removeView(name);
+        ((ViewGroup) title.getParent()).removeView(title);
         viewGroup.addView(title, 0);
         title.setHint("");
         TextView textView = new TextView(this);
