@@ -322,13 +322,14 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         FilePickerDialog filePickerDialog = new FilePickerDialog(this, dialogProperties);
         filePickerDialog.setTitle("Select a JSON file");
         filePickerDialog.setDialogSelectionListener(selections -> {
-            if (FileUtil.readFile(selections[0]).equals("")) {
+            String fileContent = FileUtil.readFile(selections[0]);
+            if (fileContent.equals("")) {
                 SketchwareUtil.toastError("The selected file is empty!");
-            } else if (FileUtil.readFile(selections[0]).equals("[]")) {
+            } else if (fileContent.equals("[]")) {
                 SketchwareUtil.toastError("The selected file is empty!");
             } else {
                 try {
-                    _importMenu(new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST));
+                    _importMenu(new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST));
                 } catch (Exception e) {
                     SketchwareUtil.toastError("Invalid JSON file");
                 }
