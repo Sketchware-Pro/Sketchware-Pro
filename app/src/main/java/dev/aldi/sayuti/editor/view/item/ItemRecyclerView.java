@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import com.besome.sketch.beans.ViewBean;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -29,11 +29,8 @@ public class ItemRecyclerView extends ListView implements sy {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0f));
         setDrawingCacheEnabled(true);
-        ArrayList<String> itemList = new ArrayList<>();
-        itemList.add("RecyclerView item 1");
-        itemList.add("RecyclerView item 2");
-        itemList.add("RecyclerView item 3");
-        setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, itemList));
+        setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1,
+                Arrays.asList("RecyclerView item 1", "RecyclerView item 2", "RecyclerView item 3")));
     }
 
     @Override
@@ -87,12 +84,11 @@ public class ItemRecyclerView extends ListView implements sy {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        float f2 = e;
         super.setPadding(
-                (int) (((float) left) * f2),
-                (int) (((float) top) * f2),
-                (int) (((float) right) * f2),
-                (int) (((float) bottom) * f2)
+                (int) (left * e),
+                (int) (top * e),
+                (int) (right * e),
+                (int) (bottom * e)
         );
     }
 }
