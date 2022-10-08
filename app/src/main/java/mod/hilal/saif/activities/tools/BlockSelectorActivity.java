@@ -31,6 +31,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -352,8 +353,23 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     private void _readFile() {
         data.clear();
-        if (BLOCK_SELECTOR_MENUS_FILE.exists()) {
-            data = new Gson().fromJson(FileUtil.readFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+        parser:
+        {
+            if (BLOCK_SELECTOR_MENUS_FILE.exists()) {
+                try {
+                    data = new Gson().fromJson(FileUtil.readFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+
+                    if (data != null) {
+                        break parser;
+                    }
+                    // fall-through to shared handler
+                } catch (JsonParseException e) {
+                    // fall-through to shared handler
+                }
+
+                SketchwareUtil.toastError("Couldn't parse Block selector menus, using none.");
+                data = new ArrayList<>();
+            }
         }
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).get("name").toString().equals("typeview")) {
