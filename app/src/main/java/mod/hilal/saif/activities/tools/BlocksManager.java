@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -193,10 +194,16 @@ public class BlocksManager extends AppCompatActivity {
         if (FileUtil.isExistFile(blocks_dir)) {
             try {
                 all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
+
+                if (all_blocks_list != null) {
+                    return;
+                }
+                // fall-through to shared handler
             } catch (JsonParseException e) {
-                SketchwareUtil.toastError("Failed to parse " + blocks_dir + ", using none.");
-                LogUtil.e("BlocksManager", "Failed to parse " + blocks_dir, e);
+                // fall-through to shared handler
             }
+
+            SketchwareUtil.showFailedToParseJsonDialog(this, new File(blocks_dir), "Custom Blocks", v -> _readSettings());
         }
     }
 
