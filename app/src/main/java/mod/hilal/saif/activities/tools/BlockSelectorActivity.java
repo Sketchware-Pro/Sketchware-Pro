@@ -44,6 +44,8 @@ import mod.hey.studios.util.Helper;
 
 public class BlockSelectorActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final File BLOCK_SELECTOR_MENUS_FILE = new File(Environment.getExternalStorageDirectory(), ".sketchware/resources/block/My Block/menu.json");
+
     private final ArrayList<String> display = new ArrayList<>();
     private LinearLayout add;
     private LinearLayout background;
@@ -339,9 +341,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     }
 
     public void _importMenu(ArrayList<HashMap<String, Object>> menu) {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/menu.json");
         data.addAll(menu);
-        FileUtil.writeFile(concat, new Gson().toJson(data));
+        FileUtil.writeFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath(), new Gson().toJson(data));
         _readFile();
         if (data.size() != 0) {
             _showItem(0);
@@ -351,8 +352,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     private void _readFile() {
         data.clear();
-        if (new File(FileUtil.getExternalStorageDir(), ".sketchware/resources/block/My Block/menu.json").exists()) {
-            data = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/menu.json")), Helper.TYPE_MAP_LIST);
+        if (BLOCK_SELECTOR_MENUS_FILE.exists()) {
+            data = new Gson().fromJson(FileUtil.readFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
         }
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).get("name").toString().equals("typeview")) {
@@ -442,7 +443,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     }
 
     private void _save_item() {
-        FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/menu.json"), new Gson().toJson(data));
+        FileUtil.writeFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath(), new Gson().toJson(data));
     }
 
     private void _refresh_display() {
