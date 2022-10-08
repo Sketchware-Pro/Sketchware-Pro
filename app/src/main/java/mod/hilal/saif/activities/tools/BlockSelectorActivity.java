@@ -403,7 +403,6 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         map.put("title", "select type :");
         map.put("data", arrayList);
         data.add(0, map);
-        _save_item();
         _refresh_display();
     }
 
