@@ -27,10 +27,10 @@ import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.topjohnwu.superuser.Shell;
 
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -191,18 +191,51 @@ public class ConfigActivity extends Activity {
 
     private static void restoreDefaultSettings(HashMap<String, Object> settings) {
         settings.clear();
-        settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
-        settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
-        settings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        settings.put(SETTING_ROOT_AUTO_INSTALL_PROJECTS, false);
-        settings.put(SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING, true);
-        settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
-        settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
-        settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
-        settings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
-        settings.put(SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, "/.sketchware/resources/block/My Block/palette.json");
-        settings.put(SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, "/.sketchware/resources/block/My Block/block.json");
+
+        List<String> keys = Arrays.asList(SETTING_ALWAYS_SHOW_BLOCKS,
+                SETTING_BACKUP_DIRECTORY,
+                SETTING_LEGACY_CODE_EDITOR,
+                SETTING_ROOT_AUTO_INSTALL_PROJECTS,
+                SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
+                SETTING_SHOW_BUILT_IN_BLOCKS,
+                SETTING_SHOW_EVERY_SINGLE_BLOCK,
+                SETTING_USE_NEW_VERSION_CONTROL,
+                SETTING_USE_ASD_HIGHLIGHTER,
+                SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH);
+
+        for (String key : keys) {
+            settings.put(key, getDefaultValue(key));
+        }
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+    }
+
+    public static Object getDefaultValue(String key) {
+        switch (key) {
+            case SETTING_ALWAYS_SHOW_BLOCKS:
+            case SETTING_LEGACY_CODE_EDITOR:
+            case SETTING_ROOT_AUTO_INSTALL_PROJECTS:
+            case SETTING_SHOW_BUILT_IN_BLOCKS:
+            case SETTING_SHOW_EVERY_SINGLE_BLOCK:
+            case SETTING_USE_NEW_VERSION_CONTROL:
+            case SETTING_USE_ASD_HIGHLIGHTER:
+                return false;
+
+            case SETTING_BACKUP_DIRECTORY:
+                return "/.sketchware/backups/";
+
+            case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING:
+                return true;
+
+            case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH:
+                return "/.sketchware/resources/block/My Block/palette.json";
+
+            case SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH:
+                return "/.sketchware/resources/block/My Block/block.json";
+
+            default:
+                throw new IllegalArgumentException("Unknown key '" + key + "'!");
+        }
     }
 
     @Override
