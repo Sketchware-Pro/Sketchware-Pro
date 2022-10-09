@@ -13,6 +13,7 @@ import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.Tools;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
@@ -111,8 +112,11 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 R.drawable.connected_96, R.string.design_drawer_menu_proguard, R.string.design_drawer_menu_proguard_subtitle));
         /* Add StringFog Manager */
         /* INCLUDES SECTION SEPARATOR */
-        menusLayout.addView(addDrawerItem(18, true,
+        menusLayout.addView(addDrawerItem(18, false,
                 R.drawable.color_lock_96, R.string.design_drawer_menu_stringfog, R.string.design_drawer_menu_stringfog_subtitle));
+        menusLayout.addView(addDrawerItem(23, true,
+                R.drawable.android_os_96, R.string.design_drawer_menu_devtools, R.string.design_drawer_menu_devtools_subtitle));
+
         /* Add Source Code Viewer */
         menusLayout.addView(addDrawerItem(16, false,
                 R.drawable.code_icon, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
@@ -202,7 +206,8 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                     case 22:
                         designActivity.toLogReader();
                         return;
-                    case 2:
+                    case 23:
+                        designActivity.toDevTools();
                     default:
                 }
             }

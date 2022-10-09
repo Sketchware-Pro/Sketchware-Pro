@@ -101,6 +101,7 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.hilal.saif.activities.tools.Tools;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
@@ -765,6 +766,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         Intent intent = new Intent(getApplicationContext(), LogReaderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
+        startActivity(intent);
+    }
+    /**
+     * Opens {@link mod.hilal.saif.activities.tools.Tools}.
+     */
+    void toDevTools(){
+        Intent intent = new Intent(getApplicationContext(), Tools.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 

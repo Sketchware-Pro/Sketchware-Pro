@@ -2633,7 +2633,9 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_proguard">ProGuard</string>
     <string name="design_drawer_menu_proguard_subtitle">Minimize/obfuscate your app with ProGuard</string>
     <string name="design_drawer_menu_stringfog">StringFog</string>
+    <string name="design_drawer_menu_devtools">Developer Tools</string>
     <string name="design_drawer_menu_stringfog_subtitle">Encrypt strings in your app at compilation time</string>
+    <string name="design_drawer_menu_devtools_subtitle">Developer Settings</string>
     <string name="design_drawer_menu_title_editor_code">Direct Code Editor</string>
     <string name="design_drawer_menu_subtitle_editor_code">Edit any Java and XML file</string>
     <string name="design_drawer_menu_nativelibs">Native library</string>

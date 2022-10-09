@@ -262,6 +262,7 @@ public class Tools extends Activity {
         base.addView(openLogcatReader);
         openLogcatReader.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), LogReaderActivity.class)));
+
     }
 
     private void signApkFileDialog() {
