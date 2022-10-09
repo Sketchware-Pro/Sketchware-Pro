@@ -7,71 +7,65 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffeeeeee"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffeeeeee"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="#ff008dcd"
+            android:gravity="center|left"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="8dp">
 
-            <LinearLayout
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/backicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/abc_vector_test" />
+
+            <TextView
+                android:id="@+id/pagetitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#ff008dcd"
-                android:gravity="center|left"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingTop="8dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="8dp">
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="Blocks Manager"
+                android:textColor="#ffffffff"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/backicon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="8dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/abc_vector_test" />
+            <ImageView
+                android:id="@+id/swap"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_menu_white_24dp" />
 
-                <TextView
-                    android:id="@+id/pagetitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:text="Blocks Manager"
-                    android:textColor="#ffffffff"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/swap"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="8dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_menu_white_24dp" />
-
-                <ImageView
-                    android:id="@+id/import_export"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="8dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_more_vert_white_24dp" />
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:choiceMode="none"
-                android:divider="@null"
-                android:dividerHeight="0dp" />
+            <ImageView
+                android:id="@+id/import_export"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_more_vert_white_24dp" />
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="none"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
