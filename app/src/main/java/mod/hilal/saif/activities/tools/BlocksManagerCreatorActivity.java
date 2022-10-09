@@ -85,8 +85,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
     private void initialize() {
         ScrollView vscroll1 = findViewById(R.id.vscroll1);
-        ImageView backIcon = findViewById(R.id.back_ico);
-        pageTitle = findViewById(R.id.page_title);
+        pageTitle = findViewById(R.id.tx_toolbar_title);
         TextInputLayout nameLayout = findViewById(R.id.name_lay);
         name = findViewById(R.id.name);
         LinearLayout selectType = findViewById(R.id.select_type);
@@ -104,8 +103,9 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         MaterialButton save = findViewById(R.id.save);
         LinearLayout reset = findViewById(R.id.reset);
 
-        backIcon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(backIcon);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(back);
 
         name.addTextChangedListener(new BaseTextWatcher() {
             @Override
