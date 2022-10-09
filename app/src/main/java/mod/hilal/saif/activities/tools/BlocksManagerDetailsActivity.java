@@ -239,18 +239,33 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         {
             try {
                 pallet_list = new Gson().fromJson(paletteFileContent, Helper.TYPE_MAP_LIST);
-                all_blocks_list = new Gson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
 
-                if (pallet_list != null && all_blocks_list != null) {
+                if (pallet_list != null) {
                     break parseLists;
                 }
-            } catch (Exception e) {
+                // fall-through to shared error handling
+            } catch (JsonParseException e) {
                 // fall-through to shared error handling
             }
 
-            SketchwareUtil.toastError("Invalid file format!\n" +
-                    "Make sure that block.json or palette.json file is formatted correctly.", Toast.LENGTH_LONG);
+            SketchwareUtil.showFailedToParseJsonDialog(this, new File(pallet_path), "Custom Block Palettes", v -> _refreshLists());
             pallet_list = new ArrayList<>();
+        }
+
+        parseBlocks:
+        {
+            try {
+                all_blocks_list = new Gson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
+
+                if (all_blocks_list != null) {
+                    break parseBlocks;
+                }
+                // fall-through to shared error handling
+            } catch (JsonParseException e) {
+                // fall-through to shared error handling
+            }
+
+            SketchwareUtil.showFailedToParseJsonDialog(this, new File(blocks_path), "Custom Blocks", v -> _refreshLists());
             all_blocks_list = new ArrayList<>();
         }
 
