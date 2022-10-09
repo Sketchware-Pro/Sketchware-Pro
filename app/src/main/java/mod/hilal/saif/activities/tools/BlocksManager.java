@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static mod.SketchwareUtil.dpToPx;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -38,12 +40,12 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.Zx;
+import a.a.a.aB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
-import mod.jbk.util.LogUtil;
 
 public class BlocksManager extends AppCompatActivity {
 
@@ -88,33 +90,56 @@ public class BlocksManager extends AppCompatActivity {
         settings.setImageResource(R.drawable.settings_96_white);
         Helper.applyRippleToToolbarView(settings);
         settings.setOnClickListener(v -> {
-            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-            LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(R.layout.settings_popup, null);
-            dialog.setView(convertView);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText pallet = convertView.findViewById(R.id.pallet_dir);
-            pallet.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-            final EditText block = convertView.findViewById(R.id.blocks_dir);
-            block.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-            final TextInputLayout extra = convertView.findViewById(R.id.extra_input_layout);
-            extra.setVisibility(View.GONE);
-            final TextView save = convertView.findViewById(R.id.save);
-            final TextView cancel = convertView.findViewById(R.id.cancel);
-            final TextView de = convertView.findViewById(R.id.defaults);
-            save.setOnClickListener(saveView -> {
+            aB dialog = new aB(this);
+            dialog.a(R.drawable.ic_folder_48dp);
+            dialog.b("Block configuration");
+
+            LinearLayout.LayoutParams defaultParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout customView = new LinearLayout(this);
+            customView.setLayoutParams(defaultParams);
+            customView.setOrientation(LinearLayout.VERTICAL);
+
+            TextInputLayout tilPalettesPath = new TextInputLayout(this);
+            tilPalettesPath.setLayoutParams(defaultParams);
+            tilPalettesPath.setOrientation(LinearLayout.VERTICAL);
+            tilPalettesPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+            tilPalettesPath.setHint("JSON file with palettes");
+            customView.addView(tilPalettesPath);
+
+            EditText palettesPath = new EditText(this);
+            palettesPath.setLayoutParams(defaultParams);
+            palettesPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+            palettesPath.setTextSize(14);
+            palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
+            tilPalettesPath.addView(palettesPath);
+
+            TextInputLayout tilBlocksPath = new TextInputLayout(this);
+            tilBlocksPath.setLayoutParams(defaultParams);
+            tilBlocksPath.setOrientation(LinearLayout.VERTICAL);
+            tilBlocksPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+            tilBlocksPath.setHint("JSON file with blocks");
+            customView.addView(tilBlocksPath);
+
+            EditText blocksPath = new EditText(this);
+            blocksPath.setLayoutParams(defaultParams);
+            blocksPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+            blocksPath.setTextSize(14);
+            blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
+            tilBlocksPath.addView(blocksPath);
+
+            dialog.a(customView);
+            dialog.b(Helper.getResString(R.string.common_word_save), view -> {
                 ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                        pallet.getText().toString());
+                        palettesPath.getText().toString());
                 ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
-                        block.getText().toString());
+                        blocksPath.getText().toString());
 
                 _readSettings();
                 _refresh_list();
                 dialog.dismiss();
             });
-            cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-            de.setOnClickListener(defaultsView -> {
+            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.configureDefaultButton("Defaults", view -> {
                 ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                         "/.sketchware/resources/block/My Block/palette.json");
                 ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
