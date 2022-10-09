@@ -75,14 +75,17 @@ public class BlocksManager extends AppCompatActivity {
     private void initialize() {
         FloatingActionButton _fab = findViewById(R.id.fab);
         listview1 = findViewById(R.id.list_pallete);
-        ImageView back_icon = findViewById(R.id.back_icon);
-        ImageView arrange_icon = findViewById(R.id.dirs);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        TextView title = findViewById(R.id.tx_toolbar_title);
+        ImageView settings = findViewById(R.id.ig_toolbar_load_file);
         card2 = findViewById(R.id.recycle_bin);
         card2_sub = findViewById(R.id.recycle_sub);
 
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-
-        arrange_icon.setOnClickListener(v -> {
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        title.setText("Block manager");
+        settings.setVisibility(View.VISIBLE);
+        settings.setImageResource(R.drawable.settings_96_white);
+        settings.setOnClickListener(v -> {
             final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
             LayoutInflater inflater = getLayoutInflater();
             final View convertView = inflater.inflate(R.layout.settings_popup, null);
