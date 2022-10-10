@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import a.a.a.Dp;
 import a.a.a.bB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.dx.command.dexer.Main;
@@ -41,6 +42,7 @@ import mod.hey.studios.lib.prdownloader.PRDownloader;
 import mod.hey.studios.lib.prdownloader.PRDownloader.OnDownloadListener;
 import mod.hey.studios.lib.prdownloader.PRDownloader.Status;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 
 //changed in 6.3.0
@@ -582,7 +584,7 @@ public class LibraryDownloader {
         void onComplete();
     }
 
-    private class BackTask extends AsyncTask<String, String, String> {
+    private class BackTask extends AsyncTask<String, String, String> implements BuildProgressReceiver {
         private ProgressDialog progressDialog;
         boolean success = false;
 
@@ -598,6 +600,7 @@ public class LibraryDownloader {
         @Override
         protected String doInBackground(String... params) {
             try {
+                Dp.maybeExtractAndroidJar(this);
                 publishProgress((use_d8 ? "D8" : "Dx") + " is running...");
                 _jar2dex(params[0]);
                 success = true;
@@ -628,6 +631,11 @@ public class LibraryDownloader {
         @Override
         protected void onProgressUpdate(String... values) {
             progressDialog.setMessage(values[0]);
+        }
+
+        @Override
+        public void onProgress(String progress) {
+            publishProgress(progress);
         }
     }
 }
