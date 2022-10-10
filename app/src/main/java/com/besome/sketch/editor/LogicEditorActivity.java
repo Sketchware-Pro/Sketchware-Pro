@@ -2484,7 +2484,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
                         String selector = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
                         String type = kq.a(selector);
-                        block = new Rs(super.e, blockId + 1, type.substring(type.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
+                        block = new Rs(super.e, blockId + 1, specBit.substring(specBit.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
                     }
 
                     block.setBlockType(1);
