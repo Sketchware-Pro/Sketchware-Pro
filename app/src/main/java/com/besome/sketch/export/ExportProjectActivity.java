@@ -23,7 +23,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -53,7 +52,6 @@ import a.a.a.hC;
 import a.a.a.iC;
 import a.a.a.kC;
 import a.a.a.lC;
-import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.wq;
 import a.a.a.xq;
@@ -223,7 +221,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             runOnUiThread(() -> {
                 Log.e("ProjectExporter", "While trying to export project's sources: "
                         + e.getMessage(), e);
-                showErrorOccurredDialog(Log.getStackTraceString(e));
+                SketchwareUtil.showAnErrorOccurredDialog(this, Log.getStackTraceString(e));
                 layout_export_src.setVisibility(View.GONE);
                 loading_export_src.setVisibility(View.GONE);
                 btn_export_src.setVisibility(View.VISIBLE);
@@ -609,37 +607,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         tv_src_path.setText(export_src_postfix + File.separator + export_src_filename);
     }
 
-    /**
-     * Show a "An error has occurred" dialog.
-     *
-     * @param errorMessage The dialog's error message
-     */
-    private void showErrorOccurredDialog(String errorMessage) {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.break_warning_96_red);
-        dialog.b(Helper.getResString(R.string.common_error_an_error_occurred));
-
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        TextView errorMessageThingy = new TextView(this);
-        errorMessageThingy.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        errorMessageThingy.setText(errorMessage);
-        scrollView.addView(errorMessageThingy);
-
-        dialog.a(scrollView);
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
-            if (!mB.a()) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
     private static class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
         private final WeakReference<ExportProjectActivity> activity;
         private final yq project_metadata;
@@ -879,11 +846,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
                         "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
-                    activity.get().runOnUiThread(() -> activity.get().showErrorOccurredDialog(
+                    activity.get().runOnUiThread(() -> SketchwareUtil.showAnErrorOccurredDialog(activity.get(),
                             "Either an incorrect password was entered, or your key store is corrupt."));
                 } else {
                     Log.e("AppExporter", throwable.getMessage(), throwable);
-                    activity.get().runOnUiThread(() -> activity.get().showErrorOccurredDialog(Log.getStackTraceString(throwable)));
+                    activity.get().runOnUiThread(() -> SketchwareUtil.showAnErrorOccurredDialog(activity.get(),
+                            Log.getStackTraceString(throwable)));
                 }
 
                 cancel(true);
@@ -974,7 +942,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             activity.get().i();
-            activity.get().showErrorOccurredDialog(str);
+            SketchwareUtil.showAnErrorOccurredDialog(activity.get(), str);
             activity.get().layout_apk_path.setVisibility(View.GONE);
             LottieAnimationView loading_sign_apk = this.loading_sign_apk.get();
             if (loading_sign_apk.h()) {
