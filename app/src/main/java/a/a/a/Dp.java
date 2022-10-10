@@ -21,6 +21,7 @@ import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
+import com.besome.sketch.SketchApplication;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
@@ -167,10 +168,11 @@ public class Dp {
      * @param targetFile   The file on local storage
      * @return If the file in assets has been extracted
      */
-    private boolean hasFileChanged(String fileInAssets, String targetFile) {
+    private static boolean hasFileChanged(String fileInAssets, String targetFile) {
         long length;
         File compareToFile = new File(targetFile);
-        long lengthOfFileInAssets = fileUtil.a(context, fileInAssets);
+        oB fileUtil = new oB();
+        long lengthOfFileInAssets = fileUtil.a(SketchApplication.getContext(), fileInAssets);
         if (compareToFile.exists()) {
             length = compareToFile.length();
         } else {
@@ -183,7 +185,7 @@ public class Dp {
         /* Delete the file */
         fileUtil.a(compareToFile);
         /* Copy the file from assets to local storage */
-        fileUtil.a(context, fileInAssets, targetFile);
+        fileUtil.a(SketchApplication.getContext(), fileInAssets, targetFile);
         return true;
     }
 
@@ -742,13 +744,11 @@ public class Dp {
         if (!fileUtil.e(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath())) {
             fileUtil.f(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
-        String androidJarArchiveName = "android.jar.zip";
         String dexsArchiveName = "dexs.zip";
         String coreLambdaStubsJarName = "core-lambda-stubs.jar";
         String libsArchiveName = "libs.zip";
         String testkeyArchiveName = "testkey.zip";
 
-        String androidJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
         String dexsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, dexsArchiveName).getAbsolutePath();
         String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
         String libsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, libsArchiveName).getAbsolutePath();
@@ -758,13 +758,7 @@ public class Dp {
         String testkeyDirectoryPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey").getAbsolutePath();
 
         String baseAssetsPath = "libs" + File.separator;
-        if (hasFileChanged(baseAssetsPath + androidJarArchiveName, androidJarPath)) {
-            progressReceiver.onProgress("Extracting built-in android.jar...");
-            /* Delete android.jar */
-            fileUtil.c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
-            /* Extract android.jar.zip to android.jar */
-            new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
-        }
+        maybeExtractAndroidJar(progressReceiver);
         if (hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
             progressReceiver.onProgress("Extracting built-in libraries' DEX files...");
             /* Delete the directory */
@@ -832,6 +826,18 @@ public class Dp {
         KotlinCompilerBridge.maybeAddKotlinBuiltInLibraryDependenciesIfPossible(this, builtInLibraryManager);
 
         ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
+    }
+
+    public static void maybeExtractAndroidJar(BuildProgressReceiver optionalProgressReceiver) {
+        String androidJarArchiveName = "android.jar.zip";
+        String androidJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
+        if (hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
+            if (optionalProgressReceiver != null) optionalProgressReceiver.onProgress("Extracting built-in android.jar...");
+            /* Delete android.jar */
+            new oB().c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
+            /* Extract android.jar.zip to android.jar */
+            new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
+        }
     }
 
     /**
