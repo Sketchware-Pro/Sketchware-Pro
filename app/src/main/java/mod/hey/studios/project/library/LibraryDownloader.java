@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -606,7 +607,7 @@ public class LibraryDownloader {
                 success = true;
             } catch (Exception e) {
                 success = false;
-                return e.toString();
+                return Log.getStackTraceString(e);
             }
 
             return "true";
@@ -618,7 +619,7 @@ public class LibraryDownloader {
                 bB.a(context, "The library has been downloaded and imported to local libraries successfully.", 1).show();
                 listener.onComplete();
             } else {
-                bB.a(context, "Dexing failed: " + s, 1).show();
+                SketchwareUtil.showAnErrorOccurredDialog(context, s);
             }
 
             if (dialog != null && dialog.isShowing()) {
