@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.tools.r8.D8;
 import com.google.gson.Gson;
@@ -64,7 +63,6 @@ public class LibraryDownloader {
     private String currentRepo = "";
     private int counter = 0;
     private ArrayList<HashMap<String, Object>> repoMap = new ArrayList<>();
-    private ProgressDialog progressDialog;
 
     public LibraryDownloader(Activity context, boolean use_d8) {
         this.context = context;
@@ -585,6 +583,7 @@ public class LibraryDownloader {
     }
 
     private class BackTask extends AsyncTask<String, String, String> {
+        private ProgressDialog progressDialog;
         boolean success = false;
 
         @Override
@@ -592,7 +591,6 @@ public class LibraryDownloader {
             super.onPreExecute();
             progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Please wait");
-            progressDialog.setMessage((use_d8 ? "D8" : "Dx") + " is running...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -600,6 +598,7 @@ public class LibraryDownloader {
         @Override
         protected String doInBackground(String... params) {
             try {
+                publishProgress((use_d8 ? "D8" : "Dx") + " is running...");
                 _jar2dex(params[0]);
                 success = true;
             } catch (Exception e) {
@@ -624,6 +623,11 @@ public class LibraryDownloader {
             }
 
             progressDialog.dismiss();
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            progressDialog.setMessage(values[0]);
         }
     }
 }
