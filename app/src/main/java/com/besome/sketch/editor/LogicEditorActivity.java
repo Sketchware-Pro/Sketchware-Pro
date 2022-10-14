@@ -210,7 +210,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public final void A() {
+    private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(this.B).a(this.M.getJavaName(), this.C + "_" + this.D);
         if (eventBlocks != null) {
             if (eventBlocks.size() == 0) {
@@ -2499,7 +2499,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         this.o.getRoot().k();
         this.g(this.getResources().getConfiguration().orientation);
         this.a(0, 0xffee7d16);
-        this.A();
+        this.loadEventBlocks();
         this.z();
     }
 
