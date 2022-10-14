@@ -211,48 +211,48 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void A() {
-        ArrayList<BlockBean> a2 = jC.a(this.B).a(this.M.getJavaName(), this.C + "_" + this.D);
-        if (a2 != null) {
-            if (a2.size() == 0) {
+        ArrayList<BlockBean> eventBlocks = jC.a(this.B).a(this.M.getJavaName(), this.C + "_" + this.D);
+        if (eventBlocks != null) {
+            if (eventBlocks.size() == 0) {
                 e(this.X);
             }
 
-            boolean z = true;
-            HashMap<Integer, Rs> hashMap = new HashMap<>();
-            for (BlockBean next : a2) {
+            boolean needToFindRoot = true;
+            HashMap<Integer, Rs> blockIdsAndBlocks = new HashMap<>();
+            for (BlockBean next : eventBlocks) {
                 if (this.D.equals("onTextChanged") && next.opCode.equals("getArg") && next.spec.equals("text")) {
                     next.spec = "charSeq";
                 }
                 Rs b2 = b(next);
-                hashMap.put((Integer) b2.getTag(), b2);
+                blockIdsAndBlocks.put((Integer) b2.getTag(), b2);
                 o.g = Math.max(o.g, (Integer) b2.getTag() + 1);
                 this.o.a(b2, 0, 0);
                 b2.setOnTouchListener(this);
-                if (z) {
+                if (needToFindRoot) {
                     this.o.getRoot().b(b2);
-                    z = false;
+                    needToFindRoot = false;
                 }
             }
-            for (BlockBean next2 : a2) {
-                Rs block = hashMap.get(Integer.valueOf(next2.id));
+            for (BlockBean next2 : eventBlocks) {
+                Rs block = blockIdsAndBlocks.get(Integer.valueOf(next2.id));
                 if (block != null) {
                     Rs subStack1RootBlock;
-                    if (next2.subStack1 >= 0 && (subStack1RootBlock = hashMap.get(next2.subStack1)) != null) {
+                    if (next2.subStack1 >= 0 && (subStack1RootBlock = blockIdsAndBlocks.get(next2.subStack1)) != null) {
                         block.e(subStack1RootBlock);
                     }
                     Rs subStack2RootBlock;
-                    if (next2.subStack2 >= 0 && (subStack2RootBlock = hashMap.get(next2.subStack2)) != null) {
+                    if (next2.subStack2 >= 0 && (subStack2RootBlock = blockIdsAndBlocks.get(next2.subStack2)) != null) {
                         block.f(subStack2RootBlock);
                     }
                     Rs nextBlock;
-                    if (next2.nextBlock >= 0 && (nextBlock = hashMap.get(next2.nextBlock)) != null) {
+                    if (next2.nextBlock >= 0 && (nextBlock = blockIdsAndBlocks.get(next2.nextBlock)) != null) {
                         block.b(nextBlock);
                     }
                     for (int i = 0; i < next2.parameters.size(); i++) {
                         String parameter = next2.parameters.get(i);
                         if (parameter != null && parameter.length() > 0) {
                             if (parameter.charAt(0) == '@') {
-                                Rs parameterBlock = hashMap.get(Integer.valueOf(parameter.substring(1)));
+                                Rs parameterBlock = blockIdsAndBlocks.get(Integer.valueOf(parameter.substring(1)));
                                 if (parameterBlock != null) {
                                     block.a((Ts) block.V.get(i), parameterBlock);
                                 }
