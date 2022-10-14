@@ -50,6 +50,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private TextView tvStorageUrl;
     private DB s = null;
     private ProjectLibraryBean firebaseLibraryBean;
+    private String sc_id;
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         firebaseLibraryBean = libraryBean;
@@ -175,6 +176,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
         s = new DB(getApplicationContext(), "P1");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
+        sc_id = savedInstanceState != null ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
         LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
         libSwitch = findViewById(R.id.lib_switch);
@@ -220,6 +222,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private void toFirebaseActivity() {
         Intent intent = new Intent(getApplicationContext(), FirebaseActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("firebase", firebaseLibraryBean);
         startActivityForResult(intent, REQUEST_CODE_FIREBASE_SETTINGS);
     }
@@ -334,5 +337,11 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
         if (hasNullConfig) SketchwareUtil.toastError(notFoundLog.toString());
         configure();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 }
