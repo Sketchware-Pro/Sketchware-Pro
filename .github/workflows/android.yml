@@ -60,7 +60,7 @@ jobs:
           path: app/build/outputs/apk/minApi26/debug
 
   buildMinApi21:
-    name: Build minApi26 debug APK
+    name: Build minApi21 debug APK
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
