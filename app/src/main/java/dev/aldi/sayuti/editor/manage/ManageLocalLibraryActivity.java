@@ -176,7 +176,15 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     localLibrary.put("assetsPath", assetsPath);
                 }
                 if (!isChecked) {
-                    project_used_libs.remove(localLibrary);
+                    int i = -1;
+                    for (int j = 0; j < project_used_libs.size(); j++) {
+                        HashMap<String, Object> nLocalLibrary = project_used_libs.get(j);
+                        if (name.equals(nLocalLibrary.get("name"))) {
+                            i = j;
+                            break;
+                        }
+                    }
+                    project_used_libs.remove(i);
                 } else {
                     project_used_libs.removeIf(usedLibrary ->
                             usedLibrary.get("name").toString().equals(enabled.getText().toString()));
