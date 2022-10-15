@@ -73,6 +73,7 @@ public class EventsMaker extends Activity {
     protected void onStop() {
         super.onStop();
         EventsHandler.refreshCachedCustomEvents();
+        EventsHandler.refreshCachedCustomListeners();
     }
 
     private void setupViews() {
