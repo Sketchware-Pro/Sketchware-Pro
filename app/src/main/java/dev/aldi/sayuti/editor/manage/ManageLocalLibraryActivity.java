@@ -36,7 +36,6 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private String local_lib_file = "";
     private String local_libs_path = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
-    private int n = 0;
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
     private void initToolbar() {
@@ -101,13 +100,12 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         FileUtil.listDir(local_libs_path, arrayList);
         //noinspection Java8ListSort
         Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
-        n = 0;
+
         List<String> localLibraryNames = new LinkedList<>();
-        while (n < arrayList.size()) {
-            if (FileUtil.isDirectory(arrayList.get(n))) {
-                localLibraryNames.add(Uri.parse(arrayList.get(n)).getLastPathSegment());
+        for (String filename : arrayList) {
+            if (FileUtil.isDirectory(filename)) {
+                localLibraryNames.add(Uri.parse(filename).getLastPathSegment());
             }
-            n++;
         }
         listview.setAdapter(new LibraryAdapter(localLibraryNames));
         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
@@ -170,26 +168,21 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 if (!isChecked) {
                     project_used_libs.remove(hashMap);
                 } else {
-                    n = 0;
-                    while (n < project_used_libs.size()) {
-                        if (project_used_libs.get(n).get("name").toString().equals(checkBox.getText().toString())) {
-                            project_used_libs.remove(hashMap);
-                        }
-                        n = n + 1;
-                    }
+                    project_used_libs.removeIf(usedLibrary ->
+                            usedLibrary.get("name").toString().equals(checkBox.getText().toString()));
                     project_used_libs.add(hashMap);
                 }
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
             });
+
             lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
-            n = 0;
-            while (n < lookup_list.size()) {
+            for (HashMap<String, Object> localLibrary : lookup_list) {
                 checkBox.setChecked(false);
-                if (checkBox.getText().toString().equals(lookup_list.get(n).get("name").toString())) {
+                if (checkBox.getText().toString().equals(localLibrary.get("name").toString())) {
                     checkBox.setChecked(true);
                 }
-                n = n + 1;
             }
+
             convertView.findViewById(R.id.img_delete).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
                 popupMenu.getMenu().add(0, 0, 0, "Delete");
