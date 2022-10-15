@@ -34,8 +34,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build debug APK
+  buildMinApi26:
+    name: Build minApi26 debug APK
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -46,27 +46,39 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - name: Build debug APK with minApi 26
+      - name: Build debug APK
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi26Debug
         env:
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
-      - name: Upload debug APK with minApi 26
+      - name: Upload debug APK
         uses: actions/upload-artifact@v3
         with:
           name: apk-minApi26-debug
           path: app/build/outputs/apk/minApi26/debug
 
-      - name: Build debug APK with minApi 21
+  buildMinApi21:
+    name: Build minApi26 debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Build debug APK
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi21Debug
         env:
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
-      - name: Upload debug APK with minApi 21
+      - name: Upload debug APK
         uses: actions/upload-artifact@v3
         with:
           name: apk-minApi21-debug
