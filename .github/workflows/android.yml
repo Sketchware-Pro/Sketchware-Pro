@@ -47,6 +47,9 @@ jobs:
           distribution: temurin
           cache: gradle
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
       - name: Build debug APK with minApi 26
         uses: gradle/gradle-build-action@v2
         with:
