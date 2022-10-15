@@ -136,9 +136,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, null);
+                convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, parent);
             }
-            
+
             final CheckBox enabled = convertView.findViewById(R.id.checkbox_content);
             enabled.setText(localLibraries.get(position));
             enabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -186,8 +186,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     }
                     project_used_libs.remove(i);
                 } else {
-                    project_used_libs.removeIf(usedLibrary ->
-                            usedLibrary.get("name").toString().equals(enabled.getText().toString()));
+                    project_used_libs.removeIf(usedLibrary -> usedLibrary.get("name").toString().equals(name));
                     project_used_libs.add(localLibrary);
                 }
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
