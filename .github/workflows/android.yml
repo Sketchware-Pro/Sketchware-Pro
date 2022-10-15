@@ -54,6 +54,8 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi26Debug
+        env:
+          CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
       - name: Upload debug APK with minApi 26
         uses: actions/upload-artifact@v3
@@ -65,6 +67,8 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi21Debug
+        env:
+          CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
       - name: Upload debug APK with minApi 21
         uses: actions/upload-artifact@v3
