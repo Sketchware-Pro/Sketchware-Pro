@@ -74,12 +74,16 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_permission);
-        if (getIntent().hasExtra("sc_id")) {
-            sc_id = getIntent().getStringExtra("sc_id");
-        }
+
         listview = findViewById(R.id.main_content);
         findViewById(R.id.managepermissionLinearLayout1).setVisibility(View.GONE);
         initToolbar();
+
+        if (getIntent().hasExtra("sc_id")) {
+            sc_id = getIntent().getStringExtra("sc_id");
+        }
+        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+        local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         loadFiles();
     }
 
@@ -87,12 +91,11 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         main_list.clear();
         project_used_libs.clear();
         lookup_list.clear();
-        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
-        local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
-        if (!FileUtil.isExistFile(local_lib_file) || FileUtil.readFile(local_lib_file).equals("")) {
+        String fileContent;
+        if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).equals("")) {
             FileUtil.writeFile(local_lib_file, "[]");
         } else {
-            project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
+            project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
