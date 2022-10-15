@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,7 +20,6 @@ import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,8 +98,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
-        //noinspection Java8ListSort
-        Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
+        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
 
         List<String> localLibraryNames = new LinkedList<>();
         for (String filename : arrayList) {
@@ -185,7 +184,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
             convertView.findViewById(R.id.img_delete).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
-                popupMenu.getMenu().add(0, 0, 0, "Delete");
+                popupMenu.getMenu().add(Menu.NONE, Menu.NONE, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
                     FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
                     bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
