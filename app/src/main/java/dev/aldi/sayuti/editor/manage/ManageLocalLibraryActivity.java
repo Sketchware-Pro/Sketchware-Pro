@@ -21,6 +21,8 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import a.a.a.bB;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -29,7 +31,6 @@ import mod.hey.studios.util.Helper;
 
 public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener, LibraryDownloader.OnCompleteListener {
 
-    private final ArrayList<HashMap<String, Object>> main_list = new ArrayList<>();
     private String sc_id = "";
     private ListView listview;
     private String local_lib_file = "";
@@ -88,7 +89,6 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     }
 
     private void loadFiles() {
-        main_list.clear();
         project_used_libs.clear();
         lookup_list.clear();
         String fileContent;
@@ -102,28 +102,27 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         //noinspection Java8ListSort
         Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
         n = 0;
+        List<String> localLibraryNames = new LinkedList<>();
         while (n < arrayList.size()) {
             if (FileUtil.isDirectory(arrayList.get(n))) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", Uri.parse(arrayList.get(n)).getLastPathSegment());
-                main_list.add(hashMap);
+                localLibraryNames.add(Uri.parse(arrayList.get(n)).getLastPathSegment());
             }
             n++;
         }
-        listview.setAdapter(new LibraryAdapter(main_list));
+        listview.setAdapter(new LibraryAdapter(localLibraryNames));
         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
     }
 
     public class LibraryAdapter extends BaseAdapter {
 
-        ArrayList<HashMap<String, Object>> _data;
+        List<String> _data;
 
-        public LibraryAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            _data = arrayList;
+        public LibraryAdapter(List<String> data) {
+            _data = data;
         }
 
         @Override
-        public HashMap<String, Object> getItem(int position) {
+        public String getItem(int position) {
             return _data.get(position);
         }
 
@@ -143,7 +142,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, null);
             }
             final CheckBox checkBox = convertView.findViewById(R.id.checkbox_content);
-            checkBox.setText((main_list.get(position)).get("name").toString());
+            checkBox.setText(_data.get(position));
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("name", checkBox.getText().toString());
