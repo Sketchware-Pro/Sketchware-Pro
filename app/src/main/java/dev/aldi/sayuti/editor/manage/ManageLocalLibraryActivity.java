@@ -32,7 +32,7 @@ import mod.hey.studios.util.Helper;
 
 public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener, LibraryDownloader.OnCompleteListener {
 
-    private String sc_id = "";
+    private boolean notAssociatedWithProject = false;
     private ListView listview;
     private String local_lib_file = "";
     private String local_libs_path = "";
@@ -81,21 +81,24 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         initToolbar();
 
         if (getIntent().hasExtra("sc_id")) {
-            sc_id = getIntent().getStringExtra("sc_id");
+            String sc_id = getIntent().getStringExtra("sc_id");
+            notAssociatedWithProject = sc_id.equals("system");
+            local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         }
         local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
-        local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         loadFiles();
     }
 
     private void loadFiles() {
         project_used_libs.clear();
         lookup_list.clear();
-        String fileContent;
-        if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).equals("")) {
-            FileUtil.writeFile(local_lib_file, "[]");
-        } else {
-            project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
+        if (!notAssociatedWithProject) {
+            String fileContent;
+            if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).equals("")) {
+                FileUtil.writeFile(local_lib_file, "[]");
+            } else {
+                project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
+            }
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
@@ -199,12 +202,16 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
             });
 
-            lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
-            for (HashMap<String, Object> localLibrary : lookup_list) {
-                enabled.setChecked(false);
-                if (enabled.getText().toString().equals(localLibrary.get("name").toString())) {
-                    enabled.setChecked(true);
+            enabled.setChecked(false);
+            if (!notAssociatedWithProject) {
+                lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
+                for (HashMap<String, Object> localLibrary : lookup_list) {
+                    if (enabled.getText().toString().equals(localLibrary.get("name").toString())) {
+                        enabled.setChecked(true);
+                    }
                 }
+            } else {
+                enabled.setEnabled(false);
             }
 
             convertView.findViewById(R.id.img_delete).setOnClickListener(v -> {
