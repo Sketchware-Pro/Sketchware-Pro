@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,7 +99,8 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
-        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
+        //noinspection Java8ListSort
+        Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
 
         List<String> localLibraryNames = new LinkedList<>();
         for (String filename : arrayList) {
@@ -186,7 +188,12 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     }
                     project_used_libs.remove(i);
                 } else {
-                    project_used_libs.removeIf(usedLibrary -> usedLibrary.get("name").toString().equals(name));
+                    for (HashMap<String, Object> usedLibrary : project_used_libs) {
+                        if (usedLibrary.get("name").toString().equals(name)) {
+                            project_used_libs.remove(usedLibrary);
+                            break;
+                        }
+                    }
                     project_used_libs.add(localLibrary);
                 }
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
