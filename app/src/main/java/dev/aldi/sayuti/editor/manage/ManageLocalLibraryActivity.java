@@ -138,7 +138,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, parent);
+                convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, parent, false);
             }
 
             final CheckBox enabled = convertView.findViewById(R.id.checkbox_content);
