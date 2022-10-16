@@ -146,7 +146,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
             final CheckBox enabled = convertView.findViewById(R.id.checkbox_content);
             enabled.setText(localLibraries.get(position));
-            enabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            enabled.setOnClickListener(v -> {
                 String name = enabled.getText().toString();
 
                 String configPath = local_libs_path + name + "/config";
@@ -180,7 +180,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 if (FileUtil.isExistFile(assetsPath)) {
                     localLibrary.put("assetsPath", assetsPath);
                 }
-                if (!isChecked) {
+                if (!enabled.isChecked()) {
                     int i = -1;
                     for (int j = 0; j < project_used_libs.size(); j++) {
                         HashMap<String, Object> nLocalLibrary = project_used_libs.get(j);
