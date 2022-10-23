@@ -17,19 +17,14 @@ import a.a.a.wB;
 
 public class ItemOTPView extends LinearLayout implements sy {
 
+    private final Paint paint;
+    private final float paddingFactor;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
-    private Paint paint;
-    private float paddingFactor;
 
     public ItemOTPView(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    public void a(Context context) {
         paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
