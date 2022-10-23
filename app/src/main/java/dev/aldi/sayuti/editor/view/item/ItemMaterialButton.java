@@ -14,12 +14,13 @@ import a.a.a.sy;
 import a.a.a.wB;
 
 public class ItemMaterialButton extends AppCompatButton implements sy {
-    public ViewBean c;
-    public boolean d;
-    public boolean e;
-    public Paint f;
-    public float g;
-    public Drawable h;
+
+    private Paint paint;
+    private float paddingFactor;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean hasFixed;
+    private Drawable background;
 
     public ItemMaterialButton(Context context) {
         super(context);
@@ -27,64 +28,64 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
     }
 
     @Deprecated
-    public void a(Context context) {
-        this.g = wB.a(context, 1.0f);
-        this.f = new Paint(1);
-        this.f.setColor(-1785080368);
+    private void a(Context context) {
+        paddingFactor = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
+        background = getBackground();
+
         setDrawingCacheEnabled(true);
         setFocusable(false);
-        this.h = getBackground();
     }
 
     @Override
     public ViewBean getBean() {
-        return this.c;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.c = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.e;
+        return hasFixed;
     }
 
     public void setFixed(boolean z) {
-        this.e = z;
+        hasFixed = z;
     }
 
     public boolean getSelection() {
-        return this.d;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.d = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.d) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.f);
+        if (hasSelection) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
-        ItemMaterialButton.super.onDraw(canvas);
+        super.onDraw(canvas);
     }
 
     @Override
-    public void setBackgroundColor(int i) {
-        if (i == 16777215) {
-            setBackground(this.h);
+    public void setBackgroundColor(int color) {
+        if (color == 0xffffff) {
+            setBackground(background);
         } else {
-            ItemMaterialButton.super.setBackgroundColor(i);
+            super.setBackgroundColor(color);
         }
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.g;
-        ItemMaterialButton.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 }
