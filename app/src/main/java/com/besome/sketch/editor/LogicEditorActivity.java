@@ -2870,54 +2870,48 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void q() {
     }
 
-    public void r() {
-        if (this.Y != null) {
-            this.m.setDragEnabled(false);
-            this.n.setScrollEnabled(false);
-            this.O.setDragEnabled(false);
-            if (this.ia) {
-                this.g(false);
+    private void r() {
+        if (Y != null) {
+            m.setDragEnabled(false);
+            n.setScrollEnabled(false);
+            O.setDragEnabled(false);
+            if (ia) {
+                g(false);
             }
 
-            if (this.G) {
-                this.F.vibrate(100L);
+            if (G) {
+                F.vibrate(100L);
             }
 
-            label28:
-            {
-                this.u = true;
-                if (((Rs) this.Y).getBlockType() == 0) {
-                    this.a((Rs) this.Y);
-                    this.f(true);
-                    this.h(true);
-                    this.p.a((Rs) this.Y);
-                    this.o.a((Rs) this.Y, 8);
-                    this.o.c((Rs) this.Y);
-                } else {
-                    if (((Rs) this.Y).getBlockType() == 2) {
-                        this.f(false);
-                        this.h(true);
-                        this.p.a((Rs) this.Y);
-                        o.a((Rs) Y, ((Us) Y).getData());
-                        break label28;
-                    }
-
-                    this.p.a((Rs) this.Y);
-                }
-
-                this.o.a((Rs) this.Y);
+            u = true;
+            if (((Rs) Y).getBlockType() == 0) {
+                a((Rs) Y);
+                f(true);
+                h(true);
+                p.a((Rs) Y);
+                o.a((Rs) Y, 8);
+                o.c((Rs) Y);
+                o.a((Rs) Y);
+            } else if (((Rs) Y).getBlockType() == 2) {
+                f(false);
+                h(true);
+                p.a((Rs) Y);
+                o.a((Rs) Y, ((Us) Y).getData());
+            } else {
+                p.a((Rs) Y);
+                o.a((Rs) Y);
             }
 
-            float var3 = this.q - this.s;
-            float var4 = this.r - this.t;
-            this.p.a(this.Y, var3, var4, var3, var4, (float) this.S, (float) this.T);
-            this.p.a(this.v);
-            if (n.a((float) v[0], (float) v[1])) {
-                this.p.setAllow(true);
+            float a = q - s;
+            float b = r - t;
+            p.a(Y, a, b, a, b, S, T);
+            p.a(v);
+            if (n.a(v[0], v[1])) {
+                p.setAllow(true);
                 o.c((Rs) Y, v[0], v[1]);
             } else {
-                this.p.setAllow(false);
-                this.o.d();
+                p.setAllow(false);
+                o.d();
             }
         }
     }
