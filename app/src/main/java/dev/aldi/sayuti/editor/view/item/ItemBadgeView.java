@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,16 +17,15 @@ import a.a.a.wB;
 
 public class ItemBadgeView extends LinearLayout implements sy {
 
-
     private final Paint paint;
-    private final float e;
+    private final float paddingFactor;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
 
     public ItemBadgeView(Context context) {
         super(context);
-        e = wB.a(context, 1.0f);
+        paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
@@ -37,7 +37,7 @@ public class ItemBadgeView extends LinearLayout implements sy {
         imageview.setScaleType(ImageView.ScaleType.FIT_XY);
         imageview.setPadding(0, 0, 0, 0);
         addView(imageview);
-        setGravity(17);
+        setGravity(Gravity.CENTER);
     }
 
     @Override
@@ -78,8 +78,7 @@ public class ItemBadgeView extends LinearLayout implements sy {
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = e;
-        super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) ((float) left * paddingFactor), (int) ((float) top * paddingFactor), (int) ((float) right * paddingFactor), (int) (paddingFactor * (float) bottom));
     }
 }
