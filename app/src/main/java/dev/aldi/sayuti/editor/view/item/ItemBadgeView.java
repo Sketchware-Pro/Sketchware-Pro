@@ -18,6 +18,7 @@ import a.a.a.wB;
 public class ItemBadgeView extends LinearLayout implements sy {
 
     private final Paint paint;
+    private final Rect rect;
     private final float paddingFactor;
     private ViewBean viewBean;
     private boolean hasSelection;
@@ -28,6 +29,8 @@ public class ItemBadgeView extends LinearLayout implements sy {
         paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
+        rect = new Rect();
+
         setDrawingCacheEnabled(true);
         ImageView imageview = new ImageView(getContext());
         imageview.setLayoutParams(new LayoutParams(
@@ -72,7 +75,8 @@ public class ItemBadgeView extends LinearLayout implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
