@@ -17,6 +17,7 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
 
     private final Paint paint;
     private final float paddingFactor;
+    private final Rect rect;
     private final Drawable background;
     private ViewBean viewBean;
     private boolean hasSelection;
@@ -27,6 +28,7 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
         paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
+        rect = new Rect();
         background = getBackground();
 
         setDrawingCacheEnabled(true);
@@ -65,7 +67,8 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
