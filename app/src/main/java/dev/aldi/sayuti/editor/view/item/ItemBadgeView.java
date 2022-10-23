@@ -32,14 +32,14 @@ public class ItemBadgeView extends LinearLayout implements sy {
         rect = new Rect();
 
         setDrawingCacheEnabled(true);
-        ImageView imageview = new ImageView(getContext());
-        imageview.setLayoutParams(new LayoutParams(
+        ImageView imageView = new ImageView(getContext());
+        imageView.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageview.setImageResource(R.drawable.item_badge_view);
-        imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageview.setPadding(0, 0, 0, 0);
-        addView(imageview);
+        imageView.setImageResource(R.drawable.item_badge_view);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setPadding(0, 0, 0, 0);
+        addView(imageView);
         setGravity(Gravity.CENTER);
     }
 
@@ -83,6 +83,6 @@ public class ItemBadgeView extends LinearLayout implements sy {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) ((float) left * paddingFactor), (int) ((float) top * paddingFactor), (int) ((float) right * paddingFactor), (int) (paddingFactor * (float) bottom));
+        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 }

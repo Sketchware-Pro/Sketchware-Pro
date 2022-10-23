@@ -14,16 +14,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ItemCircleImageView extends CircleImageView implements sy {
 
     private final Paint paint;
-    private final float g;
+    private final Rect rect;
+    private final float paddingFactor;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
 
     public ItemCircleImageView(Context context) {
         super(context);
-        g = wB.a(context, 1.0f);
-        paint = new Paint(1);
+        paddingFactor = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
+        rect = new Rect();
+
         setDrawingCacheEnabled(true);
     }
 
@@ -59,14 +62,14 @@ public class ItemCircleImageView extends CircleImageView implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, paint);
         }
-        ItemCircleImageView.super.onDraw(canvas);
+        super.onDraw(canvas);
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = g;
-        ItemCircleImageView.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 }

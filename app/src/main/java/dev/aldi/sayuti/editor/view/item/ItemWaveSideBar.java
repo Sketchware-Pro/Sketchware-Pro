@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.view.Gravity;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -16,21 +17,24 @@ import a.a.a.wB;
 public class ItemWaveSideBar extends AppCompatTextView implements sy {
 
     private final Paint paint;
-    private final float h;
+    private final Rect rect;
+    private final float paddingFactor;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
 
     public ItemWaveSideBar(Context context) {
         super(context);
-        setGravity(17);
+        paddingFactor = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
+        rect = new Rect();
+
+        setDrawingCacheEnabled(true);
         setTypeface(null, Typeface.BOLD);
         setText("A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ");
         setTextSize(18.0f);
-        h = wB.a(context, 1.0f);
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(0x9599d5d0);
-        setDrawingCacheEnabled(true);
+        setGravity(Gravity.CENTER);
     }
 
     @Override
@@ -65,19 +69,14 @@ public class ItemWaveSideBar extends AppCompatTextView implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        float f2 = h;
-        super.setPadding(
-                (int) (((float) left) * f2),
-                (int) (((float) top) * f2),
-                (int) (((float) right) * f2),
-                (int) (f2 * ((float) bottom))
-        );
+        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 }

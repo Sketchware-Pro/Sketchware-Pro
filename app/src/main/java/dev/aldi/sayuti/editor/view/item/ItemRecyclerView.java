@@ -17,17 +17,19 @@ import a.a.a.wB;
 public class ItemRecyclerView extends ListView implements sy {
 
     private final Paint paint;
-    private final float e;
+    private final Rect rect;
+    private final float paddingFactor;
     private boolean hasSelection;
     private boolean hasFixed;
     private ViewBean viewBean;
-    private final Rect onDrawRect = new Rect(0, 0, 0, 0);
 
     public ItemRecyclerView(Context context) {
         super(context);
-        e = wB.a(context, 1.0f);
+        paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0f));
+        rect = new Rect();
+
         setDrawingCacheEnabled(true);
         setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1,
                 Arrays.asList("RecyclerView item 1", "RecyclerView item 2", "RecyclerView item 3")));
@@ -66,8 +68,8 @@ public class ItemRecyclerView extends ListView implements sy {
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
             paint.setColor(0x9599d5d0);
-            onDrawRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            canvas.drawRect(onDrawRect, paint);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, paint);
         } else {
             paint.setColor(0x60000000);
             int measuredWidth = getMeasuredWidth();
@@ -84,11 +86,6 @@ public class ItemRecyclerView extends ListView implements sy {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding(
-                (int) (left * e),
-                (int) (top * e),
-                (int) (right * e),
-                (int) (bottom * e)
-        );
+        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 }
