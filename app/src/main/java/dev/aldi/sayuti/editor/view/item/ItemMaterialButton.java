@@ -15,20 +15,15 @@ import a.a.a.wB;
 
 public class ItemMaterialButton extends AppCompatButton implements sy {
 
-    private Paint paint;
-    private float paddingFactor;
+    private final Paint paint;
+    private final float paddingFactor;
+    private final Drawable background;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
-    private Drawable background;
 
     public ItemMaterialButton(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    private void a(Context context) {
         paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
