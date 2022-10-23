@@ -1,7 +1,6 @@
 package com.besome.sketch.beans;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.nA;
 
@@ -26,164 +25,158 @@ public class HistoryBlockBean extends nA {
     public int prevY;
     public ArrayList<BlockBean> removedData;
 
-    public void actionAdd(ArrayList<BlockBean> arrayList, int i, int i2, BlockBean blockBean, BlockBean blockBean2) {
-        this.actionType = 0;
-        this.currentX = i;
-        this.currentY = i2;
+    public void actionAdd(ArrayList<BlockBean> addedData, int currentX, int currentY, BlockBean prevParentData, BlockBean currentParentData) {
+        actionType = ACTION_TYPE_ADD;
+        this.currentX = currentX;
+        this.currentY = currentY;
         this.addedData = new ArrayList<>();
-        this.prevParentData = blockBean;
-        this.currentParentData = blockBean2;
-        for (BlockBean bean : arrayList) {
+        this.prevParentData = prevParentData;
+        this.currentParentData = currentParentData;
+        for (BlockBean bean : addedData) {
             this.addedData.add(bean.clone());
         }
     }
 
-    public void actionMove(ArrayList<BlockBean> arrayList, ArrayList<BlockBean> arrayList2, int i, int i2, int i3, int i4, BlockBean blockBean, BlockBean blockBean2, BlockBean blockBean3, BlockBean blockBean4) {
-        this.actionType = 3;
-        this.prevX = i;
-        this.prevY = i2;
-        this.currentX = i3;
-        this.currentY = i4;
-        this.prevParentData = blockBean3;
-        this.currentParentData = blockBean4;
-        this.prevOriginalParent = blockBean;
-        this.currentOriginalParent = blockBean2;
-        this.beforeMove = arrayList;
-        this.afterMove = arrayList2;
+    public void actionMove(ArrayList<BlockBean> beforeMove, ArrayList<BlockBean> afterMove, int prevX, int prevY, int currentX, int currentY, BlockBean prevOriginalParent, BlockBean currentOriginalParent, BlockBean preParentData, BlockBean currentParentData) {
+        actionType = ACTION_TYPE_MOVE;
+        this.prevX = prevX;
+        this.prevY = prevY;
+        this.currentX = currentX;
+        this.currentY = currentY;
+        this.prevParentData = preParentData;
+        this.currentParentData = currentParentData;
+        this.prevOriginalParent = prevOriginalParent;
+        this.currentOriginalParent = currentOriginalParent;
+        this.beforeMove = beforeMove;
+        this.afterMove = afterMove;
     }
 
-    public void actionRemove(ArrayList<BlockBean> arrayList, int i, int i2, BlockBean blockBean, BlockBean blockBean2) {
-        this.actionType = 2;
-        this.currentX = i;
-        this.currentY = i2;
-        this.prevParentData = blockBean;
-        this.currentParentData = blockBean2;
+    public void actionRemove(ArrayList<BlockBean> removedData, int currentX, int currentY, BlockBean prevParentData, BlockBean currentParentData) {
+        actionType = ACTION_TYPE_REMOVE;
+        this.currentX = currentX;
+        this.currentY = currentY;
+        this.prevParentData = prevParentData;
+        this.currentParentData = currentParentData;
         this.removedData = new ArrayList<>();
-        for (BlockBean bean : arrayList) {
+        for (BlockBean bean : removedData) {
             this.removedData.add(bean.clone());
         }
     }
 
-    public void actionUpdate(BlockBean blockBean, BlockBean blockBean2) {
-        this.actionType = 1;
-        this.prevUpdateData = blockBean.clone();
-        this.currentUpdateData = blockBean2.clone();
+    public void actionUpdate(BlockBean prevUpdateData, BlockBean currentUpdateData) {
+        actionType = ACTION_TYPE_UPDATE;
+        this.prevUpdateData = prevUpdateData.clone();
+        this.currentUpdateData = currentUpdateData.clone();
     }
 
-    public void copy(HistoryBlockBean historyBlockBean) {
-        this.actionType = historyBlockBean.actionType;
-        BlockBean blockBean = historyBlockBean.prevUpdateData;
-        if (blockBean != null) {
-            this.prevUpdateData = blockBean.clone();
+    public void copy(HistoryBlockBean bean) {
+        actionType = bean.actionType;
+        if (bean.prevUpdateData != null) {
+            prevUpdateData = bean.prevUpdateData.clone();
         }
-        BlockBean blockBean2 = historyBlockBean.currentUpdateData;
-        if (blockBean2 != null) {
-            this.currentUpdateData = blockBean2.clone();
+        if (bean.currentUpdateData != null) {
+            currentUpdateData = bean.currentUpdateData.clone();
         }
-        if (historyBlockBean.beforeMove != null) {
-            this.beforeMove = new ArrayList<>();
-            for (BlockBean bean : historyBlockBean.beforeMove) {
-                this.beforeMove.add(bean.clone());
+        if (bean.beforeMove != null) {
+            beforeMove = new ArrayList<>();
+            for (BlockBean beforeMoveBean : bean.beforeMove) {
+                beforeMove.add(beforeMoveBean.clone());
             }
         }
-        if (historyBlockBean.afterMove != null) {
-            this.afterMove = new ArrayList<>();
-            for (BlockBean bean : historyBlockBean.afterMove) {
-                this.afterMove.add(bean.clone());
+        if (bean.afterMove != null) {
+            afterMove = new ArrayList<>();
+            for (BlockBean afterMoveBean : bean.afterMove) {
+                afterMove.add(afterMoveBean.clone());
             }
         }
-        if (historyBlockBean.addedData != null) {
-            this.addedData = new ArrayList<>();
-            for (BlockBean addedDatum : historyBlockBean.addedData) {
-                this.addedData.add(addedDatum.clone());
+        if (bean.addedData != null) {
+            addedData = new ArrayList<>();
+            for (BlockBean addedDatum : bean.addedData) {
+                addedData.add(addedDatum.clone());
             }
         }
-        if (historyBlockBean.removedData != null) {
-            this.removedData = new ArrayList<>();
-            for (BlockBean removedDatum : historyBlockBean.removedData) {
-                this.removedData.add(removedDatum.clone());
+        if (bean.removedData != null) {
+            removedData = new ArrayList<>();
+            for (BlockBean removedDatum : bean.removedData) {
+                removedData.add(removedDatum.clone());
             }
         }
-        this.prevX = historyBlockBean.prevX;
-        this.prevY = historyBlockBean.prevY;
-        this.currentX = historyBlockBean.currentX;
-        this.currentY = historyBlockBean.currentY;
-        BlockBean blockBean3 = historyBlockBean.prevParentData;
-        if (blockBean3 != null) {
-            this.prevParentData = blockBean3.clone();
+        prevX = bean.prevX;
+        prevY = bean.prevY;
+        currentX = bean.currentX;
+        currentY = bean.currentY;
+        if (bean.prevParentData != null) {
+            prevParentData = bean.prevParentData.clone();
         }
-        BlockBean blockBean4 = historyBlockBean.currentParentData;
-        if (blockBean4 != null) {
-            this.currentParentData = blockBean4.clone();
+        if (bean.currentParentData != null) {
+            currentParentData = bean.currentParentData.clone();
         }
-        BlockBean blockBean5 = historyBlockBean.prevOriginalParent;
-        if (blockBean5 != null) {
-            this.prevOriginalParent = blockBean5.clone();
+        if (bean.prevOriginalParent != null) {
+            prevOriginalParent = bean.prevOriginalParent.clone();
         }
-        BlockBean blockBean6 = historyBlockBean.currentOriginalParent;
-        if (blockBean6 != null) {
-            this.currentOriginalParent = blockBean6.clone();
+        if (bean.currentOriginalParent != null) {
+            currentOriginalParent = bean.currentOriginalParent.clone();
         }
     }
 
     public int getActionType() {
-        return this.actionType;
+        return actionType;
     }
 
     public ArrayList<BlockBean> getAddedData() {
-        return this.addedData;
+        return addedData;
     }
 
     public ArrayList<BlockBean> getAfterMoveData() {
-        return this.afterMove;
+        return afterMove;
     }
 
     public ArrayList<BlockBean> getBeforeMoveData() {
-        return this.beforeMove;
+        return beforeMove;
     }
 
     public BlockBean getCurrentOriginalParent() {
-        return this.currentOriginalParent;
+        return currentOriginalParent;
     }
 
     public BlockBean getCurrentParentData() {
-        return this.currentParentData;
+        return currentParentData;
     }
 
     public BlockBean getCurrentUpdateData() {
-        return this.currentUpdateData;
+        return currentUpdateData;
     }
 
     public int getCurrentX() {
-        return this.currentX;
+        return currentX;
     }
 
     public int getCurrentY() {
-        return this.currentY;
+        return currentY;
     }
 
     public BlockBean getPrevOriginalParent() {
-        return this.prevOriginalParent;
+        return prevOriginalParent;
     }
 
     public BlockBean getPrevParentData() {
-        return this.prevParentData;
+        return prevParentData;
     }
 
     public BlockBean getPrevUpdateData() {
-        return this.prevUpdateData;
+        return prevUpdateData;
     }
 
     public int getPrevX() {
-        return this.prevX;
+        return prevX;
     }
 
     public int getPrevY() {
-        return this.prevY;
+        return prevY;
     }
 
     public ArrayList<BlockBean> getRemovedData() {
-        return this.removedData;
+        return removedData;
     }
 
     @Override
