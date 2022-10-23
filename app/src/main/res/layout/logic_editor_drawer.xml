@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@id/layout_drawer"
+    android:id="@+id/layout_drawer"
     android:layout_width="150dp"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/action_bar_height"
@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@id/tv_block_collection"
+        android:id="@+id/tv_block_collection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -26,7 +26,7 @@
         android:background="@color/scolor_light_grey" />
 
     <androidx.cardview.widget.CardView
-        android:id="@id/new_button"
+        android:id="@+id/new_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -58,12 +58,12 @@
     </androidx.cardview.widget.CardView>
 
     <com.besome.sketch.lib.ui.CustomScrollView
-        android:id="@id/scv"
+        android:id="@+id/scv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@id/layout_favorite"
+            android:id="@+id/layout_favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
