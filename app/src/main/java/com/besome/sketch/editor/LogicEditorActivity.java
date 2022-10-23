@@ -2532,10 +2532,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        Rs p;
-        BlockBean blockBean;
-        Rs p2;
-        BlockBean blockBean2;
         int actionMasked = motionEvent.getActionMasked();
         if (motionEvent.getPointerId(motionEvent.getActionIndex()) > 0) {
             return true;
@@ -2552,14 +2548,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             this.Y = view;
             return true;
         }
-        BlockBean blockBean3 = null;
         if (actionMasked == MotionEvent.ACTION_MOVE) {
             if (!this.u) {
-                if (Math.abs((this.q - this.s) - motionEvent.getX()) < this.A && Math.abs((this.r - this.t) - motionEvent.getY()) < this.A) {
-                    return false;
+                if (Math.abs(this.q - this.s - motionEvent.getX()) >= this.A || Math.abs(this.r - this.t - motionEvent.getY()) >= this.A) {
+                    this.Y = null;
+                    this.Z.removeCallbacks(this.aa);
                 }
-                this.Y = null;
-                this.Z.removeCallbacks(this.aa);
                 return false;
             }
             this.Z.removeCallbacks(this.aa);
@@ -2651,11 +2645,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             this.w.a((Ts) this.w.V.get(this.y), rs2);
                         }
                         rs2.E = w;
-                        p = w.p();
+                        w.p().k();
                     } else {
-                        p = rs2.p();
+                        rs2.p().k();
                     }
-                    p.k();
                 }
                 q();
             } else if (this.N.b()) {
@@ -2665,28 +2658,29 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     n(rs5.T);
                 } else {
                     b(false);
-                    int intValue = Integer.parseInt(rs5.getBean().id);
+                    int id = Integer.parseInt(rs5.getBean().id);
+                    BlockBean blockBean2;
                     if (w != null) {
                         BlockBean clone = w.getBean().clone();
                         if (x == 0) {
-                            clone.nextBlock = intValue;
+                            clone.nextBlock = id;
                         } else if (x == 2) {
-                            clone.subStack1 = intValue;
+                            clone.subStack1 = id;
                         } else if (x == 3) {
-                            clone.subStack2 = intValue;
+                            clone.subStack2 = id;
                         } else if (x == 5) {
-                            clone.parameters.set(this.y, "@" + intValue);
+                            clone.parameters.set(this.y, "@" + id);
                         }
                         blockBean2 = clone;
                     } else {
                         blockBean2 = null;
                     }
-                    ArrayList<Rs> allChildren = rs5.getAllChildren();
                     ArrayList<BlockBean> arrayList = new ArrayList<>();
-                    for (Rs allChild : allChildren) {
+                    for (Rs allChild : rs5.getAllChildren()) {
                         arrayList.add(allChild.getBean().clone());
                     }
                     b(rs5);
+                    BlockBean blockBean3 = null;
                     if (w != null) {
                         blockBean3 = w.getBean().clone();
                     }
@@ -2699,7 +2693,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 d(false);
                 Rs rs7 = (Rs) view;
                 this.o.a(rs7, 0);
-                Rs p3;
                 if (w != null) {
                     if (this.x == 0) {
                         w.ha = (Integer) view.getTag();
@@ -2714,11 +2707,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         this.w.a((Ts) this.w.V.get(this.y), rs7);
                     }
                     rs7.E = w;
-                    p3 = w.p();
+                    w.p().k();
                 } else {
-                    p3 = rs7.p();
+                    rs7.p().k();
                 }
-                p3.k();
                 c(rs7);
             } else if (this.N.c()) {
                 c(false);
@@ -2743,14 +2735,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         this.w.a((Ts) this.w.V.get(this.y), rs10);
                     }
                     rs10.E = w;
-                    p2 = w.p();
+                    w.p().k();
                 } else {
-                    p2 = rs10.p();
+                    rs10.p().k();
                 }
-                p2.k();
-                ArrayList<Rs> allChildren2 = rs10.getAllChildren();
                 ArrayList<BlockBean> arrayList2 = new ArrayList<>();
-                for (Rs rs : allChildren2) {
+                for (Rs rs : rs10.getAllChildren()) {
                     BlockBean clone2 = rs.getBean().clone();
                     clone2.id = String.valueOf(Integer.parseInt(clone2.id) + 99000000);
                     if (clone2.nextBlock > 0) {
@@ -2786,6 +2776,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     int addTargetId = this.o.getAddTargetId();
                     BlockBean clone3 = addTargetId >= 0 ? this.o.a(addTargetId).getBean().clone() : null;
                     Rs a4 = a(rs13, v[0], v[1], false);
+                    BlockBean blockBean3 = null;
                     if (addTargetId >= 0) {
                         blockBean3 = this.o.a(addTargetId).getBean().clone();
                     }
@@ -2807,6 +2798,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     if (a5.size() > 0) {
                         Rs a6 = this.o.a(a5.get(0).id);
                         a(a6, v[0], v[1], true);
+                        BlockBean blockBean3 = null;
                         if (addTargetId2 >= 0) {
                             blockBean3 = this.o.a(addTargetId2).getBean().clone();
                         }
@@ -2818,17 +2810,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     this.o.c();
                 } else {
                     this.o.a(rs13, 0);
-                    int intValue2 = Integer.parseInt(rs13.getBean().id);
+                    int id = Integer.parseInt(rs13.getBean().id);
+                    BlockBean blockBean;
                     if (w != null) {
                         blockBean = w.getBean().clone();
                         if (x == 0) {
-                            blockBean.nextBlock = intValue2;
+                            blockBean.nextBlock = id;
                         } else if (x == 2) {
-                            blockBean.subStack1 = intValue2;
+                            blockBean.subStack1 = id;
                         } else if (x == 3) {
-                            blockBean.subStack2 = intValue2;
+                            blockBean.subStack2 = id;
                         } else if (x == 5) {
-                            blockBean.parameters.set(this.y, "@" + intValue2);
+                            blockBean.parameters.set(this.y, "@" + id);
                         }
                     } else {
                         blockBean = null;
@@ -2846,6 +2839,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         arrayList4.add(rs.getBean().clone());
                     }
                     BlockBean clone7 = w != null ? w.getBean().clone() : null;
+                    BlockBean blockBean3 = null;
                     if (a7 != null) {
                         blockBean3 = a7.getBean().clone();
                     }
