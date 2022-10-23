@@ -2260,20 +2260,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 222) {
-            if (i2 != Activity.RESULT_OK) {
-                return;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 222) {
+                c(data.getStringExtra("block_name"), data.getStringExtra("block_spec"));
+            } else if (requestCode == 224) {
+                a(7, 0xff2ca5e2);
+            } else if (requestCode == 463 && data.getBooleanExtra("req_update_design_activity", false)) {
+                z();
             }
-            c(intent.getStringExtra("block_name"), intent.getStringExtra("block_spec"));
-        } else if (i == 224) {
-            if (i2 != Activity.RESULT_OK) {
-                return;
-            }
-            a(7, 0xff2ca5e2);
-        } else if (i == 463 && i2 == Activity.RESULT_OK && intent.getBooleanExtra("req_update_design_activity", false)) {
-            z();
         }
     }
 
