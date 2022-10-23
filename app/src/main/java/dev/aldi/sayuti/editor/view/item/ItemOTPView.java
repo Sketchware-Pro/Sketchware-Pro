@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -15,13 +17,11 @@ import a.a.a.wB;
 
 public class ItemOTPView extends LinearLayout implements sy {
 
-
-    public ViewBean f16a;
-    public boolean b;
-    public boolean c;
-    public Paint d;
-    public float e;
-    public ImageView f;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean hasFixed;
+    private Paint paint;
+    private float paddingFactor;
 
     public ItemOTPView(Context context) {
         super(context);
@@ -30,59 +30,61 @@ public class ItemOTPView extends LinearLayout implements sy {
 
     @Deprecated
     public void a(Context context) {
-        this.e = wB.a(context, 1.0f);
-        this.d = new Paint(1);
-        this.d.setColor(-1785080368);
+        paddingFactor = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
+
         setDrawingCacheEnabled(true);
-        this.f = new ImageView(getContext());
-        this.f.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-        this.f.setImageResource(R.drawable.item_otp_view);
-        this.f.setScaleType(ImageView.ScaleType.FIT_XY);
-        this.f.setPadding(0, 0, 0, 0);
-        addView(this.f);
-        setGravity(17);
+        ImageView imageView = new ImageView(getContext());
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageView.setImageResource(R.drawable.item_otp_view);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setPadding(0, 0, 0, 0);
+        addView(imageView);
+        setGravity(Gravity.CENTER);
     }
 
     @Override
     public ViewBean getBean() {
-        return this.f16a;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.f16a = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.c;
+        return hasFixed;
     }
 
     public void setFixed(boolean z) {
-        this.c = z;
+        hasFixed = z;
     }
 
     public boolean getSelection() {
-        return this.b;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.b = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.b) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
+        if (hasSelection) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
         super.onDraw(canvas);
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.e;
-        super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 }
