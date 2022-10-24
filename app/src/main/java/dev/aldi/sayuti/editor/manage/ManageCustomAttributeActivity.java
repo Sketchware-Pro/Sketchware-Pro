@@ -26,30 +26,27 @@ import mod.hey.studios.util.Helper;
 
 public class ManageCustomAttributeActivity extends AppCompatActivity {
 
-    public Intent i = new Intent();
-    public ArrayList<String> list = new ArrayList<>();
-    public ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
-    public ListView listview;
-    public HashMap<String, Object> map = new HashMap<>();
+    private final ArrayList<HashMap<String, Object>> customAttributeLocations = new ArrayList<>();
+    private ListView listView;
     /**
      * The current project's ID, like 605
      */
-    public String str = "";
-    public String str2 = "";
+    private String sc_id = "";
+    private String xmlFilename = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_custom_attribute);
-        listview = findViewById(R.id.manage_attr_listview);
+        listView = findViewById(R.id.manage_attr_listview);
         initList();
         initToolbar();
     }
 
     public void initList() {
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
-            str = getIntent().getStringExtra("sc_id");
-            str2 = getIntent().getStringExtra("file_name").replaceAll(".xml", "");
+            sc_id = getIntent().getStringExtra("sc_id");
+            xmlFilename = getIntent().getStringExtra("file_name").replaceAll(".xml", "");
         }
         addType("Toolbar");
         addType("AppBarLayout");
@@ -57,14 +54,14 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         addType("FloatingActionButton");
         addType("DrawerLayout");
         addType("NavigationDrawer");
-        listview.setAdapter(new CustomAdapter(listMap));
-        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+        listView.setAdapter(new CustomAdapter(customAttributeLocations));
+        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
     }
 
     public void addType(String type) {
-        map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("type", type);
-        listMap.add(map);
+        customAttributeLocations.add(map);
     }
 
     public void initToolbar() {
@@ -119,9 +116,10 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
             ((ImageView) convertView.findViewById(R.id.cus_attr_btn)).setImageResource(R.drawable.ic_property_inject);
             ((TextView) convertView.findViewById(R.id.cus_attr_text)).setText(_data.get(position).get("type").toString());
             linearLayout.setOnClickListener(v -> {
+                Intent i = new Intent();
                 i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);
-                i.putExtra("sc_id", str);
-                i.putExtra("file_name", str2);
+                i.putExtra("sc_id", sc_id);
+                i.putExtra("file_name", xmlFilename);
                 i.putExtra("widget_type", _data.get(position).get("type").toString().toLowerCase());
                 startActivity(i);
             });
