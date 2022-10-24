@@ -23,93 +23,93 @@ public class ExtraViewPane {
     public static void a(View view, ViewBean viewBean, ViewPane viewPane, kC kCVar) {
         switch (getLastPath(viewBean.convert)) {
             case "SearchView":
-                a((EditText) view, viewBean);
+                handleSearchView((EditText) view, viewBean);
                 break;
 
             case "AutoCompleteTextView":
-                b((AutoCompleteTextView) view, viewBean);
+                handleAutoCompleteTextView((AutoCompleteTextView) view, viewBean);
                 break;
 
             case "MultiAutoCompleteTextView":
-                c((MultiAutoCompleteTextView) view, viewBean);
+                handleMultiAutoCompleteTextView((MultiAutoCompleteTextView) view, viewBean);
                 break;
 
             case "CircleImageView":
                 if (viewBean.type == ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW) {
-                    d((ItemCircleImageView) view, viewBean, viewPane, kCVar);
+                    handleCircleImageView((ItemCircleImageView) view, viewBean, viewPane, kCVar);
                 }
                 break;
         }
     }
 
-    public static void a(EditText editText, ViewBean viewBean) {
-        editText.setHint(viewBean.text.hint);
-        editText.setHintTextColor(viewBean.text.hintColor);
-        editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.search_icon_grey, 0);
+    private static void handleSearchView(EditText item, ViewBean viewBean) {
+        item.setHint(viewBean.text.hint);
+        item.setHintTextColor(viewBean.text.hintColor);
+        item.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.search_icon_grey, 0);
     }
 
-    public static void b(AutoCompleteTextView autoCompleteTextView, ViewBean viewBean) {
-        autoCompleteTextView.setHint(viewBean.text.hint);
-        autoCompleteTextView.setHintTextColor(viewBean.text.hintColor);
+    private static void handleAutoCompleteTextView(AutoCompleteTextView item, ViewBean viewBean) {
+        item.setHint(viewBean.text.hint);
+        item.setHintTextColor(viewBean.text.hintColor);
     }
 
-    public static void c(MultiAutoCompleteTextView multiAutoCompleteTextView, ViewBean viewBean) {
-        multiAutoCompleteTextView.setHint(viewBean.text.hint);
-        multiAutoCompleteTextView.setHintTextColor(viewBean.text.hintColor);
+    private static void handleMultiAutoCompleteTextView(MultiAutoCompleteTextView item, ViewBean viewBean) {
+        item.setHint(viewBean.text.hint);
+        item.setHintTextColor(viewBean.text.hintColor);
     }
 
-    public static void d(ItemCircleImageView itemCircleImageView, ViewBean viewBean, ViewPane viewPane, kC kCVar) {
-        if (kCVar.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-            itemCircleImageView.setImageResource(viewPane.getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", viewPane.getContext().getPackageName()));
+    private static void handleCircleImageView(ItemCircleImageView item, ViewBean viewBean, ViewPane viewPane, kC kC) {
+        if (kC.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+            item.setImageResource(viewPane.getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", viewPane.getContext().getPackageName()));
         } else if (viewBean.image.resName.equals("default_image")) {
-            itemCircleImageView.setImageResource(R.drawable.default_image);
+            item.setImageResource(R.drawable.default_image);
         } else {
             try {
-                Bitmap decodeFile = BitmapFactory.decodeFile(kCVar.f(viewBean.image.resName));
+                Bitmap decodeFile = BitmapFactory.decodeFile(kC.f(viewBean.image.resName));
                 int round = Math.round(viewPane.getResources().getDisplayMetrics().density / 2.0f);
-                itemCircleImageView.setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, round * decodeFile.getHeight(), true));
+                item.setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, round * decodeFile.getHeight(), true));
             } catch (Exception e) {
-                itemCircleImageView.setImageResource(R.drawable.default_image);
+                item.setImageResource(R.drawable.default_image);
             }
         }
-        itemCircleImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        for (String splitLine : viewBean.inject.split("\n")) {
-            if (splitLine.contains("border_color")) {
-                splitLine = splitLine.replaceAll("app:civ_border_color=\"|\"", "");
+        item.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        for (String line : viewBean.inject.split("\n")) {
+            if (line.contains("border_color")) {
+                line = line.replaceAll("app:civ_border_color=\"|\"", "");
 
-                if (!splitLine.startsWith("@")) {
+                if (!line.startsWith("@")) {
                     try {
-                        itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
+                        item.setBorderColor(Color.parseColor(line));
                     } catch (Exception e) {
-                        itemCircleImageView.setBorderColor(0xff008dcd);
+                        item.setBorderColor(0xff008dcd);
                         SketchwareUtil.toastError("Invalid border color in CircleImageView " + viewBean.id + "!");
                     }
                 }
             }
 
-            if (splitLine.contains("background_color")) {
-                splitLine = splitLine.replaceAll("app:civ_circle_background_color=\"|\"", "");
+            if (line.contains("background_color")) {
+                line = line.replaceAll("app:civ_circle_background_color=\"|\"", "");
 
-                if (!splitLine.startsWith("@")) {
+                if (!line.startsWith("@")) {
                     try {
-                        itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
+                        item.setCircleBackgroundColor(Color.parseColor(line));
                     } catch (Exception e) {
-                        itemCircleImageView.setBorderColor(0xff008dcd);
+                        item.setBorderColor(0xff008dcd);
                         SketchwareUtil.toastError("Invalid background color in CircleImageView " + viewBean.id + "!");
                     }
                 }
             }
-            if (splitLine.contains("border_width")) {
+            if (line.contains("border_width")) {
                 try {
-                    itemCircleImageView.setBorderWidth(Integer.parseInt(splitLine.replaceAll("app:civ_border_width=\"|dp\"", "")));
+                    item.setBorderWidth(Integer.parseInt(line.replaceAll("app:civ_border_width=\"|dp\"", "")));
                 } catch (Exception e) {
-                    itemCircleImageView.setBorderWidth(3);
+                    item.setBorderWidth(3);
                 }
             }
         }
     }
 
-    public static String getLastPath(String str) {
+    private static String getLastPath(String str) {
         if (!str.contains(".")) {
             return str;
         }
