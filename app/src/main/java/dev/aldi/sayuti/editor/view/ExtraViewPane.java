@@ -76,20 +76,27 @@ public class ExtraViewPane {
         for (String splitLine : viewBean.inject.split("\n")) {
             if (splitLine.contains("border_color")) {
                 splitLine = splitLine.replaceAll("app:civ_border_color=\"|\"", "");
-                try {
-                    itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
-                } catch (Exception e) {
-                    itemCircleImageView.setBorderColor(0xff008dcd);
-                    SketchwareUtil.toastError("Invalid border color in CircleImageView " + viewBean.id + "!");
+
+                if (!splitLine.startsWith("@")) {
+                    try {
+                        itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
+                    } catch (Exception e) {
+                        itemCircleImageView.setBorderColor(0xff008dcd);
+                        SketchwareUtil.toastError("Invalid border color in CircleImageView " + viewBean.id + "!");
+                    }
                 }
             }
+
             if (splitLine.contains("background_color")) {
                 splitLine = splitLine.replaceAll("app:civ_circle_background_color=\"|\"", "");
-                try {
-                    itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
-                } catch (Exception e) {
-                    itemCircleImageView.setBorderColor(0xff008dcd);
-                    SketchwareUtil.toastError("Invalid background color in CircleImageView " + viewBean.id + "!");
+
+                if (!splitLine.startsWith("@")) {
+                    try {
+                        itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
+                    } catch (Exception e) {
+                        itemCircleImageView.setBorderColor(0xff008dcd);
+                        SketchwareUtil.toastError("Invalid background color in CircleImageView " + viewBean.id + "!");
+                    }
                 }
             }
             if (splitLine.contains("border_width")) {
