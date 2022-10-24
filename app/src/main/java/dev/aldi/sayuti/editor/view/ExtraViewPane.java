@@ -89,7 +89,7 @@ public class ExtraViewPane {
                     itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
                 } catch (Exception e) {
                     itemCircleImageView.setBorderColor(0xff008dcd);
-                    bB.a(viewPane.getContext(), "Invalid backgroud color!", 0).show();
+                    bB.a(viewPane.getContext(), "Invalid background color!", 0).show();
                 }
             }
             if (splitLine.contains("border_width")) {
