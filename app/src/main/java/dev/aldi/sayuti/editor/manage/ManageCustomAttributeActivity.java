@@ -27,7 +27,6 @@ import mod.hey.studios.util.Helper;
 public class ManageCustomAttributeActivity extends AppCompatActivity {
 
     private final List<String> customAttributeLocations = new LinkedList<>();
-    private ListView listView;
     private String sc_id = "";
     private String xmlFilename = "";
 
@@ -35,38 +34,34 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_custom_attribute);
-        listView = findViewById(R.id.manage_attr_listview);
-        initList();
-        initToolbar();
-    }
 
-    public void initList() {
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("AppCompat Injection Manager");
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(back);
+
+        ListView listView = findViewById(R.id.manage_attr_listview);
+
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
             sc_id = getIntent().getStringExtra("sc_id");
             xmlFilename = getIntent().getStringExtra("file_name").replaceAll(".xml", "");
+            addType("Toolbar");
+            addType("AppBarLayout");
+            addType("CoordinatorLayout");
+            addType("FloatingActionButton");
+            addType("DrawerLayout");
+            addType("NavigationDrawer");
+            listView.setAdapter(new CustomAdapter(customAttributeLocations));
+        } else {
+            finish();
         }
-        addType("Toolbar");
-        addType("AppBarLayout");
-        addType("CoordinatorLayout");
-        addType("FloatingActionButton");
-        addType("DrawerLayout");
-        addType("NavigationDrawer");
-        listView.setAdapter(new CustomAdapter(customAttributeLocations));
-        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
     }
 
-    public void addType(String type) {
+    private void addType(String type) {
         customAttributeLocations.add(type);
     }
 
-    public void initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("AppCompat Injection Manager");
-        ImageView imageView = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(imageView);
-        imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
-    }
-
-    public void makeup(View view) {
+    private void makeup(View view) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadii(new float[]{10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f});
