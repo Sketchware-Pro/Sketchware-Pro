@@ -14,9 +14,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.sketchware.remod.R;
 
-import a.a.a.bB;
 import a.a.a.kC;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
 
 public class ExtraViewPane {
@@ -80,7 +80,7 @@ public class ExtraViewPane {
                     itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
                 } catch (Exception e) {
                     itemCircleImageView.setBorderColor(0xff008dcd);
-                    bB.a(viewPane.getContext(), "Invalid border color in CircleImageView " + viewBean.id + "!", 0).show();
+                    SketchwareUtil.toastError("Invalid border color in CircleImageView " + viewBean.id + "!");
                 }
             }
             if (splitLine.contains("background_color")) {
@@ -89,7 +89,7 @@ public class ExtraViewPane {
                     itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
                 } catch (Exception e) {
                     itemCircleImageView.setBorderColor(0xff008dcd);
-                    bB.a(viewPane.getContext(), "Invalid background color in CircleImageView " + viewBean.id + "!", 0).show();
+                    SketchwareUtil.toastError("Invalid background color in CircleImageView " + viewBean.id + "!");
                 }
             }
             if (splitLine.contains("border_width")) {
