@@ -3,10 +3,11 @@ package dev.aldi.sayuti.editor.view.palette;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 import com.sketchware.remod.R;
+
+import mod.agus.jcoderz.beans.ViewBeans;
 
 public class IconCollapsingToolbar extends IconBase {
 
@@ -24,14 +25,13 @@ public class IconCollapsingToolbar extends IconBase {
     @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
-        viewBean.type = 37;
-        LayoutBean layoutBean = viewBean.layout;
-        layoutBean.orientation = VERTICAL;
-        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutBean.paddingLeft = 8;
-        layoutBean.paddingTop = 8;
-        layoutBean.paddingRight = 8;
-        layoutBean.paddingBottom = 8;
+        viewBean.type = ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT;
+        viewBean.layout.orientation = VERTICAL;
+        viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        viewBean.layout.paddingLeft = 8;
+        viewBean.layout.paddingTop = 8;
+        viewBean.layout.paddingRight = 8;
+        viewBean.layout.paddingBottom = 8;
         viewBean.convert = "com.google.android.material.appbar.CollapsingToolbarLayout";
         viewBean.inject = "android:fitsSystemWindows=\"true\"\napp:layout_scrollFlags=\"scroll|exitUntilCollapsed\"";
         return viewBean;
