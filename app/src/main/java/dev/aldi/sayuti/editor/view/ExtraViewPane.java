@@ -14,9 +14,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.sketchware.remod.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import a.a.a.bB;
 import a.a.a.kC;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
@@ -75,14 +72,14 @@ public class ExtraViewPane {
                 itemCircleImageView.setImageResource(R.drawable.default_image);
             }
         }
-        itemCircleImageView.setScaleType(ImageView.ScaleType.valueOf("CENTER_CROP"));
-        for (String splitLine : new ArrayList<>(Arrays.asList(viewBean.inject.split("\n")))) {
+        itemCircleImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        for (String splitLine : viewBean.inject.split("\n")) {
             if (splitLine.contains("border_color")) {
                 splitLine = splitLine.replaceAll("app:civ_border_color=\"|\"", "");
                 try {
                     itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
-                } catch (Exception e2) {
-                    itemCircleImageView.setBorderColor(Color.parseColor("#FF008DCD"));
+                } catch (Exception e) {
+                    itemCircleImageView.setBorderColor(0xff008dcd);
                     bB.a(viewPane.getContext(), "Invalid border color!", 0).show();
                 }
             }
@@ -90,15 +87,15 @@ public class ExtraViewPane {
                 splitLine = splitLine.replaceAll("app:civ_circle_background_color=\"|\"", "");
                 try {
                     itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
-                } catch (Exception e3) {
-                    itemCircleImageView.setBorderColor(Color.parseColor("#FF008DCD"));
+                } catch (Exception e) {
+                    itemCircleImageView.setBorderColor(0xff008dcd);
                     bB.a(viewPane.getContext(), "Invalid backgroud color!", 0).show();
                 }
             }
             if (splitLine.contains("border_width")) {
                 try {
                     itemCircleImageView.setBorderWidth(Integer.parseInt(splitLine.replaceAll("app:civ_border_width=\"|dp\"", "")));
-                } catch (Exception e4) {
+                } catch (Exception e) {
                     itemCircleImageView.setBorderWidth(3);
                 }
             }
