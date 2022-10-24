@@ -28,9 +28,6 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> customAttributeLocations = new ArrayList<>();
     private ListView listView;
-    /**
-     * The current project's ID, like 605
-     */
     private String sc_id = "";
     private String xmlFilename = "";
 
