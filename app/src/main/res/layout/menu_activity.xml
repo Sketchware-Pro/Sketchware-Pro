@@ -12,38 +12,7 @@
         android:background="#ffeeeeee"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff008dcd"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="8dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="8dp">
-
-            <ImageView
-                android:id="@+id/back_i"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/abc_vector_test" />
-
-            <TextView
-                android:id="@+id/pageti"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:padding="8dp"
-                android:text="Block selector menu manager"
-                android:textColor="#ffffffff"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <include layout="@layout/toolbar_improved" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card"

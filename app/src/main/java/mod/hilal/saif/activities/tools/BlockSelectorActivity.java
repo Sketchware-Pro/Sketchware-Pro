@@ -77,9 +77,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     private void initialize() {
         background = findViewById(R.id.back);
-        LinearLayout toolbar = findViewById(R.id.toolbar);
         bottom = findViewById(R.id.bottom);
-        ImageView back_icon = findViewById(R.id.back_i);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
         label = findViewById(R.id.label);
         container = findViewById(R.id.contai);
         spinner1 = findViewById(R.id.spinner);
@@ -94,7 +93,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         value = findViewById(R.id.val);
         LinearLayout add_value = findViewById(R.id.add_val);
         fixbug();
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
         add_value.setOnClickListener(this);
         delete.setOnClickListener(this);
         edit.setOnClickListener(this);
@@ -133,17 +132,11 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             return true;
         });
 
-        options_menu = new ImageView(this);
+        options_menu = findViewById(R.id.ig_toolbar_load_file);
+        options_menu.setVisibility(View.VISIBLE);
         options_menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
-        options_menu.setPadding((int) SketchwareUtil.getDip(9),
-                (int) SketchwareUtil.getDip(9),
-                (int) SketchwareUtil.getDip(9),
-                (int) SketchwareUtil.getDip(9));
-        options_menu.setLayoutParams(new LinearLayout.LayoutParams((int) SketchwareUtil.getDip(40), (int) SketchwareUtil.getDip(40), 0.0f));
-        options_menu.setScaleType(ImageView.ScaleType.FIT_XY);
         options_menu.setOnClickListener(v -> showOptionsMenu());
-        toolbar.addView(options_menu);
-        applyRippleToView(back_icon, delete, edit, add, cancel, save, add_value, options_menu);
+        applyRippleToView(back, delete, edit, add, cancel, save, add_value, options_menu);
     }
 
     private void save() {
