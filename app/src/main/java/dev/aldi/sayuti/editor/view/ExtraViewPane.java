@@ -12,6 +12,7 @@ import android.widget.MultiAutoCompleteTextView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import a.a.a.bB;
 import a.a.a.kC;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
+import mod.agus.jcoderz.beans.ViewBeans;
 
 public class ExtraViewPane {
     public static void a(View view, ViewBean viewBean, ViewPane viewPane, kC kCVar) {
@@ -36,7 +38,7 @@ public class ExtraViewPane {
                 break;
 
             case "CircleImageView":
-                if (viewBean.type == 43) {
+                if (viewBean.type == ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW) {
                     d((ItemCircleImageView) view, viewBean, viewPane, kCVar);
                 }
                 break;
@@ -46,7 +48,7 @@ public class ExtraViewPane {
     public static void a(EditText editText, ViewBean viewBean) {
         editText.setHint(viewBean.text.hint);
         editText.setHintTextColor(viewBean.text.hintColor);
-        editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 2131166060, 0);
+        editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.search_icon_grey, 0);
     }
 
     public static void b(AutoCompleteTextView autoCompleteTextView, ViewBean viewBean) {
@@ -63,14 +65,14 @@ public class ExtraViewPane {
         if (kCVar.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
             itemCircleImageView.setImageResource(viewPane.getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", viewPane.getContext().getPackageName()));
         } else if (viewBean.image.resName.equals("default_image")) {
-            itemCircleImageView.setImageResource(2131165522);
+            itemCircleImageView.setImageResource(R.drawable.default_image);
         } else {
             try {
                 Bitmap decodeFile = BitmapFactory.decodeFile(kCVar.f(viewBean.image.resName));
                 int round = Math.round(viewPane.getResources().getDisplayMetrics().density / 2.0f);
                 itemCircleImageView.setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, round * decodeFile.getHeight(), true));
             } catch (Exception e) {
-                itemCircleImageView.setImageResource(2131165522);
+                itemCircleImageView.setImageResource(R.drawable.default_image);
             }
         }
         itemCircleImageView.setScaleType(ImageView.ScaleType.valueOf("CENTER_CROP"));
