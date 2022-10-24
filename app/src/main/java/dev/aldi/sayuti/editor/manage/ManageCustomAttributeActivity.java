@@ -18,15 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sketchware.remod.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import dev.aldi.sayuti.editor.injection.AddCustomAttributeActivity;
 import mod.hey.studios.util.Helper;
 
 public class ManageCustomAttributeActivity extends AppCompatActivity {
 
-    private final ArrayList<HashMap<String, Object>> customAttributeLocations = new ArrayList<>();
+    private final List<String> customAttributeLocations = new LinkedList<>();
     private ListView listView;
     private String sc_id = "";
     private String xmlFilename = "";
@@ -56,9 +56,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
     }
 
     public void addType(String type) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("type", type);
-        customAttributeLocations.add(map);
+        customAttributeLocations.add(type);
     }
 
     public void initToolbar() {
@@ -82,9 +80,9 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
 
     private class CustomAdapter extends BaseAdapter {
 
-        private final ArrayList<HashMap<String, Object>> _data;
+        private final List<String> _data;
 
-        public CustomAdapter(ArrayList<HashMap<String, Object>> arrayList) {
+        public CustomAdapter(List<String> arrayList) {
             _data = arrayList;
         }
 
@@ -94,7 +92,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         }
 
         @Override
-        public HashMap<String, Object> getItem(int position) {
+        public String getItem(int position) {
             return _data.get(position);
         }
 
@@ -111,13 +109,13 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
             LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
             makeup(linearLayout);
             ((ImageView) convertView.findViewById(R.id.cus_attr_btn)).setImageResource(R.drawable.ic_property_inject);
-            ((TextView) convertView.findViewById(R.id.cus_attr_text)).setText(_data.get(position).get("type").toString());
+            ((TextView) convertView.findViewById(R.id.cus_attr_text)).setText(_data.get(position));
             linearLayout.setOnClickListener(v -> {
                 Intent i = new Intent();
                 i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);
                 i.putExtra("sc_id", sc_id);
                 i.putExtra("file_name", xmlFilename);
-                i.putExtra("widget_type", _data.get(position).get("type").toString().toLowerCase());
+                i.putExtra("widget_type", _data.get(position).toLowerCase());
                 startActivity(i);
             });
             return convertView;
