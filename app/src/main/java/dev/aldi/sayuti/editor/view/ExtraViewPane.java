@@ -80,7 +80,7 @@ public class ExtraViewPane {
                     itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
                 } catch (Exception e) {
                     itemCircleImageView.setBorderColor(0xff008dcd);
-                    bB.a(viewPane.getContext(), "Invalid border color!", 0).show();
+                    bB.a(viewPane.getContext(), "Invalid border color in CircleImageView " + viewBean.id + "!", 0).show();
                 }
             }
             if (splitLine.contains("background_color")) {
@@ -89,7 +89,7 @@ public class ExtraViewPane {
                     itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
                 } catch (Exception e) {
                     itemCircleImageView.setBorderColor(0xff008dcd);
-                    bB.a(viewPane.getContext(), "Invalid background color!", 0).show();
+                    bB.a(viewPane.getContext(), "Invalid background color in CircleImageView " + viewBean.id + "!", 0).show();
                 }
             }
             if (splitLine.contains("border_width")) {
