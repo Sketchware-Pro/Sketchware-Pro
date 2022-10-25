@@ -274,7 +274,8 @@ public class Ox {
             }
         }
         a.x.handleWidget(x(viewBean.convert));
-        if (viewBean.getClassInfo().b("LinearLayout") && !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
+        if (viewBean.getClassInfo().a("LinearLayout") &&
+                !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
             int orientation = viewBean.layout.orientation;
             if (orientation == LinearLayout.HORIZONTAL) {
                 widgetTag.a("android", "orientation", "horizontal");
