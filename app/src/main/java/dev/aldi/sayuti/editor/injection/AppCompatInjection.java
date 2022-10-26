@@ -13,15 +13,11 @@ import mod.hey.studios.util.Helper;
 
 public class AppCompatInjection {
 
-    public jq jq;
-    public HashMap<String, Object> map = new HashMap<>();
-    public String path;
-    public ProjectFileBean pfb;
-    ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
+    private String path;
+    private final ProjectFileBean projectFile;
 
     public AppCompatInjection(jq jqVar, ProjectFileBean fileBean) {
-        jq = jqVar;
-        pfb = fileBean;
+        projectFile = fileBean;
         String str = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + jqVar.sc_id + "/injection/appcompat/" + fileBean.fileName;
         path = str;
         path = str;
@@ -32,7 +28,8 @@ public class AppCompatInjection {
     }
 
     public void inject(Nx nx, String str) {
-        if (pfb.hasActivityOption(1) || pfb.hasActivityOption(4) || pfb.hasActivityOption(8)) {
+        if (projectFile.hasActivityOption(1) || projectFile.hasActivityOption(4) || projectFile.hasActivityOption(8)) {
+            ArrayList<HashMap<String, Object>> listMap;
             if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
                 listMap = new Gson().fromJson(a(), Helper.TYPE_MAP_LIST);
             } else {
