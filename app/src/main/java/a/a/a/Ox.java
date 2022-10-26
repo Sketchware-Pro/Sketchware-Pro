@@ -31,13 +31,13 @@ import mod.jbk.util.LogUtil;
 
 public class Ox {
 
-    public jq a;
-    public AppCompatInjection aci;
-    public ProjectFileBean b;
-    public ViewBean c;
-    public ArrayList<ViewBean> d;
-    public Nx e = null;
-    public Nx f = null;
+    private jq a;
+    private AppCompatInjection aci;
+    private ProjectFileBean b;
+    private ViewBean c;
+    private ArrayList<ViewBean> d;
+    private Nx e = null;
+    private Nx f = null;
 
     public Ox(jq jqVar, ProjectFileBean projectFileBean) {
         a = jqVar;
@@ -45,7 +45,7 @@ public class Ox {
         aci = new AppCompatInjection(jqVar, projectFileBean);
     }
 
-    public static String x(String str) {
+    private static String x(String str) {
         if (!str.contains(".")) {
             return str;
         }
@@ -174,10 +174,7 @@ public class Ox {
         e.a(0, "xmlns", "android", "http://schemas.android.com/apk/res/android");
     }
 
-    /**
-     * Handles a view's background resource.
-     */
-    public void writeBackgroundResource(Nx nx, ViewBean viewBean) {
+    private void writeBackgroundResource(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String backgroundResource = viewBean.layout.backgroundResource;
         if (backgroundResource == null || "NONE".equalsIgnoreCase(backgroundResource)) {
@@ -236,7 +233,7 @@ public class Ox {
         return e.toCode();
     }
 
-    public void writeWidget(Nx nx, ViewBean viewBean) {
+    private void writeWidget(Nx nx, ViewBean viewBean) {
         viewBean.getClassInfo().a();
         String convert = viewBean.convert;
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
@@ -382,10 +379,7 @@ public class Ox {
         }
     }
 
-    /**
-     * Adds a FAB.
-     */
-    public void writeFabView(Nx nx, ViewBean viewBean) {
+    private void writeFabView(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         Nx floatingActionButtonTag = new Nx("com.google.android.material.floatingactionbutton.FloatingActionButton");
         if (!toNotAdd.contains("android:id")) {
@@ -412,10 +406,7 @@ public class Ox {
         nx.a(floatingActionButtonTag);
     }
 
-    /**
-     * Handles a view's <code>android:gravity</code> property.
-     */
-    public void writeViewGravity(Nx nx, ViewBean viewBean) {
+    private void writeViewGravity(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (!toNotAdd.contains("android:gravity")) {
             int gravity = viewBean.layout.gravity;
@@ -460,11 +451,7 @@ public class Ox {
         }
     }
 
-    /**
-     * Handles an image container's image, the property can either be <code>android:src</code>
-     * or <code>app:srcCompat</code>.
-     */
-    public void writeImgSrcAttr(Nx nx, ViewBean viewBean) {
+    private void writeImgSrcAttr(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String resName = viewBean.image.resName;
         if (resName.length() > 0 && !"NONE".equals(resName)) {
@@ -482,11 +469,9 @@ public class Ox {
     }
 
     /**
-     * Handles an ImageView's scaleType.
-     *
      * @see ImageView.ScaleType
      */
-    public void writeImageScaleType(Nx nx, ViewBean viewBean) {
+    private void writeImageScaleType(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (!toNotAdd.contains("android:scaleType")) {
             if (viewBean.image.scaleType.equals(ImageBean.SCALE_TYPE_CENTER)) {
@@ -508,11 +493,9 @@ public class Ox {
     }
 
     /**
-     * Handles a view's layout gravity.
-     *
      * @see Gravity
      */
-    public void writeLayoutGravity(Nx nx, ViewBean viewBean) {
+    private void writeLayoutGravity(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (!toNotAdd.contains("android:layout_gravity")) {
             int gravity = viewBean.layout.layoutGravity;
@@ -558,11 +541,9 @@ public class Ox {
     }
 
     /**
-     * Handles a view's layout margin.
-     *
      * @see ViewGroup.MarginLayoutParams
      */
-    public void writeLayoutMargin(Nx nx, ViewBean viewBean) {
+    private void writeLayoutMargin(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         LayoutBean layoutBean = viewBean.layout;
         int marginLeft = layoutBean.marginLeft;
@@ -591,14 +572,12 @@ public class Ox {
     }
 
     /**
-     * Handles a view's padding.
-     *
      * @see View#getPaddingLeft()
      * @see View#getPaddingTop()
      * @see View#getPaddingRight()
      * @see View#getPaddingBottom()
      */
-    public void writeViewPadding(Nx nx, ViewBean viewBean) {
+    private void writeViewPadding(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         LayoutBean layoutBean = viewBean.layout;
         int paddingLeft = layoutBean.paddingLeft;
@@ -626,11 +605,7 @@ public class Ox {
         }
     }
 
-    /**
-     * Handles properties for text-related views, such as <code>android:text</code>,
-     * <code>android:textSize</code> and <code>android:textStyle</code>.
-     */
-    public void writeTextAttributes(Nx nx, ViewBean viewBean) {
+    private void writeTextAttributes(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String text = viewBean.text.text;
         if (text != null && text.length() > 0 && !toNotAdd.contains("android:text")) {
@@ -721,7 +696,7 @@ public class Ox {
         }
     }
 
-    public void k(Nx nx, ViewBean viewBean) {
+    private void k(Nx nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (viewBean.enabled == 0 && !toNotAdd.contains("android:enabled")) {
             nx.a("android", "enabled", "false");
@@ -862,7 +837,7 @@ public class Ox {
     /**
      * check whether the attribute (attrName) is injected to the ViewBean or not.
      */
-    public boolean hasAttr(String attrName, ViewBean bean) {
+    private boolean hasAttr(String attrName, ViewBean bean) {
         final String inject = bean.inject;
         if (inject == null || inject.equals("")) return false;
         return Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find();
