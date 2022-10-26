@@ -859,16 +859,6 @@ public class Ox {
         }
     }
 
-    public void n(Nx nx, ViewBean viewBean) {
-        nx.a("app", "tabGravity", "fill");
-        nx.a("app", "tabMode", "fixed");
-        nx.a("app", "tabIndicatorHeight", "3dp");
-        nx.a("app", "tabIndicatorColor", "@android:color/white");
-        nx.a("app", "tabSelectedTextColor", "@android:color/white");
-        nx.a("app", "tabTextColor", "@android:color/white");
-        nx.a("app", "tabTextAppearance", "@android:style/TextAppearance.Widget.TabWidget");
-    }
-
     /**
      * check whether the attribute (attrName) is injected to the ViewBean or not.
      */
