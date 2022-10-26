@@ -64,7 +64,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         }
         path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/".concat(num.concat("/injection/appcompat/".concat(file))));
         if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
-            listMap = new Gson().fromJson(AppCompatInjection.a(), Helper.TYPE_MAP_LIST);
+            listMap = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
         } else {
             listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         }
