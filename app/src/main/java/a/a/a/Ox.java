@@ -235,11 +235,11 @@ public class Ox {
                     case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
                     case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR:
                     case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW:
-                    case 19:
-                    case 22:
-                    case 23:
-                    case 24:
-                    case 32:
+                    case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON:
+                    case ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW:
+                    case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
+                    case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
+                    case ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW:
                         if (!hasAttr("focusable", viewBean))
                             widgetTag.a("android", "focusable", "false");
                         break;
@@ -317,13 +317,13 @@ public class Ox {
         k(widgetTag, viewBean);
         int parentViewType = viewBean.parentType;
         if (!viewBean.convert.equals("include")) {
-            if (parentViewType == 0) {
+            if (parentViewType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
                 writeLayoutGravity(widgetTag, viewBean);
                 int weight = viewBean.layout.weight;
                 if (weight > 0) {
                     widgetTag.a("android", "layout_weight", String.valueOf(weight));
                 }
-            } else if (parentViewType == 2 || parentViewType == 12) {
+            } else if (parentViewType == ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW || parentViewType == ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW) {
                 writeLayoutGravity(widgetTag, viewBean);
             }
         }
@@ -457,11 +457,11 @@ public class Ox {
      */
     public void writeLayoutGravity(Nx nx, ViewBean viewBean) {
         int gravity = viewBean.layout.layoutGravity;
-        if (gravity != 0) {
+        if (gravity != Gravity.NO_GRAVITY) {
             String attrValue = "";
             int verticalGravity = gravity & Gravity.FILL_VERTICAL;
             int horizontalGravity = gravity & Gravity.FILL_HORIZONTAL;
-            if (horizontalGravity == 1) {
+            if (horizontalGravity == Gravity.CENTER_HORIZONTAL) {
                 attrValue = "center_horizontal";
             } else {
                 if ((horizontalGravity & Gravity.LEFT) == Gravity.LEFT) {
@@ -594,8 +594,8 @@ public class Ox {
         }
         switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT:
-            case 23:
-            case 24:
+            case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
+            case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
                 String hint = viewBean.text.hint;
                 if (hint != null && hint.length() > 0) {
                     if (hint.startsWith("@")) {
@@ -799,5 +799,4 @@ public class Ox {
         if (inject == null || inject.equals("")) return false;
         return Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find();
     }
-
 }
