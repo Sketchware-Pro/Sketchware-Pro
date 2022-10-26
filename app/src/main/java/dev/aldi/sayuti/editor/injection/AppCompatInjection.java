@@ -18,7 +18,8 @@ import mod.hey.studios.util.Helper;
 
 public class AppCompatInjection {
 
-    private static final Map<String, List<Map<String, Object>>> INJECTIONS = new HashMap<>();
+    // maps sc_id to (activity filename mapped to (list of injections))
+    private static final Map<String, Map<String, List<Map<String, Object>>>> INJECTIONS = new HashMap<>();
 
     private final String sc_id;
     private final ProjectFileBean projectFile;
@@ -37,12 +38,17 @@ public class AppCompatInjection {
                 projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) ||
                 projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
             if (!INJECTIONS.containsKey(sc_id)) {
-                INJECTIONS.put(sc_id, readAppCompatInjections(sc_id, projectFile.fileName));
+                Map<String, List<Map<String, Object>>> projectInjections = new HashMap<>();
+                INJECTIONS.put(sc_id, projectInjections);
+            }
+            Map<String, List<Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
+            if (!Objects.requireNonNull(projectInjections).containsKey(projectFile.fileName)) {
+                projectInjections.put(projectFile.fileName, readAppCompatInjections(sc_id, projectFile.fileName));
             }
 
-            for (Map<String, Object> bruh : Objects.requireNonNull(INJECTIONS.get(sc_id))) {
+            for (Map<String, Object> injection : Objects.requireNonNull(projectInjections.get(projectFile.fileName))) {
                 Object value;
-                if (str.toLowerCase().equals(bruh.get("type")) && (value = bruh.get("value")) instanceof String) {
+                if (str.toLowerCase().equals(injection.get("type")) && (value = injection.get("value")) instanceof String) {
                     nx.b((String) value);
                 }
             }
