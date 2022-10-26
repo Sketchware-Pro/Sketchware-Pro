@@ -13,14 +13,12 @@ import mod.hey.studios.util.Helper;
 
 public class AppCompatInjection {
 
-    private String path;
+    private final String path;
     private final ProjectFileBean projectFile;
 
-    public AppCompatInjection(jq jqVar, ProjectFileBean fileBean) {
-        projectFile = fileBean;
-        String str = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + jqVar.sc_id + "/injection/appcompat/" + fileBean.fileName;
-        path = str;
-        path = str;
+    public AppCompatInjection(jq jq, ProjectFileBean projectFileBean) {
+        projectFile = projectFileBean;
+        path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + jq.sc_id + "/injection/appcompat/" + projectFileBean.fileName;
     }
 
     public static String a() {
