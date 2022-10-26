@@ -1,10 +1,15 @@
 package dev.aldi.sayuti.editor.injection;
 
+import android.os.Environment;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import a.a.a.Nx;
 import a.a.a.jq;
@@ -13,12 +18,14 @@ import mod.hey.studios.util.Helper;
 
 public class AppCompatInjection {
 
-    private final String path;
+    private static final Map<String, List<Map<String, Object>>> INJECTIONS = new HashMap<>();
+
+    private final String sc_id;
     private final ProjectFileBean projectFile;
 
     public AppCompatInjection(jq jq, ProjectFileBean projectFileBean) {
+        sc_id = jq.sc_id;
         projectFile = projectFileBean;
-        path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + jq.sc_id + "/injection/appcompat/" + projectFileBean.fileName;
     }
 
     public static String a() {
@@ -29,17 +36,31 @@ public class AppCompatInjection {
         if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ||
                 projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) ||
                 projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-            ArrayList<HashMap<String, Object>> listMap;
-            if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
-                listMap = new Gson().fromJson(a(), Helper.TYPE_MAP_LIST);
-            } else {
-                listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            if (!INJECTIONS.containsKey(sc_id)) {
+                INJECTIONS.put(sc_id, readAppCompatInjections(sc_id, projectFile.fileName));
             }
-            for (int i = 0; i < listMap.size(); i++) {
-                if (listMap.get(i).get("type").toString().equals(str.toLowerCase())) {
-                    nx.b(listMap.get(i).get("value").toString());
+
+            for (Map<String, Object> bruh : Objects.requireNonNull(INJECTIONS.get(sc_id))) {
+                Object value;
+                if (str.toLowerCase().equals(bruh.get("type")) && (value = bruh.get("value")) instanceof String) {
+                    nx.b((String) value);
                 }
             }
         }
+    }
+
+    private static List<Map<String, Object>> readAppCompatInjections(String sc_id, String activityFilename) {
+        String toParse;
+
+        File injectionFile = new File(Environment.getExternalStorageDirectory(),
+                ".sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename);
+        String fileContent;
+        if (injectionFile.exists() && (fileContent = FileUtil.readFile(injectionFile.getAbsolutePath())).length() != 0) {
+            toParse = fileContent;
+        } else {
+            toParse = a();
+        }
+
+        return new Gson().fromJson(toParse, Helper.TYPE_MAP_LIST);
     }
 }
