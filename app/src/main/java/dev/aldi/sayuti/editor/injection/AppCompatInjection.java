@@ -26,7 +26,9 @@ public class AppCompatInjection {
     }
 
     public void inject(Nx nx, String str) {
-        if (projectFile.hasActivityOption(1) || projectFile.hasActivityOption(4) || projectFile.hasActivityOption(8)) {
+        if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ||
+                projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) ||
+                projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
             ArrayList<HashMap<String, Object>> listMap;
             if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
                 listMap = new Gson().fromJson(a(), Helper.TYPE_MAP_LIST);
