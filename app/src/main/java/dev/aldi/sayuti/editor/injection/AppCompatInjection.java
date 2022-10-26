@@ -69,4 +69,14 @@ public class AppCompatInjection {
 
         return new Gson().fromJson(toParse, Helper.TYPE_MAP_LIST);
     }
+
+    public static void refreshInjections() {
+        for (String sc_id : INJECTIONS.keySet()) {
+            Map<String, List<Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
+            for (String activityFilename : Objects.requireNonNull(projectInjections).keySet()) {
+                projectInjections.remove(activityFilename);
+                projectInjections.put(activityFilename, readAppCompatInjections(sc_id, activityFilename));
+            }
+        }
+    }
 }
