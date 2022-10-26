@@ -31,18 +31,18 @@ import mod.jbk.util.LogUtil;
 
 public class Ox {
 
-    private jq a;
-    private AppCompatInjection aci;
-    private ProjectFileBean b;
-    private ViewBean c;
-    private ArrayList<ViewBean> d;
-    private Nx e = null;
-    private Nx f = null;
+    private final jq buildConfig;
+    private final AppCompatInjection aci;
+    private final ProjectFileBean projectFile;
+    private ViewBean fab;
+    private ArrayList<ViewBean> views;
+    private Nx rootLayout = null;
+    private Nx collapsingToolbarLayout = null;
 
-    public Ox(jq jqVar, ProjectFileBean projectFileBean) {
-        a = jqVar;
-        b = projectFileBean;
-        aci = new AppCompatInjection(jqVar, projectFileBean);
+    public Ox(jq jq, ProjectFileBean projectFileBean) {
+        buildConfig = jq;
+        projectFile = projectFileBean;
+        aci = new AppCompatInjection(jq, projectFileBean);
     }
 
     private static String x(String str) {
@@ -103,75 +103,75 @@ public class Ox {
         nx.a("android", "layout_width", "match_parent");
         nx.a("android", "layout_height", "match_parent");
         nx.a("android", "orientation", "vertical");
-        for (ViewBean viewBean : d) {
+        for (ViewBean viewBean : views) {
             String parent = viewBean.parent;
             if (parent == null || parent.length() <= 0 || parent.equals("root")) {
                 writeWidget(nx, viewBean);
             }
         }
-        if (a.g) {
-            if (b.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
+        if (buildConfig.g) {
+            if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                     nx.a("app", "layout_behavior", "@string/appbar_scrolling_view_behavior");
                 }
-                if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)
-                        || b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)
+                        || projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                     Nx coordinatorLayoutTag = new Nx("androidx.coordinatorlayout.widget.CoordinatorLayout");
                     coordinatorLayoutTag.a("android", "id", "@+id/_coordinator");
                     aci.inject(coordinatorLayoutTag, "CoordinatorLayout");
-                    e = coordinatorLayoutTag;
+                    rootLayout = coordinatorLayoutTag;
                 }
-                if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
+                if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                     Nx toolbarTag = new Nx("androidx.appcompat.widget.Toolbar");
                     toolbarTag.a("android", "id", "@+id/_toolbar");
                     aci.inject(toolbarTag, "Toolbar");
                     Nx appBarLayoutTag = new Nx("com.google.android.material.appbar.AppBarLayout");
                     appBarLayoutTag.a("android", "id", "@+id/_app_bar");
                     aci.inject(appBarLayoutTag, "AppBarLayout");
-                    if (f != null) {
-                        f.a(toolbarTag);
-                        appBarLayoutTag.a(f);
+                    if (collapsingToolbarLayout != null) {
+                        collapsingToolbarLayout.a(toolbarTag);
+                        appBarLayoutTag.a(collapsingToolbarLayout);
                     } else {
                         appBarLayoutTag.a(toolbarTag);
                     }
-                    e.a(appBarLayoutTag);
-                    e.a(nx);
+                    rootLayout.a(appBarLayoutTag);
+                    rootLayout.a(nx);
                 } else {
-                    if (e == null) {
-                        e = nx;
+                    if (rootLayout == null) {
+                        rootLayout = nx;
                     } else {
-                        e.a(nx);
+                        rootLayout.a(nx);
                     }
                 }
-                if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-                    writeFabView(e, c);
+                if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                    writeFabView(rootLayout, fab);
                 }
-                if (c.type == ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW) {
-                    writeWidget(e, c);
+                if (fab.type == ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW) {
+                    writeWidget(rootLayout, fab);
                 }
-                if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                     Nx drawerLayoutTag = new Nx("androidx.drawerlayout.widget.DrawerLayout");
                     drawerLayoutTag.a("android", "id", "@+id/_drawer");
                     aci.inject(drawerLayoutTag, "DrawerLayout");
-                    drawerLayoutTag.a(e);
+                    drawerLayoutTag.a(rootLayout);
                     Nx linearLayoutTag = new Nx("LinearLayout");
                     linearLayoutTag.a("android", "id", "@+id/_nav_view");
                     aci.inject(linearLayoutTag, "NavigationDrawer");
                     Nx includeTag = new Nx("include", true);
-                    includeTag.a("", "layout", "@layout/_drawer_" + b.fileName);
+                    includeTag.a("", "layout", "@layout/_drawer_" + projectFile.fileName);
                     linearLayoutTag.a(includeTag);
                     drawerLayoutTag.a(linearLayoutTag);
-                    e = drawerLayoutTag;
+                    rootLayout = drawerLayoutTag;
                 }
             } else {
-                e = nx;
+                rootLayout = nx;
             }
         } else {
-            e = nx;
+            rootLayout = nx;
         }
-        e.a(0, "xmlns", "tools", "http://schemas.android.com/tools");
-        e.a(0, "xmlns", "app", "http://schemas.android.com/apk/res-auto");
-        e.a(0, "xmlns", "android", "http://schemas.android.com/apk/res/android");
+        rootLayout.a(0, "xmlns", "tools", "http://schemas.android.com/tools");
+        rootLayout.a(0, "xmlns", "app", "http://schemas.android.com/apk/res-auto");
+        rootLayout.a(0, "xmlns", "android", "http://schemas.android.com/apk/res/android");
     }
 
     private void writeBackgroundResource(Nx nx, ViewBean viewBean) {
@@ -224,13 +224,13 @@ public class Ox {
     }
 
     public void a(ArrayList<ViewBean> arrayList, ViewBean viewBean) {
-        c = viewBean;
-        d = arrayList;
+        fab = viewBean;
+        views = arrayList;
         writeRootLayout();
     }
 
     public String b() {
-        return e.toCode();
+        return rootLayout.toCode();
     }
 
     private void writeWidget(Nx nx, ViewBean viewBean) {
@@ -249,7 +249,7 @@ public class Ox {
                 widgetTag.a("android", "id", "@+id/" + viewBean.id);
             }
             int type = viewBean.type;
-            if (b.fileType == ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW) {
+            if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW) {
                 switch (type) {
                     case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW:
                     case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT:
@@ -303,7 +303,7 @@ public class Ox {
                 writeViewGravity(widgetTag, viewBean);
             }
         }
-        a.x.handleWidget(x(viewBean.convert));
+        buildConfig.x.handleWidget(x(viewBean.convert));
         if (viewBean.getClassInfo().a("LinearLayout") &&
                 !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
             if (!toNotAdd.contains("android:orientation")) {
@@ -363,7 +363,7 @@ public class Ox {
             }
         }
         if (viewBean.getClassInfo().a("ViewGroup")) {
-            for (ViewBean bean : d) {
+            for (ViewBean bean : views) {
                 if (bean.parent != null && bean.parent.equals(viewBean.id)) {
                     writeWidget(widgetTag, bean);
                 }
@@ -373,7 +373,7 @@ public class Ox {
             widgetTag.b(viewBean.inject.replaceAll(" ", ""));
         }
         if (widgetTag.c().equals("CollapsingToolbarLayout")) {
-            f = widgetTag;
+            collapsingToolbarLayout = widgetTag;
         } else {
             nx.a(widgetTag);
         }
@@ -803,10 +803,10 @@ public class Ox {
                 }
 
                 if (!toNotAdd.contains("app:adUnitId")) {
-                    if (a.isDebugBuild) {
+                    if (buildConfig.isDebugBuild) {
                         nx.a("app", "adUnitId", "ca-app-pub-3940256099942544/6300978111");
                     } else {
-                        nx.a("app", "adUnitId", a.bannerAdUnitId);
+                        nx.a("app", "adUnitId", buildConfig.bannerAdUnitId);
                     }
                 }
                 break;
