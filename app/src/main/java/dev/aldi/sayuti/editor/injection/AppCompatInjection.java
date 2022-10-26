@@ -38,8 +38,7 @@ public class AppCompatInjection {
                 projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) ||
                 projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
             if (!INJECTIONS.containsKey(sc_id)) {
-                Map<String, List<Map<String, Object>>> projectInjections = new HashMap<>();
-                INJECTIONS.put(sc_id, projectInjections);
+                INJECTIONS.put(sc_id, new HashMap<>());
             }
             Map<String, List<Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
             if (!Objects.requireNonNull(projectInjections).containsKey(projectFile.fileName)) {
