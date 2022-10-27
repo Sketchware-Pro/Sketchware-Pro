@@ -35,12 +35,9 @@ import mod.hey.studios.util.Helper;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab;
-    private String file = "";
     private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
     private ListView listview;
     private HashMap<String, Object> map = new HashMap<>();
-    private String num = "";
     private String path = "";
     private String type = "";
     private String value = "";
@@ -49,38 +46,34 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_custom_attribute);
-        initialize(savedInstanceState);
-        initializeLogic();
-    }
 
-    private void initialize(Bundle _savedInstanceState) {
-        fab = findViewById(R.id.add_attr_fab);
+        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
         listview = findViewById(R.id.add_attr_listview);
         fab.setOnClickListener(v -> dialog("create", 0));
-    }
 
-    private void initializeLogic() {
+        TextView title = findViewById(R.id.tx_toolbar_title);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        Helper.applyRippleToToolbarView(back);
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {
-            num = getIntent().getStringExtra("sc_id");
-            file = getIntent().getStringExtra("file_name");
+            String sc_id = getIntent().getStringExtra("sc_id");
+            String activityFilename = getIntent().getStringExtra("file_name");
             type = getIntent().getStringExtra("widget_type");
-        }
-        path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/".concat(num.concat("/injection/appcompat/".concat(file))));
-        if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
-            listMap = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
-        } else {
-            listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-        }
-        listview.setAdapter(new CustomAdapter(listMap));
-        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-        initToolbar(type);
-    }
 
-    public void initToolbar(String title) {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText(title);
-        ImageView imageView = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(imageView);
-        imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
+            title.setText(type);
+
+            path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
+            if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
+                listMap = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
+            } else {
+                listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            }
+            listview.setAdapter(new CustomAdapter(listMap));
+            ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+        } else {
+            finish();
+        }
     }
 
     private void makeup(View view, int i2, int i3) {
