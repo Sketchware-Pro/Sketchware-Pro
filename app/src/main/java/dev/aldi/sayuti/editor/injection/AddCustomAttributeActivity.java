@@ -35,12 +35,10 @@ import mod.hey.studios.util.Helper;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
-    private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
-    private ListView listview;
-    private HashMap<String, Object> map = new HashMap<>();
-    private String path = "";
-    private String type = "";
-    private String value = "";
+    private ArrayList<HashMap<String, Object>> activityInjections = new ArrayList<>();
+    private ListView listView;
+    private String activityInjectionsFilePath = "";
+    private String widgetType = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         setContentView(R.layout.add_custom_attribute);
 
         FloatingActionButton fab = findViewById(R.id.add_attr_fab);
-        listview = findViewById(R.id.add_attr_listview);
+        listView = findViewById(R.id.add_attr_listview);
         fab.setOnClickListener(v -> dialog("create", 0));
 
         TextView title = findViewById(R.id.tx_toolbar_title);
@@ -59,18 +57,18 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {
             String sc_id = getIntent().getStringExtra("sc_id");
             String activityFilename = getIntent().getStringExtra("file_name");
-            type = getIntent().getStringExtra("widget_type");
+            widgetType = getIntent().getStringExtra("widget_type");
 
-            title.setText(type);
+            title.setText(widgetType);
 
-            path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
-            if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
-                listMap = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
+            activityInjectionsFilePath = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
+            if (!FileUtil.isExistFile(activityInjectionsFilePath) || FileUtil.readFile(activityInjectionsFilePath).equals("")) {
+                activityInjections = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
             } else {
-                listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+                activityInjections = new Gson().fromJson(FileUtil.readFile(activityInjectionsFilePath), Helper.TYPE_MAP_LIST);
             }
-            listview.setAdapter(new CustomAdapter(listMap));
-            ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+            listView.setAdapter(new CustomAdapter(activityInjections));
+            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
         } else {
             finish();
         }
@@ -101,7 +99,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         final EditText editText2 = inflate.findViewById(R.id.dialog_input_attr);
         final EditText editText3 = inflate.findViewById(R.id.dialog_input_value);
         if (type.equals("edit")) {
-            value = listMap.get(position).get("value").toString();
+            String value = activityInjections.get(position).get("value").toString();
             editText.setText(value.substring(0, value.indexOf(":")));
             editText2.setText(value.substring(value.indexOf(":") + 1, value.indexOf("=")));
             editText3.setText(value.substring(value.indexOf("\"") + 1, value.length() - 1));
@@ -109,19 +107,19 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         save.setOnClickListener(v -> {
             if (!editText.getText().toString().trim().equals("") && !editText2.getText().toString().trim().equals("") && !editText3.getText().toString().trim().equals("")) {
                 if (type.equals("create")) {
-                    map = new HashMap<>();
-                    map.put("type", AddCustomAttributeActivity.this.type);
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("type", type);
                     map.put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
-                    listMap.add(map);
+                    activityInjections.add(map);
                     SketchwareUtil.toast("Added");
                 } else if (type.equals("edit")) {
-                    listMap.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                    activityInjections.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
                     SketchwareUtil.toast("Saved");
                 }
-                listview.setAdapter(new CustomAdapter(listMap));
-                ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+                listView.setAdapter(new CustomAdapter(activityInjections));
+                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                 dialog.dismiss();
-                FileUtil.writeFile(path, new Gson().toJson(listMap));
+                FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
             }
         });
         cancel.setOnClickListener(v -> dialog.dismiss());
@@ -165,10 +163,10 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             imageView.setRotation(90.0f);
             makeup(linearLayout, 10, 5);
             makeup(imageView, 100, 0);
-            if (!_data.get(position).containsKey("type") || !listMap.get(position).get("type").toString().equals(type)) {
+            if (!_data.get(position).containsKey("type") || !activityInjections.get(position).get("type").toString().equals(widgetType)) {
                 linearLayout.setVisibility(View.GONE);
             } else {
-                value = listMap.get(position).get("value").toString();
+                String value = activityInjections.get(position).get("value").toString();
                 SpannableString spannableString = new SpannableString(value);
                 spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -185,8 +183,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                         dialog("edit", position);
                         return true;
                     }
-                    listMap.remove(position);
-                    FileUtil.writeFile(path, new Gson().toJson(listMap));
+                    activityInjections.remove(position);
+                    FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
                     notifyDataSetChanged();
                     SketchwareUtil.toast("Deleted successfully");
                     return true;
