@@ -67,7 +67,7 @@
             android:paddingTop="10dp"
             android:paddingRight="15dp"
             android:paddingBottom="10dp"
-            android:text="Cancel"
+            android:text="@string/common_word_cancel"
             android:textColor="#ffffffff"
             android:textSize="14sp" />
 
@@ -79,7 +79,7 @@
             android:paddingTop="10dp"
             android:paddingRight="15dp"
             android:paddingBottom="10dp"
-            android:text="Save"
+            android:text="@string/common_word_save"
             android:textColor="#ffffffff"
             android:textSize="14sp" />
     </LinearLayout>
