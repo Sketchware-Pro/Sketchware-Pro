@@ -86,34 +86,41 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         view.setFocusable(true);
     }
 
-    private void dialog(final String type, final int position) {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+    private void dialog(String type, int position) {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         dialog.setView(inflate);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         TextView save = inflate.findViewById(R.id.dialog_btn_save);
         TextView cancel = inflate.findViewById(R.id.dialog_btn_cancel);
-        final EditText editText = inflate.findViewById(R.id.dialog_input_res);
-        final EditText editText2 = inflate.findViewById(R.id.dialog_input_attr);
-        final EditText editText3 = inflate.findViewById(R.id.dialog_input_value);
+        EditText namespace = inflate.findViewById(R.id.dialog_input_res);
+        EditText name = inflate.findViewById(R.id.dialog_input_attr);
+        EditText value = inflate.findViewById(R.id.dialog_input_value);
+
         if (type.equals("edit")) {
-            String value = activityInjections.get(position).get("value").toString();
-            editText.setText(value.substring(0, value.indexOf(":")));
-            editText2.setText(value.substring(value.indexOf(":") + 1, value.indexOf("=")));
-            editText3.setText(value.substring(value.indexOf("\"") + 1, value.length() - 1));
+            String injectionValue = activityInjections.get(position).get("value").toString();
+            namespace.setText(injectionValue.substring(0, injectionValue.indexOf(":")));
+            name.setText(injectionValue.substring(injectionValue.indexOf(":") + 1, injectionValue.indexOf("=")));
+            value.setText(injectionValue.substring(injectionValue.indexOf("\"") + 1, injectionValue.length() - 1));
         }
+
         save.setOnClickListener(v -> {
-            if (!editText.getText().toString().trim().equals("") && !editText2.getText().toString().trim().equals("") && !editText3.getText().toString().trim().equals("")) {
+            String namespaceInput = namespace.getText().toString();
+            String nameInput = name.getText().toString();
+            String valueInput = value.getText().toString();
+            if (!namespaceInput.trim().equals("") && !nameInput.trim().equals("") && !valueInput.trim().equals("")) {
+                String newValue = namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
                 if (type.equals("create")) {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("type", type);
-                    map.put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                    map.put("value", newValue);
                     activityInjections.add(map);
                     SketchwareUtil.toast("Added");
                 } else if (type.equals("edit")) {
-                    activityInjections.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                    activityInjections.get(position).put("value", newValue);
                     SketchwareUtil.toast("Saved");
                 }
                 listView.setAdapter(new CustomAdapter(activityInjections));
@@ -125,7 +132,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         cancel.setOnClickListener(v -> dialog.dismiss());
         dialog.setOnDismissListener(dialog1 -> SketchwareUtil.hideKeyboard());
         dialog.show();
-        editText.requestFocus();
+        namespace.requestFocus();
         SketchwareUtil.showKeyboard();
     }
 
