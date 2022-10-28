@@ -185,7 +185,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 root.setVisibility(View.VISIBLE);
             }
             options.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(getApplicationContext(), options);
+                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, options);
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
                 popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {
