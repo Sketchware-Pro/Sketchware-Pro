@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -155,37 +153,7 @@ public class BlocksManager extends AppCompatActivity {
 
         _fab.setOnClickListener(v -> {
             insert_n = -1;
-            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-            LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
-            dialog.setView(convertView);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(R.id.name);
-            final EditText colour = convertView.findViewById(R.id.color);
-            final TextView save = convertView.findViewById(R.id.save);
-            final TextView cancel = convertView.findViewById(R.id.cancel);
-            final ImageView select = convertView.findViewById(R.id.select);
-
-            select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
-
-            save.setOnClickListener(saveView -> {
-                try {
-                    Color.parseColor(colour.getText().toString());
-
-                    _createPallette(name.getText().toString(), colour.getText().toString());
-                    insert_n = -1;
-                    dialog.dismiss();
-                } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                    colour.setError("Malformed hexadecimal color");
-                    colour.requestFocus();
-                }
-            });
-            cancel.setOnClickListener(cancelView -> {
-                insert_n = -1;
-                dialog.dismiss();
-            });
-            dialog.show();
+            showPaletteDialog(false, null, null, null);
         });
     }
 
@@ -308,35 +276,8 @@ public class BlocksManager extends AppCompatActivity {
         insert_n = -1;
     }
 
-    private void _showEditDial(final double _p, final String _name, final String _c) {
-        final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
-        dialog.setView(convertView);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText name = convertView.findViewById(R.id.name);
-        name.setText(_name);
-        final EditText colour = convertView.findViewById(R.id.color);
-        colour.setText(_c);
-        final TextView title = convertView.findViewById(R.id.title);
-        title.setText("Edit palette");
-        final TextView save = convertView.findViewById(R.id.save);
-        final TextView cancel = convertView.findViewById(R.id.cancel);
-        final ImageView select = convertView.findViewById(R.id.select);
-        select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
-        save.setOnClickListener(v -> {
-            try {
-                Color.parseColor(colour.getText().toString());
-                _editPallete(_p, name.getText().toString(), colour.getText().toString());
-                dialog.dismiss();
-            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                colour.setError("Malformed hexadecimal color");
-                colour.requestFocus();
-            }
-        });
-        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        dialog.show();
+    private void _showEditDial(final int _p, final String _name, final String _c) {
+        showPaletteDialog(true, _p, _name, _c);
     }
 
     private void _editPallete(final double _p, final String _n, final String _c) {
@@ -384,30 +325,7 @@ public class BlocksManager extends AppCompatActivity {
     private void _insert_pallete(final double _p) {
         insert_n = _p;
 
-        final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
-        dialog.setView(convertView);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText name = convertView.findViewById(R.id.name);
-        final EditText colour = convertView.findViewById(R.id.color);
-        final TextView save = convertView.findViewById(R.id.save);
-        final TextView cancel = convertView.findViewById(R.id.cancel);
-        final ImageView select = convertView.findViewById(R.id.select);
-        select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
-        save.setOnClickListener(v -> {
-            try {
-                Color.parseColor(colour.getText().toString());
-                _createPallette(name.getText().toString(), colour.getText().toString());
-                dialog.dismiss();
-            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                colour.setError("Malformed hexadecimal color");
-                colour.requestFocus();
-            }
-        });
-        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        dialog.show();
+        showPaletteDialog(false, null, null, null);
     }
 
     private void _moveDown(final double _p) {
@@ -506,6 +424,97 @@ public class BlocksManager extends AppCompatActivity {
             zx.showAtLocation(a, Gravity.CENTER, 0, 0);
             dialog.hide();
         };
+    }
+
+    private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor) {
+        aB dialog = new aB(this);
+        dialog.a(R.drawable.positive_96);
+        dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
+
+        LinearLayout customView = new LinearLayout(this);
+        customView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        customView.setOrientation(LinearLayout.VERTICAL);
+
+        TextInputLayout name = new TextInputLayout(this);
+        name.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        name.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        name.setOrientation(LinearLayout.VERTICAL);
+        name.setHint("Name");
+        customView.addView(name);
+
+        EditText nameEditText = new EditText(this);
+        nameEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        nameEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+        nameEditText.setTextColor(0xff000000);
+        nameEditText.setHintTextColor(0xff607d8b);
+        nameEditText.setTextSize(14);
+        if (isEditing) {
+            nameEditText.setText(oldName);
+        }
+        name.addView(nameEditText);
+
+        LinearLayout colorContainer = new LinearLayout(this);
+        colorContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        colorContainer.setGravity(Gravity.CENTER | Gravity.LEFT);
+        customView.addView(colorContainer);
+
+        TextInputLayout color = new TextInputLayout(this);
+        color.setLayoutParams(new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        color.setOrientation(LinearLayout.VERTICAL);
+        color.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        color.setHint("Color");
+        colorContainer.addView(color);
+
+        EditText colorEditText = new EditText(this);
+        colorEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        colorEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+        colorEditText.setTextColor(0xff000000);
+        colorEditText.setHintTextColor(0xff607d8b);
+        colorEditText.setTextSize(14);
+        if (isEditing) {
+            colorEditText.setText(oldColor);
+        }
+        color.addView(colorEditText);
+
+        ImageView openColorPalette = new ImageView(this);
+        openColorPalette.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(50), dpToPx(28)));
+        openColorPalette.setFocusable(false);
+        openColorPalette.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        openColorPalette.setImageResource(R.drawable.color_palette_48);
+        colorContainer.addView(openColorPalette);
+
+        dialog.a(customView);
+        openColorPalette.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colorEditText));
+
+        dialog.b(Helper.getResString(R.string.common_word_save), save -> {
+            try {
+                String nameInput = nameEditText.getText().toString();
+                String colorInput = colorEditText.getText().toString();
+                Color.parseColor(colorInput);
+
+                if (!isEditing) {
+                    _createPallette(nameInput, colorInput);
+                } else {
+                    _editPallete(oldPosition, nameInput, colorInput);
+                }
+                insert_n = -1;
+                dialog.dismiss();
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+                color.setError("Malformed hexadecimal color");
+                color.requestFocus();
+            }
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), cancel -> {
+            insert_n = -1;
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     public class PaletteAdapter extends BaseAdapter {
