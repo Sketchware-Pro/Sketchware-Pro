@@ -37,6 +37,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import a.a.a.Zx;
 import a.a.a.aB;
@@ -48,7 +51,6 @@ import mod.hilal.saif.lib.PCP;
 
 public class BlocksManager extends AppCompatActivity {
 
-    private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir = "";
     private String pallet_dir = "";
@@ -289,19 +291,19 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _removeRelatedBlocks(final double _p) {
-        temp_list.clear();
+        List<Map<String, Object>> newBlocks = new LinkedList<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == _p)) {
                 if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) > _p) {
                     HashMap<String, Object> m = all_blocks_list.get(i);
                     m.put("palette", String.valueOf((long) (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) - 1)));
-                    temp_list.add(m);
+                    newBlocks.add(m);
                 } else {
-                    temp_list.add(all_blocks_list.get(i));
+                    newBlocks.add(all_blocks_list.get(i));
                 }
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
         _readSettings();
         _refresh_list();
     }
@@ -349,13 +351,13 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _emptyRecyclebin() {
-        temp_list.clear();
+        List<Map<String, Object>> newBlocks = new LinkedList<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == -1)) {
-                temp_list.add(all_blocks_list.get(i));
+                newBlocks.add(all_blocks_list.get(i));
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
         _readSettings();
         _refresh_list();
     }
