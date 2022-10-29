@@ -219,28 +219,6 @@ public class BlocksManager extends AppCompatActivity {
         }
     }
 
-    private void _remove_pallete(final double _p) {
-        new AlertDialog.Builder(this)
-                .setTitle(pallet_listmap.get((int) _p).get("name").toString())
-                .setMessage("Remove all blocks related to this palette?")
-                .setPositiveButton("Remove permanently", (dialog, which) -> {
-                    pallet_listmap.remove((int) (_p));
-                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                    _removeRelatedBlocks(_p + 9);
-                    _readSettings();
-                    _refresh_list();
-                })
-                .setNegativeButton(R.string.common_word_cancel, null)
-                .setNeutralButton("Move to recycle bin", (dialog, which) -> {
-                    _moveRelatedBlocksToRecycleBin(_p + 9);
-                    pallet_listmap.remove((int) (_p));
-                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                    _removeRelatedBlocks(_p + 9);
-                    _readSettings();
-                    _refresh_list();
-                }).show();
-    }
-
     private double _getN(final double _p) {
         int n = 0;
         for (int i = 0; i < all_blocks_list.size(); i++) {
@@ -249,33 +227,6 @@ public class BlocksManager extends AppCompatActivity {
             }
         }
         return (n);
-    }
-
-    private void _createPallette(final String _name, final String _colour, Integer insertAtPosition) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", _name);
-        map.put("color", _colour);
-
-        if (insertAtPosition == null) {
-            pallet_listmap.add(map);
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-            _readSettings();
-            _refresh_list();
-        } else {
-            pallet_listmap.add(insertAtPosition, map);
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-            _readSettings();
-            _refresh_list();
-            _insertBlocksAt(insertAtPosition + 9);
-        }
-    }
-
-    private void _editPallete(final double _p, final String _n, final String _c) {
-        pallet_listmap.get((int) _p).put("name", _n);
-        pallet_listmap.get((int) _p).put("color", _c);
-        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-        _readSettings();
-        _refresh_list();
     }
 
     private void _MoveUp(final double _p) {
@@ -483,9 +434,28 @@ public class BlocksManager extends AppCompatActivity {
                 Color.parseColor(colorInput);
 
                 if (!isEditing) {
-                    _createPallette(nameInput, colorInput, insertAtPosition);
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("name", nameInput);
+                    map.put("color", colorInput);
+
+                    if (insertAtPosition == null) {
+                        pallet_listmap.add(map);
+                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                        _readSettings();
+                        _refresh_list();
+                    } else {
+                        pallet_listmap.add(insertAtPosition, map);
+                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                        _readSettings();
+                        _refresh_list();
+                        _insertBlocksAt(insertAtPosition + 9);
+                    }
                 } else {
-                    _editPallete(oldPosition, nameInput, colorInput);
+                    pallet_listmap.get(oldPosition).put("name", nameInput);
+                    pallet_listmap.get(oldPosition).put("color", colorInput);
+                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                    _readSettings();
+                    _refresh_list();
                 }
                 dialog.dismiss();
             } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
@@ -570,7 +540,25 @@ public class BlocksManager extends AppCompatActivity {
                             break;
 
                         case delete:
-                            _remove_pallete(position);
+                            new AlertDialog.Builder(BlocksManager.this)
+                                    .setTitle(pallet_listmap.get(position).get("name").toString())
+                                    .setMessage("Remove all blocks related to this palette?")
+                                    .setPositiveButton("Remove permanently", (dialog, which) -> {
+                                        pallet_listmap.remove(position);
+                                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                                        _removeRelatedBlocks(position + 9);
+                                        _readSettings();
+                                        _refresh_list();
+                                    })
+                                    .setNegativeButton(R.string.common_word_cancel, null)
+                                    .setNeutralButton("Move to recycle bin", (dialog, which) -> {
+                                        _moveRelatedBlocksToRecycleBin(position + 9);
+                                        pallet_listmap.remove(position);
+                                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                                        _removeRelatedBlocks(position + 9);
+                                        _readSettings();
+                                        _refresh_list();
+                                    }).show();
                             break;
 
                         case moveUp:
