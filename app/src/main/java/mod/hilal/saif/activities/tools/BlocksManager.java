@@ -202,21 +202,32 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _refresh_list() {
-        try {
-            if (FileUtil.isExistFile(pallet_dir) && !FileUtil.readFile(pallet_dir).equals("")) {
-                Parcelable savedState = listview1.onSaveInstanceState();
-                pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
-                listview1.setAdapter(new PaletteAdapter(pallet_listmap));
-                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
-                listview1.onRestoreInstanceState(savedState);
-            } else {
-                pallet_listmap.clear();
-                listview1.setAdapter(new PaletteAdapter(pallet_listmap));
-                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
+        parsePaletteJson:
+        {
+            String paletteJsonContent;
+            if (FileUtil.isExistFile(pallet_dir) && !(paletteJsonContent = FileUtil.readFile(pallet_dir)).equals("")) {
+                try {
+                    pallet_listmap = new Gson().fromJson(paletteJsonContent, Helper.TYPE_MAP_LIST);
+
+                    if (pallet_listmap != null) {
+                        break parsePaletteJson;
+                    }
+                    // fall-through to shared handler
+                } catch (JsonParseException e) {
+                    // fall-through to shared handler
+                }
+
+                SketchwareUtil.showFailedToParseJsonDialog(this, new File(pallet_dir), "Custom Block Palettes", v -> _refresh_list());
             }
-            card2_sub.setText("Blocks: " + (long) (_getN(-1)));
-        } catch (Exception e) {
+            pallet_listmap = new ArrayList<>();
         }
+
+        Parcelable savedState = listview1.onSaveInstanceState();
+        listview1.setAdapter(new PaletteAdapter(pallet_listmap));
+        ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
+        listview1.onRestoreInstanceState(savedState);
+
+        card2_sub.setText("Blocks: " + (long) (_getN(-1)));
     }
 
     private double _getN(final double _p) {
