@@ -2596,19 +2596,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 this.o.d();
             }
             return true;
-        } else if (actionMasked != MotionEvent.ACTION_UP) {
-            if (actionMasked == MotionEvent.ACTION_CANCEL) {
-                this.Z.removeCallbacks(this.aa);
-                this.u = false;
-                return false;
-            } else if (actionMasked != MotionEvent.ACTION_SCROLL) {
-                return true;
-            } else {
-                this.Z.removeCallbacks(this.aa);
-                this.u = false;
-                return false;
-            }
-        } else {
+        } else if (actionMasked == MotionEvent.ACTION_UP) {
             this.Y = null;
             this.Z.removeCallbacks(this.aa);
             if (!this.u) {
@@ -2856,6 +2844,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             this.p.setAllow(false);
             h(false);
             this.u = false;
+            return true;
+        } else if (actionMasked == MotionEvent.ACTION_CANCEL) {
+            this.Z.removeCallbacks(this.aa);
+            this.u = false;
+            return false;
+        } else if (actionMasked == MotionEvent.ACTION_SCROLL) {
+            this.Z.removeCallbacks(this.aa);
+            this.u = false;
+            return false;
+        } else {
             return true;
         }
     }
