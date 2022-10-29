@@ -3,6 +3,7 @@ package mod.hilal.saif.activities.tools;
 import static mod.SketchwareUtil.dpToPx;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -495,7 +496,7 @@ public class BlocksManager extends AppCompatActivity {
         _refresh_list();
     }
 
-    private View.OnClickListener getSharedPaletteColorPickerShower(AlertDialog dialog, EditText storePickedResultIn) {
+    private View.OnClickListener getSharedPaletteColorPickerShower(Dialog dialog, EditText storePickedResultIn) {
         return v -> {
             LayoutInflater inf = getLayoutInflater();
             final View a = inf.inflate(R.layout.color_picker, null);
