@@ -52,7 +52,6 @@ public class BlocksManager extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir = "";
     private String pallet_dir = "";
-    private double insert_n = 0;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ListView listview1;
     private LinearLayout card2;
@@ -151,17 +150,13 @@ public class BlocksManager extends AppCompatActivity {
             dialog.show();
         });
 
-        _fab.setOnClickListener(v -> {
-            insert_n = -1;
-            showPaletteDialog(false, null, null, null);
-        });
+        _fab.setOnClickListener(v -> showPaletteDialog(false, null, null, null, null));
     }
 
     private void initializeLogic() {
         _readSettings();
         _refresh_list();
         _recycleBin(card2);
-        insert_n = -1;
     }
 
     @Override
@@ -256,28 +251,23 @@ public class BlocksManager extends AppCompatActivity {
         return (n);
     }
 
-    private void _createPallette(final String _name, final String _colour) {
+    private void _createPallette(final String _name, final String _colour, Integer insertAtPosition) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", _name);
         map.put("color", _colour);
 
-        if (insert_n == -1) {
+        if (insertAtPosition == null) {
             pallet_listmap.add(map);
             FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _readSettings();
             _refresh_list();
         } else {
-            pallet_listmap.add((int) insert_n, map);
+            pallet_listmap.add(insertAtPosition, map);
             FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _readSettings();
             _refresh_list();
-            _insertBlocksAt(insert_n + 9);
+            _insertBlocksAt(insertAtPosition + 9);
         }
-        insert_n = -1;
-    }
-
-    private void _showEditDial(final int _p, final String _name, final String _c) {
-        showPaletteDialog(true, _p, _name, _c);
     }
 
     private void _editPallete(final double _p, final String _n, final String _c) {
@@ -320,12 +310,6 @@ public class BlocksManager extends AppCompatActivity {
                     .show();
             return true;
         });
-    }
-
-    private void _insert_pallete(final double _p) {
-        insert_n = _p;
-
-        showPaletteDialog(false, null, null, null);
     }
 
     private void _moveDown(final double _p) {
@@ -426,7 +410,7 @@ public class BlocksManager extends AppCompatActivity {
         };
     }
 
-    private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor) {
+    private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
         aB dialog = new aB(this);
         dialog.a(R.drawable.positive_96);
         dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
@@ -499,21 +483,17 @@ public class BlocksManager extends AppCompatActivity {
                 Color.parseColor(colorInput);
 
                 if (!isEditing) {
-                    _createPallette(nameInput, colorInput);
+                    _createPallette(nameInput, colorInput, insertAtPosition);
                 } else {
                     _editPallete(oldPosition, nameInput, colorInput);
                 }
-                insert_n = -1;
                 dialog.dismiss();
             } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
                 color.setError("Malformed hexadecimal color");
                 color.requestFocus();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), cancel -> {
-            insert_n = -1;
-            dialog.dismiss();
-        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -584,8 +564,9 @@ public class BlocksManager extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(item -> {
                     switch (item.getTitle().toString()) {
                         case edit:
-                            _showEditDial(position, pallet_listmap.get(position).get("name").toString(),
-                                    pallet_listmap.get(position).get("color").toString());
+                            showPaletteDialog(true, position,
+                                    pallet_listmap.get(position).get("name").toString(),
+                                    pallet_listmap.get(position).get("color").toString(), null);
                             break;
 
                         case delete:
@@ -601,7 +582,7 @@ public class BlocksManager extends AppCompatActivity {
                             break;
 
                         case insert:
-                            _insert_pallete(position);
+                            showPaletteDialog(false, null, null, null, position);
                             break;
 
                         default:
