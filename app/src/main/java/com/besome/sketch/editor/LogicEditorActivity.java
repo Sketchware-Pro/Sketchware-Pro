@@ -2494,36 +2494,36 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        int actionMasked = motionEvent.getActionMasked();
-        if (motionEvent.getPointerId(motionEvent.getActionIndex()) > 0) {
+    public boolean onTouch(View v, MotionEvent event) {
+        int actionMasked = event.getActionMasked();
+        if (event.getPointerId(event.getActionIndex()) > 0) {
             return true;
         }
         if (actionMasked == MotionEvent.ACTION_DOWN) {
             this.u = false;
             this.Z.postDelayed(this.aa, ViewConfiguration.getLongPressTimeout() / 2);
             int[] locationOnScreen = new int[2];
-            view.getLocationOnScreen(locationOnScreen);
+            v.getLocationOnScreen(locationOnScreen);
             this.s = locationOnScreen[0];
             this.t = locationOnScreen[1];
-            this.q = motionEvent.getRawX();
-            this.r = motionEvent.getRawY();
-            this.Y = view;
+            this.q = event.getRawX();
+            this.r = event.getRawY();
+            this.Y = v;
             return true;
         }
         if (actionMasked == MotionEvent.ACTION_MOVE) {
             if (!this.u) {
-                if (Math.abs(this.q - this.s - motionEvent.getX()) >= this.A || Math.abs(this.r - this.t - motionEvent.getY()) >= this.A) {
+                if (Math.abs(this.q - this.s - event.getX()) >= this.A || Math.abs(this.r - this.t - event.getY()) >= this.A) {
                     this.Y = null;
                     this.Z.removeCallbacks(this.aa);
                 }
                 return false;
             }
             this.Z.removeCallbacks(this.aa);
-            float rawX = motionEvent.getRawX();
-            float rawY = motionEvent.getRawY();
-            this.p.a(view, rawX - s, rawY - t, this.q - this.s, this.r - t, this.S, this.T);
-            if (b(motionEvent.getRawX(), motionEvent.getRawY())) {
+            float rawX = event.getRawX();
+            float rawY = event.getRawY();
+            this.p.a(v, rawX - s, rawY - t, this.q - this.s, this.r - t, this.S, this.T);
+            if (b(event.getRawX(), event.getRawY())) {
                 this.p.setAllow(true);
                 b(true);
                 a(false);
@@ -2532,7 +2532,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return true;
             }
             b(false);
-            if (a(motionEvent.getRawX(), motionEvent.getRawY())) {
+            if (a(event.getRawX(), event.getRawY())) {
                 this.p.setAllow(true);
                 a(true);
                 d(false);
@@ -2540,23 +2540,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return true;
             }
             a(false);
-            if (d(motionEvent.getRawX(), motionEvent.getRawY())) {
+            if (d(event.getRawX(), event.getRawY())) {
                 this.p.setAllow(true);
                 d(true);
                 c(false);
                 return true;
             }
             d(false);
-            if (c(motionEvent.getRawX(), motionEvent.getRawY())) {
+            if (c(event.getRawX(), event.getRawY())) {
                 this.p.setAllow(true);
                 c(true);
                 return true;
             }
             c(false);
             this.p.a(this.v);
-            if (n.a(v[0], v[1])) {
+            if (n.a(this.v[0], this.v[1])) {
                 this.p.setAllow(true);
-                this.o.c((Rs) view, v[0], v[1]);
+                this.o.c((Rs) v, this.v[0], this.v[1]);
             } else {
                 this.p.setAllow(false);
                 this.o.d();
@@ -2566,10 +2566,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             this.Y = null;
             this.Z.removeCallbacks(this.aa);
             if (!this.u) {
-                if (view instanceof Rs) {
-                    Rs rs = (Rs) view;
+                if (v instanceof Rs) {
+                    Rs rs = (Rs) v;
                     if (rs.getBlockType() == 0) {
-                        a(rs, motionEvent.getX(), motionEvent.getY());
+                        a(rs, event.getX(), event.getY());
                     }
                 }
                 return false;
@@ -2579,18 +2579,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             this.O.setDragEnabled(true);
             this.p.setDummyVisibility(View.GONE);
             if (!this.p.getAllow()) {
-                Rs rs2 = (Rs) view;
+                Rs rs2 = (Rs) v;
                 if (rs2.getBlockType() == 0) {
                     this.o.a(rs2, 0);
                     if (w != null) {
                         if (this.x == 0) {
-                            w.ha = (Integer) view.getTag();
+                            w.ha = (Integer) v.getTag();
                         }
                         if (this.x == 2) {
-                            this.w.ia = (Integer) view.getTag();
+                            this.w.ia = (Integer) v.getTag();
                         }
                         if (this.x == 3) {
-                            this.w.ja = (Integer) view.getTag();
+                            this.w.ja = (Integer) v.getTag();
                         }
                         if (this.x == 5) {
                             this.w.a((Ts) this.w.V.get(this.y), rs2);
@@ -2603,7 +2603,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 q();
             } else if (this.N.b()) {
-                Rs rs5 = (Rs) view;
+                Rs rs5 = (Rs) v;
                 if (rs5.getBlockType() == 2) {
                     g(true);
                     n(rs5.T);
@@ -2642,17 +2642,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
             } else if (this.N.d()) {
                 d(false);
-                Rs rs7 = (Rs) view;
+                Rs rs7 = (Rs) v;
                 this.o.a(rs7, 0);
                 if (w != null) {
                     if (this.x == 0) {
-                        w.ha = (Integer) view.getTag();
+                        w.ha = (Integer) v.getTag();
                     }
                     if (this.x == 2) {
-                        this.w.ia = (Integer) view.getTag();
+                        this.w.ia = (Integer) v.getTag();
                     }
                     if (this.x == 3) {
-                        this.w.ja = (Integer) view.getTag();
+                        this.w.ja = (Integer) v.getTag();
                     }
                     if (this.x == 5) {
                         this.w.a((Ts) this.w.V.get(this.y), rs7);
@@ -2665,22 +2665,22 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 c(rs7);
             } else if (this.N.c()) {
                 c(false);
-                if (view instanceof Us) {
-                    o(((Us) view).T);
+                if (v instanceof Us) {
+                    o(((Us) v).T);
                 }
             } else if (this.N.a()) {
                 a(false);
-                Rs rs10 = (Rs) view;
+                Rs rs10 = (Rs) v;
                 this.o.a(rs10, 0);
                 if (w != null) {
                     if (this.x == 0) {
-                        w.ha = (Integer) view.getTag();
+                        w.ha = (Integer) v.getTag();
                     }
                     if (this.x == 2) {
-                        this.w.ia = (Integer) view.getTag();
+                        this.w.ia = (Integer) v.getTag();
                     }
                     if (this.x == 3) {
-                        this.w.ja = (Integer) view.getTag();
+                        this.w.ja = (Integer) v.getTag();
                     }
                     if (this.x == 5) {
                         this.w.a((Ts) this.w.V.get(this.y), rs10);
@@ -2720,20 +2720,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 this.o.getLocationOnScreen(oLocationOnScreen);
                 bC.d(this.B).a(s(), a3, width - oLocationOnScreen[0], a2 - oLocationOnScreen[1], null, null);
                 C();
-            } else if (view instanceof Rs) {
+            } else if (v instanceof Rs) {
                 this.p.a(this.v);
-                Rs rs13 = (Rs) view;
+                Rs rs13 = (Rs) v;
                 if (rs13.getBlockType() == 1) {
                     int addTargetId = this.o.getAddTargetId();
                     BlockBean clone3 = addTargetId >= 0 ? this.o.a(addTargetId).getBean().clone() : null;
-                    Rs a4 = a(rs13, v[0], v[1], false);
+                    Rs a4 = a(rs13, this.v[0], this.v[1], false);
                     BlockBean blockBean3 = null;
                     if (addTargetId >= 0) {
                         blockBean3 = this.o.a(addTargetId).getBean().clone();
                     }
                     int[] locationOnScreen = new int[2];
                     this.o.getLocationOnScreen(locationOnScreen);
-                    bC.d(this.B).a(s(), a4.getBean().clone(), v[0] - locationOnScreen[0], v[1] - locationOnScreen[1], clone3, blockBean3);
+                    bC.d(this.B).a(s(), a4.getBean().clone(), this.v[0] - locationOnScreen[0], this.v[1] - locationOnScreen[1], clone3, blockBean3);
                     if (clone3 != null) {
                         clone3.print();
                     }
@@ -2743,18 +2743,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 } else if (rs13.getBlockType() == 2) {
                     int addTargetId2 = this.o.getAddTargetId();
                     BlockBean clone5 = addTargetId2 >= 0 ? this.o.a(addTargetId2).getBean().clone() : null;
-                    ArrayList<BlockBean> data = ((Us) view).getData();
-                    ArrayList<BlockBean> a5 = a(data, v[0], v[1], true);
+                    ArrayList<BlockBean> data = ((Us) v).getData();
+                    ArrayList<BlockBean> a5 = a(data, this.v[0], this.v[1], true);
                     if (a5.size() > 0) {
                         Rs a6 = this.o.a(a5.get(0).id);
-                        a(a6, v[0], v[1], true);
+                        a(a6, this.v[0], this.v[1], true);
                         BlockBean blockBean3 = null;
                         if (addTargetId2 >= 0) {
                             blockBean3 = this.o.a(addTargetId2).getBean().clone();
                         }
                         int[] locationOnScreen = new int[2];
                         this.o.getLocationOnScreen(locationOnScreen);
-                        bC.d(this.B).a(s(), a5, v[0] - locationOnScreen[0], v[1] - locationOnScreen[1], clone5, blockBean3);
+                        bC.d(this.B).a(s(), a5, this.v[0] - locationOnScreen[0], this.v[1] - locationOnScreen[1], clone5, blockBean3);
                     }
                     this.o.c();
                 } else {
@@ -2782,7 +2782,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     for (Rs rs : allChildren3) {
                         arrayList3.add(rs.getBean().clone());
                     }
-                    a(rs13, v[0], v[1], true);
+                    a(rs13, this.v[0], this.v[1], true);
                     ArrayList<BlockBean> arrayList4 = new ArrayList<>();
                     for (Rs rs : allChildren3) {
                         arrayList4.add(rs.getBean().clone());
@@ -2797,7 +2797,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         this.o.getLocationOnScreen(locationOnScreen);
                         int x = locationOnScreen[0];
                         int y = locationOnScreen[1];
-                        bC.d(this.B).a(s(), arrayList3, arrayList4, ((int) this.s) - x, ((int) this.t) - y, v[0] - x, v[1] - y, blockBean, clone7, clone6, blockBean3);
+                        bC.d(this.B).a(s(), arrayList3, arrayList4, ((int) this.s) - x, ((int) this.t) - y, this.v[0] - x, this.v[1] - y, blockBean, clone7, clone6, blockBean3);
                     }
                     this.o.c();
                 }
