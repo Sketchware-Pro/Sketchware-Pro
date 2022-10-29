@@ -1917,12 +1917,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (!this.ha) {
             t();
         }
-        if (this.ia == z) {
-            return;
+        if (this.ia != z) {
+            this.ia = z;
+            l();
+            (z ? this.fa : this.ga).start();
         }
-        this.ia = z;
-        l();
-        (z ? this.fa : this.ga).start();
     }
 
     public final void h(int i) {
@@ -2636,9 +2635,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     if (w != null) {
                         blockBean3 = w.getBean().clone();
                     }
-                    int[] iArr4 = new int[2];
-                    this.o.getLocationOnScreen(iArr4);
-                    bC.d(this.B).b(s(), arrayList, ((int) this.s) - iArr4[0], ((int) this.t) - iArr4[1], blockBean2, blockBean3);
+                    int[] oLocationOnScreen = new int[2];
+                    this.o.getLocationOnScreen(oLocationOnScreen);
+                    bC.d(this.B).b(s(), arrayList, ((int) this.s) - oLocationOnScreen[0], ((int) this.t) - oLocationOnScreen[1], blockBean2, blockBean3);
                     C();
                 }
             } else if (this.N.d()) {
@@ -2734,8 +2733,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                     int[] locationOnScreen = new int[2];
                     this.o.getLocationOnScreen(locationOnScreen);
-                    bC d = bC.d(this.B);
-                    d.a(s(), a4.getBean().clone(), v[0] - locationOnScreen[0], v[1] - locationOnScreen[1], clone3, blockBean3);
+                    bC.d(this.B).a(s(), a4.getBean().clone(), v[0] - locationOnScreen[0], v[1] - locationOnScreen[1], clone3, blockBean3);
                     if (clone3 != null) {
                         clone3.print();
                     }
@@ -2756,8 +2754,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         }
                         int[] locationOnScreen = new int[2];
                         this.o.getLocationOnScreen(locationOnScreen);
-                        bC d2 = bC.d(this.B);
-                        d2.a(s(), a5, v[0] - locationOnScreen[0], v[1] - locationOnScreen[1], clone5, blockBean3);
+                        bC.d(this.B).a(s(), a5, v[0] - locationOnScreen[0], v[1] - locationOnScreen[1], clone5, blockBean3);
                     }
                     this.o.c();
                 } else {
@@ -2800,8 +2797,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         this.o.getLocationOnScreen(locationOnScreen);
                         int x = locationOnScreen[0];
                         int y = locationOnScreen[1];
-                        bC d3 = bC.d(this.B);
-                        d3.a(s(), arrayList3, arrayList4, ((int) this.s) - x, ((int) this.t) - y, v[0] - x, v[1] - y, blockBean, clone7, clone6, blockBean3);
+                        bC.d(this.B).a(s(), arrayList3, arrayList4, ((int) this.s) - x, ((int) this.t) - y, v[0] - x, v[1] - y, blockBean, clone7, clone6, blockBean3);
                     }
                     this.o.c();
                 }
