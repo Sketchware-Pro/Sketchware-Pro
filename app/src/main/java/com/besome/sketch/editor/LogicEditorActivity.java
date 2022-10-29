@@ -606,8 +606,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         for (BlockBean next2 : arrayList2) {
             if (Integer.parseInt(next2.id) >= 99000000) {
-                o.g = o.g + 1;
                 hashMap.put(Integer.valueOf(next2.id), o.g);
+                o.g = o.g + 1;
             } else {
                 hashMap.put(Integer.valueOf(next2.id), Integer.valueOf(next2.id));
             }
