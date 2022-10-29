@@ -269,7 +269,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public final void B() {
+    private void redo() {
         if (!u) {
             HistoryBlockBean historyBlockBean = bC.d(B).i(s());
             if (historyBlockBean != null) {
@@ -481,7 +481,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public final void M() {
+    private void undo() {
         if (!u) {
             HistoryBlockBean history = bC.d(B).j(s());
             if (history != null) {
@@ -2401,9 +2401,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             e(false);
             g(!this.ia);
         } else if (itemId == R.id.menu_logic_redo) {
-            B();
+            redo();
         } else if (itemId == R.id.menu_logic_undo) {
-            M();
+            undo();
         } else if (itemId == R.id.menu_logic_showsource) {
             showSourceCode();
         }
