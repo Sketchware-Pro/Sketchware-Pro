@@ -631,7 +631,7 @@ public class Ox {
             }
         }
         if (viewBean.text.textColor != 0) {
-            if (!hasAttr("textColor", viewBean) && toNotAdd.contains("android:textColor")) {
+            if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor")) {
                 nx.a("android", "textColor", String.format("#%06X", viewBean.text.textColor & 0xffffff));
             }
         }
