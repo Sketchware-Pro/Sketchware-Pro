@@ -160,6 +160,12 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 return "https://sketchware-pro.vercel.app/docs/components/Firebase/dynamic-links";
 
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
+                return "https://sketchware-pro.vercel.app/docs/components/Firebase/cloud-messaging";
+
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
+                return "https://sketchware-pro.vercel.app/docs/components/Firebase/dynamic-links";
+
             case COMPONENT_TYPE_INTERSTITIAL_AD:
                 return "https://sketchware-pro.ga/docs/components/Google/admob";
             case COMPONENT_TYPE_REQUEST_NETWORK:
