@@ -134,6 +134,12 @@ Libraries added with Sketchware Pro
 	Eclipse Public License Version 1.0
 	No changes to v3.26.0
 
+* libsu:core
+
+    https://github.com/topjohnwu/libsu
+    Apache-2.0 License
+    No changes made to v5.0.2
+
 
 Full license texts
 
