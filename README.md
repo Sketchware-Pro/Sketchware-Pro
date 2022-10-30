@@ -5,33 +5,33 @@
 # Sketchware Pro
 ![GitHub contributors](https://img.shields.io/github/contributors/Sketchware-Pro/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/Sketchware-Pro/Sketchware-Pro) ![Discord server stats](https://img.shields.io/discord/790686719753846785)
 
-Here you'll find the source code of many classes in Sketchware Pro, and most importantly, **the
-place** to contribute to Sketchware Pro.
+Here you'll find the source code of many decompiled classes in Sketchware Pro,
+and most importantly, **the place** to contribute to Sketchware Pro.
 
 ## Building the app
 
-You must use Gradle to build the app. It's highly recommended to use Android Studio, though.
+You must use Gradle to build the project. It's highly recommended to use Android Studio, though.
 
-There are two build variants with the same features but slightly different:
+There are two build variants with same features but slightly different:
 
- - `MinApi26:` This variant supports exporting AABs from projects. However, it works only on Android 8.0 (O) and above.
- - `MinApi21:` This variant can't produce AABs from projects, but it supports down to Android 5.
+ - `minApi26:` This variant supports exporting AABs from projects and supports building with Java 8 to 11. However, it works only on Android 8.0 (O) and above.
+ - `minApi21:` This variant can't produce AABs from projects and only supports Java 7, but it supports down to Android 5.
 
 You must select the appropriate build variant in Android Studio using the Build Variants tab
-or use the appropriate build Gradle command.
+or use the appropriate Gradle command.
 
 ### Source code map
 
 | Class | Role |
 | ----- | ---- |
-| `La/a/a/Dp;` | Helper for compiling an entire project |
-| `La/a/a/Ix;` | Responsible for generating AndroidManifest.xml |
-| `La/a/a/Jx;` | Generates source code of activities |
+| `La/a/a/Dp;` | Helper for compiling the projects. |
+| `La/a/a/Ix;` | Responsible for generating AndroidManifest.xml. |
+| `La/a/a/Jx;` | Generates source code of activities. |
 | `La/a/a/Lx;` | Generates source code of components, such as listeners, etc. |
-| `La/a/a/Ox;` | Responsible for generating XML files of layouts |
-| `La/a/a/qq;` | Registry of built-in libraries' dependencies |
-| `La/a/a/tq;` | Responsible for the compiling dialog's quizzes |
-| `La/a/a/yq;` | Organizes Sketchware projects' file paths |
+| `La/a/a/Ox;` | Responsible for generating XML files of layouts. |
+| `La/a/a/qq;` | Registry of built-in libraries' dependencies. |
+| `La/a/a/tq;` | Responsible for compiling dialog's quizzes. |
+| `La/a/a/yq;` | Organizes Sketchware projects' file paths. |
 
 You can also check the `mod` package that has the majority of contributors' changes.
 
