@@ -121,7 +121,7 @@ dependencies {
     implementation "com.squareup.okio:okio:3.1.0"
 
     // TODO: use proguard-core dependency when duplicate class issue has been fixed
-    minApi21Implementation "com.guardsquare:proguard-base:7.1.1"
+    minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
     minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
     minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
