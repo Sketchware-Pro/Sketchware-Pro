@@ -134,6 +134,12 @@ Libraries added with Sketchware Pro
 	Eclipse Public License Version 1.0
 	No changes to v3.26.0
 
+* kotlinc
+
+    https://github.com/JetBrains/kotlin/compiler
+    Apache-2.0 License
+    Source-wise no changes made to v1.7.10
+
 * libsu:core
 
     https://github.com/topjohnwu/libsu
