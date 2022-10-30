@@ -355,7 +355,9 @@ public class yq {
                     ).replaceAll("<\\?package_name\\?>", packageName));
         }
 
-        if (!new File(javaDir, "SketchApplication.java").exists()) {
+        if (!new File(javaDir, "SketchApplication.java").exists() &&
+                new ProjectSettings(sc_id).getValue(ProjectSettings.SETTING_APPLICATION_CLASS,
+                        ".SketchApplication").equals(".SketchApplication")) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = fileUtil.b(
