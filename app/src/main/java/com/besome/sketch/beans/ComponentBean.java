@@ -119,40 +119,40 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static String getComponentDocsUrlByTypeName(int type) {
         switch (type) {
             case COMPONENT_TYPE_INTENT:
-                return "https://docs.sketchware.io/docs/component-intent.html";
+                return "https://sketchware-docs.vercel.app/docs/component-intent.html";
 
             case COMPONENT_TYPE_SHAREDPREF:
-                return "https://docs.sketchware.io/docs/component-shared-preference.html";
+                return "https://sketchware-docs.vercel.app/docs/component-shared-preference.html";
 
             case COMPONENT_TYPE_CALENDAR:
-                return "https://docs.sketchware.io/docs/component-calendar.html";
+                return "https://sketchware-docs.vercel.app/docs/component-calendar.html";
 
             case COMPONENT_TYPE_VIBRATOR:
-                return "https://docs.sketchware.io/docs/component-vibrator.html";
+                return "https://sketchware-docs.vercel.app/docs/component-vibrator.html";
 
             case COMPONENT_TYPE_TIMERTASK:
-                return "https://docs.sketchware.io/docs/component-timer.html";
+                return "https://sketchware-docs.vercel.app/docs/component-timer.html";
 
             case COMPONENT_TYPE_FIREBASE:
-                return "https://docs.sketchware.io/docs/component-firebase-database.html";
+                return "https://sketchware-docs.vercel.app/docs/component-firebase-database.html";
 
             case COMPONENT_TYPE_DIALOG:
-                return "https://docs.sketchware.io/docs/component-dialog.html";
+                return "https://sketchware-docs.vercel.app/docs/component-dialog.html";
 
             case COMPONENT_TYPE_MEDIAPLAYER:
-                return "https://docs.sketchware.io/docs/component-mediaplayer.html";
+                return "https://sketchware-docs.vercel.app/docs/component-mediaplayer.html";
 
             case COMPONENT_TYPE_SOUNDPOOL:
-                return "https://docs.sketchware.io/docs/component-soundpool.html";
+                return "https://sketchware-docs.vercel.app/docs/component-soundpool.html";
 
             case COMPONENT_TYPE_OBJECTANIMATOR:
-                return "https://docs.sketchware.io/docs/component-object-animator.html";
+                return "https://sketchware-docs.vercel.app/docs/component-object-animator.html";
 
             case COMPONENT_TYPE_GYROSCOPE:
-                return "https://docs.sketchware.io/docs/component-gyroscope.html";
+                return "https://sketchware-docs.vercel.app/docs/component-gyroscope.html";
 
             case COMPONENT_TYPE_FIREBASE_AUTH:
-                return "https://docs.sketchware.io/docs/component-firebase-auth.html";
+                return "https://sketchware-docs.vercel.app/docs/component-firebase-auth.html";
 
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 return "https://sketchware-pro.vercel.app/docs/components/Firebase/cloud-messaging";
@@ -161,6 +161,7 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
                 return "https://sketchware-pro.vercel.app/docs/components/Firebase/dynamic-links";
 
             case COMPONENT_TYPE_INTERSTITIAL_AD:
+                return "https://sketchware-pro.ga/docs/components/Google/admob";
             case COMPONENT_TYPE_REQUEST_NETWORK:
             case COMPONENT_TYPE_TEXT_TO_SPEECH:
             case COMPONENT_TYPE_SPEECH_TO_TEXT:
@@ -170,13 +171,13 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
                 return "";
 
             case COMPONENT_TYPE_FIREBASE_STORAGE:
-                return "https://docs.sketchware.io/docs/component-firebase-storage.html";
+                return "https://sketchware-docs.vercel.app/docs/component-firebase-storage.html";
 
             case COMPONENT_TYPE_CAMERA:
-                return "https://docs.sketchware.io/docs/component-camera.html";
+                return "https://sketchware-docs.vercel.app/docs/component-camera.html";
 
             case COMPONENT_TYPE_FILE_PICKER:
-                return "https://docs.sketchware.io/docs/component-filepicker.html";
+                return "https://sketchware-docs.vercel.app/docs/component-filepicker.html";
 
             default:
                 return ComponentsHandler.docs(type);
