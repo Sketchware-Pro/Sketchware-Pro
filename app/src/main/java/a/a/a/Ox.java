@@ -552,11 +552,13 @@ public class Ox {
         int marginBottom = layoutBean.marginBottom;
 
         if (marginLeft == marginRight && marginTop == marginBottom
-                && marginLeft == marginTop && marginLeft > 0 &&
-                !toNotAdd.contains("android:layout_margin")) {
-            nx.a("android", "layout_margin", marginLeft + "dp");
+                && marginLeft == marginTop && marginLeft > 0) {
+            if (!toNotAdd.contains("android:layout_margin")) {
+                nx.a("android", "layout_margin", marginLeft + "dp");
+            }
             return;
         }
+
         if (marginLeft > 0 && !toNotAdd.contains("android:layout_marginLeft")) {
             nx.a("android", "layout_marginLeft", marginLeft + "dp");
         }
@@ -586,11 +588,13 @@ public class Ox {
         int paddingBottom = layoutBean.paddingBottom;
 
         if (paddingLeft == paddingRight && paddingTop == paddingBottom
-                && paddingLeft == paddingTop && paddingLeft > 0 &&
-                !toNotAdd.contains("android:padding")) {
-            nx.a("android", "padding", paddingLeft + "dp");
+                && paddingLeft == paddingTop && paddingLeft > 0) {
+            if (!toNotAdd.contains("android:padding")) {
+                nx.a("android", "padding", paddingLeft + "dp");
+            }
             return;
         }
+
         if (paddingLeft > 0 && !toNotAdd.contains("android:paddingLeft")) {
             nx.a("android", "paddingLeft", paddingLeft + "dp");
         }
