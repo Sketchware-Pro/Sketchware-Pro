@@ -36,7 +36,7 @@ public class CodeEditorLanguages {
                             null
                     )
             );
-        } catch (Exception e) {
+        } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create Kotlin TextMate language, using empty one as default Kotlin language", e);
             kotlinLanguage = new EmptyLanguage();
         }
@@ -56,7 +56,7 @@ public class CodeEditorLanguages {
                             null
                     )
             );
-        } catch (Exception e) {
+        } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create XML TextMate language, using empty one as default XML language", e);
             xmlLanguage = new EmptyLanguage();
         }
