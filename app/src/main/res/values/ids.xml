@@ -1766,9 +1766,4 @@
     <item type="id" name="show_edited_code" />
     <item type="id" name="spinner_edited" />
     <item type="id" name="restore_all" />
-    <item type="id" name="tcpw_material_button_copy" />
-    <item type="id" name="tcpw_material_button_cut" />
-    <item type="id" name="tcpw_material_button_paste" />
-    <item type="id" name="tcpw_material_button_select_all" />
-    <item type="id" name="text_compose_panel" />
 </resources>

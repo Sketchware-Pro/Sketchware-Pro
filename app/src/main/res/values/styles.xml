@@ -1539,12 +1539,6 @@
         <item name="boxStrokeColor">?colorControlActivated</item>
     </style>
 
-    <style name="ButtonBar.IconOnly.Left" parent=""></style>
-
-    <style name="ButtonBar.IconOnly.Middle" parent=""></style>
-
-    <style name="ButtonBar.IconOnly.Right" parent=""></style>
-
     <style name="CardView" parent="@style/Base.CardView" />
 
     <style name="CardView.Dark" parent="@style/CardView">
@@ -1590,12 +1584,6 @@
         <item name="android:textSize">12.0sp</item>
         <item name="android:textColor">@color/design_tab_text_color</item>
         <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="HorizontalDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">?android:attr/listDivider</item>
     </style>
 
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
@@ -1653,16 +1641,6 @@
         <item name="android:textColorHighlight">#ffeeeeee</item>
     </style>
 
-    <style name="OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="iconPadding">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:minWidth">48dp</item>
-        <item name="android:minHeight">48dp</item>
-    </style>
-
     <style name="Platform.AppCompat" parent="@style/Platform.V21.AppCompat" />
 
     <style name="Platform.AppCompat.Light" parent="@style/Platform.V21.AppCompat.Light" />
@@ -1708,11 +1686,6 @@
     </style>
 
     <style name="Platform.Widget.AppCompat.Spinner" parent="@android:style/Widget.Holo.Spinner" />
-
-    <style name="RoundOutlinedButton.IconOnly" parent="">
-        <item name="android:maxWidth">48dp</item>
-        <item name="android:maxHeight">48dp</item>
-    </style>
 
     <style name="RtlOverlay.DialogWindowTitle.AppCompat" parent="@style/Base.DialogWindowTitle.AppCompat">
         <item name="android:textAlignment">viewStart</item>
@@ -2095,18 +2068,6 @@
 
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Title" parent="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
-    <style name="TextButton.IconOnly" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="iconPadding">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:minWidth">48dp</item>
-        <item name="android:minHeight">48dp</item>
-    </style>
-
     <style name="Theme.AppCompat" parent="@style/Base.Theme.AppCompat" />
 
     <style name="Theme.AppCompat.CompactMenu" parent="@style/Base.Theme.AppCompat.CompactMenu" />
@@ -2357,12 +2318,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBar">false</item>
-    </style>
-
-    <style name="VerticalDivider">
-        <item name="android:layout_width">0.8dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?android:attr/listDivider</item>
     </style>
 
     <style name="Widget.AppCompat.ActionBar" parent="@style/Base.Widget.AppCompat.ActionBar" />
