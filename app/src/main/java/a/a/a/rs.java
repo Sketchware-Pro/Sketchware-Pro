@@ -422,14 +422,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void addMoreBlockFromCollections(MoreBlockCollectionBean moreBlock) {
-        String blockName = moreBlock.spec;
+        String blockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
 
-        if (blockName.contains(" ")) {
-            blockName = blockName.substring(0, blockName.indexOf(' '));
-        }
         boolean duplicateNameFound = false;
         for (Pair<String, String> projectMoreBlock : jC.a(sc_id).i(currentActivity.getJavaName())) {
-            if (projectMoreBlock.first.equals(blockName)) {
+            if (ReturnMoreblockManager.getMbName(projectMoreBlock.first).equals(blockName)) {
                 duplicateNameFound = true;
                 break;
             }
