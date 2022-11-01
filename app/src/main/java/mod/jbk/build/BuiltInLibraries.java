@@ -75,8 +75,9 @@ public class BuiltInLibraries {
     public static String ANDROIDX_VIEWPAGER = "viewpager-1.0.0";
     public static String FIREBASE_AUTH = "firebase-auth-19.0.0";
     public static String FIREBASE_AUTH_INTEROP = "firebase-auth-interop-18.0.0";
-    public static String FIREBASE_COMMON = "firebase-common-19.0.0";
-    public static String FIREBASE_DATABASE = "firebase-database-19.0.0";
+    public static String FIREBASE_COMMON = "firebase-common-19.3.1";
+    public static String FIREBASE_COMPONENTS = "firebase-components-16.0.0";
+    public static String FIREBASE_DATABASE = "firebase-database-19.3.1";
     public static String FIREBASE_DATABASE_COLLECTION = "firebase-database-collection-17.0.0";
     public static String FIREBASE_DYNAMIC_LINKS = "firebase-dynamic-links-19.0.0";
     public static String FIREBASE_IID = "firebase-iid-19.0.0";
@@ -236,8 +237,9 @@ public class BuiltInLibraries {
                     ANDROIDX_LOCALBROADCASTMANAGER, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_AUTH_INTEROP, List.of(FIREBASE_COMMON, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
-            new BuiltInLibrary(FIREBASE_COMMON, List.of(GOOGLE_AUTO_VALUE_ANNOTATIONS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
-            new BuiltInLibrary(FIREBASE_DATABASE, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, FIREBASE_DATABASE_COLLECTION, ANDROIDX_ANNOTATION,
+            new BuiltInLibrary(FIREBASE_COMMON, List.of(FIREBASE_COMPONENTS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(FIREBASE_COMPONENTS, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(FIREBASE_DATABASE, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, FIREBASE_COMPONENTS, FIREBASE_DATABASE_COLLECTION, ANDROIDX_ANNOTATION,
                     PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_DATABASE_COLLECTION),
