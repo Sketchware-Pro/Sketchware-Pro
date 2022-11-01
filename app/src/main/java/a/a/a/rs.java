@@ -496,8 +496,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         aBVar.a(a2);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (zb.b()) {
-                moreBlock.spec = editText.getText().toString() + (moreBlock.spec.contains(" ") ?
-                        moreBlock.spec.substring(moreBlock.spec.indexOf(" ")) : "");
+                String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
+                moreBlock.spec = editText.getText().toString() + moreBlock.spec.substring(moreBlockName.length());
+
                 addMoreBlockFromCollectionsHandleVariables(moreBlock);
                 mB.a(getContext(), editText);
                 aBVar.dismiss();
