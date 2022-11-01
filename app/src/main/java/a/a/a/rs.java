@@ -696,12 +696,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void addMoreBlockFromCollectionsCreateEvent(MoreBlockCollectionBean moreBlock) {
-        String spec = moreBlock.spec;
-        String moreBlockName = spec.contains(" ") ? spec.substring(0, spec.indexOf(' ')) : spec;
-        jC.a(sc_id).a(currentActivity.getJavaName(), moreBlockName, spec);
-        eC a2 = jC.a(sc_id);
-        String javaName = currentActivity.getJavaName();
-        a2.a(javaName, moreBlockName + "_moreBlock", moreBlock.blocks);
+        String moreBlockName = ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec);
+
+        jC.a(sc_id).a(currentActivity.getJavaName(), moreBlockName, moreBlock.spec);
+        jC.a(sc_id).a(currentActivity.getJavaName(), moreBlockName + "_moreBlock", moreBlock.blocks);
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), 0).show();
         refreshEvents();
     }
