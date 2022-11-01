@@ -42,6 +42,8 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -492,7 +494,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         editText.setLines(1);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(currentActivity));
+
+        List<String> moreBlockNamesWithoutReturnTypes = new LinkedList<>();
+        for (String moreBlockName : jC.a(sc_id).a(currentActivity)) {
+            moreBlockNamesWithoutReturnTypes.add(ReturnMoreblockManager.getMbName(moreBlockName));
+        }
+
+        ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), new ArrayList<>(moreBlockNamesWithoutReturnTypes));
         aBVar.a(a2);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (zb.b()) {
