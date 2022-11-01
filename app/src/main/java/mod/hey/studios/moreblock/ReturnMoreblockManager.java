@@ -186,4 +186,18 @@ public class ReturnMoreblockManager {
 
         return str;
     }
+
+    public static String getMbNameWithTypeFromSpec(String spec) {
+        if (spec.contains("[") && spec.contains("]")) {
+            return spec.substring(0, spec.lastIndexOf(']') + 1);
+        } else {
+            String name = spec;
+
+            if (spec.contains(" ")) {
+                name = name.substring(0, name.indexOf(' '));
+            }
+
+            return name;
+        }
+    }
 }
