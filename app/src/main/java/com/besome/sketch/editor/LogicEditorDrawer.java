@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import a.a.a.Us;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.Tools;
 
@@ -65,19 +64,19 @@ public class LogicEditorDrawer extends LinearLayout {
     }
 
     public View a(String str, ArrayList<BlockBean> arrayList) {
-        if (arrayList.size() <= 0) {
-            return null;
+        Us collectionBlock = null;
+        if (arrayList.size() > 0) {
+            BlockBean blockBean = arrayList.get(0);
+            collectionBlock = new Us(getContext(), blockBean.type, blockBean.typeName, blockBean.opCode, str, arrayList);
+            favorite.addView(collectionBlock);
+            View view = new View(getContext());
+            view.setLayoutParams(new LinearLayout.LayoutParams(
+                    1,
+                    (int) getDip(8)));
+            favorite.addView(view);
         }
 
-        BlockBean blockBean = arrayList.get(0);
-        Us us = new Us(getContext(), blockBean.type, blockBean.typeName, blockBean.opCode, str, arrayList);
-        favorite.addView(us);
-        View view = new View(getContext());
-        view.setLayoutParams(new LinearLayout.LayoutParams(
-                1,
-                (int) getDip(8)));
-        favorite.addView(view);
-        return us;
+        return collectionBlock;
     }
 
     public void a(String str) {
