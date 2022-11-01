@@ -484,39 +484,40 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void showEditMoreBlockNameDialog(MoreBlockCollectionBean moreBlock) {
-        aB aBVar = new aB(getActivity());
-        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
-        aBVar.a(R.drawable.more_block_96dp);
-        View a2 = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
-        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
-        EditText editText = a2.findViewById(R.id.ed_input);
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        editText.setLines(1);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        aB dialog = new aB(getActivity());
+        dialog.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
+        dialog.a(R.drawable.more_block_96dp);
+
+        View customView = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
+        ((TextView) customView.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
+        EditText newName = customView.findViewById(R.id.ed_input);
+        newName.setPrivateImeOptions("defaultInputmode=english;");
+        newName.setLines(1);
+        newName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        newName.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         List<String> moreBlockNamesWithoutReturnTypes = new LinkedList<>();
         for (String moreBlockName : jC.a(sc_id).a(currentActivity)) {
             moreBlockNamesWithoutReturnTypes.add(ReturnMoreblockManager.getMbName(moreBlockName));
         }
 
-        ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), new ArrayList<>(moreBlockNamesWithoutReturnTypes));
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
-            if (zb.b()) {
+        ZB validator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), new ArrayList<>(moreBlockNamesWithoutReturnTypes));
+        dialog.a(customView);
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+            if (validator.b()) {
                 String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
-                moreBlock.spec = editText.getText().toString() + moreBlock.spec.substring(moreBlockName.length());
+                moreBlock.spec = newName.getText().toString() + moreBlock.spec.substring(moreBlockName.length());
 
                 addMoreBlockFromCollectionsHandleVariables(moreBlock);
-                mB.a(getContext(), editText);
-                aBVar.dismiss();
+                mB.a(getContext(), newName);
+                dialog.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
-            mB.a(getContext(), editText);
-            aBVar.dismiss();
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), newName);
+            dialog.dismiss();
         });
-        aBVar.show();
+        dialog.show();
     }
 
     private void maybeAddSoundToListOfToBeAddedSounds(String soundName) {
