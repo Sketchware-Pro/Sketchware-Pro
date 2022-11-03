@@ -139,7 +139,7 @@ Libraries added with Sketchware Pro
     https://github.com/JetBrains/kotlin/compiler
     Apache-2.0 License
     v1.7.10 modified to work on Android
-    Source: https://github.com/Sketchware-Pro/Sketchware-Pro/tree/main/kotlinc
+    Source: https://github.com/Sketchware-Pro/Sketchware-Pro/tree/v6.4.0-rc05/kotlinc
 
 * libsu:core
 
