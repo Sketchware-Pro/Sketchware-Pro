@@ -863,7 +863,6 @@
     <public name="monokia_pro_purple" id="0x7f0500df" type="color" />
     <public name="monokia_pro_grey" id="0x7f0500e0" type="color" />
     <public name="colorBottomBarSW" id="0x7f0500e1" type="color" />
-    <public name="textActionNameColor" id="0x7f0500e2" type="color" />
     <public name="abc_action_bar_content_inset_material" id="0x7f060000" type="dimen" />
     <public name="abc_action_bar_content_inset_with_nav" id="0x7f060001" type="dimen" />
     <public name="abc_action_bar_default_height_material" id="0x7f060002" type="dimen" />
@@ -2335,12 +2334,6 @@
     <public name="girl_swimming_flat" id="0x7f0704b4" type="drawable" />
     <public name="ic_discord" id="0x7f0704b5" type="drawable" />
     <public name="ic_user" id="0x7f0704b6" type="drawable" />
-    <public name="ic_more_vert_black_20dp" id="0x7f0704b7" type="drawable" />
-    <public name="round_content_copy_20" id="0x7f0704b8" type="drawable" />
-    <public name="round_content_cut_20" id="0x7f0704b9" type="drawable" />
-    <public name="round_content_paste_20" id="0x7f0704ba" type="drawable" />
-    <public name="round_save_20" id="0x7f0704bb" type="drawable" />
-    <public name="round_select_all_20" id="0x7f0704bc" type="drawable" />
     <public name="ALT" id="0x7f080000" type="id" />
     <public name="CTRL" id="0x7f080001" type="id" />
     <public name="FUNCTION" id="0x7f080002" type="id" />
@@ -4227,11 +4220,6 @@
     <public name="recyclerview1" id="0x7f080788" type="id" />
     <public name="recyclerview2" id="0x7f080789" type="id" />
     <public name="tv_loading_desc" id="0x7f08078a" type="id" />
-    <public name="tcpw_material_button_copy" id="0x7f08078b" type="id" />
-    <public name="tcpw_material_button_cut" id="0x7f08078c" type="id" />
-    <public name="tcpw_material_button_paste" id="0x7f08078d" type="id" />
-    <public name="tcpw_material_button_select_all" id="0x7f08078e" type="id" />
-    <public name="text_compose_panel" id="0x7f08078f" type="id" />
     <public name="abc_config_activityDefaultDur" id="0x7f090000" type="integer" />
     <public name="abc_config_activityShortDur" id="0x7f090001" type="integer" />
     <public name="app_bar_elevation_anim_duration" id="0x7f090002" type="integer" />
@@ -4680,7 +4668,6 @@
     <public name="about_changelog" id="0x7f0b01f5" type="layout" />
     <public name="about_empty_viewpager" id="0x7f0b01f6" type="layout" />
     <public name="about_moddersview" id="0x7f0b01f7" type="layout" />
-    <public name="text_compose_popup_window" id="0x7f0b01f8" type="layout" />
     <public name="contents_search_menu" id="0x7f0c0000" type="menu" />
     <public name="design_logic_menu" id="0x7f0c0001" type="menu" />
     <public name="design_menu" id="0x7f0c0002" type="menu" />
@@ -7310,9 +7297,6 @@
     <public name="replacement" id="0x7f0e0a25" type="string" />
     <public name="selectAll" id="0x7f0e0a26" type="string" />
     <public name="text_to_search" id="0x7f0e0a27" type="string" />
-    <public name="cancel" id="0x7f0e0a28" type="string" />
-    <public name="more" id="0x7f0e0a29" type="string" />
-    <public name="saveToProject" id="0x7f0e0a2a" type="string" />
     <public name="AlertDialog.AppCompat" id="0x7f0f0000" type="style" />
     <public name="AlertDialog.AppCompat.Light" id="0x7f0f0001" type="style" />
     <public name="Animation.AppCompat.Dialog" id="0x7f0f0002" type="style" />
@@ -7857,13 +7841,5 @@
     <public name="seekbarStyle" id="0x7f0f021d" type="style" />
     <public name="selectableMainItemBackground" id="0x7f0f021e" type="style" />
     <public name="AppTheme.Et" id="0x7f0f021f" type="style" />
-    <public name="ButtonBar.IconOnly.Left" id="0x7f0f0220" type="style" />
-    <public name="ButtonBar.IconOnly.Middle" id="0x7f0f0221" type="style" />
-    <public name="ButtonBar.IconOnly.Right" id="0x7f0f0222" type="style" />
-    <public name="HorizontalDivider" id="0x7f0f0223" type="style" />
-    <public name="OutlinedButton.IconOnly" id="0x7f0f0224" type="style" />
-    <public name="RoundOutlinedButton.IconOnly" id="0x7f0f0225" type="style" />
-    <public name="TextButton.IconOnly" id="0x7f0f0226" type="style" />
-    <public name="VerticalDivider" id="0x7f0f0227" type="style" />
     <public name="provider_paths" id="0x7f110001" type="xml" />
 </resources>

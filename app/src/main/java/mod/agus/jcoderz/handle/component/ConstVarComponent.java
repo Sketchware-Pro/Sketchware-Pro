@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.handle.component;
 
+import com.besome.sketch.beans.ComponentBean;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,20 +26,20 @@ public class ConstVarComponent {
 
     public void handleComponent(int componentId) {
         switch (componentId) {
-            case 30:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 isFCMUsed = true;
                 return;
 
-            case 31:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 isFBGoogleUsed = true;
                 return;
 
-            case 32:
+            case ComponentBean.COMPONENT_TYPE_ONESIGNAL:
                 isOneSignalUsed = true;
                 return;
 
-            case 33:
-            case 34:
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 isFBAdsUsed = true;
 
             default:

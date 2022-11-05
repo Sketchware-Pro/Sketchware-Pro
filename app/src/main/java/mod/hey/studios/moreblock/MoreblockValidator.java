@@ -16,7 +16,7 @@ public class MoreblockValidator extends MB {
 
     private final String[] reservedKeywords;
     private final ArrayList<String> registeredVariables;
-    private final Pattern j = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_<>,|\\[\\] ]*");
+    private final Pattern j = Pattern.compile("^[a-zA-Z]\\w*(?:\\[[\\w\\[\\],<>?| ]*])?$");
     private String[] eventNames;
     private String i;
 

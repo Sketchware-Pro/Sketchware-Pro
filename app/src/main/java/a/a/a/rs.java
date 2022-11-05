@@ -42,6 +42,8 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -422,14 +424,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void addMoreBlockFromCollections(MoreBlockCollectionBean moreBlock) {
-        String blockName = moreBlock.spec;
+        String blockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
 
-        if (blockName.contains(" ")) {
-            blockName = blockName.substring(0, blockName.indexOf(' '));
-        }
         boolean duplicateNameFound = false;
         for (Pair<String, String> projectMoreBlock : jC.a(sc_id).i(currentActivity.getJavaName())) {
-            if (projectMoreBlock.first.equals(blockName)) {
+            if (ReturnMoreblockManager.getMbName(projectMoreBlock.first).equals(blockName)) {
                 duplicateNameFound = true;
                 break;
             }
@@ -485,32 +484,40 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void showEditMoreBlockNameDialog(MoreBlockCollectionBean moreBlock) {
-        aB aBVar = new aB(getActivity());
-        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
-        aBVar.a(R.drawable.more_block_96dp);
-        View a2 = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
-        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
-        EditText editText = a2.findViewById(R.id.ed_input);
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        editText.setLines(1);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(currentActivity));
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
-            if (zb.b()) {
-                moreBlock.spec = editText.getText().toString() + (moreBlock.spec.contains(" ") ?
-                        moreBlock.spec.substring(moreBlock.spec.indexOf(" ")) : "");
+        aB dialog = new aB(getActivity());
+        dialog.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
+        dialog.a(R.drawable.more_block_96dp);
+
+        View customView = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
+        ((TextView) customView.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
+        EditText newName = customView.findViewById(R.id.ed_input);
+        newName.setPrivateImeOptions("defaultInputmode=english;");
+        newName.setLines(1);
+        newName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        newName.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        List<String> moreBlockNamesWithoutReturnTypes = new LinkedList<>();
+        for (String moreBlockName : jC.a(sc_id).a(currentActivity)) {
+            moreBlockNamesWithoutReturnTypes.add(ReturnMoreblockManager.getMbName(moreBlockName));
+        }
+
+        ZB validator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), new ArrayList<>(moreBlockNamesWithoutReturnTypes));
+        dialog.a(customView);
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+            if (validator.b()) {
+                String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
+                moreBlock.spec = newName.getText().toString() + moreBlock.spec.substring(moreBlockName.length());
+
                 addMoreBlockFromCollectionsHandleVariables(moreBlock);
-                mB.a(getContext(), editText);
-                aBVar.dismiss();
+                mB.a(getContext(), newName);
+                dialog.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
-            mB.a(getContext(), editText);
-            aBVar.dismiss();
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), newName);
+            dialog.dismiss();
         });
-        aBVar.show();
+        dialog.show();
     }
 
     private void maybeAddSoundToListOfToBeAddedSounds(String soundName) {
@@ -696,12 +703,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void addMoreBlockFromCollectionsCreateEvent(MoreBlockCollectionBean moreBlock) {
-        String spec = moreBlock.spec;
-        String moreBlockName = spec.contains(" ") ? spec.substring(0, spec.indexOf(' ')) : spec;
-        jC.a(sc_id).a(currentActivity.getJavaName(), moreBlockName, spec);
-        eC a2 = jC.a(sc_id);
-        String javaName = currentActivity.getJavaName();
-        a2.a(javaName, moreBlockName + "_moreBlock", moreBlock.blocks);
+        String moreBlockName = ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec);
+
+        jC.a(sc_id).a(currentActivity.getJavaName(), moreBlockName, moreBlock.spec);
+        jC.a(sc_id).a(currentActivity.getJavaName(), moreBlockName + "_moreBlock", moreBlock.blocks);
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), 0).show();
         refreshEvents();
     }

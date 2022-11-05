@@ -1,6 +1,6 @@
 package mod.hilal.saif.lib;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.widget.EditText;
 
 import a.a.a.Zx;
@@ -10,11 +10,11 @@ public class PCP implements Zx.b {
 
 
     public final BlocksManager a;
-    public final AlertDialog dialog;
+    public final Dialog dialog;
     public final EditText e;
     public boolean ii = false;
 
-    public PCP(BlocksManager blocksManager, EditText editText, AlertDialog alertDialog) {
+    public PCP(BlocksManager blocksManager, EditText editText, Dialog alertDialog) {
         this.a = blocksManager;
         this.e = editText;
         dialog = alertDialog;

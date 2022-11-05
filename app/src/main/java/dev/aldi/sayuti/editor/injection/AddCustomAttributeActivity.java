@@ -7,7 +7,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,52 +35,43 @@ import mod.hey.studios.util.Helper;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab;
-    private String file = "";
-    private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
-    private ListView listview;
-    private HashMap<String, Object> map = new HashMap<>();
-    private String num = "";
-    private String path = "";
-    private String type = "";
-    private String value = "";
+    private ArrayList<HashMap<String, Object>> activityInjections = new ArrayList<>();
+    private ListView listView;
+    private String activityInjectionsFilePath = "";
+    private String widgetType = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427795);
-        initialize(savedInstanceState);
-        initializeLogic();
-    }
+        setContentView(R.layout.add_custom_attribute);
 
-    private void initialize(Bundle _savedInstanceState) {
-        fab = findViewById(2131232439);
-        listview = findViewById(2131232438);
+        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
+        listView = findViewById(R.id.add_attr_listview);
         fab.setOnClickListener(v -> dialog("create", 0));
-    }
 
-    private void initializeLogic() {
+        TextView title = findViewById(R.id.tx_toolbar_title);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        Helper.applyRippleToToolbarView(back);
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {
-            num = getIntent().getStringExtra("sc_id");
-            file = getIntent().getStringExtra("file_name");
-            type = getIntent().getStringExtra("widget_type");
-        }
-        path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/".concat(num.concat("/injection/appcompat/".concat(file))));
-        if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
-            listMap = new Gson().fromJson(AppCompatInjection.a(), Helper.TYPE_MAP_LIST);
-        } else {
-            listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-        }
-        listview.setAdapter(new CustomAdapter(listMap));
-        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-        initToolbar(type);
-    }
+            String sc_id = getIntent().getStringExtra("sc_id");
+            String activityFilename = getIntent().getStringExtra("file_name");
+            widgetType = getIntent().getStringExtra("widget_type");
 
-    public void initToolbar(String title) {
-        ((TextView) findViewById(2131232458)).setText(title);
-        ImageView imageView = findViewById(2131232457);
-        Helper.applyRippleToToolbarView(imageView);
-        imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
+            title.setText(widgetType);
+
+            activityInjectionsFilePath = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
+            if (!FileUtil.isExistFile(activityInjectionsFilePath) || FileUtil.readFile(activityInjectionsFilePath).equals("")) {
+                activityInjections = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
+            } else {
+                activityInjections = new Gson().fromJson(FileUtil.readFile(activityInjectionsFilePath), Helper.TYPE_MAP_LIST);
+            }
+            listView.setAdapter(new CustomAdapter(activityInjections));
+            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        } else {
+            finish();
+        }
     }
 
     private void makeup(View view, int i2, int i3) {
@@ -92,65 +86,72 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         view.setFocusable(true);
     }
 
-    private void dialog(final String type, final int position) {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427797, null);
+    private void dialog(String type, int position) {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         dialog.setView(inflate);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawableResource(17170445);
-        TextView save = inflate.findViewById(2131232445);
-        TextView cancel = inflate.findViewById(2131232444);
-        final EditText editText = inflate.findViewById(2131232446);
-        final EditText editText2 = inflate.findViewById(2131232443);
-        final EditText editText3 = inflate.findViewById(2131232447);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView save = inflate.findViewById(R.id.dialog_btn_save);
+        TextView cancel = inflate.findViewById(R.id.dialog_btn_cancel);
+        EditText namespace = inflate.findViewById(R.id.dialog_input_res);
+        EditText name = inflate.findViewById(R.id.dialog_input_attr);
+        EditText value = inflate.findViewById(R.id.dialog_input_value);
+
         if (type.equals("edit")) {
-            value = listMap.get(position).get("value").toString();
-            editText.setText(value.substring(0, value.indexOf(":")));
-            editText2.setText(value.substring(value.indexOf(":") + 1, value.indexOf("=")));
-            editText3.setText(value.substring(value.indexOf("\"") + 1, value.length() - 1));
+            String injectionValue = activityInjections.get(position).get("value").toString();
+            namespace.setText(injectionValue.substring(0, injectionValue.indexOf(":")));
+            name.setText(injectionValue.substring(injectionValue.indexOf(":") + 1, injectionValue.indexOf("=")));
+            value.setText(injectionValue.substring(injectionValue.indexOf("\"") + 1, injectionValue.length() - 1));
         }
+
         save.setOnClickListener(v -> {
-            if (!editText.getText().toString().trim().equals("") && !editText2.getText().toString().trim().equals("") && !editText3.getText().toString().trim().equals("")) {
+            String namespaceInput = namespace.getText().toString();
+            String nameInput = name.getText().toString();
+            String valueInput = value.getText().toString();
+            if (!namespaceInput.trim().equals("") && !nameInput.trim().equals("") && !valueInput.trim().equals("")) {
+                String newValue = namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
                 if (type.equals("create")) {
-                    map = new HashMap<>();
-                    map.put("type", AddCustomAttributeActivity.this.type);
-                    map.put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
-                    listMap.add(map);
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("type", type);
+                    map.put("value", newValue);
+                    activityInjections.add(map);
                     SketchwareUtil.toast("Added");
                 } else if (type.equals("edit")) {
-                    listMap.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                    activityInjections.get(position).put("value", newValue);
                     SketchwareUtil.toast("Saved");
                 }
-                listview.setAdapter(new CustomAdapter(listMap));
-                ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+                listView.setAdapter(new CustomAdapter(activityInjections));
+                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                 dialog.dismiss();
-                FileUtil.writeFile(path, new Gson().toJson(listMap));
+                FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
             }
         });
         cancel.setOnClickListener(v -> dialog.dismiss());
         dialog.setOnDismissListener(dialog1 -> SketchwareUtil.hideKeyboard());
         dialog.show();
-        editText.requestFocus();
+        namespace.requestFocus();
         SketchwareUtil.showKeyboard();
     }
 
     private class CustomAdapter extends BaseAdapter {
 
-        private final ArrayList<HashMap<String, Object>> _data;
+        private final ArrayList<HashMap<String, Object>> injections;
 
         public CustomAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            _data = arrayList;
+            injections = arrayList;
         }
 
         @Override
         public int getCount() {
-            return _data.size();
+            return injections.size();
         }
 
         @Override
         public HashMap<String, Object> getItem(int position) {
-            return _data.get(position);
+            return injections.get(position);
         }
 
         @Override
@@ -159,40 +160,43 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427796, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
-            LinearLayout linearLayout = convertView.findViewById(2131232440);
-            TextView textView = convertView.findViewById(2131232441);
-            final ImageView imageView = convertView.findViewById(2131232442);
-            imageView.setRotation(90.0f);
-            makeup(linearLayout, 10, 5);
-            makeup(imageView, 100, 0);
-            if (!_data.get(position).containsKey("type") || !listMap.get(position).get("type").toString().equals(type)) {
-                linearLayout.setVisibility(View.GONE);
+
+            LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);
+            TextView injection = convertView.findViewById(R.id.cus_attr_text);
+            ImageView options = convertView.findViewById(R.id.cus_attr_btn);
+
+            options.setRotation(90);
+            makeup(root, 10, 5);
+            makeup(options, 100, 0);
+
+            if (!injections.get(position).containsKey("type") || !activityInjections.get(position).get("type").toString().equals(widgetType)) {
+                root.setVisibility(View.GONE);
             } else {
-                value = listMap.get(position).get("value").toString();
+                String value = activityInjections.get(position).get("value").toString();
                 SpannableString spannableString = new SpannableString(value);
-                spannableString.setSpan(new ForegroundColorSpan(-8769908), 0, value.indexOf(":"), 33);
-                spannableString.setSpan(new ForegroundColorSpan(-14606047), value.indexOf(":"), value.indexOf("=") + 1, 33);
-                spannableString.setSpan(new ForegroundColorSpan(-12213691), value.indexOf("\""), value.length(), 33);
-                textView.setText(spannableString);
-                linearLayout.setVisibility(View.VISIBLE);
+                spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(0xff45a245), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                injection.setText(spannableString);
+                root.setVisibility(View.VISIBLE);
             }
-            imageView.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(getApplicationContext(), imageView);
-                popupMenu.getMenu().add(0, 0, 0, "Edit");
-                popupMenu.getMenu().add(0, 1, 0, "Delete");
+            options.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, options);
+                popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
+                popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == 0) {
                         dialog("edit", position);
-                        return true;
+                    } else {
+                        activityInjections.remove(position);
+                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
+                        notifyDataSetChanged();
+                        SketchwareUtil.toast("Deleted successfully");
                     }
-                    listMap.remove(position);
-                    FileUtil.writeFile(path, new Gson().toJson(listMap));
-                    notifyDataSetChanged();
-                    SketchwareUtil.toast("Deleted successfully");
                     return true;
                 });
                 popupMenu.show();

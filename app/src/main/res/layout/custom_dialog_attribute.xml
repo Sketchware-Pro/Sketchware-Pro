@@ -1,18 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="20.0dip">
-        <LinearLayout android:orientation="vertical" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ff09a7ec" android:padding="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Input attribute value" />
-            <EditText android:textSize="16.0sp" android:textColor="#ff212121" android:textColorHint="#ff607d8b" android:id="@id/dialog_input_res" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="res" />
-            <EditText android:textSize="16.0sp" android:textColor="#ff212121" android:textColorHint="#ff607d8b" android:id="@id/dialog_input_attr" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="attr" />
-            <EditText android:textSize="16.0sp" android:textColor="#ff212121" android:textColorHint="#ff607d8b" android:id="@id/dialog_input_value" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="value" />
-        </LinearLayout>
-        <LinearLayout android:gravity="center|right" android:orientation="horizontal" android:background="#ff09a7ec" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <TextView android:textSize="14.0sp" android:textColor="#ffffffff" android:id="@id/dialog_btn_cancel" android:paddingLeft="15.0dip" android:paddingTop="10.0dip" android:paddingRight="15.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cancel" />
-            <TextView android:textSize="14.0sp" android:textColor="#ffffffff" android:id="@id/dialog_btn_save" android:paddingLeft="15.0dip" android:paddingTop="10.0dip" android:paddingRight="15.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Save" />
-        </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="#ffffffff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Input attribute value"
+            android:textColor="#ff09a7ec"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/dialog_input_res"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="res"
+            android:padding="8dp"
+            android:textColor="#ff212121"
+            android:textColorHint="#ff607d8b"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/dialog_input_attr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="attr"
+            android:padding="8dp"
+            android:textColor="#ff212121"
+            android:textColorHint="#ff607d8b"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/dialog_input_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="value"
+            android:padding="8dp"
+            android:textColor="#ff212121"
+            android:textColorHint="#ff607d8b"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff09a7ec"
+        android:gravity="center|right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/common_word_cancel"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/dialog_btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/common_word_save"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

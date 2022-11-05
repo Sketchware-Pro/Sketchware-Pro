@@ -992,7 +992,7 @@ public class Dp {
             stringFogClassInjector.doFog2ClassInDir(new File(yq.compiledClassesPath));
             KB.a(context, "stringfog/stringfog.zip", yq.compiledClassesPath);
         } catch (Exception e) {
-            LogUtil.e("Stringfog", e.toString());
+            LogUtil.e("StringFog", "Failed to run StringFog", e);
         }
     }
 

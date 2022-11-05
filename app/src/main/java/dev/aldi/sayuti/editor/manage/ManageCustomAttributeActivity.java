@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dev.aldi.sayuti.editor.injection.AddCustomAttributeActivity;
+import dev.aldi.sayuti.editor.injection.AppCompatInjection;
 import mod.hey.studios.util.Helper;
 
 public class ManageCustomAttributeActivity extends AppCompatActivity {
@@ -55,6 +56,12 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         } else {
             finish();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        AppCompatInjection.refreshInjections();
     }
 
     private void addType(String type) {

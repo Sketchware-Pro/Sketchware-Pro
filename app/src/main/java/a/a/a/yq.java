@@ -355,7 +355,10 @@ public class yq {
                     ).replaceAll("<\\?package_name\\?>", packageName));
         }
 
-        if (!new File(javaDir, "SketchApplication.java").exists()) {
+        String customApplicationClassName = new ProjectSettings(sc_id).getValue(ProjectSettings.SETTING_APPLICATION_CLASS,
+                ".SketchApplication");
+        boolean notUsingCustomApplicationClass = customApplicationClassName.equals(".SketchApplication");
+        if (!new File(javaDir, "SketchApplication.java").exists() && notUsingCustomApplicationClass) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = fileUtil.b(
@@ -384,14 +387,20 @@ public class yq {
 
         if (logcatEnabled) {
             if (!new File(javaDir, "SketchLogger.java").exists()) {
+                String sketchLoggerFileContent = fileUtil.b(
+                        context,
+                        "debug" + File.separator
+                                + "SketchLogger.java"
+                ).replaceAll("<\\?package_name\\?>", packageName);
+
+                if (!notUsingCustomApplicationClass && customApplicationClassName.charAt(0) == '.') {
+                    sketchLoggerFileContent = sketchLoggerFileContent.replaceAll("SketchApplication\\.getContext\\(\\)",
+                            customApplicationClassName.substring(1) + ".getContext()");
+                }
+
                 fileUtil.b(javaFilesPath + File.separator
                                 + packageNameAsFolders + File.separator
-                                + "SketchLogger.java",
-                        fileUtil.b(
-                                context,
-                                "debug" + File.separator
-                                        + "SketchLogger.java"
-                        ).replaceAll("<\\?package_name\\?>", packageName));
+                                + "SketchLogger.java", sketchLoggerFileContent);
             }
         }
     }

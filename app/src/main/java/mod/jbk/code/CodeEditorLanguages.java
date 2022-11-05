@@ -4,13 +4,11 @@ import android.content.res.AssetManager;
 
 import com.besome.sketch.SketchApplication;
 
-import org.eclipse.tm4e.core.internal.theme.reader.ThemeReader;
-
-import java.io.InputStreamReader;
+import org.eclipse.tm4e.core.registry.IGrammarSource;
+import org.eclipse.tm4e.core.registry.IThemeSource;
 
 import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.lang.Language;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
 import mod.jbk.util.LogUtil;
 
@@ -26,10 +24,19 @@ public class CodeEditorLanguages {
 
         Language kotlinLanguage;
         try {
-            kotlinLanguage = TextMateLanguage.create("kotlin.tmLanguage",
-                    assets.open("textmate/kotlin.tmLanguage"),
-                    ThemeReader.readThemeSync("dracula.json", assets.open("textmate/themes/dracula.json")));
-        } catch (Exception e) {
+            kotlinLanguage = TextMateLanguage.create(
+                    IGrammarSource.fromInputStream(
+                            assets.open("textmate/kotlin.tmLanguage"),
+                            "kotlin.tmLanguage",
+                            null
+                    ),
+                    IThemeSource.fromInputStream(
+                            assets.open("textmate/themes/dracula.json"),
+                            "dracula.json",
+                            null
+                    )
+            );
+        } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create Kotlin TextMate language, using empty one as default Kotlin language", e);
             kotlinLanguage = new EmptyLanguage();
         }
@@ -37,10 +44,19 @@ public class CodeEditorLanguages {
 
         Language xmlLanguage;
         try {
-            xmlLanguage = TextMateLanguage.create("xml.tmLanguage.json",
-                    assets.open("textmate/xml.tmLanguage.json"),
-                    ThemeReader.readThemeSync("dracula.json", assets.open("textmate/themes/dracula.json")));
-        } catch (Exception e) {
+            xmlLanguage = TextMateLanguage.create(
+                    IGrammarSource.fromInputStream(
+                            assets.open("textmate/xml.tmLanguage.json"),
+                            "xml.tmLanguage.json",
+                            null
+                    ),
+                    IThemeSource.fromInputStream(
+                            assets.open("textmate/themes/dracula.json"),
+                            "dracula.json",
+                            null
+                    )
+            );
+        } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create XML TextMate language, using empty one as default XML language", e);
             xmlLanguage = new EmptyLanguage();
         }

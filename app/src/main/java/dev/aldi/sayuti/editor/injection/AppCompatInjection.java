@@ -1,10 +1,15 @@
 package dev.aldi.sayuti.editor.injection;
 
+import android.os.Environment;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import a.a.a.Nx;
 import a.a.a.jq;
@@ -13,35 +18,63 @@ import mod.hey.studios.util.Helper;
 
 public class AppCompatInjection {
 
-    public jq jq;
-    public HashMap<String, Object> map = new HashMap<>();
-    public String path;
-    public ProjectFileBean pfb;
-    ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
+    // maps sc_id to (activity filename mapped to (list of injections))
+    private static final Map<String, Map<String, List<Map<String, Object>>>> INJECTIONS = new HashMap<>();
 
-    public AppCompatInjection(jq jqVar, ProjectFileBean fileBean) {
-        jq = jqVar;
-        pfb = fileBean;
-        String str = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + jqVar.sc_id + "/injection/appcompat/" + fileBean.fileName;
-        path = str;
-        path = str;
+    private final String sc_id;
+    private final ProjectFileBean projectFile;
+
+    public AppCompatInjection(jq jq, ProjectFileBean projectFileBean) {
+        sc_id = jq.sc_id;
+        projectFile = projectFileBean;
     }
 
-    public static String a() {
+    public static String getDefaultActivityInjections() {
         return "[{\"type\":\"toolbar\",\"value\":\"android:layout_width=\\\"match_parent\\\"\"},{\"type\":\"toolbar\",\"value\":\"android:layout_height=\\\"?attr/actionBarSize\\\"\"},{\"type\":\"toolbar\",\"value\":\"android:background=\\\"?attr/colorPrimary\\\"\"},{\"type\":\"toolbar\",\"value\":\"app:popupTheme=\\\"@style/AppTheme.PopupOverlay\\\"\"},{\"type\":\"appbarlayout\",\"value\":\"android:layout_width=\\\"match_parent\\\"\"},{\"type\":\"appbarlayout\",\"value\":\"android:layout_height=\\\"wrap_content\\\"\"},{\"type\":\"appbarlayout\",\"value\":\"android:theme=\\\"@style/AppTheme.AppBarOverlay\\\"\"},{\"type\":\"coordinatorlayout\",\"value\":\"android:layout_width=\\\"match_parent\\\"\"},{\"type\":\"coordinatorlayout\",\"value\":\"android:layout_height=\\\"match_parent\\\"\"},{\"type\":\"drawerlayout\",\"value\":\"android:layout_width=\\\"match_parent\\\"\"},{\"type\":\"drawerlayout\",\"value\":\"android:layout_height=\\\"match_parent\\\"\"},{\"type\":\"drawerlayout\",\"value\":\"tools:openDrawer=\\\"start\\\"\"},{\"type\":\"navigationdrawer\",\"value\":\"android:layout_width=\\\"320dp\\\"\"},{\"type\":\"navigationdrawer\",\"value\":\"android:layout_height=\\\"match_parent\\\"\"},{\"type\":\"navigationdrawer\",\"value\":\"android:layout_gravity=\\\"start\\\"\"},{\"type\":\"navigationdrawer\",\"value\":\"android:background=\\\"#EEEEEE\\\"\"}]";
     }
 
     public void inject(Nx nx, String str) {
-        if (pfb.hasActivityOption(1) || pfb.hasActivityOption(4) || pfb.hasActivityOption(8)) {
-            if (!FileUtil.isExistFile(path) || FileUtil.readFile(path).equals("")) {
-                listMap = new Gson().fromJson(a(), Helper.TYPE_MAP_LIST);
-            } else {
-                listMap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+        if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ||
+                projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) ||
+                projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+            if (!INJECTIONS.containsKey(sc_id)) {
+                INJECTIONS.put(sc_id, new HashMap<>());
             }
-            for (int i = 0; i < listMap.size(); i++) {
-                if (listMap.get(i).get("type").toString().equals(str.toLowerCase())) {
-                    nx.b(listMap.get(i).get("value").toString());
+            Map<String, List<Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
+            if (!Objects.requireNonNull(projectInjections).containsKey(projectFile.fileName)) {
+                projectInjections.put(projectFile.fileName, readAppCompatInjections(sc_id, projectFile.fileName));
+            }
+
+            for (Map<String, Object> injection : Objects.requireNonNull(projectInjections.get(projectFile.fileName))) {
+                Object value;
+                if (str.toLowerCase().equals(injection.get("type")) && (value = injection.get("value")) instanceof String) {
+                    nx.b((String) value);
                 }
+            }
+        }
+    }
+
+    private static List<Map<String, Object>> readAppCompatInjections(String sc_id, String activityFilename) {
+        String toParse;
+
+        File injectionFile = new File(Environment.getExternalStorageDirectory(),
+                ".sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename);
+        String fileContent;
+        if (injectionFile.exists() && (fileContent = FileUtil.readFile(injectionFile.getAbsolutePath())).length() != 0) {
+            toParse = fileContent;
+        } else {
+            toParse = getDefaultActivityInjections();
+        }
+
+        return new Gson().fromJson(toParse, Helper.TYPE_MAP_LIST);
+    }
+
+    public static void refreshInjections() {
+        for (String sc_id : INJECTIONS.keySet()) {
+            Map<String, List<Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
+            for (String activityFilename : Objects.requireNonNull(projectInjections).keySet()) {
+                projectInjections.remove(activityFilename);
+                projectInjections.put(activityFilename, readAppCompatInjections(sc_id, activityFilename));
             }
         }
     }

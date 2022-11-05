@@ -78,13 +78,13 @@ Libraries added with Sketchware Pro
 
 	https://www.guardsquare.com/proguard
 	GNU General Public License v2.0
-	No changes made to v7.1.1
+	No changes made to both v7.2.2 in minApi26 builds, and v6.0.3 in minApi21 builds
 
 * R8
 
 	https://r8.googlesource.com
 	Its own license, read the full text further below
-	No changes made to v3.3.28
+	No changes made to v3.3.75
 
 * hdodenhof/CircleImageView
 
@@ -96,7 +96,7 @@ Libraries added with Sketchware Pro
 
 	https://github.com/Rosemoe/sora-editor
 	GNU Lesser General Public License v2.1
-	No changes made to v0.11.1
+	No changes made to v0.17.2
 
 * Angads25/android-filepicker
 
@@ -114,7 +114,7 @@ Libraries added with Sketchware Pro
 
 	https://github.com/google/bundletool
 	Apache-2.0 License
-	No changes made to v1.11.2
+	No changes made to v1.11.3
 
 * OkHttp
 
@@ -133,6 +133,19 @@ Libraries added with Sketchware Pro
 	https://www.eclipse.org
 	Eclipse Public License Version 1.0
 	No changes to v3.26.0
+
+* kotlinc
+
+    https://github.com/JetBrains/kotlin/compiler
+    Apache-2.0 License
+    v1.7.10 modified to work on Android
+    Source: https://github.com/Sketchware-Pro/Sketchware-Pro/tree/main/kotlinc
+
+* libsu:core
+
+    https://github.com/topjohnwu/libsu
+    Apache-2.0 License
+    No changes made to v5.0.2
 
 
 Full license texts

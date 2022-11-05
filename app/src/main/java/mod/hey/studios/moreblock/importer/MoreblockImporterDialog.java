@@ -168,9 +168,9 @@ public class MoreblockImporterDialog {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = act.getLayoutInflater().inflate(R.layout.manage_collection_popup_import_more_block_list_item, null);
+                convertView = act.getLayoutInflater().inflate(R.layout.manage_collection_popup_import_more_block_list_item, parent, false);
             }
 
             ViewGroup container = convertView.findViewById(R.id.block_area);

@@ -3,10 +3,10 @@ package mod.hilal.saif.activities.tools;
 import static mod.SketchwareUtil.dpToPx;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,6 +37,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import a.a.a.Zx;
 import a.a.a.aB;
@@ -49,11 +51,9 @@ import mod.hilal.saif.lib.PCP;
 
 public class BlocksManager extends AppCompatActivity {
 
-    private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir = "";
     private String pallet_dir = "";
-    private double insert_n = 0;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ListView listview1;
     private LinearLayout card2;
@@ -152,47 +152,13 @@ public class BlocksManager extends AppCompatActivity {
             dialog.show();
         });
 
-        _fab.setOnClickListener(v -> {
-            insert_n = -1;
-            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-            LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
-            dialog.setView(convertView);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(R.id.name);
-            final EditText colour = convertView.findViewById(R.id.color);
-            final TextView save = convertView.findViewById(R.id.save);
-            final TextView cancel = convertView.findViewById(R.id.cancel);
-            final ImageView select = convertView.findViewById(R.id.select);
-
-            select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
-
-            save.setOnClickListener(saveView -> {
-                try {
-                    Color.parseColor(colour.getText().toString());
-
-                    _createPallette(name.getText().toString(), colour.getText().toString());
-                    insert_n = -1;
-                    dialog.dismiss();
-                } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                    colour.setError("Malformed hexadecimal color");
-                    colour.requestFocus();
-                }
-            });
-            cancel.setOnClickListener(cancelView -> {
-                insert_n = -1;
-                dialog.dismiss();
-            });
-            dialog.show();
-        });
+        _fab.setOnClickListener(v -> showPaletteDialog(false, null, null, null, null));
     }
 
     private void initializeLogic() {
         _readSettings();
         _refresh_list();
         _recycleBin(card2);
-        insert_n = -1;
     }
 
     @Override
@@ -238,43 +204,32 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _refresh_list() {
-        try {
-            if (FileUtil.isExistFile(pallet_dir) && !FileUtil.readFile(pallet_dir).equals("")) {
-                Parcelable savedState = listview1.onSaveInstanceState();
-                pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
-                listview1.setAdapter(new PaletteAdapter(pallet_listmap));
-                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
-                listview1.onRestoreInstanceState(savedState);
-            } else {
-                pallet_listmap.clear();
-                listview1.setAdapter(new PaletteAdapter(pallet_listmap));
-                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
-            }
-            card2_sub.setText("Blocks: " + (long) (_getN(-1)));
-        } catch (Exception e) {
-        }
-    }
+        parsePaletteJson:
+        {
+            String paletteJsonContent;
+            if (FileUtil.isExistFile(pallet_dir) && !(paletteJsonContent = FileUtil.readFile(pallet_dir)).equals("")) {
+                try {
+                    pallet_listmap = new Gson().fromJson(paletteJsonContent, Helper.TYPE_MAP_LIST);
 
-    private void _remove_pallete(final double _p) {
-        new AlertDialog.Builder(this)
-                .setTitle(pallet_listmap.get((int) _p).get("name").toString())
-                .setMessage("Remove all blocks related to this palette?")
-                .setPositiveButton("Remove permanently", (dialog, which) -> {
-                    pallet_listmap.remove((int) (_p));
-                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                    _removeRelatedBlocks(_p + 9);
-                    _readSettings();
-                    _refresh_list();
-                })
-                .setNegativeButton(R.string.common_word_cancel, null)
-                .setNeutralButton("Move to recycle bin", (dialog, which) -> {
-                    _moveRelatedBlocksToRecycleBin(_p + 9);
-                    pallet_listmap.remove((int) (_p));
-                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                    _removeRelatedBlocks(_p + 9);
-                    _readSettings();
-                    _refresh_list();
-                }).show();
+                    if (pallet_listmap != null) {
+                        break parsePaletteJson;
+                    }
+                    // fall-through to shared handler
+                } catch (JsonParseException e) {
+                    // fall-through to shared handler
+                }
+
+                SketchwareUtil.showFailedToParseJsonDialog(this, new File(pallet_dir), "Custom Block Palettes", v -> _refresh_list());
+            }
+            pallet_listmap = new ArrayList<>();
+        }
+
+        Parcelable savedState = listview1.onSaveInstanceState();
+        listview1.setAdapter(new PaletteAdapter(pallet_listmap));
+        ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
+        listview1.onRestoreInstanceState(savedState);
+
+        card2_sub.setText("Blocks: " + (long) (_getN(-1)));
     }
 
     private double _getN(final double _p) {
@@ -285,65 +240,6 @@ public class BlocksManager extends AppCompatActivity {
             }
         }
         return (n);
-    }
-
-    private void _createPallette(final String _name, final String _colour) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", _name);
-        map.put("color", _colour);
-
-        if (insert_n == -1) {
-            pallet_listmap.add(map);
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-            _readSettings();
-            _refresh_list();
-        } else {
-            pallet_listmap.add((int) insert_n, map);
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-            _readSettings();
-            _refresh_list();
-            _insertBlocksAt(insert_n + 9);
-        }
-        insert_n = -1;
-    }
-
-    private void _showEditDial(final double _p, final String _name, final String _c) {
-        final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
-        dialog.setView(convertView);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText name = convertView.findViewById(R.id.name);
-        name.setText(_name);
-        final EditText colour = convertView.findViewById(R.id.color);
-        colour.setText(_c);
-        final TextView title = convertView.findViewById(R.id.title);
-        title.setText("Edit palette");
-        final TextView save = convertView.findViewById(R.id.save);
-        final TextView cancel = convertView.findViewById(R.id.cancel);
-        final ImageView select = convertView.findViewById(R.id.select);
-        select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
-        save.setOnClickListener(v -> {
-            try {
-                Color.parseColor(colour.getText().toString());
-                _editPallete(_p, name.getText().toString(), colour.getText().toString());
-                dialog.dismiss();
-            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                colour.setError("Malformed hexadecimal color");
-                colour.requestFocus();
-            }
-        });
-        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        dialog.show();
-    }
-
-    private void _editPallete(final double _p, final String _n, final String _c) {
-        pallet_listmap.get((int) _p).put("name", _n);
-        pallet_listmap.get((int) _p).put("color", _c);
-        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-        _readSettings();
-        _refresh_list();
     }
 
     private void _MoveUp(final double _p) {
@@ -380,35 +276,6 @@ public class BlocksManager extends AppCompatActivity {
         });
     }
 
-    private void _insert_pallete(final double _p) {
-        insert_n = _p;
-
-        final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
-        dialog.setView(convertView);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText name = convertView.findViewById(R.id.name);
-        final EditText colour = convertView.findViewById(R.id.color);
-        final TextView save = convertView.findViewById(R.id.save);
-        final TextView cancel = convertView.findViewById(R.id.cancel);
-        final ImageView select = convertView.findViewById(R.id.select);
-        select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
-        save.setOnClickListener(v -> {
-            try {
-                Color.parseColor(colour.getText().toString());
-                _createPallette(name.getText().toString(), colour.getText().toString());
-                dialog.dismiss();
-            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                colour.setError("Malformed hexadecimal color");
-                colour.requestFocus();
-            }
-        });
-        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        dialog.show();
-    }
-
     private void _moveDown(final double _p) {
         if (_p < (pallet_listmap.size() - 1)) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + 1));
@@ -424,19 +291,19 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _removeRelatedBlocks(final double _p) {
-        temp_list.clear();
+        List<Map<String, Object>> newBlocks = new LinkedList<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == _p)) {
                 if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) > _p) {
                     HashMap<String, Object> m = all_blocks_list.get(i);
                     m.put("palette", String.valueOf((long) (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) - 1)));
-                    temp_list.add(m);
+                    newBlocks.add(m);
                 } else {
-                    temp_list.add(all_blocks_list.get(i));
+                    newBlocks.add(all_blocks_list.get(i));
                 }
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
         _readSettings();
         _refresh_list();
     }
@@ -484,18 +351,18 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _emptyRecyclebin() {
-        temp_list.clear();
+        List<Map<String, Object>> newBlocks = new LinkedList<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == -1)) {
-                temp_list.add(all_blocks_list.get(i));
+                newBlocks.add(all_blocks_list.get(i));
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
         _readSettings();
         _refresh_list();
     }
 
-    private View.OnClickListener getSharedPaletteColorPickerShower(AlertDialog dialog, EditText storePickedResultIn) {
+    private View.OnClickListener getSharedPaletteColorPickerShower(Dialog dialog, EditText storePickedResultIn) {
         return v -> {
             LayoutInflater inf = getLayoutInflater();
             final View a = inf.inflate(R.layout.color_picker, null);
@@ -505,6 +372,112 @@ public class BlocksManager extends AppCompatActivity {
             zx.showAtLocation(a, Gravity.CENTER, 0, 0);
             dialog.hide();
         };
+    }
+
+    private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
+        aB dialog = new aB(this);
+        dialog.a(R.drawable.positive_96);
+        dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
+
+        LinearLayout customView = new LinearLayout(this);
+        customView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        customView.setOrientation(LinearLayout.VERTICAL);
+
+        TextInputLayout name = new TextInputLayout(this);
+        name.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        name.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        name.setOrientation(LinearLayout.VERTICAL);
+        name.setHint("Name");
+        customView.addView(name);
+
+        EditText nameEditText = new EditText(this);
+        nameEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        nameEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+        nameEditText.setTextColor(0xff000000);
+        nameEditText.setHintTextColor(0xff607d8b);
+        nameEditText.setTextSize(14);
+        if (isEditing) {
+            nameEditText.setText(oldName);
+        }
+        name.addView(nameEditText);
+
+        LinearLayout colorContainer = new LinearLayout(this);
+        colorContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        colorContainer.setGravity(Gravity.CENTER | Gravity.LEFT);
+        customView.addView(colorContainer);
+
+        TextInputLayout color = new TextInputLayout(this);
+        color.setLayoutParams(new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        color.setOrientation(LinearLayout.VERTICAL);
+        color.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        color.setHint("Color");
+        colorContainer.addView(color);
+
+        EditText colorEditText = new EditText(this);
+        colorEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        colorEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+        colorEditText.setTextColor(0xff000000);
+        colorEditText.setHintTextColor(0xff607d8b);
+        colorEditText.setTextSize(14);
+        if (isEditing) {
+            colorEditText.setText(oldColor);
+        }
+        color.addView(colorEditText);
+
+        ImageView openColorPalette = new ImageView(this);
+        openColorPalette.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(50), dpToPx(28)));
+        openColorPalette.setFocusable(false);
+        openColorPalette.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        openColorPalette.setImageResource(R.drawable.color_palette_48);
+        colorContainer.addView(openColorPalette);
+
+        dialog.a(customView);
+        openColorPalette.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colorEditText));
+
+        dialog.b(Helper.getResString(R.string.common_word_save), save -> {
+            try {
+                String nameInput = nameEditText.getText().toString();
+                String colorInput = colorEditText.getText().toString();
+                Color.parseColor(colorInput);
+
+                if (!isEditing) {
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("name", nameInput);
+                    map.put("color", colorInput);
+
+                    if (insertAtPosition == null) {
+                        pallet_listmap.add(map);
+                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                        _readSettings();
+                        _refresh_list();
+                    } else {
+                        pallet_listmap.add(insertAtPosition, map);
+                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                        _readSettings();
+                        _refresh_list();
+                        _insertBlocksAt(insertAtPosition + 9);
+                    }
+                } else {
+                    pallet_listmap.get(oldPosition).put("name", nameInput);
+                    pallet_listmap.get(oldPosition).put("color", colorInput);
+                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                    _readSettings();
+                    _refresh_list();
+                }
+                dialog.dismiss();
+            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+                color.setError("Malformed hexadecimal color");
+                color.requestFocus();
+            }
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public class PaletteAdapter extends BaseAdapter {
@@ -574,12 +547,31 @@ public class BlocksManager extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(item -> {
                     switch (item.getTitle().toString()) {
                         case edit:
-                            _showEditDial(position, pallet_listmap.get(position).get("name").toString(),
-                                    pallet_listmap.get(position).get("color").toString());
+                            showPaletteDialog(true, position,
+                                    pallet_listmap.get(position).get("name").toString(),
+                                    pallet_listmap.get(position).get("color").toString(), null);
                             break;
 
                         case delete:
-                            _remove_pallete(position);
+                            new AlertDialog.Builder(BlocksManager.this)
+                                    .setTitle(pallet_listmap.get(position).get("name").toString())
+                                    .setMessage("Remove all blocks related to this palette?")
+                                    .setPositiveButton("Remove permanently", (dialog, which) -> {
+                                        pallet_listmap.remove(position);
+                                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                                        _removeRelatedBlocks(position + 9);
+                                        _readSettings();
+                                        _refresh_list();
+                                    })
+                                    .setNegativeButton(R.string.common_word_cancel, null)
+                                    .setNeutralButton("Move to recycle bin", (dialog, which) -> {
+                                        _moveRelatedBlocksToRecycleBin(position + 9);
+                                        pallet_listmap.remove(position);
+                                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                                        _removeRelatedBlocks(position + 9);
+                                        _readSettings();
+                                        _refresh_list();
+                                    }).show();
                             break;
 
                         case moveUp:
@@ -591,7 +583,7 @@ public class BlocksManager extends AppCompatActivity {
                             break;
 
                         case insert:
-                            _insert_pallete(position);
+                            showPaletteDialog(false, null, null, null, position);
                             break;
 
                         default:
