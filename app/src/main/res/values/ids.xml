@@ -1755,10 +1755,6 @@
     <item type="id" name="project_config_title" />
     <item type="id" name="project_config_icon" />
     <item type="id" name="ln_pg_fm" />
-    <item type="id" name="panel_btn_copy" />
-    <item type="id" name="panel_btn_cut" />
-    <item type="id" name="panel_btn_paste" />
-    <item type="id" name="panel_btn_select_all" />
     <item type="id" name="result_item_desc" />
     <item type="id" name="result_item_image" />
     <item type="id" name="result_item_label" />

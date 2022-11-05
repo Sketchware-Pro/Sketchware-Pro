@@ -261,8 +261,4 @@
     <dimen name="tooltip_y_offset_non_touch">0.0dip</dimen>
     <dimen name="tooltip_y_offset_touch">16.0dip</dimen>
     <dimen name="tutorial_item_margin">8.0dip</dimen>
-    <dimen name="activity_margin">4.0dip</dimen>
-    <dimen name="checkbox_margin">8.0dip</dimen>
-    <dimen name="toolbar_image_margin">16.0dip</dimen>
-    <dimen name="checkbox_dimens">24.0dip</dimen>
 </resources>

@@ -162,12 +162,6 @@
     <color name="tooltip_background_dark">#e6616161</color>
     <color name="tooltip_background_light">#e6ffffff</color>
     <color name="transparent">#00ffffff</color>
-    <color name="colorPrimary">#ff3f51b5</color>
-    <color name="colorPrimaryDark">#ff303f9f</color>
-    <color name="colorAccent">#ff3f51b5</color>
-    <color name="textColorPrimary">#ffffffff</color>
-    <color name="textColorSecondary">#ffffffff</color>
-    <color name="colorHeader">@color/colorPrimary</color>
     <color name="darkGrey">#ff272822</color>
     <color name="black">#ff000000</color>
     <color name="orange">#ffcc7832</color>

@@ -2591,13 +2591,6 @@ Please check the URL again."</string>
     <string name="view_widget_favorites_save_guide">Saved widgets are saved to My Collection and are accessible from all the projects.</string>
     <string name="view_widget_favorites_save_guide_new">If you save this widget, this widget will be added to widget collection and images used in this widget will be added to image collection automatically. Saved widget can be used in all projects.</string>
     <string name="view_widget_favorites_save_title">Save Widget to My Collection</string>
-    <string name="cancel_button_label">Cancel</string>
-    <string name="choose_button_label">Select</string>
-    <string name="label_parent_directory">Parent Directory</string>
-    <string name="last_edit">Last edited:</string>
-    <string name="error_dir_access" />
-    <string name="default_dir">/sdcard</string>
-    <string name="label_parent_dir">...</string>
     <string name="text_title_menu_resource">Resource</string>
     <string name="text_title_menu_assets">Asset</string>
     <string name="text_title_menu_permission">Permission</string>
