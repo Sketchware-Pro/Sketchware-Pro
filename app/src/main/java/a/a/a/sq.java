@@ -181,7 +181,7 @@ public class sq {
                 return h;
 
             default:
-                return null;
+                return new Pair[0];
         }
     }
 
@@ -189,7 +189,7 @@ public class sq {
         if (property.equals("property_progressbar_style")) {
             return m;
         } else {
-            return null;
+            return new Pair[0];
         }
     }
 }
