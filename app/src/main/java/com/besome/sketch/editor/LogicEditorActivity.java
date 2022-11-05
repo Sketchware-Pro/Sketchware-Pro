@@ -3,6 +3,7 @@ package com.besome.sketch.editor;
 import static mod.SketchwareUtil.getDip;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -120,7 +121,9 @@ import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 
+@SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
+    public final Handler Z = new Handler();
     public Vibrator F;
     public boolean G;
     public DB H;
@@ -170,45 +173,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public boolean W = false;
     public boolean X = false;
     public View Y = null;
-    public final Handler Z = new Handler();
-    public Runnable aa = this::r;
     public boolean da = false;
     public boolean ea = false;
     public boolean ha = false;
     public boolean ia = false;
-
-    private static class ProjectSaver extends MA {
-        private final WeakReference<LogicEditorActivity> activity;
-
-        public ProjectSaver(LogicEditorActivity logicEditorActivity) {
-            super(logicEditorActivity);
-            this.activity = new WeakReference<>(logicEditorActivity);
-            logicEditorActivity.a(this);
-        }
-
-        @Override
-        public void a() {
-            this.activity.get().h();
-            this.activity.get().finish();
-        }
-
-        @Override
-        public void a(String str) {
-            Toast.makeText(this.a, xB.b().a(this.activity.get().getApplicationContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
-            this.activity.get().h();
-        }
-
-        @Override
-        public void b() {
-            publishProgress("Now saving..");
-            this.activity.get().E();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-    }
+    public Runnable aa = this::r;
 
     private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(this.B).a(this.M.getJavaName(), this.C + "_" + this.D);
@@ -2970,6 +2939,39 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         this.O.a();
         for (BlockCollectionBean next : Mp.h().f()) {
             this.O.a(next.name, next.blocks).setOnTouchListener(this);
+        }
+    }
+
+    private static class ProjectSaver extends MA {
+        private final WeakReference<LogicEditorActivity> activity;
+
+        public ProjectSaver(LogicEditorActivity logicEditorActivity) {
+            super(logicEditorActivity);
+            this.activity = new WeakReference<>(logicEditorActivity);
+            logicEditorActivity.a(this);
+        }
+
+        @Override
+        public void a() {
+            this.activity.get().h();
+            this.activity.get().finish();
+        }
+
+        @Override
+        public void a(String str) {
+            Toast.makeText(this.a, xB.b().a(this.activity.get().getApplicationContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
+            this.activity.get().h();
+        }
+
+        @Override
+        public void b() {
+            publishProgress("Now saving..");
+            this.activity.get().E();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return a(voids);
         }
     }
 }
