@@ -17,7 +17,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import androidx.annotation.StringRes;
+
 import com.google.gson.reflect.TypeToken;
+import com.sketchware.remod.R;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -60,11 +63,11 @@ public class Helper {
         }
     }
 
-    public static String getResString(int resId) {
+    public static String getResString(@StringRes int resId) {
         return xB.b().a(getContext(), resId);
     }
 
-    public static String getResString(int resId, Object... formatArgs) {
+    public static String getResString(@StringRes int resId, Object... formatArgs) {
         return String.format(getResString(resId), formatArgs);
     }
 
