@@ -13,11 +13,12 @@ import a.a.a.wB;
 
 @Deprecated
 public class ItemDigitalClock extends DigitalClock implements sy {
+
     public ViewBean O;
     public boolean P;
     public boolean Q;
     public Paint R;
-    public float S;
+    public int S;
 
     @Deprecated
     public ItemDigitalClock(Context context) {
@@ -27,53 +28,52 @@ public class ItemDigitalClock extends DigitalClock implements sy {
 
     @Deprecated
     public void a(Context context) {
-        this.S = wB.a(context, 1.0f);
-        this.R = new Paint(1);
-        this.R.setColor(-1785080368);
+        S = (int) wB.a(context, 1.0f);
+        R = new Paint(Paint.ANTI_ALIAS_FLAG);
+        R.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 
     @Override
     public ViewBean getBean() {
-        return this.O;
+        return O;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.O = viewBean;
+        O = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.Q;
+        return Q;
     }
 
     public void setFixed(boolean z) {
-        this.Q = z;
+        Q = z;
     }
 
     public boolean getSelection() {
-        return this.P;
+        return P;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.P = z;
+        P = z;
         invalidate();
     }
 
     @Override
     @Deprecated
     public void onDraw(Canvas canvas) {
-        if (this.P) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.R);
+        if (P) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), R);
         }
         super.onDraw(canvas);
     }
 
     @Override
     public void setPadding(int i, int i2, int i3, int i4) {
-        float f = this.S;
-        super.setPadding((int) (((float) i) * f), (int) (((float) i2) * f), (int) (((float) i3) * f), (int) (f * ((float) i4)));
+        super.setPadding(i * S, i2 * S, i3 * S, S * i4);
     }
 }

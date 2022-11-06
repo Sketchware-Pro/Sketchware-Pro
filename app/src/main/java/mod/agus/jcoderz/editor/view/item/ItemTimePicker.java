@@ -14,12 +14,11 @@ import a.a.a.wB;
 
 public class ItemTimePicker extends TimePicker implements sy {
 
-
     public ViewBean f23a;
     public boolean b;
     public boolean c;
     public Paint d;
-    public float e;
+    public int e;
 
     public ItemTimePicker(Context context) {
         super(context);
@@ -28,9 +27,9 @@ public class ItemTimePicker extends TimePicker implements sy {
 
     @Deprecated
     public void a(Context context) {
-        this.e = wB.a(context, 1.0f);
-        this.d = new Paint(1);
-        this.d.setColor(-1785080368);
+        e = (int) wB.a(context, 1.0f);
+        d = new Paint(Paint.ANTI_ALIAS_FLAG);
+        d.setColor(0x9599d5d0);
         setFocusable(false);
         setClickable(false);
         setDrawingCacheEnabled(true);
@@ -38,37 +37,37 @@ public class ItemTimePicker extends TimePicker implements sy {
 
     @Override
     public ViewBean getBean() {
-        return this.f23a;
+        return f23a;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.f23a = viewBean;
+        f23a = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.c;
+        return c;
     }
 
     public void setFixed(boolean z) {
-        this.c = z;
+        c = z;
     }
 
     public boolean getSelection() {
-        return this.b;
+        return b;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.b = z;
+        b = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.b) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
+        if (b) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
         }
         super.onDraw(canvas);
     }
@@ -80,7 +79,6 @@ public class ItemTimePicker extends TimePicker implements sy {
 
     @Override
     public void setPadding(int i, int i2, int i3, int i4) {
-        float f = this.e;
-        super.setPadding((int) (((float) i) * f), (int) (((float) i2) * f), (int) (((float) i3) * f), (int) (f * ((float) i4)));
+        super.setPadding(i * e, i2 * e, i3 * e, e * i4);
     }
 }

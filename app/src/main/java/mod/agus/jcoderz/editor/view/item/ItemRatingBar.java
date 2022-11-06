@@ -12,11 +12,12 @@ import a.a.a.sy;
 import a.a.a.wB;
 
 public class ItemRatingBar extends RatingBar implements sy {
+
     public ViewBean b;
     public boolean c;
     public boolean d;
     public Paint e;
-    public float f;
+    public int f;
 
     public ItemRatingBar(Context context) {
         super(context);
@@ -25,52 +26,51 @@ public class ItemRatingBar extends RatingBar implements sy {
 
     @Deprecated
     public void a(Context context) {
-        this.f = wB.a(context, 1.0f);
-        this.e = new Paint(1);
-        this.e.setColor(-1785080368);
+        f = (int) wB.a(context, 1.0f);
+        e = new Paint(Paint.ANTI_ALIAS_FLAG);
+        e.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 
     @Override
     public ViewBean getBean() {
-        return this.b;
+        return b;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.b = viewBean;
+        b = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.d;
+        return d;
     }
 
     public void setFixed(boolean z) {
-        this.d = z;
+        d = z;
     }
 
     public boolean getSelection() {
-        return this.c;
+        return c;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.c = z;
+        c = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.c) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.e);
+        if (c) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), e);
         }
         super.onDraw(canvas);
     }
 
     @Override
     public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.f;
-        super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+        super.setPadding(i * f, i2 * f, i3 * f, f * i4);
     }
 }

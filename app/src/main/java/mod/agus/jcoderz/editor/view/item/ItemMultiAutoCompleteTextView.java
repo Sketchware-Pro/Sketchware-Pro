@@ -13,11 +13,12 @@ import a.a.a.sy;
 import a.a.a.wB;
 
 public class ItemMultiAutoCompleteTextView extends MultiAutoCompleteTextView implements sy {
+
     public ViewBean c;
     public boolean d;
     public boolean e;
     public Paint f;
-    public float g;
+    public int g;
     public Drawable h;
 
     public ItemMultiAutoCompleteTextView(Context context) {
@@ -27,55 +28,55 @@ public class ItemMultiAutoCompleteTextView extends MultiAutoCompleteTextView imp
 
     @Deprecated
     public void a(Context context) {
-        this.g = wB.a(context, 1.0f);
-        this.f = new Paint(1);
-        this.f.setColor(-1785080368);
+        g = (int) wB.a(context, 1.0f);
+        f = new Paint(Paint.ANTI_ALIAS_FLAG);
+        f.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
         setFocusable(false);
-        this.h = getBackground();
+        h = getBackground();
     }
 
     @Override
     public ViewBean getBean() {
-        return this.c;
+        return c;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.c = viewBean;
+        c = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.e;
+        return e;
     }
 
     public void setFixed(boolean z) {
-        this.e = z;
+        e = z;
     }
 
     public boolean getSelection() {
-        return this.d;
+        return d;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.d = z;
+        d = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.d) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.f);
+        if (d) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), f);
         }
         super.onDraw(canvas);
     }
 
     @Override
     public void setBackgroundColor(int i) {
-        if (i == 16777215) {
-            setBackground(this.h);
+        if (i == 0xffffff) {
+            setBackground(h);
         } else {
             super.setBackgroundColor(i);
         }
@@ -83,7 +84,6 @@ public class ItemMultiAutoCompleteTextView extends MultiAutoCompleteTextView imp
 
     @Override
     public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.g;
-        super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+        super.setPadding(i * g, i2 * g, i3 * g, g * i4);
     }
 }
