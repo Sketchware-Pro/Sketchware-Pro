@@ -22,6 +22,7 @@ public class ItemVideoView extends LinearLayout implements sy {
     public Paint d;
     public int e;
     public ImageView f;
+    private Rect rect;
 
     public ItemVideoView(Context context) {
         super(context);
@@ -33,6 +34,7 @@ public class ItemVideoView extends LinearLayout implements sy {
         e = (int) wB.a(context, 1.0f);
         d = new Paint(Paint.ANTI_ALIAS_FLAG);
         d.setColor(0x9599d5d0);
+        rect = new Rect();
         setDrawingCacheEnabled(true);
         f = new ImageView(getContext());
         f.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
@@ -75,7 +77,8 @@ public class ItemVideoView extends LinearLayout implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (b) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, d);
         }
         super.onDraw(canvas);
     }

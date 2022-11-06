@@ -19,6 +19,7 @@ public class ItemTimePicker extends TimePicker implements sy {
     public boolean c;
     public Paint d;
     public int e;
+    private Rect rect;
 
     public ItemTimePicker(Context context) {
         super(context);
@@ -30,6 +31,7 @@ public class ItemTimePicker extends TimePicker implements sy {
         e = (int) wB.a(context, 1.0f);
         d = new Paint(Paint.ANTI_ALIAS_FLAG);
         d.setColor(0x9599d5d0);
+        rect = new Rect();
         setFocusable(false);
         setClickable(false);
         setDrawingCacheEnabled(true);
@@ -67,7 +69,8 @@ public class ItemTimePicker extends TimePicker implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (b) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, d);
         }
         super.onDraw(canvas);
     }

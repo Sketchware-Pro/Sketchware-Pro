@@ -20,6 +20,7 @@ public class ItemAutoCompleteTextView extends AutoCompleteTextView implements sy
     public Paint f;
     public int g;
     public Drawable h;
+    private Rect rect;
 
     public ItemAutoCompleteTextView(Context context) {
         super(context);
@@ -31,6 +32,7 @@ public class ItemAutoCompleteTextView extends AutoCompleteTextView implements sy
         g = (int) wB.a(context, 1.0f);
         f = new Paint(Paint.ANTI_ALIAS_FLAG);
         f.setColor(0x9599d5d0);
+        rect = new Rect();
         setDrawingCacheEnabled(true);
         setFocusable(false);
         h = getBackground();
@@ -68,7 +70,8 @@ public class ItemAutoCompleteTextView extends AutoCompleteTextView implements sy
     @Override
     public void onDraw(Canvas canvas) {
         if (d) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), f);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, f);
         }
         super.onDraw(canvas);
     }

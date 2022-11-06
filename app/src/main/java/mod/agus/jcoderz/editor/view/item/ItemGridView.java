@@ -22,6 +22,7 @@ public class ItemGridView extends GridView implements sy {
     public Paint d;
     public int e;
     public ArrayList<String> f = new ArrayList<>();
+    private Rect rect;
 
     public ItemGridView(Context context) {
         super(context);
@@ -33,6 +34,7 @@ public class ItemGridView extends GridView implements sy {
         e = (int) wB.a(context, 1.0f);
         d = new Paint(Paint.ANTI_ALIAS_FLAG);
         d.setStrokeWidth(wB.a(getContext(), 2.0f));
+        rect = new Rect();
         setDrawingCacheEnabled(true);
         setNumColumns(3);
         setColumnWidth(-1);
@@ -79,7 +81,8 @@ public class ItemGridView extends GridView implements sy {
     public void onDraw(Canvas canvas) {
         if (b) {
             d.setColor(0x9599d5d0);
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, d);
         } else {
             d.setColor(0x60000000);
             float measuredWidth = getMeasuredWidth();

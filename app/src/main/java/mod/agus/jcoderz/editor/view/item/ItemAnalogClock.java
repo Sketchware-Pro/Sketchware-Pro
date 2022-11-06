@@ -19,6 +19,7 @@ public class ItemAnalogClock extends AnalogClock implements sy {
     public boolean Q;
     public Paint R;
     public int S;
+    private Rect rect;
 
     @Deprecated
     public ItemAnalogClock(Context context) {
@@ -31,6 +32,7 @@ public class ItemAnalogClock extends AnalogClock implements sy {
         S = (int) wB.a(context, 1.0f);
         R = new Paint(Paint.ANTI_ALIAS_FLAG);
         R.setColor(0x9599d5d0);
+        rect = new Rect();
         setDrawingCacheEnabled(true);
     }
 
@@ -67,7 +69,8 @@ public class ItemAnalogClock extends AnalogClock implements sy {
     @Deprecated
     public void onDraw(Canvas canvas) {
         if (P) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), R);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, R);
         }
         super.onDraw(canvas);
     }

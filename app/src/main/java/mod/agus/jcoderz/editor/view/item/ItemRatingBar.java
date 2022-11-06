@@ -18,6 +18,7 @@ public class ItemRatingBar extends RatingBar implements sy {
     public boolean d;
     public Paint e;
     public int f;
+    private Rect rect;
 
     public ItemRatingBar(Context context) {
         super(context);
@@ -29,6 +30,7 @@ public class ItemRatingBar extends RatingBar implements sy {
         f = (int) wB.a(context, 1.0f);
         e = new Paint(Paint.ANTI_ALIAS_FLAG);
         e.setColor(0x9599d5d0);
+        rect = new Rect();
         setDrawingCacheEnabled(true);
     }
 
@@ -64,7 +66,8 @@ public class ItemRatingBar extends RatingBar implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (c) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), e);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, e);
         }
         super.onDraw(canvas);
     }
