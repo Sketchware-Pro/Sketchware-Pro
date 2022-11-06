@@ -14,64 +14,59 @@ import a.a.a.wB;
 
 public class ItemMultiAutoCompleteTextView extends MultiAutoCompleteTextView implements sy {
 
-    public ViewBean c;
-    public boolean d;
-    public boolean e;
-    public Paint f;
-    public int g;
-    public Drawable h;
-    private Rect rect;
+    private final Paint paint;
+    private final int paddingFactor;
+    private final Drawable drawable;
+    private final Rect rect;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean isFixed;
 
     public ItemMultiAutoCompleteTextView(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    public void a(Context context) {
-        g = (int) wB.a(context, 1.0f);
-        f = new Paint(Paint.ANTI_ALIAS_FLAG);
-        f.setColor(0x9599d5d0);
+        paddingFactor = (int) wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         rect = new Rect();
         setDrawingCacheEnabled(true);
         setFocusable(false);
-        h = getBackground();
+        drawable = getBackground();
     }
 
     @Override
     public ViewBean getBean() {
-        return c;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        c = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return e;
+        return isFixed;
     }
 
     public void setFixed(boolean z) {
-        e = z;
+        isFixed = z;
     }
 
     public boolean getSelection() {
-        return d;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        d = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (d) {
+        if (hasSelection) {
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            canvas.drawRect(rect, f);
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
@@ -79,14 +74,14 @@ public class ItemMultiAutoCompleteTextView extends MultiAutoCompleteTextView imp
     @Override
     public void setBackgroundColor(int i) {
         if (i == 0xffffff) {
-            setBackground(h);
+            setBackground(drawable);
         } else {
             super.setBackgroundColor(i);
         }
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        super.setPadding(i * g, i2 * g, i3 * g, g * i4);
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left * paddingFactor, top * paddingFactor, right * paddingFactor, paddingFactor * bottom);
     }
 }

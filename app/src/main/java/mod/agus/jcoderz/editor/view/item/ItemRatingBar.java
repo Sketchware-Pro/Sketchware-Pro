@@ -13,67 +13,62 @@ import a.a.a.wB;
 
 public class ItemRatingBar extends RatingBar implements sy {
 
-    public ViewBean b;
-    public boolean c;
-    public boolean d;
-    public Paint e;
-    public int f;
-    private Rect rect;
+    private final Paint paint;
+    private final int paddingFactor;
+    private final Rect rect;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean isFixed;
 
     public ItemRatingBar(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    public void a(Context context) {
-        f = (int) wB.a(context, 1.0f);
-        e = new Paint(Paint.ANTI_ALIAS_FLAG);
-        e.setColor(0x9599d5d0);
+        paddingFactor = (int) wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         rect = new Rect();
         setDrawingCacheEnabled(true);
     }
 
     @Override
     public ViewBean getBean() {
-        return b;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        b = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return d;
+        return isFixed;
     }
 
     public void setFixed(boolean z) {
-        d = z;
+        isFixed = z;
     }
 
     public boolean getSelection() {
-        return c;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        c = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (c) {
+        if (hasSelection) {
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            canvas.drawRect(rect, e);
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        super.setPadding(i * f, i2 * f, i3 * f, f * i4);
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left * paddingFactor, top * paddingFactor, right * paddingFactor, paddingFactor * bottom);
     }
 }

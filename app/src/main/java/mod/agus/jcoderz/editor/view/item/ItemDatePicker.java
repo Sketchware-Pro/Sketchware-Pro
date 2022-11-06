@@ -14,23 +14,18 @@ import a.a.a.wB;
 
 public class ItemDatePicker extends DatePicker implements sy {
 
-    public ViewBean f21a;
-    public boolean b;
-    public boolean c;
-    public Paint d;
-    public int e;
-    private Rect rect;
+    private final Paint paint;
+    private final int paddingFactor;
+    private final Rect rect;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean isFixed;
 
     public ItemDatePicker(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    public void a(Context context) {
-        e = (int) wB.a(context, 1.0f);
-        d = new Paint(Paint.ANTI_ALIAS_FLAG);
-        d.setColor(0x9599d5d0);
+        paddingFactor = (int) wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         rect = new Rect();
         setFocusable(false);
         setClickable(false);
@@ -39,38 +34,38 @@ public class ItemDatePicker extends DatePicker implements sy {
 
     @Override
     public ViewBean getBean() {
-        return f21a;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        f21a = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return c;
+        return isFixed;
     }
 
     public void setFixed(boolean z) {
-        c = z;
+        isFixed = z;
     }
 
     public boolean getSelection() {
-        return b;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        b = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (b) {
+        if (hasSelection) {
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            canvas.drawRect(rect, d);
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
@@ -81,7 +76,7 @@ public class ItemDatePicker extends DatePicker implements sy {
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        super.setPadding(i * e, i2 * e, i3 * e, e * i4);
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left * paddingFactor, top * paddingFactor, right * paddingFactor, paddingFactor * bottom);
     }
 }
