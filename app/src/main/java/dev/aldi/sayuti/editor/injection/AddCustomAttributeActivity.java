@@ -115,7 +115,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 String newValue = namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
                 if (type.equals("create")) {
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("type", type);
+                    map.put("type", widgetType);
                     map.put("value", newValue);
                     activityInjections.add(map);
                     SketchwareUtil.toast("Added");
