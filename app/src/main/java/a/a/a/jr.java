@@ -21,7 +21,6 @@ import com.besome.sketch.editor.PropertyActivity;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
-import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -191,10 +190,6 @@ public class jr extends qA {
         var2.putExtra("sc_id", r);
         var2.putExtra("bean", var1);
         var2.putExtra("project_file", f);
-        EventBuilder var3 = new EventBuilder();
-        var3.setCategory("editor");
-        var3.setAction("property");
-        var3.setLabel("Custom");
         startActivityForResult(var2, 213);
     }
 
