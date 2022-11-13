@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+
 import com.besome.sketch.beans.HistoryViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
@@ -23,9 +24,9 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.PropertyActivity;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
-import com.besome.sketch.editor.view.palette.PaletteWidget.a;
-import com.besome.sketch.editor.view.palette.PaletteWidget.b;
+import com.besome.sketch.editor.view.palette.PaletteWidget;
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,9 +52,9 @@ public class jr extends qA {
     public final void a(ViewGroup var1) {
         this.setHasOptionsMenu(true);
         int var2 = this.getResources().getConfiguration().orientation;
-        this.g = (ViewEditor)var1.findViewById(2131232319);
+        this.g = (ViewEditor) var1.findViewById(2131232319);
         this.g.setScreenType(var2);
-        this.m = (ViewProperty)this.getActivity().findViewById(2131232326);
+        this.m = (ViewProperty) this.getActivity().findViewById(2131232326);
         this.m.setOnPropertyListener(new cr(this));
         this.m.setOnPropertyValueChangedListener(new dr(this));
         this.m.setOnEventClickListener(new er(this));
@@ -186,59 +187,59 @@ public class jr extends qA {
     public final void e() {
         this.g.d();
         this.g.setPaletteLayoutVisible(0);
-        this.g.a(a.a, "");
-        this.g.a(a.b, "");
-        this.g.a(b.b, "", "TextView", "TextView");
+        this.g.a(PaletteWidget.a.a, "");
+        this.g.a(PaletteWidget.a.b, "");
+        this.g.a(PaletteWidget.b.b, "", "TextView", "TextView");
         ProjectFileBean var1 = this.f;
         if (var1 != null && var1.fileType == 7) {
-            this.g.a(a.c, "");
-            this.g.a(a.d, "");
-            this.g.a(b.c, "", "EditText", "Edit Text");
+            this.g.a(PaletteWidget.a.c, "");
+            this.g.a(PaletteWidget.a.d, "");
+            this.g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
             this.g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
             this.g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-            this.g.a(b.a, "", "Button", "Button");
-            this.g.a(b.d, "", "ImageView", "default_image");
-            this.g.a(b.g, "", "CheckBox", "CheckBox");
+            this.g.a(PaletteWidget.b.a, "", "Button", "Button");
+            this.g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+            this.g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
             this.g.extraWidget("", "RadioButton", "RadioButton");
-            this.g.a(b.i, "", "Switch", "Switch");
-            this.g.a(b.j, "", "SeekBar", "SeekBar");
-            this.g.a(b.m, "", "ProgressBar", "ProgressBar");
+            this.g.a(PaletteWidget.b.i, "", "Switch", "Switch");
+            this.g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+            this.g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
             this.g.extraWidget("", "RatingBar", "RatingBar");
             this.g.extraWidget("", "AnalogClock", "AnalogClock");
             this.g.extraWidget("", "TimePicker", "TimePicker");
             this.g.extraWidget("", "DatePicker", "DatePicker");
-            this.g.a(b.f, "", "Spinner", "Spinner");
-            this.g.a(b.h, "", "WebView", "WebView");
+            this.g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+            this.g.a(PaletteWidget.b.h, "", "WebView", "WebView");
             this.g.extraWidget("", "VideoView", "VideoView");
             this.g.extraWidget("", "BadgeView", "BadgeView");
-            this.g.a(b.l, "", "AdView", "AdView");
+            this.g.a(PaletteWidget.b.l, "", "AdView", "AdView");
         } else {
             var1 = this.f;
             if (var1 != null && var1.fileType == 6) {
-                this.g.a(a.c, "");
-                this.g.a(a.d, "");
-                this.g.a(b.c, "", "EditText", "Edit Text");
+                this.g.a(PaletteWidget.a.c, "");
+                this.g.a(PaletteWidget.a.d, "");
+                this.g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
                 this.g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
                 this.g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                this.g.a(b.a, "", "Button", "Button");
-                this.g.a(b.d, "", "ImageView", "default_image");
-                this.g.a(b.g, "", "CheckBox", "CheckBox");
+                this.g.a(PaletteWidget.b.a, "", "Button", "Button");
+                this.g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+                this.g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
                 this.g.extraWidget("", "RadioButton", "RadioButton");
-                this.g.a(b.i, "", "Switch", "Switch");
-                this.g.a(b.j, "", "SeekBar", "SeekBar");
-                this.g.a(b.m, "", "ProgressBar", "ProgressBar");
+                this.g.a(PaletteWidget.b.i, "", "Switch", "Switch");
+                this.g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+                this.g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
                 this.g.extraWidget("", "RatingBar", "RatingBar");
                 this.g.extraWidget("", "AnalogClock", "AnalogClock");
                 this.g.extraWidget("", "TimePicker", "TimePicker");
                 this.g.extraWidget("", "DatePicker", "DatePicker");
-                this.g.a(b.f, "", "Spinner", "Spinner");
-                this.g.a(b.h, "", "WebView", "WebView");
+                this.g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+                this.g.a(PaletteWidget.b.h, "", "WebView", "WebView");
                 this.g.extraWidget("", "VideoView", "VideoView");
                 this.g.extraWidget("", "BadgeView", "BadgeView");
-                this.g.a(b.l, "", "AdView", "AdView");
+                this.g.a(PaletteWidget.b.l, "", "AdView", "AdView");
             } else {
-                this.g.a(a.c, "");
-                this.g.a(a.d, "");
+                this.g.a(PaletteWidget.a.c, "");
+                this.g.a(PaletteWidget.a.d, "");
                 this.g.extraWidgetLayout("", "RadioGroup");
                 this.g.i.extraTitle("AndroidX", 0);
                 this.g.extraWidgetLayout("", "TabLayout");
@@ -247,27 +248,27 @@ public class jr extends qA {
                 this.g.extraWidgetLayout("", "CardView");
                 this.g.extraWidgetLayout("", "TextInputLayout");
                 this.g.extraWidgetLayout("", "SwipeRefreshLayout");
-                this.g.a(b.c, "", "EditText", "Edit Text");
+                this.g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
                 this.g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
                 this.g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                this.g.a(b.a, "", "Button", "Button");
+                this.g.a(PaletteWidget.b.a, "", "Button", "Button");
                 this.g.extraWidget("", "MaterialButton", "MaterialButton");
-                this.g.a(b.d, "", "ImageView", "default_image");
+                this.g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
                 this.g.extraWidget("", "CircleImageView", "default_image");
-                this.g.a(b.g, "", "CheckBox", "CheckBox");
+                this.g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
                 this.g.extraWidget("", "RadioButton", "RadioButton");
-                this.g.a(b.i, "", "Switch", "Switch");
-                this.g.a(b.j, "", "SeekBar", "SeekBar");
-                this.g.a(b.m, "", "ProgressBar", "ProgressBar");
+                this.g.a(PaletteWidget.b.i, "", "Switch", "Switch");
+                this.g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+                this.g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
                 this.g.extraWidget("", "RatingBar", "RatingBar");
                 this.g.extraWidget("", "SearchView", "SearchView");
                 this.g.extraWidget("", "VideoView", "VideoView");
-                this.g.a(b.h, "", "WebView", "WebView");
+                this.g.a(PaletteWidget.b.h, "", "WebView", "WebView");
                 this.g.i.extraTitle("List", 1);
-                this.g.a(b.e, "", "ListView", "ListView");
+                this.g.a(PaletteWidget.b.e, "", "ListView", "ListView");
                 this.g.extraWidget("", "GridView", "GridView");
                 this.g.extraWidget("", "RecyclerView", "RecyclerView");
-                this.g.a(b.f, "", "Spinner", "Spinner");
+                this.g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
                 this.g.extraWidget("", "ViewPager", "ViewPager");
                 this.g.i.extraTitle("Library", 1);
                 this.g.extraWidget("", "BadgeView", "BadgeView");
@@ -277,8 +278,8 @@ public class jr extends qA {
                 this.g.extraWidget("", "LottieAnimation", "LottieAnimation");
                 this.g.extraWidget("", "OTPView", "OTPView");
                 this.g.i.extraTitle("Google", 1);
-                this.g.a(b.l, "", "AdView", "AdView");
-                this.g.a(b.n, "", "MapView", "MapView");
+                this.g.a(PaletteWidget.b.l, "", "AdView", "AdView");
+                this.g.a(PaletteWidget.b.n, "", "MapView", "MapView");
                 this.g.extraWidget("", "SignInButton", "SignInButton");
                 this.g.extraWidget("", "YoutubePlayer", "YoutubePlayer");
                 this.g.i.extraTitle("Date & Time", 1);
@@ -286,7 +287,7 @@ public class jr extends qA {
                 this.g.extraWidget("", "DigitalClock", "DigitalClock");
                 this.g.extraWidget("", "TimePicker", "TimePicker");
                 this.g.extraWidget("", "DatePicker", "DatePicker");
-                this.g.a(b.k, "", "CalendarView", "CalendarView");
+                this.g.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
             }
         }
 
@@ -300,7 +301,7 @@ public class jr extends qA {
         }
 
         if (this.o == null) {
-            this.o = ObjectAnimator.ofFloat(this.m, View.TRANSLATION_Y, new float[]{wB.a(this.getActivity(), (float)this.m.getHeight())});
+            this.o = ObjectAnimator.ofFloat(this.m, View.TRANSLATION_Y, new float[]{wB.a(this.getActivity(), (float) this.m.getHeight())});
             this.o.setDuration(300L);
             this.o.setInterpolator(new DecelerateInterpolator());
         }
@@ -323,8 +324,8 @@ public class jr extends qA {
                 if (var2 == 0) {
                     Iterator var3 = var1.getAddedData().iterator();
 
-                    while(var3.hasNext()) {
-                        var4 = (ViewBean)var3.next();
+                    while (var3.hasNext()) {
+                        var4 = (ViewBean) var3.next();
                         jC.a(this.r).a(this.f.getXmlName(), var4);
                     }
 
@@ -350,8 +351,8 @@ public class jr extends qA {
                     } else if (var2 == 2) {
                         Iterator var8 = var1.getRemovedData().iterator();
 
-                        while(var8.hasNext()) {
-                            ViewBean var7 = (ViewBean)var8.next();
+                        while (var8.hasNext()) {
+                            ViewBean var7 = (ViewBean) var8.next();
                             jC.a(this.r).a(this.f, var7);
                         }
 
@@ -404,8 +405,8 @@ public class jr extends qA {
                 if (var2 == 0) {
                     Iterator var3 = var1.getAddedData().iterator();
 
-                    while(var3.hasNext()) {
-                        var4 = (ViewBean)var3.next();
+                    while (var3.hasNext()) {
+                        var4 = (ViewBean) var3.next();
                         jC.a(this.r).a(this.f, var4);
                     }
 
@@ -432,8 +433,8 @@ public class jr extends qA {
                     } else if (var2 == 2) {
                         Iterator var8 = var1.getRemovedData().iterator();
 
-                        while(var8.hasNext()) {
-                            ViewBean var7 = (ViewBean)var8.next();
+                        while (var8.hasNext()) {
+                            ViewBean var7 = (ViewBean) var8.next();
                             jC.a(this.r).a(this.f.getXmlName(), var7);
                         }
 
@@ -477,14 +478,14 @@ public class jr extends qA {
         super.onActivityResult(var1, var2, var3);
         if (var1 == 213) {
             if (var2 == -1) {
-                this.c((ViewBean)var3.getParcelableExtra("bean"));
+                this.c((ViewBean) var3.getParcelableExtra("bean"));
             }
 
             if (var3 != null && var3.getBooleanExtra("is_edit_image", false)) {
                 Iterator var4 = jC.a(this.r).d(this.f.getXmlName()).iterator();
 
-                while(var4.hasNext()) {
-                    this.c((ViewBean)var4.next());
+                while (var4.hasNext()) {
+                    this.c((ViewBean) var4.next());
                 }
 
                 if (this.k) {
@@ -533,7 +534,7 @@ public class jr extends qA {
     }
 
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        ViewGroup var4 = (ViewGroup)var1.inflate(2131427425, var2, false);
+        ViewGroup var4 = (ViewGroup) var1.inflate(2131427425, var2, false);
         this.a(var4);
         if (var3 != null) {
             this.r = var3.getString("sc_id");
@@ -549,7 +550,7 @@ public class jr extends qA {
     }
 
     public boolean onOptionsItemSelected(MenuItem var1) {
-        switch(var1.getItemId()) {
+        switch (var1.getItemId()) {
             case 2131231540:
                 this.h();
                 break;
@@ -577,9 +578,9 @@ public class jr extends qA {
     public void p() {
         Iterator var1 = mod.agus.jcoderz.editor.view.ViewEditor.a();
 
-        while(var1.hasNext()) {
-            HashMap var2 = (HashMap)var1.next();
-            this.g.extraWidget((String)var2.get("tag"), (String)var2.get("name"), (String)var2.get("text"));
+        while (var1.hasNext()) {
+            HashMap var2 = (HashMap) var1.next();
+            this.g.extraWidget((String) var2.get("tag"), (String) var2.get("name"), (String) var2.get("text"));
         }
 
     }
@@ -587,9 +588,9 @@ public class jr extends qA {
     public void q() {
         Iterator var1 = mod.agus.jcoderz.editor.view.ViewEditor.c();
 
-        while(var1.hasNext()) {
-            HashMap var2 = (HashMap)var1.next();
-            this.g.extraWidgetLayout((String)var2.get("tag"), (String)var2.get("name"));
+        while (var1.hasNext()) {
+            HashMap var2 = (HashMap) var1.next();
+            this.g.extraWidgetLayout((String) var2.get("tag"), (String) var2.get("name"));
         }
 
     }
