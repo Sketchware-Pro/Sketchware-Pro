@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class jr extends qA {
+
     public ProjectFileBean f;
     public ViewEditor g;
     public boolean h = true;
@@ -51,9 +52,8 @@ public class jr extends qA {
 
     public final void a(ViewGroup var1) {
         setHasOptionsMenu(true);
-        int var2 = getResources().getConfiguration().orientation;
         g = var1.findViewById(2131232319);
-        g.setScreenType(var2);
+        g.setScreenType(getResources().getConfiguration().orientation);
         m = getActivity().findViewById(2131232326);
         m.setOnPropertyListener(new cr(this));
         m.setOnPropertyValueChangedListener(new dr(this));
@@ -154,14 +154,8 @@ public class jr extends qA {
     }
 
     public final void c() {
-        if (n.isRunning()) {
-            n.cancel();
-        }
-
-        if (o.isRunning()) {
-            o.cancel();
-        }
-
+        if (n.isRunning()) n.cancel();
+        if (o.isRunning()) o.cancel();
     }
 
     public void c(ViewBean var1) {
@@ -169,15 +163,7 @@ public class jr extends qA {
     }
 
     public void c(boolean var1) {
-        ViewProperty var2 = m;
-        byte var3;
-        if (var1) {
-            var3 = 0;
-        } else {
-            var3 = 8;
-        }
-
-        var2.setVisibility(var3);
+        m.setVisibility(var1 ? View.VISIBLE : View.GONE);
     }
 
     public ProjectFileBean d() {
@@ -190,8 +176,7 @@ public class jr extends qA {
         g.a(PaletteWidget.a.a, "");
         g.a(PaletteWidget.a.b, "");
         g.a(PaletteWidget.b.b, "", "TextView", "TextView");
-        ProjectFileBean var1 = f;
-        if (var1 != null && var1.fileType == 7) {
+        if (f != null && f.fileType == 7) {
             g.a(PaletteWidget.a.c, "");
             g.a(PaletteWidget.a.d, "");
             g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
@@ -214,8 +199,7 @@ public class jr extends qA {
             g.extraWidget("", "BadgeView", "BadgeView");
             g.a(PaletteWidget.b.l, "", "AdView", "AdView");
         } else {
-            var1 = f;
-            if (var1 != null && var1.fileType == 6) {
+            if (f != null && f.fileType == 6) {
                 g.a(PaletteWidget.a.c, "");
                 g.a(PaletteWidget.a.d, "");
                 g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
