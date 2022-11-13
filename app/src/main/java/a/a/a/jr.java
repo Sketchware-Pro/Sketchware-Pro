@@ -322,13 +322,10 @@ public class jr extends qA {
                 ViewBean var4;
                 sy var5;
                 if (var2 == 0) {
-                    Iterator var3 = var1.getAddedData().iterator();
-
-                    while (var3.hasNext()) {
-                        var4 = (ViewBean) var3.next();
+                    for (ViewBean viewBean : var1.getAddedData()) {
+                        var4 = viewBean;
                         jC.a(r).a(f.getXmlName(), var4);
                     }
-
                     var5 = g.a(var1.getAddedData(), false);
                     g.a(var5, false);
                 } else {
@@ -349,13 +346,9 @@ public class jr extends qA {
                         var5 = g.e(var6);
                         g.a(var5, false);
                     } else if (var2 == 2) {
-                        Iterator var8 = var1.getRemovedData().iterator();
-
-                        while (var8.hasNext()) {
-                            ViewBean var7 = (ViewBean) var8.next();
+                        for (ViewBean var7 : var1.getRemovedData()) {
                             jC.a(r).a(f, var7);
                         }
-
                         g.b(var1.getRemovedData(), false);
                         g.i();
                     } else if (var2 == 3) {
@@ -403,13 +396,10 @@ public class jr extends qA {
                 int var2 = var1.getActionType();
                 ViewBean var4;
                 if (var2 == 0) {
-                    Iterator var3 = var1.getAddedData().iterator();
-
-                    while (var3.hasNext()) {
-                        var4 = (ViewBean) var3.next();
+                    for (ViewBean viewBean : var1.getAddedData()) {
+                        var4 = viewBean;
                         jC.a(r).a(f, var4);
                     }
-
                     g.b(var1.getAddedData(), false);
                     g.i();
                 } else {
@@ -431,13 +421,9 @@ public class jr extends qA {
                         var6 = g.e(var4);
                         g.a(var6, false);
                     } else if (var2 == 2) {
-                        Iterator var8 = var1.getRemovedData().iterator();
-
-                        while (var8.hasNext()) {
-                            ViewBean var7 = (ViewBean) var8.next();
+                        for (ViewBean var7 : var1.getRemovedData()) {
                             jC.a(r).a(f.getXmlName(), var7);
                         }
-
                         var6 = g.a(var1.getRemovedData(), false);
                         g.a(var6, false);
                     } else if (var2 == 3) {
@@ -458,7 +444,7 @@ public class jr extends qA {
     }
 
     public void n() {
-        ArrayList var1 = eC.a(jC.a(r).d(f.getXmlName()));
+        ArrayList<ViewBean> var1 = eC.a(jC.a(r).d(f.getXmlName()));
         ViewBean var2;
         if (f.hasActivityOption(8)) {
             var2 = jC.a(r).h(f.getXmlName());
@@ -482,10 +468,9 @@ public class jr extends qA {
             }
 
             if (var3 != null && var3.getBooleanExtra("is_edit_image", false)) {
-                Iterator var4 = jC.a(r).d(f.getXmlName()).iterator();
 
-                while (var4.hasNext()) {
-                    c((ViewBean) var4.next());
+                for (ViewBean viewBean : jC.a(r).d(f.getXmlName())) {
+                    c(viewBean);
                 }
 
                 if (k) {
@@ -576,22 +561,16 @@ public class jr extends qA {
     }
 
     public void p() {
-        Iterator var1 = mod.agus.jcoderz.editor.view.ViewEditor.a();
-
-        while (var1.hasNext()) {
-            HashMap var2 = (HashMap) var1.next();
-            g.extraWidget((String) var2.get("tag"), (String) var2.get("name"), (String) var2.get("text"));
+        for (Iterator<HashMap<String, String>> it = mod.agus.jcoderz.editor.view.ViewEditor.a(); it.hasNext(); ) {
+            HashMap<String, String> map = it.next();
+            g.extraWidget(map.get("tag"), map.get("name"), map.get("text"));
         }
-
     }
 
     public void q() {
-        Iterator var1 = mod.agus.jcoderz.editor.view.ViewEditor.c();
-
-        while (var1.hasNext()) {
-            HashMap var2 = (HashMap) var1.next();
-            g.extraWidgetLayout((String) var2.get("tag"), (String) var2.get("name"));
+        for (Iterator<HashMap<String, String>> it = mod.agus.jcoderz.editor.view.ViewEditor.c(); it.hasNext(); ) {
+            HashMap<String, String> map = it.next();
+            g.extraWidgetLayout(map.get("tag"), map.get("name"));
         }
-
     }
 }
