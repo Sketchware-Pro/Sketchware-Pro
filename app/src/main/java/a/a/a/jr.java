@@ -50,40 +50,40 @@ public class jr extends qA {
     }
 
     public final void a(ViewGroup var1) {
-        this.setHasOptionsMenu(true);
-        int var2 = this.getResources().getConfiguration().orientation;
-        this.g = (ViewEditor) var1.findViewById(2131232319);
-        this.g.setScreenType(var2);
-        this.m = (ViewProperty) this.getActivity().findViewById(2131232326);
-        this.m.setOnPropertyListener(new cr(this));
-        this.m.setOnPropertyValueChangedListener(new dr(this));
-        this.m.setOnEventClickListener(new er(this));
-        this.m.setOnPropertyTargetChangeListener(new fr(this));
-        this.g.setOnWidgetSelectedListener(new gr(this));
-        this.g.setOnDraggingListener(new hr(this));
-        this.g.setOnHistoryChangeListener(new ir(this));
-        this.g.setFavoriteData(Rp.h().f());
+        setHasOptionsMenu(true);
+        int var2 = getResources().getConfiguration().orientation;
+        g = var1.findViewById(2131232319);
+        g.setScreenType(var2);
+        m = getActivity().findViewById(2131232326);
+        m.setOnPropertyListener(new cr(this));
+        m.setOnPropertyValueChangedListener(new dr(this));
+        m.setOnEventClickListener(new er());
+        m.setOnPropertyTargetChangeListener(new fr(this));
+        g.setOnWidgetSelectedListener(new gr(this));
+        g.setOnDraggingListener(new hr(this));
+        g.setOnHistoryChangeListener(new ir(this));
+        g.setFavoriteData(Rp.h().f());
     }
 
     public void a(ProjectFileBean var1) {
-        this.f = var1;
-        this.h = var1.hasActivityOption(1);
-        this.i = var1.hasActivityOption(2);
-        this.k = var1.hasActivityOption(8);
-        this.j = var1.hasActivityOption(4);
-        this.l = var1.orientation;
-        this.g.a(this.r, var1);
-        this.g.h();
-        this.m.a(this.r, this.f);
-        this.e();
-        this.i();
-        this.k();
+        f = var1;
+        h = var1.hasActivityOption(1);
+        i = var1.hasActivityOption(2);
+        k = var1.hasActivityOption(8);
+        j = var1.hasActivityOption(4);
+        l = var1.orientation;
+        g.a(r, var1);
+        g.h();
+        m.a(r, f);
+        e();
+        i();
+        k();
     }
 
     public final void a(ViewBean var1) {
-        this.g.k();
-        if (this.k) {
-            this.g.a(var1);
+        g.k();
+        if (k) {
+            g.a(var1);
         }
 
     }
@@ -91,85 +91,85 @@ public class jr extends qA {
     public final void a(String var1) {
         ViewBean var2;
         if (var1.equals("_fab")) {
-            var2 = jC.a(this.r).h(this.f.getXmlName());
+            var2 = jC.a(r).h(f.getXmlName());
         } else {
-            var2 = jC.a(this.r).c(this.f.getXmlName(), var1);
+            var2 = jC.a(r).c(f.getXmlName(), var1);
         }
 
-        this.c(var2);
-        this.m.e();
+        c(var2);
+        m.e();
     }
 
     public final void a(String var1, String var2, String var3) {
-        Intent var4 = new Intent(this.getContext(), LogicEditorActivity.class);
-        var4.setFlags(536870912);
-        var4.putExtra("sc_id", this.r);
+        Intent var4 = new Intent(getContext(), LogicEditorActivity.class);
+        var4.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        var4.putExtra("sc_id", r);
         var4.putExtra("id", var1);
         var4.putExtra("event", var2);
-        var4.putExtra("project_file", this.f);
+        var4.putExtra("project_file", f);
         var4.putExtra("event_text", var3);
-        this.getContext().startActivity(var4);
+        getContext().startActivity(var4);
     }
 
     public void a(ArrayList<ViewBean> var1) {
-        this.g.h();
-        this.g.a(eC.a(var1));
+        g.h();
+        g.a(eC.a(var1));
     }
 
     public void a(boolean var1) {
-        this.f();
-        if (!this.p || !var1) {
-            this.c();
+        f();
+        if (!p || !var1) {
+            c();
             if (var1) {
-                this.n.start();
-            } else if (this.p) {
-                this.o.start();
+                n.start();
+            } else if (p) {
+                o.start();
             }
 
-            this.p = var1;
+            p = var1;
         }
     }
 
     public void b(ViewBean var1) {
-        Intent var2 = new Intent(this.getContext(), PropertyActivity.class);
-        var2.setFlags(536870912);
-        var2.putExtra("sc_id", this.r);
+        Intent var2 = new Intent(getContext(), PropertyActivity.class);
+        var2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        var2.putExtra("sc_id", r);
         var2.putExtra("bean", var1);
-        var2.putExtra("project_file", this.f);
+        var2.putExtra("project_file", f);
         EventBuilder var3 = new EventBuilder();
         var3.setCategory("editor");
         var3.setAction("property");
         var3.setLabel("Custom");
-        this.startActivityForResult(var2, 213);
+        startActivityForResult(var2, 213);
     }
 
     public final void b(ArrayList<ViewBean> var1) {
-        this.l();
-        this.a(var1);
+        l();
+        a(var1);
     }
 
     public void b(boolean var1) {
-        this.g.setIsAdLoaded(var1);
-        this.g.requestLayout();
+        g.setIsAdLoaded(var1);
+        g.requestLayout();
     }
 
     public final void c() {
-        if (this.n.isRunning()) {
-            this.n.cancel();
+        if (n.isRunning()) {
+            n.cancel();
         }
 
-        if (this.o.isRunning()) {
-            this.o.cancel();
+        if (o.isRunning()) {
+            o.cancel();
         }
 
     }
 
     public void c(ViewBean var1) {
-        this.g.e(var1);
+        g.e(var1);
     }
 
     public void c(boolean var1) {
-        ViewProperty var2 = this.m;
+        ViewProperty var2 = m;
         byte var3;
         if (var1) {
             var3 = 0;
@@ -181,142 +181,142 @@ public class jr extends qA {
     }
 
     public ProjectFileBean d() {
-        return this.f;
+        return f;
     }
 
     public final void e() {
-        this.g.d();
-        this.g.setPaletteLayoutVisible(0);
-        this.g.a(PaletteWidget.a.a, "");
-        this.g.a(PaletteWidget.a.b, "");
-        this.g.a(PaletteWidget.b.b, "", "TextView", "TextView");
-        ProjectFileBean var1 = this.f;
+        g.d();
+        g.setPaletteLayoutVisible(0);
+        g.a(PaletteWidget.a.a, "");
+        g.a(PaletteWidget.a.b, "");
+        g.a(PaletteWidget.b.b, "", "TextView", "TextView");
+        ProjectFileBean var1 = f;
         if (var1 != null && var1.fileType == 7) {
-            this.g.a(PaletteWidget.a.c, "");
-            this.g.a(PaletteWidget.a.d, "");
-            this.g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-            this.g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-            this.g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-            this.g.a(PaletteWidget.b.a, "", "Button", "Button");
-            this.g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-            this.g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-            this.g.extraWidget("", "RadioButton", "RadioButton");
-            this.g.a(PaletteWidget.b.i, "", "Switch", "Switch");
-            this.g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-            this.g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-            this.g.extraWidget("", "RatingBar", "RatingBar");
-            this.g.extraWidget("", "AnalogClock", "AnalogClock");
-            this.g.extraWidget("", "TimePicker", "TimePicker");
-            this.g.extraWidget("", "DatePicker", "DatePicker");
-            this.g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-            this.g.a(PaletteWidget.b.h, "", "WebView", "WebView");
-            this.g.extraWidget("", "VideoView", "VideoView");
-            this.g.extraWidget("", "BadgeView", "BadgeView");
-            this.g.a(PaletteWidget.b.l, "", "AdView", "AdView");
+            g.a(PaletteWidget.a.c, "");
+            g.a(PaletteWidget.a.d, "");
+            g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+            g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+            g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+            g.a(PaletteWidget.b.a, "", "Button", "Button");
+            g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+            g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+            g.extraWidget("", "RadioButton", "RadioButton");
+            g.a(PaletteWidget.b.i, "", "Switch", "Switch");
+            g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+            g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+            g.extraWidget("", "RatingBar", "RatingBar");
+            g.extraWidget("", "AnalogClock", "AnalogClock");
+            g.extraWidget("", "TimePicker", "TimePicker");
+            g.extraWidget("", "DatePicker", "DatePicker");
+            g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+            g.a(PaletteWidget.b.h, "", "WebView", "WebView");
+            g.extraWidget("", "VideoView", "VideoView");
+            g.extraWidget("", "BadgeView", "BadgeView");
+            g.a(PaletteWidget.b.l, "", "AdView", "AdView");
         } else {
-            var1 = this.f;
+            var1 = f;
             if (var1 != null && var1.fileType == 6) {
-                this.g.a(PaletteWidget.a.c, "");
-                this.g.a(PaletteWidget.a.d, "");
-                this.g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-                this.g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-                this.g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                this.g.a(PaletteWidget.b.a, "", "Button", "Button");
-                this.g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-                this.g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-                this.g.extraWidget("", "RadioButton", "RadioButton");
-                this.g.a(PaletteWidget.b.i, "", "Switch", "Switch");
-                this.g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-                this.g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-                this.g.extraWidget("", "RatingBar", "RatingBar");
-                this.g.extraWidget("", "AnalogClock", "AnalogClock");
-                this.g.extraWidget("", "TimePicker", "TimePicker");
-                this.g.extraWidget("", "DatePicker", "DatePicker");
-                this.g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-                this.g.a(PaletteWidget.b.h, "", "WebView", "WebView");
-                this.g.extraWidget("", "VideoView", "VideoView");
-                this.g.extraWidget("", "BadgeView", "BadgeView");
-                this.g.a(PaletteWidget.b.l, "", "AdView", "AdView");
+                g.a(PaletteWidget.a.c, "");
+                g.a(PaletteWidget.a.d, "");
+                g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+                g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+                g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+                g.a(PaletteWidget.b.a, "", "Button", "Button");
+                g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+                g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+                g.extraWidget("", "RadioButton", "RadioButton");
+                g.a(PaletteWidget.b.i, "", "Switch", "Switch");
+                g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+                g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+                g.extraWidget("", "RatingBar", "RatingBar");
+                g.extraWidget("", "AnalogClock", "AnalogClock");
+                g.extraWidget("", "TimePicker", "TimePicker");
+                g.extraWidget("", "DatePicker", "DatePicker");
+                g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+                g.a(PaletteWidget.b.h, "", "WebView", "WebView");
+                g.extraWidget("", "VideoView", "VideoView");
+                g.extraWidget("", "BadgeView", "BadgeView");
+                g.a(PaletteWidget.b.l, "", "AdView", "AdView");
             } else {
-                this.g.a(PaletteWidget.a.c, "");
-                this.g.a(PaletteWidget.a.d, "");
-                this.g.extraWidgetLayout("", "RadioGroup");
-                this.g.i.extraTitle("AndroidX", 0);
-                this.g.extraWidgetLayout("", "TabLayout");
-                this.g.extraWidgetLayout("", "BottomNavigationView");
-                this.g.extraWidgetLayout("", "CollapsingToolbarLayout");
-                this.g.extraWidgetLayout("", "CardView");
-                this.g.extraWidgetLayout("", "TextInputLayout");
-                this.g.extraWidgetLayout("", "SwipeRefreshLayout");
-                this.g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-                this.g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-                this.g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                this.g.a(PaletteWidget.b.a, "", "Button", "Button");
-                this.g.extraWidget("", "MaterialButton", "MaterialButton");
-                this.g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-                this.g.extraWidget("", "CircleImageView", "default_image");
-                this.g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-                this.g.extraWidget("", "RadioButton", "RadioButton");
-                this.g.a(PaletteWidget.b.i, "", "Switch", "Switch");
-                this.g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-                this.g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-                this.g.extraWidget("", "RatingBar", "RatingBar");
-                this.g.extraWidget("", "SearchView", "SearchView");
-                this.g.extraWidget("", "VideoView", "VideoView");
-                this.g.a(PaletteWidget.b.h, "", "WebView", "WebView");
-                this.g.i.extraTitle("List", 1);
-                this.g.a(PaletteWidget.b.e, "", "ListView", "ListView");
-                this.g.extraWidget("", "GridView", "GridView");
-                this.g.extraWidget("", "RecyclerView", "RecyclerView");
-                this.g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-                this.g.extraWidget("", "ViewPager", "ViewPager");
-                this.g.i.extraTitle("Library", 1);
-                this.g.extraWidget("", "BadgeView", "BadgeView");
-                this.g.extraWidget("", "WaveSideBar", "WaveSideBar");
-                this.g.extraWidget("", "PatternLockView", "PatternLockView");
-                this.g.extraWidget("", "CodeView", "CodeView");
-                this.g.extraWidget("", "LottieAnimation", "LottieAnimation");
-                this.g.extraWidget("", "OTPView", "OTPView");
-                this.g.i.extraTitle("Google", 1);
-                this.g.a(PaletteWidget.b.l, "", "AdView", "AdView");
-                this.g.a(PaletteWidget.b.n, "", "MapView", "MapView");
-                this.g.extraWidget("", "SignInButton", "SignInButton");
-                this.g.extraWidget("", "YoutubePlayer", "YoutubePlayer");
-                this.g.i.extraTitle("Date & Time", 1);
-                this.g.extraWidget("", "AnalogClock", "AnalogClock");
-                this.g.extraWidget("", "DigitalClock", "DigitalClock");
-                this.g.extraWidget("", "TimePicker", "TimePicker");
-                this.g.extraWidget("", "DatePicker", "DatePicker");
-                this.g.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
+                g.a(PaletteWidget.a.c, "");
+                g.a(PaletteWidget.a.d, "");
+                g.extraWidgetLayout("", "RadioGroup");
+                g.i.extraTitle("AndroidX", 0);
+                g.extraWidgetLayout("", "TabLayout");
+                g.extraWidgetLayout("", "BottomNavigationView");
+                g.extraWidgetLayout("", "CollapsingToolbarLayout");
+                g.extraWidgetLayout("", "CardView");
+                g.extraWidgetLayout("", "TextInputLayout");
+                g.extraWidgetLayout("", "SwipeRefreshLayout");
+                g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+                g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+                g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+                g.a(PaletteWidget.b.a, "", "Button", "Button");
+                g.extraWidget("", "MaterialButton", "MaterialButton");
+                g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+                g.extraWidget("", "CircleImageView", "default_image");
+                g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+                g.extraWidget("", "RadioButton", "RadioButton");
+                g.a(PaletteWidget.b.i, "", "Switch", "Switch");
+                g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+                g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+                g.extraWidget("", "RatingBar", "RatingBar");
+                g.extraWidget("", "SearchView", "SearchView");
+                g.extraWidget("", "VideoView", "VideoView");
+                g.a(PaletteWidget.b.h, "", "WebView", "WebView");
+                g.i.extraTitle("List", 1);
+                g.a(PaletteWidget.b.e, "", "ListView", "ListView");
+                g.extraWidget("", "GridView", "GridView");
+                g.extraWidget("", "RecyclerView", "RecyclerView");
+                g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+                g.extraWidget("", "ViewPager", "ViewPager");
+                g.i.extraTitle("Library", 1);
+                g.extraWidget("", "BadgeView", "BadgeView");
+                g.extraWidget("", "WaveSideBar", "WaveSideBar");
+                g.extraWidget("", "PatternLockView", "PatternLockView");
+                g.extraWidget("", "CodeView", "CodeView");
+                g.extraWidget("", "LottieAnimation", "LottieAnimation");
+                g.extraWidget("", "OTPView", "OTPView");
+                g.i.extraTitle("Google", 1);
+                g.a(PaletteWidget.b.l, "", "AdView", "AdView");
+                g.a(PaletteWidget.b.n, "", "MapView", "MapView");
+                g.extraWidget("", "SignInButton", "SignInButton");
+                g.extraWidget("", "YoutubePlayer", "YoutubePlayer");
+                g.i.extraTitle("Date & Time", 1);
+                g.extraWidget("", "AnalogClock", "AnalogClock");
+                g.extraWidget("", "DigitalClock", "DigitalClock");
+                g.extraWidget("", "TimePicker", "TimePicker");
+                g.extraWidget("", "DatePicker", "DatePicker");
+                g.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
             }
         }
 
     }
 
     public final void f() {
-        if (this.n == null) {
-            this.n = ObjectAnimator.ofFloat(this.m, View.TRANSLATION_Y, new float[]{0.0F});
-            this.n.setDuration(700L);
-            this.n.setInterpolator(new DecelerateInterpolator());
+        if (n == null) {
+            n = ObjectAnimator.ofFloat(m, View.TRANSLATION_Y, 0.0F);
+            n.setDuration(700L);
+            n.setInterpolator(new DecelerateInterpolator());
         }
 
-        if (this.o == null) {
-            this.o = ObjectAnimator.ofFloat(this.m, View.TRANSLATION_Y, new float[]{wB.a(this.getActivity(), (float) this.m.getHeight())});
-            this.o.setDuration(300L);
-            this.o.setInterpolator(new DecelerateInterpolator());
+        if (o == null) {
+            o = ObjectAnimator.ofFloat(m, View.TRANSLATION_Y, wB.a(getActivity(), (float) m.getHeight()));
+            o.setDuration(300L);
+            o.setInterpolator(new DecelerateInterpolator());
         }
 
     }
 
     public boolean g() {
-        return this.p;
+        return p;
     }
 
     public final void h() {
-        if (!this.q) {
-            HistoryViewBean var1 = cC.c(this.r).h(this.f.getXmlName());
+        if (!q) {
+            HistoryViewBean var1 = cC.c(r).h(f.getXmlName());
             if (var1 == null) {
-                this.k();
+                k();
             } else {
                 int var2 = var1.getActionType();
                 ViewBean var4;
@@ -326,11 +326,11 @@ public class jr extends qA {
 
                     while (var3.hasNext()) {
                         var4 = (ViewBean) var3.next();
-                        jC.a(this.r).a(this.f.getXmlName(), var4);
+                        jC.a(r).a(f.getXmlName(), var4);
                     }
 
-                    var5 = this.g.a(var1.getAddedData(), false);
-                    this.g.a(var5, false);
+                    var5 = g.a(var1.getAddedData(), false);
+                    g.a(var5, false);
                 } else {
                     ViewBean var6;
                     if (var2 == 1) {
@@ -341,64 +341,64 @@ public class jr extends qA {
                         }
 
                         if (var6.id.equals("_fab")) {
-                            jC.a(this.r).h(this.f.getXmlName()).copy(var6);
+                            jC.a(r).h(f.getXmlName()).copy(var6);
                         } else {
-                            jC.a(this.r).c(this.f.getXmlName(), var4.id).copy(var6);
+                            jC.a(r).c(f.getXmlName(), var4.id).copy(var6);
                         }
 
-                        var5 = this.g.e(var6);
-                        this.g.a(var5, false);
+                        var5 = g.e(var6);
+                        g.a(var5, false);
                     } else if (var2 == 2) {
                         Iterator var8 = var1.getRemovedData().iterator();
 
                         while (var8.hasNext()) {
                             ViewBean var7 = (ViewBean) var8.next();
-                            jC.a(this.r).a(this.f, var7);
+                            jC.a(r).a(f, var7);
                         }
 
-                        this.g.b(var1.getRemovedData(), false);
-                        this.g.i();
+                        g.b(var1.getRemovedData(), false);
+                        g.i();
                     } else if (var2 == 3) {
                         var4 = var1.getMovedData();
-                        var6 = jC.a(this.r).c(this.f.getXmlName(), var4.id);
+                        var6 = jC.a(r).c(f.getXmlName(), var4.id);
                         var6.copy(var4);
-                        var5 = this.g.b(var6, false);
-                        this.g.a(var5, false);
+                        var5 = g.b(var6, false);
+                        g.a(var5, false);
                     }
                 }
 
-                this.k();
+                k();
             }
         }
     }
 
     public void i() {
-        if (this.f != null) {
-            this.b(jC.a(this.r).d(this.f.getXmlName()));
-            this.a(jC.a(this.r).h(this.f.getXmlName()));
+        if (f != null) {
+            b(jC.a(r).d(f.getXmlName()));
+            a(jC.a(r).h(f.getXmlName()));
         }
     }
 
     public void j() {
-        this.g.setFavoriteData(Rp.h().f());
+        g.setFavoriteData(Rp.h().f());
     }
 
     public void k() {
-        if (this.getActivity() != null) {
-            this.getActivity().invalidateOptionsMenu();
+        if (getActivity() != null) {
+            getActivity().invalidateOptionsMenu();
         }
 
     }
 
     public void l() {
-        this.g.j();
+        g.j();
     }
 
     public final void m() {
-        if (!this.q) {
-            HistoryViewBean var1 = cC.c(this.r).i(this.f.getXmlName());
+        if (!q) {
+            HistoryViewBean var1 = cC.c(r).i(f.getXmlName());
             if (var1 == null) {
-                this.k();
+                k();
             } else {
                 int var2 = var1.getActionType();
                 ViewBean var4;
@@ -407,11 +407,11 @@ public class jr extends qA {
 
                     while (var3.hasNext()) {
                         var4 = (ViewBean) var3.next();
-                        jC.a(this.r).a(this.f, var4);
+                        jC.a(r).a(f, var4);
                     }
 
-                    this.g.b(var1.getAddedData(), false);
-                    this.g.i();
+                    g.b(var1.getAddedData(), false);
+                    g.i();
                 } else {
                     ViewBean var5;
                     sy var6;
@@ -423,85 +423,85 @@ public class jr extends qA {
                         }
 
                         if (var5.id.equals("_fab")) {
-                            jC.a(this.r).h(this.f.getXmlName()).copy(var4);
+                            jC.a(r).h(f.getXmlName()).copy(var4);
                         } else {
-                            jC.a(this.r).c(this.f.getXmlName(), var5.id).copy(var4);
+                            jC.a(r).c(f.getXmlName(), var5.id).copy(var4);
                         }
 
-                        var6 = this.g.e(var4);
-                        this.g.a(var6, false);
+                        var6 = g.e(var4);
+                        g.a(var6, false);
                     } else if (var2 == 2) {
                         Iterator var8 = var1.getRemovedData().iterator();
 
                         while (var8.hasNext()) {
                             ViewBean var7 = (ViewBean) var8.next();
-                            jC.a(this.r).a(this.f.getXmlName(), var7);
+                            jC.a(r).a(f.getXmlName(), var7);
                         }
 
-                        var6 = this.g.a(var1.getRemovedData(), false);
-                        this.g.a(var6, false);
+                        var6 = g.a(var1.getRemovedData(), false);
+                        g.a(var6, false);
                     } else if (var2 == 3) {
                         var4 = var1.getMovedData();
-                        var5 = jC.a(this.r).c(this.f.getXmlName(), var4.id);
+                        var5 = jC.a(r).c(f.getXmlName(), var4.id);
                         var5.preIndex = var4.index;
                         var5.index = var4.preIndex;
                         var5.parent = var4.preParent;
                         var5.preParent = var4.parent;
-                        var6 = this.g.b(var5, false);
-                        this.g.a(var6, false);
+                        var6 = g.b(var5, false);
+                        g.a(var6, false);
                     }
                 }
 
-                this.k();
+                k();
             }
         }
     }
 
     public void n() {
-        ArrayList var1 = eC.a(jC.a(this.r).d(this.f.getXmlName()));
+        ArrayList var1 = eC.a(jC.a(r).d(f.getXmlName()));
         ViewBean var2;
-        if (this.f.hasActivityOption(8)) {
-            var2 = jC.a(this.r).h(this.f.getXmlName());
+        if (f.hasActivityOption(8)) {
+            var2 = jC.a(r).h(f.getXmlName());
         } else {
             var2 = null;
         }
 
-        this.m.a(var1, var2);
+        m.a(var1, var2);
     }
 
     public void onActivityCreated(Bundle var1) {
         super.onActivityCreated(var1);
-        this.k();
+        k();
     }
 
     public void onActivityResult(int var1, int var2, Intent var3) {
         super.onActivityResult(var1, var2, var3);
         if (var1 == 213) {
             if (var2 == -1) {
-                this.c((ViewBean) var3.getParcelableExtra("bean"));
+                c(var3.getParcelableExtra("bean"));
             }
 
             if (var3 != null && var3.getBooleanExtra("is_edit_image", false)) {
-                Iterator var4 = jC.a(this.r).d(this.f.getXmlName()).iterator();
+                Iterator var4 = jC.a(r).d(f.getXmlName()).iterator();
 
                 while (var4.hasNext()) {
-                    this.c((ViewBean) var4.next());
+                    c((ViewBean) var4.next());
                 }
 
-                if (this.k) {
-                    this.c(jC.a(this.r).h(this.f.getXmlName()));
+                if (k) {
+                    c(jC.a(r).h(f.getXmlName()));
                 }
             }
 
-            this.k();
+            k();
         }
 
     }
 
     public void onConfigurationChanged(Configuration var1) {
         super.onConfigurationChanged(var1);
-        this.g.setScreenType(var1.orientation);
-        this.g.P = true;
+        g.setScreenType(var1.orientation);
+        g.P = true;
     }
 
     public void onCreate(Bundle var1) {
@@ -513,8 +513,8 @@ public class jr extends qA {
         var2.inflate(2131492867, var1);
         var1.findItem(2131231540).setEnabled(false);
         var1.findItem(2131231541).setEnabled(false);
-        if (this.f != null) {
-            if (cC.c(this.r).f(this.f.getXmlName())) {
+        if (f != null) {
+            if (cC.c(r).f(f.getXmlName())) {
                 var1.findItem(2131231540).setIcon(2131165827);
                 var1.findItem(2131231540).setEnabled(true);
             } else {
@@ -522,7 +522,7 @@ public class jr extends qA {
                 var1.findItem(2131231540).setEnabled(false);
             }
 
-            if (cC.c(this.r).g(this.f.getXmlName())) {
+            if (cC.c(r).g(f.getXmlName())) {
                 var1.findItem(2131231541).setIcon(2131165878);
                 var1.findItem(2131231541).setEnabled(true);
             } else {
@@ -535,11 +535,11 @@ public class jr extends qA {
 
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
         ViewGroup var4 = (ViewGroup) var1.inflate(2131427425, var2, false);
-        this.a(var4);
+        a(var4);
         if (var3 != null) {
-            this.r = var3.getString("sc_id");
+            r = var3.getString("sc_id");
         } else {
-            this.r = this.getActivity().getIntent().getStringExtra("sc_id");
+            r = getActivity().getIntent().getStringExtra("sc_id");
         }
 
         return var4;
@@ -552,23 +552,23 @@ public class jr extends qA {
     public boolean onOptionsItemSelected(MenuItem var1) {
         switch (var1.getItemId()) {
             case 2131231540:
-                this.h();
+                h();
                 break;
             case 2131231541:
-                this.m();
+                m();
         }
 
         return true;
     }
 
     public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", this.r);
+        var1.putString("sc_id", r);
         super.onSaveInstanceState(var1);
     }
 
     public void onStop() {
         super.onStop();
-        ViewProperty var1 = this.m;
+        ViewProperty var1 = m;
         if (var1 != null) {
             var1.d();
         }
@@ -580,7 +580,7 @@ public class jr extends qA {
 
         while (var1.hasNext()) {
             HashMap var2 = (HashMap) var1.next();
-            this.g.extraWidget((String) var2.get("tag"), (String) var2.get("name"), (String) var2.get("text"));
+            g.extraWidget((String) var2.get("tag"), (String) var2.get("name"), (String) var2.get("text"));
         }
 
     }
@@ -590,7 +590,7 @@ public class jr extends qA {
 
         while (var1.hasNext()) {
             HashMap var2 = (HashMap) var1.next();
-            this.g.extraWidgetLayout((String) var2.get("tag"), (String) var2.get("name"));
+            g.extraWidgetLayout((String) var2.get("tag"), (String) var2.get("name"));
         }
 
     }
