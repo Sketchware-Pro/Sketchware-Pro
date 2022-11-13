@@ -46,9 +46,9 @@ public class jr extends qA {
     public jr() {
     }
 
-    public final void a(ViewGroup var1) {
+    private void a(ViewGroup viewGroup) {
         setHasOptionsMenu(true);
-        g = var1.findViewById(R.id.view_editor);
+        g = viewGroup.findViewById(R.id.view_editor);
         g.setScreenType(getResources().getConfiguration().orientation);
         m = getActivity().findViewById(R.id.view_property);
         m.setOnPropertyListener(new Iw() {
@@ -77,23 +77,23 @@ public class jr extends qA {
             }
 
             @Override
-            public void a(String var1) {
+            public void a(String viewId) {
                 n();
-                m.a(var1);
+                m.a(viewId);
             }
 
             @Override
-            public void a(boolean var1, String var2) {
-                if (!var2.isEmpty()) {
+            public void a(boolean var1, String viewId) {
+                if (!viewId.isEmpty()) {
                     this.a();
-                    m.a(var2);
+                    m.a(viewId);
                     m.e();
                 }
 
                 jr.this.a(var1);
             }
         });
-        this.g.setOnDraggingListener(new _x() {
+        g.setOnDraggingListener(new _x() {
             @Override
             public boolean a() {
                 return jC.c(r).b().isEnabled();
@@ -116,18 +116,18 @@ public class jr extends qA {
                 ((DesignActivity) getActivity()).b(true);
             }
         });
-        this.g.setOnHistoryChangeListener(this::k);
-        this.g.setFavoriteData(Rp.h().f());
+        g.setOnHistoryChangeListener(this::k);
+        g.setFavoriteData(Rp.h().f());
     }
 
-    public void a(ProjectFileBean var1) {
-        f = var1;
-        h = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
-        i = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
-        k = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
-        j = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER);
-        l = var1.orientation;
-        g.a(r, var1);
+    public void a(ProjectFileBean projectFileBean) {
+        f = projectFileBean;
+        h = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
+        i = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
+        k = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
+        j = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER);
+        l = projectFileBean.orientation;
+        g.a(r, projectFileBean);
         g.h();
         m.a(r, f);
         e();
@@ -137,38 +137,34 @@ public class jr extends qA {
 
     public final void a(ViewBean var1) {
         g.k();
-        if (k) {
-            g.a(var1);
-        }
-
+        if (k) g.a(var1);
     }
 
-    public final void a(String var1) {
-        ViewBean var2;
-        if (var1.equals("_fab")) {
-            var2 = jC.a(r).h(f.getXmlName());
+    public final void a(String viewId) {
+        ViewBean viewBean;
+        if (viewId.equals("_fab")) {
+            viewBean = jC.a(r).h(f.getXmlName());
         } else {
-            var2 = jC.a(r).c(f.getXmlName(), var1);
+            viewBean = jC.a(r).c(f.getXmlName(), viewId);
         }
-
-        c(var2);
+        c(viewBean);
         m.e();
     }
 
-    public final void a(String var1, String var2, String var3) {
-        Intent var4 = new Intent(getContext(), LogicEditorActivity.class);
-        var4.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var4.putExtra("sc_id", r);
-        var4.putExtra("id", var1);
-        var4.putExtra("event", var2);
-        var4.putExtra("project_file", f);
-        var4.putExtra("event_text", var3);
-        getContext().startActivity(var4);
+    private void a(String eventId, String eventName, String eventName2) {
+        Intent intent = new Intent(getContext(), LogicEditorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", r);
+        intent.putExtra("id", eventId);
+        intent.putExtra("event", eventName);
+        intent.putExtra("project_file", f);
+        intent.putExtra("event_text", eventName2);
+        getContext().startActivity(intent);
     }
 
-    public void a(ArrayList<ViewBean> var1) {
+    public void a(ArrayList<ViewBean> viewBeans) {
         g.h();
-        g.a(eC.a(var1));
+        g.a(eC.a(viewBeans));
     }
 
     public void a(boolean var1) {
@@ -185,18 +181,18 @@ public class jr extends qA {
         }
     }
 
-    public void b(ViewBean var1) {
-        Intent var2 = new Intent(getContext(), PropertyActivity.class);
-        var2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var2.putExtra("sc_id", r);
-        var2.putExtra("bean", var1);
-        var2.putExtra("project_file", f);
-        startActivityForResult(var2, 213);
+    public void b(ViewBean viewBean) {
+        Intent intent = new Intent(getContext(), PropertyActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", r);
+        intent.putExtra("bean", viewBean);
+        intent.putExtra("project_file", f);
+        startActivityForResult(intent, 213);
     }
 
-    public final void b(ArrayList<ViewBean> var1) {
+    public final void b(ArrayList<ViewBean> viewBeans) {
         l();
-        a(var1);
+        a(viewBeans);
     }
 
     public void b(boolean var1) {
@@ -351,10 +347,10 @@ public class jr extends qA {
             if (var1 == null) {
                 k();
             } else {
-                int var2 = var1.getActionType();
+                int actionType = var1.getActionType();
                 ViewBean var4;
                 sy var5;
-                if (var2 == HistoryViewBean.ACTION_TYPE_ADD) {
+                if (actionType == HistoryViewBean.ACTION_TYPE_ADD) {
                     for (ViewBean viewBean : var1.getAddedData()) {
                         var4 = viewBean;
                         jC.a(r).a(f.getXmlName(), var4);
@@ -363,7 +359,7 @@ public class jr extends qA {
                     g.a(var5, false);
                 } else {
                     ViewBean var6;
-                    if (var2 == HistoryViewBean.ACTION_TYPE_UPDATE) {
+                    if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
                         var4 = var1.getPrevUpdateData();
                         var6 = var1.getCurrentUpdateData();
                         if (!var4.id.equals(var6.id)) {
@@ -378,13 +374,13 @@ public class jr extends qA {
 
                         var5 = g.e(var6);
                         g.a(var5, false);
-                    } else if (var2 == HistoryViewBean.ACTION_TYPE_REMOVE) {
+                    } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
                         for (ViewBean var7 : var1.getRemovedData()) {
                             jC.a(r).a(f, var7);
                         }
                         g.b(var1.getRemovedData(), false);
                         g.i();
-                    } else if (var2 == HistoryViewBean.ACTION_TYPE_MOVE) {
+                    } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
                         var4 = var1.getMovedData();
                         var6 = jC.a(r).c(f.getXmlName(), var4.id);
                         var6.copy(var4);
@@ -392,7 +388,6 @@ public class jr extends qA {
                         g.a(var5, false);
                     }
                 }
-
                 k();
             }
         }
@@ -421,25 +416,25 @@ public class jr extends qA {
 
     public final void m() {
         if (!q) {
-            HistoryViewBean var1 = cC.c(r).i(f.getXmlName());
-            if (var1 == null) {
+            HistoryViewBean historyViewBean = cC.c(r).i(f.getXmlName());
+            if (historyViewBean == null) {
                 k();
             } else {
-                int var2 = var1.getActionType();
+                int actionType = historyViewBean.getActionType();
                 ViewBean var4;
-                if (var2 == HistoryViewBean.ACTION_TYPE_ADD) {
-                    for (ViewBean viewBean : var1.getAddedData()) {
+                if (actionType == HistoryViewBean.ACTION_TYPE_ADD) {
+                    for (ViewBean viewBean : historyViewBean.getAddedData()) {
                         var4 = viewBean;
                         jC.a(r).a(f, var4);
                     }
-                    g.b(var1.getAddedData(), false);
+                    g.b(historyViewBean.getAddedData(), false);
                     g.i();
                 } else {
                     ViewBean var5;
                     sy var6;
-                    if (var2 == HistoryViewBean.ACTION_TYPE_UPDATE) {
-                        var4 = var1.getPrevUpdateData();
-                        var5 = var1.getCurrentUpdateData();
+                    if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
+                        var4 = historyViewBean.getPrevUpdateData();
+                        var5 = historyViewBean.getCurrentUpdateData();
                         if (!var4.id.equals(var5.id)) {
                             var4.preId = var5.id;
                         }
@@ -450,14 +445,14 @@ public class jr extends qA {
                         }
                         var6 = g.e(var4);
                         g.a(var6, false);
-                    } else if (var2 == HistoryViewBean.ACTION_TYPE_REMOVE) {
-                        for (ViewBean var7 : var1.getRemovedData()) {
+                    } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
+                        for (ViewBean var7 : historyViewBean.getRemovedData()) {
                             jC.a(r).a(f.getXmlName(), var7);
                         }
-                        var6 = g.a(var1.getRemovedData(), false);
+                        var6 = g.a(historyViewBean.getRemovedData(), false);
                         g.a(var6, false);
-                    } else if (var2 == HistoryViewBean.ACTION_TYPE_MOVE) {
-                        var4 = var1.getMovedData();
+                    } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
+                        var4 = historyViewBean.getMovedData();
                         var5 = jC.a(r).c(f.getXmlName(), var4.id);
                         var5.preIndex = var4.index;
                         var5.index = var4.preIndex;
@@ -467,38 +462,37 @@ public class jr extends qA {
                         g.a(var6, false);
                     }
                 }
-
                 k();
             }
         }
     }
 
     public void n() {
-        ArrayList<ViewBean> var1 = eC.a(jC.a(r).d(f.getXmlName()));
-        ViewBean var2;
+        ArrayList<ViewBean> viewBeanArrayList = eC.a(jC.a(r).d(f.getXmlName()));
+        ViewBean viewBean;
         if (f.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-            var2 = jC.a(r).h(f.getXmlName());
+            viewBean = jC.a(r).h(f.getXmlName());
         } else {
-            var2 = null;
+            viewBean = null;
         }
-        m.a(var1, var2);
+        m.a(viewBeanArrayList, viewBean);
     }
 
     @Override
-    public void onActivityCreated(Bundle var1) {
-        super.onActivityCreated(var1);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         k();
     }
 
     @Override
-    public void onActivityResult(int var1, int var2, Intent var3) {
-        super.onActivityResult(var1, var2, var3);
-        if (var1 == 213) {
-            if (var2 == -1) {
-                c(var3.getParcelableExtra("bean"));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 213) {
+            if (resultCode == -1) {
+                c(data.getParcelableExtra("bean"));
             }
 
-            if (var3 != null && var3.getBooleanExtra("is_edit_image", false)) {
+            if (data != null && data.getBooleanExtra("is_edit_image", false)) {
                 for (ViewBean viewBean : jC.a(r).d(f.getXmlName())) {
                     c(viewBean);
                 }
@@ -511,54 +505,53 @@ public class jr extends qA {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration var1) {
-        super.onConfigurationChanged(var1);
-        g.setScreenType(var1.orientation);
+    public void onConfigurationChanged(Configuration newConfiguration) {
+        super.onConfigurationChanged(newConfiguration);
+        g.setScreenType(newConfiguration.orientation);
         g.P = true;
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu var1, MenuInflater var2) {
-        super.onCreateOptionsMenu(var1, var2);
-        var2.inflate(R.menu.design_view_menu, var1);
-        var1.findItem(R.id.menu_view_redo).setEnabled(false);
-        var1.findItem(R.id.menu_view_undo).setEnabled(false);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+        menuInflater.inflate(R.menu.design_view_menu, menu);
+        menu.findItem(R.id.menu_view_redo).setEnabled(false);
+        menu.findItem(R.id.menu_view_undo).setEnabled(false);
         if (f != null) {
             if (cC.c(r).f(f.getXmlName())) {
-                var1.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_white_48dp);
-                var1.findItem(R.id.menu_view_redo).setEnabled(true);
+                menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_white_48dp);
+                menu.findItem(R.id.menu_view_redo).setEnabled(true);
             } else {
-                var1.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_grey_48dp);
-                var1.findItem(R.id.menu_view_redo).setEnabled(false);
+                menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_grey_48dp);
+                menu.findItem(R.id.menu_view_redo).setEnabled(false);
             }
 
             if (cC.c(r).g(f.getXmlName())) {
-                var1.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_white_48dp);
-                var1.findItem(R.id.menu_view_undo).setEnabled(true);
+                menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_white_48dp);
+                menu.findItem(R.id.menu_view_undo).setEnabled(true);
             } else {
-                var1.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_grey_48dp);
-                var1.findItem(R.id.menu_view_undo).setEnabled(false);
+                menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_grey_48dp);
+                menu.findItem(R.id.menu_view_undo).setEnabled(false);
             }
-
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        ViewGroup var4 = (ViewGroup) var1.inflate(R.layout.fr_graphic_editor, var2, false);
-        a(var4);
-        if (var3 != null) {
-            r = var3.getString("sc_id");
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle bundle) {
+        ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.fr_graphic_editor, parent, false);
+        a(viewGroup);
+        if (bundle != null) {
+            r = bundle.getString("sc_id");
         } else {
             r = getActivity().getIntent().getStringExtra("sc_id");
         }
 
-        return var4;
+        return viewGroup;
     }
 
     @Override
@@ -567,29 +560,27 @@ public class jr extends qA {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem var1) {
-        switch (var1.getItemId()) {
-            case R.id.menu_view_redo:
-                h();
-                break;
-            case R.id.menu_view_undo:
-                m();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_view_redo) {
+            h();
+        } else if (itemId == R.id.menu_view_undo) {
+            m();
         }
         return true;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", r);
-        super.onSaveInstanceState(var1);
+    public void onSaveInstanceState(Bundle newInstanceState) {
+        newInstanceState.putString("sc_id", r);
+        super.onSaveInstanceState(newInstanceState);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ViewProperty var1 = m;
-        if (var1 != null) {
-            var1.d();
+        if (m != null) {
+            m.d();
         }
     }
 
