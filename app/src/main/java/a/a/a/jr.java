@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package a.a.a;
 
 import android.animation.ObjectAnimator;
@@ -20,6 +15,7 @@ import android.view.animation.DecelerateInterpolator;
 import com.besome.sketch.beans.HistoryViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.PropertyActivity;
 import com.besome.sketch.editor.view.ViewEditor;
@@ -55,14 +51,73 @@ public class jr extends qA {
         g = var1.findViewById(2131232319);
         g.setScreenType(getResources().getConfiguration().orientation);
         m = getActivity().findViewById(2131232326);
-        m.setOnPropertyListener(new cr(this));
-        m.setOnPropertyValueChangedListener(new dr(this));
-        m.setOnEventClickListener(new er());
-        m.setOnPropertyTargetChangeListener(new fr(this));
-        g.setOnWidgetSelectedListener(new gr(this));
-        g.setOnDraggingListener(new hr(this));
-        g.setOnHistoryChangeListener(new ir(this));
-        g.setFavoriteData(Rp.h().f());
+        m.setOnPropertyListener(new Iw() {
+            @Override
+            public void a() {
+                g.setFavoriteData(Rp.h().f());
+            }
+
+            @Override
+            public void a(String s, ViewBean viewBean) {
+                b(viewBean);
+            }
+        });
+        m.setOnPropertyValueChangedListener(viewBean -> {
+            jr.this.a(viewBean.id);
+            m.e();
+            k();
+        });
+        m.setOnEventClickListener(eventBean -> jr.this.a(eventBean.targetId, eventBean.eventName, eventBean.eventName));
+        m.setOnPropertyTargetChangeListener(this::a);
+        g.setOnWidgetSelectedListener(new cy() {
+            @Override
+            public void a() {
+                n();
+                m.e();
+            }
+
+            @Override
+            public void a(String var1) {
+                n();
+                m.a(var1);
+            }
+
+            @Override
+            public void a(boolean var1, String var2) {
+                if (!var2.isEmpty()) {
+                    this.a();
+                    m.a(var2);
+                    m.e();
+                }
+
+                jr.this.a(var1);
+            }
+        });
+        this.g.setOnDraggingListener(new _x() {
+            @Override
+            public boolean a() {
+                return jC.c(r).b().isEnabled();
+            }
+
+            @Override
+            public void b() {
+                q = true;
+                ((DesignActivity) getActivity()).b(false);
+            }
+
+            @Override
+            public boolean c() {
+                return jC.c(r).e().isEnabled();
+            }
+
+            @Override
+            public void d() {
+                q = false;
+                ((DesignActivity) getActivity()).b(true);
+            }
+        });
+        this.g.setOnHistoryChangeListener(this::k);
+        this.g.setFavoriteData(Rp.h().f());
     }
 
     public void a(ProjectFileBean var1) {
@@ -274,7 +329,6 @@ public class jr extends qA {
                 g.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
             }
         }
-
     }
 
     public final void f() {
@@ -289,7 +343,6 @@ public class jr extends qA {
             o.setDuration(300L);
             o.setInterpolator(new DecelerateInterpolator());
         }
-
     }
 
     public boolean g() {
@@ -364,7 +417,6 @@ public class jr extends qA {
         if (getActivity() != null) {
             getActivity().invalidateOptionsMenu();
         }
-
     }
 
     public void l() {
@@ -395,13 +447,11 @@ public class jr extends qA {
                         if (!var4.id.equals(var5.id)) {
                             var4.preId = var5.id;
                         }
-
                         if (var5.id.equals("_fab")) {
                             jC.a(r).h(f.getXmlName()).copy(var4);
                         } else {
                             jC.a(r).c(f.getXmlName(), var5.id).copy(var4);
                         }
-
                         var6 = g.e(var4);
                         g.a(var6, false);
                     } else if (var2 == 2) {
@@ -435,7 +485,6 @@ public class jr extends qA {
         } else {
             var2 = null;
         }
-
         m.a(var1, var2);
     }
 
@@ -454,19 +503,15 @@ public class jr extends qA {
             }
 
             if (var3 != null && var3.getBooleanExtra("is_edit_image", false)) {
-
                 for (ViewBean viewBean : jC.a(r).d(f.getXmlName())) {
                     c(viewBean);
                 }
-
                 if (k) {
                     c(jC.a(r).h(f.getXmlName()));
                 }
             }
-
             k();
         }
-
     }
 
     @Override
@@ -534,7 +579,6 @@ public class jr extends qA {
             case 2131231541:
                 m();
         }
-
         return true;
     }
 
@@ -551,7 +595,6 @@ public class jr extends qA {
         if (var1 != null) {
             var1.d();
         }
-
     }
 
     public void p() {
