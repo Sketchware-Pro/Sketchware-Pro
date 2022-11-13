@@ -21,6 +21,7 @@ import com.besome.sketch.editor.PropertyActivity;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,9 +48,9 @@ public class jr extends qA {
 
     public final void a(ViewGroup var1) {
         setHasOptionsMenu(true);
-        g = var1.findViewById(2131232319);
+        g = var1.findViewById(R.id.view_editor);
         g.setScreenType(getResources().getConfiguration().orientation);
-        m = getActivity().findViewById(2131232326);
+        m = getActivity().findViewById(R.id.view_property);
         m.setOnPropertyListener(new Iw() {
             @Override
             public void a() {
@@ -121,10 +122,10 @@ public class jr extends qA {
 
     public void a(ProjectFileBean var1) {
         f = var1;
-        h = var1.hasActivityOption(1);
-        i = var1.hasActivityOption(2);
-        k = var1.hasActivityOption(8);
-        j = var1.hasActivityOption(4);
+        h = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
+        i = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
+        k = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
+        j = var1.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER);
         l = var1.orientation;
         g.a(r, var1);
         g.h();
@@ -222,7 +223,7 @@ public class jr extends qA {
 
     public final void e() {
         g.d();
-        g.setPaletteLayoutVisible(0);
+        g.setPaletteLayoutVisible(View.VISIBLE);
         g.a(PaletteWidget.a.a, "");
         g.a(PaletteWidget.a.b, "");
         g.a(PaletteWidget.b.b, "", "TextView", "TextView");
@@ -353,7 +354,7 @@ public class jr extends qA {
                 int var2 = var1.getActionType();
                 ViewBean var4;
                 sy var5;
-                if (var2 == 0) {
+                if (var2 == HistoryViewBean.ACTION_TYPE_ADD) {
                     for (ViewBean viewBean : var1.getAddedData()) {
                         var4 = viewBean;
                         jC.a(r).a(f.getXmlName(), var4);
@@ -362,7 +363,7 @@ public class jr extends qA {
                     g.a(var5, false);
                 } else {
                     ViewBean var6;
-                    if (var2 == 1) {
+                    if (var2 == HistoryViewBean.ACTION_TYPE_UPDATE) {
                         var4 = var1.getPrevUpdateData();
                         var6 = var1.getCurrentUpdateData();
                         if (!var4.id.equals(var6.id)) {
@@ -377,13 +378,13 @@ public class jr extends qA {
 
                         var5 = g.e(var6);
                         g.a(var5, false);
-                    } else if (var2 == 2) {
+                    } else if (var2 == HistoryViewBean.ACTION_TYPE_REMOVE) {
                         for (ViewBean var7 : var1.getRemovedData()) {
                             jC.a(r).a(f, var7);
                         }
                         g.b(var1.getRemovedData(), false);
                         g.i();
-                    } else if (var2 == 3) {
+                    } else if (var2 == HistoryViewBean.ACTION_TYPE_MOVE) {
                         var4 = var1.getMovedData();
                         var6 = jC.a(r).c(f.getXmlName(), var4.id);
                         var6.copy(var4);
@@ -426,7 +427,7 @@ public class jr extends qA {
             } else {
                 int var2 = var1.getActionType();
                 ViewBean var4;
-                if (var2 == 0) {
+                if (var2 == HistoryViewBean.ACTION_TYPE_ADD) {
                     for (ViewBean viewBean : var1.getAddedData()) {
                         var4 = viewBean;
                         jC.a(r).a(f, var4);
@@ -436,7 +437,7 @@ public class jr extends qA {
                 } else {
                     ViewBean var5;
                     sy var6;
-                    if (var2 == 1) {
+                    if (var2 == HistoryViewBean.ACTION_TYPE_UPDATE) {
                         var4 = var1.getPrevUpdateData();
                         var5 = var1.getCurrentUpdateData();
                         if (!var4.id.equals(var5.id)) {
@@ -449,13 +450,13 @@ public class jr extends qA {
                         }
                         var6 = g.e(var4);
                         g.a(var6, false);
-                    } else if (var2 == 2) {
+                    } else if (var2 == HistoryViewBean.ACTION_TYPE_REMOVE) {
                         for (ViewBean var7 : var1.getRemovedData()) {
                             jC.a(r).a(f.getXmlName(), var7);
                         }
                         var6 = g.a(var1.getRemovedData(), false);
                         g.a(var6, false);
-                    } else if (var2 == 3) {
+                    } else if (var2 == HistoryViewBean.ACTION_TYPE_MOVE) {
                         var4 = var1.getMovedData();
                         var5 = jC.a(r).c(f.getXmlName(), var4.id);
                         var5.preIndex = var4.index;
@@ -475,7 +476,7 @@ public class jr extends qA {
     public void n() {
         ArrayList<ViewBean> var1 = eC.a(jC.a(r).d(f.getXmlName()));
         ViewBean var2;
-        if (f.hasActivityOption(8)) {
+        if (f.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
             var2 = jC.a(r).h(f.getXmlName());
         } else {
             var2 = null;
@@ -524,24 +525,24 @@ public class jr extends qA {
     @Override
     public void onCreateOptionsMenu(Menu var1, MenuInflater var2) {
         super.onCreateOptionsMenu(var1, var2);
-        var2.inflate(2131492867, var1);
-        var1.findItem(2131231540).setEnabled(false);
-        var1.findItem(2131231541).setEnabled(false);
+        var2.inflate(R.menu.design_view_menu, var1);
+        var1.findItem(R.id.menu_view_redo).setEnabled(false);
+        var1.findItem(R.id.menu_view_undo).setEnabled(false);
         if (f != null) {
             if (cC.c(r).f(f.getXmlName())) {
-                var1.findItem(2131231540).setIcon(2131165827);
-                var1.findItem(2131231540).setEnabled(true);
+                var1.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_white_48dp);
+                var1.findItem(R.id.menu_view_redo).setEnabled(true);
             } else {
-                var1.findItem(2131231540).setIcon(2131165826);
-                var1.findItem(2131231540).setEnabled(false);
+                var1.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_grey_48dp);
+                var1.findItem(R.id.menu_view_redo).setEnabled(false);
             }
 
             if (cC.c(r).g(f.getXmlName())) {
-                var1.findItem(2131231541).setIcon(2131165878);
-                var1.findItem(2131231541).setEnabled(true);
+                var1.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_white_48dp);
+                var1.findItem(R.id.menu_view_undo).setEnabled(true);
             } else {
-                var1.findItem(2131231541).setIcon(2131165877);
-                var1.findItem(2131231541).setEnabled(false);
+                var1.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_grey_48dp);
+                var1.findItem(R.id.menu_view_undo).setEnabled(false);
             }
 
         }
@@ -549,7 +550,7 @@ public class jr extends qA {
 
     @Override
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        ViewGroup var4 = (ViewGroup) var1.inflate(2131427425, var2, false);
+        ViewGroup var4 = (ViewGroup) var1.inflate(R.layout.fr_graphic_editor, var2, false);
         a(var4);
         if (var3 != null) {
             r = var3.getString("sc_id");
@@ -568,10 +569,10 @@ public class jr extends qA {
     @Override
     public boolean onOptionsItemSelected(MenuItem var1) {
         switch (var1.getItemId()) {
-            case 2131231540:
+            case R.id.menu_view_redo:
                 h();
                 break;
-            case 2131231541:
+            case R.id.menu_view_undo:
                 m();
         }
         return true;
