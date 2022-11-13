@@ -455,11 +455,13 @@ public class jr extends qA {
         m.a(var1, var2);
     }
 
+    @Override
     public void onActivityCreated(Bundle var1) {
         super.onActivityCreated(var1);
         k();
     }
 
+    @Override
     public void onActivityResult(int var1, int var2, Intent var3) {
         super.onActivityResult(var1, var2, var3);
         if (var1 == 213) {
@@ -483,16 +485,19 @@ public class jr extends qA {
 
     }
 
+    @Override
     public void onConfigurationChanged(Configuration var1) {
         super.onConfigurationChanged(var1);
         g.setScreenType(var1.orientation);
         g.P = true;
     }
 
+    @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
     }
 
+    @Override
     public void onCreateOptionsMenu(Menu var1, MenuInflater var2) {
         super.onCreateOptionsMenu(var1, var2);
         var2.inflate(2131492867, var1);
@@ -518,6 +523,7 @@ public class jr extends qA {
         }
     }
 
+    @Override
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
         ViewGroup var4 = (ViewGroup) var1.inflate(2131427425, var2, false);
         a(var4);
@@ -530,10 +536,12 @@ public class jr extends qA {
         return var4;
     }
 
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem var1) {
         switch (var1.getItemId()) {
             case 2131231540:
@@ -546,11 +554,13 @@ public class jr extends qA {
         return true;
     }
 
+    @Override
     public void onSaveInstanceState(Bundle var1) {
         var1.putString("sc_id", r);
         super.onSaveInstanceState(var1);
     }
 
+    @Override
     public void onStop() {
         super.onStop();
         ViewProperty var1 = m;
