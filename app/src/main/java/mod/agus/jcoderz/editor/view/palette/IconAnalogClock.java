@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconAnalogClock extends IconBase {
+
     public IconAnalogClock(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconAnalogClock.super.a(context);
         setWidgetImage(2131166276);
         setWidgetName("AnalogClock");
     }

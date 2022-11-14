@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconDatePicker extends IconBase {
+
     public IconDatePicker(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconDatePicker.super.a(context);
         setWidgetImage(2131165519);
         setWidgetName("DatePicker");
     }

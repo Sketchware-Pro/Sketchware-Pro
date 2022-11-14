@@ -13,11 +13,6 @@ public class IconTabLayout extends IconBase {
 
     public IconTabLayout(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconTabLayout.super.a(context);
         setWidgetImage(R.drawable.widget_tab_layout);
         setWidgetName("TabLayout");
     }

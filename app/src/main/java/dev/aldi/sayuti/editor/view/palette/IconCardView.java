@@ -13,11 +13,6 @@ public class IconCardView extends IconBase {
 
     public IconCardView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.widget_cardview);
         setWidgetName("CardView");
     }

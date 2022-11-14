@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconVideoView extends IconBase {
+
     public IconVideoView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconVideoView.super.a(context);
         setWidgetImage(2131166259);
         setWidgetName("VideoView");
     }

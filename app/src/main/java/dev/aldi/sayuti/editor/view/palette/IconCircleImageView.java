@@ -14,11 +14,6 @@ public class IconCircleImageView extends IconBase {
 
     public IconCircleImageView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.widget_circle_image);
         setWidgetName("CircleImageView");
     }

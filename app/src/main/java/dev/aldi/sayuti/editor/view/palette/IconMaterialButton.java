@@ -15,11 +15,6 @@ public class IconMaterialButton extends IconBase {
 
     public IconMaterialButton(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.widget_material_button);
         setWidgetName("MaterialButton");
     }

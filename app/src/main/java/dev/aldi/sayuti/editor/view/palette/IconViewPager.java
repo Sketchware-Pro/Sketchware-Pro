@@ -13,11 +13,6 @@ public class IconViewPager extends IconBase {
 
     public IconViewPager(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.widget_view_pager);
         setWidgetName("ViewPager");
     }

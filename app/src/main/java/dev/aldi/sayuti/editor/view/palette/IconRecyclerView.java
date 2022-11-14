@@ -13,11 +13,6 @@ public class IconRecyclerView extends IconBase {
 
     public IconRecyclerView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.grid_3_48);
         setWidgetName("RecyclerView");
     }

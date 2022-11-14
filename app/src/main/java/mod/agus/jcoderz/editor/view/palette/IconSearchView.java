@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconSearchView extends IconBase {
+
     public IconSearchView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconSearchView.super.a(context);
         setWidgetImage(2131165849);
         setWidgetName("SearchView");
     }

@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconGridView extends IconBase {
+
     public IconGridView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconGridView.super.a(context);
         setWidgetImage(2131165662);
         setWidgetName("GridView");
     }

@@ -13,11 +13,6 @@ public class IconGoogleSignInButton extends IconBase {
 
     public IconGoogleSignInButton(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.google_48);
         setWidgetName("SignInButton");
     }

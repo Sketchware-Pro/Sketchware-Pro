@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconRatingBar extends IconBase {
+
     public IconRatingBar(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconRatingBar.super.a(context);
         setWidgetImage(2131165475);
         setWidgetName("RatingBar");
     }

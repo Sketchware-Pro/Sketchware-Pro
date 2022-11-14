@@ -13,11 +13,6 @@ public class IconOTPView extends IconBase {
 
     public IconOTPView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.event_google_signin);
         setWidgetName("OTPView");
     }

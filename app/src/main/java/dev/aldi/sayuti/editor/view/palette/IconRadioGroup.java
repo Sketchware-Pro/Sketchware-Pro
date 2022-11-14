@@ -13,11 +13,6 @@ public class IconRadioGroup extends IconBase {
 
     public IconRadioGroup(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.widget_radiogroup);
         setWidgetName("RadioGroup");
     }

@@ -13,11 +13,6 @@ public class IconTextInputLayout extends IconBase {
 
     public IconTextInputLayout(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        super.a(context);
         setWidgetImage(R.drawable.widget_edit_text);
         setWidgetName("TextInputLayout");
     }

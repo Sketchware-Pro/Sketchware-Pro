@@ -7,13 +7,9 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 public class IconMultiAutoCompleteTextView extends IconBase {
+
     public IconMultiAutoCompleteTextView(Context context) {
         super(context);
-    }
-
-    @Override
-    public void a(Context context) {
-        IconMultiAutoCompleteTextView.super.a(context);
         setWidgetImage(2131166242);
         setWidgetName("MultiAutoCompleteTextView");
     }
