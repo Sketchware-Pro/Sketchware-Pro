@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -327,6 +326,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             if (!mB.a()) {
                 showProjectSortingDialog();
             }
+            //Refresh projects
+            n();
         }
         // ActionBarDrawerToggle#onOptionsItemSelected(MenuItem)
         if (drawerToggle.a(item)) {
