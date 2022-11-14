@@ -293,6 +293,19 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         RadioButton sortOrderAsc = root.findViewById(R.id.sortOrderAsc);
         RadioButton sortOrderDesc = root.findViewById(R.id.sortOrderDesc);
 
+        int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
+        if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
+            sortByName.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_BY_ID) == ProjectComparator.SORT_BY_ID) {
+            sortByID.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_ORDER_ASCENDING) == ProjectComparator.SORT_ORDER_ASCENDING) {
+            sortOrderAsc.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
+            sortOrderDesc.setChecked(true);
+        }
         dialog.setView(root);
         dialog.setPositiveButton("Save", view -> {
             int sortValue = ProjectComparator.DEFAULT;
