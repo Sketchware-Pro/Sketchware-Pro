@@ -273,7 +273,7 @@ public class jq {
         ArrayList<AdTestDeviceBean> testDevices;
         if (!(projectLibraryBean == null || (testDevices = projectLibraryBean.testDevices) == null || testDevices.size() <= 0)) {
             for (AdTestDeviceBean adTestDeviceBean : projectLibraryBean.testDevices) {
-                this.t.add(adTestDeviceBean.deviceId);
+                t.add(adTestDeviceBean.deviceId);
             }
         }
         String reserved1;
@@ -282,7 +282,7 @@ public class jq {
         }
         String reserved2;
         if (projectLibraryBean != null && (reserved2 = projectLibraryBean.reserved2) != null && !reserved2.isEmpty()) {
-            this.interstitialAdUnitId = reserved2.substring(reserved2.lastIndexOf(" : ") + 3);
+            interstitialAdUnitId = reserved2.substring(reserved2.lastIndexOf(" : ") + 3);
         }
         String reserved3;
         if (projectLibraryBean != null && (reserved3 = projectLibraryBean.reserved3) != null && !reserved3.isEmpty()) {
@@ -314,7 +314,7 @@ public class jq {
         }
 
         public boolean b(int i) {
-            return (this.c & i) == i;
+            return (c & i) == i;
         }
 
         /**
