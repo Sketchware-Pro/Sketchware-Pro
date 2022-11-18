@@ -5,7 +5,6 @@ import static com.besome.sketch.SketchApplication.getContext;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,7 +19,6 @@ import android.view.View;
 import androidx.annotation.StringRes;
 
 import com.google.gson.reflect.TypeToken;
-import com.sketchware.remod.R;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.xB;
-import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class Helper {
@@ -77,20 +74,6 @@ public class Helper {
 
     public static DialogDismissListener getDialogDismissListener(final Dialog dialog) {
         return new DialogDismissListener(dialog);
-    }
-
-    /**
-     * @return A {@link DialogInterface.OnDismissListener} that hides the keyboard
-     */
-    public static DialogDismissListener getDialogOnDismissKeyboardHider() {
-        return new DialogDismissListener();
-    }
-
-    /**
-     * @return A {@link DialogInterface.OnCancelListener} that hides the keyboard
-     */
-    public static DialogDismissListener getDialogOnCancelKeyboardHider() {
-        return new DialogDismissListener();
     }
 
     public static void applyRipple(Context context, View view) {
@@ -171,12 +154,9 @@ public class Helper {
     /**
      * A listener class for dismissing {@link Dialog}s.
      */
-    public static class DialogDismissListener implements View.OnClickListener,
-            DialogInterface.OnDismissListener, DialogInterface.OnCancelListener {
+    public static class DialogDismissListener implements View.OnClickListener {
 
-        private Dialog dialog;
-        private boolean hideKeyboard = false;
-        private View hideKeyboardView;
+        private final Dialog dialog;
 
         /**
          * Constructor for {@link Helper#getDialogDismissListener(Dialog)}.
@@ -185,58 +165,9 @@ public class Helper {
             this.dialog = dialog;
         }
 
-        /**
-         * Constructor for {@link Helper#getDialogOnDismissKeyboardHider()}
-         * or {@link Helper#getDialogOnCancelKeyboardHider()
-         */
-        private DialogDismissListener() {
-        }
-
         @Override
         public void onClick(View v) {
-            Log.d("Helper", "onClick!");
             dialog.dismiss();
-
-            hideKeyboard();
-        }
-
-        /**
-         * Makes the {@link View.OnClickListener} also hide the keyboard when clicked.
-         *
-         * @param hide        Whether the keyboard should be hidden or not
-         * @param visibleView A {@link View} which should be visible and "connected"
-         *                    to the currently focused View.
-         *                    Can be <code>null</code> if <code>hide</code> is <code>false</code>.
-         *                    If <code>null</code>, the listener will call {@link SketchwareUtil#hideKeyboard()}
-         *                    instead of {@link SketchwareUtil#hideKeyboard(View)}
-         * @return The current {@link DialogDismissListener} object
-         */
-        public DialogDismissListener setHideKeyboard(boolean hide, View visibleView) {
-            hideKeyboard = hide;
-            hideKeyboardView = visibleView;
-            return this;
-        }
-
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-            Log.d("Helper", "onDismiss!");
-            hideKeyboard();
-        }
-
-        @Override
-        public void onCancel(DialogInterface dialog) {
-            Log.d("Helper", "onCancel!");
-            hideKeyboard();
-        }
-
-        private void hideKeyboard() {
-            if (hideKeyboard) {
-                if (hideKeyboardView == null) {
-                    SketchwareUtil.hideKeyboard();
-                } else {
-                    SketchwareUtil.hideKeyboard(hideKeyboardView);
-                }
-            }
         }
     }
 }
