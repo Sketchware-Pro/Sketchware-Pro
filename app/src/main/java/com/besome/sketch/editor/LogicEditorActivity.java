@@ -294,19 +294,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void G() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_add_new_list));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_editor_title_add_new_list));
         aBVar.a(R.drawable.add_96_blue);
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
         EditText editText = a2.findViewById(R.id.ed_input);
-        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.logic_editor_hint_enter_variable_name));
-        ((TextView) a2.findViewById(R.id.rb_int)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_number));
-        ((TextView) a2.findViewById(R.id.rb_string)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_string));
-        ((TextView) a2.findViewById(R.id.rb_map)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_map));
-        ZB zb = new ZB(e, a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
+        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(xB.b().a(getContext(), R.string.logic_editor_hint_enter_variable_name));
+        ((TextView) a2.findViewById(R.id.rb_int)).setText(xB.b().a(getContext(), R.string.logic_variable_type_number));
+        ((TextView) a2.findViewById(R.id.rb_string)).setText(xB.b().a(getContext(), R.string.logic_variable_type_string));
+        ((TextView) a2.findViewById(R.id.rb_map)).setText(xB.b().a(getContext(), R.string.logic_variable_type_map));
+        ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_add), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
             if (zb.b()) {
                 int i = 1;
                 int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -319,12 +319,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
 
                 a(i, editText.getText().toString());
-                mB.a(getApplicationContext(), editText);
+                mB.a(getContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
         aBVar.show();
@@ -332,21 +332,21 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private void showAddNewVariableDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_add_new_variable));
+        dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_add_new_variable));
         dialog.a(R.drawable.add_96_blue);
 
         View customView = wB.a(this, R.layout.logic_popup_add_variable);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
         EditText editText = customView.findViewById(R.id.ed_input);
-        ((TextInputLayout) customView.findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.logic_editor_hint_enter_variable_name));
+        ((TextInputLayout) customView.findViewById(R.id.ti_input)).setHint(xB.b().a(getContext(), R.string.logic_editor_hint_enter_variable_name));
         editText.setPrivateImeOptions("defaultInputmode=english;");
-        ((TextView) customView.findViewById(R.id.rb_boolean)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_boolean));
-        ((TextView) customView.findViewById(R.id.rb_int)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_number));
-        ((TextView) customView.findViewById(R.id.rb_string)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_string));
-        ((TextView) customView.findViewById(R.id.rb_map)).setText(xB.b().a(getApplicationContext(), R.string.logic_variable_type_map));
-        ZB nameValidator = new ZB(getApplicationContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
+        ((TextView) customView.findViewById(R.id.rb_boolean)).setText(xB.b().a(getContext(), R.string.logic_variable_type_boolean));
+        ((TextView) customView.findViewById(R.id.rb_int)).setText(xB.b().a(getContext(), R.string.logic_variable_type_number));
+        ((TextView) customView.findViewById(R.id.rb_string)).setText(xB.b().a(getContext(), R.string.logic_variable_type_string));
+        ((TextView) customView.findViewById(R.id.rb_map)).setText(xB.b().a(getContext(), R.string.logic_variable_type_map));
+        ZB nameValidator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         dialog.a(customView);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_add), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
             int variableType = 1;
             if (radioGroup.getCheckedRadioButtonId() == R.id.rb_boolean) {
                 variableType = 0;
@@ -360,12 +360,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             if (nameValidator.b()) {
                 b(variableType, editText.getText().toString());
-                mB.a(getApplicationContext(), editText);
+                mB.a(getContext(), editText);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             dialog.dismiss();
         });
         dialog.show();
@@ -378,7 +378,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void J() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_remove_list));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_editor_title_remove_list));
         aBVar.a(R.drawable.delete_96);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
@@ -386,7 +386,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e(list.second));
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_remove), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_remove), v -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -397,20 +397,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             l(radioButton.getText().toString());
                         }
                     }
-                    Toast.makeText(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.logic_editor_message_currently_used_list), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), xB.b().a(getContext(), R.string.logic_editor_message_currently_used_list), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 i++;
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
     public final void K() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_remove_variable));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_editor_title_remove_variable));
         aBVar.a(R.drawable.delete_96);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
@@ -420,7 +420,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e);
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_remove), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_remove), v -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -431,14 +431,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             m(radioButton.getText().toString());
                         }
                     }
-                    Toast.makeText(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.logic_editor_message_currently_used_variable), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), xB.b().a(getContext(), R.string.logic_editor_message_currently_used_variable), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 i++;
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -548,10 +548,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         imageView.setLayoutParams(new LinearLayout.LayoutParams(i, i));
         if (!"NONE".equals(str)) {
             if (z) {
-                imageView.setImageResource(getResources().getIdentifier(str, "drawable", getApplicationContext().getPackageName()));
+                imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.a(e, getApplicationContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
+                    fromFile = FileProvider.a(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
                 } else {
                     fromFile = Uri.fromFile(new File(jC.d(B).f(str)));
                 }
@@ -711,7 +711,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             int var6;
             if (str.equals("property_image")) {
                 var4 = xB.b();
-                var5 = getApplicationContext();
+                var5 = getContext();
                 var6 = R.string.logic_editor_title_select_image;
             } else {
                 if (!str.equals("property_background_resource")) {
@@ -719,7 +719,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
 
                 var4 = xB.b();
-                var5 = getApplicationContext();
+                var5 = getContext();
                 var6 = R.string.logic_editor_title_select_image_background;
             }
 
@@ -762,7 +762,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
 
         var3.a(var12);
-        var3.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        var3.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             int childCount = var7.getChildCount();
             int i = 0;
             while (true) {
@@ -778,13 +778,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             var3.dismiss();
         });
-        var3.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(var3));
+        var3.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(var3));
         var3.show();
     }
 
     public void a(Ss ss, boolean z) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value));
+        aBVar.b(xB.b().a(getContext(), z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value));
         aBVar.a(R.drawable.rename_96_blue);
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -798,7 +798,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             String text = editText.getText().toString();
             emptyStringSetter:
             {
@@ -822,11 +822,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
 
             a(ss, (Object) text);
-            mB.a(getApplicationContext(), editText);
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
         aBVar.show();
@@ -1180,7 +1180,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         eC a2 = jC.a(B);
         String javaName = M.getJavaName();
         a2.a(javaName, substring + "_moreBlock", moreBlockCollectionBean.blocks);
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
+        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
         a(8, 0xff8a55d7);
     }
 
@@ -1303,10 +1303,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void b(MoreBlockCollectionBean moreBlockCollectionBean) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_more_block_title_change_block_name));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
         aBVar.a(R.drawable.more_block_96dp);
         View a2 = wB.a(getBaseContext(), R.layout.property_popup_save_to_favorite);
-        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getApplicationContext(), R.string.logic_more_block_desc_change_block_name));
+        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
         EditText editText = a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
@@ -1314,18 +1314,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         ZB zb = new ZB(getBaseContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (zb.b()) {
                 String spec = moreBlockCollectionBean.spec;
                 String substring = spec.contains(" ") ? spec.substring(spec.indexOf(" ")) : "";
                 moreBlockCollectionBean.spec = editText.getText().toString() + substring;
                 d(moreBlockCollectionBean);
-                mB.a(getApplicationContext(), editText);
+                mB.a(getContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
         aBVar.show();
@@ -1391,10 +1391,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void c(Rs rs) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_block_favorites_save_title));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_block_favorites_save_title));
         aBVar.a(R.drawable.ic_bookmark_red_48dp);
         View a2 = wB.a(this, R.layout.property_popup_save_to_favorite);
-        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getApplicationContext(), R.string.logic_block_favorites_save_guide));
+        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_block_favorites_save_guide));
         EditText editText = a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
@@ -1402,15 +1402,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(this, a2.findViewById(R.id.ti_input), Mp.h().g());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (nb.b()) {
                 a(editText.getText().toString(), rs);
-                mB.a(getApplicationContext(), editText);
+                mB.a(getContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
         aBVar.show();
@@ -1418,7 +1418,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void c(Ss ss) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_enter_string_value));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_editor_title_enter_string_value));
         aBVar.a(R.drawable.rename_96_blue);
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(xB.b().a(this, R.string.property_hint_enter_value));
@@ -1428,13 +1428,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             a(ss, (Object) editText.getText().toString());
-            mB.a(getApplicationContext(), editText);
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
         aBVar.show();
@@ -1547,7 +1547,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void d(Ss ss) {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_font));
+        dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_font));
         dialog.a(R.drawable.abc_96_color);
 
         View customView = wB.a(this, R.layout.property_popup_selector_color);
@@ -1569,7 +1569,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
 
         dialog.a(customView);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -1579,7 +1579,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -1659,8 +1659,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText(str);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.topMargin = (int) wB.a(getApplicationContext(), 4.0f);
-        layoutParams.bottomMargin = (int) wB.a(getApplicationContext(), 4.0f);
+        layoutParams.topMargin = (int) wB.a(getContext(), 4.0f);
+        layoutParams.bottomMargin = (int) wB.a(getContext(), 4.0f);
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
@@ -1668,22 +1668,22 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void e(Ss ss) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_enter_data_value));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_editor_title_enter_data_value));
         aBVar.a(R.drawable.rename_96_blue);
         View a2 = wB.a(this, R.layout.property_popup_input_intent_data);
-        ((TextView) a2.findViewById(R.id.tv_desc_intent_usage)).setText(xB.b().a(getApplicationContext(), R.string.property_description_component_intent_usage));
+        ((TextView) a2.findViewById(R.id.tv_desc_intent_usage)).setText(xB.b().a(getContext(), R.string.property_description_component_intent_usage));
         EditText editText = a2.findViewById(R.id.ed_input);
         ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(xB.b().a(this, R.string.property_hint_enter_value));
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             a(ss, (Object) editText.getText().toString());
-            mB.a(getApplicationContext(), editText);
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> {
+            mB.a(getContext(), editText);
             aBVar.dismiss();
         });
         aBVar.show();
@@ -1727,7 +1727,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 i2 = i3 - ((int) wB.a(this, 320.0f));
                 a2 = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
-                a2 = ((i3 - GB.a(e)) - GB.f(e)) - ((int) wB.a(this, 240.0f));
+                a2 = ((i3 - GB.a(getContext())) - GB.f(getContext())) - ((int) wB.a(this, 240.0f));
             }
             layoutParams = new LinearLayout.LayoutParams(i2, a2);
         } else {
@@ -1746,7 +1746,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (D.equals("onBindCustomView") && (str = jC.a(B).c(M.getXmlName(), C).customView) != null) {
             xmlName = ProjectFileBean.getXmlName(str);
         }
-        asdAll.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_view));
+        asdAll.b(xB.b().a(getContext(), R.string.logic_editor_title_select_view));
         for (Pair<Integer, String> next : jC.a(B).d(xmlName, ss.getClassInfo().a())) {
             viewGroup.addView(d(ViewBean.getViewTypeName(next.first), next.second));
         }
@@ -1765,7 +1765,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         asdAll.a(a2);
         asdAll.carry(this, ss, viewGroup);
-        asdAll.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
+        asdAll.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             int childCount2 = viewGroup.getChildCount();
             int j = 0;
             while (true) {
@@ -1781,16 +1781,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             asdAll.dismiss();
         });
-        asdAll.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(asdAll));
+        asdAll.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(asdAll));
         asdAll.show();
     }
 
     public final void f(MoreBlockCollectionBean moreBlockCollectionBean) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_more_block_title_add_variable_resource));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_add_variable_resource));
         aBVar.a(R.drawable.break_warning_96_red);
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.logic_more_block_desc_add_variable_resource));
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_continue), v -> {
+        aBVar.a(xB.b().a(getContext(), R.string.logic_more_block_desc_add_variable_resource));
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_continue), v -> {
             for (Pair<Integer, String> integerStringPair : ja) {
                 jC.a(B).c(M.getJavaName(), integerStringPair.first, integerStringPair.second);
             }
@@ -1809,7 +1809,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(moreBlockCollectionBean);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1836,6 +1836,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         super.finish();
     }
 
+    private Context getContext() {
+        return getApplicationContext();
+    }
+
     public final void g(int i) {
         RelativeLayout.LayoutParams layoutParams;
         int i2;
@@ -1849,7 +1853,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.topMargin = GB.a(e);
+            layoutParams.topMargin = GB.a(getContext());
             i2 = LinearLayout.HORIZONTAL;
         } else {
             K.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) wB.a(this, 240.0f)));
@@ -1935,7 +1939,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void h(Ss ss) {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_sound));
+        dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_sound));
         dialog.a(R.drawable.music_48);
 
         View customView = wB.a(this, R.layout.property_popup_selector_single);
@@ -1962,12 +1966,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             sound.setOnClickListener(v -> soundPool.load(jC.d(B).i(sound.getText().toString()), 1));
         }
         dialog.a(customView);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             RadioButton checkedRadioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
             a(ss, (Object) checkedRadioButton.getText().toString());
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -2001,7 +2005,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void i(Ss ss) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_editor_title_select_typeface));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_editor_title_select_typeface));
         aBVar.a(R.drawable.abc_96_color);
         View a3 = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = a3.findViewById(R.id.rg_content);
@@ -2013,7 +2017,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             int childCount = radioGroup.getChildCount();
             int i = 0;
             while (true) {
@@ -2029,7 +2033,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -2165,20 +2169,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void n(String str) {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.logic_block_favorites_delete_title));
+        aBVar.b(xB.b().a(getContext(), R.string.logic_block_favorites_delete_title));
         aBVar.a(R.drawable.high_priority_96_red);
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.logic_block_favorites_delete_message));
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_delete), v -> {
+        aBVar.a(xB.b().a(getContext(), R.string.logic_block_favorites_delete_message));
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             Mp.h().a(str, true);
             O.a(str);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
     public void o(String str) {
-        Intent intent = new Intent(getApplicationContext(), ShowBlockCollectionActivity.class);
+        Intent intent = new Intent(getContext(), ShowBlockCollectionActivity.class);
         intent.putExtra("block_name", str);
         startActivity(intent);
     }
@@ -2240,13 +2244,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 } else if (tag.equals("listRemove")) {
                     J();
                 } else if (tag.equals("blockAdd")) {
-                    Intent intent = new Intent(getApplicationContext(), MakeBlockActivity.class);
+                    Intent intent = new Intent(getContext(), MakeBlockActivity.class);
                     intent.putExtra("sc_id", B);
                     intent.putExtra("project_file", M);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivityForResult(intent, 222);
                 } else if (tag.equals("componentAdd")) {
-                    Intent intent = new Intent(getApplicationContext(), ComponentAddActivity.class);
+                    Intent intent = new Intent(getContext(), ComponentAddActivity.class);
                     intent.putExtra("sc_id", B);
                     intent.putExtra("project_file", M);
                     intent.putExtra("filename", M.getJavaName());
@@ -2293,7 +2297,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             parcelable = bundle.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
-        H = new DB(e, "P1");
+        H = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
         k = findViewById(R.id.toolbar);
         a(k);
@@ -2306,8 +2310,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         });
         k.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
-        G = new DB(e, "P12").a("P12I0", true);
-        A = ViewConfiguration.get(e).getScaledTouchSlop();
+        G = new DB(getContext(), "P12").a("P12I0", true);
+        A = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         String stringExtra = getIntent().getStringExtra("event_text");
         if (C.equals("onCreate")) {
@@ -2385,11 +2389,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         String title;
         if (D.equals("moreBlock")) {
-            title = xB.b().a(getApplicationContext(), R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(B).b(M.getJavaName(), C));
+            title = xB.b().a(getContext(), R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(B).b(M.getJavaName(), C));
         } else if (C.equals("_fab")) {
-            title = xB.b().a(getApplicationContext(), "fab", D);
+            title = xB.b().a(getContext(), "fab", D);
         } else {
-            title = xB.b().a(getApplicationContext(), C, D);
+            title = xB.b().a(getContext(), C, D);
         }
         E = title;
 
@@ -2404,11 +2408,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 {
                     Rs block;
                     if (specBit.charAt(1) == 'b') {
-                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "b", "getArg");
+                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "b", "getArg");
                     } else if (specBit.charAt(1) == 'd') {
-                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "d", "getArg");
+                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "d", "getArg");
                     } else if (specBit.charAt(1) == 's') {
-                        block = new Rs(super.e, blockId + 1, specBit.substring(3), "s", "getArg");
+                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "s", "getArg");
                     } else {
                         if (specBit.charAt(1) != 'm') {
                             break label44;
@@ -2416,7 +2420,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
                         String selector = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
                         String type = kq.a(selector);
-                        block = new Rs(super.e, blockId + 1, specBit.substring(specBit.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
+                        block = new Rs(getContext(), blockId + 1, specBit.substring(specBit.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
                     }
 
                     block.setBlockType(1);
@@ -2683,7 +2687,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 int[] nLocationOnScreen = new int[2];
                 n.getLocationOnScreen(nLocationOnScreen);
                 int width = nLocationOnScreen[0] + (n.getWidth() / 2);
-                int a2 = nLocationOnScreen[1] + ((int) wB.a(getApplicationContext(), 4.0f));
+                int a2 = nLocationOnScreen[1] + ((int) wB.a(getContext(), 4.0f));
                 ArrayList<BlockBean> a3 = a(arrayList2, width, a2, true);
                 int[] oLocationOnScreen = new int[2];
                 o.getLocationOnScreen(oLocationOnScreen);
@@ -2920,7 +2924,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         @Override
         public void a(String str) {
-            Toast.makeText(a, xB.b().a(activity.get().getApplicationContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(a, xB.b().a(activity.get().getContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
             activity.get().h();
         }
 
