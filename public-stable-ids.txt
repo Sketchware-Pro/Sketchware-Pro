@@ -3429,6 +3429,7 @@ com.sketchware.remod:id/ti_variable_name = 0x7f080459
 com.sketchware.remod:id/ticket_no = 0x7f08045a
 com.sketchware.remod:id/time = 0x7f08045b
 com.sketchware.remod:id/timeout_bar = 0x7f08045c
+com.sketchware.remod:id/title = 0x7f08045d
 com.sketchware.remod:id/titleDividerNoCustom = 0x7f08045e
 com.sketchware.remod:id/title_apk_path = 0x7f08045f
 com.sketchware.remod:id/title_apk_url = 0x7f080460

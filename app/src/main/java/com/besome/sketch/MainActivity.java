@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -22,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,13 +42,16 @@ import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.gg;
 import a.a.a.l;
+import a.a.a.mB;
 import a.a.a.nd;
 import a.a.a.oB;
 import a.a.a.sB;
+import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -62,6 +69,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     private MainDrawer drawer;
     private ViewPager viewPager;
     private DB u;
+    private DB preference;
     private CoordinatorLayout coordinator;
     private Snackbar storageAccessDenied;
     private GC projectsFragment = null;
@@ -170,6 +178,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
 
+        preference = new DB(getApplicationContext(), "project");
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
         long u1I1 = u.e("U1I1");
@@ -275,8 +284,64 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         xB.b().a();
     }
 
+    private void showProjectSortingDialog() {
+        SketchDialog dialog = new SketchDialog(this);
+        dialog.setTitle("Sort Project");
+        View root = wB.a(this, R.layout.sort_project_dialog);
+        RadioButton sortByName = root.findViewById(R.id.sortByName);
+        RadioButton sortByID = root.findViewById(R.id.sortByID);
+        RadioButton sortOrderAsc = root.findViewById(R.id.sortOrderAsc);
+        RadioButton sortOrderDesc = root.findViewById(R.id.sortOrderDesc);
+
+        int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
+        if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
+            sortByName.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_BY_ID) == ProjectComparator.SORT_BY_ID) {
+            sortByID.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_ORDER_ASCENDING) == ProjectComparator.SORT_ORDER_ASCENDING) {
+            sortOrderAsc.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
+            sortOrderDesc.setChecked(true);
+        }
+        dialog.setView(root);
+        dialog.setPositiveButton("Save", view -> {
+            int sortValue = ProjectComparator.DEFAULT;
+            if (sortByName.isChecked()) {
+                sortValue |= ProjectComparator.SORT_BY_NAME;
+            }
+            if (sortByID.isChecked()) {
+                sortValue |= ProjectComparator.SORT_BY_ID;
+            }
+            if (sortOrderAsc.isChecked()) {
+                sortValue |= ProjectComparator.SORT_ORDER_ASCENDING;
+            }
+            if (sortOrderDesc.isChecked()) {
+                sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
+            }
+            preference.a("sortBy", sortValue, true);
+        });
+        dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
+        dialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sortProject) {
+            if (!mB.a()) {
+                showProjectSortingDialog();
+            }
+            //Refresh projects
+            n();
+        }
         // ActionBarDrawerToggle#onOptionsItemSelected(MenuItem)
         if (drawerToggle.a(item)) {
             return true;

@@ -61,6 +61,7 @@ public class GC extends DA implements View.OnClickListener {
     private AnimatorSet expandAnimatorSet;
     private ProjectsAdapter projectsAdapter;
     private FloatingActionButton floatingActionButton;
+    private DB preference;
 
     private void toProjectSettingOrRequestPermission(int position) {
         if (super.c()) {
@@ -77,6 +78,7 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     private void initialize(ViewGroup parent) {
+        preference = new DB(getContext(), "project");
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
         swipeRefresh.setOnRefreshListener(() -> {
             if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
@@ -146,7 +148,7 @@ public class GC extends DA implements View.OnClickListener {
         projectsList = lC.a();
         if (projectsList.size() > 0) {
             //noinspection Java8ListSort
-            Collections.sort(projectsList, new ProjectComparator());
+            Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
         }
 
         myProjects.getAdapter().c();
