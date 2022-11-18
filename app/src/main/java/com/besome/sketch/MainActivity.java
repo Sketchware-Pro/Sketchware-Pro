@@ -322,6 +322,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
             }
             preference.a("sortBy", sortValue, true);
+            dialog.dismiss();
         });
         dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
         dialog.show();
