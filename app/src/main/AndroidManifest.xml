@@ -56,7 +56,7 @@
             android:name="com.besome.sketch.editor.LogicEditorActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="false"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.besome.sketch.editor.PropertyActivity"
             android:configChanges="orientation|screenSize" />

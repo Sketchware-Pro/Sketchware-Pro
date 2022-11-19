@@ -6,7 +6,6 @@ import com.besome.sketch.editor.LogicEditorActivity;
 
 import a.a.a.Ss;
 import io.github.rosemoe.sora.widget.CodeEditor;
-import mod.SketchwareUtil;
 
 public class AsdHandlerCodeEditor implements View.OnClickListener {
 
@@ -41,7 +40,6 @@ public class AsdHandlerCodeEditor implements View.OnClickListener {
             content = " " + content;
         }
         logicEditorActivity.a(ss, (Object) content);
-        SketchwareUtil.hideKeyboard(codeEditor);
         asdDialog.dismiss();
     }
 }

@@ -315,7 +315,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     }
 
     public void cancelLis(AsdDialog asdDialog) {
-        cancel.setOnClickListener(new AsdHandlerCodeEditorCancel(codeEditor, asdDialog));
+        cancel.setOnClickListener(Helper.getDialogDismissListener(asdDialog));
     }
 
     public void setCon(String str2) {

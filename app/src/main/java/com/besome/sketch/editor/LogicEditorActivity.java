@@ -319,14 +319,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
 
                 a(i, editText.getText().toString());
-                mB.a(getApplicationContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
-        });
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -360,14 +356,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             if (nameValidator.b()) {
                 b(variableType, editText.getText().toString());
-                mB.a(getApplicationContext(), editText);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            dialog.dismiss();
-        });
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -822,13 +814,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
 
             a(ss, (Object) text);
-            mB.a(getApplicationContext(), editText);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
-        });
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1320,14 +1308,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 String substring = spec.contains(" ") ? spec.substring(spec.indexOf(" ")) : "";
                 moreBlockCollectionBean.spec = editText.getText().toString() + substring;
                 d(moreBlockCollectionBean);
-                mB.a(getApplicationContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
-        });
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1405,14 +1389,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
             if (nb.b()) {
                 a(editText.getText().toString(), rs);
-                mB.a(getApplicationContext(), editText);
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
-        });
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1430,13 +1410,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(a2);
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
             a(ss, (Object) editText.getText().toString());
-            mB.a(getApplicationContext(), editText);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
-        });
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1679,13 +1655,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(a2);
         aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_save), v -> {
             a(ss, (Object) editText.getText().toString());
-            mB.a(getApplicationContext(), editText);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
-            mB.a(getApplicationContext(), editText);
-            aBVar.dismiss();
-        });
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

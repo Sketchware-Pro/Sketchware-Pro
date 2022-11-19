@@ -5,7 +5,6 @@ import android.view.View;
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import a.a.a.Ss;
-import mod.SketchwareUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 
 public class AsdOldHandlerCodeEditor implements View.OnClickListener {
@@ -42,7 +41,6 @@ public class AsdOldHandlerCodeEditor implements View.OnClickListener {
             editable = " " + editable;
         }
         logicEditorActivity.a(ss, (Object) editable);
-        SketchwareUtil.hideKeyboard(v);
         dialog.dismiss();
     }
 }
