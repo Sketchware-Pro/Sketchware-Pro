@@ -23,6 +23,7 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.moreblock.MoreblockValidator;
@@ -32,6 +33,7 @@ import mod.hey.studios.util.Helper;
 @SuppressLint("ViewConstructor")
 public class dt extends LinearLayout {
 
+    private static final Pattern CUSTOM_VARIABLE_PATTERN = Pattern.compile("[mldb]\\.[a-zA-Z]+");
     private final ArrayList<Pair<String, String>> variablesSpecAndNamePair = new ArrayList<>();
     private boolean customVariableInvalid = false;
     private Activity activity;
@@ -136,7 +138,7 @@ public class dt extends LinearLayout {
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
                 final String s = sequence.toString();
 
-                if (s.matches("[mldb]\\.[a-zA-Z]+")) {
+                if (CUSTOM_VARIABLE_PATTERN.matcher(s).matches()) {
                     customVariableInvalid = false;
                 } else {
                     customVariableInvalid = !s.equals("");
