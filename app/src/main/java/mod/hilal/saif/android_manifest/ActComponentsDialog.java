@@ -197,7 +197,6 @@ public class ActComponentsDialog extends Dialog {
                         activitiesComponents.get(i).put("value", codeEditor.getText());
                         FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
                                 .toJson(activitiesComponents));
-                        SketchwareUtil.hideKeyboard(editor);
                         SketchwareUtil.toast("Saved");
                         dismiss();
                         return;
@@ -217,13 +216,9 @@ public class ActComponentsDialog extends Dialog {
                 FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
                         .toJson(arrayList));
             }
-            SketchwareUtil.hideKeyboard(editor);
             dismiss();
         });
-        cancel.setOnClickListener(v -> {
-            SketchwareUtil.hideKeyboard(editor);
-            dismiss();
-        });
+        cancel.setOnClickListener(Helper.getDialogDismissListener(this));
     }
 
     private void setCodeEditorText() {

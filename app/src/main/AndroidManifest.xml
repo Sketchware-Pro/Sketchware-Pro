@@ -271,7 +271,8 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.hilal.saif.activities.android_manifest.AndroidManifestInjectionDetails"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="mod.hilal.saif.activities.tools.BlockSelectorActivity"
             android:configChanges="orientation|screenSize" />
