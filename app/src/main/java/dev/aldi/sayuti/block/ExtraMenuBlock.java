@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import a.a.a.Ss;
 import a.a.a.aB;
@@ -65,7 +66,7 @@ public class ExtraMenuBlock {
         }
     }
 
-    public final void b(JSONObject json, aB dialog, ArrayList<String> selectableItems, String sc_id) {
+    private void b(JSONObject json, aB dialog, ArrayList<String> selectableItems, String sc_id) {
         String menus = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/menu/");
         String layouts = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/layout/");
         String animations = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/anim/");
@@ -75,16 +76,12 @@ public class ExtraMenuBlock {
             switch (json.getString("id")) {
                 case "menu":
                     dialog.b("Select a menu");
-                    for (String menu : FileUtil.listFiles(menus, ".xml")) {
-                        selectableItems.add(Uri.parse(menu).getLastPathSegment().substring(0, Uri.parse(menu).getLastPathSegment().indexOf(".xml")));
-                    }
+                    listXmlFilenames(selectableItems, menus);
                     break;
 
                 case "layout":
                     dialog.b("Select a layout");
-                    for (String layout : FileUtil.listFiles(layouts, ".xml")) {
-                        selectableItems.add(Uri.parse(layout).getLastPathSegment().substring(0, Uri.parse(layout).getLastPathSegment().indexOf(".xml")));
-                    }
+                    listXmlFilenames(selectableItems, layouts);
                     for (String str4 : jC.b(sc_id).e()) {
                         selectableItems.add(str4.substring(0, str4.indexOf(".xml")));
                     }
@@ -92,32 +89,35 @@ public class ExtraMenuBlock {
 
                 case "anim":
                     dialog.b("Select an animation");
-                    for (String animation : FileUtil.listFiles(animations, ".xml")) {
-                        selectableItems.add(Uri.parse(animation).getLastPathSegment().substring(0, Uri.parse(animation).getLastPathSegment().indexOf(".xml")));
-                    }
+                    listXmlFilenames(selectableItems, animations);
                     break;
 
                 case "drawable":
                     dialog.b("Select a drawable");
-                    for (String drawable : FileUtil.listFiles(drawables, ".xml")) {
-                        selectableItems.add(Uri.parse(drawable).getLastPathSegment().substring(0, Uri.parse(drawable).getLastPathSegment().indexOf(".xml")));
-                    }
+                    listXmlFilenames(selectableItems, drawables);
                     break;
 
                 case "image":
                     dialog.b("Select an image");
                     for (String drawable_xhdpi : FileUtil.listFiles(drawables_xhdpi, "")) {
                         if (drawable_xhdpi.contains(".png") || drawable_xhdpi.contains(".jpg")) {
-                            if (drawable_xhdpi.contains(".png")) {
-                                selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".png")));
-                            } else {
-                                selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".jpg")));
-                            }
+                            addFilenameToCollection(selectableItems, drawable_xhdpi, drawable_xhdpi.contains(".png") ? ".png" : ".jpg");
                         }
                     }
                     break;
             }
         } catch (JSONException ignored) {
         }
+    }
+
+    private void listXmlFilenames(Collection<String> target, String filePath) {
+        for (String file : FileUtil.listFiles(filePath, ".xml")) {
+            addFilenameToCollection(target, file, ".xml");
+        }
+    }
+
+    private void addFilenameToCollection(Collection<String> target, String filePath, String filenameExtensionToCutOff) {
+        String lastPathSegment = Uri.parse(filePath).getLastPathSegment();
+        target.add(lastPathSegment.substring(0, lastPathSegment.indexOf(filenameExtensionToCutOff)));
     }
 }
