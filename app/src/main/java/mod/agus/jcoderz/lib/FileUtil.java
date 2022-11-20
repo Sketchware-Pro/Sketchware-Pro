@@ -340,7 +340,7 @@ public class FileUtil {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
+                final String[] selectionArgs = {
                         split[1]
                 };
 

@@ -440,7 +440,7 @@ public class LibraryDownloader {
                                 if (use_d8 || JarCheck.checkJar(libName.concat("/classes.jar"), 44, 51)) {
                                     message.setText("Download completed.");
 
-                                    String[] test = new String[]{libName.concat("/classes.jar")};
+                                    String[] test = {libName.concat("/classes.jar")};
                                     new BackTask().execute(test);
                                     FileUtil.deleteFile(path2.toString());
 

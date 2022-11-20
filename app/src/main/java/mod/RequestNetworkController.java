@@ -56,7 +56,7 @@ public class RequestNetworkController {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
             try {
-                final TrustManager[] trustAllCerts = new TrustManager[]{
+                final TrustManager[] trustAllCerts = {
                         new X509TrustManager() {
                             @Override
                             public void checkClientTrusted(X509Certificate[] chain, String authType)

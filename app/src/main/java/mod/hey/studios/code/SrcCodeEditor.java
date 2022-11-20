@@ -350,7 +350,7 @@ public class SrcCodeEditor extends AppCompatActivity {
                 break;
 
             case "Switch theme":
-                String[] themes = new String[]{"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
+                String[] themes = {"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
                 new AlertDialog.Builder(SrcCodeEditor.this)
                         .setTitle("Switch theme")
                         .setSingleChoiceItems(themes, -1,

@@ -102,7 +102,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         break;
 
                     case "Switch theme":
-                        String[] themeItems = new String[]{
+                        String[] themeItems = {
                                 "Default",
                                 "GitHub",
                                 "Eclipse",
