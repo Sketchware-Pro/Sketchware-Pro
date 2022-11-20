@@ -419,7 +419,7 @@ public class BuiltInLibraries {
             this.name = name;
             this.dependencyNames = dependencyNames;
             this.packageName = packageName;
-            this.hasResources = packageName != null;
+            hasResources = packageName != null;
         }
 
         /**

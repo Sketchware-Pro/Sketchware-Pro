@@ -7,7 +7,7 @@ public class WidgetCollectionBean extends SelectableBean {
     public ArrayList<ViewBean> widgets;
 
     public WidgetCollectionBean(String str, ArrayList<ViewBean> arrayList) {
-        this.name = str;
-        this.widgets = arrayList;
+        name = str;
+        widgets = arrayList;
     }
 }

@@ -59,7 +59,7 @@ public class ProjectSettings {
     private HashMap<String, String> hashmap;
 
     public ProjectSettings(String s) {
-        this.sc_id = s;
+        sc_id = s;
 
         path = getPath();
 

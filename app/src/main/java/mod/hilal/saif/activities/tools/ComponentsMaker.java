@@ -70,7 +70,7 @@ public class ComponentsMaker extends Activity {
         FloatingActionButton fab = findViewById(R.id.add_attr_fab);
         fab.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), ComponentsMakerCreator.class)));
-        this.listView = findViewById(R.id.add_attr_listview);
+        listView = findViewById(R.id.add_attr_listview);
         refreshList();
     }
 
@@ -132,8 +132,8 @@ public class ComponentsMaker extends Activity {
     }
 
     private void _importComponents(ArrayList<HashMap<String, Object>> arrayList) {
-        this.listMap.addAll(arrayList);
-        FileUtil.writeFile(COMPONENTS_FILE_PATH, new Gson().toJson(this.listMap));
+        listMap.addAll(arrayList);
+        FileUtil.writeFile(COMPONENTS_FILE_PATH, new Gson().toJson(listMap));
         refreshList();
         SketchwareUtil.toast("Successfully imported components");
     }
@@ -141,7 +141,7 @@ public class ComponentsMaker extends Activity {
     private void exportComponent(int position) {
         String fileName = listMap.get(position).get("name").toString() + ".json";
         ArrayList<HashMap<String, Object>> componentList = new ArrayList<>();
-        componentList.add(this.listMap.get(position));
+        componentList.add(listMap.get(position));
         FileUtil.writeFile(new File(COMPONENT_EXPORT_PATH, fileName).getAbsolutePath(), new Gson().toJson(componentList));
         SketchwareUtil.toast("Successfully exported component to:\n/Internal storage/" + PATH_COMPONENT_EXPORT + fileName, Toast.LENGTH_LONG);
     }
@@ -187,17 +187,17 @@ public class ComponentsMaker extends Activity {
         private final ArrayList<HashMap<String, Object>> _data;
 
         public ListAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            this._data = arrayList;
+            _data = arrayList;
         }
 
         @Override
         public int getCount() {
-            return this._data.size();
+            return _data.size();
         }
 
         @Override
         public HashMap<String, Object> getItem(int i) {
-            return this._data.get(i);
+            return _data.get(i);
         }
 
         @Override

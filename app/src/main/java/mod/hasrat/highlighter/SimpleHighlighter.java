@@ -22,8 +22,8 @@ public class SimpleHighlighter {
     private final List<SyntaxScheme> syntaxList;
 
     public SimpleHighlighter(EditText editor) {
-        this.mEditor = editor;
-        this.syntaxList = SyntaxScheme.JAVA();
+        mEditor = editor;
+        syntaxList = SyntaxScheme.JAVA();
         init();
     }
 

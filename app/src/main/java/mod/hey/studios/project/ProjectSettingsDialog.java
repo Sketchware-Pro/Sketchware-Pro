@@ -25,7 +25,7 @@ public class ProjectSettingsDialog {
 
     public ProjectSettingsDialog(Activity activity, String sc_id) {
         this.activity = activity;
-        this.settings = new ProjectSettings(sc_id);
+        settings = new ProjectSettings(sc_id);
     }
 
     public void show() {

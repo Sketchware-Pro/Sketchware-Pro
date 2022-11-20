@@ -227,7 +227,7 @@ public class BackupRestoreManager {
             this.activityWeakReference = activityWeakReference;
             this.file = file;
             this.gc = gc;
-            this.restoreLocalLibs = restoreLocalLibraries;
+            restoreLocalLibs = restoreLocalLibraries;
         }
 
         @Override

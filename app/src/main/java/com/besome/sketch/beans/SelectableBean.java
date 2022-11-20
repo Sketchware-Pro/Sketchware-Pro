@@ -20,11 +20,11 @@ public class SelectableBean extends nA {
     }
 
     public SelectableBean(int savedPosition, boolean isnew) {
-        this.savedPos = -1;
-        this.isSelected = false;
-        this.isNew = false;
-        this.isSelected = false;
-        this.savedPos = savedPosition;
-        this.isNew = isnew;
+        savedPos = -1;
+        isSelected = false;
+        isNew = false;
+        isSelected = false;
+        savedPos = savedPosition;
+        isNew = isnew;
     }
 }

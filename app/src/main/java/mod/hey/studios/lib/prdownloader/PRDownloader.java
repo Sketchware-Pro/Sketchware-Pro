@@ -264,11 +264,11 @@ public class PRDownloader {
         private boolean databaseEnabled;
 
         private PRDownloaderConfig(Builder builder) {
-            this.readTimeout = builder.readTimeout;
-            this.connectTimeout = builder.connectTimeout;
-            this.userAgent = builder.userAgent;
-            this.httpClient = builder.httpClient;
-            this.databaseEnabled = builder.databaseEnabled;
+            readTimeout = builder.readTimeout;
+            connectTimeout = builder.connectTimeout;
+            userAgent = builder.userAgent;
+            httpClient = builder.httpClient;
+            databaseEnabled = builder.databaseEnabled;
         }
 
         public static Builder newBuilder() {
@@ -526,21 +526,21 @@ public class PRDownloader {
         private Status status;
 
         DownloadRequest(DownloadRequestBuilder builder) {
-            this.url = builder.url;
-            this.dirPath = builder.dirPath;
-            this.fileName = builder.fileName;
-            this.headerMap = builder.headerMap;
-            this.priority = builder.priority;
-            this.tag = builder.tag;
-            this.readTimeout =
+            url = builder.url;
+            dirPath = builder.dirPath;
+            fileName = builder.fileName;
+            headerMap = builder.headerMap;
+            priority = builder.priority;
+            tag = builder.tag;
+            readTimeout =
                     builder.readTimeout != 0 ?
                             builder.readTimeout :
                             getReadTimeoutFromConfig();
-            this.connectTimeout =
+            connectTimeout =
                     builder.connectTimeout != 0 ?
                             builder.connectTimeout :
                             getConnectTimeoutFromConfig();
-            this.userAgent = builder.userAgent;
+            userAgent = builder.userAgent;
         }
 
         public Priority getPriority() {
@@ -770,11 +770,11 @@ public class PRDownloader {
         }
 
         private void destroy() {
-            this.onProgressListener = null;
-            this.onDownloadListener = null;
-            this.onStartOrResumeListener = null;
-            this.onPauseListener = null;
-            this.onCancelListener = null;
+            onProgressListener = null;
+            onDownloadListener = null;
+            onStartOrResumeListener = null;
+            onPauseListener = null;
+            onCancelListener = null;
         }
 
         private int getReadTimeoutFromConfig() {
@@ -988,7 +988,7 @@ public class PRDownloader {
         private final ExecutorSupplier executorSupplier;
 
         private Core() {
-            this.executorSupplier = new DefaultExecutorSupplier();
+            executorSupplier = new DefaultExecutorSupplier();
         }
 
         public static Core getInstance() {
@@ -1127,8 +1127,8 @@ public class PRDownloader {
 
         DownloadRunnable(DownloadRequest request) {
             this.request = request;
-            this.priority = request.getPriority();
-            this.sequence = request.getSequenceNumber();
+            priority = request.getPriority();
+            sequence = request.getSequenceNumber();
         }
 
         @Override
@@ -1176,11 +1176,11 @@ public class PRDownloader {
         }
 
         public void init(Context context, PRDownloaderConfig config) {
-            this.readTimeout = config.getReadTimeout();
-            this.connectTimeout = config.getConnectTimeout();
-            this.userAgent = config.getUserAgent();
-            this.httpClient = config.getHttpClient();
-            this.dbHelper = config.isDatabaseEnabled() ? new AppDbHelper(context) : new NoOpsDbHelper();
+            readTimeout = config.getReadTimeout();
+            connectTimeout = config.getConnectTimeout();
+            userAgent = config.getUserAgent();
+            httpClient = config.getHttpClient();
+            dbHelper = config.isDatabaseEnabled() ? new AppDbHelper(context) : new NoOpsDbHelper();
             if (config.isDatabaseEnabled()) {
                 PRDownloader.cleanUp(30);
             }
@@ -1347,7 +1347,7 @@ public class PRDownloader {
                         file.createNewFile();
                     }
                 }
-                this.outputStream = FileDownloadRandomAccessFile.create(file);
+                outputStream = FileDownloadRandomAccessFile.create(file);
                 if (isResumeSupported && request.getDownloadedBytes() != 0) {
                     outputStream.seek(request.getDownloadedBytes());
                 }
@@ -1930,7 +1930,7 @@ public class PRDownloader {
 
         DownloadFutureTask(DownloadRunnable downloadRunnable) {
             super(downloadRunnable, null);
-            this.runnable = downloadRunnable;
+            runnable = downloadRunnable;
         }
 
         @Override

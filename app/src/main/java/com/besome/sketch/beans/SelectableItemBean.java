@@ -33,84 +33,84 @@ public class SelectableItemBean extends nA implements Parcelable {
     public int type;
 
     public SelectableItemBean() {
-        this.isSelected = false;
-        this.type = SRC_TYPE_NONE;
-        this.name = "";
-        this.desc = "";
-        this.isNew = false;
-        this.reserved1 = 0;
-        this.reserved2 = 0;
-        this.reserved3 = 0;
+        isSelected = false;
+        type = SRC_TYPE_NONE;
+        name = "";
+        desc = "";
+        isNew = false;
+        reserved1 = 0;
+        reserved2 = 0;
+        reserved3 = 0;
     }
 
     public SelectableItemBean(String name) {
-        this.isSelected = false;
-        this.type = SRC_TYPE_NONE;
+        isSelected = false;
+        type = SRC_TYPE_NONE;
         this.name = name;
-        this.desc = "";
-        this.isNew = false;
-        this.reserved1 = 0;
-        this.reserved2 = 0;
-        this.reserved3 = 0;
+        desc = "";
+        isNew = false;
+        reserved1 = 0;
+        reserved2 = 0;
+        reserved3 = 0;
     }
 
     public SelectableItemBean(int type, String name, int reserved1, int reserved2, int reserved3) {
-        this.isSelected = false;
+        isSelected = false;
         this.type = type;
         this.name = name;
-        this.desc = "";
-        this.isNew = false;
+        desc = "";
+        isNew = false;
         this.reserved1 = reserved1;
         this.reserved2 = reserved2;
         this.reserved3 = reserved3;
     }
 
     public SelectableItemBean(int type, String name) {
-        this.isSelected = false;
+        isSelected = false;
         this.type = type;
         this.name = name;
-        this.desc = "";
-        this.isNew = false;
-        this.reserved1 = 0;
-        this.reserved2 = 0;
-        this.reserved3 = 0;
+        desc = "";
+        isNew = false;
+        reserved1 = 0;
+        reserved2 = 0;
+        reserved3 = 0;
     }
 
     public SelectableItemBean(int type, String name, String desc) {
-        this.isSelected = false;
+        isSelected = false;
         this.type = type;
         this.name = name;
         this.desc = desc;
-        this.isNew = false;
-        this.reserved1 = 0;
-        this.reserved2 = 0;
-        this.reserved3 = 0;
+        isNew = false;
+        reserved1 = 0;
+        reserved2 = 0;
+        reserved3 = 0;
     }
 
     public SelectableItemBean(int type, String name, String desc, boolean isNew) {
-        this.isSelected = false;
+        isSelected = false;
         this.type = type;
         this.name = name;
         this.desc = desc;
         this.isNew = isNew;
-        this.reserved1 = 0;
-        this.reserved2 = 0;
-        this.reserved3 = 0;
+        reserved1 = 0;
+        reserved2 = 0;
+        reserved3 = 0;
     }
 
     public SelectableItemBean(int type, String name, String desc, boolean isNew, int reserved1) {
-        this.isSelected = false;
+        isSelected = false;
         this.type = type;
         this.name = name;
         this.desc = desc;
         this.isNew = isNew;
         this.reserved1 = reserved1;
-        this.reserved2 = 0;
-        this.reserved3 = 0;
+        reserved2 = 0;
+        reserved3 = 0;
     }
 
     public SelectableItemBean(int type, String name, String desc, boolean isNew, int reserved1, int reserved2, int reserved3) {
-        this.isSelected = false;
+        isSelected = false;
         this.type = type;
         this.name = name;
         this.desc = desc;
@@ -122,14 +122,14 @@ public class SelectableItemBean extends nA implements Parcelable {
 
     public SelectableItemBean(Parcel parcel) {
         boolean z = false;
-        this.isSelected = parcel.readInt() != 0;
-        this.type = parcel.readInt();
-        this.name = parcel.readString();
-        this.desc = parcel.readString();
-        this.isNew = parcel.readInt() != 0 || z;
-        this.reserved1 = parcel.readInt();
-        this.reserved2 = parcel.readInt();
-        this.reserved3 = parcel.readInt();
+        isSelected = parcel.readInt() != 0;
+        type = parcel.readInt();
+        name = parcel.readString();
+        desc = parcel.readString();
+        isNew = parcel.readInt() != 0 || z;
+        reserved1 = parcel.readInt();
+        reserved2 = parcel.readInt();
+        reserved3 = parcel.readInt();
     }
 
     public static Parcelable.Creator<SelectableItemBean> getCreator() {
@@ -137,14 +137,14 @@ public class SelectableItemBean extends nA implements Parcelable {
     }
 
     public void copy(SelectableItemBean selectableItemBean) {
-        this.isSelected = selectableItemBean.isSelected;
-        this.type = selectableItemBean.type;
-        this.name = selectableItemBean.name;
-        this.desc = selectableItemBean.desc;
-        this.isNew = selectableItemBean.isNew;
-        this.reserved1 = selectableItemBean.reserved1;
-        this.reserved2 = selectableItemBean.reserved2;
-        this.reserved3 = selectableItemBean.reserved3;
+        isSelected = selectableItemBean.isSelected;
+        type = selectableItemBean.type;
+        name = selectableItemBean.name;
+        desc = selectableItemBean.desc;
+        isNew = selectableItemBean.isNew;
+        reserved1 = selectableItemBean.reserved1;
+        reserved2 = selectableItemBean.reserved2;
+        reserved3 = selectableItemBean.reserved3;
     }
 
     @Override
@@ -157,13 +157,13 @@ public class SelectableItemBean extends nA implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.isSelected ? 1 : 0);
-        parcel.writeInt(this.type);
-        parcel.writeString(this.name);
-        parcel.writeString(this.desc);
-        parcel.writeInt(this.isNew ? 1 : 0);
-        parcel.writeInt(this.reserved1);
-        parcel.writeInt(this.reserved2);
-        parcel.writeInt(this.reserved3);
+        parcel.writeInt(isSelected ? 1 : 0);
+        parcel.writeInt(type);
+        parcel.writeString(name);
+        parcel.writeString(desc);
+        parcel.writeInt(isNew ? 1 : 0);
+        parcel.writeInt(reserved1);
+        parcel.writeInt(reserved2);
+        parcel.writeInt(reserved3);
     }
 }

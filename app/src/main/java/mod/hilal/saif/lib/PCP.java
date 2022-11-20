@@ -15,16 +15,16 @@ public class PCP implements Zx.b {
     public boolean ii = false;
 
     public PCP(BlocksManager blocksManager, EditText editText, Dialog alertDialog) {
-        this.a = blocksManager;
-        this.e = editText;
+        a = blocksManager;
+        e = editText;
         dialog = alertDialog;
     }
 
     public PCP(EditText editText) {
-        this.e = editText;
-        this.ii = true;
+        e = editText;
+        ii = true;
         dialog = null;
-        this.a = null;
+        a = null;
     }
 
     @Override

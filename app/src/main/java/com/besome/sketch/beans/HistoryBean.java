@@ -11,20 +11,20 @@ public class HistoryBean extends nA {
     public nA prevData;
 
     public HistoryBean(int i, nA nAVar, nA nAVar2) {
-        this.actionType = i;
-        this.prevData = nAVar;
-        this.currentData = nAVar2;
+        actionType = i;
+        prevData = nAVar;
+        currentData = nAVar2;
     }
 
     public int getActionType() {
-        return this.actionType;
+        return actionType;
     }
 
     public nA getCurrentData() {
-        return this.currentData;
+        return currentData;
     }
 
     public nA getPrevData() {
-        return this.prevData;
+        return prevData;
     }
 }

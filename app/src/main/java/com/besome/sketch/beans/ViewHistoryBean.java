@@ -17,93 +17,93 @@ public class ViewHistoryBean extends nA {
     public ArrayList<ViewBean> removedData;
 
     public void actionAdd(ArrayList<ViewBean> arrayList) {
-        this.actionType = 0;
-        this.addedData = new ArrayList<>();
+        actionType = 0;
+        addedData = new ArrayList<>();
         for (ViewBean bean : arrayList) {
             ViewBean viewBean = new ViewBean();
             viewBean.copy(bean);
-            this.addedData.add(viewBean);
+            addedData.add(viewBean);
         }
     }
 
     public void actionMove(ViewBean viewBean) {
-        this.actionType = 3;
-        this.moveData = new ViewBean();
-        this.moveData.copy(viewBean);
+        actionType = 3;
+        moveData = new ViewBean();
+        moveData.copy(viewBean);
     }
 
     public void actionRemove(ArrayList<ViewBean> arrayList) {
-        this.actionType = 2;
-        this.removedData = new ArrayList<>();
+        actionType = 2;
+        removedData = new ArrayList<>();
         for (ViewBean bean : arrayList) {
             ViewBean viewBean = new ViewBean();
             viewBean.copy(bean);
-            this.removedData.add(viewBean);
+            removedData.add(viewBean);
         }
     }
 
     public void actionUpdate(ViewBean viewBean, ViewBean viewBean2) {
-        this.actionType = 1;
-        this.prevUpdateData = new ViewBean();
-        this.prevUpdateData.copy(viewBean);
-        this.currentUpdateData = new ViewBean();
-        this.currentUpdateData.copy(viewBean2);
+        actionType = 1;
+        prevUpdateData = new ViewBean();
+        prevUpdateData.copy(viewBean);
+        currentUpdateData = new ViewBean();
+        currentUpdateData.copy(viewBean2);
     }
 
     public void copy(ViewHistoryBean viewHistoryBean) {
-        this.actionType = viewHistoryBean.actionType;
+        actionType = viewHistoryBean.actionType;
         if (viewHistoryBean.prevUpdateData != null) {
-            this.prevUpdateData = new ViewBean();
-            this.prevUpdateData.copy(viewHistoryBean.prevUpdateData);
+            prevUpdateData = new ViewBean();
+            prevUpdateData.copy(viewHistoryBean.prevUpdateData);
         }
         if (viewHistoryBean.currentUpdateData != null) {
-            this.currentUpdateData = new ViewBean();
-            this.currentUpdateData.copy(viewHistoryBean.currentUpdateData);
+            currentUpdateData = new ViewBean();
+            currentUpdateData.copy(viewHistoryBean.currentUpdateData);
         }
         if (viewHistoryBean.moveData != null) {
-            this.moveData = new ViewBean();
-            this.moveData.copy(viewHistoryBean.moveData);
+            moveData = new ViewBean();
+            moveData.copy(viewHistoryBean.moveData);
         }
         if (viewHistoryBean.addedData != null) {
-            this.addedData = new ArrayList<>();
+            addedData = new ArrayList<>();
             for (ViewBean addedDatum : viewHistoryBean.addedData) {
                 ViewBean viewBean = new ViewBean();
                 viewBean.copy(addedDatum);
-                this.addedData.add(viewBean);
+                addedData.add(viewBean);
             }
         }
         if (viewHistoryBean.removedData != null) {
-            this.removedData = new ArrayList<>();
+            removedData = new ArrayList<>();
             for (ViewBean removedDatum : viewHistoryBean.removedData) {
                 ViewBean viewBean2 = new ViewBean();
                 viewBean2.copy(removedDatum);
-                this.removedData.add(viewBean2);
+                removedData.add(viewBean2);
             }
         }
     }
 
     public int getActionType() {
-        return this.actionType;
+        return actionType;
     }
 
     public ArrayList<ViewBean> getAddedData() {
-        return this.addedData;
+        return addedData;
     }
 
     public ViewBean getCurrentUpdateData() {
-        return this.currentUpdateData;
+        return currentUpdateData;
     }
 
     public ViewBean getMovedData() {
-        return this.moveData;
+        return moveData;
     }
 
     public ViewBean getPrevUpdateData() {
-        return this.prevUpdateData;
+        return prevUpdateData;
     }
 
     public ArrayList<ViewBean> getRemovedData() {
-        return this.removedData;
+        return removedData;
     }
 
     @Override

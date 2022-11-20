@@ -220,7 +220,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(ViewHolder holder, int position) {
-            if (position != this.selectedIconPosition) {
+            if (position != selectedIconPosition) {
                 if (iconType == 2) {
                     holder.background.setBackgroundColor(0xffbdbdbd);
                 } else {

@@ -162,7 +162,7 @@ public class ProjectLibraryBean implements Parcelable {
 
     @Override
     public ProjectLibraryBean clone() {
-        ProjectLibraryBean projectLibraryBean = new ProjectLibraryBean(this.libType);
+        ProjectLibraryBean projectLibraryBean = new ProjectLibraryBean(libType);
         projectLibraryBean.copy(this);
         return projectLibraryBean;
     }

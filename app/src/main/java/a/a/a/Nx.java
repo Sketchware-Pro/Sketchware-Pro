@@ -17,11 +17,11 @@ public class Nx {
     }
 
     public Nx(String str, boolean z) {
-        this.d = z;
-        this.a = str;
-        this.b = 0;
-        this.e = new ArrayList<>();
-        this.f = new ArrayList<>();
+        d = z;
+        a = str;
+        b = 0;
+        e = new ArrayList<>();
+        f = new ArrayList<>();
     }
 
     private String addZeroIndent() {
@@ -130,7 +130,7 @@ public class Nx {
             if (namespace != null && namespace.length() > 0) {
                 return namespace + ":" + attr + "=" + "\"" + value + "\"";
             } else if (attr == null || attr.length() <= 0) {
-                return value.replaceAll("\n", Nx.this.g);
+                return value.replaceAll("\n", g);
             } else {
                 return attr + "=" + "\"" + value + "\"";
             }

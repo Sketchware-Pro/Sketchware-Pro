@@ -34,8 +34,8 @@ public class MoreblockImporterDialog {
 
     public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
         this.act = act;
-        this.internalList = beanList;
-        this.list = new ArrayList<>(beanList);
+        internalList = beanList;
+        list = new ArrayList<>(beanList);
         this.callback = callback;
     }
 

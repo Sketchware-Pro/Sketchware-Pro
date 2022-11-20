@@ -394,8 +394,8 @@ public class AndroidManifestInjection extends Activity {
                 map.put("act_name", temp.get(i));
                 list_map.add(map);
             }
-            this.act_list.setAdapter(new ListAdapter(this.list_map));
-            ((BaseAdapter) this.act_list.getAdapter()).notifyDataSetChanged();
+            act_list.setAdapter(new ListAdapter(list_map));
+            ((BaseAdapter) act_list.getAdapter()).notifyDataSetChanged();
         }
     }
 

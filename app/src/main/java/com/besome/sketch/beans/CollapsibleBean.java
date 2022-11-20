@@ -9,9 +9,9 @@ public class CollapsibleBean extends nA {
     public boolean isSelected = false;
 
     public void initValue() {
-        this.isCollapsed = true;
-        this.isConfirmation = false;
-        this.isSelected = false;
-        this.buttonPressed = -1;
+        isCollapsed = true;
+        isConfirmation = false;
+        isSelected = false;
+        buttonPressed = -1;
     }
 }

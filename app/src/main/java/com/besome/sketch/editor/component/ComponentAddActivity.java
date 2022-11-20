@@ -481,7 +481,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             if (!x) {
                 return;
             }
-            if (position == this.layoutPosition) {
+            if (position == layoutPosition) {
                 Pair<Integer, Integer> pair = w.get(position);
                 holder.itemName.animate()
                         .setDuration(100)

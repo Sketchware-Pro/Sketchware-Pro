@@ -50,7 +50,7 @@ public class AdTestDeviceBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.deviceId);
+        parcel.writeString(deviceId);
     }
 
     @Override

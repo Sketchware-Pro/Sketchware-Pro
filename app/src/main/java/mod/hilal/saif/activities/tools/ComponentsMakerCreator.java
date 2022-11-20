@@ -97,7 +97,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     }
 
     private void initializeHelper() {
-        this.coName.addTextChangedListener(new ComponentHelper(new EditText[]{this.coBuildClass, this.coVarName, this.coTypeName, this.coTypeClass}, this.coTypeClass));
+        coName.addTextChangedListener(new ComponentHelper(new EditText[]{coBuildClass, coVarName, coTypeName, coTypeClass}, coTypeClass));
     }
 
     @Override

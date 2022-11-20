@@ -29,13 +29,13 @@ public class InAppBean implements Parcelable {
     }
 
     public InAppBean(Parcel parcel) {
-        this.sku = parcel.readString();
-        this.title = parcel.readString();
-        this.price = parcel.readString();
-        this.desc = parcel.readString();
-        this.choose = parcel.readString();
-        this.currency = parcel.readString();
-        this.priceL = parcel.readLong();
+        sku = parcel.readString();
+        title = parcel.readString();
+        price = parcel.readString();
+        desc = parcel.readString();
+        choose = parcel.readString();
+        currency = parcel.readString();
+        priceL = parcel.readLong();
     }
 
     public static Parcelable.Creator<InAppBean> getCreator() {
@@ -49,12 +49,12 @@ public class InAppBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.sku);
-        parcel.writeString(this.title);
-        parcel.writeString(this.price);
-        parcel.writeString(this.desc);
-        parcel.writeString(this.choose);
-        parcel.writeString(this.currency);
-        parcel.writeLong(this.priceL);
+        parcel.writeString(sku);
+        parcel.writeString(title);
+        parcel.writeString(price);
+        parcel.writeString(desc);
+        parcel.writeString(choose);
+        parcel.writeString(currency);
+        parcel.writeLong(priceL);
     }
 }

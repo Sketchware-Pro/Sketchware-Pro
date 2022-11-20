@@ -60,7 +60,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
-            if (this.propertyMenuItem.getVisibility() == VISIBLE) {
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
                 setIcon(findViewById(R.id.img_icon));
                 ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;

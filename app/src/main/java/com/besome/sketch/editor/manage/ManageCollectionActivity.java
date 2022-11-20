@@ -1431,14 +1431,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                                 mediaPlayer.release();
                             }
 
-                            if (ManageCollectionActivity.this.D != -1) {
-                                ((ProjectResourceBean) currentCollectionTypeItems.get(ManageCollectionActivity.this.D)).curSoundPosition = 0;
+                            if (D != -1) {
+                                ((ProjectResourceBean) currentCollectionTypeItems.get(D)).curSoundPosition = 0;
                                 // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                                collectionAdapter.c(ManageCollectionActivity.this.D);
+                                collectionAdapter.c(D);
                             }
 
                             E = position;
-                            ManageCollectionActivity.this.D = position;
+                            D = position;
                             // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
                             collectionAdapter.c(E);
                             mediaPlayer = new MediaPlayer();
@@ -1455,7 +1455,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                                 // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
                                 collectionAdapter.c(E);
                                 E = -1;
-                                ManageCollectionActivity.this.D = -1;
+                                D = -1;
                             });
 
                             try {

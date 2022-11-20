@@ -7,7 +7,7 @@ public class BlockCollectionBean extends SelectableBean {
     public String name;
 
     public BlockCollectionBean(String str, ArrayList<BlockBean> arrayList) {
-        this.name = str;
-        this.blocks = arrayList;
+        name = str;
+        blocks = arrayList;
     }
 }

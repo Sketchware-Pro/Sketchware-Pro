@@ -268,7 +268,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                 if (!mB.a()) {
                     int id = j() - 1;
                     DrawerItemAdapter.this.c(id);
-                    Activity activity = (Activity) MainDrawer.this.getContext();
+                    Activity activity = (Activity) getContext();
                     if (id == DrawerItem.MENU_ABOUT_MODDERS.ordinal()) {
                         Intent intent = new Intent(activity, AboutModActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

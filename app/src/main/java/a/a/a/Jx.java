@@ -784,7 +784,7 @@ public class Jx {
     private void addAdapterCode() {
         for (ViewBean viewBean : projectDataManager.f(projectFileBean.getXmlName())) {
             String xmlName = ProjectFileBean.getXmlName(viewBean.customView);
-            this.projectFileBean.getJavaName();
+            projectFileBean.getJavaName();
             String eventName = viewBean.id + "_onBindCustomView";
             String adapterLogic = new Fx(projectFileBean.getActivityName(), buildConfig, eventName, projectDataManager.a(projectFileBean.getJavaName(), eventName)).a();
             String adapterCode;
@@ -811,7 +811,7 @@ public class Jx {
     }
 
     private void addMoreBlockCodes() {
-        String javaName = this.projectFileBean.getJavaName();
+        String javaName = projectFileBean.getJavaName();
         ArrayList<Pair<String, String>> pairs = projectDataManager.i(javaName);
         for (int index = 0, pairsSize = pairs.size(); index < pairsSize; index++) {
             Pair<String, String> next = pairs.get(index);

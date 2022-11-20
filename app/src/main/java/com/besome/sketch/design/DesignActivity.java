@@ -1287,7 +1287,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a(String str) {
             bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
-            DesignActivity.this.h();
+            h();
         }
 
         @Override

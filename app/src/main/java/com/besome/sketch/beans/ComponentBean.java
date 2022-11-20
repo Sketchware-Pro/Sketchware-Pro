@@ -109,11 +109,11 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     }
 
     public ComponentBean(Parcel other) {
-        this.type = other.readInt();
-        this.componentId = other.readString();
-        this.param1 = other.readString();
-        this.param2 = other.readString();
-        this.param3 = other.readString();
+        type = other.readInt();
+        componentId = other.readString();
+        param1 = other.readString();
+        param2 = other.readString();
+        param3 = other.readString();
     }
 
     public static String getComponentDocsUrlByTypeName(int type) {

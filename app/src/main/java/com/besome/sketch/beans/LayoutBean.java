@@ -74,34 +74,34 @@ public class LayoutBean extends nA implements Parcelable {
     public int width;
 
     public LayoutBean() {
-        this.width = LAYOUT_WRAP_CONTENT;
-        this.height = LAYOUT_WRAP_CONTENT;
-        this.gravity = GRAVITY_NONE;
-        this.layoutGravity = GRAVITY_NONE;
-        this.orientation = ORIENTATION_NONE;
-        this.backgroundColor = 0xffffff;
-        this.borderColor = 0xff008dcd;
+        width = LAYOUT_WRAP_CONTENT;
+        height = LAYOUT_WRAP_CONTENT;
+        gravity = GRAVITY_NONE;
+        layoutGravity = GRAVITY_NONE;
+        orientation = ORIENTATION_NONE;
+        backgroundColor = 0xffffff;
+        borderColor = 0xff008dcd;
     }
 
     public LayoutBean(Parcel parcel) {
-        this.width = parcel.readInt();
-        this.height = parcel.readInt();
-        this.orientation = parcel.readInt();
-        this.gravity = parcel.readInt();
-        this.paddingLeft = parcel.readInt();
-        this.paddingTop = parcel.readInt();
-        this.paddingRight = parcel.readInt();
-        this.paddingBottom = parcel.readInt();
-        this.marginLeft = parcel.readInt();
-        this.marginTop = parcel.readInt();
-        this.marginRight = parcel.readInt();
-        this.marginBottom = parcel.readInt();
-        this.weight = parcel.readInt();
-        this.weightSum = parcel.readInt();
-        this.layoutGravity = parcel.readInt();
-        this.backgroundColor = parcel.readInt();
-        this.borderColor = parcel.readInt();
-        this.backgroundResource = parcel.readString();
+        width = parcel.readInt();
+        height = parcel.readInt();
+        orientation = parcel.readInt();
+        gravity = parcel.readInt();
+        paddingLeft = parcel.readInt();
+        paddingTop = parcel.readInt();
+        paddingRight = parcel.readInt();
+        paddingBottom = parcel.readInt();
+        marginLeft = parcel.readInt();
+        marginTop = parcel.readInt();
+        marginRight = parcel.readInt();
+        marginBottom = parcel.readInt();
+        weight = parcel.readInt();
+        weightSum = parcel.readInt();
+        layoutGravity = parcel.readInt();
+        backgroundColor = parcel.readInt();
+        borderColor = parcel.readInt();
+        backgroundResource = parcel.readString();
     }
 
     public static Parcelable.Creator getCreator() {
@@ -109,24 +109,24 @@ public class LayoutBean extends nA implements Parcelable {
     }
 
     public void copy(LayoutBean layoutBean) {
-        this.width = layoutBean.width;
-        this.height = layoutBean.height;
-        this.orientation = layoutBean.orientation;
-        this.gravity = layoutBean.gravity;
-        this.paddingLeft = layoutBean.paddingLeft;
-        this.paddingTop = layoutBean.paddingTop;
-        this.paddingRight = layoutBean.paddingRight;
-        this.paddingBottom = layoutBean.paddingBottom;
-        this.marginLeft = layoutBean.marginLeft;
-        this.marginTop = layoutBean.marginTop;
-        this.marginRight = layoutBean.marginRight;
-        this.marginBottom = layoutBean.marginBottom;
-        this.weight = layoutBean.weight;
-        this.weightSum = layoutBean.weightSum;
-        this.layoutGravity = layoutBean.layoutGravity;
-        this.backgroundColor = layoutBean.backgroundColor;
-        this.borderColor = layoutBean.borderColor;
-        this.backgroundResource = layoutBean.backgroundResource;
+        width = layoutBean.width;
+        height = layoutBean.height;
+        orientation = layoutBean.orientation;
+        gravity = layoutBean.gravity;
+        paddingLeft = layoutBean.paddingLeft;
+        paddingTop = layoutBean.paddingTop;
+        paddingRight = layoutBean.paddingRight;
+        paddingBottom = layoutBean.paddingBottom;
+        marginLeft = layoutBean.marginLeft;
+        marginTop = layoutBean.marginTop;
+        marginRight = layoutBean.marginRight;
+        marginBottom = layoutBean.marginBottom;
+        weight = layoutBean.weight;
+        weightSum = layoutBean.weightSum;
+        layoutGravity = layoutBean.layoutGravity;
+        backgroundColor = layoutBean.backgroundColor;
+        borderColor = layoutBean.borderColor;
+        backgroundResource = layoutBean.backgroundResource;
     }
 
     @Override
@@ -150,23 +150,23 @@ public class LayoutBean extends nA implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.width);
-        parcel.writeInt(this.height);
-        parcel.writeInt(this.orientation);
-        parcel.writeInt(this.gravity);
-        parcel.writeInt(this.paddingLeft);
-        parcel.writeInt(this.paddingTop);
-        parcel.writeInt(this.paddingRight);
-        parcel.writeInt(this.paddingBottom);
-        parcel.writeInt(this.marginLeft);
-        parcel.writeInt(this.marginTop);
-        parcel.writeInt(this.marginRight);
-        parcel.writeInt(this.marginBottom);
-        parcel.writeInt(this.weight);
-        parcel.writeInt(this.weightSum);
-        parcel.writeInt(this.layoutGravity);
-        parcel.writeInt(this.backgroundColor);
-        parcel.writeInt(this.borderColor);
-        parcel.writeString(this.backgroundResource);
+        parcel.writeInt(width);
+        parcel.writeInt(height);
+        parcel.writeInt(orientation);
+        parcel.writeInt(gravity);
+        parcel.writeInt(paddingLeft);
+        parcel.writeInt(paddingTop);
+        parcel.writeInt(paddingRight);
+        parcel.writeInt(paddingBottom);
+        parcel.writeInt(marginLeft);
+        parcel.writeInt(marginTop);
+        parcel.writeInt(marginRight);
+        parcel.writeInt(marginBottom);
+        parcel.writeInt(weight);
+        parcel.writeInt(weightSum);
+        parcel.writeInt(layoutGravity);
+        parcel.writeInt(backgroundColor);
+        parcel.writeInt(borderColor);
+        parcel.writeString(backgroundResource);
     }
 }

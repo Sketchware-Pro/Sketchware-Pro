@@ -38,29 +38,29 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         this.resType = resType;
         this.resName = resName;
         this.resFullName = resFullName;
-        this.isEdited = false;
-        this.isDuplicateCollection = false;
-        this.curSoundPosition = 0;
-        this.totalSoundDuration = 0;
-        this.rotate = 0;
-        this.flipVertical = 1;
-        this.flipHorizontal = 1;
+        isEdited = false;
+        isDuplicateCollection = false;
+        curSoundPosition = 0;
+        totalSoundDuration = 0;
+        rotate = 0;
+        flipVertical = 1;
+        flipHorizontal = 1;
     }
 
     public ProjectResourceBean(Parcel parcel) {
-        this.resType = parcel.readInt();
-        this.resName = parcel.readString();
-        this.resFullName = parcel.readString();
+        resType = parcel.readInt();
+        resName = parcel.readString();
+        resFullName = parcel.readString();
         boolean z = true;
-        this.isEdited = parcel.readInt() != 0;
-        this.isDuplicateCollection = parcel.readInt() != 0;
-        this.curSoundPosition = parcel.readInt();
-        this.totalSoundDuration = parcel.readInt();
-        this.rotate = parcel.readInt();
-        this.flipVertical = parcel.readInt();
-        this.flipHorizontal = parcel.readInt();
-        this.savedPos = parcel.readInt();
-        this.isNew = parcel.readInt() != 0 && z;
+        isEdited = parcel.readInt() != 0;
+        isDuplicateCollection = parcel.readInt() != 0;
+        curSoundPosition = parcel.readInt();
+        totalSoundDuration = parcel.readInt();
+        rotate = parcel.readInt();
+        flipVertical = parcel.readInt();
+        flipHorizontal = parcel.readInt();
+        savedPos = parcel.readInt();
+        isNew = parcel.readInt() != 0 && z;
     }
 
     public static Parcelable.Creator<ProjectResourceBean> getCreator() {
@@ -72,18 +72,18 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     }
 
     public void copy(ProjectResourceBean projectResourceBean) {
-        this.resType = projectResourceBean.resType;
-        this.resName = projectResourceBean.resName;
-        this.resFullName = projectResourceBean.resFullName;
-        this.isEdited = projectResourceBean.isEdited;
-        this.isDuplicateCollection = projectResourceBean.isDuplicateCollection;
-        this.curSoundPosition = projectResourceBean.curSoundPosition;
-        this.totalSoundDuration = projectResourceBean.totalSoundDuration;
-        this.rotate = projectResourceBean.rotate;
-        this.flipVertical = projectResourceBean.flipVertical;
-        this.flipHorizontal = projectResourceBean.flipHorizontal;
-        this.savedPos = projectResourceBean.savedPos;
-        this.isNew = projectResourceBean.isNew;
+        resType = projectResourceBean.resType;
+        resName = projectResourceBean.resName;
+        resFullName = projectResourceBean.resFullName;
+        isEdited = projectResourceBean.isEdited;
+        isDuplicateCollection = projectResourceBean.isDuplicateCollection;
+        curSoundPosition = projectResourceBean.curSoundPosition;
+        totalSoundDuration = projectResourceBean.totalSoundDuration;
+        rotate = projectResourceBean.rotate;
+        flipVertical = projectResourceBean.flipVertical;
+        flipHorizontal = projectResourceBean.flipHorizontal;
+        savedPos = projectResourceBean.savedPos;
+        isNew = projectResourceBean.isNew;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     }
 
     public boolean isNinePatch() {
-        return isNinePatch(this.resFullName);
+        return isNinePatch(resFullName);
     }
 
     public void print() {
@@ -100,23 +100,23 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.resType);
-        parcel.writeString(this.resName);
-        parcel.writeString(this.resFullName);
-        parcel.writeInt(this.isEdited ? 1 : 0);
-        parcel.writeInt(this.isDuplicateCollection ? 1 : 0);
-        parcel.writeInt(this.curSoundPosition);
-        parcel.writeInt(this.totalSoundDuration);
-        parcel.writeInt(this.rotate);
-        parcel.writeInt(this.flipVertical);
-        parcel.writeInt(this.flipHorizontal);
-        parcel.writeInt(this.savedPos);
-        parcel.writeInt(this.isNew ? 1 : 0);
+        parcel.writeInt(resType);
+        parcel.writeString(resName);
+        parcel.writeString(resFullName);
+        parcel.writeInt(isEdited ? 1 : 0);
+        parcel.writeInt(isDuplicateCollection ? 1 : 0);
+        parcel.writeInt(curSoundPosition);
+        parcel.writeInt(totalSoundDuration);
+        parcel.writeInt(rotate);
+        parcel.writeInt(flipVertical);
+        parcel.writeInt(flipHorizontal);
+        parcel.writeInt(savedPos);
+        parcel.writeInt(isNew ? 1 : 0);
     }
 
     @Override
     public ProjectResourceBean clone() {
-        ProjectResourceBean projectResourceBean = new ProjectResourceBean(this.resType, this.resName, this.resFullName);
+        ProjectResourceBean projectResourceBean = new ProjectResourceBean(resType, resName, resFullName);
         projectResourceBean.copy(this);
         return projectResourceBean;
     }

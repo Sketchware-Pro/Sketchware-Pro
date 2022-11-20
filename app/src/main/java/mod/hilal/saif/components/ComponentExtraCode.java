@@ -14,8 +14,8 @@ public class ComponentExtraCode {
     public final Hx hx;
 
     public ComponentExtraCode(Hx h, StringBuilder st) {
-        this.b = st;
-        this.hx = h;
+        b = st;
+        hx = h;
     }
 
     public void s(String str) {

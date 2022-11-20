@@ -326,11 +326,11 @@ public class Hx {
         }
 
         private void setOnCancelledLogic(String onCancelledLogic) {
-            this.onCancelledCode = onCancelledLogic;
+            onCancelledCode = onCancelledLogic;
         }
 
         private void setOnSuccessLogic(String onSuccessLogic) {
-            this.onSuccessCode = onSuccessLogic;
+            onSuccessCode = onSuccessLogic;
         }
 
         private String getCode() {
@@ -345,8 +345,8 @@ public class Hx {
         private final ArrayList<d> c = new ArrayList<>();
 
         private c(Hx hx, String str, Gx gx) {
-            this.d = hx;
-            this.a = str;
+            d = hx;
+            a = str;
 
             String[] listeners = oq.b(gx);
             if (listeners.length > 0) {

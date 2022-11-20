@@ -21,7 +21,7 @@ public class ExtraMenuBlock {
     private final LogicEditorActivity a;
 
     public ExtraMenuBlock(LogicEditorActivity logicEditorActivity) {
-        this.a = logicEditorActivity;
+        a = logicEditorActivity;
     }
 
     public void a(Ss ss, AsdAll asdAll, ArrayList<String> arrayList) {
@@ -46,7 +46,7 @@ public class ExtraMenuBlock {
                 JSONObject jSONObject = jSONArray.getJSONObject(i);
                 if (!jSONObject.isNull("id") && menuName.equals(jSONObject.getString("id"))) {
                     arrayList.clear();
-                    b(jSONObject, asdAll, arrayList, this.a.B);
+                    b(jSONObject, asdAll, arrayList, a.B);
                     try {
                         JSONArray jSONArray2 = new JSONObject(ExtraBlockFile.getMenuDataFile()).getJSONArray(jSONObject.getString("id"));
                         if (jSONArray2.length() > 0) {

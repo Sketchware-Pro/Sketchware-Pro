@@ -308,9 +308,9 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         setPreference("dark_theme", dark_theme);
 
         if (type == ColorScheme.JAVA) {
-            this.highlightList = ColorScheme.TYPE_JAVA(colorTheme);
+            highlightList = ColorScheme.TYPE_JAVA(colorTheme);
         } else if (type == ColorScheme.XML) {
-            this.highlightList = ColorScheme.TYPE_XML(colorTheme);
+            highlightList = ColorScheme.TYPE_XML(colorTheme);
         } else {
             return;
         }

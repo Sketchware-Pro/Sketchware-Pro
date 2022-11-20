@@ -8,8 +8,8 @@ public class MoreBlockCollectionBean extends SelectableBean {
     public String spec;
 
     public MoreBlockCollectionBean(String str, String str2, ArrayList<BlockBean> arrayList) {
-        this.name = str;
-        this.spec = str2;
-        this.blocks = arrayList;
+        name = str;
+        spec = str2;
+        blocks = arrayList;
     }
 }

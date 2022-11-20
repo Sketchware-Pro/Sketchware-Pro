@@ -63,11 +63,11 @@ public class jr extends qA {
             }
         });
         m.setOnPropertyValueChangedListener(viewBean -> {
-            jr.this.a(viewBean.id);
+            a(viewBean.id);
             m.e();
             k();
         });
-        m.setOnEventClickListener(eventBean -> jr.this.a(eventBean.targetId, eventBean.eventName, eventBean.eventName));
+        m.setOnEventClickListener(eventBean -> a(eventBean.targetId, eventBean.eventName, eventBean.eventName));
         m.setOnPropertyTargetChangeListener(this::a);
         g.setOnWidgetSelectedListener(new cy() {
             @Override
@@ -85,7 +85,7 @@ public class jr extends qA {
             @Override
             public void a(boolean var1, String viewId) {
                 if (!viewId.isEmpty()) {
-                    this.a();
+                    a();
                     m.a(viewId);
                     m.e();
                 }

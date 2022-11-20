@@ -252,7 +252,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
                     Context applicationContext =
-                            ManageGoogleMapActivity.this.getApplicationContext();
+                            getApplicationContext();
                     String providerPath = getPackageName() + ".provider";
                     String iconPath = wq.e() + File.separator + sc_id;
                     iconUri =

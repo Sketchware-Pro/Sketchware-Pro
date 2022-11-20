@@ -36,14 +36,14 @@ public class ImageBean extends nA implements Parcelable {
     public String scaleType;
 
     public ImageBean() {
-        this.scaleType = ImageView.ScaleType.CENTER.name();
-        this.rotate = 0;
+        scaleType = ImageView.ScaleType.CENTER.name();
+        rotate = 0;
     }
 
     public ImageBean(Parcel parcel) {
-        this.resName = parcel.readString();
-        this.scaleType = parcel.readString();
-        this.rotate = parcel.readInt();
+        resName = parcel.readString();
+        scaleType = parcel.readString();
+        rotate = parcel.readInt();
     }
 
     public static Parcelable.Creator<ImageBean> getCreator() {
@@ -51,9 +51,9 @@ public class ImageBean extends nA implements Parcelable {
     }
 
     public void copy(ImageBean imageBean) {
-        this.resName = imageBean.resName;
-        this.scaleType = imageBean.scaleType;
-        this.rotate = imageBean.rotate;
+        resName = imageBean.resName;
+        scaleType = imageBean.scaleType;
+        rotate = imageBean.rotate;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ImageBean extends nA implements Parcelable {
     }
 
     public boolean isEqual(ImageBean imageBean) {
-        String str = this.resName;
+        String str = resName;
         if (str != null) {
             String str2 = imageBean.resName;
             if (str2 == null || !str.equals(str2)) {
@@ -71,7 +71,7 @@ public class ImageBean extends nA implements Parcelable {
         } else if (imageBean.resName != null) {
             return false;
         }
-        String str3 = this.scaleType;
+        String str3 = scaleType;
         if (str3 != null) {
             String str4 = imageBean.scaleType;
             if (str4 == null || !str3.equals(str4)) {
@@ -80,7 +80,7 @@ public class ImageBean extends nA implements Parcelable {
         } else if (imageBean.scaleType != null) {
             return false;
         }
-        return this.rotate == imageBean.rotate;
+        return rotate == imageBean.rotate;
     }
 
     public void print() {
@@ -88,8 +88,8 @@ public class ImageBean extends nA implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.resName);
-        parcel.writeString(this.scaleType);
-        parcel.writeInt(this.rotate);
+        parcel.writeString(resName);
+        parcel.writeString(scaleType);
+        parcel.writeInt(rotate);
     }
 }

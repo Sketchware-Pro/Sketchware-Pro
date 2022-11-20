@@ -44,7 +44,7 @@ public class LogicClickListener implements View.OnClickListener {
     public LogicClickListener(LogicEditorActivity logicEditor) {
         this.logicEditor = logicEditor;
         projectDataManager = jC.a(logicEditor.B);
-        this.projectFile = logicEditor.M;
+        projectFile = logicEditor.M;
         eventName = logicEditor.C + "_" + logicEditor.D;
         javaName = logicEditor.M.getJavaName();
     }

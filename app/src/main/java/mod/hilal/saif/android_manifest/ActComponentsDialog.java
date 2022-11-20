@@ -94,7 +94,7 @@ public class ActComponentsDialog extends Dialog {
                 (int) getDip(0),
                 (int) getDip(0));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        if (this.codeEditor.dark_theme) {
+        if (codeEditor.dark_theme) {
             linearLayout.setBackgroundColor(0xff292929);
         } else {
             linearLayout.setBackgroundColor(Color.WHITE);

@@ -17,7 +17,7 @@ public class AsdOldHandlerCodeEditor implements View.OnClickListener {
     private final Ss ss;
 
     public AsdOldHandlerCodeEditor(LogicEditorActivity activity, boolean isNumber, Ss ss, AsdOldDialog asdOldDialog, CodeEditorEditText codeEditorEditText) {
-        this.logicEditorActivity = activity;
+        logicEditorActivity = activity;
         this.isNumber = isNumber;
         this.ss = ss;
         dialog = asdOldDialog;

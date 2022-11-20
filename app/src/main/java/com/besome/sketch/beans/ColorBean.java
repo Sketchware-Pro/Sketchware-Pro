@@ -13,14 +13,14 @@ public class ColorBean {
     }
 
     public ColorBean(int color, String name, int displayColor, int icon) {
-        this.colorCode = color;
-        this.colorName = name;
-        this.displayNameColor = displayColor;
+        colorCode = color;
+        colorName = name;
+        displayNameColor = displayColor;
         this.icon = icon;
     }
 
     public String getColorCode(boolean isWideFilling) {
-        int color = this.colorCode;
+        int color = colorCode;
         if (color == 0) return "TRANSPARENT";
 
         if (color == 0xffffff) return "NONE";
