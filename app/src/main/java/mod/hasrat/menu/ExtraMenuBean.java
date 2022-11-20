@@ -44,7 +44,6 @@ import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
-import mod.hilal.saif.asd.AsdOrigin;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.hilal.saif.asd.old.AsdOldDialog;
 
@@ -742,11 +741,11 @@ public class ExtraMenuBean {
     }
 
     private void asdDialog(Ss ss, String message) {
-        AsdOrigin asdOr = new AsdOrigin(logicEditor);
-        asdOr.b(Helper.getResString(R.string.logic_editor_title_enter_string_value));
-        asdOr.a(R.drawable.rename_96_blue);
+        aB dialog = new aB(logicEditor);
+        dialog.b(Helper.getResString(R.string.logic_editor_title_enter_string_value));
+        dialog.a(R.drawable.rename_96_blue);
 
-        if (!isEmpty(message)) asdOr.a(message);
+        if (!isEmpty(message)) dialog.a(message);
 
         View root = wB.a(logicEditor, R.layout.property_popup_input_text);
         EditText edittext = root.findViewById(R.id.ed_input);
@@ -756,19 +755,34 @@ public class ExtraMenuBean {
             new SimpleHighlighter(edittext);
         }
         edittext.setText(ss.getArgValue().toString());
-        asdOr.a(root);
-        asdOr.carry(logicEditor, ss, false, edittext);
+        dialog.a(root);
 
-        asdOr.b(Helper.getResString(R.string.common_word_save), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
             String content = edittext.getText().toString();
             if (content.length() > 0 && content.charAt(0) == '@') {
                 content = " " + content;
             }
             logicEditor.a(ss, (Object) content);
-            asdOr.dismiss();
+            dialog.dismiss();
         });
-        asdOr.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(asdOr));
-        asdOr.show();
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.configureDefaultButton("Code Editor", v -> {
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
+                asdOldDialog.setCon(edittext.getText().toString());
+                asdOldDialog.show();
+                asdOldDialog.saveLis(logicEditor, false, ss, asdOldDialog);
+                asdOldDialog.cancelLis(logicEditor, asdOldDialog);
+            } else {
+                AsdDialog asdDialog = new AsdDialog(logicEditor);
+                asdDialog.setCon(edittext.getText().toString());
+                asdDialog.show();
+                asdDialog.saveLis(logicEditor, false, ss, asdDialog);
+                asdDialog.cancelLis(asdDialog);
+            }
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     private void pathSelectorMenu(final Ss ss) {
