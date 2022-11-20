@@ -131,7 +131,7 @@ public class SketchwareUtil {
             } else {
                 return Optional.empty();
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             LogUtil.e("SketchwareUtil", "Failed to do single string content query for Uri " + uri + " and column name " + columnName, e);
             return Optional.empty();
         }
