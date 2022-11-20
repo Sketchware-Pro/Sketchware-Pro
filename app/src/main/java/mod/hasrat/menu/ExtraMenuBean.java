@@ -35,7 +35,6 @@ import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
-import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
@@ -440,17 +439,17 @@ public class ExtraMenuBean {
 
             case "videoad":
                 title = Helper.getResString(R.string.logic_editor_title_select_component);
-                menus = getComponentMenus(22);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD);
                 break;
 
             case "progressdialog":
                 title = Helper.getResString(R.string.logic_editor_title_select_component);
-                menus = getComponentMenus(23);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG);
                 break;
 
             case "datepickerdialog":
                 title = Helper.getResString(R.string.logic_editor_title_select_component);
-                menus = getComponentMenus(24);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG);
                 break;
 
             case "asynctask":
@@ -460,52 +459,52 @@ public class ExtraMenuBean {
 
             case "timepickerdialog":
                 title = Helper.getResString(R.string.logic_editor_title_select_component);
-                menus = getComponentMenus(25);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG);
                 break;
 
             case "notification":
                 title = Helper.getResString(R.string.logic_editor_title_select_component);
-                menus = getComponentMenus(26);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_NOTIFICATION);
                 break;
 
             case "fragmentAdapter":
                 title = "Select a FragmentAdapter Component";
-                menus = getComponentMenus(27);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER);
                 break;
 
             case "phoneauth":
                 title = "Select a FirebasePhone Component";
-                menus = getComponentMenus(28);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE);
                 break;
 
             case "dynamiclink":
                 title = "Select a DynamicLink Component";
-                menus = getComponentMenus(29);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS);
                 break;
 
             case "cloudmessage":
                 title = "Select a CloudMessage Component";
-                menus = getComponentMenus(30);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE);
                 break;
 
             case "googlelogin":
                 title = "Select a FirebaseGoogle Component";
-                menus = getComponentMenus(31);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN);
                 break;
 
             case "onesignal":
                 title = "Select a OneSignal Component";
-                menus = getComponentMenus(32);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_ONESIGNAL);
                 break;
 
             case "fbadbanner":
                 title = "Select an FBAdsBanner Component";
-                menus = getComponentMenus(33);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER);
                 break;
 
             case "fbadinterstitial":
                 title = "Select an FBAdsInterstitial Component";
-                menus = getComponentMenus(34);
+                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL);
                 break;
 
             case "providerType":
@@ -522,12 +521,14 @@ public class ExtraMenuBean {
                 title = Helper.getResString(R.string.logic_editor_title_mapview_marker_color);
                 menus = new ArrayList<>(Arrays.asList(uq.r));
                 break;
+
             case "service":
                 title = "Select a Background Service";
                 if (FileUtil.isExistFile(fpu.getManifestService(sc_id))) {
                     menus = frc.getServiceManifestList();
                 }
                 break;
+
             case "broadcast":
                 title = "Select a Broadcast Receiver";
                 if (FileUtil.isExistFile(fpu.getManifestBroadcast(sc_id))) {
@@ -575,6 +576,7 @@ public class ExtraMenuBean {
                     menus.add(projectFileBean.fileName);
                 }
                 break;
+
             case "SignButtonColor":
                 title = "Select a SignInButton Color";
                 menus.add("COLOR_AUTO");
