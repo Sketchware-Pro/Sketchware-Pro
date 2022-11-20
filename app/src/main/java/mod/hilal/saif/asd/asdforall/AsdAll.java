@@ -23,7 +23,7 @@ import a.a.a.Ss;
 
 public class AsdAll extends Dialog {
 
-    public Activity activity;
+    public final Activity activity;
     public LinearLayout b;
     public LinearLayout base;
     public boolean boo;
@@ -42,7 +42,7 @@ public class AsdAll extends Dialog {
     public LogicEditorActivity lea;
     public String m = "No";
     public int n = -1;
-    public int o = 0;
+    public final int o = 0;
     public View.OnClickListener p = null;
     public View.OnClickListener q = null;
     public View r;

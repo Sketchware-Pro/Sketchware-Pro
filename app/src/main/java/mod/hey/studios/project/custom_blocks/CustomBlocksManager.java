@@ -16,7 +16,7 @@ import java.io.File;
 import android.os.Environment;
 
 public class CustomBlocksManager {
-    String sc_id;
+    final String sc_id;
     ArrayList<BlockBean> blocks;
 
     public CustomBlocksManager(String sc_id) {

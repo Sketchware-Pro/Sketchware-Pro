@@ -28,7 +28,7 @@ import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 
 public class AsdAllEditor extends Dialog {
 
-    public Activity activity;
+    public final Activity activity;
     public ViewGroup base;
     public TextView cancel;
     public View.OnClickListener cancel_l = null;

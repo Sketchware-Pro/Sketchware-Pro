@@ -26,7 +26,7 @@ import mod.hilal.saif.asd.old.AsdOldDialog;
 
 public class AsdOrigin extends Dialog {
 
-    public Activity activity;
+    public final Activity activity;
     public LogicEditorActivity logicEditorActivity;
     public LinearLayout b;
     public View c;
@@ -41,7 +41,7 @@ public class AsdOrigin extends Dialog {
     public String dialog_btn_yes_str = "Yes";
     public String dialog_btn_no_str = "No";
     public int dialog_img_image_id = -1;
-    public int code_editor_theme = 0;
+    public final int code_editor_theme = 0;
     public View.OnClickListener dialog_btn_yes_listener = null;
     public View.OnClickListener dialog_btn_no_listener = null;
     public View layout_button;

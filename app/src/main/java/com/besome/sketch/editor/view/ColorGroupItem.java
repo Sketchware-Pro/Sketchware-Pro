@@ -11,8 +11,8 @@ import a.a.a.wB;
 
 public class ColorGroupItem extends RelativeLayout {
 
-    public TextView b;
-    public ImageView c;
+    public final TextView b;
+    public final ImageView c;
 
     public ColorGroupItem(Context context) {
         super(context);

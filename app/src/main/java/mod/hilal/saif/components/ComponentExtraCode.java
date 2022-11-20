@@ -10,8 +10,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 
 public class ComponentExtraCode {
 
-    public StringBuilder b;
-    public Hx hx;
+    public final StringBuilder b;
+    public final Hx hx;
 
     public ComponentExtraCode(Hx h, StringBuilder st) {
         this.b = st;

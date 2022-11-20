@@ -54,7 +54,7 @@ public class BackupFactory {
             "fonts", "icons", "images", "sounds"
     };
 
-    String sc_id;
+    final String sc_id;
     File outPath;
     boolean backupLocalLibs;
     boolean backupCustomBlocks;
