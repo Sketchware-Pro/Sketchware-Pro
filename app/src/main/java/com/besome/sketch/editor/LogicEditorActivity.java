@@ -119,7 +119,7 @@ import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.asd.asdforall.AsdAll;
+import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -1711,14 +1711,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void f(Ss ss) {
         String str;
-        AsdAll asdAll = new AsdAll(this);
+        aB dialog = new aB(this);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         String xmlName = M.getXmlName();
         if (D.equals("onBindCustomView") && (str = jC.a(B).c(M.getXmlName(), C).customView) != null) {
             xmlName = ProjectFileBean.getXmlName(str);
         }
-        asdAll.b(xB.b().a(getContext(), R.string.logic_editor_title_select_view));
+        dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_view));
         for (Pair<Integer, String> next : jC.a(B).d(xmlName, ss.getClassInfo().a())) {
             viewGroup.addView(d(ViewBean.getViewTypeName(next.first), next.second));
         }
@@ -1735,9 +1735,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             i++;
         }
-        asdAll.a(a2);
-        asdAll.carry(this, ss, viewGroup);
-        asdAll.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.a(a2);
+        dialog.configureDefaultButton("Code Editor", v -> {
+            AsdAllEditor editor = new AsdAllEditor(this);
+            editor.setCon(ss.getArgValue().toString());
+            editor.show();
+            editor.saveLis(this, ss, editor);
+            editor.cancelLis(this, editor);
+            dialog.dismiss();
+        });
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             int childCount2 = viewGroup.getChildCount();
             int j = 0;
             while (true) {
@@ -1751,10 +1758,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 j++;
             }
-            asdAll.dismiss();
+            dialog.dismiss();
         });
-        asdAll.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(asdAll));
-        asdAll.show();
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public final void f(MoreBlockCollectionBean moreBlockCollectionBean) {

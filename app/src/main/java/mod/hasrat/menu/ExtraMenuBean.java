@@ -29,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.Ss;
+import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
@@ -44,7 +45,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
 import mod.hilal.saif.asd.AsdOrigin;
-import mod.hilal.saif.asd.asdforall.AsdAll;
+import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.hilal.saif.asd.old.AsdOldDialog;
 
 public class ExtraMenuBean {
@@ -232,7 +233,7 @@ public class ExtraMenuBean {
 
     private void defaultMenus(Ss menu) {
         String menuName = menu.getMenuName();
-        AsdAll asdAll = new AsdAll(logicEditor);
+        aB dialog = new aB(logicEditor);
         View rootView = wB.a(logicEditor, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = rootView.findViewById(R.id.rg_content);
         ArrayList<String> menus = new ArrayList<>();
@@ -599,11 +600,11 @@ public class ExtraMenuBean {
             case "ResAttr":
             case "ResXml":
                 title = "Deprecated";
-                asdAll.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
+                dialog.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
                 break;
 
             case "AdUnit":
-                asdAll.a(R.drawable.unit_96);
+                dialog.a(R.drawable.unit_96);
                 title = "Select an Ad Unit";
                 for (AdUnitBean bean : jC.c(sc_id).e.adUnits) {
                     menus.add(bean.id);
@@ -611,7 +612,7 @@ public class ExtraMenuBean {
                 break;
 
             case "TestDevice":
-                asdAll.a(R.drawable.ic_test_device_48dp);
+                dialog.a(R.drawable.ic_test_device_48dp);
                 title = "Select a Test device";
                 for (AdTestDeviceBean testDevice : jC.c(sc_id).e.testDevices) {
                     menus.add(testDevice.deviceId);
@@ -671,7 +672,7 @@ public class ExtraMenuBean {
                 Pair<String, String[]> menuPair = BlockMenu.getMenu(menu.getMenuName());
                 title = menuPair.first;
                 menus = new ArrayList<>(Arrays.asList(menuPair.second));
-                extraMenuBlock.a(menu, asdAll, menus);
+                extraMenuBlock.a(menu, dialog, menus);
 
                 for (String s : projectDataManager.e(javaName, 5)) {
                     Matcher matcher2 = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
@@ -703,9 +704,9 @@ public class ExtraMenuBean {
             }
         }
 
-        asdAll.b(title);
-        asdAll.a(rootView);
-        asdAll.b(Helper.getResString(R.string.common_word_select), view -> {
+        dialog.b(title);
+        dialog.a(rootView);
+        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof RadioButton) {
                     RadioButton rb = (RadioButton) viewGroup.getChildAt(i);
@@ -714,11 +715,18 @@ public class ExtraMenuBean {
                     }
                 }
             }
-            asdAll.dismiss();
+            dialog.dismiss();
         });
-        asdAll.carry(logicEditor, menu, viewGroup);
-        asdAll.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(asdAll));
-        asdAll.show();
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.configureDefaultButton("Code Editor", v -> {
+            AsdAllEditor editor = new AsdAllEditor(logicEditor);
+            editor.setCon(menu.getArgValue().toString());
+            editor.show();
+            editor.saveLis(logicEditor, menu, editor);
+            editor.cancelLis(logicEditor, editor);
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     private ArrayList<String> getVarMenus(int type) {
