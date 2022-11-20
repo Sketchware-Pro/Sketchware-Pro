@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.property;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
+@SuppressLint("ViewConstructor")
 public class PropertySwitchSingleLineItem extends LinearLayout implements View.OnClickListener {
 
     private String key = "";

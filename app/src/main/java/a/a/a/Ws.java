@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.sketchware.remod.R;
 
+@SuppressLint("ViewConstructor")
 public class Ws extends RelativeLayout {
 
     private final int id;

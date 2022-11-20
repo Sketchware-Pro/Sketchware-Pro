@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.property;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -17,6 +18,7 @@ import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
+@SuppressLint("ViewConstructor")
 public class PropertySizeItem extends RelativeLayout implements View.OnClickListener {
 
     private Context context;
