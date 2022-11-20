@@ -103,7 +103,9 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
     }
 
     private void setPreference(String key, float value) {
-        sharedpref.edit().putFloat(key, value).apply();
+        if (!isInEditMode()) {
+            sharedpref.edit().putFloat(key, value).apply();
+        }
     }
 
     private void loadPreferences() {
