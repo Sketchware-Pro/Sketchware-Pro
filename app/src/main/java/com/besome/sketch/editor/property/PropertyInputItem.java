@@ -23,7 +23,6 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {

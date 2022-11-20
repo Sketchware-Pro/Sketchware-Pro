@@ -21,7 +21,6 @@ import a.a.a.Xf;
 import a.a.a.Zt;
 import a.a.a.gg;
 import a.a.a.mB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.e {

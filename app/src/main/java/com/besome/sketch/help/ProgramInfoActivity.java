@@ -24,7 +24,6 @@ import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {

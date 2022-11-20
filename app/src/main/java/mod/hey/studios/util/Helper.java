@@ -20,7 +20,6 @@ import android.view.View;
 import androidx.annotation.StringRes;
 
 import com.google.gson.reflect.TypeToken;
-import com.sketchware.remod.R;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

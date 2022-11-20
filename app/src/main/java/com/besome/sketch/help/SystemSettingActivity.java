@@ -15,7 +15,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 
 import a.a.a.mB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {

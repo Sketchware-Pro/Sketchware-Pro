@@ -1,7 +1,6 @@
 package com.besome.sketch.beans;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.nA;
 

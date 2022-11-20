@@ -16,7 +16,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import a.a.a.aB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class ProjectSettingsDialog {

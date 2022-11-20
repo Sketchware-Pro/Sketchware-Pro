@@ -12,7 +12,6 @@ import java.util.HashMap;
 import a.a.a.Vs;
 import a.a.a.Ws;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class PaletteSelector extends LinearLayout implements View.OnClickListener {

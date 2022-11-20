@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 
 import a.a.a.uy;
 import a.a.a.wB;
-import mod.hey.studios.util.Helper;
 
 public class PaletteFavorite extends LinearLayout {
     private LinearLayout collectionWidgets;
