@@ -4,7 +4,9 @@ import static android.text.TextUtils.isEmpty;
 import static com.besome.sketch.SketchApplication.getContext;
 import static mod.SketchwareUtil.getDip;
 
+import android.content.Context;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -14,12 +16,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import a.a.a.ZB;
 import a.a.a.aB;
@@ -162,53 +170,65 @@ public class LogicClickListener implements View.OnClickListener {
         SketchDialog dialog = new SketchDialog(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
         dialog.setIcon(R.drawable.delete_96);
-        View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
-        ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
+
+        RecyclerView recyclerView = new RecyclerView(logicEditor);
+        recyclerView.setLayoutManager(new LinearLayoutManager(null));
+
+        List<RemoveAdapter.Item> data = new LinkedList<>();
+        RemoveAdapter adapter = new RemoveAdapter(logicEditor, data);
+        recyclerView.setAdapter(adapter);
 
         ArrayList<String> bools = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_BOOLEAN);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("Boolean (" + boolsSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(bools.get(i)));
+            String booleanName = bools.get(i);
+            if (i == 0) data.add(new RemoveAdapter.Item("Boolean (" + boolsSize + ")"));
+            data.add(new RemoveAdapter.Item(booleanName,
+                    logicEditor.o.c(booleanName) || projectDataManager.c(javaName, booleanName, eventName),
+                    R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> numbers = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_NUMBER);
         for (int i = 0, intsSize = numbers.size(); i < intsSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("Number (" + intsSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(numbers.get(i)));
+            String number = numbers.get(i);
+            if (i == 0) data.add(new RemoveAdapter.Item("Number (" + intsSize + ")"));
+            data.add(new RemoveAdapter.Item(number,
+                    logicEditor.o.c(number) || projectDataManager.c(javaName, number, eventName),
+                    R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> strs = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_STRING);
         for (int i = 0, strsSize = strs.size(); i < strsSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("String (" + strsSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(strs.get(i)));
+            String string = strs.get(i);
+            if (i == 0) data.add(new RemoveAdapter.Item("String (" + strsSize + ")"));
+            data.add(new RemoveAdapter.Item(string,
+                    logicEditor.o.c(string) || projectDataManager.c(javaName, string, eventName),
+                    R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> maps = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_MAP);
         for (int i = 0, mapSize = maps.size(); i < mapSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("Map (" + mapSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(maps.get(i)));
+            String map = maps.get(i);
+            if (i == 0) data.add(new RemoveAdapter.Item("Map (" + mapSize + ")"));
+            data.add(new RemoveAdapter.Item(map,
+                    logicEditor.o.c(map) || projectDataManager.c(javaName, map, eventName),
+                    R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> vars = getUsedVariable(5);
         vars.addAll(getUsedVariable(6));
         for (int i = 0, varsSize = vars.size(); i < varsSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("Custom Variable (" + varsSize + ")"));
-            viewGroup.addView(getRemoveVariableCheckBox(vars.get(i)));
+            String var = vars.get(i);
+            if (i == 0) data.add(new RemoveAdapter.Item("Custom Variable (" + varsSize + ")"));
+            data.add(new RemoveAdapter.Item(var,
+                    logicEditor.o.c(var) || projectDataManager.c(javaName, var, eventName),
+                    R.string.logic_editor_message_currently_used_variable));
         }
 
-        dialog.setView(var2);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), view -> {
-            int childCount = viewGroup.getChildCount();
-
-            for (int i = 0; i < childCount; i++) {
-                if (viewGroup.getChildAt(i) instanceof CheckBox) {
-                    CheckBox variable = (CheckBox) viewGroup.getChildAt(i);
-                    String variableName = variable.getText().toString();
-
-                    if (variable.isChecked()) {
-                        // Since an in-use Variable can't be checked, just remove it
-                        logicEditor.m(variableName);
-                    }
+        dialog.setView(recyclerView);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), v -> {
+            for (RemoveAdapter.Item item : data) {
+                if (item.type == RemoveAdapter.Item.TYPE_ITEM && item.isChecked) {
+                    logicEditor.m(item.text);
                 }
             }
             dialog.dismiss();
@@ -404,5 +424,104 @@ public class LogicClickListener implements View.OnClickListener {
             }
         });
         return checkBox;
+    }
+
+    private static class RemoveAdapter extends RecyclerView.a<RemoveAdapter.ViewHolder> {
+
+        private final Context context;
+        private final List<Item> data;
+
+        private RemoveAdapter(Context context, List<Item> data) {
+            this.context = context;
+            this.data = data;
+        }
+
+        @Override
+        // RecyclerView.Adapter#getItemCount()
+        public int a() {
+            return data.size();
+        }
+
+        @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.logic_editor_remove_item, parent, false));
+        }
+
+        @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
+            Item item = data.get(position);
+
+            if (item.type == Item.TYPE_TITLE) {
+                holder.title.setVisibility(View.VISIBLE);
+                holder.title.setText(item.text);
+                holder.checkBox.setVisibility(View.GONE);
+            } else {
+                holder.title.setVisibility(View.GONE);
+                holder.checkBox.setVisibility(View.VISIBLE);
+                holder.checkBox.setText(item.text);
+                holder.checkBox.setChecked(item.isChecked);
+
+                holder.checkBox.setOnClickListener(v -> {
+                    boolean isChecked = holder.checkBox.isChecked();
+                    item.isChecked = isChecked;
+                    if (item.type == Item.TYPE_ITEM && isChecked) {
+                        //noinspection ConstantConditions Item#isInUse can't be null if Item#type is Item#TYPE_ITEM
+                        if (item.isInUse) {
+                            //noinspection ConstantConditions Item#inUseMessage can't be null if Item#type is Item#TYPE_ITEM
+                            SketchwareUtil.toastError(Helper.getResString(item.inUseMessage), bB.TOAST_WARNING);
+                            holder.checkBox.performClick();
+                        }
+                    }
+                });
+            }
+        }
+
+        private static class ViewHolder extends RecyclerView.v {
+            public final TextView title;
+            public final CheckBox checkBox;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                title = itemView.findViewById(R.id.title);
+                checkBox = itemView.findViewById(R.id.item);
+            }
+        }
+
+        private static class Item {
+            public static final int TYPE_TITLE = 0;
+            public static final int TYPE_ITEM = 1;
+
+            private final int type;
+            private final String text;
+            private final Boolean isInUse;
+            @StringRes
+            private final Integer inUseMessage;
+
+            private volatile boolean isChecked = false;
+
+            public Item(String title) {
+                type = TYPE_TITLE;
+                text = title;
+                isInUse = null;
+                inUseMessage = null;
+            }
+
+            public Item(String itemName, boolean isInUse, @StringRes int inUseMessage) {
+                type = TYPE_ITEM;
+                text = itemName;
+                this.isInUse = isInUse;
+                this.inUseMessage = inUseMessage;
+            }
+
+            public int getType() {
+                return type;
+            }
+
+            public String getText() {
+                return text;
+            }
+        }
     }
 }
