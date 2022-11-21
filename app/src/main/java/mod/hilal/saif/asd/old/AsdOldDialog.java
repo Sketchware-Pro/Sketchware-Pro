@@ -22,6 +22,7 @@ import a.a.a.Ss;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 
 public class AsdOldDialog extends Dialog {
@@ -186,7 +187,7 @@ public class AsdOldDialog extends Dialog {
     }
 
     public void cancelLis(LogicEditorActivity activity, AsdOldDialog asdOldDialog) {
-        cancel.setOnClickListener(new AsdOldHandlerCodeEditorCancel(asdOldDialog));
+        cancel.setOnClickListener(Helper.getDialogDismissListener(asdOldDialog));
     }
 
     public void setCon(String con) {

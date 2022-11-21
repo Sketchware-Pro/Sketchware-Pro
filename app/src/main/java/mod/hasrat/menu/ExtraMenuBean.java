@@ -757,13 +757,9 @@ public class ExtraMenuBean {
                 content = " " + content;
             }
             logicEditor.a(ss, (Object) content);
-            SketchwareUtil.hideKeyboard(edittext);
             asdOr.dismiss();
         });
-        asdOr.a(Helper.getResString(R.string.common_word_cancel), view -> {
-            SketchwareUtil.hideKeyboard(edittext);
-            asdOr.dismiss();
-        });
+        asdOr.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(asdOr));
         asdOr.show();
     }
 

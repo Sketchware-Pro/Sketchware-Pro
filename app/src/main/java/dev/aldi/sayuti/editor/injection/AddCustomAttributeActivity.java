@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -115,7 +116,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 String newValue = namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
                 if (type.equals("create")) {
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("type", type);
+                    map.put("type", widgetType);
                     map.put("value", newValue);
                     activityInjections.add(map);
                     SketchwareUtil.toast("Added");
@@ -129,11 +130,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
             }
         });
-        cancel.setOnClickListener(v -> dialog.dismiss());
-        dialog.setOnDismissListener(dialog1 -> SketchwareUtil.hideKeyboard());
+        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
         dialog.show();
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         namespace.requestFocus();
-        SketchwareUtil.showKeyboard();
     }
 
     private class CustomAdapter extends BaseAdapter {

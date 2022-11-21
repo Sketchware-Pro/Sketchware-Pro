@@ -46,42 +46,6 @@ public class SketchwareUtil {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    /**
-     * @param v A View which should be visible and "connected" to the currently focused view
-     * @see SketchwareUtil#hideKeyboard()
-     */
-    public static void hideKeyboard(View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
-    /**
-     * Hide the keyboard. This may show the keyboard if it's not opened.
-     * Use {@link SketchwareUtil#hideKeyboard(View)} instead, if possible.
-     *
-     * @see SketchwareUtil#hideKeyboard(View)
-     */
-    public static void hideKeyboard() {
-        InputMethodManager _inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-
-    /**
-     * @param v A View which should be focused (and wants to receive IME input)
-     */
-    public static void showKeyboard(View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(v, 0);
-    }
-
-    /**
-     * Use {@link SketchwareUtil#showKeyboard(View)} instead, if possible.
-     */
-    public static void showKeyboard() {
-        InputMethodManager _inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
     public static void showMessage(Context context, String _s) {
         Toast.makeText(context, _s, Toast.LENGTH_SHORT).show();
     }
@@ -178,13 +142,12 @@ public class SketchwareUtil {
             try (ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(document, "r");
                  FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
                 File temporaryFile = File.createTempFile("document", "." + tempFileExtension);
-                try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {
-                    try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
-                        byte[] buffer = new byte[4096];
-                        int length;
-                        while ((length = inputStream.read(buffer)) > 0) {
-                            bufferedOutputStream.write(buffer, 0, length);
-                        }
+                try (FileOutputStream outputStream = new FileOutputStream(temporaryFile);
+                     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
+                    byte[] buffer = new byte[4096];
+                    int length;
+                    while ((length = inputStream.read(buffer)) > 0) {
+                        bufferedOutputStream.write(buffer, 0, length);
                     }
                 }
 

@@ -56,7 +56,7 @@
             android:name="com.besome.sketch.editor.LogicEditorActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="false"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.besome.sketch.editor.PropertyActivity"
             android:configChanges="orientation|screenSize" />
@@ -271,7 +271,8 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.hilal.saif.activities.android_manifest.AndroidManifestInjectionDetails"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="mod.hilal.saif.activities.tools.BlockSelectorActivity"
             android:configChanges="orientation|screenSize" />

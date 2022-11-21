@@ -3091,7 +3091,7 @@ public class Lx {
                 }
             } else {
                 if (processingMultiLineComment) {
-                    if (codeBit == '*') {
+                    if (codeBit == '*' && codeChars.length > i + 1) {
                         char nextChar = codeChars[i + 1];
                         if (nextChar == '/') {
                             formattedCode.append(codeBit);
@@ -3128,7 +3128,7 @@ public class Lx {
                         formattedCode.append(codeBit);
                     }
                 } else {
-                    if (codeBit == '/') {
+                    if (codeBit == '/' && codeChars.length > i + 1) {
                         char nextChar = codeChars[i + 1];
                         if (nextChar == '/') {
                             formattedCode.append(codeBit);
