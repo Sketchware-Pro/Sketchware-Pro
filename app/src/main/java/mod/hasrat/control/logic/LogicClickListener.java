@@ -6,6 +6,7 @@ import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
 import android.text.InputType;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -177,45 +178,34 @@ public class LogicClickListener implements View.OnClickListener {
         RemoveAdapter adapter = new RemoveAdapter(data);
         recyclerView.setAdapter(adapter);
 
-        ArrayList<String> bools = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_BOOLEAN);
-        for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
-            String booleanName = bools.get(i);
-            if (i == 0) data.add(new Item("Boolean (" + boolsSize + ")"));
-            data.add(new Item(booleanName,
-                    R.string.logic_editor_message_currently_used_variable));
-        }
+        List<Pair<List<Integer>, String>> variableTypes = List.of(
+                new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_BOOLEAN), "Boolean (%d)"),
+                new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_NUMBER), "Number (%d)"),
+                new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_STRING), "String (%d)"),
+                new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_MAP), "Map (%d)"),
+                new Pair<>(List.of(5, 6), "Custom Variable (%d)")
+        );
 
-        ArrayList<String> numbers = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_NUMBER);
-        for (int i = 0, intsSize = numbers.size(); i < intsSize; i++) {
-            String number = numbers.get(i);
-            if (i == 0) data.add(new Item("Number (" + intsSize + ")"));
-            data.add(new Item(number,
-                    R.string.logic_editor_message_currently_used_variable));
-        }
+        for (Pair<List<Integer>, String> variableType : variableTypes) {
+            List<String> variableTypeInstances = new LinkedList<>();
 
-        ArrayList<String> strs = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_STRING);
-        for (int i = 0, strsSize = strs.size(); i < strsSize; i++) {
-            String string = strs.get(i);
-            if (i == 0) data.add(new Item("String (" + strsSize + ")"));
-            data.add(new Item(string,
-                    R.string.logic_editor_message_currently_used_variable));
-        }
+            List<Integer> first = variableType.first;
+            for (int i = 0; i < first.size(); i++) {
+                Integer type = first.get(i);
 
-        ArrayList<String> maps = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_MAP);
-        for (int i = 0, mapSize = maps.size(); i < mapSize; i++) {
-            String map = maps.get(i);
-            if (i == 0) data.add(new Item("Map (" + mapSize + ")"));
-            data.add(new Item(map,
-                    R.string.logic_editor_message_currently_used_variable));
-        }
+                if (i == 0) {
+                    variableTypeInstances = getUsedVariable(type);
+                } else {
+                    variableTypeInstances.addAll(getUsedVariable(type));
+                }
+            }
 
-        ArrayList<String> vars = getUsedVariable(5);
-        vars.addAll(getUsedVariable(6));
-        for (int i = 0, varsSize = vars.size(); i < varsSize; i++) {
-            String var = vars.get(i);
-            if (i == 0) data.add(new Item("Custom Variable (" + varsSize + ")"));
-            data.add(new Item(var,
-                    R.string.logic_editor_message_currently_used_variable));
+            for (int i = 0, size = variableTypeInstances.size(); i < size; i++) {
+                String instanceName = variableTypeInstances.get(i);
+
+                if (i == 0) data.add(new Item(String.format(variableType.second, size)));
+                data.add(new Item(instanceName, R.string.logic_editor_message_currently_used_variable));
+            }
         }
 
         dialog.setView(recyclerView);
