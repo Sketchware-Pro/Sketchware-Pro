@@ -2,11 +2,10 @@ package mod.hasrat.control.logic;
 
 import static android.text.TextUtils.isEmpty;
 import static com.besome.sketch.SketchApplication.getContext;
+import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
-import android.content.Context;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -174,43 +173,39 @@ public class LogicClickListener implements View.OnClickListener {
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
 
-        List<RemoveAdapter.Item> data = new LinkedList<>();
-        RemoveAdapter adapter = new RemoveAdapter(logicEditor, data);
+        List<Item> data = new LinkedList<>();
+        RemoveAdapter adapter = new RemoveAdapter(data);
         recyclerView.setAdapter(adapter);
 
         ArrayList<String> bools = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_BOOLEAN);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
             String booleanName = bools.get(i);
-            if (i == 0) data.add(new RemoveAdapter.Item("Boolean (" + boolsSize + ")"));
-            data.add(new RemoveAdapter.Item(booleanName,
-                    logicEditor.o.c(booleanName) || projectDataManager.c(javaName, booleanName, eventName),
+            if (i == 0) data.add(new Item("Boolean (" + boolsSize + ")"));
+            data.add(new Item(booleanName,
                     R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> numbers = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_NUMBER);
         for (int i = 0, intsSize = numbers.size(); i < intsSize; i++) {
             String number = numbers.get(i);
-            if (i == 0) data.add(new RemoveAdapter.Item("Number (" + intsSize + ")"));
-            data.add(new RemoveAdapter.Item(number,
-                    logicEditor.o.c(number) || projectDataManager.c(javaName, number, eventName),
+            if (i == 0) data.add(new Item("Number (" + intsSize + ")"));
+            data.add(new Item(number,
                     R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> strs = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_STRING);
         for (int i = 0, strsSize = strs.size(); i < strsSize; i++) {
             String string = strs.get(i);
-            if (i == 0) data.add(new RemoveAdapter.Item("String (" + strsSize + ")"));
-            data.add(new RemoveAdapter.Item(string,
-                    logicEditor.o.c(string) || projectDataManager.c(javaName, string, eventName),
+            if (i == 0) data.add(new Item("String (" + strsSize + ")"));
+            data.add(new Item(string,
                     R.string.logic_editor_message_currently_used_variable));
         }
 
         ArrayList<String> maps = getUsedVariable(ExtraMenuBean.VARIABLE_TYPE_MAP);
         for (int i = 0, mapSize = maps.size(); i < mapSize; i++) {
             String map = maps.get(i);
-            if (i == 0) data.add(new RemoveAdapter.Item("Map (" + mapSize + ")"));
-            data.add(new RemoveAdapter.Item(map,
-                    logicEditor.o.c(map) || projectDataManager.c(javaName, map, eventName),
+            if (i == 0) data.add(new Item("Map (" + mapSize + ")"));
+            data.add(new Item(map,
                     R.string.logic_editor_message_currently_used_variable));
         }
 
@@ -218,16 +213,15 @@ public class LogicClickListener implements View.OnClickListener {
         vars.addAll(getUsedVariable(6));
         for (int i = 0, varsSize = vars.size(); i < varsSize; i++) {
             String var = vars.get(i);
-            if (i == 0) data.add(new RemoveAdapter.Item("Custom Variable (" + varsSize + ")"));
-            data.add(new RemoveAdapter.Item(var,
-                    logicEditor.o.c(var) || projectDataManager.c(javaName, var, eventName),
+            if (i == 0) data.add(new Item("Custom Variable (" + varsSize + ")"));
+            data.add(new Item(var,
                     R.string.logic_editor_message_currently_used_variable));
         }
 
         dialog.setView(recyclerView);
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), v -> {
-            for (RemoveAdapter.Item item : data) {
-                if (item.type == RemoveAdapter.Item.TYPE_ITEM && item.isChecked) {
+            for (Item item : data) {
+                if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.m(item.text);
                 }
             }
@@ -393,13 +387,6 @@ public class LogicClickListener implements View.OnClickListener {
         return editText;
     }
 
-    private CheckBox getRemoveVariableCheckBox(String variableName) {
-        return commonRemoveCheckBox(
-                logicEditor.o.c(variableName) || projectDataManager.c(javaName, variableName, eventName),
-                variableName,
-                R.string.logic_editor_message_currently_used_variable);
-    }
-
     private CheckBox getRemoveListCheckBox(String listName) {
         return commonRemoveCheckBox(
                 logicEditor.o.b(listName) || projectDataManager.b(javaName, listName, eventName),
@@ -426,13 +413,11 @@ public class LogicClickListener implements View.OnClickListener {
         return checkBox;
     }
 
-    private static class RemoveAdapter extends RecyclerView.a<RemoveAdapter.ViewHolder> {
+    private class RemoveAdapter extends RecyclerView.a<RecyclerView.v> {
 
-        private final Context context;
         private final List<Item> data;
 
-        private RemoveAdapter(Context context, List<Item> data) {
-            this.context = context;
+        private RemoveAdapter(List<Item> data) {
             this.data = data;
         }
 
@@ -444,84 +429,116 @@ public class LogicClickListener implements View.OnClickListener {
 
         @Override
         // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.logic_editor_remove_item, parent, false));
+        public RecyclerView.v b(ViewGroup parent, int viewType) {
+            if (viewType == Item.TYPE_TITLE) {
+                TextView textView = new TextView(logicEditor);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT));
+                textView.setPadding(
+                        dpToPx(2),
+                        dpToPx(4),
+                        dpToPx(4),
+                        dpToPx(4)
+                );
+                textView.setTextSize(14);
+                return new TitleHolder(textView);
+            } else if (viewType == Item.TYPE_ITEM) {
+                CheckBox checkBox = new CheckBox(logicEditor);
+                checkBox.setLayoutParams(new LinearLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT));
+                return new CheckBoxHolder(checkBox);
+            } else {
+                throw new IllegalStateException("Unknown view type " + viewType);
+            }
         }
 
         @Override
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void b(RecyclerView.v holder, int position) {
             Item item = data.get(position);
+            // RecyclerView.ViewHolder#getItemViewType()
+            int viewType = holder.i();
 
-            if (item.type == Item.TYPE_TITLE) {
-                holder.title.setVisibility(View.VISIBLE);
-                holder.title.setText(item.text);
-                holder.checkBox.setVisibility(View.GONE);
-            } else {
-                holder.title.setVisibility(View.GONE);
-                holder.checkBox.setVisibility(View.VISIBLE);
-                holder.checkBox.setText(item.text);
-                holder.checkBox.setChecked(item.isChecked);
+            if (viewType == Item.TYPE_TITLE) {
+                TitleHolder titleHolder = (TitleHolder) holder;
+                titleHolder.title.setText(item.text);
+            } else if (viewType == Item.TYPE_ITEM) {
+                CheckBoxHolder checkBoxHolder = (CheckBoxHolder) holder;
+                checkBoxHolder.checkBox.setText(item.text);
+                checkBoxHolder.checkBox.setChecked(item.isChecked);
 
-                holder.checkBox.setOnClickListener(v -> {
-                    boolean isChecked = holder.checkBox.isChecked();
+                checkBoxHolder.checkBox.setOnClickListener(v -> {
+                    boolean isChecked = checkBoxHolder.checkBox.isChecked();
                     item.isChecked = isChecked;
                     if (item.type == Item.TYPE_ITEM && isChecked) {
-                        //noinspection ConstantConditions Item#isInUse can't be null if Item#type is Item#TYPE_ITEM
-                        if (item.isInUse) {
+                        if (logicEditor.o.c(item.text) || projectDataManager.c(javaName, item.text, eventName)) {
                             //noinspection ConstantConditions Item#inUseMessage can't be null if Item#type is Item#TYPE_ITEM
                             SketchwareUtil.toastError(Helper.getResString(item.inUseMessage), bB.TOAST_WARNING);
-                            holder.checkBox.performClick();
+                            checkBoxHolder.checkBox.performClick();
                         }
                     }
                 });
+            } else {
+                throw new IllegalStateException("Unknown view type " + viewType);
             }
         }
 
-        private static class ViewHolder extends RecyclerView.v {
-            public final TextView title;
+        @Override
+        // RecyclerView.Adapter#getItemViewType(int)
+        public int b(int position) {
+            return data.get(position).type;
+        }
+
+        private class CheckBoxHolder extends RecyclerView.v {
             public final CheckBox checkBox;
 
-            public ViewHolder(View itemView) {
+            public CheckBoxHolder(View itemView) {
                 super(itemView);
-                title = itemView.findViewById(R.id.title);
-                checkBox = itemView.findViewById(R.id.item);
+                checkBox = (CheckBox) itemView;
             }
         }
 
-        private static class Item {
-            public static final int TYPE_TITLE = 0;
-            public static final int TYPE_ITEM = 1;
+        private class TitleHolder extends RecyclerView.v {
+            public final TextView title;
 
-            private final int type;
-            private final String text;
-            private final Boolean isInUse;
-            @StringRes
-            private final Integer inUseMessage;
-
-            private volatile boolean isChecked = false;
-
-            public Item(String title) {
-                type = TYPE_TITLE;
-                text = title;
-                isInUse = null;
-                inUseMessage = null;
+            public TitleHolder(View itemView) {
+                super(itemView);
+                title = (TextView) itemView;
             }
+        }
+    }
 
-            public Item(String itemName, boolean isInUse, @StringRes int inUseMessage) {
-                type = TYPE_ITEM;
-                text = itemName;
-                this.isInUse = isInUse;
-                this.inUseMessage = inUseMessage;
-            }
+    private static class Item {
+        public static final int TYPE_TITLE = 0;
+        public static final int TYPE_ITEM = 1;
 
-            public int getType() {
-                return type;
-            }
+        private final int type;
+        private final String text;
+        @StringRes
+        private final Integer inUseMessage;
 
-            public String getText() {
-                return text;
-            }
+        private boolean isChecked = false;
+
+        public Item(String title) {
+            type = TYPE_TITLE;
+            text = title;
+            inUseMessage = null;
+        }
+
+        public Item(String itemName, @StringRes int inUseMessage) {
+            type = TYPE_ITEM;
+            text = itemName;
+            this.inUseMessage = inUseMessage;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public String getText() {
+            return text;
         }
     }
 }
