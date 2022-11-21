@@ -37,7 +37,6 @@ import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
-import a.a.a.wB;
 import mod.SketchwareUtil;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hasrat.menu.ExtraMenuBean;
@@ -286,44 +285,37 @@ public class LogicClickListener implements View.OnClickListener {
         aB dialog = new aB(logicEditor);
         dialog.b(Helper.getResString(R.string.logic_editor_title_remove_list));
         dialog.a(R.drawable.delete_96);
-        View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
-        ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
 
-        ArrayList<String> listNumbers = getUsedList(ExtraMenuBean.LIST_TYPE_NUMBER);
-        for (int i = 0, listIntSize = listNumbers.size(); i < listIntSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List Integer (" + listIntSize + ")"));
-            viewGroup.addView(getRemoveListCheckBox(listNumbers.get(i)));
+        RecyclerView recyclerView = new RecyclerView(logicEditor);
+        recyclerView.setLayoutManager(new LinearLayoutManager(null));
+
+        List<Item> data = new LinkedList<>();
+        RemoveAdapter adapter = new RemoveAdapter(logicEditor, data,
+                listName -> logicEditor.o.b(listName) || projectDataManager.b(javaName, listName, eventName));
+        recyclerView.setAdapter(adapter);
+
+        List<Pair<Integer, String>> listTypes = List.of(
+                new Pair<>(ExtraMenuBean.LIST_TYPE_NUMBER, "List Integer (%d)"),
+                new Pair<>(ExtraMenuBean.LIST_TYPE_STRING, "List String (%d)"),
+                new Pair<>(ExtraMenuBean.LIST_TYPE_MAP, "List Map (%d)"),
+                new Pair<>(4, "List Custom (%d)")
+        );
+
+        for (Pair<Integer, String> listType : listTypes) {
+            ArrayList<String> lists = getUsedList(listType.first);
+            for (int i = 0, size = lists.size(); i < size; i++) {
+                String instanceName = lists.get(i);
+
+                if (i == 0) data.add(new Item(String.format(listType.second, size)));
+                data.add(new Item(instanceName, R.string.logic_editor_message_currently_used_list));
+            }
         }
 
-        ArrayList<String> listStrs = getUsedList(ExtraMenuBean.LIST_TYPE_STRING);
-        for (int i = 0, listStrSize = listStrs.size(); i < listStrSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List String (" + listStrSize + ")"));
-            viewGroup.addView(getRemoveListCheckBox(listStrs.get(i)));
-        }
-
-        ArrayList<String> listMaps = getUsedList(ExtraMenuBean.LIST_TYPE_MAP);
-        for (int i = 0, listMapSize = listMaps.size(); i < listMapSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List Map (" + listMapSize + ")"));
-            viewGroup.addView(getRemoveListCheckBox(listMaps.get(i)));
-        }
-
-        ArrayList<String> listCustom = getUsedList(4);
-        for (int i = 0, listCustomSize = listCustom.size(); i < listCustomSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List Custom (" + listCustomSize + ")"));
-            viewGroup.addView(getRemoveListCheckBox(listCustom.get(i)));
-        }
-
-        dialog.a(var2);
-        dialog.b(Helper.getResString(R.string.common_word_remove), view -> {
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                if (viewGroup.getChildAt(i) instanceof CheckBox) {
-                    CheckBox list = (CheckBox) viewGroup.getChildAt(i);
-                    String listName = list.getText().toString();
-
-                    if (list.isChecked()) {
-                        // Since an in-use List can't be checked, just remove it
-                        logicEditor.l(listName);
-                    }
+        dialog.a(recyclerView);
+        dialog.b(Helper.getResString(R.string.common_word_remove), v -> {
+            for (Item item : data) {
+                if (item.type == Item.TYPE_ITEM && item.isChecked) {
+                    logicEditor.l(item.text);
                 }
             }
             dialog.dismiss();
@@ -347,19 +339,6 @@ public class LogicClickListener implements View.OnClickListener {
         return textInputLayout;
     }
 
-    private TextView commonTextView(String text) {
-        TextView textView = new TextView(logicEditor);
-        textView.setText(text);
-        textView.setPadding(
-                (int) getDip(2),
-                (int) getDip(4),
-                (int) getDip(4),
-                (int) getDip(4)
-        );
-        textView.setTextSize(14f);
-        return textView;
-    }
-
     private EditText commonEditText(String hint) {
         EditText editText = new EditText(logicEditor);
         editText.setLayoutParams(new LinearLayout.LayoutParams(
@@ -378,32 +357,6 @@ public class LogicClickListener implements View.OnClickListener {
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         return editText;
-    }
-
-    private CheckBox getRemoveListCheckBox(String listName) {
-        return commonRemoveCheckBox(
-                logicEditor.o.b(listName) || projectDataManager.b(javaName, listName, eventName),
-                listName,
-                R.string.logic_editor_message_currently_used_list);
-    }
-
-    private CheckBox commonRemoveCheckBox(boolean hasUses, String name, int toastMessageId) {
-        CheckBox checkBox = new CheckBox(logicEditor);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) getDip(40),
-                1);
-        checkBox.setLayoutParams(params);
-        checkBox.setText(name);
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (buttonView.isChecked()) {
-                if (hasUses) {
-                    SketchwareUtil.toastError(Helper.getResString(toastMessageId), bB.TOAST_WARNING);
-                    buttonView.setChecked(false);
-                }
-            }
-        });
-        return checkBox;
     }
 
     private static class RemoveAdapter extends RecyclerView.a<RecyclerView.v> {
