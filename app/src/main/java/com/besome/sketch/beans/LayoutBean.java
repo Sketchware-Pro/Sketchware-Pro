@@ -104,7 +104,7 @@ public class LayoutBean extends nA implements Parcelable {
         backgroundResource = parcel.readString();
     }
 
-    public static Parcelable.Creator getCreator() {
+    public static Parcelable.Creator<LayoutBean> getCreator() {
         return CREATOR;
     }
 
