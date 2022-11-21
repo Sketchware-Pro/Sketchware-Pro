@@ -5,6 +5,7 @@ import static com.besome.sketch.SketchApplication.getContext;
 import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
+import android.content.Context;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import a.a.a.ZB;
 import a.a.a.aB;
@@ -175,7 +177,8 @@ public class LogicClickListener implements View.OnClickListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
 
         List<Item> data = new LinkedList<>();
-        RemoveAdapter adapter = new RemoveAdapter(data);
+        RemoveAdapter adapter = new RemoveAdapter(logicEditor, data,
+                variableName -> logicEditor.o.c(variableName) || projectDataManager.c(javaName, variableName, eventName));
         recyclerView.setAdapter(adapter);
 
         List<Pair<List<Integer>, String>> variableTypes = List.of(
@@ -403,12 +406,18 @@ public class LogicClickListener implements View.OnClickListener {
         return checkBox;
     }
 
-    private class RemoveAdapter extends RecyclerView.a<RecyclerView.v> {
-
+    private static class RemoveAdapter extends RecyclerView.a<RecyclerView.v> {
+        private final Context context;
         private final List<Item> data;
+        private final Function<String, Boolean> isInUseChecker;
 
-        private RemoveAdapter(List<Item> data) {
+        /**
+         * @param isInUseChecker Function that should return whether the name (parameter) is in use.
+         */
+        private RemoveAdapter(Context context, List<Item> data, Function<String, Boolean> isInUseChecker) {
+            this.context = context;
             this.data = data;
+            this.isInUseChecker = isInUseChecker;
         }
 
         @Override
@@ -421,7 +430,7 @@ public class LogicClickListener implements View.OnClickListener {
         // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public RecyclerView.v b(ViewGroup parent, int viewType) {
             if (viewType == Item.TYPE_TITLE) {
-                TextView textView = new TextView(logicEditor);
+                TextView textView = new TextView(context);
                 textView.setLayoutParams(new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT));
@@ -434,7 +443,7 @@ public class LogicClickListener implements View.OnClickListener {
                 textView.setTextSize(14);
                 return new TitleHolder(textView);
             } else if (viewType == Item.TYPE_ITEM) {
-                CheckBox checkBox = new CheckBox(logicEditor);
+                CheckBox checkBox = new CheckBox(context);
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT));
@@ -463,7 +472,7 @@ public class LogicClickListener implements View.OnClickListener {
                     boolean isChecked = checkBoxHolder.checkBox.isChecked();
                     item.isChecked = isChecked;
                     if (item.type == Item.TYPE_ITEM && isChecked) {
-                        if (logicEditor.o.c(item.text) || projectDataManager.c(javaName, item.text, eventName)) {
+                        if (isInUseChecker.apply(item.text)) {
                             //noinspection ConstantConditions Item#inUseMessage can't be null if Item#type is Item#TYPE_ITEM
                             SketchwareUtil.toastError(Helper.getResString(item.inUseMessage), bB.TOAST_WARNING);
                             checkBoxHolder.checkBox.performClick();
@@ -481,7 +490,7 @@ public class LogicClickListener implements View.OnClickListener {
             return data.get(position).type;
         }
 
-        private class CheckBoxHolder extends RecyclerView.v {
+        private static class CheckBoxHolder extends RecyclerView.v {
             public final CheckBox checkBox;
 
             public CheckBoxHolder(View itemView) {
@@ -490,7 +499,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
         }
 
-        private class TitleHolder extends RecyclerView.v {
+        private static class TitleHolder extends RecyclerView.v {
             public final TextView title;
 
             public TitleHolder(View itemView) {
