@@ -693,85 +693,70 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         C();
     }
 
-    public final void a(Ss ss, String str) {
-        aB var3;
-        label54:
-        {
-            var3 = new aB(this);
-            xB var4;
-            Context var5;
-            int var6;
-            if (str.equals("property_image")) {
-                var4 = xB.b();
-                var5 = getContext();
-                var6 = R.string.logic_editor_title_select_image;
-            } else {
-                if (!str.equals("property_background_resource")) {
-                    break label54;
-                }
-
-                var4 = xB.b();
-                var5 = getContext();
-                var6 = R.string.logic_editor_title_select_image_background;
-            }
-
-            var3.b(var4.a(var5, var6));
+    public final void pickImage(Ss ss, String str) {
+        boolean selectingBackgroundImage = "property_background_resource".equals(str);
+        boolean selectingImage = !selectingBackgroundImage && "property_image".equals(str);
+        aB dialog = new aB(this);
+        if (selectingImage) {
+            dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_image));
+        } else if (selectingBackgroundImage) {
+            dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_image_background));
         }
 
-        var3.a(R.drawable.ic_picture_48dp);
-        View var12 = wB.a(this, R.layout.property_popup_selector_color);
-        RadioGroup var7 = var12.findViewById(R.id.rg);
-        LinearLayout var11 = var12.findViewById(R.id.content);
-        ArrayList<String> var8 = jC.d(B).m();
+        dialog.a(R.drawable.ic_picture_48dp);
+        View customView = wB.a(this, R.layout.property_popup_selector_color);
+        RadioGroup radioGroup = customView.findViewById(R.id.rg);
+        LinearLayout content = customView.findViewById(R.id.content);
+        ArrayList<String> images = jC.d(B).m();
         if (xq.a(B) || xq.b(B)) {
-            if ("property_image".equals(str)) {
-                var8.add(0, "default_image");
-            } else if ("property_background_resource".equals(str)) {
-                var8.add(0, "NONE");
+            if (selectingImage) {
+                images.add(0, "default_image");
+            } else if (selectingBackgroundImage) {
+                images.add(0, "NONE");
             }
         }
 
-        for (String value : var8) {
-            str = value;
-            RadioButton var9 = c(str);
-            var7.addView(var9);
-            if (str.equals(ss.getArgValue())) {
-                var9.setChecked(true);
+        for (String image : images) {
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText("");
+            radioButton.setTag(image);
+            radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
+            radioButton.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    (int) (wB.a(this, 1f) * 60)));
+
+            radioGroup.addView(radioButton);
+            if (image.equals(ss.getArgValue())) {
+                radioButton.setChecked(true);
             }
 
-            LinearLayout var10;
-            if ((xq.a(B) || xq.b(B)) && !str.equals("default_image") && !"NONE".equals(str)) {
-                var10 = a(str, false);
-            } else {
-                var10 = a(str, true);
-            }
-
-            var10.setOnClickListener(v -> {
-                RadioButton button = (RadioButton) var7.getChildAt(var11.indexOfChild(v));
+            LinearLayout imageLinear = a(image, !((xq.a(B) || xq.b(B)) && !image.equals("default_image") && !"NONE".equals(image)));
+            imageLinear.setOnClickListener(v -> {
+                RadioButton button = (RadioButton) radioGroup.getChildAt(content.indexOfChild(v));
                 button.setChecked(true);
             });
-            var11.addView(var10);
+            content.addView(imageLinear);
         }
 
-        var3.a(var12);
-        var3.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
-            int childCount = var7.getChildCount();
+        dialog.a(customView);
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+            int childCount = radioGroup.getChildCount();
             int i = 0;
             while (true) {
                 if (i >= childCount) {
                     break;
                 }
-                RadioButton radioButton = (RadioButton) var7.getChildAt(i);
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     a(ss, radioButton.getTag());
                     break;
                 }
                 i++;
             }
-            var3.dismiss();
+            dialog.dismiss();
         });
-        var3.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(var3));
-        var3.show();
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public void a(Ss ss, boolean z) {
@@ -1335,16 +1320,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final boolean b(float f, float f2) {
         return N.b(f, f2);
-    }
-
-    public final RadioButton c(String str) {
-        RadioButton radioButton = new RadioButton(this);
-        radioButton.setText("");
-        radioButton.setTag(str);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (wB.a(this, 1.0f) * 60.0f));
-        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
-        radioButton.setLayoutParams(layoutParams);
-        return radioButton;
     }
 
     public final void c(int i, String str) {

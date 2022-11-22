@@ -148,11 +148,11 @@ public class ExtraMenuBean {
             case "m":
                 switch (menuName) {
                     case "resource":
-                        logicEditor.a(ss, "property_image");
+                        logicEditor.pickImage(ss, "property_image");
                         return;
 
                     case "resource_bg":
-                        logicEditor.a(ss, "property_background_resource");
+                        logicEditor.pickImage(ss, "property_background_resource");
                         return;
 
                     case "sound":
