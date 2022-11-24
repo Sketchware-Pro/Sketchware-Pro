@@ -8,18 +8,18 @@ import com.google.gson.annotations.Expose;
 import a.a.a.nA;
 
 public class TextBean extends nA implements Parcelable {
-    public static final Parcelable.Creator<TextBean> CREATOR = new Parcelable.Creator<TextBean>() {
-
+    public static final Parcelable.Creator<TextBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public TextBean createFromParcel(Parcel parcel) {
-            return new TextBean(parcel);
+        public TextBean createFromParcel(Parcel source) {
+            return new TextBean(source);
         }
 
         @Override
-        public TextBean[] newArray(int i) {
-            return new TextBean[i];
+        public TextBean[] newArray(int size) {
+            return new TextBean[size];
         }
     };
+
     public static int IME_OPTION_DONE = 6;
     public static int IME_OPTION_GO = 2;
     public static int IME_OPTION_NEXT = 5;

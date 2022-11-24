@@ -8,18 +8,18 @@ import com.google.gson.annotations.Expose;
 import a.a.a.nA;
 
 public class LayoutBean extends nA implements Parcelable {
-    public static final Parcelable.Creator<LayoutBean> CREATOR = new Parcelable.Creator<LayoutBean>() {
-
+    public static final Parcelable.Creator<LayoutBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public LayoutBean createFromParcel(Parcel parcel) {
-            return new LayoutBean(parcel);
+        public LayoutBean createFromParcel(Parcel source) {
+            return new LayoutBean(source);
         }
 
         @Override
-        public LayoutBean[] newArray(int i) {
-            return new LayoutBean[i];
+        public LayoutBean[] newArray(int size) {
+            return new LayoutBean[size];
         }
     };
+
     public static final int GRAVITY_BOTTOM = 80;
     public static final int GRAVITY_CENTER = 17;
     public static final int GRAVITY_CENTER_HORIZONTAL = 1;

@@ -7,8 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.sketchware.remod.R;
 
 public class EventBean extends CollapsibleBean implements Parcelable {
-
-    public static final Parcelable.Creator<EventBean> CREATOR = new Parcelable.Creator<EventBean>() {
+    public static final Parcelable.Creator<EventBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public EventBean createFromParcel(Parcel source) {
             return new EventBean(source);

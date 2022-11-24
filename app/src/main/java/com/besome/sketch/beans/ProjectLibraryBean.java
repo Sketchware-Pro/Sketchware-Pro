@@ -9,17 +9,18 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 
 public class ProjectLibraryBean implements Parcelable {
-    public static final Parcelable.Creator<ProjectLibraryBean> CREATOR = new Parcelable.Creator<ProjectLibraryBean>() {
+    public static final Parcelable.Creator<ProjectLibraryBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public ProjectLibraryBean createFromParcel(Parcel parcel) {
-            return new ProjectLibraryBean(parcel);
+        public ProjectLibraryBean createFromParcel(Parcel source) {
+            return new ProjectLibraryBean(source);
         }
 
         @Override
-        public ProjectLibraryBean[] newArray(int i) {
-            return new ProjectLibraryBean[i];
+        public ProjectLibraryBean[] newArray(int size) {
+            return new ProjectLibraryBean[size];
         }
     };
+
     public static final String LIB_USE_N = "N";
     public static final String LIB_USE_Y = "Y";
     public static final int PROJECT_LIB_TYPE_ADMOB = 2;

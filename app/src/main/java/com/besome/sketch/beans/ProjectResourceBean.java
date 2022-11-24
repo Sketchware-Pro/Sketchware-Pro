@@ -6,18 +6,18 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 
 public class ProjectResourceBean extends SelectableBean implements Parcelable {
-    public static final Parcelable.Creator<ProjectResourceBean> CREATOR = new Parcelable.Creator<ProjectResourceBean>() {
-
+    public static final Parcelable.Creator<ProjectResourceBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public ProjectResourceBean createFromParcel(Parcel parcel) {
-            return new ProjectResourceBean(parcel);
+        public ProjectResourceBean createFromParcel(Parcel source) {
+            return new ProjectResourceBean(source);
         }
 
         @Override
-        public ProjectResourceBean[] newArray(int i) {
-            return new ProjectResourceBean[i];
+        public ProjectResourceBean[] newArray(int size) {
+            return new ProjectResourceBean[size];
         }
     };
+
     public static int PROJECT_RES_TYPE_FILE = 1;
     public static int PROJECT_RES_TYPE_RESOURCE;
     public int curSoundPosition;

@@ -11,6 +11,17 @@ import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class ComponentBean extends CollapsibleBean implements Parcelable {
+    public static final Parcelable.Creator<ComponentBean> CREATOR = new Parcelable.Creator<>() {
+        @Override
+        public ComponentBean createFromParcel(Parcel source) {
+            return new ComponentBean(source);
+        }
+
+        @Override
+        public ComponentBean[] newArray(int size) {
+            return new ComponentBean[size];
+        }
+    };
 
     public static final int COMPONENT_TYPE_INTENT = 1;
     public static final int COMPONENT_TYPE_SHAREDPREF = 2;
@@ -46,18 +57,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final int COMPONENT_TYPE_ONESIGNAL = 32;
     public static final int COMPONENT_TYPE_FACEBOOK_ADS_BANNER = 33;
     public static final int COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL = 34;
-
-    public static final Parcelable.Creator<ComponentBean> CREATOR = new Parcelable.Creator<ComponentBean>() {
-        @Override
-        public ComponentBean createFromParcel(Parcel source) {
-            return new ComponentBean(source);
-        }
-
-        @Override
-        public ComponentBean[] newArray(int size) {
-            return new ComponentBean[size];
-        }
-    };
 
     public Gx classInfo;
     @Expose

@@ -6,17 +6,18 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 
 public class AdUnitBean implements Parcelable {
-    public static final Parcelable.Creator<AdUnitBean> CREATOR = new Parcelable.Creator<AdUnitBean>() {
+    public static final Parcelable.Creator<AdUnitBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public AdUnitBean createFromParcel(Parcel parcel) {
-            return new AdUnitBean(parcel);
+        public AdUnitBean createFromParcel(Parcel source) {
+            return new AdUnitBean(source);
         }
 
         @Override
-        public AdUnitBean[] newArray(int i) {
-            return new AdUnitBean[i];
+        public AdUnitBean[] newArray(int size) {
+            return new AdUnitBean[size];
         }
     };
+
     @Expose
     public String id;
     @Expose

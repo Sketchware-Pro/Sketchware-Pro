@@ -4,19 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class InAppBean implements Parcelable {
-    public static final Parcelable.Creator<InAppBean> CREATOR = new Parcelable.Creator<InAppBean>() {
-        /* class com.besome.sketch.beans.InAppBean.AnonymousClass1 */
-
-        @Override // android.os.Parcelable.Creator
-        public InAppBean createFromParcel(Parcel parcel) {
-            return new InAppBean(parcel);
+    public static final Parcelable.Creator<InAppBean> CREATOR = new Parcelable.Creator<>() {
+        @Override
+        public InAppBean createFromParcel(Parcel source) {
+            return new InAppBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public InAppBean[] newArray(int i) {
-            return new InAppBean[i];
+        @Override
+        public InAppBean[] newArray(int size) {
+            return new InAppBean[size];
         }
     };
+
     public String choose = ProjectLibraryBean.LIB_USE_N;
     public String currency;
     public String desc;

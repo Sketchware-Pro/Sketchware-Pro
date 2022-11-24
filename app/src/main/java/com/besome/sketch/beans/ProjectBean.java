@@ -6,8 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class ProjectBean implements Parcelable {
-
-    public static final Parcelable.Creator<ProjectBean> CREATOR = new Parcelable.Creator<ProjectBean>() {
+    public static final Parcelable.Creator<ProjectBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public ProjectBean createFromParcel(Parcel source) {
             return new ProjectBean(source);

@@ -6,17 +6,18 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 
 public class AdTestDeviceBean implements Parcelable {
-    public static final Parcelable.Creator<AdTestDeviceBean> CREATOR = new Parcelable.Creator<AdTestDeviceBean>() {
+    public static final Parcelable.Creator<AdTestDeviceBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public AdTestDeviceBean createFromParcel(Parcel parcel) {
-            return new AdTestDeviceBean(parcel);
+        public AdTestDeviceBean createFromParcel(Parcel source) {
+            return new AdTestDeviceBean(source);
         }
 
         @Override
-        public AdTestDeviceBean[] newArray(int i) {
-            return new AdTestDeviceBean[i];
+        public AdTestDeviceBean[] newArray(int size) {
+            return new AdTestDeviceBean[size];
         }
     };
+
     @Expose
     public String deviceId;
 

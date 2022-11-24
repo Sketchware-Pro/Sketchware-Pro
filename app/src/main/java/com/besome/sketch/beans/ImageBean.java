@@ -9,18 +9,18 @@ import com.google.gson.annotations.Expose;
 import a.a.a.nA;
 
 public class ImageBean extends nA implements Parcelable {
-    public static final Parcelable.Creator<ImageBean> CREATOR = new Parcelable.Creator<ImageBean>() {
-
-        @Override // android.os.Parcelable.Creator
-        public ImageBean createFromParcel(Parcel parcel) {
-            return new ImageBean(parcel);
+    public static final Parcelable.Creator<ImageBean> CREATOR = new Parcelable.Creator<>() {
+        @Override
+        public ImageBean createFromParcel(Parcel source) {
+            return new ImageBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public ImageBean[] newArray(int i) {
-            return new ImageBean[i];
+        @Override
+        public ImageBean[] newArray(int size) {
+            return new ImageBean[size];
         }
     };
+
     public static final String SCALE_TYPE_CENTER = ImageView.ScaleType.CENTER.name();
     public static final String SCALE_TYPE_CENTER_CROP = ImageView.ScaleType.CENTER_CROP.name();
     public static final String SCALE_TYPE_CENTER_INSIDE = ImageView.ScaleType.CENTER_INSIDE.name();

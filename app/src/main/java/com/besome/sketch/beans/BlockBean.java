@@ -11,8 +11,7 @@ import a.a.a.Gx;
 import a.a.a.mq;
 
 public class BlockBean extends SelectableBean implements Parcelable {
-
-    public static final Parcelable.Creator<BlockBean> CREATOR = new Parcelable.Creator<BlockBean>() {
+    public static final Parcelable.Creator<BlockBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public BlockBean createFromParcel(Parcel source) {
             return new BlockBean(source);

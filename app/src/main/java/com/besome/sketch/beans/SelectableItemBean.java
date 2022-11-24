@@ -6,18 +6,18 @@ import android.os.Parcelable;
 import a.a.a.nA;
 
 public class SelectableItemBean extends nA implements Parcelable {
-    public static final Parcelable.Creator<SelectableItemBean> CREATOR = new Parcelable.Creator<SelectableItemBean>() {
-
+    public static final Parcelable.Creator<SelectableItemBean> CREATOR = new Parcelable.Creator<>() {
         @Override
-        public SelectableItemBean createFromParcel(Parcel parcel) {
-            return new SelectableItemBean(parcel);
+        public SelectableItemBean createFromParcel(Parcel source) {
+            return new SelectableItemBean(source);
         }
 
         @Override
-        public SelectableItemBean[] newArray(int i) {
-            return new SelectableItemBean[i];
+        public SelectableItemBean[] newArray(int size) {
+            return new SelectableItemBean[size];
         }
     };
+
     public static final int SRC_TYPE_NONE = -1;
     public static final int SRC_TYPE_SKETCHWARE_DATA = 1;
     public static final int SRC_TYPE_SKETCHWARE_ICONPACK = 2;

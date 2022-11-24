@@ -6,8 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 
 public class ProjectFileBean extends SelectableBean implements Parcelable {
-
-    public static final Creator<ProjectFileBean> CREATOR = new Creator<ProjectFileBean>() {
+    public static final Creator<ProjectFileBean> CREATOR = new Creator<>() {
         @Override
         public ProjectFileBean createFromParcel(Parcel source) {
             return new ProjectFileBean(source);

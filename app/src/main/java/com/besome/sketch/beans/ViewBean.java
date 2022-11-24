@@ -11,8 +11,7 @@ import a.a.a.nA;
 import mod.agus.jcoderz.beans.ViewBeans;
 
 public class ViewBean extends nA implements Parcelable {
-
-    public static final Parcelable.Creator<ViewBean> CREATOR = new Parcelable.Creator<ViewBean>() {
+    public static final Parcelable.Creator<ViewBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public ViewBean createFromParcel(Parcel source) {
             return new ViewBean(source);

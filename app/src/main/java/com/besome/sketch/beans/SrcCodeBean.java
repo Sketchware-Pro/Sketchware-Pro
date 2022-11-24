@@ -4,8 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SrcCodeBean implements Parcelable {
-
-    public static final Parcelable.Creator<SrcCodeBean> CREATOR = new Parcelable.Creator<SrcCodeBean>() {
+    public static final Parcelable.Creator<SrcCodeBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public SrcCodeBean createFromParcel(Parcel source) {
             return new SrcCodeBean(source);
