@@ -11,8 +11,9 @@ import com.android.tools.r8.OutputMode;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import a.a.a.Dp;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -35,18 +36,18 @@ public class DexCompiler {
             throw new IllegalStateException("Can't use d8 as API level " + Build.VERSION.SDK_INT + " < 26");
         }
 
-        Collection<Path> programFiles = new ArrayList<>();
+        Collection<Path> programFiles = new LinkedList<>();
         if (compileHelper.proguard.isProguardEnabled()) {
-            programFiles.add(new File(compileHelper.yq.classesProGuardPath).toPath());
+            programFiles.add(Paths.get(compileHelper.yq.classesProGuardPath));
         } else {
             for (File file : FileUtil.listFilesRecursively(new File(compileHelper.yq.compiledClassesPath), ".class")) {
                 programFiles.add(file.toPath());
             }
         }
 
-        Collection<Path> libraryFiles = new ArrayList<>();
+        Collection<Path> libraryFiles = new LinkedList<>();
         for (String jarPath : compileHelper.getClasspath().split(":")) {
-            libraryFiles.add(new File(jarPath).toPath());
+            libraryFiles.add(Paths.get(jarPath));
         }
 
         D8.run(D8Command.builder()
