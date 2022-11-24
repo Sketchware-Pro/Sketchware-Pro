@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
+import com.sketchware.remod.R;
 
 import a.a.a.Gx;
 import a.a.a.nA;
@@ -325,61 +326,61 @@ public class ViewBean extends nA implements Parcelable {
     public static int getViewTypeResId(int type) {
         switch (type) {
             case VIEW_TYPE_LAYOUT_LINEAR:
-                return 0x7f07042f;
+                return R.drawable.widget_linear_horizontal;
 
             case VIEW_TYPE_LAYOUT_RELATIVE:
-                return 0x7f070439;
+                return R.drawable.widget_relative_layout;
 
             case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
-                return 0x7f070429;
+                return R.drawable.widget_horizon_scrollview;
 
             case VIEW_TYPE_WIDGET_BUTTON:
-                return 0x7f07041d;
+                return R.drawable.widget_button;
 
             case VIEW_TYPE_WIDGET_TEXTVIEW:
-                return 0x7f070443;
+                return R.drawable.widget_text_view;
 
             case VIEW_TYPE_WIDGET_EDITTEXT:
-                return 0x7f070422;
+                return R.drawable.widget_edit_text;
 
             case VIEW_TYPE_WIDGET_IMAGEVIEW:
-                return 0x7f07042d;
+                return R.drawable.widget_image_view;
 
             case VIEW_TYPE_WIDGET_WEBVIEW:
-                return 0x7f070446;
+                return R.drawable.widget_web_view;
 
             case VIEW_TYPE_WIDGET_PROGRESSBAR:
-                return 0x7f070437;
+                return R.drawable.widget_progress_bar;
 
             case VIEW_TYPE_WIDGET_LISTVIEW:
-                return 0x7f070431;
+                return R.drawable.widget_list_view;
 
             case VIEW_TYPE_WIDGET_SPINNER:
-                return 0x7f070440;
+                return R.drawable.widget_spinner;
 
             case VIEW_TYPE_WIDGET_CHECKBOX:
-                return 0x7f070421;
+                return R.drawable.widget_check_box;
 
             case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
-                return 0x7f07043a;
+                return R.drawable.widget_scrollview;
 
             case VIEW_TYPE_WIDGET_SWITCH:
-                return 0x7f070441;
+                return R.drawable.widget_switch;
 
             case VIEW_TYPE_WIDGET_SEEKBAR:
-                return 0x7f07043b;
+                return R.drawable.widget_seek_bar;
 
             case VIEW_TYPE_WIDGET_CALENDARVIEW:
-                return 0x7f07041f;
+                return R.drawable.widget_calendarview;
 
             case VIEW_TYPE_WIDGET_FAB:
-                return 0x7f070423;
+                return R.drawable.widget_fab;
 
             case VIEW_TYPE_WIDGET_ADVIEW:
-                return 0x7f07041a;
+                return R.drawable.widget_admob;
 
             case VIEW_TYPE_WIDGET_MAPVIEW:
-                return 0x7f070427;
+                return R.drawable.widget_google_map;
 
             default:
                 return ViewBeans.getViewTypeResId(type);

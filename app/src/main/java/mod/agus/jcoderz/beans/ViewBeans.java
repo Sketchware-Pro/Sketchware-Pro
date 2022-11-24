@@ -2,6 +2,7 @@ package mod.agus.jcoderz.beans;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
+import com.sketchware.remod.R;
 
 public class ViewBeans {
 
@@ -87,84 +88,84 @@ public class ViewBeans {
     public static int getViewTypeResId(int id) {
         switch (id) {
             case VIEW_TYPE_WIDGET_RADIOBUTTON:
-                return 2131166264;
+                return R.drawable.widget_radio_button;
 
             case VIEW_TYPE_WIDGET_RATINGBAR:
-                return 2131165475;
+                return R.drawable.color_star_24;
 
             case VIEW_TYPE_WIDGET_VIDEOVIEW:
-                return 2131166259;
+                return R.drawable.widget_mediaplayer;
 
             case VIEW_TYPE_WIDGET_SEARCHVIEW:
-                return 2131165849;
+                return R.drawable.ic_search_color_96dp;
 
             case VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
             case VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
             case VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT:
-                return 2131166242;
+                return R.drawable.widget_edit_text;
 
             case VIEW_TYPE_WIDGET_GRIDVIEW:
             case VIEW_TYPE_WIDGET_RECYCLERVIEW:
-                return 2131165662;
+                return R.drawable.grid_3_48;
 
             case VIEW_TYPE_WIDGET_ANALOGCLOCK:
             case VIEW_TYPE_WIDGET_TIMEPICKER:
             case VIEW_TYPE_WIDGET_DIGITALCLOCK:
-                return 2131166276;
+                return R.drawable.widget_timer;
 
             case VIEW_TYPE_WIDGET_DATEPICKER:
-                return 2131165519;
+                return R.drawable.date_span_96;
 
             case VIEW_TYPE_LAYOUT_TABLAYOUT:
-                return 2131166303;
+                return R.drawable.widget_tab_layout;
 
             case VIEW_TYPE_LAYOUT_VIEWPAGER:
-                return 2131166352;
+                return R.drawable.widget_view_pager;
 
             case VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW:
-                return 2131166314;
+                return R.drawable.widget_bottom_view;
 
             case VIEW_TYPE_WIDGET_BADGEVIEW:
-                return 2131166257;
+                return R.drawable.widget_list_view;
 
             case VIEW_TYPE_WIDGET_PATTERNLOCKVIEW:
-                return 2131166308;
+                return R.drawable.widget_pattern_lock_view;
 
             case VIEW_TYPE_WIDGET_WAVESIDEBAR:
-                return 2131166312;
+                return R.drawable.widget_wave_side_bar;
 
             case VIEW_TYPE_LAYOUT_CARDVIEW:
-                return 2131166299;
+                return R.drawable.widget_cardview;
 
             case VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT:
-                return 2131166351;
+                return R.drawable.widget_collapsing_toolbar;
 
             case VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT:
-                return 2131166320;
+                return R.drawable.widget_swipe_refresh;
 
             case VIEW_TYPE_LAYOUT_RADIOGROUP:
-                return 2131166321;
+                return R.drawable.widget_radiogroup;
 
             case VIEW_TYPE_WIDGET_MATERIALBUTTON:
-                return 2131166353;
+                return R.drawable.widget_material_button;
 
             case VIEW_TYPE_WIDGET_SIGNINBUTTON:
-                return 2131165650;
+                return R.drawable.google_48;
 
             case VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW:
-                return 2131166354;
+                return R.drawable.widget_circle_image;
 
             case VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW:
-                return 2131166355;
+                return R.drawable.widget_lottie;
 
             case VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW:
-                return 2131166356;
+                return R.drawable.widget_youtube;
 
             case VIEW_TYPE_WIDGET_OTPVIEW:
-                return 2131166346;
+                return R.drawable.event_google_signin;
 
             case VIEW_TYPE_WIDGET_CODEVIEW:
-                return 2131166357;
+                return R.drawable.widget_code_view;
 
             default:
                 return id;
