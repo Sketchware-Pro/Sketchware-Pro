@@ -28,6 +28,9 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,6 +46,8 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -245,7 +250,7 @@ public class FileUtil {
     public static void listDir(String path, ArrayList<String> list) {
         File[] listFiles;
         File dir = new File(path);
-        if (!(!dir.exists() || dir.isFile() || (listFiles = dir.listFiles()) == null || listFiles.length <= 0 || list == null)) {
+        if (dir.exists() && !dir.isFile() && (listFiles = dir.listFiles()) != null && listFiles.length > 0 && list != null) {
             list.clear();
             for (File file : listFiles) {
                 list.add(file.getAbsolutePath());
@@ -266,6 +271,26 @@ public class FileUtil {
             }
         }
         return list;
+    }
+
+    @NonNull
+    public static List<File> listFilesRecursively(@NonNull File directory, @Nullable String optionalFilenameExtension) {
+        List<File> files = new LinkedList<>();
+
+        File[] directoryFiles = directory.listFiles();
+        if (directoryFiles != null) {
+            for (File file : directoryFiles) {
+                if (file.isFile()) {
+                    if (optionalFilenameExtension != null && file.getName().endsWith(optionalFilenameExtension)) {
+                        files.add(file);
+                    }
+                } else {
+                    files.addAll(listFilesRecursively(file, optionalFilenameExtension));
+                }
+            }
+        }
+
+        return files;
     }
 
     public static boolean isDirectory(String path) {
