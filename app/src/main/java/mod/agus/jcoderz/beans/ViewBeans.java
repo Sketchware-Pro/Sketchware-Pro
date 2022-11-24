@@ -126,7 +126,7 @@ public class ViewBeans {
                 return R.drawable.widget_bottom_view;
 
             case VIEW_TYPE_WIDGET_BADGEVIEW:
-                return R.drawable.widget_list_view;
+                return R.drawable.item_badge_view;
 
             case VIEW_TYPE_WIDGET_PATTERNLOCKVIEW:
                 return R.drawable.widget_pattern_lock_view;
