@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import a.a.a.Dp;
-import mod.agus.jcoderz.command.ProcessingFiles;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.ProjectSettings;
 
 public class DexCompiler {
@@ -39,8 +39,8 @@ public class DexCompiler {
         if (compileHelper.proguard.isProguardEnabled()) {
             programFiles.add(new File(compileHelper.yq.classesProGuardPath).toPath());
         } else {
-            for (String filePath : ProcessingFiles.getListResource(compileHelper.yq.compiledClassesPath)) {
-                programFiles.add(new File(filePath).toPath());
+            for (File file : FileUtil.listFilesRecursively(new File(compileHelper.yq.compiledClassesPath), ".class")) {
+                programFiles.add(file.toPath());
             }
         }
 
