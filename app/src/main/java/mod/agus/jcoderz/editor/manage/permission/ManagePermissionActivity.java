@@ -133,19 +133,19 @@ public class ManagePermissionActivity extends Activity {
         }
 
         @Override
-        public String getItem(int i) {
-            return namePerm.get(i);
+        public String getItem(int position) {
+            return namePerm.get(position);
         }
 
         @Override
-        public long getItemId(int i) {
-            return i;
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.view_item_permission, null);
+                convertView = getLayoutInflater().inflate(R.layout.view_item_permission, parent, false);
             }
 
             CheckBox checkBox = convertView.findViewById(R.id.checkbox_content);
@@ -159,12 +159,8 @@ public class ManagePermissionActivity extends Activity {
                     frc.listFilePermission.remove(button.getText().toString());
                 }
             });
-            handleChecked(checkBox, position);
+            checkBox.setChecked(frc.getPermissionList().contains(namePerm.get(position)));
             return convertView;
-        }
-
-        public void handleChecked(CheckBox checkBox, int i) {
-            checkBox.setChecked(frc.getPermissionList().contains(namePerm.get(i)));
         }
 
         public void setFilter(ArrayList<String> filter) {
