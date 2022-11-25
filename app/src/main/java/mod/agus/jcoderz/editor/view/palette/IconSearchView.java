@@ -1,31 +1,35 @@
 package mod.agus.jcoderz.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
+
+import mod.agus.jcoderz.beans.ViewBeans;
 
 public class IconSearchView extends IconBase {
 
     public IconSearchView(Context context) {
         super(context);
-        setWidgetImage(2131165849);
+        setWidgetImage(R.drawable.ic_search_color_96dp);
         setWidgetName("SearchView");
     }
 
     @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
-        viewBean.type = 22;
+        viewBean.type = ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.width = -1;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutBean.paddingLeft = 8;
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;
         layoutBean.paddingBottom = 8;
         viewBean.text.hint = getName();
-        viewBean.text.hintColor = -10453621;
+        viewBean.text.hintColor = 0xff607d8b;
         viewBean.convert = getName();
         return viewBean;
     }

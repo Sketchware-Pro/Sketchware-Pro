@@ -3,7 +3,6 @@ package mod.agus.jcoderz.editor.view;
 import android.content.Context;
 import android.view.View;
 
-import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.view.item.ItemLinearLayout;
 
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
@@ -20,6 +19,7 @@ import dev.aldi.sayuti.editor.view.item.ItemTabLayout;
 import dev.aldi.sayuti.editor.view.item.ItemViewPager;
 import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
 import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
+import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
 import mod.agus.jcoderz.editor.view.item.ItemAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.item.ItemDatePicker;
@@ -33,65 +33,90 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 
 public class ViewPanes {
-
-    public static View a(int i, Context context) {
-        switch (i) {
-            case 19:
+    public static View a(int type, Context context) {
+        switch (type) {
+            case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON:
                 return new ItemRadioButton(context);
-            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_RATINGBAR:
                 return new ItemRatingBar(context);
-            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_VIDEOVIEW:
                 return new ItemVideoView(context);
-            case 22:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW:
                 return new ItemSearchView(context);
-            case 23:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
                 return new ItemAutoCompleteTextView(context);
-            case 24:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
                 return new ItemMultiAutoCompleteTextView(context);
-            case 25:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_GRIDVIEW:
                 return new ItemGridView(context);
-            case 26:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_ANALOGCLOCK:
                 return new ItemAnalogClock(context);
-            case 27:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER:
                 return new ItemDatePicker(context);
-            case 28:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER:
                 return new ItemTimePicker(context);
-            case 29:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_DIGITALCLOCK:
                 return new ItemDigitalClock(context);
-            case 30:
+
+            case ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT:
                 return new ItemTabLayout(context);
-            case 31:
+
+            case ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER:
                 return new ItemViewPager(context);
-            case 32:
+
+            case ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW:
                 return new ItemBottomNavigationView(context);
-            case 33:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_BADGEVIEW:
                 return new ItemBadgeView(context);
-            case 34:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_PATTERNLOCKVIEW:
                 return new ItemPatternLockView(context);
-            case 35:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR:
                 return new ItemWaveSideBar(context);
-            case 36:
-            case 37:
-            case 38:
-            case 39:
-            case 40:
+
+            case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW:
+            case ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT:
+            case ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT:
+            case ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT:
+            case ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP:
                 return new ItemLinearLayout(context);
-            case 41:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON:
                 return new ItemMaterialButton(context);
-            case 42:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON:
                 return new ItemGoogleSignInButton(context);
-            case 43:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW:
                 return new ItemCircleImageView(context);
-            case 44:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW:
                 return new ItemLottieAnimation(context);
-            case 45:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW:
                 return new ItemYoutubePlayer(context);
-            case 46:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW:
                 return new ItemOTPView(context);
-            case 47:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW:
                 return new ItemCodeView(context);
-            case 48:
+
+            case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW:
                 return new ItemRecyclerView(context);
+
             default:
                 return null;
         }

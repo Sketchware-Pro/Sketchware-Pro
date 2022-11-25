@@ -5,19 +5,22 @@ import android.content.Context;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
+
+import mod.agus.jcoderz.beans.ViewBeans;
 
 public class IconDigitalClock extends IconBase {
 
     public IconDigitalClock(Context context) {
         super(context);
-        setWidgetImage(2131166276);
+        setWidgetImage(R.drawable.widget_timer);
         setWidgetName("DigitalClock");
     }
 
     @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
-        viewBean.type = 29;
+        viewBean.type = ViewBeans.VIEW_TYPE_WIDGET_DIGITALCLOCK;
         LayoutBean layoutBean = viewBean.layout;
         layoutBean.paddingLeft = 8;
         layoutBean.paddingTop = 8;
