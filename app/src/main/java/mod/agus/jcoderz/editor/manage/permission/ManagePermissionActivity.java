@@ -14,6 +14,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -74,13 +75,13 @@ public class ManagePermissionActivity extends Activity {
     }
 
     public void initToolbar() {
-        ((TextView) findViewById(2131232458)).setText("Permission Manager");
-        ImageView back = findViewById(2131232457);
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Permission Manager");
+        ImageView back = findViewById(R.id.ig_toolbar_back);
         Helper.applyRipple(this, back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        ImageView resetPermissions = findViewById(2131232459);
+        ImageView resetPermissions = findViewById(R.id.ig_toolbar_load_file);
         resetPermissions.setVisibility(View.VISIBLE);
-        resetPermissions.setImageResource(2131165836);
+        resetPermissions.setImageResource(R.drawable.ic_restore_white_24dp);
         resetPermissions.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(ManagePermissionActivity.this);
             builder.setTitle("Reset permissions");
@@ -99,13 +100,13 @@ public class ManagePermissionActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427786);
+        setContentView(R.layout.manage_permission);
         if (getIntent().hasExtra("sc_id")) {
             numProj = getIntent().getStringExtra("sc_id");
             frc = new FileResConfig(numProj);
         }
-        sv = findViewById(2131232363);
-        lv = findViewById(2131232364);
+        sv = findViewById(R.id.search_perm);
+        lv = findViewById(R.id.main_content);
         arrayList = new ArrayList<>();
         checkFile();
         setItems();
@@ -146,10 +147,10 @@ public class ManagePermissionActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427789, null);
+                convertView = getLayoutInflater().inflate(R.layout.view_item_permission, null);
             }
 
-            CheckBox checkBox = convertView.findViewById(2131232370);
+            CheckBox checkBox = convertView.findViewById(R.id.checkbox_content);
             checkBox.setText(namePerm.get(position));
             checkBox.setOnCheckedChangeListener((button, checked) -> {
                 if (checked) {
