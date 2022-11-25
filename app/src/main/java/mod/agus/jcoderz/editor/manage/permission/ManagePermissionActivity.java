@@ -24,17 +24,17 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 public class ManagePermissionActivity extends Activity {
-    public ListAdapter adapter;
-    public ArrayList<String> arrayList;
-    public FileResConfig frc;
-    public ListView lv;
-    public String numProj;
-    public SearchView sv;
+    private ListAdapter adapter;
+    private ArrayList<String> arrayList;
+    private FileResConfig frc;
+    private ListView lv;
+    private String numProj;
+    private SearchView sv;
 
     private void setItems() {
         Parcelable lvSavedState = lv.onSaveInstanceState();
         arrayList = ListPermission.getPermissions();
-        ListAdapter listAdapter = new ListAdapter(arrayList, numProj);
+        ListAdapter listAdapter = new ListAdapter(arrayList);
         adapter = listAdapter;
         lv.setAdapter(listAdapter);
         lv.onRestoreInstanceState(lvSavedState);
@@ -57,13 +57,13 @@ public class ManagePermissionActivity extends Activity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 String lowerCase = newText.toLowerCase();
-                ArrayList<String> arrayList = new ArrayList<>();
-                for (String next : ManagePermissionActivity.this.arrayList) {
+                ArrayList<String> filter = new ArrayList<>();
+                for (String next : arrayList) {
                     if (next.toLowerCase().contains(lowerCase)) {
-                        arrayList.add(next);
+                        filter.add(next);
                     }
                 }
-                adapter.setFilter(arrayList);
+                adapter.setFilter(filter);
                 return true;
             }
 
@@ -120,13 +120,11 @@ public class ManagePermissionActivity extends Activity {
         super.onBackPressed();
     }
 
-    public class ListAdapter extends BaseAdapter {
-        public ArrayList<String> namePerm;
-        public String numProj;
+    private class ListAdapter extends BaseAdapter {
+        private ArrayList<String> namePerm;
 
-        public ListAdapter(ArrayList<String> arrayList, String str) {
+        public ListAdapter(ArrayList<String> arrayList) {
             namePerm = arrayList;
-            numProj = str;
         }
 
         @Override
