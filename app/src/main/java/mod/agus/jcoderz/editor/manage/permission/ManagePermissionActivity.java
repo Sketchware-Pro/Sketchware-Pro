@@ -82,19 +82,18 @@ public class ManagePermissionActivity extends Activity {
         ImageView resetPermissions = findViewById(R.id.ig_toolbar_load_file);
         resetPermissions.setVisibility(View.VISIBLE);
         resetPermissions.setImageResource(R.drawable.ic_restore_white_24dp);
-        resetPermissions.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ManagePermissionActivity.this);
-            builder.setTitle("Reset permissions");
-            builder.setMessage("Are you sure you want to reset all permissions? This cannot be undone!");
-            builder.setPositiveButton("Reset", (dialog, which) -> {
-                FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
-                //As FileResConfig only refreshes permissions during <init>()V, this is required.
-                frc = new FileResConfig(numProj);
-                setItems();
-            });
-            builder.setNegativeButton("Cancel", null);
-            builder.create().show();
-        });
+        resetPermissions.setOnClickListener(v ->
+                new AlertDialog.Builder(this)
+                        .setTitle("Reset permissions")
+                        .setMessage("Are you sure you want to reset all permissions? This cannot be undone!")
+                        .setPositiveButton("Reset", (dialog, which) -> {
+                            FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
+                            //As FileResConfig only refreshes permissions during <init>()V, this is required.
+                            frc = new FileResConfig(numProj);
+                            setItems();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show());
     }
 
     @Override
