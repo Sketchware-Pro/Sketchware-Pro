@@ -106,11 +106,10 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void setupViews() {
-
-        CardView application_card = newCard(-1, -2, 0);
-        LinearLayout application_skin = newLayout(-1, -1, 0);
+        CardView application_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        LinearLayout application_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
         application_card.addView(application_skin);
-        makeup(application_skin, 2131166366, "Application", "Default properties for the app");
+        makeup(application_skin, R.drawable.icons8_app_attrs, "Application", "Default properties for the app");
         base.addView(application_card);
         application_skin.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -122,10 +121,10 @@ public class AndroidManifestInjection extends Activity {
         });
 
         {
-            CardView permission_card = newCard(-1, -2, 0);
-            LinearLayout permission_skin = newLayout(-1, -1, 0);
+            CardView permission_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+            LinearLayout permission_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
             permission_card.addView(permission_skin);
-            makeup(permission_skin, 0x7f07019b, "Permissions", "Add custom Permissions to the app");
+            makeup(permission_skin, R.drawable.event_on_signin_complete_48dp, "Permissions", "Add custom Permissions to the app");
             base.addView(permission_card);
             permission_skin.setOnClickListener(_view -> {
                 Intent inta = new Intent();
@@ -138,18 +137,18 @@ public class AndroidManifestInjection extends Activity {
         }
 
         {
-            CardView permission_card = newCard(-1, -2, 0);
-            LinearLayout permission_skin = newLayout(-1, -1, 0);
+            CardView permission_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+            LinearLayout permission_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
             permission_card.addView(permission_skin);
-            makeup(permission_skin, 0x7f07035b, "Launcher Activity", "Change the default Launcher Activity");
+            makeup(permission_skin, R.drawable.recycling_48, "Launcher Activity", "Change the default Launcher Activity");
             base.addView(permission_card);
             permission_skin.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
         }
 
-        CardView allAct_card = newCard(-1, -2, 0);
-        LinearLayout allAct_skin = newLayout(-1, -1, 0);
+        CardView allAct_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        LinearLayout allAct_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
         allAct_card.addView(allAct_skin);
-        makeup(allAct_skin, 0x7f07049d, "All Activities", "Add attributes for all Activities");
+        makeup(allAct_skin, R.drawable.icons8_all_activities_attrs, "All Activities", "Add attributes for all Activities");
         base.addView(allAct_card);
         allAct_skin.setOnClickListener(v -> {
             Intent inta = new Intent();
@@ -160,10 +159,10 @@ public class AndroidManifestInjection extends Activity {
             startActivity(inta);
         });
 
-        CardView appCom_card = newCard(-1, -2, 0);
-        LinearLayout appCom_skin = newLayout(-1, -1, 0);
+        CardView appCom_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        LinearLayout appCom_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
         appCom_card.addView(appCom_skin);
-        makeup(appCom_skin, 0x7f07049f, "App Components", "Add extra components");
+        makeup(appCom_skin, R.drawable.icons8_app_components, "App Components", "Add extra components");
         base.addView(appCom_card);
         appCom_skin.setOnClickListener(v -> showAppComponentDialog());
 
@@ -179,7 +178,7 @@ public class AndroidManifestInjection extends Activity {
                 (int) getDip(8));
         sub_skin.setFocusable(false);
         sub_skin.setGravity(Gravity.CENTER_VERTICAL);
-        TextView sub = newText("Activities:", 16, false, Color.GRAY, -2, -2, 0);
+        TextView sub = newText("Activities:", 16, false, Color.GRAY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
         sub_skin.addView(sub);
         base.addView(sub_skin);
 
