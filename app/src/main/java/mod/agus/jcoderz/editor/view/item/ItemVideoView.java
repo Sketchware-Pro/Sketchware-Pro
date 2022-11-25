@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -30,12 +31,14 @@ public class ItemVideoView extends LinearLayout implements sy {
         paint.setColor(0x9599d5d0);
         rect = new Rect();
         setDrawingCacheEnabled(true);
-        ImageView f = new ImageView(getContext());
-        f.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-        f.setImageResource(R.drawable.item_video_view);
-        f.setScaleType(ImageView.ScaleType.FIT_XY);
-        f.setPadding(0, 0, 0, 0);
-        addView(f);
+        ImageView background = new ImageView(context);
+        background.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        background.setImageResource(R.drawable.item_video_view);
+        background.setScaleType(ImageView.ScaleType.FIT_XY);
+        background.setPadding(0, 0, 0, 0);
+        addView(background);
         setGravity(Gravity.CENTER);
     }
 
