@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427804);
+        setContentView(R.layout.components_creator);
         if (getIntent().hasExtra("pos")) {
             isEdit = true;
             pos = Integer.parseInt(getIntent().getStringExtra("pos"));
@@ -78,22 +79,22 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     }
 
     private void getViewsById() {
-        coName = findViewById(2131232489);
-        coId = findViewById(2131232490);
-        coTypeName = findViewById(2131232491);
-        coIcon = findViewById(2131232492);
-        selectIcon = findViewById(2131232493);
-        selectIcon.setImageResource(2131165298);
-        coDesc = findViewById(2131232494);
-        coVarName = findViewById(2131232495);
-        coTypeClass = findViewById(2131232496);
-        coBuildClass = findViewById(2131232497);
-        coUrl = findViewById(2131232498);
-        coAddiVar = findViewById(2131232499);
-        coDeAddiVar = findViewById(2131232500);
-        coCustomImport = findViewById(2131232501);
-        cancel = findViewById(2131232502);
-        save = findViewById(2131232503);
+        coName = findViewById(R.id.components_creator_name);
+        coId = findViewById(R.id.components_creator_id);
+        coTypeName = findViewById(R.id.components_creator_typename);
+        coIcon = findViewById(R.id.components_creator_icon);
+        selectIcon = findViewById(R.id.components_creator_iconselector);
+        selectIcon.setImageResource(R.drawable.add_96_blue);
+        coDesc = findViewById(R.id.components_creator_description);
+        coVarName = findViewById(R.id.components_creator_varname);
+        coTypeClass = findViewById(R.id.components_creator_typeclass);
+        coBuildClass = findViewById(R.id.components_creator_buildclass);
+        coUrl = findViewById(R.id.components_creator_url);
+        coAddiVar = findViewById(R.id.components_creator_addirional);
+        coDeAddiVar = findViewById(R.id.components_creator_deadditional);
+        coCustomImport = findViewById(R.id.components_creator_custom);
+        cancel = findViewById(R.id.components_creator_cancel);
+        save = findViewById(R.id.components_creator_save);
     }
 
     private void initializeHelper() {
@@ -175,12 +176,13 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     }
 
     private void setToolbar() {
+        TextView title = findViewById(R.id.tx_toolbar_title);
         if (isEdit) {
-            ((TextView) findViewById(2131232458)).setText(na);
+            title.setText(na);
         } else {
-            ((TextView) findViewById(2131232458)).setText("Create a new component");
+            title.setText("Create a new component");
         }
-        ImageView back_icon = findViewById(2131232457);
+        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(this);
         Helper.applyRippleToToolbarView(back_icon);
     }
