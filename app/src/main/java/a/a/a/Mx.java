@@ -13,14 +13,14 @@ public class Mx {
 
     public void a(String name, int value) {
         Nx integerBuilder = new Nx("integer", true);
-        integerBuilder.a("", "name", name);
+        integerBuilder.addAttribute("", "name", name);
         integerBuilder.a(String.valueOf(value));
         a.a(integerBuilder);
     }
 
     public void a(String name, String value) {
         Nx colorBuilder = new Nx("color", true);
-        colorBuilder.a("", "name", name);
+        colorBuilder.addAttribute("", "name", name);
         colorBuilder.a(value);
         a.a(colorBuilder);
     }
@@ -29,7 +29,7 @@ public class Mx {
         Nx styleBuilder = b.get(styleName);
         if (styleBuilder != null) {
             Nx styleItemBuilder = new Nx("item", true);
-            styleItemBuilder.a("", "name", name);
+            styleItemBuilder.addAttribute("", "name", name);
             styleItemBuilder.a(value);
             styleBuilder.a(styleItemBuilder);
         }
@@ -37,9 +37,9 @@ public class Mx {
 
     public void a(String name, String value, boolean translatable) {
         Nx stringBuilder = new Nx("string", true);
-        stringBuilder.a("", "name", name);
+        stringBuilder.addAttribute("", "name", name);
         if (!translatable) {
-            stringBuilder.a("", "translatable", "false");
+            stringBuilder.addAttribute("", "translatable", "false");
         }
 
         String trimmedValue = value.trim();
@@ -66,9 +66,9 @@ public class Mx {
 
     public void c(String name, String parent) {
         Nx styleBuilder = new Nx("style", true);
-        styleBuilder.a("", "name", name);
+        styleBuilder.addAttribute("", "name", name);
         if (parent.length() > 0) {
-            styleBuilder.a("", "parent", parent);
+            styleBuilder.addAttribute("", "parent", parent);
         }
 
         a.a(styleBuilder);

@@ -632,10 +632,10 @@ public class yq {
         ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, exportingProject);
         if (N.u) {
             Nx pathsTag = new Nx("paths");
-            pathsTag.a("xmlns", "android", "http://schemas.android.com/apk/res/android");
+            pathsTag.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
             Nx externalPathTag = new Nx("external-path");
-            externalPathTag.a("", "name", "external_files");
-            externalPathTag.a("", "path", ".");
+            externalPathTag.addAttribute("", "name", "external_files");
+            externalPathTag.addAttribute("", "path", ".");
             pathsTag.a(externalPathTag);
             srcCodeBeans.add(new SrcCodeBean("provider_paths.xml",
                     CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.toCode())));

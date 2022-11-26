@@ -50,7 +50,7 @@ public class AppCompatInjection {
             for (Map<String, Object> injection : Objects.requireNonNull(projectInjections.get(projectFile.fileName))) {
                 Object value;
                 if (str.toLowerCase().equals(injection.get("type")) && (value = injection.get("value")) instanceof String) {
-                    nx.b((String) value);
+                    nx.addAttributeValue((String) value);
                 }
             }
         }

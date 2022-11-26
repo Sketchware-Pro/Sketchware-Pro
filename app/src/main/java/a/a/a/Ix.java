@@ -42,7 +42,7 @@ public class Ix {
         b = projectFileBeans;
         buildSettings = new BuildSettings(jq.sc_id);
         frc = new FileResConfig(c.sc_id);
-        a.a("xmlns", "android", "http://schemas.android.com/apk/res/android");
+        a.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
     }
 
     /**
@@ -52,13 +52,13 @@ public class Ix {
      */
     private void writeFileProvider(Nx applicationTag) {
         Nx providerTag = new Nx("provider");
-        providerTag.a("android", "authorities", c.packageName + ".provider");
-        providerTag.a("android", "name", "androidx.core.content.FileProvider");
-        providerTag.a("android", "exported", "false");
-        providerTag.a("android", "grantUriPermissions", "true");
+        providerTag.addAttribute("android", "authorities", c.packageName + ".provider");
+        providerTag.addAttribute("android", "name", "androidx.core.content.FileProvider");
+        providerTag.addAttribute("android", "exported", "false");
+        providerTag.addAttribute("android", "grantUriPermissions", "true");
         Nx metadataTag = new Nx("meta-data");
-        metadataTag.a("android", "name", "android.support.FILE_PROVIDER_PATHS");
-        metadataTag.a("android", "resource", "@xml/provider_paths");
+        metadataTag.addAttribute("android", "name", "android.support.FILE_PROVIDER_PATHS");
+        metadataTag.addAttribute("android", "resource", "@xml/provider_paths");
         providerTag.a(metadataTag);
         applicationTag.a(providerTag);
     }
@@ -71,7 +71,7 @@ public class Ix {
      */
     private void writePermission(Nx manifestTag, String permissionName) {
         Nx usesPermissionTag = new Nx("uses-permission");
-        usesPermissionTag.a("android", "name", permissionName);
+        usesPermissionTag.addAttribute("android", "name", permissionName);
         manifestTag.a(usesPermissionTag);
     }
 
@@ -82,42 +82,42 @@ public class Ix {
      */
     private void writeFirebaseMetaData(Nx applicationTag) {
         Nx providerTag = new Nx("provider");
-        providerTag.a("android", "name", "com.google.firebase.provider.FirebaseInitProvider");
-        providerTag.a("android", "authorities", c.packageName + ".firebaseinitprovider");
-        providerTag.a("android", "exported", "false");
-        providerTag.a("android", "initOrder", "100");
+        providerTag.addAttribute("android", "name", "com.google.firebase.provider.FirebaseInitProvider");
+        providerTag.addAttribute("android", "authorities", c.packageName + ".firebaseinitprovider");
+        providerTag.addAttribute("android", "exported", "false");
+        providerTag.addAttribute("android", "initOrder", "100");
         applicationTag.a(providerTag);
         Nx serviceTag = new Nx("service");
-        serviceTag.a("android", "name", "com.google.firebase.components.ComponentDiscoveryService");
-        serviceTag.a("android", "exported", "false");
+        serviceTag.addAttribute("android", "name", "com.google.firebase.components.ComponentDiscoveryService");
+        serviceTag.addAttribute("android", "exported", "false");
         if (c.isFirebaseAuthUsed) {
             Nx metadataTag = new Nx("meta-data");
-            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar");
-            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar");
+            metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.isFirebaseDatabaseUsed) {
             Nx metadataTag = new Nx("meta-data");
-            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar");
-            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar");
+            metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.isFirebaseStorageUsed) {
             Nx metadataTag = new Nx("meta-data");
-            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.storage.StorageRegistrar");
-            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.storage.StorageRegistrar");
+            metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.isDynamicLinkUsed) {
             Nx metadataTag = new Nx("meta-data");
-            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
-            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
+            metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.x.isFCMUsed) {
             Nx metadataTag = new Nx("meta-data");
-            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
-            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
+            metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         applicationTag.a(serviceTag);
@@ -130,8 +130,8 @@ public class Ix {
      */
     private void writeGoogleMapMetaData(Nx applicationTag) {
         Nx metadataTag = new Nx("meta-data");
-        metadataTag.a("android", "name", "com.google.android.geo.API_KEY");
-        metadataTag.a("android", "value", "@string/google_maps_key");
+        metadataTag.addAttribute("android", "name", "com.google.android.geo.API_KEY");
+        metadataTag.addAttribute("android", "value", "@string/google_maps_key");
         applicationTag.a(metadataTag);
     }
 
@@ -142,8 +142,8 @@ public class Ix {
      */
     private void writeLegacyLibrary(Nx applicationTag) {
         Nx usesLibraryTag = new Nx("uses-library");
-        usesLibraryTag.a("android", "name", "org.apache.http.legacy");
-        usesLibraryTag.a("android", "required", "false");
+        usesLibraryTag.addAttribute("android", "name", "org.apache.http.legacy");
+        usesLibraryTag.addAttribute("android", "required", "false");
         applicationTag.a(usesLibraryTag);
     }
 
@@ -154,8 +154,8 @@ public class Ix {
      */
     private void writeGMSVersion(Nx applicationTag) {
         Nx metadataTag = new Nx("meta-data");
-        metadataTag.a("android", "name", "com.google.android.gms.version");
-        metadataTag.a("android", "value", "@integer/google_play_services_version");
+        metadataTag.addAttribute("android", "name", "com.google.android.gms.version");
+        metadataTag.addAttribute("android", "value", "@integer/google_play_services_version");
         applicationTag.a(metadataTag);
     }
 
@@ -168,13 +168,13 @@ public class Ix {
      */
     private void writeBroadcast(Nx applicationTag, String receiverName) {
         Nx receiverTag = new Nx("receiver");
-        receiverTag.a("android", "name", receiverName);
+        receiverTag.addAttribute("android", "name", receiverName);
         Nx intentFilterTag = new Nx("intent-filter");
         Nx actionTag = new Nx("action");
-        actionTag.a("android", "name", receiverName);
+        actionTag.addAttribute("android", "name", receiverName);
         intentFilterTag.a(actionTag);
         if (targetsSdkVersion31OrHigher) {
-            receiverTag.a("android", "exported", "true");
+            receiverTag.addAttribute("android", "exported", "true");
         }
         receiverTag.a(intentFilterTag);
         applicationTag.a(receiverTag);
@@ -182,8 +182,8 @@ public class Ix {
 
     private void writeAdmobAppId(Nx applicationTag) {
         Nx metadataTag = new Nx("meta-data");
-        metadataTag.a("android", "name", "com.google.android.gms.ads.APPLICATION_ID");
-        metadataTag.a("android", "value", c.appId);
+        metadataTag.addAttribute("android", "name", "com.google.android.gms.ads.APPLICATION_ID");
+        metadataTag.addAttribute("android", "value", c.appId);
         applicationTag.a(metadataTag);
     }
 
@@ -195,27 +195,27 @@ public class Ix {
      */
     private void writeService(Nx applicationTag, String serviceName) {
         Nx serviceTag = new Nx("service");
-        serviceTag.a("android", "name", serviceName);
-        serviceTag.a("android", "enabled", "true");
+        serviceTag.addAttribute("android", "name", serviceName);
+        serviceTag.addAttribute("android", "enabled", "true");
         applicationTag.a(serviceTag);
     }
 
     private void writeDLIntentFilter(Nx activityTag) {
         Nx intentFilterTag = new Nx("intent-filter");
         Nx intentFilterActionTag = new Nx("action");
-        intentFilterActionTag.a("android", "name", "android.intent.action.VIEW");
+        intentFilterActionTag.addAttribute("android", "name", "android.intent.action.VIEW");
         Nx intentFilterCategoryDefaultTag = new Nx("category");
-        intentFilterCategoryDefaultTag.a("android", "name", "android.intent.category.DEFAULT");
+        intentFilterCategoryDefaultTag.addAttribute("android", "name", "android.intent.category.DEFAULT");
         Nx intentFilterCategoryBrowsableTag = new Nx("category");
-        intentFilterCategoryBrowsableTag.a("android", "name", "android.intent.category.BROWSABLE");
+        intentFilterCategoryBrowsableTag.addAttribute("android", "name", "android.intent.category.BROWSABLE");
         intentFilterTag.a(intentFilterActionTag);
         intentFilterTag.a(intentFilterCategoryDefaultTag);
         intentFilterTag.a(intentFilterCategoryBrowsableTag);
         for (Pair<String, String> stringStringPair : c.dlDataList) {
             if (!isEmpty(stringStringPair.first) && !isEmpty(stringStringPair.second)) {
                 Nx intentFilterDataTag = new Nx("data");
-                intentFilterDataTag.a("android", "host", stringStringPair.first);
-                intentFilterDataTag.a("android", "scheme", stringStringPair.second);
+                intentFilterDataTag.addAttribute("android", "host", stringStringPair.first);
+                intentFilterDataTag.addAttribute("android", "scheme", stringStringPair.second);
                 if (c.dlDataList.size() != 0) {
                     intentFilterTag.a(intentFilterDataTag);
                 }
@@ -237,7 +237,7 @@ public class Ix {
      */
     public String a() {
         boolean addRequestLegacyExternalStorage = false;
-        a.a("", "package", c.packageName);
+        a.addAttribute("", "package", c.packageName);
 
         if (!c.hasPermissions()) {
             if (c.hasPermission(jq.PERMISSION_CALL_PHONE)) {
@@ -289,21 +289,21 @@ public class Ix {
         AndroidManifestInjector.getP(a, c.sc_id);
 
         Nx applicationTag = new Nx("application");
-        applicationTag.a("android", "allowBackup", "true");
-        applicationTag.a("android", "icon", "@drawable/app_icon");
-        applicationTag.a("android", "label", "@string/app_name");
+        applicationTag.addAttribute("android", "allowBackup", "true");
+        applicationTag.addAttribute("android", "icon", "@drawable/app_icon");
+        applicationTag.addAttribute("android", "label", "@string/app_name");
 
         String applicationClassName = settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication");
         if (c.isDebugBuild || !applicationClassName.equals(".SketchApplication") ||
                 new File(fpu.getPathJava(c.sc_id), "SketchApplication.java").exists()) {
-            applicationTag.a("android", "name", applicationClassName);
+            applicationTag.addAttribute("android", "name", applicationClassName);
         }
         if (addRequestLegacyExternalStorage) {
-            applicationTag.a("android", "requestLegacyExternalStorage", "true");
+            applicationTag.addAttribute("android", "requestLegacyExternalStorage", "true");
         }
         if (!buildSettings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            applicationTag.a("android", "usesCleartextTraffic", "true");
+            applicationTag.addAttribute("android", "usesCleartextTraffic", "true");
         }
         AndroidManifestInjector.getAppAttrs(applicationTag, c.sc_id);
 
@@ -312,57 +312,57 @@ public class Ix {
                 Nx activityTag = new Nx("activity");
 
                 String javaName = projectFileBean.getJavaName();
-                activityTag.a("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
+                activityTag.addAttribute("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
 
                 if (!AndroidManifestInjector.getActivityAttrs(activityTag, c.sc_id, projectFileBean.getJavaName())) {
-                    activityTag.a("android", "configChanges", "orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout");
-                    activityTag.a("android", "hardwareAccelerated", "true");
-                    activityTag.a("android", "supportsPictureInPicture", "true");
+                    activityTag.addAttribute("android", "configChanges", "orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout");
+                    activityTag.addAttribute("android", "hardwareAccelerated", "true");
+                    activityTag.addAttribute("android", "supportsPictureInPicture", "true");
                 }
                 if (!AndroidManifestInjector.isActivityThemeUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     if (c.g) {
                         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN)) {
-                            activityTag.a("android", "theme", "@style/AppTheme.FullScreen");
+                            activityTag.addAttribute("android", "theme", "@style/AppTheme.FullScreen");
                         }
                     } else if (projectFileBean.hasActivityOption(ProjectFileBean.PROJECT_FILE_TYPE_DRAWER)) {
                         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
-                            activityTag.a("android", "theme", "@style/NoStatusBar");
+                            activityTag.addAttribute("android", "theme", "@style/NoStatusBar");
                         } else {
-                            activityTag.a("android", "theme", "@style/FullScreen");
+                            activityTag.addAttribute("android", "theme", "@style/FullScreen");
                         }
                     } else if (!projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
-                        activityTag.a("android", "theme", "@style/NoActionBar");
+                        activityTag.addAttribute("android", "theme", "@style/NoActionBar");
                     }
                 }
                 if (!AndroidManifestInjector.isActivityOrientationUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     int orientation = projectFileBean.orientation;
                     if (orientation == ProjectFileBean.ORIENTATION_PORTRAIT) {
-                        activityTag.a("android", "screenOrientation", "portrait");
+                        activityTag.addAttribute("android", "screenOrientation", "portrait");
                     } else if (orientation == ProjectFileBean.ORIENTATION_LANDSCAPE) {
-                        activityTag.a("android", "screenOrientation", "landscape");
+                        activityTag.addAttribute("android", "screenOrientation", "landscape");
                     }
                 }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
                     if (keyboardSetting.length() > 0) {
-                        activityTag.a("android", "windowSoftInputMode", keyboardSetting);
+                        activityTag.addAttribute("android", "windowSoftInputMode", keyboardSetting);
                     }
                 }
                 if (projectFileBean.fileName.equals(AndroidManifestInjector.getLauncherActivity(c.sc_id))) {
                     Nx intentFilterTag = new Nx("intent-filter");
                     Nx actionTag = new Nx("action");
-                    actionTag.a("android", "name", Intent.ACTION_MAIN);
+                    actionTag.addAttribute("android", "name", Intent.ACTION_MAIN);
                     intentFilterTag.a(actionTag);
                     Nx categoryTag = new Nx("category");
-                    categoryTag.a("android", "name", Intent.CATEGORY_LAUNCHER);
+                    categoryTag.addAttribute("android", "name", Intent.CATEGORY_LAUNCHER);
                     intentFilterTag.a(categoryTag);
                     if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
-                        activityTag.a("android", "exported", "true");
+                        activityTag.addAttribute("android", "exported", "true");
                     }
                     activityTag.a(intentFilterTag);
                 } else if (c.isDynamicLinkUsed) {
                     if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
-                        activityTag.a("android", "exported", "false");
+                        activityTag.addAttribute("android", "exported", "false");
                     }
                     writeDLIntentFilter(activityTag);
                 }
@@ -371,15 +371,15 @@ public class Ix {
         }
         {
             Nx activityTag = new Nx("activity");
-            activityTag.a("android", "name", ".DebugActivity");
-            activityTag.a("android", "screenOrientation", "portrait");
+            activityTag.addAttribute("android", "name", ".DebugActivity");
+            activityTag.addAttribute("android", "screenOrientation", "portrait");
             applicationTag.a(activityTag);
         }
         if (c.isAdMobEnabled) {
             Nx activityTag = new Nx("activity");
-            activityTag.a("android", "name", "com.google.android.gms.ads.AdActivity");
-            activityTag.a("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
-            activityTag.a("android", "theme", "@android:style/Theme.Translucent");
+            activityTag.addAttribute("android", "name", "com.google.android.gms.ads.AdActivity");
+            activityTag.addAttribute("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
+            activityTag.addAttribute("android", "theme", "@android:style/Theme.Translucent");
             applicationTag.a(activityTag);
         }
         if (c.isFirebaseEnabled || c.isAdMobEnabled || c.isMapUsed) {
@@ -436,7 +436,7 @@ public class Ix {
                     String name = nameObject.toString();
                     String value = valueObject.toString();
                     if (name.equals(activityName)) {
-                        activityTag.b(value);
+                        activityTag.addAttributeValue(value);
                         if (value.contains("android:name=")) {
                             specifiedActivityName = true;
                         } else if (value.contains("android:configChanges=")) {
@@ -447,10 +447,10 @@ public class Ix {
             }
         }
         if (!specifiedActivityName) {
-            activityTag.a("android", "name", activityName);
+            activityTag.addAttribute("android", "name", activityName);
         }
         if (!specifiedConfigChanges) {
-            activityTag.a("android", "configChanges", "orientation|screenSize");
+            activityTag.addAttribute("android", "configChanges", "orientation|screenSize");
         }
         applicationTag.a(activityTag);
     }

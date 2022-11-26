@@ -88,7 +88,7 @@ public class AndroidManifestInjector {
                 if (value instanceof String) {
                     if ("_application_permissions".equals(name)) {
                         Nx usesPermissionTag = new Nx("uses-permission");
-                        usesPermissionTag.b((String) value);
+                        usesPermissionTag.addAttributeValue((String) value);
                         nx.a(usesPermissionTag);
                     }
                 } else {
@@ -269,7 +269,7 @@ public class AndroidManifestInjector {
                     Object value = attribute.get("value");
 
                     if (value instanceof String) {
-                        nx.b((String) value);
+                        nx.addAttributeValue((String) value);
 
                         if (!themeInjected && ((String) value).contains("android:theme")) {
                             themeInjected = true;
@@ -284,7 +284,7 @@ public class AndroidManifestInjector {
         }
 
         if (!themeInjected) {
-            nx.b("android:theme=\"@style/AppTheme\"");
+            nx.addAttributeValue("android:theme=\"@style/AppTheme\"");
         }
     }
 
@@ -301,7 +301,7 @@ public class AndroidManifestInjector {
                     Object value = attribute.get("value");
 
                     if (value instanceof String) {
-                        nx.b((String) value);
+                        nx.addAttributeValue((String) value);
                     } else {
                         SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
                     }

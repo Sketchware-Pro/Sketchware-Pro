@@ -36,7 +36,7 @@ public class Nx {
         return str.toString();
     }
 
-    public void a(int position, String namespace, String attr, String value) {
+    public void addNamespaceDeclaration(int position, String namespace, String attr, String value) {
         e.add(position, new AttributeBuilder(namespace, attr, value));
     }
 
@@ -49,11 +49,11 @@ public class Nx {
         c = str;
     }
 
-    public void a(String namespace, String attr, String value) {
+    public void addAttribute(String namespace, String attr, String value) {
         e.add(new AttributeBuilder(namespace, attr, value));
     }
 
-    public void b(String value) {
+    public void addAttributeValue(String value) {
         e.add(new AttributeBuilder(value));
     }
 

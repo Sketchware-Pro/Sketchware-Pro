@@ -59,14 +59,14 @@ public class ConstVarManifest {
 
     public static void writePermission(Nx nx, String permissionName) {
         Nx usesPermissionTag = new Nx("uses-permission");
-        usesPermissionTag.a("android", "name", permissionName);
+        usesPermissionTag.addAttribute("android", "name", permissionName);
         nx.a(usesPermissionTag);
     }
 
     public static void writePermissionMultiLine(Nx nx, String permissionName) {
         Nx permissionTag = new Nx("permission");
-        permissionTag.a("android", "name", permissionName);
-        permissionTag.a("android", "protectionLevel", "signature");
+        permissionTag.addAttribute("android", "name", permissionName);
+        permissionTag.addAttribute("android", "protectionLevel", "signature");
         nx.a(permissionTag);
     }
 }
