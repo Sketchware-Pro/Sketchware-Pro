@@ -98,7 +98,7 @@ public class Nx {
     }
 
     public String c() {
-        return a.replaceAll("\\w*\\..*\\.", "");
+        return Jx.WIDGET_NAME_PATTERN.matcher(a).replaceAll("");
     }
 
     private void b(int indentSize) {

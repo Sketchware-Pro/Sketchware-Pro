@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
@@ -36,6 +37,7 @@ public class yq {
      * <code>/</code> at the end, e.g. <code>sk-pro-default-rtdb.firebaseio.com</code>.
      */
     private static final String FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER = "(-default-rtdb)?\\.[a-z](.?)+";
+    private static final Pattern PACKAGE_PLACEHOLDER_PATTERN = Pattern.compile("<\\?package_name\\?>");
 
     /**
      * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets
@@ -348,11 +350,11 @@ public class yq {
             fileUtil.b(javaFilesPath + File.separator
                             + packageNameAsFolders + File.separator
                             + "DebugActivity.java",
-                    fileUtil.b(
+                    PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
                             context,
                             "debug" + File.separator
                                     + "DebugActivity.java"
-                    ).replaceAll("<\\?package_name\\?>", packageName));
+                    )).replaceAll(packageName));
         }
 
         String customApplicationClassName = new ProjectSettings(sc_id).getValue(ProjectSettings.SETTING_APPLICATION_CLASS,
@@ -361,10 +363,10 @@ public class yq {
         if (!new File(javaDir, "SketchApplication.java").exists() && notUsingCustomApplicationClass) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
-            String sketchApplicationFileContent = fileUtil.b(
+            String sketchApplicationFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
                     context,
                     "debug" + File.separator + "SketchApplication.java"
-            ).replaceAll("<\\?package_name\\?>", packageName);
+            )).replaceAll(packageName);
             if (applyMultiDex) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
                         "Application \\{", "androidx.multidex.MultiDexApplication \\{");
@@ -387,11 +389,11 @@ public class yq {
 
         if (logcatEnabled) {
             if (!new File(javaDir, "SketchLogger.java").exists()) {
-                String sketchLoggerFileContent = fileUtil.b(
+                String sketchLoggerFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
                         context,
                         "debug" + File.separator
                                 + "SketchLogger.java"
-                ).replaceAll("<\\?package_name\\?>", packageName);
+                )).replaceAll(packageName);
 
                 if (!notUsingCustomApplicationClass && customApplicationClassName.charAt(0) == '.') {
                     sketchLoggerFileContent = sketchLoggerFileContent.replaceAll("SketchApplication\\.getContext\\(\\)",
@@ -399,8 +401,8 @@ public class yq {
                 }
 
                 fileUtil.b(javaFilesPath + File.separator
-                                + packageNameAsFolders + File.separator
-                                + "SketchLogger.java", sketchLoggerFileContent);
+                        + packageNameAsFolders + File.separator
+                        + "SketchLogger.java", sketchLoggerFileContent);
             }
         }
     }

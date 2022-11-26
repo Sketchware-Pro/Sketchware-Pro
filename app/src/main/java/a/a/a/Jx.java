@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -26,14 +27,13 @@ import mod.hilal.saif.events.LogicHandler;
 public class Jx {
 
     public static final String EOL = "\r\n";
+    public static final Pattern WIDGET_NAME_PATTERN = Pattern.compile("\\w*\\..*\\.");
     private final ProjectSettings settings;
     private final PermissionManager permissionManager;
     private final String packageName;
     private final ProjectFileBean projectFileBean;
     private final eC projectDataManager;
-    private Hx eventManager;
     private final jq buildConfig;
-    private ArrayList<String> imports = new ArrayList<>();
     /**
      * Fields with static initializer that added Components need,
      * e.g. {"private Timer _timer = new Timer();"}
@@ -60,7 +60,6 @@ public class Jx {
      * Component initializer lines which get added to <code>_initialize(Bundle)</code>
      */
     private final ArrayList<String> componentInitializers = new ArrayList<>();
-    private String onCreateEventCode = "";
     /**
      * Code of More Blocks that have been created
      */
@@ -73,6 +72,9 @@ public class Jx {
      * Filled with request code constants for FilePicker components
      */
     private final ArrayList<String> filePickerRequestCodes = new ArrayList<>();
+    private Hx eventManager;
+    private ArrayList<String> imports = new ArrayList<>();
+    private String onCreateEventCode = "";
 
     public Jx(jq jqVar, ProjectFileBean projectFileBean, eC eCVar) {
         packageName = jqVar.packageName;
@@ -152,6 +154,7 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
+    @SuppressWarnings("DynamicRegexReplaceableByCompiledPattern")
     public String generateCode() {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
@@ -584,7 +587,7 @@ public class Jx {
     }
 
     private String getDrawerViewDeclarationAndAddImports(ViewBean viewBean) {
-        String viewType = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (viewType.equals("")) {
             viewType = viewBean.getClassInfo().a();
         }
@@ -602,7 +605,7 @@ public class Jx {
     }
 
     private String getViewDeclarationAndAddImports(ViewBean viewBean) {
-        String viewType = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (viewType.equals("")) {
             viewType = viewBean.getClassInfo().a();
         }
@@ -774,7 +777,7 @@ public class Jx {
     }
 
     private String getDrawerViewInitializer(ViewBean viewBean) {
-        String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        String replaceAll = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
         }
@@ -800,7 +803,7 @@ public class Jx {
     }
 
     private String getViewInitializer(ViewBean viewBean) {
-        String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        String replaceAll = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
         }
