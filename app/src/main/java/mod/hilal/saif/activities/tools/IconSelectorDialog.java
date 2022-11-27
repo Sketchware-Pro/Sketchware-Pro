@@ -19,16 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class IconSelectorDialog extends Dialog {
 
-    private final ArrayList<Integer> data = new ArrayList<>();
+    private final List<Integer> data;
     private final EditText ed;
     private ViewGroup base;
 
     public IconSelectorDialog(Activity activity, EditText editText) {
         super(activity);
         ed = editText;
+
+        data = new ArrayList<>(2131166368 - 2131165190);
+        for (int i = 2131165190; i < 2131166368; i++) {
+            data.add(i);
+        }
     }
 
     @Override
@@ -54,9 +60,6 @@ public class IconSelectorDialog extends Dialog {
             dismiss();
         });
         base.addView(gridView);
-        for (int i = 2131165190; i < 2131166368; i++) {
-            data.add(i);
-        }
         gridView.setAdapter(new IconListAdapter(data));
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
         if (!ed.getText().toString().isEmpty()) {
@@ -87,9 +90,9 @@ public class IconSelectorDialog extends Dialog {
 
     private class IconListAdapter extends BaseAdapter {
 
-        private final ArrayList<Integer> iconsList;
+        private final List<Integer> iconsList;
 
-        public IconListAdapter(ArrayList<Integer> arrayList) {
+        public IconListAdapter(List<Integer> arrayList) {
             iconsList = arrayList;
         }
 
