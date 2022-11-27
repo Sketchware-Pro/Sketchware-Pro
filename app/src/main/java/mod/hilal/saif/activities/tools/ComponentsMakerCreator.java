@@ -103,23 +103,17 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case 2131232457://back_icon
-            case 2131232502://cancel
-                finish();
-                break;
-
-            case 2131232503://save
-                if (filledIn()) {
-                    save();
-                } else {
-                    SketchwareUtil.toast("Some required fields are empty");
-                }
-                break;
-
-            case 2131232493://selectIcon
-                showIconSelectorDialog();
-                break;
+        int id = v.getId();
+        if (id == R.id.ig_toolbar_back || id == R.id.components_creator_cancel) {
+            finish();
+        } else if (id == R.id.components_creator_save) {
+            if (filledIn()) {
+                save();
+            } else {
+                SketchwareUtil.toast("Some required fields are empty");
+            }
+        } else if (id == R.id.components_creator_iconselector) {
+            showIconSelectorDialog();
         }
     }
 
