@@ -25,7 +25,6 @@ public class IconSelectorDialog extends Dialog {
     private final ArrayList<Integer> data = new ArrayList<>();
     private final EditText ed;
     private ViewGroup base;
-    private RecyclerView dump;
 
     public IconSelectorDialog(Activity activity, EditText editText) {
         super(activity);
@@ -36,7 +35,8 @@ public class IconSelectorDialog extends Dialog {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_events);
-        dump = findViewById(R.id.list_events);
+
+        RecyclerView dump = findViewById(R.id.list_events);
         base = (ViewGroup) dump.getParent();
         base.removeView(dump);
         setUpViews();
@@ -44,13 +44,9 @@ public class IconSelectorDialog extends Dialog {
 
     public void setUpViews() {
         GridView gridView = new GridView(getContext());
-        gridView.setLayoutParams(
-                new LinearLayout.LayoutParams(
+        gridView.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0.0f
-                )
-        );
+                        LinearLayout.LayoutParams.MATCH_PARENT));
         gridView.setNumColumns(6);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gridView.setOnItemClickListener((parent, view, position, id) -> {
@@ -61,34 +57,23 @@ public class IconSelectorDialog extends Dialog {
         for (int i = 2131165190; i < 2131166368; i++) {
             data.add(i);
         }
-        //data.subList(data.indexOf(2131165192), data.indexOf(2131165274)).clear();
         gridView.setAdapter(new IconListAdapter(data));
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
         if (!ed.getText().toString().isEmpty()) {
-            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString()))
-            );
+            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString())));
         }
-
     }
 
-    private View pallette(int resourceId) {
+    private View createIcon(int resourceId) {
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(
-                new LinearLayout.LayoutParams(
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0.0f
-                )
-        );
+                        LinearLayout.LayoutParams.MATCH_PARENT));
         linearLayout.setGravity(Gravity.CENTER);
         ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(
-                new LinearLayout.LayoutParams(
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(
                         (int) getDip(50),
-                        (int) getDip(50),
-                        0.0f
-                )
-        );
+                        (int) getDip(50)));
         imageView.setImageResource(resourceId);
         imageView.setPadding(
                 (int) getDip(4),
@@ -98,11 +83,6 @@ public class IconSelectorDialog extends Dialog {
         );
         linearLayout.addView(imageView);
         return linearLayout;
-    }
-
-    @Override
-    public void show() {
-        super.show();
     }
 
     private class IconListAdapter extends BaseAdapter {
@@ -130,7 +110,7 @@ public class IconSelectorDialog extends Dialog {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return pallette(getItem(position));
+            return createIcon(getItem(position));
         }
     }
 }
