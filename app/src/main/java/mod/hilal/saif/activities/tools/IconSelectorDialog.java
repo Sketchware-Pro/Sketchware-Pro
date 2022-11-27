@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 
 public class IconSelectorDialog extends Dialog {
@@ -33,8 +35,8 @@ public class IconSelectorDialog extends Dialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427775);
-        dump = findViewById(2131231449);
+        setContentView(R.layout.view_events);
+        dump = findViewById(R.id.list_events);
         base = (ViewGroup) dump.getParent();
         base.removeView(dump);
         setUpViews();
