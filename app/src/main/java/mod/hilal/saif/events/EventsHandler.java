@@ -14,6 +14,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
+import mod.jbk.util.OldResourceIdMapper;
 
 public class EventsHandler {
 
@@ -258,7 +259,7 @@ public class EventsHandler {
 
                                 if (icon instanceof String) {
                                     try {
-                                        return Integer.parseInt((String) icon);
+                                        return OldResourceIdMapper.getDrawableFromOldResourceId(Integer.parseInt((String) icon));
                                     } catch (NumberFormatException e) {
                                         SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
                                         return R.drawable.android_icon;

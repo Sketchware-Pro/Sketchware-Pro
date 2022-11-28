@@ -21,6 +21,8 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import mod.jbk.util.OldResourceIdMapper;
+
 public class IconSelectorDialog extends Dialog {
 
     private final List<Integer> data;
@@ -31,8 +33,8 @@ public class IconSelectorDialog extends Dialog {
         super(activity);
         ed = editText;
 
-        data = new ArrayList<>(2131166368 - 2131165190);
-        for (int i = 2131165190; i < 2131166368; i++) {
+        data = new ArrayList<>(OldResourceIdMapper.HIGHEST_ID - OldResourceIdMapper.LOWEST_ID);
+        for (int i = OldResourceIdMapper.LOWEST_ID; i < OldResourceIdMapper.HIGHEST_ID; i++) {
             data.add(i);
         }
     }
@@ -67,7 +69,7 @@ public class IconSelectorDialog extends Dialog {
         }
     }
 
-    private View createIcon(int resourceId) {
+    private View createIcon(int oldResourceId) {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -77,7 +79,7 @@ public class IconSelectorDialog extends Dialog {
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
                         (int) getDip(50),
                         (int) getDip(50)));
-        imageView.setImageResource(resourceId);
+        imageView.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId));
         imageView.setPadding(
                 (int) getDip(4),
                 (int) getDip(4),

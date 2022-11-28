@@ -19,6 +19,7 @@ import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.OldResourceIdMapper;
 //responsible code :
 //ComponentBean == sketchware / beans √
 //Manage components == agus /component √
@@ -183,7 +184,7 @@ public class ComponentsHandler {
 
                             if (iconObject instanceof String) {
                                 try {
-                                    return Integer.parseInt((String) iconObject);
+                                    return OldResourceIdMapper.getDrawableFromOldResourceId(Integer.parseInt((String) iconObject));
                                 } catch (NumberFormatException e) {
                                     SketchwareUtil.toastError("Invalid icon entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                                     break;
