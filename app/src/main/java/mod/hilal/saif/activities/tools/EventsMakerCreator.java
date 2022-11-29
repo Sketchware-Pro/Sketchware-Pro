@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.OldResourceIdMapper;
 
 public class EventsMakerCreator extends Activity {
 
@@ -32,6 +34,7 @@ public class EventsMakerCreator extends Activity {
     private EditText eventCode;
     private EditText eventDesc;
     private EditText eventIcon;
+    private TextInputLayout eventIconTil;
     private EditText eventName;
     private EditText eventParams;
     private EditText eventSpec;
@@ -100,6 +103,7 @@ public class EventsMakerCreator extends Activity {
         EditText eventListener = findViewById(R.id.events_creator_listenername);
         ((View) eventListener.getParent().getParent()).setVisibility(View.GONE);
         eventIcon = findViewById(R.id.events_creator_icon);
+        eventIconTil = findViewById(R.id.events_creator_icon_til);
         eventDesc = findViewById(R.id.events_creator_desc);
         eventParams = findViewById(R.id.events_creator_params);
         eventSpec = findViewById(R.id.events_creator_spec);
@@ -116,6 +120,7 @@ public class EventsMakerCreator extends Activity {
             eventIcon.setText("2131165298");
             ((View) eventIcon.getParent().getParent().getParent()).setVisibility(View.GONE);
         }
+        Helper.addClearErrorOnTextChangeTextWatcher(eventIconTil);
     }
 
     private void setupViews() {
@@ -131,6 +136,11 @@ public class EventsMakerCreator extends Activity {
     private void save() {
         if (!filledIn()) {
             SketchwareUtil.toast("Some required fields are empty!");
+            return;
+        }
+        if (!OldResourceIdMapper.isValidIconId(eventIcon.getText().toString())) {
+            eventIconTil.setError("Invalid icon ID");
+            eventIcon.requestFocus();
             return;
         }
         ArrayList<HashMap<String, Object>> arrayList;

@@ -18,6 +18,7 @@ import android.view.View;
 
 import androidx.annotation.StringRes;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 
 import a.a.a.xB;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.lib.BaseTextWatcher;
 
 public class Helper {
 
@@ -149,6 +151,15 @@ public class Helper {
         paths.clear();
         paths.addAll(directories);
         paths.addAll(files);
+    }
+
+    public static void addClearErrorOnTextChangeTextWatcher(TextInputLayout target) {
+        target.getEditText().addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                target.setError(null);
+            }
+        });
     }
 
     /**

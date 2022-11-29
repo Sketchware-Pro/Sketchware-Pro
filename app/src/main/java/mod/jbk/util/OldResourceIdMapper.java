@@ -2374,4 +2374,16 @@ public class OldResourceIdMapper {
                 return 0;
         }
     }
+
+    public static boolean isValidIconId(String idString) {
+        int id;
+
+        try {
+            id = Integer.parseInt(idString);
+        } catch (NumberFormatException e) {
+            id = -1;
+        }
+
+        return id >= OldResourceIdMapper.LOWEST_ID && id <= OldResourceIdMapper.HIGHEST_ID;
+    }
 }
