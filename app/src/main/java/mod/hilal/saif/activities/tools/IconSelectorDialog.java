@@ -66,18 +66,8 @@ public class IconSelectorDialog extends Dialog {
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
 
         String iconIdInput = ed.getText().toString();
-        if (!iconIdInput.isEmpty()) {
-            int id;
-
-            try {
-                id = Integer.parseInt(iconIdInput);
-            } catch (NumberFormatException e) {
-                id = -1;
-            }
-
-            if (id >= OldResourceIdMapper.LOWEST_ID && id <= OldResourceIdMapper.HIGHEST_ID) {
-                gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(iconIdInput)));
-            }
+        if (!iconIdInput.isEmpty() && OldResourceIdMapper.isValidIconId(iconIdInput)) {
+            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(iconIdInput)));
         }
     }
 
