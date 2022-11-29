@@ -110,7 +110,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:layout_weight="1"
