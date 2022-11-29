@@ -53,8 +53,8 @@ public class IconSelectorDialog extends Dialog {
     public void setUpViews() {
         GridView gridView = new GridView(getContext());
         gridView.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
         gridView.setNumColumns(6);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gridView.setOnItemClickListener((parent, view, position, id) -> {
@@ -64,21 +64,33 @@ public class IconSelectorDialog extends Dialog {
         base.addView(gridView);
         gridView.setAdapter(new IconListAdapter(data));
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
-        if (!ed.getText().toString().isEmpty()) {
-            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString())));
+
+        String iconIdInput = ed.getText().toString();
+        if (!iconIdInput.isEmpty()) {
+            int id;
+
+            try {
+                id = Integer.parseInt(iconIdInput);
+            } catch (NumberFormatException e) {
+                id = -1;
+            }
+
+            if (id >= OldResourceIdMapper.LOWEST_ID && id <= OldResourceIdMapper.HIGHEST_ID) {
+                gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(iconIdInput)));
+            }
         }
     }
 
     private View createIcon(int oldResourceId) {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
         linearLayout.setGravity(Gravity.CENTER);
         ImageView imageView = new ImageView(getContext());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                        (int) getDip(50),
-                        (int) getDip(50)));
+                (int) getDip(50),
+                (int) getDip(50)));
         imageView.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId));
         imageView.setPadding(
                 (int) getDip(4),
