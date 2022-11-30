@@ -1,11 +1,11 @@
 package a.a.a;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -22,9 +22,12 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class tx extends RelativeLayout implements OnClickListener {
+import mod.hey.studios.util.Helper;
+
+@SuppressLint("ViewConstructor")
+public class tx extends RelativeLayout implements View.OnClickListener {
+
     public String a;
     public String b;
     public String c;
@@ -51,7 +54,7 @@ public class tx extends RelativeLayout implements OnClickListener {
         LinearLayout var4 = new LinearLayout(getContext());
         var4.setLayoutParams(new LayoutParams(-1, (int) (60.0F * var3)));
         var4.setGravity(19);
-        var4.setOrientation(0);
+        var4.setOrientation(LinearLayout.HORIZONTAL);
         TextView var5 = new TextView(getContext());
         LinearLayout.LayoutParams var6 = new LinearLayout.LayoutParams(0, -2);
         var6.weight = 1.0F;
@@ -67,20 +70,17 @@ public class tx extends RelativeLayout implements OnClickListener {
             if (var2) {
                 var11.setImageResource(getContext().getResources().getIdentifier(var1, "drawable", getContext().getPackageName()));
             } else {
-                File var12 = new File(jC.d(a).f(var1));
-                if (var12.exists()) {
-                    Uri var10;
+                File iconFile = new File(jC.d(a).f(var1));
+                if (iconFile.exists()) {
+                    Uri uri;
                     if (VERSION.SDK_INT >= 24) {
-                        Context var8 = getContext();
-                        StringBuilder var9 = new StringBuilder();
-                        var9.append(getContext().getPackageName());
-                        var9.append(".provider");
-                        var10 = FileProvider.a(var8, var9.toString(), var12);
+                        String providerName = getContext().getPackageName() + ".provider";
+                        uri = FileProvider.a(getContext(), providerName, iconFile);
                     } else {
-                        var10 = Uri.fromFile(var12);
+                        uri = Uri.fromFile(iconFile);
                     }
 
-                    Glide.with(getContext()).load(var10).signature(kC.n()).error(2131165831).into(var11);
+                    Glide.with(getContext()).load(uri).signature(kC.n()).error(2131165831).into(var11);
                 } else {
                     var11.setImageResource(getContext().getResources().getIdentifier(var1, "drawable", getContext().getPackageName()));
                 }
@@ -106,68 +106,60 @@ public class tx extends RelativeLayout implements OnClickListener {
     }
 
     public final void a() {
-        aB var1 = new aB((Activity) getContext());
-        var1.b(e.getText().toString());
-        var1.a(m);
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(e.getText().toString());
+        dialog.a(m);
         View var2 = wB.a(getContext(), 2131427641);
         ScrollView var3 = var2.findViewById(2131231692);
         i = var2.findViewById(2131231667);
         j = var2.findViewById(2131230932);
-        ArrayList var4 = jC.d(a).m();
-        if (xq.a(a) || xq.b(a)) {
-            if (d) {
-                var4.add(0, "default_image");
+        ArrayList<String> var4 = jC.d(a).m();
+        if (d) {
+            var4.add(0, "default_image");
+        } else {
+            var4.add(0, "NONE");
+        }
+
+        for (String str : var4) {
+            RadioButton radioButton = a(str);
+            i.addView(radioButton);
+            if (str.equals(c)) {
+                radioButton.setChecked(true);
+            }
+
+            LinearLayout linearLayout;
+            if (str.equals("default_image")) {
+                linearLayout = a(str, true);
             } else {
-                var4.add(0, "NONE");
+                linearLayout = a(str, false);
             }
+            linearLayout.setOnClickListener(view -> {
+                int indexOfChild = j.indexOfChild(view);
+                ((RadioButton) i.getChildAt(indexOfChild)).setChecked(true);
+            });
+            j.addView(linearLayout);
         }
 
-        Iterator var5 = var4.iterator();
+        RadioButton radioButton = (RadioButton) i.getChildAt(0);
+        radioButton.setChecked(true);
 
-        RadioButton var8;
-        RadioButton var9;
-        for (var9 = null; var5.hasNext(); var9 = var8) {
-            String var6 = (String) var5.next();
-            RadioButton var7 = a(var6);
-            i.addView(var7);
-            var8 = var9;
-            if (var6.equals(c)) {
-                var7.setChecked(true);
-                var8 = var7;
-            }
-
-            LinearLayout var10;
-            if (xq.a(a)) {
-                if (var6.equals("default_image")) {
-                    var10 = a(var6, true);
-                } else {
-                    var10 = a(var6, false);
+        dialog.a(var2);
+        dialog.b(xB.b().a(getContext(), 2131625035), view -> {
+            int childCount = i.getChildCount();
+            for (int j = 0; j < childCount; j++) {
+                RadioButton radioButton1 = (RadioButton) i.getChildAt(j);
+                if (radioButton1.isChecked()) {
+                    setValue(radioButton1.getTag().toString());
+                    if (n != null) {
+                        n.a(b, c);
+                    }
+                    break;
                 }
-            } else if (xq.b(a)) {
-                if (var6.equals("default_image")) {
-                    var10 = a(var6, true);
-                } else {
-                    var10 = a(var6, false);
-                }
-            } else {
-                var10 = a(var6, true);
             }
-
-            var10.setOnClickListener(new px(this));
-            j.addView(var10);
-        }
-
-        var8 = var9;
-        if (var9 == null) {
-            var8 = (RadioButton) i.getChildAt(0);
-            var8.setChecked(true);
-        }
-
-        var1.a(var2);
-        var1.b(xB.b().a(getContext(), 2131625035), new qx(this, var1));
-        var1.a(xB.b().a(getContext(), 2131624974), new rx(this, var1));
-        var1.setOnShowListener(new sx(this, var3, var8));
-        var1.show();
+        });
+        dialog.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.setOnShowListener(dialogInterface -> var3.smoothScrollTo(0, (int) radioButton.getY()));
+        dialog.show();
     }
 
     public final void a(Context var1, boolean var2, boolean var3) {
@@ -183,7 +175,6 @@ public class tx extends RelativeLayout implements OnClickListener {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
         }
-
     }
 
     public String getKey() {
@@ -214,7 +205,7 @@ public class tx extends RelativeLayout implements OnClickListener {
                 m = 2131165811;
             }
 
-            if (l.getVisibility() == 0) {
+            if (l.getVisibility() == View.VISIBLE) {
                 ImageView var6 = findViewById(2131231151);
                 TextView var5 = findViewById(2131232195);
                 var6.setImageResource(m);
@@ -230,36 +221,34 @@ public class tx extends RelativeLayout implements OnClickListener {
         return c;
     }
 
-    public void setValue(String var1) {
-        if (var1 != null && !var1.equalsIgnoreCase("NONE")) {
-            c = var1;
-            f.setText(var1);
-            if (jC.d(a).h(var1) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                g.setImageResource(getContext().getResources().getIdentifier(var1, "drawable", getContext().getPackageName()));
-            } else if (var1.equals("default_image")) {
-                g.setImageResource(getContext().getResources().getIdentifier(var1, "drawable", getContext().getPackageName()));
+    @SuppressLint("SetTextI18n")
+    public void setValue(String value) {
+        if (value != null && !value.equalsIgnoreCase("NONE")) {
+            c = value;
+            f.setText(value);
+            if (jC.d(a).h(value) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                g.setImageResource(getContext().getResources().getIdentifier(value, "drawable", getContext().getPackageName()));
+            } else if (value.equals("default_image")) {
+                g.setImageResource(getContext().getResources().getIdentifier(value, "drawable", getContext().getPackageName()));
             } else {
-                File var2 = new File(jC.d(a).f(var1));
-                if (var2.exists()) {
-                    Uri var5;
+                File iconFile = new File(jC.d(a).f(value));
+                if (iconFile.exists()) {
+                    Uri uri;
                     if (VERSION.SDK_INT >= 24) {
-                        Context var4 = getContext();
-                        StringBuilder var3 = new StringBuilder();
-                        var3.append(getContext().getPackageName());
-                        var3.append(".provider");
-                        var5 = FileProvider.a(var4, var3.toString(), var2);
+                        String providerName = getContext().getPackageName() + ".provider";
+                        uri = FileProvider.a(getContext(), providerName, iconFile);
                     } else {
-                        var5 = Uri.fromFile(var2);
+                        uri = Uri.fromFile(iconFile);
                     }
 
-                    Glide.with(getContext()).load(var5).signature(kC.n()).error(2131165831).into(g);
+                    Glide.with(getContext()).load(uri).signature(kC.n()).error(2131165831).into(g);
                 } else {
-                    g.setImageResource(getContext().getResources().getIdentifier(var1, "drawable", getContext().getPackageName()));
+                    g.setImageResource(getContext().getResources().getIdentifier(value, "drawable", getContext().getPackageName()));
                 }
             }
 
         } else {
-            c = var1;
+            c = value;
             f.setText("NONE");
             g.setImageDrawable(null);
             g.setBackgroundColor(16777215);
@@ -279,11 +268,11 @@ public class tx extends RelativeLayout implements OnClickListener {
 
     public void setOrientationItem(int var1) {
         if (var1 == 0) {
-            k.setVisibility(8);
-            l.setVisibility(0);
+            k.setVisibility(View.GONE);
+            l.setVisibility(View.VISIBLE);
         } else {
-            k.setVisibility(0);
-            l.setVisibility(8);
+            k.setVisibility(View.VISIBLE);
+            l.setVisibility(View.GONE);
         }
 
     }
