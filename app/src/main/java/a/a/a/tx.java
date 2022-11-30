@@ -116,9 +116,9 @@ public class tx extends RelativeLayout implements OnClickListener {
         var1.b(this.e.getText().toString());
         var1.a(this.m);
         View var2 = wB.a(this.getContext(), 2131427641);
-        ScrollView var3 = (ScrollView) var2.findViewById(2131231692);
-        this.i = (RadioGroup) var2.findViewById(2131231667);
-        this.j = (LinearLayout) var2.findViewById(2131230932);
+        ScrollView var3 = var2.findViewById(2131231692);
+        this.i = var2.findViewById(2131231667);
+        this.j = var2.findViewById(2131230932);
         ArrayList var4 = jC.d(this.a).m();
         if (xq.a(this.a) || xq.b(this.a)) {
             if (this.d) {
@@ -178,10 +178,10 @@ public class tx extends RelativeLayout implements OnClickListener {
 
     public final void a(Context var1, boolean var2, boolean var3) {
         wB.a(var1, this, 2131427647);
-        this.e = (TextView) this.findViewById(2131232055);
-        this.f = (TextView) this.findViewById(2131232270);
-        this.g = (ImageView) this.findViewById(2131232321);
-        this.h = (ImageView) this.findViewById(2131231155);
+        this.e = this.findViewById(2131232055);
+        this.f = this.findViewById(2131232270);
+        this.g = this.findViewById(2131232321);
+        this.h = this.findViewById(2131231155);
         this.k = this.findViewById(2131231626);
         this.l = this.findViewById(2131231628);
         this.d = var3;
@@ -221,8 +221,8 @@ public class tx extends RelativeLayout implements OnClickListener {
             }
 
             if (this.l.getVisibility() == 0) {
-                ImageView var6 = (ImageView) this.findViewById(2131231151);
-                TextView var5 = (TextView) this.findViewById(2131232195);
+                ImageView var6 = this.findViewById(2131231151);
+                TextView var5 = this.findViewById(2131232195);
                 var6.setImageResource(this.m);
                 var5.setText(xB.b().a(this.getContext(), var2));
             } else {
@@ -267,7 +267,7 @@ public class tx extends RelativeLayout implements OnClickListener {
         } else {
             this.c = var1;
             this.f.setText("NONE");
-            this.g.setImageDrawable((Drawable) null);
+            this.g.setImageDrawable(null);
             this.g.setBackgroundColor(16777215);
         }
     }
