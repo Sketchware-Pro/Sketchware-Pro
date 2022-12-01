@@ -16,25 +16,35 @@ import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import mod.jbk.util.OldResourceIdMapper;
 
 public class IconSelectorDialog extends Dialog {
 
-    private final ArrayList<Integer> data = new ArrayList<>();
+    private final List<Integer> data;
     private final EditText ed;
     private ViewGroup base;
-    private RecyclerView dump;
 
     public IconSelectorDialog(Activity activity, EditText editText) {
         super(activity);
         ed = editText;
+
+        data = new ArrayList<>(OldResourceIdMapper.HIGHEST_ID - OldResourceIdMapper.LOWEST_ID);
+        for (int i = OldResourceIdMapper.LOWEST_ID; i < OldResourceIdMapper.HIGHEST_ID; i++) {
+            data.add(i);
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427775);
-        dump = findViewById(2131231449);
+        setContentView(R.layout.view_events);
+
+        RecyclerView dump = findViewById(R.id.list_events);
         base = (ViewGroup) dump.getParent();
         base.removeView(dump);
         setUpViews();
@@ -42,13 +52,9 @@ public class IconSelectorDialog extends Dialog {
 
     public void setUpViews() {
         GridView gridView = new GridView(getContext());
-        gridView.setLayoutParams(
-                new LinearLayout.LayoutParams(
+        gridView.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0.0f
-                )
-        );
+                        LinearLayout.LayoutParams.MATCH_PARENT));
         gridView.setNumColumns(6);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gridView.setOnItemClickListener((parent, view, position, id) -> {
@@ -56,38 +62,24 @@ public class IconSelectorDialog extends Dialog {
             dismiss();
         });
         base.addView(gridView);
-        for (int i = 2131165190; i < 2131166368; i++) {
-            data.add(i);
-        }
-        //data.subList(data.indexOf(2131165192), data.indexOf(2131165274)).clear();
         gridView.setAdapter(new IconListAdapter(data));
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
         if (!ed.getText().toString().isEmpty()) {
-            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString()))
-            );
+            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString())));
         }
-
     }
 
-    private View pallette(int resourceId) {
+    private View createIcon(int oldResourceId) {
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(
-                new LinearLayout.LayoutParams(
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0.0f
-                )
-        );
+                        LinearLayout.LayoutParams.MATCH_PARENT));
         linearLayout.setGravity(Gravity.CENTER);
         ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(
-                new LinearLayout.LayoutParams(
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(
                         (int) getDip(50),
-                        (int) getDip(50),
-                        0.0f
-                )
-        );
-        imageView.setImageResource(resourceId);
+                        (int) getDip(50)));
+        imageView.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId));
         imageView.setPadding(
                 (int) getDip(4),
                 (int) getDip(4),
@@ -98,16 +90,11 @@ public class IconSelectorDialog extends Dialog {
         return linearLayout;
     }
 
-    @Override
-    public void show() {
-        super.show();
-    }
-
     private class IconListAdapter extends BaseAdapter {
 
-        private final ArrayList<Integer> iconsList;
+        private final List<Integer> iconsList;
 
-        public IconListAdapter(ArrayList<Integer> arrayList) {
+        public IconListAdapter(List<Integer> arrayList) {
             iconsList = arrayList;
         }
 
@@ -128,7 +115,7 @@ public class IconSelectorDialog extends Dialog {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return pallette(getItem(position));
+            return createIcon(getItem(position));
         }
     }
 }
