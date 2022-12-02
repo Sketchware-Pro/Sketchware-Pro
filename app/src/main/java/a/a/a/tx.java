@@ -156,6 +156,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     break;
                 }
             }
+            dialog.dismiss();
         });
         dialog.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(dialog));
         dialog.setOnShowListener(dialogInterface -> var3.smoothScrollTo(0, (int) radioButton.getY()));
