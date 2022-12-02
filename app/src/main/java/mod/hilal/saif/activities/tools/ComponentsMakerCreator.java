@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -18,6 +19,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hasrat.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.OldResourceIdMapper;
 
 public class ComponentsMakerCreator extends Activity implements View.OnClickListener {
 
@@ -29,6 +31,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     private EditText coDesc;
     private EditText coIcon;
     private EditText coId;
+    private TextInputLayout coIconTil;
     private EditText coName;
     private EditText coTypeClass;
     private EditText coTypeName;
@@ -81,6 +84,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     private void getViewsById() {
         coName = findViewById(R.id.components_creator_name);
         coId = findViewById(R.id.components_creator_id);
+        coIconTil = findViewById(R.id.components_creator_icon_til);
         coTypeName = findViewById(R.id.components_creator_typename);
         coIcon = findViewById(R.id.components_creator_icon);
         selectIcon = findViewById(R.id.components_creator_iconselector);
@@ -95,6 +99,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
         coCustomImport = findViewById(R.id.components_creator_custom);
         cancel = findViewById(R.id.components_creator_cancel);
         save = findViewById(R.id.components_creator_save);
+        Helper.addClearErrorOnTextChangeTextWatcher(coIconTil);
     }
 
     private void initializeHelper() {
@@ -108,7 +113,12 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
             finish();
         } else if (id == R.id.components_creator_save) {
             if (filledIn()) {
-                save();
+                if (OldResourceIdMapper.isValidIconId(coId.getText().toString())) {
+                    save();
+                } else {
+                    coIconTil.setError("Invalid icon ID");
+                    coIcon.requestFocus();
+                }
             } else {
                 SketchwareUtil.toast("Some required fields are empty");
             }
