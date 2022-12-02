@@ -1,12 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="?selectableItemBackground" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:id="@id/property_item" android:layout_width="fill_parent" android:layout_height="72.0dip">
-        <ImageView android:id="@id/img_left_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:layout_centerVertical="true" android:layout_alignParentStart="true" />
-        <TextView android:textSize="14.0sp" android:textColor="#ff9a9a9a" android:id="@id/tv_value" android:paddingRight="60.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/tv_name" android:layout_marginStart="40.0dip" />
-        <ImageView android:id="@id/view_image" android:background="#ffbdbdbd" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_marginRight="16.0dip" android:scaleType="centerCrop" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
-        <View android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_alignParentBottom="true" android:layout_marginStart="40.0dip" />
-        <TextView android:textSize="16.0sp" android:textColor="#ff404040" android:id="@id/tv_name" android:paddingTop="16.0dip" android:paddingRight="60.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_marginStart="40.0dip" android:layout_alignParentStart="true" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground">
+
+    <RelativeLayout
+        android:id="@+id/property_item"
+        android:layout_width="match_parent"
+        android:layout_height="72dp">
+
+        <ImageView
+            android:id="@+id/img_left_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:id="@+id/tv_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginStart="40dp"
+            android:paddingRight="60dp"
+            android:textColor="#ff9a9a9a"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/view_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:background="#ffbdbdbd"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="40dp"
+            android:background="#fff6f6f6" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:paddingTop="16dp"
+            android:paddingRight="60dp"
+            android:textColor="#ff404040"
+            android:textSize="16sp" />
     </RelativeLayout>
+
     <include layout="@layout/property_grid_item" />
 </RelativeLayout>
