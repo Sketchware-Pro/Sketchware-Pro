@@ -84,8 +84,8 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         bannerAdUnitIdView = findViewById(R.id.tv_banner_id);
         interstitialAdName = findViewById(R.id.tv_inter_name);
         interstitialAdUnitIdView = findViewById(R.id.tv_inter_id);
-        rewardedAdUnitIdView = findViewById(R.id.tv_reward_name);
-        rewardedAdName = findViewById(R.id.tv_reward_name_title);
+        rewardedAdName = findViewById(R.id.tv_reward_name);
+        rewardedAdUnitIdView = findViewById(R.id.tv_reward_id);
         ((TextView) findViewById(R.id.tv_banner_title)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
         ((TextView) findViewById(R.id.tv_banner_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_banner_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
