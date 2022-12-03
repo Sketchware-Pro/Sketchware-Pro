@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
@@ -77,6 +78,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         dialog.show();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_set_unit);
         gB.b(this, 600, 200, null);
@@ -92,6 +94,8 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         ((TextView) findViewById(R.id.tv_inter_title)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
         ((TextView) findViewById(R.id.tv_inter_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_inter_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_reward_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_reward_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
 
         findViewById(R.id.img_select_banner).setOnClickListener(this);
         findViewById(R.id.img_select_inter).setOnClickListener(this);
