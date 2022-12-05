@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/color_primary" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="12.0dip" android:layout_marginBottom="12.0dip" />
-    <View android:background="@color/color_secondary" android:layout_width="380.0dip" android:layout_height="3.0dip" />
-    <LinearLayout android:orientation="horizontal" android:background="#ffffffff" android:layout_width="wrap_content" android:layout_height="300.0dip">
-        <androidx.recyclerview.widget.RecyclerView android:id="@id/var_type_category" android:background="@color/lighter_grey" android:layout_width="80.0dip" android:layout_height="fill_parent" android:splitMotionEvents="false" />
-        <androidx.recyclerview.widget.RecyclerView android:id="@id/var_type_list" android:background="#ffffffff" android:layout_width="300.0dip" android:layout_height="fill_parent" android:splitMotionEvents="false" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16.0dip"
+        android:layout_marginTop="12.0dip"
+        android:layout_marginBottom="12.0dip"
+        android:textColor="@color/color_primary"
+        android:textSize="14.0sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="380.0dip"
+        android:layout_height="3.0dip"
+        android:background="@color/color_secondary" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="300.0dip"
+        android:background="#ffffffff"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/var_type_category"
+            android:layout_width="80.0dip"
+            android:layout_height="fill_parent"
+            android:background="@color/lighter_grey"
+            android:splitMotionEvents="false" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/var_type_list"
+            android:layout_width="300.0dip"
+            android:layout_height="fill_parent"
+            android:background="#ffffffff"
+            android:splitMotionEvents="false" />
     </LinearLayout>
 </LinearLayout>
