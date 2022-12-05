@@ -11,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@SuppressLint({"ViewConstructor", "ResourceType"})
+@SuppressLint("ViewConstructor")
 public class gt extends LinearLayout {
 
     private HashMap<Integer, ArrayList<VariableItem>> allVariablesWithCategeryIndex;
@@ -69,13 +72,13 @@ public class gt extends LinearLayout {
                 if (var5 != 2) {
                     type = kq.b(name);
                 } else {
-                    type = xB.b().a(getContext(), 2131625592);
+                    type = xB.b().a(getContext(), R.string.logic_variable_type_string);
                 }
             } else {
-                type = xB.b().a(getContext(), 2131625591);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
             }
         } else {
-            type = xB.b().a(getContext(), 2131625586);
+            type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
         }
 
         label67:
@@ -129,62 +132,62 @@ public class gt extends LinearLayout {
 
         switch (var5) {
             case 0:
-                type = xB.b().a(getContext(), 2131625591);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
                 break;
             case 1:
-                type = xB.b().a(getContext(), 2131625586);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
                 break;
             case 2:
-                type = xB.b().a(getContext(), 2131625592);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_string);
                 break;
             case 3:
-                type = xB.b().a(getContext(), 2131625590);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_map);
                 break;
             case 4:
-                type = xB.b().a(getContext(), 2131625588);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_list_number);
                 break;
             case 5:
-                type = xB.b().a(getContext(), 2131625589);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_list_string);
                 break;
             case 6:
-                type = xB.b().a(getContext(), 2131625587);
+                type = xB.b().a(getContext(), R.string.logic_variable_type_list_map);
         }
 
         return type;
     }
 
     private void a() {
-        componentsVariableList.add(new VariableItem("m", "intent", 2131166254));
-        componentsVariableList.add(new VariableItem("m", "file", 2131166268));
-        componentsVariableList.add(new VariableItem("m", "calendar", 2131166238));
-        componentsVariableList.add(new VariableItem("m", "vibrator", 2131166277));
-        componentsVariableList.add(new VariableItem("m", "timer", 2131166276));
-        componentsVariableList.add(new VariableItem("m", "dialog", 2131166235));
-        componentsVariableList.add(new VariableItem("m", "mediaplayer", 2131166259));
-        componentsVariableList.add(new VariableItem("m", "soundpool", 2131166269));
-        componentsVariableList.add(new VariableItem("m", "objectanimator", 2131166262));
-        componentsVariableList.add(new VariableItem("m", "firebase", 2131166245));
-        componentsVariableList.add(new VariableItem("m", "firebaseauth", 2131166245));
-        componentsVariableList.add(new VariableItem("m", "firebasestorage", 2131166245));
-        componentsVariableList.add(new VariableItem("m", "camera", 2131166240));
-        componentsVariableList.add(new VariableItem("m", "filepicker", 2131166244));
-        componentsVariableList.add(new VariableItem("m", "requestnetwork", 2131166261));
-        componentsVariableList.add(new VariableItem("m", "texttospeech", 2131166274));
-        componentsVariableList.add(new VariableItem("m", "speechtotext", 2131166271));
-        componentsVariableList.add(new VariableItem("m", "locationmanager", 2131166258));
-        componentsVariableList.add(new VariableItem("m", "videoad", 2131166295));
-        componentsVariableList.add(new VariableItem("m", "progressdialog", 2131166296));
-        componentsVariableList.add(new VariableItem("m", "timepickerdialog", 2131166276));
-        componentsVariableList.add(new VariableItem("m", "notification", 2131166298));
+        componentsVariableList.add(new VariableItem("m", "intent", R.drawable.widget_intent));
+        componentsVariableList.add(new VariableItem("m", "file", R.drawable.widget_shared_preference));
+        componentsVariableList.add(new VariableItem("m", "calendar", R.drawable.widget_calendar));
+        componentsVariableList.add(new VariableItem("m", "vibrator", R.drawable.widget_vibrator));
+        componentsVariableList.add(new VariableItem("m", "timer", R.drawable.widget_timer));
+        componentsVariableList.add(new VariableItem("m", "dialog", R.drawable.widget_alertdialog));
+        componentsVariableList.add(new VariableItem("m", "mediaplayer", R.drawable.widget_mediaplayer));
+        componentsVariableList.add(new VariableItem("m", "soundpool", R.drawable.widget_soundpool));
+        componentsVariableList.add(new VariableItem("m", "objectanimator", R.drawable.widget_objectanimator));
+        componentsVariableList.add(new VariableItem("m", "firebase", R.drawable.widget_firebase));
+        componentsVariableList.add(new VariableItem("m", "firebaseauth", R.drawable.widget_firebase));
+        componentsVariableList.add(new VariableItem("m", "firebasestorage", R.drawable.widget_firebase));
+        componentsVariableList.add(new VariableItem("m", "camera", R.drawable.widget_camera));
+        componentsVariableList.add(new VariableItem("m", "filepicker", R.drawable.widget_file));
+        componentsVariableList.add(new VariableItem("m", "requestnetwork", R.drawable.widget_network_request));
+        componentsVariableList.add(new VariableItem("m", "texttospeech", R.drawable.widget_text_to_speech));
+        componentsVariableList.add(new VariableItem("m", "speechtotext", R.drawable.widget_speech_to_text));
+        componentsVariableList.add(new VariableItem("m", "locationmanager", R.drawable.widget_location));
+        componentsVariableList.add(new VariableItem("m", "videoad", R.drawable.widget_media_controller));
+        componentsVariableList.add(new VariableItem("m", "progressdialog", R.drawable.widget_progress_dialog));
+        componentsVariableList.add(new VariableItem("m", "timepickerdialog", R.drawable.widget_timer));
+        componentsVariableList.add(new VariableItem("m", "notification", R.drawable.widget_notification));
     }
 
     private void initialize(Activity activity) {
-        wB.a(activity, this, 2131427770);
-        k = findViewById(2131232082);
-        LinearLayout j = (LinearLayout) wB.a(activity, 2131427771);
-        RecyclerView f = j.findViewById(2131232303);
-        RecyclerView g = j.findViewById(2131232304);
-        ((TextView) j.findViewById(2131232195)).setText(xB.b().a(activity, 2131625507));
+        wB.a(activity, this, R.layout.var_type_spinner);
+        k = findViewById(R.id.tv_preview);
+        LinearLayout j = (LinearLayout) wB.a(activity, R.layout.var_type_spinner_dialog);
+        RecyclerView f = j.findViewById(R.id.var_type_category);
+        RecyclerView g = j.findViewById(R.id.var_type_list);
+        ((TextView) j.findViewById(R.id.tv_title)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_add_variable_type));
         allVariablesWithCategeryIndex = new HashMap<>();
         variableItems = new ArrayList<>();
         viewsVariableList = new ArrayList<>();
@@ -215,7 +218,7 @@ public class gt extends LinearLayout {
         }
 
         dialog.setContentView(j);
-        findViewById(2131230931).setOnClickListener(view -> {
+        findViewById(R.id.container).setOnClickListener(view -> {
             if (!mB.a()) {
                 d();
             }
@@ -223,36 +226,36 @@ public class gt extends LinearLayout {
     }
 
     private void b() {
-        variableItems.add(new VariableItem("b", "", 2131165876));
-        variableItems.add(new VariableItem("d", "", 2131166000));
-        variableItems.add(new VariableItem("s", "", 2131165191));
-        variableItems.add(new VariableItem("m", "varMap", 2131165785));
-        variableItems.add(new VariableItem("m", "listInt", 2131165783));
-        variableItems.add(new VariableItem("m", "listStr", 2131165783));
-        variableItems.add(new VariableItem("m", "listMap", 2131165783));
+        variableItems.add(new VariableItem("b", "", R.drawable.ic_true_false_color_48dp));
+        variableItems.add(new VariableItem("d", "", R.drawable.numbers_48));
+        variableItems.add(new VariableItem("s", "", R.drawable.abc_96_color));
+        variableItems.add(new VariableItem("m", "varMap", R.drawable.ic_map_color_48dp));
+        variableItems.add(new VariableItem("m", "listInt", R.drawable.ic_list_color_48dp));
+        variableItems.add(new VariableItem("m", "listStr", R.drawable.ic_list_color_48dp));
+        variableItems.add(new VariableItem("m", "listMap", R.drawable.ic_list_color_48dp));
     }
 
     private void c() {
-        viewsVariableList.add(new VariableItem("m", "view", 2131165939));
-        viewsVariableList.add(new VariableItem("m", "textview", 2131166275));
-        viewsVariableList.add(new VariableItem("m", "imageview", 2131166253));
-        viewsVariableList.add(new VariableItem("m", "checkbox", 2131166241));
-        viewsVariableList.add(new VariableItem("m", "switch", 2131166273));
-        viewsVariableList.add(new VariableItem("m", "listview", 2131166257));
-        viewsVariableList.add(new VariableItem("m", "spinner", 2131166272));
-        viewsVariableList.add(new VariableItem("m", "webview", 2131166278));
-        viewsVariableList.add(new VariableItem("m", "seekbar", 2131166267));
-        viewsVariableList.add(new VariableItem("m", "progressbar", 2131166263));
-        viewsVariableList.add(new VariableItem("m", "calendarview", 2131166238));
-        viewsVariableList.add(new VariableItem("m", "radiobutton", 2131166264));
-        viewsVariableList.add(new VariableItem("m", "ratingbar", 2131166177));
-        viewsVariableList.add(new VariableItem("m", "videoview", 2131166259));
-        viewsVariableList.add(new VariableItem("m", "searchview", 2131165849));
-        viewsVariableList.add(new VariableItem("m", "gridview", 2131165662));
-        viewsVariableList.add(new VariableItem("m", "actv", 2131166242));
-        viewsVariableList.add(new VariableItem("m", "mactv", 2131166242));
-        viewsVariableList.add(new VariableItem("m", "viewpager", 2131166265));
-        viewsVariableList.add(new VariableItem("m", "badgeview", 2131166031));
+        viewsVariableList.add(new VariableItem("m", "view", R.drawable.layout_48));
+        viewsVariableList.add(new VariableItem("m", "textview", R.drawable.widget_text_view));
+        viewsVariableList.add(new VariableItem("m", "imageview", R.drawable.widget_image_view));
+        viewsVariableList.add(new VariableItem("m", "checkbox", R.drawable.widget_check_box));
+        viewsVariableList.add(new VariableItem("m", "switch", R.drawable.widget_switch));
+        viewsVariableList.add(new VariableItem("m", "listview", R.drawable.widget_list_view));
+        viewsVariableList.add(new VariableItem("m", "spinner", R.drawable.widget_spinner));
+        viewsVariableList.add(new VariableItem("m", "webview", R.drawable.widget_web_view));
+        viewsVariableList.add(new VariableItem("m", "seekbar", R.drawable.widget_seek_bar));
+        viewsVariableList.add(new VariableItem("m", "progressbar", R.drawable.widget_progress_bar));
+        viewsVariableList.add(new VariableItem("m", "calendarview", R.drawable.widget_calendar));
+        viewsVariableList.add(new VariableItem("m", "radiobutton", R.drawable.widget_radio_button));
+        viewsVariableList.add(new VariableItem("m", "ratingbar", R.drawable.star_filled));
+        viewsVariableList.add(new VariableItem("m", "videoview", R.drawable.widget_mediaplayer));
+        viewsVariableList.add(new VariableItem("m", "searchview", R.drawable.ic_search_color_96dp));
+        viewsVariableList.add(new VariableItem("m", "gridview", R.drawable.grid_3_48));
+        viewsVariableList.add(new VariableItem("m", "actv", R.drawable.widget_edit_text));
+        viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.widget_edit_text));
+        viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.widget_relative_layout));
+        viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.pro_account_100dp_primary));
     }
 
     private void d() {
@@ -282,22 +285,22 @@ public class gt extends LinearLayout {
             if (position != 0) {
                 if (position != 1) {
                     if (position == 2) {
-                        viewHolder.u.setImageResource(2131165504);
-                        viewHolder.v.setText(xB.b().a(getContext(), 2131624979));
+                        viewHolder.u.setImageResource(R.drawable.component_96);
+                        viewHolder.v.setText(xB.b().a(getContext(), R.string.common_word_component));
                     }
                 } else {
-                    viewHolder.u.setImageResource(2131166257);
-                    viewHolder.v.setText(xB.b().a(getContext(), 2131625046));
+                    viewHolder.u.setImageResource(R.drawable.widget_list_view);
+                    viewHolder.v.setText(xB.b().a(getContext(), R.string.common_word_view));
                 }
             } else {
-                viewHolder.u.setImageResource(2131166227);
-                viewHolder.v.setText(xB.b().a(getContext(), 2131625045));
+                viewHolder.u.setImageResource(R.drawable.variation_48);
+                viewHolder.v.setText(xB.b().a(getContext(), R.string.common_word_variable));
             }
 
             if (layoutPosition == position) {
                 viewHolder.t.setBackgroundColor(-1);
             } else {
-                viewHolder.t.setBackgroundColor(getResources().getColor(2131034221));
+                viewHolder.t.setBackgroundColor(getResources().getColor(R.color.lighter_grey));
             }
 
         }
@@ -308,7 +311,7 @@ public class gt extends LinearLayout {
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(getContext()).inflate(2131427769, parent, false));
+            return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.var_type_category, parent, false));
         }
 
         private class ViewHolder extends RecyclerView.v {
@@ -319,9 +322,9 @@ public class gt extends LinearLayout {
 
             public ViewHolder(View itemVIew) {
                 super(itemVIew);
-                t = itemVIew.findViewById(2131230931);
-                u = itemVIew.findViewById(2131231090);
-                v = itemVIew.findViewById(2131231561);
+                t = itemVIew.findViewById(R.id.container);
+                u = itemVIew.findViewById(R.id.icon);
+                v = itemVIew.findViewById(R.id.name);
                 itemVIew.setOnClickListener(view -> {
                     layoutPosition = j();
                     veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(layoutPosition));
@@ -336,9 +339,10 @@ public class gt extends LinearLayout {
 
         public String type;
         public String name;
+        @DrawableRes
         public int icon;
 
-        public VariableItem(String type, String name, int icon) {
+        public VariableItem(String type, String name, @DrawableRes int icon) {
             this.type = type;
             this.name = name;
             this.icon = icon;
@@ -370,7 +374,7 @@ public class gt extends LinearLayout {
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(wB.a(getContext(), 2131427772));
+            return new ViewHolder(wB.a(getContext(), R.layout.var_type_spinner_item));
         }
 
         private class ViewHolder extends RecyclerView.v {
@@ -379,8 +383,8 @@ public class gt extends LinearLayout {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(2131231561);
-                u = itemView.findViewById(2131231090);
+                t = itemView.findViewById(R.id.name);
+                u = itemView.findViewById(R.id.icon);
                 itemView.setOnClickListener(view -> {
                     setPreview(allVariablesWithCategeryIndex.get(d).get(j()));
                     dialog.hide();
