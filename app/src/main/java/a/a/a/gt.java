@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.v;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,48 +20,43 @@ import java.util.HashMap;
 @SuppressLint({"ViewConstructor", "ResourceType"})
 public class gt extends LinearLayout {
 
-    public Activity a;
-    public HashMap<Integer, ArrayList<gt.b>> b;
-    public ArrayList<gt.b> c;
-    public ArrayList<gt.b> d;
-    public ArrayList<gt.b> e;
-    public RecyclerView f;
-    public RecyclerView g;
-    public gt.a h;
-    public gt.c i;
-    public LinearLayout j;
-    public TextView k;
-    public Dialog l;
-    public gt.b m;
+    private HashMap<Integer, ArrayList<VariableItem>> allVariablesWithCategeryIndex;
+    private ArrayList<VariableItem> variableItems;
+    private ArrayList<VariableItem> viewsVariableList;
+    private ArrayList<VariableItem> componentsVariableList;
+    private VeriableItemAdapter veriableItemAdapter;
+    private TextView k;
+    private Dialog dialog;
+    private VariableItem selectedVariableItem;
 
     public gt(Activity var1) {
         super(var1);
-        a(var1);
+        initialize(var1);
     }
 
-    private void setPreview(gt.b var1) {
-        m = var1;
-        k.setText(a(var1.a, var1.b));
+    private void setPreview(VariableItem variableItem) {
+        selectedVariableItem = variableItem;
+        k.setText(getTypeName(variableItem.type, variableItem.name));
     }
 
-    public final String a(String var1, String var2) {
+    private String getTypeName(String type, String name) {
         byte var4;
         byte var5;
         label77:
         {
-            int var3 = var1.hashCode();
+            int var3 = type.hashCode();
             var4 = 0;
             if (var3 != 98) {
                 if (var3 != 100) {
-                    if (var3 == 115 && var1.equals("s")) {
+                    if (var3 == 115 && type.equals("s")) {
                         var5 = 2;
                         break label77;
                     }
-                } else if (var1.equals("d")) {
+                } else if (type.equals("d")) {
                     var5 = 1;
                     break label77;
                 }
-            } else if (var1.equals("b")) {
+            } else if (type.equals("b")) {
                 var5 = 0;
                 break label77;
             }
@@ -73,58 +67,58 @@ public class gt extends LinearLayout {
         if (var5 != 0) {
             if (var5 != 1) {
                 if (var5 != 2) {
-                    var1 = kq.b(var2);
+                    type = kq.b(name);
                 } else {
-                    var1 = xB.b().a(getContext(), 2131625592);
+                    type = xB.b().a(getContext(), 2131625592);
                 }
             } else {
-                var1 = xB.b().a(getContext(), 2131625591);
+                type = xB.b().a(getContext(), 2131625591);
             }
         } else {
-            var1 = xB.b().a(getContext(), 2131625586);
+            type = xB.b().a(getContext(), 2131625586);
         }
 
         label67:
         {
-            switch (var2.hashCode()) {
+            switch (name.hashCode()) {
                 case -823676088:
-                    if (var2.equals("varInt")) {
+                    if (name.equals("varInt")) {
                         var5 = var4;
                         break label67;
                     }
                     break;
                 case -823672651:
-                    if (var2.equals("varMap")) {
+                    if (name.equals("varMap")) {
                         var5 = 3;
                         break label67;
                     }
                     break;
                 case -823666294:
-                    if (var2.equals("varStr")) {
+                    if (name.equals("varStr")) {
                         var5 = 2;
                         break label67;
                     }
                     break;
                 case 181944945:
-                    if (var2.equals("listInt")) {
+                    if (name.equals("listInt")) {
                         var5 = 4;
                         break label67;
                     }
                     break;
                 case 181948382:
-                    if (var2.equals("listMap")) {
+                    if (name.equals("listMap")) {
                         var5 = 6;
                         break label67;
                     }
                     break;
                 case 181954739:
-                    if (var2.equals("listStr")) {
+                    if (name.equals("listStr")) {
                         var5 = 5;
                         break label67;
                     }
                     break;
                 case 235637425:
-                    if (var2.equals("varBool")) {
+                    if (name.equals("varBool")) {
                         var5 = 1;
                         break label67;
                     }
@@ -135,93 +129,92 @@ public class gt extends LinearLayout {
 
         switch (var5) {
             case 0:
-                var1 = xB.b().a(getContext(), 2131625591);
+                type = xB.b().a(getContext(), 2131625591);
                 break;
             case 1:
-                var1 = xB.b().a(getContext(), 2131625586);
+                type = xB.b().a(getContext(), 2131625586);
                 break;
             case 2:
-                var1 = xB.b().a(getContext(), 2131625592);
+                type = xB.b().a(getContext(), 2131625592);
                 break;
             case 3:
-                var1 = xB.b().a(getContext(), 2131625590);
+                type = xB.b().a(getContext(), 2131625590);
                 break;
             case 4:
-                var1 = xB.b().a(getContext(), 2131625588);
+                type = xB.b().a(getContext(), 2131625588);
                 break;
             case 5:
-                var1 = xB.b().a(getContext(), 2131625589);
+                type = xB.b().a(getContext(), 2131625589);
                 break;
             case 6:
-                var1 = xB.b().a(getContext(), 2131625587);
+                type = xB.b().a(getContext(), 2131625587);
         }
 
-        return var1;
+        return type;
     }
 
-    public final void a() {
-        e.add(new gt.b(this, "m", "intent", 2131166254));
-        e.add(new gt.b(this, "m", "file", 2131166268));
-        e.add(new gt.b(this, "m", "calendar", 2131166238));
-        e.add(new gt.b(this, "m", "vibrator", 2131166277));
-        e.add(new gt.b(this, "m", "timer", 2131166276));
-        e.add(new gt.b(this, "m", "dialog", 2131166235));
-        e.add(new gt.b(this, "m", "mediaplayer", 2131166259));
-        e.add(new gt.b(this, "m", "soundpool", 2131166269));
-        e.add(new gt.b(this, "m", "objectanimator", 2131166262));
-        e.add(new gt.b(this, "m", "firebase", 2131166245));
-        e.add(new gt.b(this, "m", "firebaseauth", 2131166245));
-        e.add(new gt.b(this, "m", "firebasestorage", 2131166245));
-        e.add(new gt.b(this, "m", "camera", 2131166240));
-        e.add(new gt.b(this, "m", "filepicker", 2131166244));
-        e.add(new gt.b(this, "m", "requestnetwork", 2131166261));
-        e.add(new gt.b(this, "m", "texttospeech", 2131166274));
-        e.add(new gt.b(this, "m", "speechtotext", 2131166271));
-        e.add(new gt.b(this, "m", "locationmanager", 2131166258));
-        e.add(new gt.b(this, "m", "videoad", 2131166295));
-        e.add(new gt.b(this, "m", "progressdialog", 2131166296));
-        e.add(new gt.b(this, "m", "timepickerdialog", 2131166276));
-        e.add(new gt.b(this, "m", "notification", 2131166298));
+    private void a() {
+        componentsVariableList.add(new VariableItem("m", "intent", 2131166254));
+        componentsVariableList.add(new VariableItem("m", "file", 2131166268));
+        componentsVariableList.add(new VariableItem("m", "calendar", 2131166238));
+        componentsVariableList.add(new VariableItem("m", "vibrator", 2131166277));
+        componentsVariableList.add(new VariableItem("m", "timer", 2131166276));
+        componentsVariableList.add(new VariableItem("m", "dialog", 2131166235));
+        componentsVariableList.add(new VariableItem("m", "mediaplayer", 2131166259));
+        componentsVariableList.add(new VariableItem("m", "soundpool", 2131166269));
+        componentsVariableList.add(new VariableItem("m", "objectanimator", 2131166262));
+        componentsVariableList.add(new VariableItem("m", "firebase", 2131166245));
+        componentsVariableList.add(new VariableItem("m", "firebaseauth", 2131166245));
+        componentsVariableList.add(new VariableItem("m", "firebasestorage", 2131166245));
+        componentsVariableList.add(new VariableItem("m", "camera", 2131166240));
+        componentsVariableList.add(new VariableItem("m", "filepicker", 2131166244));
+        componentsVariableList.add(new VariableItem("m", "requestnetwork", 2131166261));
+        componentsVariableList.add(new VariableItem("m", "texttospeech", 2131166274));
+        componentsVariableList.add(new VariableItem("m", "speechtotext", 2131166271));
+        componentsVariableList.add(new VariableItem("m", "locationmanager", 2131166258));
+        componentsVariableList.add(new VariableItem("m", "videoad", 2131166295));
+        componentsVariableList.add(new VariableItem("m", "progressdialog", 2131166296));
+        componentsVariableList.add(new VariableItem("m", "timepickerdialog", 2131166276));
+        componentsVariableList.add(new VariableItem("m", "notification", 2131166298));
     }
 
-    public final void a(Activity var1) {
-        a = var1;
-        wB.a(var1, this, 2131427770);
+    private void initialize(Activity activity) {
+        wB.a(activity, this, 2131427770);
         k = findViewById(2131232082);
-        j = (LinearLayout) wB.a(var1, 2131427771);
-        f = j.findViewById(2131232303);
-        g = j.findViewById(2131232304);
-        ((TextView) j.findViewById(2131232195)).setText(xB.b().a(var1, 2131625507));
-        b = new HashMap<>();
-        c = new ArrayList<>();
-        d = new ArrayList<>();
-        e = new ArrayList<>();
+        LinearLayout j = (LinearLayout) wB.a(activity, 2131427771);
+        RecyclerView f = j.findViewById(2131232303);
+        RecyclerView g = j.findViewById(2131232304);
+        ((TextView) j.findViewById(2131232195)).setText(xB.b().a(activity, 2131625507));
+        allVariablesWithCategeryIndex = new HashMap<>();
+        variableItems = new ArrayList<>();
+        viewsVariableList = new ArrayList<>();
+        componentsVariableList = new ArrayList<>();
         b();
         c();
         a();
-        b.put(0, c);
-        b.put(1, d);
-        b.put(2, e);
+        allVariablesWithCategeryIndex.put(0, variableItems);
+        allVariablesWithCategeryIndex.put(1, viewsVariableList);
+        allVariablesWithCategeryIndex.put(2, componentsVariableList);
         f.setHasFixedSize(true);
-        LinearLayoutManager var4 = new LinearLayoutManager(var1, 1, false);
+        LinearLayoutManager var4 = new LinearLayoutManager(activity, 1, false);
         f.setLayoutManager(var4);
-        h = new gt.a(this);
-        h.a(b);
+        CategeryItemAdapter h = new CategeryItemAdapter();
+        h.setData(allVariablesWithCategeryIndex);
         f.setAdapter(h);
         g.setHasFixedSize(true);
-        var4 = new LinearLayoutManager(var1, 1, false);
+        var4 = new LinearLayoutManager(activity, 1, false);
         g.setLayoutManager(var4);
-        i = new gt.c(this);
-        g.setAdapter(i);
-        h.d = 0;
-        i.a(b.get(0));
-        setPreview(c.get(0));
-        l = new Dialog(var1);
+        veriableItemAdapter = new VeriableItemAdapter();
+        g.setAdapter(veriableItemAdapter);
+        h.layoutPosition = 0;
+        veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(0));
+        setPreview(variableItems.get(0));
+        dialog = new Dialog(activity);
         if (j.getParent() != null) {
             ((ViewGroup) j.getParent()).removeView(j);
         }
 
-        l.setContentView(j);
+        dialog.setContentView(j);
         findViewById(2131230931).setOnClickListener(view -> {
             if (!mB.a()) {
                 d();
@@ -229,175 +222,168 @@ public class gt extends LinearLayout {
         });
     }
 
-    public final void b() {
-        c.add(new gt.b(this, "b", "", 2131165876));
-        c.add(new gt.b(this, "d", "", 2131166000));
-        c.add(new gt.b(this, "s", "", 2131165191));
-        c.add(new gt.b(this, "m", "varMap", 2131165785));
-        c.add(new gt.b(this, "m", "listInt", 2131165783));
-        c.add(new gt.b(this, "m", "listStr", 2131165783));
-        c.add(new gt.b(this, "m", "listMap", 2131165783));
+    private void b() {
+        variableItems.add(new VariableItem("b", "", 2131165876));
+        variableItems.add(new VariableItem("d", "", 2131166000));
+        variableItems.add(new VariableItem("s", "", 2131165191));
+        variableItems.add(new VariableItem("m", "varMap", 2131165785));
+        variableItems.add(new VariableItem("m", "listInt", 2131165783));
+        variableItems.add(new VariableItem("m", "listStr", 2131165783));
+        variableItems.add(new VariableItem("m", "listMap", 2131165783));
     }
 
-    public final void c() {
-        d.add(new gt.b(this, "m", "view", 2131165939));
-        d.add(new gt.b(this, "m", "textview", 2131166275));
-        d.add(new gt.b(this, "m", "imageview", 2131166253));
-        d.add(new gt.b(this, "m", "checkbox", 2131166241));
-        d.add(new gt.b(this, "m", "switch", 2131166273));
-        d.add(new gt.b(this, "m", "listview", 2131166257));
-        d.add(new gt.b(this, "m", "spinner", 2131166272));
-        d.add(new gt.b(this, "m", "webview", 2131166278));
-        d.add(new gt.b(this, "m", "seekbar", 2131166267));
-        d.add(new gt.b(this, "m", "progressbar", 2131166263));
-        d.add(new gt.b(this, "m", "calendarview", 2131166238));
-        d.add(new gt.b(this, "m", "radiobutton", 2131166264));
-        d.add(new gt.b(this, "m", "ratingbar", 2131166177));
-        d.add(new gt.b(this, "m", "videoview", 2131166259));
-        d.add(new gt.b(this, "m", "searchview", 2131165849));
-        d.add(new gt.b(this, "m", "gridview", 2131165662));
-        d.add(new gt.b(this, "m", "actv", 2131166242));
-        d.add(new gt.b(this, "m", "mactv", 2131166242));
-        d.add(new gt.b(this, "m", "viewpager", 2131166265));
-        d.add(new gt.b(this, "m", "badgeview", 2131166031));
+    private void c() {
+        viewsVariableList.add(new VariableItem("m", "view", 2131165939));
+        viewsVariableList.add(new VariableItem("m", "textview", 2131166275));
+        viewsVariableList.add(new VariableItem("m", "imageview", 2131166253));
+        viewsVariableList.add(new VariableItem("m", "checkbox", 2131166241));
+        viewsVariableList.add(new VariableItem("m", "switch", 2131166273));
+        viewsVariableList.add(new VariableItem("m", "listview", 2131166257));
+        viewsVariableList.add(new VariableItem("m", "spinner", 2131166272));
+        viewsVariableList.add(new VariableItem("m", "webview", 2131166278));
+        viewsVariableList.add(new VariableItem("m", "seekbar", 2131166267));
+        viewsVariableList.add(new VariableItem("m", "progressbar", 2131166263));
+        viewsVariableList.add(new VariableItem("m", "calendarview", 2131166238));
+        viewsVariableList.add(new VariableItem("m", "radiobutton", 2131166264));
+        viewsVariableList.add(new VariableItem("m", "ratingbar", 2131166177));
+        viewsVariableList.add(new VariableItem("m", "videoview", 2131166259));
+        viewsVariableList.add(new VariableItem("m", "searchview", 2131165849));
+        viewsVariableList.add(new VariableItem("m", "gridview", 2131165662));
+        viewsVariableList.add(new VariableItem("m", "actv", 2131166242));
+        viewsVariableList.add(new VariableItem("m", "mactv", 2131166242));
+        viewsVariableList.add(new VariableItem("m", "viewpager", 2131166265));
+        viewsVariableList.add(new VariableItem("m", "badgeview", 2131166031));
     }
 
-    public final void d() {
-        l.show();
+    private void d() {
+        dialog.show();
     }
 
     public Pair<String, String> getSelectedItem() {
-        return new Pair<>(m.a, m.b);
+        return new Pair<>(selectedVariableItem.type, selectedVariableItem.name);
     }
 
-    public class a extends androidx.recyclerview.widget.RecyclerView.a<gt.a.a> {
-        public final gt e;
-        public HashMap<Integer, ArrayList<gt.b>> c;
-        public int d;
+    private class CategeryItemAdapter extends RecyclerView.a<CategeryItemAdapter.ViewHolder> {
 
-        public a(gt var1) {
-            e = var1;
-            d = -1;
+        private HashMap<Integer, ArrayList<VariableItem>> integerArrayListHashMap;
+        private int layoutPosition;
+
+        public CategeryItemAdapter() {
+            layoutPosition = -1;
         }
 
         @Override
         public int a() {
-            return c.size();
+            return integerArrayListHashMap.size();
         }
 
         @Override
-        public void b(gt.a.a var1, int var2) {
-            if (var2 != 0) {
-                if (var2 != 1) {
-                    if (var2 == 2) {
-                        var1.u.setImageResource(2131165504);
-                        var1.v.setText(xB.b().a(e.getContext(), 2131624979));
+        public void b(ViewHolder viewHolder, int position) {
+            if (position != 0) {
+                if (position != 1) {
+                    if (position == 2) {
+                        viewHolder.u.setImageResource(2131165504);
+                        viewHolder.v.setText(xB.b().a(getContext(), 2131624979));
                     }
                 } else {
-                    var1.u.setImageResource(2131166257);
-                    var1.v.setText(xB.b().a(e.getContext(), 2131625046));
+                    viewHolder.u.setImageResource(2131166257);
+                    viewHolder.v.setText(xB.b().a(getContext(), 2131625046));
                 }
             } else {
-                var1.u.setImageResource(2131166227);
-                var1.v.setText(xB.b().a(e.getContext(), 2131625045));
+                viewHolder.u.setImageResource(2131166227);
+                viewHolder.v.setText(xB.b().a(getContext(), 2131625045));
             }
 
-            if (d == var2) {
-                var1.t.setBackgroundColor(-1);
+            if (layoutPosition == position) {
+                viewHolder.t.setBackgroundColor(-1);
             } else {
-                var1.t.setBackgroundColor(e.getResources().getColor(2131034221));
+                viewHolder.t.setBackgroundColor(getResources().getColor(2131034221));
             }
 
         }
 
-        public void a(HashMap<Integer, ArrayList<gt.b>> var1) {
-            c = var1;
+        public void setData(HashMap<Integer, ArrayList<VariableItem>> integerArrayListHashMap) {
+            this.integerArrayListHashMap = integerArrayListHashMap;
         }
 
         @Override
-        public gt.a.a b(ViewGroup var1, int var2) {
-            return new gt.a.a(this, LayoutInflater.from(e.getContext()).inflate(2131427769, var1, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(getContext()).inflate(2131427769, parent, false));
         }
 
-        public class a extends v {
-            public final gt.a w;
+        private class ViewHolder extends RecyclerView.v {
+
             public LinearLayout t;
             public ImageView u;
             public TextView v;
 
-            public a(gt.a var1, View var2) {
-                super(var2);
-                w = var1;
-                t = var2.findViewById(2131230931);
-                u = var2.findViewById(2131231090);
-                v = var2.findViewById(2131231561);
-                var2.setOnClickListener(view -> {
-                    w.d = j();
-                    gt.this.i.a(gt.this.b.get(w.d));
-                    gt.this.i.c();
-                    w.c();
+            public ViewHolder(View itemVIew) {
+                super(itemVIew);
+                t = itemVIew.findViewById(2131230931);
+                u = itemVIew.findViewById(2131231090);
+                v = itemVIew.findViewById(2131231561);
+                itemVIew.setOnClickListener(view -> {
+                    layoutPosition = j();
+                    veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(layoutPosition));
+                    veriableItemAdapter.c();
+                    CategeryItemAdapter.this.c();
                 });
             }
         }
     }
 
-    public class b {
-        public final gt d;
-        public String a;
-        public String b;
-        public int c;
+    private class VariableItem {
 
-        public b(gt var1, String var2, String var3, int var4) {
-            d = var1;
-            a = var2;
-            b = var3;
-            c = var4;
+        public String type;
+        public String name;
+        public int icon;
+
+        public VariableItem(String type, String name, int icon) {
+            this.type = type;
+            this.name = name;
+            this.icon = icon;
         }
     }
 
-    public class c extends androidx.recyclerview.widget.RecyclerView.a<gt.c.a> {
+    private class VeriableItemAdapter extends RecyclerView.a<VeriableItemAdapter.ViewHolder> {
 
-        public final gt d;
-        public ArrayList<gt.b> c;
+        private ArrayList<VariableItem> variableItems1;
 
-        public c(gt var1) {
-            d = var1;
+        public VeriableItemAdapter() {
         }
 
         @Override
         public int a() {
-            return c.size();
+            return variableItems1.size();
         }
 
         @Override
-        public void b(gt.c.a var1, int var2) {
-            gt.b var3 = c.get(var2);
-            var1.t.setText(d.a(var3.a, var3.b));
-            var1.u.setImageResource(var3.c);
+        public void b(ViewHolder viewHolder, int position) {
+            VariableItem variableItem = variableItems1.get(position);
+            viewHolder.t.setText(getTypeName(variableItem.type, variableItem.name));
+            viewHolder.u.setImageResource(variableItem.icon);
         }
 
-        public void a(ArrayList<gt.b> var1) {
-            c = var1;
+        public void setData(ArrayList<VariableItem> variableItems) {
+            variableItems1 = variableItems;
         }
 
         @Override
-        public gt.c.a b(ViewGroup var1, int var2) {
-            return new gt.c.a(this, wB.a(d.getContext(), 2131427772));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(wB.a(getContext(), 2131427772));
         }
 
-        public class a extends v {
-            public final gt.c v;
+        private class ViewHolder extends RecyclerView.v {
             public TextView t;
             public ImageView u;
 
-            public a(gt.c var1, View var2) {
-                super(var2);
-                v = var1;
-                t = var2.findViewById(2131231561);
-                u = var2.findViewById(2131231090);
-                var2.setOnClickListener(view -> {
-                    setPreview(gt.this.b.get(d).get(j()));
-                    gt.this.l.hide();
+            public ViewHolder(View itemView) {
+                super(itemView);
+                t = itemView.findViewById(2131231561);
+                u = itemView.findViewById(2131231090);
+                itemView.setOnClickListener(view -> {
+                    setPreview(allVariablesWithCategeryIndex.get(d).get(j()));
+                    dialog.hide();
                 });
             }
         }
