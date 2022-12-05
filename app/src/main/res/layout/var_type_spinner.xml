@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/container" android:background="?selectableItemBackground" android:padding="4.0dip" android:focusable="true" android:clickable="true" android:layout_width="fill_parent" android:layout_height="48.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:id="@id/tv_preview" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
-    <ImageView android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="48.0dip"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="4.0dip">
+
+    <TextView
+        android:id="@+id/tv_preview"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0" />
+
+    <ImageView
+        android:layout_width="16.0dip"
+        android:layout_height="16.0dip"
+        android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
 </LinearLayout>
