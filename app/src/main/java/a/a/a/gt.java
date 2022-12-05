@@ -31,6 +31,7 @@ public class gt extends LinearLayout {
     private TextView k;
     private Dialog dialog;
     private VariableItem selectedVariableItem;
+    private CategeryItemAdapter categeryItemAdapter;
 
     public gt(Activity var1) {
         super(var1);
@@ -201,15 +202,15 @@ public class gt extends LinearLayout {
         f.setHasFixedSize(true);
         LinearLayoutManager var4 = new LinearLayoutManager(activity, 1, false);
         f.setLayoutManager(var4);
-        CategeryItemAdapter h = new CategeryItemAdapter();
-        h.setData(allVariablesWithCategeryIndex);
-        f.setAdapter(h);
+        categeryItemAdapter = new CategeryItemAdapter();
+        categeryItemAdapter.setData(allVariablesWithCategeryIndex);
+        f.setAdapter(categeryItemAdapter);
         g.setHasFixedSize(true);
         var4 = new LinearLayoutManager(activity, 1, false);
         g.setLayoutManager(var4);
         veriableItemAdapter = new VeriableItemAdapter();
         g.setAdapter(veriableItemAdapter);
-        h.layoutPosition = 0;
+        categeryItemAdapter.layoutPosition = 0;
         veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(0));
         setPreview(variableItems.get(0));
         dialog = new Dialog(activity);
@@ -386,7 +387,7 @@ public class gt extends LinearLayout {
                 t = itemView.findViewById(R.id.name);
                 u = itemView.findViewById(R.id.icon);
                 itemView.setOnClickListener(view -> {
-                    setPreview(allVariablesWithCategeryIndex.get(d).get(j()));
+                    setPreview(allVariablesWithCategeryIndex.get(categeryItemAdapter.layoutPosition).get(j()));
                     dialog.hide();
                 });
             }
