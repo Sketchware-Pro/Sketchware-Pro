@@ -28,7 +28,7 @@ public class gt extends LinearLayout {
     private ArrayList<VariableItem> viewsVariableList;
     private ArrayList<VariableItem> componentsVariableList;
     private VeriableItemAdapter veriableItemAdapter;
-    private TextView k;
+    private TextView tvPreview;
     private Dialog dialog;
     private VariableItem selectedVariableItem;
     private CategeryItemAdapter categeryItemAdapter;
@@ -40,7 +40,7 @@ public class gt extends LinearLayout {
 
     private void setPreview(VariableItem variableItem) {
         selectedVariableItem = variableItem;
-        k.setText(getTypeName(variableItem.type, variableItem.name));
+        tvPreview.setText(getTypeName(variableItem.type, variableItem.name));
     }
 
     private String getTypeName(String type, String name) {
@@ -157,7 +157,7 @@ public class gt extends LinearLayout {
         return type;
     }
 
-    private void a() {
+    private void initializeComponentItems() {
         componentsVariableList.add(new VariableItem("m", "intent", R.drawable.widget_intent));
         componentsVariableList.add(new VariableItem("m", "file", R.drawable.widget_shared_preference));
         componentsVariableList.add(new VariableItem("m", "calendar", R.drawable.widget_calendar));
@@ -184,49 +184,48 @@ public class gt extends LinearLayout {
 
     private void initialize(Activity activity) {
         wB.a(activity, this, R.layout.var_type_spinner);
-        k = findViewById(R.id.tv_preview);
-        LinearLayout j = (LinearLayout) wB.a(activity, R.layout.var_type_spinner_dialog);
-        RecyclerView f = j.findViewById(R.id.var_type_category);
-        RecyclerView g = j.findViewById(R.id.var_type_list);
-        ((TextView) j.findViewById(R.id.tv_title)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_add_variable_type));
+        tvPreview = findViewById(R.id.tv_preview);
+        LinearLayout spinnerDialogLayout = (LinearLayout) wB.a(activity, R.layout.var_type_spinner_dialog);
+        RecyclerView varTypeCategory = spinnerDialogLayout.findViewById(R.id.var_type_category);
+        RecyclerView varTypeList = spinnerDialogLayout.findViewById(R.id.var_type_list);
+        ((TextView) spinnerDialogLayout.findViewById(R.id.tv_title)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_add_variable_type));
         allVariablesWithCategeryIndex = new HashMap<>();
         variableItems = new ArrayList<>();
         viewsVariableList = new ArrayList<>();
         componentsVariableList = new ArrayList<>();
-        b();
-        c();
-        a();
+        initializeVariableItems();
+        initializeViewsItems();
+        initializeComponentItems();
         allVariablesWithCategeryIndex.put(0, variableItems);
         allVariablesWithCategeryIndex.put(1, viewsVariableList);
         allVariablesWithCategeryIndex.put(2, componentsVariableList);
-        f.setHasFixedSize(true);
-        LinearLayoutManager var4 = new LinearLayoutManager(activity, 1, false);
-        f.setLayoutManager(var4);
+        varTypeCategory.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, 1, false);
+        varTypeCategory.setLayoutManager(layoutManager);
         categeryItemAdapter = new CategeryItemAdapter();
         categeryItemAdapter.setData(allVariablesWithCategeryIndex);
-        f.setAdapter(categeryItemAdapter);
-        g.setHasFixedSize(true);
-        var4 = new LinearLayoutManager(activity, 1, false);
-        g.setLayoutManager(var4);
+        varTypeCategory.setAdapter(categeryItemAdapter);
+        varTypeList.setHasFixedSize(true);
+        varTypeList.setLayoutManager(layoutManager);
         veriableItemAdapter = new VeriableItemAdapter();
-        g.setAdapter(veriableItemAdapter);
+        varTypeList.setAdapter(veriableItemAdapter);
         categeryItemAdapter.layoutPosition = 0;
         veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(0));
         setPreview(variableItems.get(0));
         dialog = new Dialog(activity);
-        if (j.getParent() != null) {
-            ((ViewGroup) j.getParent()).removeView(j);
+        if (spinnerDialogLayout.getParent() != null) {
+            ((ViewGroup) spinnerDialogLayout.getParent()).removeView(spinnerDialogLayout);
         }
 
-        dialog.setContentView(j);
+        dialog.setContentView(spinnerDialogLayout);
         findViewById(R.id.container).setOnClickListener(view -> {
             if (!mB.a()) {
-                d();
+                dialog.show();
             }
         });
     }
 
-    private void b() {
+    private void initializeVariableItems() {
         variableItems.add(new VariableItem("b", "", R.drawable.ic_true_false_color_48dp));
         variableItems.add(new VariableItem("d", "", R.drawable.numbers_48));
         variableItems.add(new VariableItem("s", "", R.drawable.abc_96_color));
@@ -236,7 +235,7 @@ public class gt extends LinearLayout {
         variableItems.add(new VariableItem("m", "listMap", R.drawable.ic_list_color_48dp));
     }
 
-    private void c() {
+    private void initializeViewsItems() {
         viewsVariableList.add(new VariableItem("m", "view", R.drawable.layout_48));
         viewsVariableList.add(new VariableItem("m", "textview", R.drawable.widget_text_view));
         viewsVariableList.add(new VariableItem("m", "imageview", R.drawable.widget_image_view));
@@ -257,10 +256,6 @@ public class gt extends LinearLayout {
         viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.widget_edit_text));
         viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.widget_relative_layout));
         viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.pro_account_100dp_primary));
-    }
-
-    private void d() {
-        dialog.show();
     }
 
     public Pair<String, String> getSelectedItem() {
@@ -286,22 +281,22 @@ public class gt extends LinearLayout {
             if (position != 0) {
                 if (position != 1) {
                     if (position == 2) {
-                        viewHolder.u.setImageResource(R.drawable.component_96);
-                        viewHolder.v.setText(xB.b().a(getContext(), R.string.common_word_component));
+                        viewHolder.icon.setImageResource(R.drawable.component_96);
+                        viewHolder.name.setText(xB.b().a(getContext(), R.string.common_word_component));
                     }
                 } else {
-                    viewHolder.u.setImageResource(R.drawable.widget_list_view);
-                    viewHolder.v.setText(xB.b().a(getContext(), R.string.common_word_view));
+                    viewHolder.icon.setImageResource(R.drawable.widget_list_view);
+                    viewHolder.name.setText(xB.b().a(getContext(), R.string.common_word_view));
                 }
             } else {
-                viewHolder.u.setImageResource(R.drawable.variation_48);
-                viewHolder.v.setText(xB.b().a(getContext(), R.string.common_word_variable));
+                viewHolder.icon.setImageResource(R.drawable.variation_48);
+                viewHolder.name.setText(xB.b().a(getContext(), R.string.common_word_variable));
             }
 
             if (layoutPosition == position) {
-                viewHolder.t.setBackgroundColor(-1);
+                viewHolder.container.setBackgroundColor(-1);
             } else {
-                viewHolder.t.setBackgroundColor(getResources().getColor(R.color.lighter_grey));
+                viewHolder.container.setBackgroundColor(getResources().getColor(R.color.lighter_grey));
             }
 
         }
@@ -317,15 +312,15 @@ public class gt extends LinearLayout {
 
         private class ViewHolder extends RecyclerView.v {
 
-            public LinearLayout t;
-            public ImageView u;
-            public TextView v;
+            public LinearLayout container;
+            public ImageView icon;
+            public TextView name;
 
             public ViewHolder(View itemVIew) {
                 super(itemVIew);
-                t = itemVIew.findViewById(R.id.container);
-                u = itemVIew.findViewById(R.id.icon);
-                v = itemVIew.findViewById(R.id.name);
+                container = itemVIew.findViewById(R.id.container);
+                icon = itemVIew.findViewById(R.id.icon);
+                name = itemVIew.findViewById(R.id.name);
                 itemVIew.setOnClickListener(view -> {
                     layoutPosition = j();
                     veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(layoutPosition));
@@ -365,8 +360,8 @@ public class gt extends LinearLayout {
         @Override
         public void b(ViewHolder viewHolder, int position) {
             VariableItem variableItem = variableItems1.get(position);
-            viewHolder.t.setText(getTypeName(variableItem.type, variableItem.name));
-            viewHolder.u.setImageResource(variableItem.icon);
+            viewHolder.name.setText(getTypeName(variableItem.type, variableItem.name));
+            viewHolder.icon.setImageResource(variableItem.icon);
         }
 
         public void setData(ArrayList<VariableItem> variableItems) {
@@ -379,13 +374,13 @@ public class gt extends LinearLayout {
         }
 
         private class ViewHolder extends RecyclerView.v {
-            public TextView t;
-            public ImageView u;
+            public TextView name;
+            public ImageView icon;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.name);
-                u = itemView.findViewById(R.id.icon);
+                name = itemView.findViewById(R.id.name);
+                icon = itemView.findViewById(R.id.icon);
                 itemView.setOnClickListener(view -> {
                     setPreview(allVariablesWithCategeryIndex.get(categeryItemAdapter.layoutPosition).get(j()));
                     dialog.hide();
