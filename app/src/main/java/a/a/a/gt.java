@@ -23,15 +23,15 @@ import java.util.HashMap;
 @SuppressLint("ViewConstructor")
 public class gt extends LinearLayout {
 
-    private HashMap<Integer, ArrayList<VariableItem>> allVariablesWithCategeryIndex;
+    private HashMap<Integer, ArrayList<VariableItem>> allVariablesWithCategoryIndex;
     private ArrayList<VariableItem> variableItems;
     private ArrayList<VariableItem> viewsVariableList;
     private ArrayList<VariableItem> componentsVariableList;
-    private VeriableItemAdapter veriableItemAdapter;
+    private VariableItemAdapter variableItemAdapter;
     private TextView tvPreview;
     private Dialog dialog;
     private VariableItem selectedVariableItem;
-    private CategeryItemAdapter categeryItemAdapter;
+    private CategoryItemAdapter categoryItemAdapter;
 
     public gt(Activity var1) {
         super(var1);
@@ -189,28 +189,28 @@ public class gt extends LinearLayout {
         RecyclerView varTypeCategory = spinnerDialogLayout.findViewById(R.id.var_type_category);
         RecyclerView varTypeList = spinnerDialogLayout.findViewById(R.id.var_type_list);
         ((TextView) spinnerDialogLayout.findViewById(R.id.tv_title)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_add_variable_type));
-        allVariablesWithCategeryIndex = new HashMap<>();
+        allVariablesWithCategoryIndex = new HashMap<>();
         variableItems = new ArrayList<>();
         viewsVariableList = new ArrayList<>();
         componentsVariableList = new ArrayList<>();
         initializeVariableItems();
         initializeViewsItems();
         initializeComponentItems();
-        allVariablesWithCategeryIndex.put(0, variableItems);
-        allVariablesWithCategeryIndex.put(1, viewsVariableList);
-        allVariablesWithCategeryIndex.put(2, componentsVariableList);
+        allVariablesWithCategoryIndex.put(0, variableItems);
+        allVariablesWithCategoryIndex.put(1, viewsVariableList);
+        allVariablesWithCategoryIndex.put(2, componentsVariableList);
         varTypeCategory.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity, 1, false);
         varTypeCategory.setLayoutManager(layoutManager);
-        categeryItemAdapter = new CategeryItemAdapter();
-        categeryItemAdapter.setData(allVariablesWithCategeryIndex);
-        varTypeCategory.setAdapter(categeryItemAdapter);
+        categoryItemAdapter = new CategoryItemAdapter();
+        categoryItemAdapter.setData(allVariablesWithCategoryIndex);
+        varTypeCategory.setAdapter(categoryItemAdapter);
         varTypeList.setHasFixedSize(true);
         varTypeList.setLayoutManager(layoutManager);
-        veriableItemAdapter = new VeriableItemAdapter();
-        varTypeList.setAdapter(veriableItemAdapter);
-        categeryItemAdapter.layoutPosition = 0;
-        veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(0));
+        variableItemAdapter = new VariableItemAdapter();
+        varTypeList.setAdapter(variableItemAdapter);
+        categoryItemAdapter.layoutPosition = 0;
+        variableItemAdapter.setData(allVariablesWithCategoryIndex.get(0));
         setPreview(variableItems.get(0));
         dialog = new Dialog(activity);
         if (spinnerDialogLayout.getParent() != null) {
@@ -262,12 +262,12 @@ public class gt extends LinearLayout {
         return new Pair<>(selectedVariableItem.type, selectedVariableItem.name);
     }
 
-    private class CategeryItemAdapter extends RecyclerView.a<CategeryItemAdapter.ViewHolder> {
+    private class CategoryItemAdapter extends RecyclerView.a<CategoryItemAdapter.ViewHolder> {
 
         private HashMap<Integer, ArrayList<VariableItem>> integerArrayListHashMap;
         private int layoutPosition;
 
-        public CategeryItemAdapter() {
+        public CategoryItemAdapter() {
             layoutPosition = -1;
         }
 
@@ -323,9 +323,9 @@ public class gt extends LinearLayout {
                 name = itemVIew.findViewById(R.id.name);
                 itemVIew.setOnClickListener(view -> {
                     layoutPosition = j();
-                    veriableItemAdapter.setData(allVariablesWithCategeryIndex.get(layoutPosition));
-                    veriableItemAdapter.c();
-                    CategeryItemAdapter.this.c();
+                    variableItemAdapter.setData(allVariablesWithCategoryIndex.get(layoutPosition));
+                    variableItemAdapter.c();
+                    CategoryItemAdapter.this.c();
                 });
             }
         }
@@ -345,11 +345,11 @@ public class gt extends LinearLayout {
         }
     }
 
-    private class VeriableItemAdapter extends RecyclerView.a<VeriableItemAdapter.ViewHolder> {
+    private class VariableItemAdapter extends RecyclerView.a<VariableItemAdapter.ViewHolder> {
 
         private ArrayList<VariableItem> variableItems1;
 
-        public VeriableItemAdapter() {
+        public VariableItemAdapter() {
         }
 
         @Override
@@ -382,7 +382,7 @@ public class gt extends LinearLayout {
                 name = itemView.findViewById(R.id.name);
                 icon = itemView.findViewById(R.id.icon);
                 itemView.setOnClickListener(view -> {
-                    setPreview(allVariablesWithCategeryIndex.get(categeryItemAdapter.layoutPosition).get(j()));
+                    setPreview(allVariablesWithCategoryIndex.get(categoryItemAdapter.layoutPosition).get(j()));
                     dialog.hide();
                 });
             }
