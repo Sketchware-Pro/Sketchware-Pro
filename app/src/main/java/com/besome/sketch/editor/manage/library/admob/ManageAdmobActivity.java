@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +47,8 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private TextView tvInterId;
     private ProjectLibraryBean admobLibraryBean;
     private String sc_id;
+    private TextView tvRewardId;
+    private TextView tvRewardName;
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
@@ -74,6 +77,19 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
             } else {
                 tvInterName.setText("");
                 tvInterId.setText(adId);
+            }
+        }
+    }
+
+    private void setRewardAdUnit(String adId) {
+        if (!adId.isEmpty()) {
+            if (adId.contains(" : ")) {
+                int indexOfSemicolon = adId.indexOf(" : ");
+                tvRewardName.setText(adId.substring(0, indexOfSemicolon));
+                tvRewardId.setText(adId.substring(indexOfSemicolon + 3));
+            } else {
+                tvRewardName.setText("");
+                tvRewardId.setText(adId);
             }
         }
     }
@@ -161,6 +177,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,11 +206,16 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         ((TextView) findViewById(R.id.tv_title_inter)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
         ((TextView) findViewById(R.id.tv_title_inter_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_inter_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_reward)).setText("Rewarded Ad");
+        ((TextView) findViewById(R.id.tv_title_reward_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_title_reward_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
         ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
         tvBannerId = findViewById(R.id.tv_banner_id);
         tvBannerName = findViewById(R.id.tv_banner_name);
         tvInterId = findViewById(R.id.tv_inter_id);
         tvInterName = findViewById(R.id.tv_inter_name);
+        tvRewardId = findViewById(R.id.tv_reward_id);
+        tvRewardName = findViewById(R.id.tv_reward_name);
 
         RecyclerView listTestDevice = findViewById(R.id.list_test_device);
         listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
@@ -281,6 +303,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         libSwitch.setChecked("Y".equals(admobLibraryBean.useYn));
         setBannerAdUnit(admobLibraryBean.reserved1);
         setInterAdUnit(admobLibraryBean.reserved2);
+        setRewardAdUnit(admobLibraryBean.reserved3);
         testDeviceList = admobLibraryBean.testDevices;
         testDeviceAdapter.c();
     }
