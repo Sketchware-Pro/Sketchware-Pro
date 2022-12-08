@@ -151,18 +151,30 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
 
     public static String getActivityName(String name) {
         name = name.toLowerCase();
-        while (name.contains("_")) {
-            int index = name.indexOf('_');
-            if (index + 1 == name.length()) {
-                name = name.substring(0, name.length() - 1);
+        StringBuilder activityName = new StringBuilder();
+        int i = 0;
+        while (i < name.length()) {
+            int j;
+            char charAt = name.charAt(i);
+            if (charAt == '_' && i < name.length() - 1) {
+                j = i + 1;
+                char charAt2 = name.charAt(j);
+                if (Character.isLowerCase(charAt2)) {
+                    activityName.append(Character.toUpperCase(charAt2));
+                } else {
+                    activityName.append(charAt);
+                    j = i;
+                }
+            } else if (i == 0) {
+                activityName.append(Character.toUpperCase(charAt));
+                j = i;
             } else {
-                String firstPart = index == 0 ? "" : name.substring(0, index);
-                char camelCase = Character.toUpperCase(name.charAt(index + 1));
-                String lastPart = name.substring(index + 2);
-                name = firstPart + camelCase + lastPart + "Activity";
+                activityName.append(charAt);
+                j = i;
             }
+            i = j + 1;
         }
-        return Character.toUpperCase(name.charAt(0)) + (name.length() > 1 ? name.substring(1) : "");
+        return activityName + "Activity";
     }
 
     public static Creator<ProjectFileBean> getCreator() {
