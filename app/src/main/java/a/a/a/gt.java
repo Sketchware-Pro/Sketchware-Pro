@@ -200,13 +200,12 @@ public class gt extends LinearLayout {
         allVariablesWithCategoryIndex.put(1, viewsVariableList);
         allVariablesWithCategoryIndex.put(2, componentsVariableList);
         varTypeCategory.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, 1, false);
-        varTypeCategory.setLayoutManager(layoutManager);
+        varTypeCategory.setLayoutManager(new LinearLayoutManager(activity, 1, false));
         categoryItemAdapter = new CategoryItemAdapter();
         categoryItemAdapter.setData(allVariablesWithCategoryIndex);
         varTypeCategory.setAdapter(categoryItemAdapter);
         varTypeList.setHasFixedSize(true);
-        varTypeList.setLayoutManager(layoutManager);
+        varTypeList.setLayoutManager(new LinearLayoutManager(activity, 1, false));
         variableItemAdapter = new VariableItemAdapter();
         varTypeList.setAdapter(variableItemAdapter);
         categoryItemAdapter.layoutPosition = 0;
