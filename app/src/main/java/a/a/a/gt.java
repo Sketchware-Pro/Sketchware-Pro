@@ -3,6 +3,7 @@ package a.a.a;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -262,8 +263,7 @@ public class gt extends LinearLayout {
     }
 
     private class CategoryItemAdapter extends RecyclerView.a<CategoryItemAdapter.ViewHolder> {
-
-        private HashMap<Integer, ArrayList<VariableItem>> integerArrayListHashMap;
+        private HashMap<Integer, ArrayList<VariableItem>> categories;
         private int layoutPosition;
 
         public CategoryItemAdapter() {
@@ -271,11 +271,13 @@ public class gt extends LinearLayout {
         }
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
-            return integerArrayListHashMap.size();
+            return categories.size();
         }
 
         @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(ViewHolder viewHolder, int position) {
             if (position != 0) {
                 if (position != 1) {
@@ -293,7 +295,7 @@ public class gt extends LinearLayout {
             }
 
             if (layoutPosition == position) {
-                viewHolder.container.setBackgroundColor(-1);
+                viewHolder.container.setBackgroundColor(Color.WHITE);
             } else {
                 viewHolder.container.setBackgroundColor(getResources().getColor(R.color.lighter_grey));
             }
@@ -301,26 +303,26 @@ public class gt extends LinearLayout {
         }
 
         public void setData(HashMap<Integer, ArrayList<VariableItem>> integerArrayListHashMap) {
-            this.integerArrayListHashMap = integerArrayListHashMap;
+            this.categories = integerArrayListHashMap;
         }
 
         @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.var_type_category, parent, false));
         }
 
         private class ViewHolder extends RecyclerView.v {
+            public final LinearLayout container;
+            public final ImageView icon;
+            public final TextView name;
 
-            public LinearLayout container;
-            public ImageView icon;
-            public TextView name;
-
-            public ViewHolder(View itemVIew) {
-                super(itemVIew);
-                container = itemVIew.findViewById(R.id.container);
-                icon = itemVIew.findViewById(R.id.icon);
-                name = itemVIew.findViewById(R.id.name);
-                itemVIew.setOnClickListener(view -> {
+            public ViewHolder(View itemView) {
+                super(itemView);
+                container = itemView.findViewById(R.id.container);
+                icon = itemView.findViewById(R.id.icon);
+                name = itemView.findViewById(R.id.name);
+                itemView.setOnClickListener(view -> {
                     layoutPosition = j();
                     variableItemAdapter.setData(allVariablesWithCategoryIndex.get(layoutPosition));
                     variableItemAdapter.c();
@@ -330,12 +332,11 @@ public class gt extends LinearLayout {
         }
     }
 
-    private class VariableItem {
-
-        public String type;
-        public String name;
+    private static class VariableItem {
+        public final String type;
+        public final String name;
         @DrawableRes
-        public int icon;
+        public final int icon;
 
         public VariableItem(String type, String name, @DrawableRes int icon) {
             this.type = type;
@@ -345,36 +346,35 @@ public class gt extends LinearLayout {
     }
 
     private class VariableItemAdapter extends RecyclerView.a<VariableItemAdapter.ViewHolder> {
-
-        private ArrayList<VariableItem> variableItems1;
-
-        public VariableItemAdapter() {
-        }
+        private ArrayList<VariableItem> variables;
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
-            return variableItems1.size();
+            return variables.size();
         }
 
         @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(ViewHolder viewHolder, int position) {
-            VariableItem variableItem = variableItems1.get(position);
+            VariableItem variableItem = variables.get(position);
             viewHolder.name.setText(getTypeName(variableItem.type, variableItem.name));
             viewHolder.icon.setImageResource(variableItem.icon);
         }
 
         public void setData(ArrayList<VariableItem> variableItems) {
-            variableItems1 = variableItems;
+            variables = variableItems;
         }
 
         @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(wB.a(getContext(), R.layout.var_type_spinner_item));
         }
 
         private class ViewHolder extends RecyclerView.v {
-            public TextView name;
-            public ImageView icon;
+            public final TextView name;
+            public final ImageView icon;
 
             public ViewHolder(View itemView) {
                 super(itemView);
