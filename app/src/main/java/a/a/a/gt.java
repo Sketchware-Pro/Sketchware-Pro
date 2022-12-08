@@ -45,114 +45,53 @@ public class gt extends LinearLayout {
     }
 
     private String getTypeName(String type, String name) {
-        byte var4;
-        byte var5;
-        label77:
-        {
-            int var3 = type.hashCode();
-            var4 = 0;
-            if (var3 != 98) {
-                if (var3 != 100) {
-                    if (var3 == 115 && type.equals("s")) {
-                        var5 = 2;
-                        break label77;
-                    }
-                } else if (type.equals("d")) {
-                    var5 = 1;
-                    break label77;
-                }
-            } else if (type.equals("b")) {
-                var5 = 0;
-                break label77;
-            }
-
-            var5 = -1;
-        }
-
-        if (var5 != 0) {
-            if (var5 != 1) {
-                if (var5 != 2) {
-                    type = kq.b(name);
-                } else {
-                    type = xB.b().a(getContext(), R.string.logic_variable_type_string);
-                }
-            } else {
-                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
-            }
-        } else {
-            type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
-        }
-
-        label67:
-        {
-            switch (name.hashCode()) {
-                case -823676088:
-                    if (name.equals("varInt")) {
-                        var5 = var4;
-                        break label67;
-                    }
-                    break;
-                case -823672651:
-                    if (name.equals("varMap")) {
-                        var5 = 3;
-                        break label67;
-                    }
-                    break;
-                case -823666294:
-                    if (name.equals("varStr")) {
-                        var5 = 2;
-                        break label67;
-                    }
-                    break;
-                case 181944945:
-                    if (name.equals("listInt")) {
-                        var5 = 4;
-                        break label67;
-                    }
-                    break;
-                case 181948382:
-                    if (name.equals("listMap")) {
-                        var5 = 6;
-                        break label67;
-                    }
-                    break;
-                case 181954739:
-                    if (name.equals("listStr")) {
-                        var5 = 5;
-                        break label67;
-                    }
-                    break;
-                case 235637425:
-                    if (name.equals("varBool")) {
-                        var5 = 1;
-                        break label67;
-                    }
-            }
-
-            var5 = -1;
-        }
-
-        switch (var5) {
-            case 0:
-                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
-                break;
-            case 1:
+        switch (type) {
+            case "b":
                 type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
                 break;
-            case 2:
+
+            case "d":
+                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
+                break;
+
+            case "s":
                 type = xB.b().a(getContext(), R.string.logic_variable_type_string);
                 break;
-            case 3:
+
+            default:
+                type = kq.b(name);
+        }
+
+        switch (name) {
+            case "varInt":
+                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
+                break;
+
+            case "varBool":
+                type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
+                break;
+
+            case "varStr":
+                type = xB.b().a(getContext(), R.string.logic_variable_type_string);
+                break;
+
+            case "varMap":
                 type = xB.b().a(getContext(), R.string.logic_variable_type_map);
                 break;
-            case 4:
+
+            case "listInt":
                 type = xB.b().a(getContext(), R.string.logic_variable_type_list_number);
                 break;
-            case 5:
+
+            case "listStr":
                 type = xB.b().a(getContext(), R.string.logic_variable_type_list_string);
                 break;
-            case 6:
+
+            case "listMap":
                 type = xB.b().a(getContext(), R.string.logic_variable_type_list_map);
+                break;
+
+            default:
         }
 
         return type;
