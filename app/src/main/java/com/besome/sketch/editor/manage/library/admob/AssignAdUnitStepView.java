@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.library.admob;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,9 +17,14 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import a.a.a.Uu;
+import a.a.a.aB;
+import a.a.a.bB;
+import a.a.a.gB;
+import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
-public class Nu extends LinearLayout implements Uu, OnClickListener {
+public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
     private final ArrayList<String> adUnits = new ArrayList<>();
     private String bannerAdUnitId = "";
     private TextView bannerAdName;
@@ -31,7 +36,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     private TextView rewardedAdName;
     private TextView rewardedAdUnitIdView;
 
-    public Nu(Context context) {
+    public AssignAdUnitStepView(Context context) {
         super(context);
         initialize(context);
     }

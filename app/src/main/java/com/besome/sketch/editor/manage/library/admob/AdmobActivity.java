@@ -31,9 +31,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.GB;
-import a.a.a.Iu;
-import a.a.a.Ku;
-import a.a.a.Nu;
 import a.a.a.Tu;
 import a.a.a.Uu;
 import a.a.a.aB;
@@ -90,7 +87,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         stepContainer.removeAllViews();
         switch (position) {
             case 0:
-                Iu addAdUnitsStep = new Iu(this);
+                AddAdUnitStepView addAdUnitsStep = new AddAdUnitStepView(this);
                 stepContainer.addView(addAdUnitsStep);
                 addAdUnitsStep.setData(adMobSettings);
                 step = addAdUnitsStep;
@@ -98,7 +95,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
             case 1:
                 goToConsole.setVisibility(View.GONE);
-                Nu assignAdUnitsStep = new Nu(this);
+                AssignAdUnitStepView assignAdUnitsStep = new AssignAdUnitStepView(this);
                 stepContainer.addView(assignAdUnitsStep);
                 assignAdUnitsStep.setData(adMobSettings);
                 step = assignAdUnitsStep;
@@ -114,7 +111,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
             case 3:
                 goToConsole.setVisibility(View.GONE);
-                Ku reviewStep = new Ku(this);
+                ReviewStepView reviewStep = new ReviewStepView(this);
                 stepContainer.addView(reviewStep);
                 reviewStep.setData(adMobSettings);
                 step = reviewStep;

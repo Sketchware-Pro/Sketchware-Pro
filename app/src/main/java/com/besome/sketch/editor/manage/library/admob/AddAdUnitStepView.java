@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.library.admob;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,21 +17,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
-import com.besome.sketch.editor.manage.library.admob.AdmobActivity;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import a.a.a.SB;
+import a.a.a.Uu;
+import a.a.a.aB;
+import a.a.a.bB;
+import a.a.a.gB;
+import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
 @SuppressLint("ViewConstructor")
-public class Iu extends LinearLayout implements Uu, OnClickListener {
+public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
 
     private AdUnitsAdapter adUnitsAdapter;
     private ArrayList<AdUnitBean> adUnitBeanArrayList = new ArrayList<>();
     private TextView tvWarning;
 
-    public Iu(AdmobActivity activity) {
+    public AddAdUnitStepView(AdmobActivity activity) {
         super(activity);
         initialize(activity);
     }

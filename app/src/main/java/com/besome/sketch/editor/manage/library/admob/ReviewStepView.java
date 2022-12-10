@@ -1,5 +1,6 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.library.admob;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,12 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import a.a.a.Uu;
+import a.a.a.gB;
+import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
-public class Ku extends LinearLayout implements Uu {
+public class ReviewStepView extends LinearLayout implements Uu {
 
     private Switch adMobToggle;
     private TextView bannerName;
@@ -32,11 +36,12 @@ public class Ku extends LinearLayout implements Uu {
     private TextView rewardedAdName;
     private TextView rewardedAdId;
 
-    public Ku(Context context) {
+    public ReviewStepView(Context context) {
         super(context);
         initialize(context);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_preview);
         gB.b(this, 600, 200, null);
