@@ -24,8 +24,6 @@ import com.besome.sketch.editor.view.palette.PaletteWidget;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class jr extends qA {
 
@@ -581,20 +579,6 @@ public class jr extends qA {
         super.onStop();
         if (m != null) {
             m.d();
-        }
-    }
-
-    public void p() {
-        for (Iterator<HashMap<String, String>> it = mod.agus.jcoderz.editor.view.ViewEditor.a(); it.hasNext(); ) {
-            HashMap<String, String> map = it.next();
-            g.extraWidget(map.get("tag"), map.get("name"), map.get("text"));
-        }
-    }
-
-    public void q() {
-        for (Iterator<HashMap<String, String>> it = mod.agus.jcoderz.editor.view.ViewEditor.c(); it.hasNext(); ) {
-            HashMap<String, String> map = it.next();
-            g.extraWidgetLayout(map.get("tag"), map.get("name"));
         }
     }
 }
