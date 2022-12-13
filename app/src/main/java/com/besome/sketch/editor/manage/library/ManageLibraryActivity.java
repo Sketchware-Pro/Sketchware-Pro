@@ -23,7 +23,6 @@ import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
-import a.a.a.qu;
 import mod.hey.studios.util.Helper;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -47,7 +46,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private String originalGoogleMapUseYn = "N";
 
     private void addLibraryItem(ProjectLibraryBean libraryBean) {
-        qu libraryItemView = new qu(this);
+        LibraryItemView libraryItemView = new LibraryItemView(this);
         libraryItemView.a(R.layout.manage_library_common_item);
         libraryItemView.setTag(libraryBean.libType);
         libraryItemView.setData(libraryBean);
@@ -83,7 +82,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         }
 
         for (int i = 0; i < libraryItemLayout.getChildCount(); i++) {
-            qu libraryItemView = (qu) libraryItemLayout.getChildAt(i);
+            LibraryItemView libraryItemView = (LibraryItemView) libraryItemLayout.getChildAt(i);
             if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
                 libraryItemView.setData(libraryBean);
             }

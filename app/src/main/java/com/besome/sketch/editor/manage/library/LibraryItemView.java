@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.library;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -10,14 +10,17 @@ import androidx.cardview.widget.CardView;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.sketchware.remod.R;
 
-public class qu extends CardView {
+import a.a.a.wB;
+import a.a.a.xB;
+
+public class LibraryItemView extends CardView {
     private final Context context;
     private ImageView icon;
     private TextView title;
     private TextView description;
     private TextView enabled;
 
-    public qu(Context context) {
+    public LibraryItemView(Context context) {
         super(context);
         this.context = context;
     }
