@@ -36,7 +36,6 @@ import java.io.IOException;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.GC;
 import a.a.a.Xf;
 import a.a.a.aB;
 import a.a.a.bB;
@@ -72,7 +71,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     private DB preference;
     private CoordinatorLayout coordinator;
     private Snackbar storageAccessDenied;
-    private GC projectsFragment = null;
+    private ProjectsFragment projectsFragment = null;
 
     @Override
     // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
@@ -495,14 +494,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
         public Object a(ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.a(container, position);
-            projectsFragment = (GC) fragment;
+            projectsFragment = (ProjectsFragment) fragment;
             return fragment;
         }
 
         @Override
         // FragmentPagerAdapter#getItem(int)
         public Fragment c(int position) {
-            return new GC();
+            return new ProjectsFragment();
         }
 
         @Override

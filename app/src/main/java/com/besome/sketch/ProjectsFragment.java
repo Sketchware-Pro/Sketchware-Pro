@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.besome.sketch.MainActivity;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.export.ExportProjectActivity;
@@ -41,11 +40,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.DA;
+import a.a.a.DB;
+import a.a.a.MA;
+import a.a.a.ci;
+import a.a.a.gB;
+import a.a.a.lC;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.wq;
+import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
-public class GC extends DA implements View.OnClickListener {
+public class ProjectsFragment extends DA implements View.OnClickListener {
 
     private static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
     private static final int REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY = 206;
@@ -281,8 +290,8 @@ public class GC extends DA implements View.OnClickListener {
         public DeleteProjectTask(int position) {
             super(getContext());
             this.position = position;
-            GC.this.b();
-            GC.this.a(this);
+            ProjectsFragment.this.b();
+            ProjectsFragment.this.a(this);
         }
 
         @Override
@@ -293,12 +302,12 @@ public class GC extends DA implements View.OnClickListener {
                 projectsAdapter.a(position, projectsAdapter.a());
             }
 
-            GC.this.a();
+            ProjectsFragment.this.a();
         }
 
         @Override
         public void a(String idk) {
-            GC.this.a();
+            ProjectsFragment.this.a();
         }
 
         @Override

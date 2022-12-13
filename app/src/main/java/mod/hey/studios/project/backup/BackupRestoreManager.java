@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.besome.sketch.ProjectsFragment;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -19,7 +20,6 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-import a.a.a.GC;
 import a.a.a.aB;
 import a.a.a.lC;
 import mod.SketchwareUtil;
@@ -31,7 +31,7 @@ public class BackupRestoreManager {
     private final Activity act;
 
     // Needed to refresh the project list after restoring
-    private GC gc;
+    private ProjectsFragment projectsFragment;
 
     private HashMap<Integer, Boolean> backupDialogStates;
 
@@ -39,9 +39,9 @@ public class BackupRestoreManager {
         this.act = act;
     }
 
-    public BackupRestoreManager(Activity act, GC gc) {
+    public BackupRestoreManager(Activity act, ProjectsFragment projectsFragment) {
         this.act = act;
-        this.gc = gc;
+        this.projectsFragment = projectsFragment;
     }
 
     public static String getRestoreIntegratedLocalLibrariesMessage(boolean restoringMultipleBackups, int currentRestoringIndex, int totalAmountOfBackups, String filename) {
@@ -163,7 +163,7 @@ public class BackupRestoreManager {
     }
 
     public void doRestore(final String file, final boolean restoreLocalLibs) {
-        new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, gc).execute("");
+        new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, projectsFragment).execute("");
     }
 
     private static class BackupAsyncTask extends AsyncTask<String, Integer, String> {
@@ -217,16 +217,16 @@ public class BackupRestoreManager {
 
         private final WeakReference<Activity> activityWeakReference;
         private final String file;
-        private final GC gc;
+        private final ProjectsFragment projectsFragment;
         private final boolean restoreLocalLibs;
         private BackupFactory bm;
         private ProgressDialog dlg;
         private boolean error = false;
 
-        RestoreAsyncTask(WeakReference<Activity> activityWeakReference, String file, boolean restoreLocalLibraries, GC gc) {
+        RestoreAsyncTask(WeakReference<Activity> activityWeakReference, String file, boolean restoreLocalLibraries, ProjectsFragment projectsFragment) {
             this.activityWeakReference = activityWeakReference;
             this.file = file;
-            this.gc = gc;
+            this.projectsFragment = projectsFragment;
             restoreLocalLibs = restoreLocalLibraries;
         }
 
@@ -259,8 +259,8 @@ public class BackupRestoreManager {
 
             if (!bm.isRestoreSuccess() || error) {
                 SketchwareUtil.toastError("Couldn't restore: " + bm.error, Toast.LENGTH_LONG);
-            } else if (gc != null) {
-                gc.refreshProjectsList();
+            } else if (projectsFragment != null) {
+                projectsFragment.refreshProjectsList();
                 SketchwareUtil.toast("Restored successfully");
             } else {
                 SketchwareUtil.toast("Restored successfully. Refresh to see the project", Toast.LENGTH_LONG);
