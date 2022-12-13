@@ -27,32 +27,28 @@ import java.util.ArrayList;
 
 public class jr extends qA {
 
-    public ProjectFileBean f;
-    public ViewEditor g;
-    public boolean h = true;
-    public boolean i = false;
-    public boolean j = false;
-    public boolean k = false;
-    public int l = 0;
-    public ViewProperty m;
-    public ObjectAnimator n;
-    public ObjectAnimator o;
-    public boolean p;
-    public boolean q = false;
-    public String r;
+    private ProjectFileBean projectFileBean;
+    private ViewEditor viewEditor;
+    private boolean k = false;
+    private ViewProperty viewProperty;
+    private ObjectAnimator n;
+    private ObjectAnimator o;
+    private boolean p;
+    private boolean q = false;
+    private String sc_id;
 
     public jr() {
     }
 
-    private void a(ViewGroup viewGroup) {
+    private void initialize(ViewGroup viewGroup) {
         setHasOptionsMenu(true);
-        g = viewGroup.findViewById(R.id.view_editor);
-        g.setScreenType(getResources().getConfiguration().orientation);
-        m = getActivity().findViewById(R.id.view_property);
-        m.setOnPropertyListener(new Iw() {
+        viewEditor = viewGroup.findViewById(R.id.view_editor);
+        viewEditor.setScreenType(getResources().getConfiguration().orientation);
+        viewProperty = getActivity().findViewById(R.id.view_property);
+        viewProperty.setOnPropertyListener(new Iw() {
             @Override
             public void a() {
-                g.setFavoriteData(Rp.h().f());
+                viewEditor.setFavoriteData(Rp.h().f());
             }
 
             @Override
@@ -60,41 +56,41 @@ public class jr extends qA {
                 b(viewBean);
             }
         });
-        m.setOnPropertyValueChangedListener(viewBean -> {
+        viewProperty.setOnPropertyValueChangedListener(viewBean -> {
             a(viewBean.id);
-            m.e();
-            k();
+            viewProperty.e();
+            invalidateOptionsMenu();
         });
-        m.setOnEventClickListener(eventBean -> a(eventBean.targetId, eventBean.eventName, eventBean.eventName));
-        m.setOnPropertyTargetChangeListener(this::a);
-        g.setOnWidgetSelectedListener(new cy() {
+        viewProperty.setOnEventClickListener(eventBean -> toLogicEditorActivity(eventBean.targetId, eventBean.eventName, eventBean.eventName));
+        viewProperty.setOnPropertyTargetChangeListener(this::a);
+        viewEditor.setOnWidgetSelectedListener(new cy() {
             @Override
             public void a() {
                 n();
-                m.e();
+                viewProperty.e();
             }
 
             @Override
             public void a(String viewId) {
                 n();
-                m.a(viewId);
+                viewProperty.a(viewId);
             }
 
             @Override
             public void a(boolean var1, String viewId) {
                 if (!viewId.isEmpty()) {
                     a();
-                    m.a(viewId);
-                    m.e();
+                    viewProperty.a(viewId);
+                    viewProperty.e();
                 }
 
                 jr.this.a(var1);
             }
         });
-        g.setOnDraggingListener(new _x() {
+        viewEditor.setOnDraggingListener(new _x() {
             @Override
             public boolean a() {
-                return jC.c(r).b().isEnabled();
+                return jC.c(sc_id).b().isEnabled();
             }
 
             @Override
@@ -105,7 +101,7 @@ public class jr extends qA {
 
             @Override
             public boolean c() {
-                return jC.c(r).e().isEnabled();
+                return jC.c(sc_id).e().isEnabled();
             }
 
             @Override
@@ -114,55 +110,51 @@ public class jr extends qA {
                 ((DesignActivity) getActivity()).b(true);
             }
         });
-        g.setOnHistoryChangeListener(this::k);
-        g.setFavoriteData(Rp.h().f());
+        viewEditor.setOnHistoryChangeListener(this::invalidateOptionsMenu);
+        viewEditor.setFavoriteData(Rp.h().f());
     }
 
     public void a(ProjectFileBean projectFileBean) {
-        f = projectFileBean;
-        h = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
-        i = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
+        this.projectFileBean = projectFileBean;
         k = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
-        j = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER);
-        l = projectFileBean.orientation;
-        g.a(r, projectFileBean);
-        g.h();
-        m.a(r, f);
+        viewEditor.a(sc_id, projectFileBean);
+        viewEditor.h();
+        viewProperty.a(sc_id, this.projectFileBean);
         e();
         i();
-        k();
+        invalidateOptionsMenu();
     }
 
-    public final void a(ViewBean var1) {
-        g.k();
-        if (k) g.a(var1);
+    private void a(ViewBean var1) {
+        viewEditor.k();
+        if (k) viewEditor.a(var1);
     }
 
-    public final void a(String viewId) {
+    private void a(String viewId) {
         ViewBean viewBean;
         if (viewId.equals("_fab")) {
-            viewBean = jC.a(r).h(f.getXmlName());
+            viewBean = jC.a(sc_id).h(projectFileBean.getXmlName());
         } else {
-            viewBean = jC.a(r).c(f.getXmlName(), viewId);
+            viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), viewId);
         }
         c(viewBean);
-        m.e();
+        viewProperty.e();
     }
 
-    private void a(String eventId, String eventName, String eventName2) {
+    private void toLogicEditorActivity(String eventId, String eventName, String eventName2) {
         Intent intent = new Intent(getContext(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", r);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("id", eventId);
         intent.putExtra("event", eventName);
-        intent.putExtra("project_file", f);
+        intent.putExtra("project_file", projectFileBean);
         intent.putExtra("event_text", eventName2);
         getContext().startActivity(intent);
     }
 
     public void a(ArrayList<ViewBean> viewBeans) {
-        g.h();
-        g.a(eC.a(viewBeans));
+        viewEditor.h();
+        viewEditor.a(eC.a(viewBeans));
     }
 
     public void a(boolean var1) {
@@ -182,154 +174,154 @@ public class jr extends qA {
     public void b(ViewBean viewBean) {
         Intent intent = new Intent(getContext(), PropertyActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", r);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("bean", viewBean);
-        intent.putExtra("project_file", f);
+        intent.putExtra("project_file", projectFileBean);
         startActivityForResult(intent, 213);
     }
 
-    public final void b(ArrayList<ViewBean> viewBeans) {
+    private void b(ArrayList<ViewBean> viewBeans) {
         l();
         a(viewBeans);
     }
 
     public void b(boolean var1) {
-        g.setIsAdLoaded(var1);
-        g.requestLayout();
+        viewEditor.setIsAdLoaded(var1);
+        viewEditor.requestLayout();
     }
 
-    public final void c() {
+    private void c() {
         if (n.isRunning()) n.cancel();
         if (o.isRunning()) o.cancel();
     }
 
     public void c(ViewBean var1) {
-        g.e(var1);
+        viewEditor.e(var1);
     }
 
     public void c(boolean var1) {
-        m.setVisibility(var1 ? View.VISIBLE : View.GONE);
+        viewProperty.setVisibility(var1 ? View.VISIBLE : View.GONE);
     }
 
     public ProjectFileBean d() {
-        return f;
+        return projectFileBean;
     }
 
-    public final void e() {
-        g.d();
-        g.setPaletteLayoutVisible(View.VISIBLE);
-        g.a(PaletteWidget.a.a, "");
-        g.a(PaletteWidget.a.b, "");
-        g.a(PaletteWidget.b.b, "", "TextView", "TextView");
-        if (f != null && f.fileType == 7) {
-            g.a(PaletteWidget.a.c, "");
-            g.a(PaletteWidget.a.d, "");
-            g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-            g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-            g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-            g.a(PaletteWidget.b.a, "", "Button", "Button");
-            g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-            g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-            g.extraWidget("", "RadioButton", "RadioButton");
-            g.a(PaletteWidget.b.i, "", "Switch", "Switch");
-            g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-            g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-            g.extraWidget("", "RatingBar", "RatingBar");
-            g.extraWidget("", "AnalogClock", "AnalogClock");
-            g.extraWidget("", "TimePicker", "TimePicker");
-            g.extraWidget("", "DatePicker", "DatePicker");
-            g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-            g.a(PaletteWidget.b.h, "", "WebView", "WebView");
-            g.extraWidget("", "VideoView", "VideoView");
-            g.extraWidget("", "BadgeView", "BadgeView");
-            g.a(PaletteWidget.b.l, "", "AdView", "AdView");
+    private void e() {
+        viewEditor.d();
+        viewEditor.setPaletteLayoutVisible(View.VISIBLE);
+        viewEditor.a(PaletteWidget.a.a, "");
+        viewEditor.a(PaletteWidget.a.b, "");
+        viewEditor.a(PaletteWidget.b.b, "", "TextView", "TextView");
+        if (projectFileBean != null && projectFileBean.fileType == 7) {
+            viewEditor.a(PaletteWidget.a.c, "");
+            viewEditor.a(PaletteWidget.a.d, "");
+            viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+            viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+            viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+            viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
+            viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+            viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+            viewEditor.extraWidget("", "RadioButton", "RadioButton");
+            viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
+            viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+            viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+            viewEditor.extraWidget("", "RatingBar", "RatingBar");
+            viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
+            viewEditor.extraWidget("", "TimePicker", "TimePicker");
+            viewEditor.extraWidget("", "DatePicker", "DatePicker");
+            viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+            viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
+            viewEditor.extraWidget("", "VideoView", "VideoView");
+            viewEditor.extraWidget("", "BadgeView", "BadgeView");
+            viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
         } else {
-            if (f != null && f.fileType == 6) {
-                g.a(PaletteWidget.a.c, "");
-                g.a(PaletteWidget.a.d, "");
-                g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-                g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-                g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                g.a(PaletteWidget.b.a, "", "Button", "Button");
-                g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-                g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-                g.extraWidget("", "RadioButton", "RadioButton");
-                g.a(PaletteWidget.b.i, "", "Switch", "Switch");
-                g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-                g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-                g.extraWidget("", "RatingBar", "RatingBar");
-                g.extraWidget("", "AnalogClock", "AnalogClock");
-                g.extraWidget("", "TimePicker", "TimePicker");
-                g.extraWidget("", "DatePicker", "DatePicker");
-                g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-                g.a(PaletteWidget.b.h, "", "WebView", "WebView");
-                g.extraWidget("", "VideoView", "VideoView");
-                g.extraWidget("", "BadgeView", "BadgeView");
-                g.a(PaletteWidget.b.l, "", "AdView", "AdView");
+            if (projectFileBean != null && projectFileBean.fileType == 6) {
+                viewEditor.a(PaletteWidget.a.c, "");
+                viewEditor.a(PaletteWidget.a.d, "");
+                viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+                viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+                viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+                viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
+                viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+                viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+                viewEditor.extraWidget("", "RadioButton", "RadioButton");
+                viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
+                viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+                viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+                viewEditor.extraWidget("", "RatingBar", "RatingBar");
+                viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
+                viewEditor.extraWidget("", "TimePicker", "TimePicker");
+                viewEditor.extraWidget("", "DatePicker", "DatePicker");
+                viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+                viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
+                viewEditor.extraWidget("", "VideoView", "VideoView");
+                viewEditor.extraWidget("", "BadgeView", "BadgeView");
+                viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
             } else {
-                g.a(PaletteWidget.a.c, "");
-                g.a(PaletteWidget.a.d, "");
-                g.extraWidgetLayout("", "RadioGroup");
-                g.i.extraTitle("AndroidX", 0);
-                g.extraWidgetLayout("", "TabLayout");
-                g.extraWidgetLayout("", "BottomNavigationView");
-                g.extraWidgetLayout("", "CollapsingToolbarLayout");
-                g.extraWidgetLayout("", "CardView");
-                g.extraWidgetLayout("", "TextInputLayout");
-                g.extraWidgetLayout("", "SwipeRefreshLayout");
-                g.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-                g.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-                g.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                g.a(PaletteWidget.b.a, "", "Button", "Button");
-                g.extraWidget("", "MaterialButton", "MaterialButton");
-                g.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-                g.extraWidget("", "CircleImageView", "default_image");
-                g.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-                g.extraWidget("", "RadioButton", "RadioButton");
-                g.a(PaletteWidget.b.i, "", "Switch", "Switch");
-                g.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-                g.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-                g.extraWidget("", "RatingBar", "RatingBar");
-                g.extraWidget("", "SearchView", "SearchView");
-                g.extraWidget("", "VideoView", "VideoView");
-                g.a(PaletteWidget.b.h, "", "WebView", "WebView");
-                g.i.extraTitle("List", 1);
-                g.a(PaletteWidget.b.e, "", "ListView", "ListView");
-                g.extraWidget("", "GridView", "GridView");
-                g.extraWidget("", "RecyclerView", "RecyclerView");
-                g.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-                g.extraWidget("", "ViewPager", "ViewPager");
-                g.i.extraTitle("Library", 1);
-                g.extraWidget("", "BadgeView", "BadgeView");
-                g.extraWidget("", "WaveSideBar", "WaveSideBar");
-                g.extraWidget("", "PatternLockView", "PatternLockView");
-                g.extraWidget("", "CodeView", "CodeView");
-                g.extraWidget("", "LottieAnimation", "LottieAnimation");
-                g.extraWidget("", "OTPView", "OTPView");
-                g.i.extraTitle("Google", 1);
-                g.a(PaletteWidget.b.l, "", "AdView", "AdView");
-                g.a(PaletteWidget.b.n, "", "MapView", "MapView");
-                g.extraWidget("", "SignInButton", "SignInButton");
-                g.extraWidget("", "YoutubePlayer", "YoutubePlayer");
-                g.i.extraTitle("Date & Time", 1);
-                g.extraWidget("", "AnalogClock", "AnalogClock");
-                g.extraWidget("", "DigitalClock", "DigitalClock");
-                g.extraWidget("", "TimePicker", "TimePicker");
-                g.extraWidget("", "DatePicker", "DatePicker");
-                g.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
+                viewEditor.a(PaletteWidget.a.c, "");
+                viewEditor.a(PaletteWidget.a.d, "");
+                viewEditor.extraWidgetLayout("", "RadioGroup");
+                viewEditor.i.extraTitle("AndroidX", 0);
+                viewEditor.extraWidgetLayout("", "TabLayout");
+                viewEditor.extraWidgetLayout("", "BottomNavigationView");
+                viewEditor.extraWidgetLayout("", "CollapsingToolbarLayout");
+                viewEditor.extraWidgetLayout("", "CardView");
+                viewEditor.extraWidgetLayout("", "TextInputLayout");
+                viewEditor.extraWidgetLayout("", "SwipeRefreshLayout");
+                viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+                viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+                viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+                viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
+                viewEditor.extraWidget("", "MaterialButton", "MaterialButton");
+                viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+                viewEditor.extraWidget("", "CircleImageView", "default_image");
+                viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+                viewEditor.extraWidget("", "RadioButton", "RadioButton");
+                viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
+                viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+                viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+                viewEditor.extraWidget("", "RatingBar", "RatingBar");
+                viewEditor.extraWidget("", "SearchView", "SearchView");
+                viewEditor.extraWidget("", "VideoView", "VideoView");
+                viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
+                viewEditor.i.extraTitle("List", 1);
+                viewEditor.a(PaletteWidget.b.e, "", "ListView", "ListView");
+                viewEditor.extraWidget("", "GridView", "GridView");
+                viewEditor.extraWidget("", "RecyclerView", "RecyclerView");
+                viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+                viewEditor.extraWidget("", "ViewPager", "ViewPager");
+                viewEditor.i.extraTitle("Library", 1);
+                viewEditor.extraWidget("", "BadgeView", "BadgeView");
+                viewEditor.extraWidget("", "WaveSideBar", "WaveSideBar");
+                viewEditor.extraWidget("", "PatternLockView", "PatternLockView");
+                viewEditor.extraWidget("", "CodeView", "CodeView");
+                viewEditor.extraWidget("", "LottieAnimation", "LottieAnimation");
+                viewEditor.extraWidget("", "OTPView", "OTPView");
+                viewEditor.i.extraTitle("Google", 1);
+                viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
+                viewEditor.a(PaletteWidget.b.n, "", "MapView", "MapView");
+                viewEditor.extraWidget("", "SignInButton", "SignInButton");
+                viewEditor.extraWidget("", "YoutubePlayer", "YoutubePlayer");
+                viewEditor.i.extraTitle("Date & Time", 1);
+                viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
+                viewEditor.extraWidget("", "DigitalClock", "DigitalClock");
+                viewEditor.extraWidget("", "TimePicker", "TimePicker");
+                viewEditor.extraWidget("", "DatePicker", "DatePicker");
+                viewEditor.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
             }
         }
     }
 
-    public final void f() {
+    private void f() {
         if (n == null) {
-            n = ObjectAnimator.ofFloat(m, View.TRANSLATION_Y, 0.0F);
+            n = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, 0.0F);
             n.setDuration(700L);
             n.setInterpolator(new DecelerateInterpolator());
         }
 
         if (o == null) {
-            o = ObjectAnimator.ofFloat(m, View.TRANSLATION_Y, wB.a(getActivity(), (float) m.getHeight()));
+            o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(getActivity(), (float) viewProperty.getHeight()));
             o.setDuration(300L);
             o.setInterpolator(new DecelerateInterpolator());
         }
@@ -339,147 +331,141 @@ public class jr extends qA {
         return p;
     }
 
-    public final void h() {
+    private void h() {
         if (!q) {
-            HistoryViewBean var1 = cC.c(r).h(f.getXmlName());
-            if (var1 == null) {
-                k();
+            HistoryViewBean historyViewBean = cC.c(sc_id).h(projectFileBean.getXmlName());
+            if (historyViewBean == null) {
+                invalidateOptionsMenu();
             } else {
-                int actionType = var1.getActionType();
-                ViewBean var4;
-                sy var5;
+                int actionType = historyViewBean.getActionType();
+                sy widgetItemView;
                 if (actionType == HistoryViewBean.ACTION_TYPE_ADD) {
-                    for (ViewBean viewBean : var1.getAddedData()) {
-                        var4 = viewBean;
-                        jC.a(r).a(f.getXmlName(), var4);
+                    for (ViewBean viewBean : historyViewBean.getAddedData()) {
+                        jC.a(sc_id).a(projectFileBean.getXmlName(), viewBean);
                     }
-                    var5 = g.a(var1.getAddedData(), false);
-                    g.a(var5, false);
+                    widgetItemView = viewEditor.a(historyViewBean.getAddedData(), false);
+                    viewEditor.a(widgetItemView, false);
                 } else {
-                    ViewBean var6;
                     if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
-                        var4 = var1.getPrevUpdateData();
-                        var6 = var1.getCurrentUpdateData();
-                        if (!var4.id.equals(var6.id)) {
-                            var6.preId = var4.id;
+                        ViewBean prevUpdateData = historyViewBean.getPrevUpdateData();
+                        ViewBean currentUpdateData = historyViewBean.getCurrentUpdateData();
+                        if (!prevUpdateData.id.equals(currentUpdateData.id)) {
+                            currentUpdateData.preId = prevUpdateData.id;
                         }
 
-                        if (var6.id.equals("_fab")) {
-                            jC.a(r).h(f.getXmlName()).copy(var6);
+                        if (currentUpdateData.id.equals("_fab")) {
+                            jC.a(sc_id).h(projectFileBean.getXmlName()).copy(currentUpdateData);
                         } else {
-                            jC.a(r).c(f.getXmlName(), var4.id).copy(var6);
+                            jC.a(sc_id).c(projectFileBean.getXmlName(), prevUpdateData.id).copy(currentUpdateData);
                         }
 
-                        var5 = g.e(var6);
-                        g.a(var5, false);
+                        widgetItemView = viewEditor.e(currentUpdateData);
+                        viewEditor.a(widgetItemView, false);
                     } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
-                        for (ViewBean var7 : var1.getRemovedData()) {
-                            jC.a(r).a(f, var7);
+                        for (ViewBean viewBean : historyViewBean.getRemovedData()) {
+                            jC.a(sc_id).a(projectFileBean, viewBean);
                         }
-                        g.b(var1.getRemovedData(), false);
-                        g.i();
+                        viewEditor.b(historyViewBean.getRemovedData(), false);
+                        viewEditor.i();
                     } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
-                        var4 = var1.getMovedData();
-                        var6 = jC.a(r).c(f.getXmlName(), var4.id);
-                        var6.copy(var4);
-                        var5 = g.b(var6, false);
-                        g.a(var5, false);
+                        ViewBean movedData = historyViewBean.getMovedData();
+                        ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
+                        viewBean.copy(movedData);
+                        widgetItemView = viewEditor.b(viewBean, false);
+                        viewEditor.a(widgetItemView, false);
                     }
                 }
-                k();
+                invalidateOptionsMenu();
             }
         }
     }
 
     public void i() {
-        if (f != null) {
-            b(jC.a(r).d(f.getXmlName()));
-            a(jC.a(r).h(f.getXmlName()));
+        if (projectFileBean != null) {
+            b(jC.a(sc_id).d(projectFileBean.getXmlName()));
+            a(jC.a(sc_id).h(projectFileBean.getXmlName()));
         }
     }
 
     public void j() {
-        g.setFavoriteData(Rp.h().f());
+        viewEditor.setFavoriteData(Rp.h().f());
     }
 
-    public void k() {
+    private void invalidateOptionsMenu() {
         if (getActivity() != null) {
             getActivity().invalidateOptionsMenu();
         }
     }
 
     public void l() {
-        g.j();
+        viewEditor.j();
     }
 
-    public final void m() {
+    private void m() {
         if (!q) {
-            HistoryViewBean historyViewBean = cC.c(r).i(f.getXmlName());
+            HistoryViewBean historyViewBean = cC.c(sc_id).i(projectFileBean.getXmlName());
             if (historyViewBean == null) {
-                k();
+                invalidateOptionsMenu();
             } else {
                 int actionType = historyViewBean.getActionType();
-                ViewBean var4;
                 if (actionType == HistoryViewBean.ACTION_TYPE_ADD) {
                     for (ViewBean viewBean : historyViewBean.getAddedData()) {
-                        var4 = viewBean;
-                        jC.a(r).a(f, var4);
+                        jC.a(sc_id).a(projectFileBean, viewBean);
                     }
-                    g.b(historyViewBean.getAddedData(), false);
-                    g.i();
+                    viewEditor.b(historyViewBean.getAddedData(), false);
+                    viewEditor.i();
                 } else {
-                    ViewBean var5;
-                    sy var6;
+                    sy widgetItemView;
                     if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
-                        var4 = historyViewBean.getPrevUpdateData();
-                        var5 = historyViewBean.getCurrentUpdateData();
-                        if (!var4.id.equals(var5.id)) {
-                            var4.preId = var5.id;
+                        ViewBean prevUpdateData = historyViewBean.getPrevUpdateData();
+                        ViewBean currentUpdateData = historyViewBean.getCurrentUpdateData();
+                        if (!prevUpdateData.id.equals(currentUpdateData.id)) {
+                            prevUpdateData.preId = currentUpdateData.id;
                         }
-                        if (var5.id.equals("_fab")) {
-                            jC.a(r).h(f.getXmlName()).copy(var4);
+                        if (currentUpdateData.id.equals("_fab")) {
+                            jC.a(sc_id).h(projectFileBean.getXmlName()).copy(prevUpdateData);
                         } else {
-                            jC.a(r).c(f.getXmlName(), var5.id).copy(var4);
+                            jC.a(sc_id).c(projectFileBean.getXmlName(), currentUpdateData.id).copy(prevUpdateData);
                         }
-                        var6 = g.e(var4);
-                        g.a(var6, false);
+                        widgetItemView = viewEditor.e(prevUpdateData);
+                        viewEditor.a(widgetItemView, false);
                     } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
                         for (ViewBean var7 : historyViewBean.getRemovedData()) {
-                            jC.a(r).a(f.getXmlName(), var7);
+                            jC.a(sc_id).a(projectFileBean.getXmlName(), var7);
                         }
-                        var6 = g.a(historyViewBean.getRemovedData(), false);
-                        g.a(var6, false);
+                        widgetItemView = viewEditor.a(historyViewBean.getRemovedData(), false);
+                        viewEditor.a(widgetItemView, false);
                     } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
-                        var4 = historyViewBean.getMovedData();
-                        var5 = jC.a(r).c(f.getXmlName(), var4.id);
-                        var5.preIndex = var4.index;
-                        var5.index = var4.preIndex;
-                        var5.parent = var4.preParent;
-                        var5.preParent = var4.parent;
-                        var6 = g.b(var5, false);
-                        g.a(var6, false);
+                        ViewBean movedData = historyViewBean.getMovedData();
+                        ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
+                        viewBean.preIndex = movedData.index;
+                        viewBean.index = movedData.preIndex;
+                        viewBean.parent = movedData.preParent;
+                        viewBean.preParent = movedData.parent;
+                        widgetItemView = viewEditor.b(viewBean, false);
+                        viewEditor.a(widgetItemView, false);
                     }
                 }
-                k();
+                invalidateOptionsMenu();
             }
         }
     }
 
     public void n() {
-        ArrayList<ViewBean> viewBeanArrayList = eC.a(jC.a(r).d(f.getXmlName()));
+        ArrayList<ViewBean> viewBeanArrayList = eC.a(jC.a(sc_id).d(projectFileBean.getXmlName()));
         ViewBean viewBean;
-        if (f.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-            viewBean = jC.a(r).h(f.getXmlName());
+        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+            viewBean = jC.a(sc_id).h(projectFileBean.getXmlName());
         } else {
             viewBean = null;
         }
-        m.a(viewBeanArrayList, viewBean);
+        viewProperty.a(viewBeanArrayList, viewBean);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        k();
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -491,22 +477,22 @@ public class jr extends qA {
             }
 
             if (data != null && data.getBooleanExtra("is_edit_image", false)) {
-                for (ViewBean viewBean : jC.a(r).d(f.getXmlName())) {
+                for (ViewBean viewBean : jC.a(sc_id).d(projectFileBean.getXmlName())) {
                     c(viewBean);
                 }
                 if (k) {
-                    c(jC.a(r).h(f.getXmlName()));
+                    c(jC.a(sc_id).h(projectFileBean.getXmlName()));
                 }
             }
-            k();
+            invalidateOptionsMenu();
         }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfiguration) {
         super.onConfigurationChanged(newConfiguration);
-        g.setScreenType(newConfiguration.orientation);
-        g.P = true;
+        viewEditor.setScreenType(newConfiguration.orientation);
+        viewEditor.P = true;
     }
 
     @Override
@@ -520,8 +506,8 @@ public class jr extends qA {
         menuInflater.inflate(R.menu.design_view_menu, menu);
         menu.findItem(R.id.menu_view_redo).setEnabled(false);
         menu.findItem(R.id.menu_view_undo).setEnabled(false);
-        if (f != null) {
-            if (cC.c(r).f(f.getXmlName())) {
+        if (projectFileBean != null) {
+            if (cC.c(sc_id).f(projectFileBean.getXmlName())) {
                 menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_white_48dp);
                 menu.findItem(R.id.menu_view_redo).setEnabled(true);
             } else {
@@ -529,7 +515,7 @@ public class jr extends qA {
                 menu.findItem(R.id.menu_view_redo).setEnabled(false);
             }
 
-            if (cC.c(r).g(f.getXmlName())) {
+            if (cC.c(sc_id).g(projectFileBean.getXmlName())) {
                 menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_white_48dp);
                 menu.findItem(R.id.menu_view_undo).setEnabled(true);
             } else {
@@ -542,19 +528,14 @@ public class jr extends qA {
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle bundle) {
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.fr_graphic_editor, parent, false);
-        a(viewGroup);
+        initialize(viewGroup);
         if (bundle != null) {
-            r = bundle.getString("sc_id");
+            sc_id = bundle.getString("sc_id");
         } else {
-            r = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = getActivity().getIntent().getStringExtra("sc_id");
         }
 
         return viewGroup;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -570,15 +551,15 @@ public class jr extends qA {
 
     @Override
     public void onSaveInstanceState(Bundle newInstanceState) {
-        newInstanceState.putString("sc_id", r);
+        newInstanceState.putString("sc_id", sc_id);
         super.onSaveInstanceState(newInstanceState);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (m != null) {
-            m.d();
+        if (viewProperty != null) {
+            viewProperty.d();
         }
     }
 }
