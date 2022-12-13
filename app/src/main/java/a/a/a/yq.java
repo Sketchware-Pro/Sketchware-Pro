@@ -12,6 +12,7 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
+import com.sketchware.remod.xml.XmlBuilder;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -633,9 +634,9 @@ public class yq {
     public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean exportingProject) {
         ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, exportingProject);
         if (N.u) {
-            Nx pathsTag = new Nx("paths");
+            XmlBuilder pathsTag = new XmlBuilder("paths");
             pathsTag.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
-            Nx externalPathTag = new Nx("external-path");
+            XmlBuilder externalPathTag = new XmlBuilder("external-path");
             externalPathTag.addAttribute("", "name", "external_files");
             externalPathTag.addAttribute("", "path", ".");
             pathsTag.a(externalPathTag);

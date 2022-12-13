@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import a.a.a.Nx;
+import com.sketchware.remod.xml.XmlBuilder;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -75,7 +75,7 @@ public class AndroidManifestInjector {
         return attributes;
     }
 
-    public static void getP(Nx nx, String id) {
+    public static void getP(XmlBuilder nx, String id) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(id);
 
         for (int i = 0; i < attributes.size(); i++) {
@@ -87,7 +87,7 @@ public class AndroidManifestInjector {
 
                 if (value instanceof String) {
                     if ("_application_permissions".equals(name)) {
-                        Nx usesPermissionTag = new Nx("uses-permission");
+                        XmlBuilder usesPermissionTag = new XmlBuilder("uses-permission");
                         usesPermissionTag.addAttributeValue((String) value);
                         nx.a(usesPermissionTag);
                     }
@@ -100,11 +100,11 @@ public class AndroidManifestInjector {
         }
     }
 
-    public static void getAppAttrs(Nx nx, String projectId) {
+    public static void getAppAttrs(XmlBuilder nx, String projectId) {
         addToApp(nx, projectId);
     }
 
-    public static boolean getActivityAttrs(Nx nx, String projectId, String actName) {
+    public static boolean getActivityAttrs(XmlBuilder nx, String projectId, String actName) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
         String className = actName.substring(0, actName.indexOf(".java"));
 
@@ -125,15 +125,15 @@ public class AndroidManifestInjector {
         return false;
     }
 
-    public static boolean isActivityThemeUsed(Nx nx, String projectId, String actName) {
+    public static boolean isActivityThemeUsed(XmlBuilder nx, String projectId, String actName) {
         return isActivityAttributeUsed("android:theme", projectId, actName);
     }
 
-    public static boolean isActivityOrientationUsed(Nx nx, String projectId, String actName) {
+    public static boolean isActivityOrientationUsed(XmlBuilder nx, String projectId, String actName) {
         return isActivityAttributeUsed("android:screenOrientation", projectId, actName);
     }
 
-    public static boolean isActivityKeyboardUsed(Nx nx, String projectId, String actName) {
+    public static boolean isActivityKeyboardUsed(XmlBuilder nx, String projectId, String actName) {
         return isActivityAttributeUsed("android:windowSoftInputMode", projectId, actName);
     }
 
@@ -256,7 +256,7 @@ public class AndroidManifestInjector {
         return returnValue.toString();
     }
 
-    public static void addToApp(Nx nx, String projectId) {
+    public static void addToApp(XmlBuilder nx, String projectId) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
 
         boolean themeInjected = false;
@@ -288,7 +288,7 @@ public class AndroidManifestInjector {
         }
     }
 
-    public static void addToAct(Nx nx, String projectId, String actName) {
+    public static void addToAct(XmlBuilder nx, String projectId, String actName) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
         String className = actName.substring(0, actName.indexOf(".java"));
 

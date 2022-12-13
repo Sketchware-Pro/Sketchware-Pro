@@ -1,22 +1,24 @@
-package a.a.a;
+package com.sketchware.remod.xml;
 
 import java.util.ArrayList;
 
-public class Nx {
+import a.a.a.Jx;
+
+public class XmlBuilder {
 
     public String a;
     public int b;
     public String c;
     public boolean d;
     public ArrayList<AttributeBuilder> e;
-    public ArrayList<Nx> f;
+    public ArrayList<XmlBuilder> f;
     public String g;
 
-    public Nx(String str) {
+    public XmlBuilder(String str) {
         this(str, false);
     }
 
-    public Nx(String str, boolean z) {
+    public XmlBuilder(String str, boolean z) {
         d = z;
         a = str;
         b = 0;
@@ -40,7 +42,7 @@ public class Nx {
         e.add(position, new AttributeBuilder(namespace, attr, value));
     }
 
-    public void a(Nx xmlBuilder) {
+    public void a(XmlBuilder xmlBuilder) {
         xmlBuilder.b(b + 1);
         f.add(xmlBuilder);
     }
@@ -85,7 +87,7 @@ public class Nx {
         } else {
             resultCode.append(">");
             resultCode.append("\r\n");
-            for (Nx xmlBuilder : f) {
+            for (XmlBuilder xmlBuilder : f) {
                 resultCode.append(xmlBuilder.toCode());
             }
             resultCode.append(addZeroIndent());
@@ -104,7 +106,7 @@ public class Nx {
     private void b(int indentSize) {
         b = indentSize;
         if (f != null) {
-            for (Nx nx : f) {
+            for (XmlBuilder nx : f) {
                 nx.b(indentSize + 1);
             }
         }

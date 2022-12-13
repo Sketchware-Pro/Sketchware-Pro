@@ -1,34 +1,36 @@
 package a.a.a;
 
+import com.sketchware.remod.xml.XmlBuilder;
+
 import java.util.HashMap;
 
 public class Mx {
 
-    public Nx a = new Nx("resources");
-    public HashMap<String, Nx> b = new HashMap<>();
+    public XmlBuilder a = new XmlBuilder("resources");
+    public HashMap<String, XmlBuilder> b = new HashMap<>();
 
     public String toCode() {
         return a.toCode();
     }
 
     public void a(String name, int value) {
-        Nx integerBuilder = new Nx("integer", true);
+        XmlBuilder integerBuilder = new XmlBuilder("integer", true);
         integerBuilder.addAttribute("", "name", name);
         integerBuilder.a(String.valueOf(value));
         a.a(integerBuilder);
     }
 
     public void a(String name, String value) {
-        Nx colorBuilder = new Nx("color", true);
+        XmlBuilder colorBuilder = new XmlBuilder("color", true);
         colorBuilder.addAttribute("", "name", name);
         colorBuilder.a(value);
         a.a(colorBuilder);
     }
 
     public void a(String styleName, String name, String value) {
-        Nx styleBuilder = b.get(styleName);
+        XmlBuilder styleBuilder = b.get(styleName);
         if (styleBuilder != null) {
-            Nx styleItemBuilder = new Nx("item", true);
+            XmlBuilder styleItemBuilder = new XmlBuilder("item", true);
             styleItemBuilder.addAttribute("", "name", name);
             styleItemBuilder.a(value);
             styleBuilder.a(styleItemBuilder);
@@ -36,7 +38,7 @@ public class Mx {
     }
 
     public void a(String name, String value, boolean translatable) {
-        Nx stringBuilder = new Nx("string", true);
+        XmlBuilder stringBuilder = new XmlBuilder("string", true);
         stringBuilder.addAttribute("", "name", name);
         if (!translatable) {
             stringBuilder.addAttribute("", "translatable", "false");
@@ -65,7 +67,7 @@ public class Mx {
     }
 
     public void c(String name, String parent) {
-        Nx styleBuilder = new Nx("style", true);
+        XmlBuilder styleBuilder = new XmlBuilder("style", true);
         styleBuilder.addAttribute("", "name", name);
         if (parent.length() > 0) {
             styleBuilder.addAttribute("", "parent", parent);

@@ -2,7 +2,7 @@ package mod.agus.jcoderz.handle.component;
 
 import android.Manifest;
 
-import a.a.a.Nx;
+import com.sketchware.remod.xml.XmlBuilder;
 import mod.agus.jcoderz.editor.manifest.EditorManifest;
 
 /**
@@ -10,7 +10,7 @@ import mod.agus.jcoderz.editor.manifest.EditorManifest;
  */
 public class ConstVarManifest {
 
-    public static void handlePermissionComponent(Nx nx, ConstVarComponent component) {
+    public static void handlePermissionComponent(XmlBuilder nx, ConstVarComponent component) {
         if (component.isFCMUsed) {
             writePermission(nx, Manifest.permission.WAKE_LOCK);
             writePermission(nx, "com.google.android.c2dm.permission.RECEIVE");
@@ -42,7 +42,7 @@ public class ConstVarManifest {
         }
     }
 
-    public static void handleBgTaskComponent(Nx nx, ConstVarComponent component) {
+    public static void handleBgTaskComponent(XmlBuilder nx, ConstVarComponent component) {
         if (component.isFCMUsed) {
             EditorManifest.writeDefFCM(nx);
         }
@@ -57,14 +57,14 @@ public class ConstVarManifest {
         }
     }
 
-    public static void writePermission(Nx nx, String permissionName) {
-        Nx usesPermissionTag = new Nx("uses-permission");
+    public static void writePermission(XmlBuilder nx, String permissionName) {
+        XmlBuilder usesPermissionTag = new XmlBuilder("uses-permission");
         usesPermissionTag.addAttribute("android", "name", permissionName);
         nx.a(usesPermissionTag);
     }
 
-    public static void writePermissionMultiLine(Nx nx, String permissionName) {
-        Nx permissionTag = new Nx("permission");
+    public static void writePermissionMultiLine(XmlBuilder nx, String permissionName) {
+        XmlBuilder permissionTag = new XmlBuilder("permission");
         permissionTag.addAttribute("android", "name", permissionName);
         permissionTag.addAttribute("android", "protectionLevel", "signature");
         nx.a(permissionTag);

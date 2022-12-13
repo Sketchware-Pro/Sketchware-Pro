@@ -11,6 +11,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
+import com.sketchware.remod.xml.XmlBuilder;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -36,8 +37,8 @@ public class Ox {
     private final ProjectFileBean projectFile;
     private ViewBean fab;
     private ArrayList<ViewBean> views;
-    private Nx rootLayout = null;
-    private Nx collapsingToolbarLayout = null;
+    private XmlBuilder rootLayout = null;
+    private XmlBuilder collapsingToolbarLayout = null;
 
     public Ox(jq jq, ProjectFileBean projectFileBean) {
         buildConfig = jq;
@@ -99,7 +100,7 @@ public class Ox {
     }
 
     private void writeRootLayout() {
-        Nx nx = new Nx("LinearLayout");
+        XmlBuilder nx = new XmlBuilder("LinearLayout");
         nx.addAttribute("android", "layout_width", "match_parent");
         nx.addAttribute("android", "layout_height", "match_parent");
         nx.addAttribute("android", "orientation", "vertical");
@@ -116,16 +117,16 @@ public class Ox {
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)
                         || projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-                    Nx coordinatorLayoutTag = new Nx("androidx.coordinatorlayout.widget.CoordinatorLayout");
+                    XmlBuilder coordinatorLayoutTag = new XmlBuilder("androidx.coordinatorlayout.widget.CoordinatorLayout");
                     coordinatorLayoutTag.addAttribute("android", "id", "@+id/_coordinator");
                     aci.inject(coordinatorLayoutTag, "CoordinatorLayout");
                     rootLayout = coordinatorLayoutTag;
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
-                    Nx toolbarTag = new Nx("androidx.appcompat.widget.Toolbar");
+                    XmlBuilder toolbarTag = new XmlBuilder("androidx.appcompat.widget.Toolbar");
                     toolbarTag.addAttribute("android", "id", "@+id/_toolbar");
                     aci.inject(toolbarTag, "Toolbar");
-                    Nx appBarLayoutTag = new Nx("com.google.android.material.appbar.AppBarLayout");
+                    XmlBuilder appBarLayoutTag = new XmlBuilder("com.google.android.material.appbar.AppBarLayout");
                     appBarLayoutTag.addAttribute("android", "id", "@+id/_app_bar");
                     aci.inject(appBarLayoutTag, "AppBarLayout");
                     if (collapsingToolbarLayout != null) {
@@ -150,14 +151,14 @@ public class Ox {
                     writeWidget(rootLayout, fab);
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                    Nx drawerLayoutTag = new Nx("androidx.drawerlayout.widget.DrawerLayout");
+                    XmlBuilder drawerLayoutTag = new XmlBuilder("androidx.drawerlayout.widget.DrawerLayout");
                     drawerLayoutTag.addAttribute("android", "id", "@+id/_drawer");
                     aci.inject(drawerLayoutTag, "DrawerLayout");
                     drawerLayoutTag.a(rootLayout);
-                    Nx linearLayoutTag = new Nx("LinearLayout");
+                    XmlBuilder linearLayoutTag = new XmlBuilder("LinearLayout");
                     linearLayoutTag.addAttribute("android", "id", "@+id/_nav_view");
                     aci.inject(linearLayoutTag, "NavigationDrawer");
-                    Nx includeTag = new Nx("include", true);
+                    XmlBuilder includeTag = new XmlBuilder("include", true);
                     includeTag.addAttribute("", "layout", "@layout/_drawer_" + projectFile.fileName);
                     linearLayoutTag.a(includeTag);
                     drawerLayoutTag.a(linearLayoutTag);
@@ -174,7 +175,7 @@ public class Ox {
         rootLayout.addNamespaceDeclaration(0, "xmlns", "android", "http://schemas.android.com/apk/res/android");
     }
 
-    private void writeBackgroundResource(Nx nx, ViewBean viewBean) {
+    private void writeBackgroundResource(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String backgroundResource = viewBean.layout.backgroundResource;
         if (backgroundResource == null || "NONE".equalsIgnoreCase(backgroundResource)) {
@@ -233,13 +234,13 @@ public class Ox {
         return rootLayout.toCode();
     }
 
-    private void writeWidget(Nx nx, ViewBean viewBean) {
+    private void writeWidget(XmlBuilder nx, ViewBean viewBean) {
         viewBean.getClassInfo().a();
         String convert = viewBean.convert;
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
 
-        Nx widgetTag = convert.equals("") ? new Nx(viewBean.getClassInfo().a()) :
-                new Nx(convert.replaceAll(" ", ""));
+        XmlBuilder widgetTag = convert.equals("") ? new XmlBuilder(viewBean.getClassInfo().a()) :
+                new XmlBuilder(convert.replaceAll(" ", ""));
         if (convert.equals("include")) {
             if (!toNotAdd.contains("layout")) {
                 widgetTag.addAttribute("", "layout", "@layout/" + viewBean.id);
@@ -379,9 +380,9 @@ public class Ox {
         }
     }
 
-    private void writeFabView(Nx nx, ViewBean viewBean) {
+    private void writeFabView(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
-        Nx floatingActionButtonTag = new Nx("com.google.android.material.floatingactionbutton.FloatingActionButton");
+        XmlBuilder floatingActionButtonTag = new XmlBuilder("com.google.android.material.floatingactionbutton.FloatingActionButton");
         if (!toNotAdd.contains("android:id")) {
             floatingActionButtonTag.addAttribute("android", "id", "@+id/" + viewBean.id);
         }
@@ -406,7 +407,7 @@ public class Ox {
         nx.a(floatingActionButtonTag);
     }
 
-    private void writeViewGravity(Nx nx, ViewBean viewBean) {
+    private void writeViewGravity(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (!toNotAdd.contains("android:gravity")) {
             int gravity = viewBean.layout.gravity;
@@ -451,7 +452,7 @@ public class Ox {
         }
     }
 
-    private void writeImgSrcAttr(Nx nx, ViewBean viewBean) {
+    private void writeImgSrcAttr(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String resName = viewBean.image.resName;
         if (resName.length() > 0 && !"NONE".equals(resName)) {
@@ -471,7 +472,7 @@ public class Ox {
     /**
      * @see ImageView.ScaleType
      */
-    private void writeImageScaleType(Nx nx, ViewBean viewBean) {
+    private void writeImageScaleType(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (!toNotAdd.contains("android:scaleType")) {
             if (viewBean.image.scaleType.equals(ImageBean.SCALE_TYPE_CENTER)) {
@@ -495,7 +496,7 @@ public class Ox {
     /**
      * @see Gravity
      */
-    private void writeLayoutGravity(Nx nx, ViewBean viewBean) {
+    private void writeLayoutGravity(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (!toNotAdd.contains("android:layout_gravity")) {
             int gravity = viewBean.layout.layoutGravity;
@@ -543,7 +544,7 @@ public class Ox {
     /**
      * @see ViewGroup.MarginLayoutParams
      */
-    private void writeLayoutMargin(Nx nx, ViewBean viewBean) {
+    private void writeLayoutMargin(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         LayoutBean layoutBean = viewBean.layout;
         int marginLeft = layoutBean.marginLeft;
@@ -579,7 +580,7 @@ public class Ox {
      * @see View#getPaddingRight()
      * @see View#getPaddingBottom()
      */
-    private void writeViewPadding(Nx nx, ViewBean viewBean) {
+    private void writeViewPadding(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         LayoutBean layoutBean = viewBean.layout;
         int paddingLeft = layoutBean.paddingLeft;
@@ -609,7 +610,7 @@ public class Ox {
         }
     }
 
-    private void writeTextAttributes(Nx nx, ViewBean viewBean) {
+    private void writeTextAttributes(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String text = viewBean.text.text;
         if (text != null && text.length() > 0 && !toNotAdd.contains("android:text")) {
@@ -700,7 +701,7 @@ public class Ox {
         }
     }
 
-    private void k(Nx nx, ViewBean viewBean) {
+    private void k(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         if (viewBean.enabled == 0 && !toNotAdd.contains("android:enabled")) {
             nx.addAttribute("android", "enabled", "false");

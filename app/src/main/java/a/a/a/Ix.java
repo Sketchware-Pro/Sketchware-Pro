@@ -11,6 +11,7 @@ import android.util.Pair;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
+import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 
 public class Ix {
 
-    public Nx a = new Nx("manifest");
+    public XmlBuilder a = new XmlBuilder("manifest");
     public ArrayList<ProjectFileBean> b;
     public BuildSettings buildSettings;
     public jq c;
@@ -48,15 +49,15 @@ public class Ix {
     /**
      * Adds FileProvider metadata to AndroidManifest.
      *
-     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link XmlBuilder} object
      */
-    private void writeFileProvider(Nx applicationTag) {
-        Nx providerTag = new Nx("provider");
+    private void writeFileProvider(XmlBuilder applicationTag) {
+        XmlBuilder providerTag = new XmlBuilder("provider");
         providerTag.addAttribute("android", "authorities", c.packageName + ".provider");
         providerTag.addAttribute("android", "name", "androidx.core.content.FileProvider");
         providerTag.addAttribute("android", "exported", "false");
         providerTag.addAttribute("android", "grantUriPermissions", "true");
-        Nx metadataTag = new Nx("meta-data");
+        XmlBuilder metadataTag = new XmlBuilder("meta-data");
         metadataTag.addAttribute("android", "name", "android.support.FILE_PROVIDER_PATHS");
         metadataTag.addAttribute("android", "resource", "@xml/provider_paths");
         providerTag.a(metadataTag);
@@ -66,11 +67,11 @@ public class Ix {
     /**
      * Adds a permission to AndroidManifest.
      *
-     * @param manifestTag    AndroidManifest {@link Nx} object
-     * @param permissionName The {@code uses-permission} {@link Nx} tag
+     * @param manifestTag    AndroidManifest {@link XmlBuilder} object
+     * @param permissionName The {@code uses-permission} {@link XmlBuilder} tag
      */
-    private void writePermission(Nx manifestTag, String permissionName) {
-        Nx usesPermissionTag = new Nx("uses-permission");
+    private void writePermission(XmlBuilder manifestTag, String permissionName) {
+        XmlBuilder usesPermissionTag = new XmlBuilder("uses-permission");
         usesPermissionTag.addAttribute("android", "name", permissionName);
         manifestTag.a(usesPermissionTag);
     }
@@ -78,44 +79,44 @@ public class Ix {
     /**
      * Adds Firebase metadata to AndroidManifest.
      *
-     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link XmlBuilder} object
      */
-    private void writeFirebaseMetaData(Nx applicationTag) {
-        Nx providerTag = new Nx("provider");
+    private void writeFirebaseMetaData(XmlBuilder applicationTag) {
+        XmlBuilder providerTag = new XmlBuilder("provider");
         providerTag.addAttribute("android", "name", "com.google.firebase.provider.FirebaseInitProvider");
         providerTag.addAttribute("android", "authorities", c.packageName + ".firebaseinitprovider");
         providerTag.addAttribute("android", "exported", "false");
         providerTag.addAttribute("android", "initOrder", "100");
         applicationTag.a(providerTag);
-        Nx serviceTag = new Nx("service");
+        XmlBuilder serviceTag = new XmlBuilder("service");
         serviceTag.addAttribute("android", "name", "com.google.firebase.components.ComponentDiscoveryService");
         serviceTag.addAttribute("android", "exported", "false");
         if (c.isFirebaseAuthUsed) {
-            Nx metadataTag = new Nx("meta-data");
+            XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar");
             metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.isFirebaseDatabaseUsed) {
-            Nx metadataTag = new Nx("meta-data");
+            XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar");
             metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.isFirebaseStorageUsed) {
-            Nx metadataTag = new Nx("meta-data");
+            XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.storage.StorageRegistrar");
             metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.isDynamicLinkUsed) {
-            Nx metadataTag = new Nx("meta-data");
+            XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
             metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
         if (c.x.isFCMUsed) {
-            Nx metadataTag = new Nx("meta-data");
+            XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
             metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
@@ -126,10 +127,10 @@ public class Ix {
     /**
      * Adds the Google Maps SDK API key metadata to AndroidManifest.
      *
-     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link XmlBuilder} object
      */
-    private void writeGoogleMapMetaData(Nx applicationTag) {
-        Nx metadataTag = new Nx("meta-data");
+    private void writeGoogleMapMetaData(XmlBuilder applicationTag) {
+        XmlBuilder metadataTag = new XmlBuilder("meta-data");
         metadataTag.addAttribute("android", "name", "com.google.android.geo.API_KEY");
         metadataTag.addAttribute("android", "value", "@string/google_maps_key");
         applicationTag.a(metadataTag);
@@ -138,10 +139,10 @@ public class Ix {
     /**
      * Specifies in AndroidManifest that the app uses Apache HTTP legacy library.
      *
-     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link XmlBuilder} object
      */
-    private void writeLegacyLibrary(Nx applicationTag) {
-        Nx usesLibraryTag = new Nx("uses-library");
+    private void writeLegacyLibrary(XmlBuilder applicationTag) {
+        XmlBuilder usesLibraryTag = new XmlBuilder("uses-library");
         usesLibraryTag.addAttribute("android", "name", "org.apache.http.legacy");
         usesLibraryTag.addAttribute("android", "required", "false");
         applicationTag.a(usesLibraryTag);
@@ -150,10 +151,10 @@ public class Ix {
     /**
      * Adds metadata about the GMS library version (a resource integer).
      *
-     * @param applicationTag {@link Nx} object to add the {@code meta-data} tag to
+     * @param applicationTag {@link XmlBuilder} object to add the {@code meta-data} tag to
      */
-    private void writeGMSVersion(Nx applicationTag) {
-        Nx metadataTag = new Nx("meta-data");
+    private void writeGMSVersion(XmlBuilder applicationTag) {
+        XmlBuilder metadataTag = new XmlBuilder("meta-data");
         metadataTag.addAttribute("android", "name", "com.google.android.gms.version");
         metadataTag.addAttribute("android", "value", "@integer/google_play_services_version");
         applicationTag.a(metadataTag);
@@ -162,15 +163,15 @@ public class Ix {
     /**
      * Registers a {@link BroadcastReceiver} in AndroidManifest.
      *
-     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link XmlBuilder} object
      * @param receiverName   The component name of the broadcast
      * @see ComponentName
      */
-    private void writeBroadcast(Nx applicationTag, String receiverName) {
-        Nx receiverTag = new Nx("receiver");
+    private void writeBroadcast(XmlBuilder applicationTag, String receiverName) {
+        XmlBuilder receiverTag = new XmlBuilder("receiver");
         receiverTag.addAttribute("android", "name", receiverName);
-        Nx intentFilterTag = new Nx("intent-filter");
-        Nx actionTag = new Nx("action");
+        XmlBuilder intentFilterTag = new XmlBuilder("intent-filter");
+        XmlBuilder actionTag = new XmlBuilder("action");
         actionTag.addAttribute("android", "name", receiverName);
         intentFilterTag.a(actionTag);
         if (targetsSdkVersion31OrHigher) {
@@ -180,8 +181,8 @@ public class Ix {
         applicationTag.a(receiverTag);
     }
 
-    private void writeAdmobAppId(Nx applicationTag) {
-        Nx metadataTag = new Nx("meta-data");
+    private void writeAdmobAppId(XmlBuilder applicationTag) {
+        XmlBuilder metadataTag = new XmlBuilder("meta-data");
         metadataTag.addAttribute("android", "name", "com.google.android.gms.ads.APPLICATION_ID");
         metadataTag.addAttribute("android", "value", c.appId);
         applicationTag.a(metadataTag);
@@ -190,30 +191,30 @@ public class Ix {
     /**
      * Registers a {@link Service} in AndroidManifest.
      *
-     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link XmlBuilder} object
      * @param serviceName    The component name of the service
      */
-    private void writeService(Nx applicationTag, String serviceName) {
-        Nx serviceTag = new Nx("service");
+    private void writeService(XmlBuilder applicationTag, String serviceName) {
+        XmlBuilder serviceTag = new XmlBuilder("service");
         serviceTag.addAttribute("android", "name", serviceName);
         serviceTag.addAttribute("android", "enabled", "true");
         applicationTag.a(serviceTag);
     }
 
-    private void writeDLIntentFilter(Nx activityTag) {
-        Nx intentFilterTag = new Nx("intent-filter");
-        Nx intentFilterActionTag = new Nx("action");
+    private void writeDLIntentFilter(XmlBuilder activityTag) {
+        XmlBuilder intentFilterTag = new XmlBuilder("intent-filter");
+        XmlBuilder intentFilterActionTag = new XmlBuilder("action");
         intentFilterActionTag.addAttribute("android", "name", "android.intent.action.VIEW");
-        Nx intentFilterCategoryDefaultTag = new Nx("category");
+        XmlBuilder intentFilterCategoryDefaultTag = new XmlBuilder("category");
         intentFilterCategoryDefaultTag.addAttribute("android", "name", "android.intent.category.DEFAULT");
-        Nx intentFilterCategoryBrowsableTag = new Nx("category");
+        XmlBuilder intentFilterCategoryBrowsableTag = new XmlBuilder("category");
         intentFilterCategoryBrowsableTag.addAttribute("android", "name", "android.intent.category.BROWSABLE");
         intentFilterTag.a(intentFilterActionTag);
         intentFilterTag.a(intentFilterCategoryDefaultTag);
         intentFilterTag.a(intentFilterCategoryBrowsableTag);
         for (Pair<String, String> stringStringPair : c.dlDataList) {
             if (!isEmpty(stringStringPair.first) && !isEmpty(stringStringPair.second)) {
-                Nx intentFilterDataTag = new Nx("data");
+                XmlBuilder intentFilterDataTag = new XmlBuilder("data");
                 intentFilterDataTag.addAttribute("android", "host", stringStringPair.first);
                 intentFilterDataTag.addAttribute("android", "scheme", stringStringPair.second);
                 if (c.dlDataList.size() != 0) {
@@ -288,7 +289,7 @@ public class Ix {
         ConstVarManifest.handlePermissionComponent(a, c.x);
         AndroidManifestInjector.getP(a, c.sc_id);
 
-        Nx applicationTag = new Nx("application");
+        XmlBuilder applicationTag = new XmlBuilder("application");
         applicationTag.addAttribute("android", "allowBackup", "true");
         applicationTag.addAttribute("android", "icon", "@drawable/app_icon");
         applicationTag.addAttribute("android", "label", "@string/app_name");
@@ -309,7 +310,7 @@ public class Ix {
 
         for (ProjectFileBean projectFileBean : b) {
             if (!projectFileBean.fileName.contains("_fragment")) {
-                Nx activityTag = new Nx("activity");
+                XmlBuilder activityTag = new XmlBuilder("activity");
 
                 String javaName = projectFileBean.getJavaName();
                 activityTag.addAttribute("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
@@ -349,11 +350,11 @@ public class Ix {
                     }
                 }
                 if (projectFileBean.fileName.equals(AndroidManifestInjector.getLauncherActivity(c.sc_id))) {
-                    Nx intentFilterTag = new Nx("intent-filter");
-                    Nx actionTag = new Nx("action");
+                    XmlBuilder intentFilterTag = new XmlBuilder("intent-filter");
+                    XmlBuilder actionTag = new XmlBuilder("action");
                     actionTag.addAttribute("android", "name", Intent.ACTION_MAIN);
                     intentFilterTag.a(actionTag);
-                    Nx categoryTag = new Nx("category");
+                    XmlBuilder categoryTag = new XmlBuilder("category");
                     categoryTag.addAttribute("android", "name", Intent.CATEGORY_LAUNCHER);
                     intentFilterTag.a(categoryTag);
                     if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
@@ -370,13 +371,13 @@ public class Ix {
             }
         }
         {
-            Nx activityTag = new Nx("activity");
+            XmlBuilder activityTag = new XmlBuilder("activity");
             activityTag.addAttribute("android", "name", ".DebugActivity");
             activityTag.addAttribute("android", "screenOrientation", "portrait");
             applicationTag.a(activityTag);
         }
         if (c.isAdMobEnabled) {
-            Nx activityTag = new Nx("activity");
+            XmlBuilder activityTag = new XmlBuilder("activity");
             activityTag.addAttribute("android", "name", "com.google.android.gms.ads.AdActivity");
             activityTag.addAttribute("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
             activityTag.addAttribute("android", "theme", "@android:style/Theme.Translucent");
@@ -424,8 +425,8 @@ public class Ix {
         return AndroidManifestInjector.mHolder(a.toCode(), c.sc_id).replaceAll("\\$\\{applicationId\\}", packageName);
     }
 
-    private void writeJava(Nx applicationTag, String activityName, ArrayList<HashMap<String, Object>> activityAttrs) {
-        Nx activityTag = new Nx("activity");
+    private void writeJava(XmlBuilder applicationTag, String activityName, ArrayList<HashMap<String, Object>> activityAttrs) {
+        XmlBuilder activityTag = new XmlBuilder("activity");
         boolean specifiedActivityName = false;
         boolean specifiedConfigChanges = false;
         for (HashMap<String, Object> hashMap : activityAttrs) {
