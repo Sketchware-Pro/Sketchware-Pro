@@ -52,7 +52,7 @@ public class BackupRestoreManager {
         }
     }
 
-    public void backup(final String sc_id, final String project_name) {
+    public void backup(String sc_id, String project_name) {
         final String localLibrariesTag = "local libraries";
         final String customBlocksTag = "Custom Blocks";
         backupDialogStates = new HashMap<>();
@@ -118,7 +118,7 @@ public class BackupRestoreManager {
         dialog.show();
     }
 
-    private void doBackup(final String sc_id, final String project_name) {
+    private void doBackup(String sc_id, String project_name) {
         new BackupAsyncTask(new WeakReference<>(act), sc_id, project_name, backupDialogStates)
                 .execute("");
     }
@@ -162,7 +162,7 @@ public class BackupRestoreManager {
         fpd.show();
     }
 
-    public void doRestore(final String file, final boolean restoreLocalLibs) {
+    public void doRestore(String file, boolean restoreLocalLibs) {
         new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, projectsFragment).execute("");
     }
 
