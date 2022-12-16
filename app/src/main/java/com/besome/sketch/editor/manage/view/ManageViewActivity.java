@@ -36,14 +36,12 @@ import a.a.a.eC;
 import a.a.a.gg;
 import a.a.a.jC;
 import a.a.a.mB;
-import a.a.a.to;
 import a.a.a.wq;
 import a.a.a.xB;
-import a.a.a.xo;
 import a.a.a.xw;
 
 @SuppressLint("ResourceType")
-public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e, to {
+public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e {
 
     public static final int k = 2;
     public Toolbar m;
@@ -150,15 +148,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         u.g();
     }
 
-    @Override
-    public void d(int var1) {
-        try {
-            new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<String> l() {
         ArrayList<String> projectLayoutFiles = new ArrayList<>();
         projectLayoutFiles.add("debug");
@@ -222,11 +211,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             k();
 
             try {
-                if (super.j.h()) {
-                    new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
-                } else {
-                    xo.a(getApplicationContext());
-                }
+                new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
             } catch (Exception e) {
                 e.printStackTrace();
                 h();
@@ -311,7 +296,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         w.setupWithViewPager(v);
         s = findViewById(2131231054);
         s.setOnClickListener(this);
-        xo.a((to) this);
     }
 
     @Override
@@ -322,22 +306,11 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public void onDestroy() {
-        xo.i();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == 2131231532) {
             a(!q);
         }
         return super.onOptionsItemSelected(menuItem);
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
     }
 
     @Override
