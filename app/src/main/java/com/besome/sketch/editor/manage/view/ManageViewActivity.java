@@ -21,7 +21,6 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders.ScreenViewBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -47,7 +46,6 @@ import a.a.a.xw;
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e, to {
 
     public static final int k = 2;
-    private String sc_id;
     public Toolbar m;
     public LinearLayout n;
     public Button o;
@@ -60,6 +58,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public ViewPager v;
     public TabLayout w;
     public int[] x = new int[19];
+    private String sc_id;
 
     public final String a(int var1, String var2) {
         String var3 = wq.b(var1);
@@ -347,9 +346,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         if (!super.j()) {
             finish();
         }
-
-        super.d.setScreenName(ManageViewActivity.class.getSimpleName());
-        super.d.send((new ScreenViewBuilder()).build());
     }
 
     @Override
