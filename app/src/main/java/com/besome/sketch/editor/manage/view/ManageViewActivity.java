@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.e;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
@@ -28,7 +27,6 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import a.a.a.Aw;
 import a.a.a.By;
 import a.a.a.Fw;
 import a.a.a.MA;
@@ -43,12 +41,11 @@ import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.xo;
 import a.a.a.xw;
-import a.a.a.yw;
-import a.a.a.zw;
 
 @SuppressLint("ResourceType")
-public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, e, to {
-    public final int k = 2;
+public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e, to {
+
+    public static final int k = 2;
     public String l;
     public Toolbar m;
     public LinearLayout n;
@@ -62,9 +59,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public ViewPager v;
     public TabLayout w;
     public int[] x = new int[19];
-
-    public ManageViewActivity() {
-    }
 
     public final String a(int var1, String var2) {
         String var3 = wq.b(var1);
@@ -126,7 +120,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                 jC.a(l).a(var1.getJavaName(), 1, var3.type, var3.id, "onClick");
             }
         }
-
     }
 
     public void a(boolean var1) {
@@ -160,13 +153,10 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     @Override
     public void d(int var1) {
         try {
-            Handler var2 = new Handler();
-            Aw var3 = new Aw(this);
-            var2.postDelayed(var3, 500L);
+            new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
         } catch (Exception var4) {
             var4.printStackTrace();
         }
-
     }
 
     public ArrayList<String> l() {
@@ -234,9 +224,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
             try {
                 if (super.j.h()) {
-                    Handler var1 = new Handler();
-                    zw var2 = new zw(this);
-                    var1.postDelayed(var2, 500L);
+                    new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
                 } else {
                     xo.a(getApplicationContext());
                 }
@@ -298,7 +286,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         d().a(xB.b().a(getApplicationContext(), 2131625138));
         d().e(true);
         d().d(true);
-        m.setNavigationOnClickListener(new yw(this));
+        m.setNavigationOnClickListener(view -> {
+            if (!mB.a()) onBackPressed();
+        });
         n = findViewById(2131231319);
         o = findViewById(2131230817);
         p = findViewById(2131230810);
@@ -322,7 +312,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         w.setupWithViewPager(v);
         s = findViewById(2131231054);
         s.setOnClickListener(this);
-        xo.a(this);
+        xo.a((to) this);
     }
 
     @Override
@@ -399,8 +389,11 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                 c.m();
             } catch (Exception var4) {
                 var4.printStackTrace();
-                By var1 = new By(xB.b().a(super.a, 2131624916));
-                throw var1;
+                try {
+                    throw new By(xB.b().a(super.a, 2131624916));
+                } catch (By ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 
