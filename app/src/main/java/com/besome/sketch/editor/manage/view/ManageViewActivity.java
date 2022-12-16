@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -46,7 +47,7 @@ import a.a.a.xw;
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e, to {
 
     public static final int k = 2;
-    public String l;
+    private String sc_id;
     public Toolbar m;
     public LinearLayout n;
     public Button o;
@@ -69,7 +70,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         var5[var1] = var6;
         var4.append(var6);
         String var9 = var4.toString();
-        ArrayList<ViewBean> var12 = jC.a(l).d(var2);
+        ArrayList<ViewBean> var12 = jC.a(sc_id).d(var2);
         var2 = var9;
 
         while (true) {
@@ -112,12 +113,12 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     public final void a(ProjectFileBean var1, ArrayList<ViewBean> var2) {
-        jC.a(l);
-        for (ViewBean var3 : eC.a(var2)) {
-            var3.id = a(var3.type, var1.getXmlName());
-            jC.a(l).a(var1.getXmlName(), var3);
-            if (var3.type == 3 && var1.fileType == 0) {
-                jC.a(l).a(var1.getJavaName(), 1, var3.type, var3.id, "onClick");
+        jC.a(sc_id);
+        for (ViewBean viewBean : eC.a(var2)) {
+            viewBean.id = a(viewBean.type, var1.getXmlName());
+            jC.a(sc_id).a(var1.getXmlName(), viewBean);
+            if (viewBean.type == ViewBean.VIEW_TYPE_WIDGET_BUTTON && var1.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                jC.a(sc_id).a(var1.getJavaName(), EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, "onClick");
             }
         }
     }
@@ -126,9 +127,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         q = var1;
         invalidateOptionsMenu();
         if (q) {
-            n.setVisibility(0);
+            n.setVisibility(View.VISIBLE);
         } else {
-            n.setVisibility(8);
+            n.setVisibility(View.GONE);
         }
 
         t.a(q);
@@ -154,65 +155,64 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public void d(int var1) {
         try {
             new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
-        } catch (Exception var4) {
-            var4.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public ArrayList<String> l() {
-        ArrayList<String> var1 = new ArrayList<>();
-        var1.add("debug");
-        ArrayList<ProjectFileBean> var2 = t.c();
-        ArrayList<ProjectFileBean> var3 = u.c();
+        ArrayList<String> projectLayoutFiles = new ArrayList<>();
+        projectLayoutFiles.add("debug");
+        ArrayList<ProjectFileBean> activitiesFiles = t.c();
+        ArrayList<ProjectFileBean> customViewsFiles = u.c();
 
-        for (ProjectFileBean projectFileBean : var2) {
-            var1.add(projectFileBean.fileName);
+        for (ProjectFileBean projectFileBean : activitiesFiles) {
+            projectLayoutFiles.add(projectFileBean.fileName);
         }
 
-        for (ProjectFileBean projectFileBean : var3) {
-            var1.add(projectFileBean.fileName);
+        for (ProjectFileBean projectFileBean : customViewsFiles) {
+            projectLayoutFiles.add(projectFileBean.fileName);
         }
 
-        return var1;
+        return projectLayoutFiles;
     }
 
     public final void m() {
-        jC.b(l).a(t.c());
-        jC.b(l).b(u.c());
-        jC.b(l).l();
-        jC.b(l).j();
-        jC.a(l).a(jC.b(l));
+        jC.b(sc_id).a(t.c());
+        jC.b(sc_id).b(u.c());
+        jC.b(sc_id).l();
+        jC.b(sc_id).j();
+        jC.a(sc_id).a(jC.b(sc_id));
     }
 
     @Override
-    public void onActivityResult(int var1, int var2, Intent var3) {
-        super.onActivityResult(var1, var2, var3);
-        ProjectFileBean var4;
-        if (var1 == 264) {
-            if (var2 == -1) {
-                var4 = var3.getParcelableExtra("project_file");
-                t.a(var4);
-                if (var4.hasActivityOption(4)) {
-                    b(var4.getDrawerName());
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ProjectFileBean projectFileBean;
+        if (requestCode == 264) {
+            if (resultCode == RESULT_OK) {
+                projectFileBean = data.getParcelableExtra("project_file");
+                t.a(projectFileBean);
+                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                    b(projectFileBean.getDrawerName());
                 }
 
-                if (var4.hasActivityOption(4) || var4.hasActivityOption(8)) {
-                    jC.c(l).c().useYn = "Y";
+                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                    jC.c(sc_id).c().useYn = "Y";
                 }
 
-                if (var3.hasExtra("preset_views")) {
-                    a(var4, var3.getParcelableArrayListExtra("preset_views"));
+                if (data.hasExtra("preset_views")) {
+                    a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
                 }
             }
-        } else if (var1 == 266 && var2 == -1) {
-            var4 = var3.getParcelableExtra("project_file");
-            u.a(var4);
+        } else if (requestCode == 266 && resultCode == RESULT_OK) {
+            projectFileBean = data.getParcelableExtra("project_file");
+            u.a(projectFileBean);
             u.g();
-            if (var3.hasExtra("preset_views")) {
-                a(var4, var3.getParcelableArrayListExtra("preset_views"));
+            if (data.hasExtra("preset_views")) {
+                a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
             }
         }
-
     }
 
     @Override
@@ -228,8 +228,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                 } else {
                     xo.a(getApplicationContext());
                 }
-            } catch (Exception var3) {
-                var3.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
                 h();
             }
 
@@ -237,23 +237,23 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public void onClick(View var1) {
+    public void onClick(View v) {
         if (!mB.a()) {
-            int var2 = var1.getId();
-            if (var2 != 2131230810) {
-                if (var2 != 2131230817) {
-                    if (var2 == 2131231054) {
+            int viewId = v.getId();
+            if (viewId != 2131230810) {
+                if (viewId != 2131230817) {
+                    if (viewId == 2131231054) {
                         a(false);
-                        Intent var3;
-                        if (v.getCurrentItem() == 0) {
-                            var3 = new Intent(this, AddViewActivity.class);
-                            var3.putStringArrayListExtra("screen_names", l());
-                            var3.putExtra("request_code", 264);
-                            startActivityForResult(var3, 264);
+                        Intent intent;
+                        if (this.v.getCurrentItem() == 0) {
+                            intent = new Intent(this, AddViewActivity.class);
+                            intent.putStringArrayListExtra("screen_names", l());
+                            intent.putExtra("request_code", 264);
+                            startActivityForResult(intent, 264);
                         } else {
-                            var3 = new Intent(this, AddCustomViewActivity.class);
-                            var3.putStringArrayListExtra("screen_names", l());
-                            startActivityForResult(var3, 266);
+                            intent = new Intent(this, AddCustomViewActivity.class);
+                            intent.putStringArrayListExtra("screen_names", l());
+                            startActivityForResult(intent, 266);
                         }
                     }
                 } else if (q) {
@@ -273,8 +273,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (!super.j()) {
             finish();
         }
@@ -282,7 +282,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         setContentView(2131427569);
         m = findViewById(2131231847);
         a(m);
-        findViewById(2131231370).setVisibility(8);
+        findViewById(2131231370).setVisibility(View.GONE);
         d().a(xB.b().a(getApplicationContext(), 2131625138));
         d().e(true);
         d().d(true);
@@ -296,12 +296,12 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         p.setText(xB.b().a(getApplicationContext(), 2131624974));
         o.setOnClickListener(this);
         p.setOnClickListener(this);
-        if (var1 == null) {
-            l = getIntent().getStringExtra("sc_id");
+        if (savedInstanceState == null) {
+            sc_id = getIntent().getStringExtra("sc_id");
             r = getIntent().getStringExtra("compatUseYn");
         } else {
-            l = var1.getString("sc_id");
-            r = var1.getString("compatUseYn");
+            sc_id = savedInstanceState.getString("sc_id");
+            r = savedInstanceState.getString("compatUseYn");
         }
 
         w = findViewById(2131231781);
@@ -316,10 +316,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu var1) {
-        getMenuInflater().inflate(2131492881, var1);
-        var1.findItem(2131231532).setVisible(!q);
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(2131492881, menu);
+        menu.findItem(2131231532).setVisible(!q);
         return true;
     }
 
@@ -330,17 +329,16 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem var1) {
-        if (var1.getItemId() == 2131231532) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == 2131231532) {
             a(!q);
         }
-
-        return super.onOptionsItemSelected(var1);
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override
-    public void onPostCreate(Bundle var1) {
-        super.onPostCreate(var1);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override
@@ -355,10 +353,10 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", l);
-        var1.putString("compatUseYn", r);
-        super.onSaveInstanceState(var1);
+    public void onSaveInstanceState(Bundle newState) {
+        newState.putString("sc_id", sc_id);
+        newState.putString("compatUseYn", r);
+        super.onSaveInstanceState(newState);
     }
 
     public class a extends MA {
@@ -367,14 +365,14 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         public a(ManageViewActivity var1, Context var2) {
             super(var2);
             c = var1;
-            var1.a(this);
+            ManageViewActivity.this.a(this);
         }
 
         @Override
         public void a() {
             c.h();
-            c.setResult(-1);
-            c.finish();
+            setResult(RESULT_OK);
+            finish();
         }
 
         @Override
@@ -387,8 +385,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             try {
                 publishProgress(xB.b().a(c.getApplicationContext(), 2131624963));
                 c.m();
-            } catch (Exception var4) {
-                var4.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
                 try {
                     throw new By(xB.b().a(super.a, 2131624916));
                 } catch (By ex) {
@@ -399,7 +397,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         @Override
         protected String doInBackground(Void... voids) {
-            return null;
+            return a(voids);
         }
     }
 
