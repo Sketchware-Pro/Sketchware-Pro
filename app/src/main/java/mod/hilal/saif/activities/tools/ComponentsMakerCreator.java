@@ -113,7 +113,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
             finish();
         } else if (id == R.id.components_creator_save) {
             if (filledIn()) {
-                if (OldResourceIdMapper.isValidIconId(coId.getText().toString())) {
+                if (OldResourceIdMapper.isValidIconId(coIcon.getText().toString())) {
                     save();
                 } else {
                     coIconTil.setError("Invalid icon ID");
