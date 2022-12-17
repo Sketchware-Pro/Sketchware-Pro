@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="text_title_menu_java">Java/Kotlin</string>
+    <string name="text_title_menu_java">Java/Kotlin Manager</string>
     <string name="text_subtitle_menu_java">Import Java/Kotlin files</string>
 </resources>

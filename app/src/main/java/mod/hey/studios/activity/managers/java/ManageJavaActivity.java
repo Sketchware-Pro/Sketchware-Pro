@@ -146,7 +146,7 @@ public class ManageJavaActivity extends Activity {
 
         Helper.applyRippleToToolbarView(back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        title.setText(getString(R.string.text_title_menu_java) + " Manager");
+        title.setText(R.string.text_title_menu_java);
 
         loadFile.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(loadFile);
