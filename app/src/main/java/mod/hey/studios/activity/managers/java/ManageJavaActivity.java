@@ -184,11 +184,11 @@ public class ManageJavaActivity extends Activity {
     }
 
     private void showCreateDialog() {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
         View root = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
 
-        final EditText inputName = root.findViewById(R.id.dialog_edittext_name);
-        final RadioGroup radio_fileType = root.findViewById(R.id.dialog_radio_filetype);
+        EditText inputName = root.findViewById(R.id.dialog_edittext_name);
+        RadioGroup radio_fileType = root.findViewById(R.id.dialog_radio_filetype);
 
         ((TextView) root.findViewById(R.id.dialog_radio_filetype_class)).setText("Java Class");
         ((TextView) root.findViewById(R.id.dialog_radio_filetype_activity)).setText("Java Activity");
@@ -310,12 +310,12 @@ public class ManageJavaActivity extends Activity {
         pickerDialog.show();
     }
 
-    private void showRenameDialog(final int position) {
+    private void showRenameDialog(int position) {
         boolean isFolder = adapter.isFolder(position);
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
         LinearLayout root = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
 
-        final EditText filename = root.findViewById(R.id.edittext_change_name);
+        EditText filename = root.findViewById(R.id.edittext_change_name);
         filename.setText(adapter.getFileName(position));
 
         CheckBox renameOccurrences = null;
@@ -372,8 +372,8 @@ public class ManageJavaActivity extends Activity {
         filename.requestFocus();
     }
 
-    private void showDeleteDialog(final int position) {
-        final boolean isInManifest = frc.getJavaManifestList().contains(adapter.getFullName(position));
+    private void showDeleteDialog(int position) {
+        boolean isInManifest = frc.getJavaManifestList().contains(adapter.getFullName(position));
 
         new AlertDialog.Builder(this)
                 .setTitle(adapter.getFileName(position))
@@ -506,7 +506,7 @@ public class ManageJavaActivity extends Activity {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
             }
