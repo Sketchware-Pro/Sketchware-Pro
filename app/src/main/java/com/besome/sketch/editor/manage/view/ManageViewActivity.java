@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,7 +40,6 @@ import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.xw;
 
-@SuppressLint("ResourceType")
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e {
 
     public static final int k = 2;
@@ -224,9 +223,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public void onClick(View v) {
         if (!mB.a()) {
             int viewId = v.getId();
-            if (viewId != 2131230810) {
-                if (viewId != 2131230817) {
-                    if (viewId == 2131231054) {
+            if (viewId != R.id.btn_cancel) {
+                if (viewId != R.id.btn_delete) {
+                    if (viewId == R.id.fab) {
                         a(false);
                         Intent intent;
                         if (this.v.getCurrentItem() == 0) {
@@ -246,7 +245,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                     a(false);
                     t.g();
                     u.g();
-                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624935), 1).show();
+                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                     s.f();
                 }
             } else if (q) {
@@ -263,21 +262,21 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             finish();
         }
 
-        setContentView(2131427569);
-        m = findViewById(2131231847);
+        setContentView(R.layout.manage_view);
+        m = findViewById(R.id.toolbar);
         a(m);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), 2131625138));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_view));
         d().e(true);
         d().d(true);
         m.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });
-        n = findViewById(2131231319);
-        o = findViewById(2131230817);
-        p = findViewById(2131230810);
-        o.setText(xB.b().a(getApplicationContext(), 2131624986));
-        p.setText(xB.b().a(getApplicationContext(), 2131624974));
+        n = findViewById(R.id.layout_btn_group);
+        o = findViewById(R.id.btn_delete);
+        p = findViewById(R.id.btn_cancel);
+        o.setText(xB.b().a(getApplicationContext(), R.string.common_word_delete));
+        p.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
         o.setOnClickListener(this);
         p.setOnClickListener(this);
         if (savedInstanceState == null) {
@@ -288,26 +287,26 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             r = savedInstanceState.getString("compatUseYn");
         }
 
-        w = findViewById(2131231781);
-        v = findViewById(2131232325);
+        w = findViewById(R.id.tab_layout);
+        v = findViewById(R.id.view_pager);
         v.setAdapter(new ManageViewActivity.b(this, getSupportFragmentManager()));
         v.setOffscreenPageLimit(2);
         v.a(this);
         w.setupWithViewPager(v);
-        s = findViewById(2131231054);
+        s = findViewById(R.id.fab);
         s.setOnClickListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(2131492881, menu);
-        menu.findItem(2131231532).setVisible(!q);
+        getMenuInflater().inflate(R.menu.manage_screen_menu, menu);
+        menu.findItem(R.id.menu_screen_delete).setVisible(!q);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == 2131231532) {
+        if (menuItem.getItemId() == R.id.menu_screen_delete) {
             a(!q);
         }
         return super.onOptionsItemSelected(menuItem);
@@ -352,12 +351,12 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         @Override
         public void b() {
             try {
-                publishProgress(xB.b().a(c.getApplicationContext(), 2131624963));
+                publishProgress(xB.b().a(c.getApplicationContext(), R.string.common_message_progress));
                 c.m();
             } catch (Exception e) {
                 e.printStackTrace();
                 try {
-                    throw new By(xB.b().a(super.a, 2131624916));
+                    throw new By(xB.b().a(super.a, R.string.common_error_unknown));
                 } catch (By ex) {
                     ex.printStackTrace();
                 }
@@ -378,8 +377,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             super(var2);
             g = var1;
             f = new String[2];
-            f[0] = xB.b().a(var1.getApplicationContext(), 2131625046).toUpperCase();
-            f[1] = xB.b().a(var1.getApplicationContext(), 2131624984).toUpperCase();
+            f[0] = xB.b().a(var1.getApplicationContext(), R.string.common_word_view).toUpperCase();
+            f[1] = xB.b().a(var1.getApplicationContext(), R.string.common_word_custom_view).toUpperCase();
         }
 
         @Override
