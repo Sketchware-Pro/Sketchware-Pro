@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package a.a.a;
 
 import android.content.Intent;
@@ -15,12 +10,15 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.v;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.view.ManageViewActivity;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -41,26 +39,26 @@ public class Fw extends qA {
         String var3 = wq.b(var1);
         StringBuilder var4 = new StringBuilder();
         var4.append(var3);
-        int[] var5 = this.m;
+        int[] var5 = m;
         int var6 = var5[var1] + 1;
         var5[var1] = var6;
         var4.append(var6);
         String var9 = var4.toString();
-        ArrayList var12 = jC.a(this.g).d(var2);
+        ArrayList var12 = jC.a(g).d(var2);
         var2 = var9;
 
-        while(true) {
+        while (true) {
             boolean var7 = false;
             Iterator var10 = var12.iterator();
 
             boolean var13;
-            while(true) {
+            while (true) {
                 var13 = var7;
                 if (!var10.hasNext()) {
                     break;
                 }
 
-                if (var2.equals(((ViewBean)var10.next()).id)) {
+                if (var2.equals(((ViewBean) var10.next()).id)) {
                     var13 = true;
                     break;
                 }
@@ -72,7 +70,7 @@ public class Fw extends qA {
 
             StringBuilder var8 = new StringBuilder();
             var8.append(var3);
-            int[] var11 = this.m;
+            int[] var11 = m;
             var6 = var11[var1] + 1;
             var11[var1] = var6;
             var8.append(var6);
@@ -85,109 +83,109 @@ public class Fw extends qA {
     }
 
     public void a(ProjectFileBean var1) {
-        this.i.add(var1);
-        this.j.c();
+        i.add(var1);
+        j.c();
     }
 
     public void a(boolean var1) {
-        this.k = var1;
-        this.e();
-        this.j.c();
+        k = var1;
+        e();
+        j.c();
     }
 
     public final void b(ProjectFileBean var1) {
-        ProjectFileBean var2 = (ProjectFileBean)this.i.get(this.j.c);
+        ProjectFileBean var2 = i.get(j.c);
         var2.keyboardSetting = var1.keyboardSetting;
         var2.orientation = var1.orientation;
         var2.options = var1.options;
         if (var1.hasActivityOption(4)) {
-            ((ManageViewActivity)this.getActivity()).b(ProjectFileBean.getDrawerName(var2.fileName));
+            ((ManageViewActivity) getActivity()).b(ProjectFileBean.getDrawerName(var2.fileName));
         } else {
-            ((ManageViewActivity)this.getActivity()).c(ProjectFileBean.getDrawerName(var2.fileName));
+            ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(var2.fileName));
         }
 
         if (var1.hasActivityOption(4) || var1.hasActivityOption(8)) {
-            jC.c(this.g).c().useYn = "Y";
+            jC.c(g).c().useYn = "Y";
         }
 
     }
 
     public ArrayList<ProjectFileBean> c() {
-        return this.i;
+        return i;
     }
 
     public final void c(ProjectFileBean var1) {
-        ProjectFileBean var2 = (ProjectFileBean)this.i.get(this.j.c);
-        ArrayList var3 = jC.a(this.g).d(var2.getXmlName());
+        ProjectFileBean var2 = i.get(j.c);
+        ArrayList var3 = jC.a(g).d(var2.getXmlName());
 
-        for(int var4 = var3.size() - 1; var4 >= 0; --var4) {
-            ViewBean var5 = (ViewBean)var3.get(var4);
-            jC.a(this.g).a(var2, var5);
+        for (int var4 = var3.size() - 1; var4 >= 0; --var4) {
+            ViewBean var5 = (ViewBean) var3.get(var4);
+            jC.a(g).a(var2, var5);
         }
 
-        ArrayList var6 = this.a(var1.presetName);
-        jC.a(this.g);
+        ArrayList var6 = a(var1.presetName);
+        jC.a(g);
         Iterator var8 = eC.a(var6).iterator();
 
-        while(var8.hasNext()) {
-            ViewBean var7 = (ViewBean)var8.next();
-            var7.id = this.a(var7.type, var2.getXmlName());
-            jC.a(this.g).a(var2.getXmlName(), var7);
+        while (var8.hasNext()) {
+            ViewBean var7 = (ViewBean) var8.next();
+            var7.id = a(var7.type, var2.getXmlName());
+            jC.a(g).a(var2.getXmlName(), var7);
             if (var7.type == 3 && var2.fileType == 0) {
-                jC.a(this.g).a(var2.getJavaName(), 1, var7.type, var7.id, "onClick");
+                jC.a(g).a(var2.getJavaName(), 1, var7.type, var7.id, "onClick");
             }
         }
 
     }
 
     public void d() {
-        this.g = this.getActivity().getIntent().getStringExtra("sc_id");
-        this.h = this.getActivity().getIntent().getStringExtra("compatUseYn");
-        ArrayList var1 = jC.b(this.g).b();
+        g = getActivity().getIntent().getStringExtra("sc_id");
+        h = getActivity().getIntent().getStringExtra("compatUseYn");
+        ArrayList var1 = jC.b(g).b();
         if (var1 != null) {
             Iterator var2 = var1.iterator();
             boolean var3 = false;
 
-            while(var2.hasNext()) {
-                ProjectFileBean var4 = (ProjectFileBean)var2.next();
+            while (var2.hasNext()) {
+                ProjectFileBean var4 = (ProjectFileBean) var2.next();
                 if (var4.fileName.equals("main")) {
-                    this.i.add(0, var4);
+                    i.add(0, var4);
                     var3 = true;
                 } else {
-                    this.i.add(var4);
+                    i.add(var4);
                 }
             }
 
             if (!var3) {
-                this.i.add(0, new ProjectFileBean(0, "main"));
+                i.add(0, new ProjectFileBean(0, "main"));
             }
 
         }
     }
 
     public final void e() {
-        for(Iterator var1 = this.i.iterator(); var1.hasNext(); ((ProjectFileBean)var1.next()).isSelected = false) {
+        for (Iterator var1 = i.iterator(); var1.hasNext(); ((ProjectFileBean) var1.next()).isSelected = false) {
         }
 
     }
 
     public void f() {
-        int var1 = this.i.size();
+        int var1 = i.size();
 
-        while(true) {
+        while (true) {
             int var2 = var1 - 1;
             if (var2 < 0) {
-                this.j.c();
+                j.c();
                 return;
             }
 
-            ProjectFileBean var3 = (ProjectFileBean)this.i.get(var2);
+            ProjectFileBean var3 = i.get(var2);
             var1 = var2;
             if (var3.isSelected) {
-                this.i.remove(var2);
+                i.remove(var2);
                 var1 = var2;
                 if (var3.hasActivityOption(4)) {
-                    ((ManageViewActivity)this.getActivity()).c(ProjectFileBean.getDrawerName(var3.fileName));
+                    ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(var3.fileName));
                     var1 = var2;
                 }
             }
@@ -195,14 +193,14 @@ public class Fw extends qA {
     }
 
     public void g() {
-        ArrayList var1 = this.i;
+        ArrayList var1 = i;
         if (var1 != null) {
             if (var1.size() == 0) {
-                this.l.setVisibility(0);
-                this.f.setVisibility(8);
+                l.setVisibility(0);
+                f.setVisibility(8);
             } else {
-                this.f.setVisibility(0);
-                this.l.setVisibility(8);
+                f.setVisibility(0);
+                l.setVisibility(8);
             }
         }
 
@@ -211,15 +209,15 @@ public class Fw extends qA {
     public void onActivityCreated(Bundle var1) {
         super.onActivityCreated(var1);
         if (var1 == null) {
-            this.d();
+            d();
         } else {
-            this.g = var1.getString("sc_id");
-            this.h = var1.getString("compatUseYn");
-            this.i = var1.getParcelableArrayList("activities");
+            g = var1.getString("sc_id");
+            h = var1.getString("compatUseYn");
+            i = var1.getParcelableArrayList("activities");
         }
 
-        this.j.c();
-        this.g();
+        j.c();
+        g();
     }
 
     public void onActivityResult(int var1, int var2, Intent var3) {
@@ -227,47 +225,47 @@ public class Fw extends qA {
         Fw.a var4;
         if (var1 == 265) {
             if (var2 == -1) {
-                this.b((ProjectFileBean)var3.getParcelableExtra("project_file"));
-                var4 = this.j;
+                b(var3.getParcelableExtra("project_file"));
+                var4 = j;
                 var4.c(var4.c);
             }
         } else if (var1 == 276 && var2 == -1) {
-            ProjectFileBean var5 = (ProjectFileBean)var3.getParcelableExtra("preset_data");
-            this.b(var5);
-            this.c(var5);
-            var4 = this.j;
+            ProjectFileBean var5 = var3.getParcelableExtra("preset_data");
+            b(var5);
+            c(var5);
+            var4 = j;
             var4.c(var4.c);
         }
 
     }
 
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        ViewGroup var4 = (ViewGroup)var1.inflate(2131427442, var2, false);
-        this.i = new ArrayList();
-        this.f = (RecyclerView)var4.findViewById(2131231442);
-        this.f.setHasFixedSize(true);
-        this.f.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        this.j = new Fw.a(this, this.f);
-        this.f.setAdapter(this.j);
-        this.l = (TextView)var4.findViewById(2131231997);
-        this.l.setText(xB.b().a(this.getActivity(), 2131625290));
+        ViewGroup var4 = (ViewGroup) var1.inflate(2131427442, var2, false);
+        i = new ArrayList();
+        f = var4.findViewById(2131231442);
+        f.setHasFixedSize(true);
+        f.setLayoutManager(new LinearLayoutManager(getContext()));
+        j = new Fw.a(this, f);
+        f.setAdapter(j);
+        l = var4.findViewById(2131231997);
+        l.setText(xB.b().a(getActivity(), 2131625290));
         return var4;
     }
 
     public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", this.g);
-        var1.putString("compatUseYn", this.h);
-        var1.putParcelableArrayList("activities", this.i);
+        var1.putString("sc_id", g);
+        var1.putString("compatUseYn", h);
+        var1.putParcelableArrayList("activities", i);
         super.onSaveInstanceState(var1);
     }
 
     public class a extends androidx.recyclerview.widget.RecyclerView.a<Fw.a.a> {
-        public int c;
         public final Fw d;
+        public int c;
 
         public a(Fw var1, RecyclerView var2) {
-            this.d = var1;
-            this.c = -1;
+            d = var1;
+            c = -1;
             if (var2.getLayoutManager() instanceof LinearLayoutManager) {
                 var2.a(new Bw(this, var1));
             }
@@ -275,7 +273,7 @@ public class Fw extends qA {
         }
 
         public int a() {
-            return this.d.i != null ? this.d.i.size() : 0;
+            return d.i != null ? d.i.size() : 0;
         }
 
         public void a(Fw.a.a var1, int var2) {
@@ -283,7 +281,7 @@ public class Fw extends qA {
             var1.y.setVisibility(8);
             if (var2 == 0) {
                 var1.t.setVisibility(8);
-            } else if (this.d.k) {
+            } else if (d.k) {
                 var1.y.setVisibility(0);
                 var1.v.setVisibility(8);
             } else {
@@ -291,8 +289,8 @@ public class Fw extends qA {
                 var1.v.setVisibility(0);
             }
 
-            ProjectFileBean var3 = (ProjectFileBean)this.d.i.get(var2);
-            var1.v.setImageResource(this.f(var3.options));
+            ProjectFileBean var3 = d.i.get(var2);
+            var1.v.setImageResource(f(var3.options));
             var1.w.setText(var3.getXmlName());
             var1.x.setText(var3.getJavaName());
             if (var3.isSelected) {
@@ -309,16 +307,16 @@ public class Fw extends qA {
 
         public final int f(int var1) {
             String var2 = String.format("%4s", Integer.toBinaryString(var1)).replace(' ', '0');
-            Resources var3 = this.d.getContext().getResources();
+            Resources var3 = d.getContext().getResources();
             StringBuilder var4 = new StringBuilder();
             var4.append("activity_");
             var4.append(var2);
-            return var3.getIdentifier(var4.toString(), "drawable", this.d.getContext().getPackageName());
+            return var3.getIdentifier(var4.toString(), "drawable", d.getContext().getPackageName());
         }
 
         public class a extends v {
-            public ImageView A;
             public final Fw.a B;
+            public ImageView A;
             public CheckBox t;
             public View u;
             public ImageView v;
@@ -329,19 +327,19 @@ public class Fw extends qA {
 
             public a(Fw.a var1, View var2) {
                 super(var2);
-                this.B = var1;
-                this.t = (CheckBox)var2.findViewById(2131230893);
-                this.u = var2.findViewById(2131232322);
-                this.v = (ImageView)var2.findViewById(2131231104);
-                this.w = (TextView)var2.findViewById(2131232144);
-                this.x = (TextView)var2.findViewById(2131231863);
-                this.y = (LinearLayout)var2.findViewById(2131230959);
-                this.z = (ImageView)var2.findViewById(2131231132);
-                this.A = (ImageView)var2.findViewById(2131231168);
-                this.t.setVisibility(8);
-                this.u.setOnClickListener(new Cw(this, var1));
-                this.u.setOnLongClickListener(new Dw(this, var1));
-                this.A.setOnClickListener(new Ew(this, var1));
+                B = var1;
+                t = var2.findViewById(2131230893);
+                u = var2.findViewById(2131232322);
+                v = var2.findViewById(2131231104);
+                w = var2.findViewById(2131232144);
+                x = var2.findViewById(2131231863);
+                y = var2.findViewById(2131230959);
+                z = var2.findViewById(2131231132);
+                A = var2.findViewById(2131231168);
+                t.setVisibility(8);
+                u.setOnClickListener(new Cw(this, var1));
+                u.setOnLongClickListener(new Dw(this, var1));
+                A.setOnClickListener(new Ew(this, var1));
             }
         }
     }
