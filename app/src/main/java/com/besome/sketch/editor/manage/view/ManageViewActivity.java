@@ -215,7 +215,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                 e.printStackTrace();
                 h();
             }
-
         }
     }
 
@@ -223,23 +222,12 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public void onClick(View v) {
         if (!mB.a()) {
             int viewId = v.getId();
-            if (viewId != R.id.btn_cancel) {
-                if (viewId != R.id.btn_delete) {
-                    if (viewId == R.id.fab) {
-                        a(false);
-                        Intent intent;
-                        if (this.viewPager.getCurrentItem() == 0) {
-                            intent = new Intent(this, AddViewActivity.class);
-                            intent.putStringArrayListExtra("screen_names", l());
-                            intent.putExtra("request_code", 264);
-                            startActivityForResult(intent, 264);
-                        } else {
-                            intent = new Intent(this, AddCustomViewActivity.class);
-                            intent.putStringArrayListExtra("screen_names", l());
-                            startActivityForResult(intent, 266);
-                        }
-                    }
-                } else if (selecting) {
+            if (viewId == R.id.btn_cancel) {
+                if (selecting) {
+                    a(false);
+                }
+            } else if (viewId == R.id.btn_delete) {
+                if (selecting) {
                     activitiesFragment.f();
                     customViewsFragment.f();
                     a(false);
@@ -248,10 +236,17 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                     bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                     s.f();
                 }
-            } else if (selecting) {
+            } else if (viewId == R.id.fab) {
                 a(false);
-            }
 
+                boolean isActivitiesTab = viewPager.getCurrentItem() == 0;
+                Intent intent = new Intent(this, isActivitiesTab ? AddViewActivity.class : AddCustomViewActivity.class);
+                intent.putStringArrayListExtra("screen_names", l());
+                if (isActivitiesTab) {
+                    intent.putExtra("request_code", 264);
+                }
+                startActivityForResult(intent, isActivitiesTab ? 264 : 266);
+            }
         }
     }
 
