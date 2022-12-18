@@ -41,8 +41,10 @@ import a.a.a.xB;
 import a.a.a.xw;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e {
-
     private static final int TAB_COUNT = 2;
+    private static final int REQUEST_CODE_ADD_ACTIVITY = 264;
+    private static final int REQUEST_CODE_ADD_CUSTOM_VIEW = 266;
+
     private LinearLayout actionButtonsContainer;
     private boolean selecting = false;
     private String isAppCompatEnabled = "N";
@@ -176,7 +178,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ProjectFileBean projectFileBean;
-        if (requestCode == 264) {
+        if (requestCode == REQUEST_CODE_ADD_ACTIVITY) {
             if (resultCode == RESULT_OK) {
                 projectFileBean = data.getParcelableExtra("project_file");
                 activitiesFragment.a(projectFileBean);
@@ -192,7 +194,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                     a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
                 }
             }
-        } else if (requestCode == 266 && resultCode == RESULT_OK) {
+        } else if (requestCode == REQUEST_CODE_ADD_CUSTOM_VIEW && resultCode == RESULT_OK) {
             projectFileBean = data.getParcelableExtra("project_file");
             customViewsFragment.a(projectFileBean);
             customViewsFragment.g();
@@ -243,9 +245,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                 Intent intent = new Intent(this, isActivitiesTab ? AddViewActivity.class : AddCustomViewActivity.class);
                 intent.putStringArrayListExtra("screen_names", l());
                 if (isActivitiesTab) {
-                    intent.putExtra("request_code", 264);
+                    intent.putExtra("request_code", REQUEST_CODE_ADD_ACTIVITY);
                 }
-                startActivityForResult(intent, isActivitiesTab ? 264 : 266);
+                startActivityForResult(intent, isActivitiesTab ? REQUEST_CODE_ADD_ACTIVITY : REQUEST_CODE_ADD_CUSTOM_VIEW);
             }
         }
     }
