@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/ic_edit_white_48dp" android:id="@id/menu_screen_edit" android:visible="false" android:orderInCategory="1" android:title="edit" app:showAsAction="always" />
-    <item android:icon="@drawable/ic_delete_white_24dp" android:id="@id/menu_screen_delete" android:orderInCategory="1" android:title="@string/common_word_delete" app:showAsAction="always" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_screen_edit"
+        android:icon="@drawable/ic_edit_white_48dp"
+        android:orderInCategory="1"
+        android:title="edit"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_screen_delete"
+        android:icon="@drawable/ic_delete_white_24dp"
+        android:orderInCategory="1"
+        android:title="@string/common_word_delete"
+        app:showAsAction="always" />
 </menu>
