@@ -210,7 +210,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             k();
 
             try {
-                new Handler().postDelayed(() -> (new a(this, getApplicationContext())).execute(), 500L);
+                new Handler().postDelayed(() -> (new a(getApplicationContext())).execute(), 500L);
             } catch (Exception e) {
                 e.printStackTrace();
                 h();
@@ -289,7 +289,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         w = findViewById(R.id.tab_layout);
         v = findViewById(R.id.view_pager);
-        v.setAdapter(new ManageViewActivity.b(this, getSupportFragmentManager()));
+        v.setAdapter(new ManageViewActivity.b(getSupportFragmentManager()));
         v.setOffscreenPageLimit(2);
         v.a(this);
         w.setupWithViewPager(v);
@@ -328,31 +328,28 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     public class a extends MA {
-        public final ManageViewActivity c;
-
-        public a(ManageViewActivity var1, Context var2) {
+        public a(Context var2) {
             super(var2);
-            c = var1;
             ManageViewActivity.this.a(this);
         }
 
         @Override
         public void a() {
-            c.h();
+            h();
             setResult(RESULT_OK);
             finish();
         }
 
         @Override
         public void a(String var1) {
-            c.h();
+            h();
         }
 
         @Override
         public void b() {
             try {
-                publishProgress(xB.b().a(c.getApplicationContext(), R.string.common_message_progress));
-                c.m();
+                publishProgress(xB.b().a(getApplicationContext(), R.string.common_message_progress));
+                m();
             } catch (Exception e) {
                 e.printStackTrace();
                 try {
@@ -370,15 +367,13 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     public class b extends gg {
-        public final ManageViewActivity g;
         public String[] f;
 
-        public b(ManageViewActivity var1, Xf var2) {
+        public b(Xf var2) {
             super(var2);
-            g = var1;
             f = new String[2];
-            f[0] = xB.b().a(var1.getApplicationContext(), R.string.common_word_view).toUpperCase();
-            f[1] = xB.b().a(var1.getApplicationContext(), R.string.common_word_custom_view).toUpperCase();
+            f[0] = xB.b().a(getApplicationContext(), R.string.common_word_view).toUpperCase();
+            f[1] = xB.b().a(getApplicationContext(), R.string.common_word_custom_view).toUpperCase();
         }
 
         @Override
@@ -395,9 +390,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         public Object a(ViewGroup var1, int var2) {
             Fragment var3 = (Fragment) super.a(var1, var2);
             if (var2 != 0) {
-                g.u = (xw) var3;
+                u = (xw) var3;
             } else {
-                g.t = (Fw) var3;
+                t = (Fw) var3;
             }
 
             return var3;
