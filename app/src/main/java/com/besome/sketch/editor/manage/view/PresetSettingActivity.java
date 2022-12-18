@@ -31,7 +31,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
             case 276:
                 resDrawable = rq.e(presetName);
                 break;
-            case 277:
+            case AddCustomViewActivity.REQ_CD_PRESET_ACTIVITY:
                 resDrawable = rq.a(presetName);
                 break;
             case 278:
@@ -99,7 +99,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_screen_activity_add_view_preset_setting);
         e(Helper.getResString(R.string.preset_setting_title));
-        requestCode = getIntent().getIntExtra("request_code", RESULT_OK);
+        requestCode = getIntent().getIntExtra("request_code", -1);
         if (getIntent().hasExtra("edit_mode")) {
             inEditMode = true;
         }
@@ -112,7 +112,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
         activityName = findViewById(R.id.tv_activity_name);
         if (requestCode == 276) {
             presets = rq.d();
-        } else if (requestCode == 277) {
+        } else if (requestCode == AddCustomViewActivity.REQ_CD_PRESET_ACTIVITY) {
             presets = rq.b();
         } else {
             presets = rq.c();

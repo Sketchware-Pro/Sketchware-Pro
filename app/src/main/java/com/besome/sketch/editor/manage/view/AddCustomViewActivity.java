@@ -23,7 +23,7 @@ import mod.hey.studios.util.Helper;
 
 public class AddCustomViewActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    private static final int REQ_CD_PRESET_ACTIVITY = 277;
+    public static final int REQ_CD_PRESET_ACTIVITY = 277;
     private EditText customViewName;
     private YB viewNameValidator;
     private String presetName;
