@@ -231,15 +231,15 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16.0dip"
+                    android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8.0dip"
+                        android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -252,7 +252,7 @@
                         <TextView
                             android:id="@+id/tv_title_reward"
                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
@@ -304,7 +304,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
                                     android:textColor="#ff404040"
-                                    android:textSize="14.0sp" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/tv_reward_id"
