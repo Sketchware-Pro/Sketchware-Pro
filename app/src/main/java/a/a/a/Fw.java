@@ -251,7 +251,19 @@ public class Fw extends qA {
             d = var1;
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new Bw(this, var1));
+                recyclerView.a(new RecyclerView.m() {
+                    @Override
+                    public void a(RecyclerView recyclerView, int i, int i1) {
+                        super.a(recyclerView, i, i1);
+                        if (i1 > 2) {
+                            if (((ManageViewActivity) getActivity()).s.isEnabled()) {
+                                ((ManageViewActivity) getActivity()).s.c();
+                            }
+                        } else if (i1 < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
+                            ((ManageViewActivity) getActivity()).s.f();
+                        }
+                    }
+                });
             }
 
         }
@@ -320,9 +332,38 @@ public class Fw extends qA {
                 z = itemView.findViewById(2131231132);
                 A = itemView.findViewById(0x7f0801c0);
                 t.setVisibility(View.GONE);
-                u.setOnClickListener(new Cw(this, var1));
-                u.setOnLongClickListener(new Dw(this, var1));
-                A.setOnClickListener(new Ew(this, var1));
+                u.setOnClickListener(view -> {
+                    if (!mB.a()) {
+                        layoutPosition = j();
+                        if (Fw.this.k) {
+                            if (layoutPosition != 0) {
+                                activitiesFiles.get(layoutPosition).isSelected = t.isChecked();
+                                ProjectFilesAdapter.this.c(layoutPosition);
+                            }
+                        } else {
+                            Intent intent = new Intent(getContext(), AddViewActivity.class);
+                            intent.putExtra("project_file", activitiesFiles.get(layoutPosition));
+                            intent.putExtra("request_code", 265);
+                            startActivityForResult(intent, 265);
+                        }
+                    }
+                });
+                u.setOnLongClickListener(view -> {
+                    ((ManageViewActivity) getActivity()).a(true);
+                    layoutPosition = j();
+                    t.setChecked(!t.isChecked());
+                    activitiesFiles.get(layoutPosition).isSelected = t.isChecked();
+                    return true;
+                });
+                A.setOnClickListener(view -> {
+                    if (!mB.a()) {
+                        layoutPosition = j();
+                        Intent intent = new Intent(getContext(), PresetSettingActivity.class);
+                        intent.putExtra("request_code", 276);
+                        intent.putExtra("edit_mode", true);
+                        startActivityForResult(intent, 276);
+                    }
+                });
             }
         }
     }
