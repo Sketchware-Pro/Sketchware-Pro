@@ -18,21 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.ManageViewActivity;
+import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 @SuppressLint("ResourceType")
 public class Fw extends qA {
+
     public RecyclerView f;
-    public String g;
-    public String h = "N";
-    public ArrayList<ProjectFileBean> i;
-    public Fw.a j = null;
     public Boolean k = false;
     public TextView l;
     public int[] m = new int[19];
+    private ProjectFilesAdapter projectFilesAdapter = null;
+    private String sc_id;
+    private String isAppCompatUsed = "N";
+    private ArrayList<ProjectFileBean> activitiesFiles;
 
     public Fw() {
     }
@@ -46,7 +49,7 @@ public class Fw extends qA {
         var5[var1] = var6;
         var4.append(var6);
         String var9 = var4.toString();
-        ArrayList<ViewBean> var12 = jC.a(g).d(var2);
+        ArrayList<ViewBean> var12 = jC.a(sc_id).d(var2);
         var2 = var9;
 
         while (true) {
@@ -85,106 +88,99 @@ public class Fw extends qA {
     }
 
     public void a(ProjectFileBean var1) {
-        i.add(var1);
-        j.c();
+        activitiesFiles.add(var1);
+        projectFilesAdapter.c();
     }
 
     public void a(boolean var1) {
         k = var1;
         e();
-        j.c();
+        projectFilesAdapter.c();
     }
 
-    public final void b(ProjectFileBean var1) {
-        ProjectFileBean var2 = i.get(j.c);
-        var2.keyboardSetting = var1.keyboardSetting;
-        var2.orientation = var1.orientation;
-        var2.options = var1.options;
-        if (var1.hasActivityOption(4)) {
-            ((ManageViewActivity) getActivity()).b(ProjectFileBean.getDrawerName(var2.fileName));
+    public final void b(ProjectFileBean projectFileBean) {
+        ProjectFileBean newProjectFile = activitiesFiles.get(projectFilesAdapter.layoutPosition);
+        newProjectFile.keyboardSetting = projectFileBean.keyboardSetting;
+        newProjectFile.orientation = projectFileBean.orientation;
+        newProjectFile.options = projectFileBean.options;
+        if (projectFileBean.hasActivityOption(4)) {
+            ((ManageViewActivity) getActivity()).b(ProjectFileBean.getDrawerName(newProjectFile.fileName));
         } else {
-            ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(var2.fileName));
+            ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(newProjectFile.fileName));
         }
 
-        if (var1.hasActivityOption(4) || var1.hasActivityOption(8)) {
-            jC.c(g).c().useYn = "Y";
+        if (projectFileBean.hasActivityOption(4) || projectFileBean.hasActivityOption(8)) {
+            jC.c(sc_id).c().useYn = "Y";
         }
     }
 
     public ArrayList<ProjectFileBean> c() {
-        return i;
+        return activitiesFiles;
     }
 
     public final void c(ProjectFileBean var1) {
-        ProjectFileBean projectFileBean = i.get(j.c);
+        ProjectFileBean projectFileBean = activitiesFiles.get(projectFilesAdapter.layoutPosition);
 
-        ArrayList<ViewBean> fileViewBeans = jC.a(g).d(projectFileBean.getXmlName());
+        ArrayList<ViewBean> fileViewBeans = jC.a(sc_id).d(projectFileBean.getXmlName());
         for (int i = fileViewBeans.size() - 1; i >= 0; --i) {
-            jC.a(g).a(projectFileBean, fileViewBeans.get(i));
+            jC.a(sc_id).a(projectFileBean, fileViewBeans.get(i));
         }
 
         ArrayList<ViewBean> var6 = a(var1.presetName);
         for (ViewBean viewBean : eC.a(var6)) {
             viewBean.id = a(viewBean.type, projectFileBean.getXmlName());
-            jC.a(g).a(projectFileBean.getXmlName(), viewBean);
+            jC.a(sc_id).a(projectFileBean.getXmlName(), viewBean);
             if (viewBean.type == 3 && projectFileBean.fileType == 0) {
-                jC.a(g).a(projectFileBean.getJavaName(), 1, viewBean.type, viewBean.id, "onClick");
+                jC.a(sc_id).a(projectFileBean.getJavaName(), 1, viewBean.type, viewBean.id, "onClick");
             }
         }
     }
 
     public void d() {
-        g = getActivity().getIntent().getStringExtra("sc_id");
-        h = getActivity().getIntent().getStringExtra("compatUseYn");
-        ArrayList<ProjectFileBean> projectFiles = jC.b(g).b();
+        sc_id = getActivity().getIntent().getStringExtra("sc_id");
+        isAppCompatUsed = getActivity().getIntent().getStringExtra("compatUseYn");
+        ArrayList<ProjectFileBean> projectFiles = jC.b(sc_id).b();
         if (projectFiles != null) {
             boolean isMainActivityFile = false;
             for (ProjectFileBean projectFileBean : projectFiles) {
                 if (projectFileBean.fileName.equals("main")) {
-                    i.add(0, projectFileBean);
+                    activitiesFiles.add(0, projectFileBean);
                     isMainActivityFile = true;
                 } else {
-                    i.add(projectFileBean);
+                    activitiesFiles.add(projectFileBean);
                 }
             }
             if (!isMainActivityFile) {
-                i.add(0, new ProjectFileBean(0, "main"));
+                activitiesFiles.add(0, new ProjectFileBean(0, "main"));
             }
         }
     }
 
     public final void e() {
-        for (ProjectFileBean projectFileBean : i) {
+        for (ProjectFileBean projectFileBean : activitiesFiles) {
             projectFileBean.isSelected = false;
         }
     }
 
     public void f() {
-        int var1 = i.size();
-
-        while (true) {
-            int var2 = var1 - 1;
-            if (var2 < 0) {
-                j.c();
+        for (int i = 0, filesSize = activitiesFiles.size(); i < filesSize; i++) {
+            if (i < 0) {
+                projectFilesAdapter.c();
                 return;
             }
-
-            ProjectFileBean var3 = i.get(var2);
-            var1 = var2;
-            if (var3.isSelected) {
-                i.remove(var2);
-                var1 = var2;
-                if (var3.hasActivityOption(4)) {
-                    ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(var3.fileName));
-                    var1 = var2;
+            ProjectFileBean projectFileBean = activitiesFiles.get(i);
+            if (projectFileBean.isSelected) {
+                activitiesFiles.remove(projectFileBean);
+                if (projectFileBean.hasActivityOption(4)) {
+                    ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(projectFileBean.fileName));
                 }
             }
         }
     }
 
     public void g() {
-        if (i != null) {
-            if (i.size() == 0) {
+        if (activitiesFiles != null) {
+            if (activitiesFiles.size() == 0) {
                 l.setVisibility(View.VISIBLE);
                 f.setVisibility(View.GONE);
             } else {
@@ -200,12 +196,12 @@ public class Fw extends qA {
         if (savedInstanceState == null) {
             d();
         } else {
-            g = savedInstanceState.getString("sc_id");
-            h = savedInstanceState.getString("compatUseYn");
-            i = savedInstanceState.getParcelableArrayList("activities");
+            sc_id = savedInstanceState.getString("sc_id");
+            isAppCompatUsed = savedInstanceState.getString("compatUseYn");
+            activitiesFiles = savedInstanceState.getParcelableArrayList("activities");
         }
 
-        j.c();
+        projectFilesAdapter.c();
         g();
     }
 
@@ -215,25 +211,25 @@ public class Fw extends qA {
         if (requestCode == 265) {
             if (resultCode == Activity.RESULT_OK) {
                 b(data.getParcelableExtra("project_file"));
-                j.c(j.c);
+                projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
             }
         } else if (requestCode == 276 && resultCode == Activity.RESULT_OK) {
             ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
             b(projectFileBean);
             c(projectFileBean);
-            j.c(j.c);
+            projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) layoutInflater.inflate(2131427442, parent, false);
-        i = new ArrayList<>();
+        activitiesFiles = new ArrayList<>();
         f = root.findViewById(2131231442);
         f.setHasFixedSize(true);
         f.setLayoutManager(new LinearLayoutManager(getContext()));
-        j = new Fw.a(this, f);
-        f.setAdapter(j);
+        projectFilesAdapter = new ProjectFilesAdapter(this, f);
+        f.setAdapter(projectFilesAdapter);
         l = root.findViewById(2131231997);
         l.setText(xB.b().a(getActivity(), 2131625290));
         return root;
@@ -241,32 +237,32 @@ public class Fw extends qA {
 
     @Override
     public void onSaveInstanceState(Bundle newState) {
-        newState.putString("sc_id", g);
-        newState.putString("compatUseYn", h);
-        newState.putParcelableArrayList("activities", i);
+        newState.putString("sc_id", sc_id);
+        newState.putString("compatUseYn", isAppCompatUsed);
+        newState.putParcelableArrayList("activities", activitiesFiles);
         super.onSaveInstanceState(newState);
     }
 
-    public class a extends androidx.recyclerview.widget.RecyclerView.a<Fw.a.a> {
+    public class ProjectFilesAdapter extends RecyclerView.a<ProjectFilesAdapter.ViewHolder> {
         public final Fw d;
-        public int c;
+        public int layoutPosition;
 
-        public a(Fw var1, RecyclerView var2) {
+        public ProjectFilesAdapter(Fw var1, RecyclerView recyclerView) {
             d = var1;
-            c = -1;
-            if (var2.getLayoutManager() instanceof LinearLayoutManager) {
-                var2.a(new Bw(this, var1));
+            layoutPosition = -1;
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.a(new Bw(this, var1));
             }
 
         }
 
         @Override
         public int a() {
-            return d.i != null ? d.i.size() : 0;
+            return d.activitiesFiles != null ? d.activitiesFiles.size() : 0;
         }
 
         @Override
-        public void b(Fw.a.a viewHolder, int position) {
+        public void b(ViewHolder viewHolder, int position) {
             viewHolder.v.setVisibility(View.VISIBLE);
             viewHolder.y.setVisibility(View.GONE);
             if (position == 0) {
@@ -279,8 +275,8 @@ public class Fw extends qA {
                 viewHolder.v.setVisibility(View.VISIBLE);
             }
 
-            ProjectFileBean projectFileBean = d.i.get(position);
-            viewHolder.v.setImageResource(f(projectFileBean.options));
+            ProjectFileBean projectFileBean = d.activitiesFiles.get(position);
+            viewHolder.v.setImageResource(getImageResByOptions(projectFileBean.options));
             viewHolder.w.setText(projectFileBean.getXmlName());
             viewHolder.x.setText(projectFileBean.getJavaName());
             if (projectFileBean.isSelected) {
@@ -291,19 +287,18 @@ public class Fw extends qA {
         }
 
         @Override
-        public Fw.a.a b(ViewGroup parent, int viewType) {
-            return new Fw.a.a(this, LayoutInflater.from(parent.getContext()).inflate(2131427571, parent, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(this, LayoutInflater.from(parent.getContext()).inflate(2131427571, parent, false));
         }
 
-        public final int f(int var1) {
-            String var2 = String.format("%4s", Integer.toBinaryString(var1)).replace(' ', '0');
-            Resources var3 = d.getContext().getResources();
-            String var4 = "activity_" + var2;
-            return var3.getIdentifier(var4, "drawable", d.getContext().getPackageName());
+        private int getImageResByOptions(int options) {
+            String option = String.format("%4s", Integer.toBinaryString(options)).replace(' ', '0');
+            Resources resources = getContext().getResources();
+            return resources.getIdentifier("activity_" + option, "drawable", getContext().getPackageName());
         }
 
-        public class a extends RecyclerView.v {
-            public final Fw.a B;
+        public class ViewHolder extends RecyclerView.v {
+            public final ProjectFilesAdapter B;
             public ImageView A;
             public CheckBox t;
             public View u;
@@ -313,7 +308,7 @@ public class Fw extends qA {
             public LinearLayout y;
             public ImageView z;
 
-            public a(Fw.a var1, View itemView) {
+            public ViewHolder(ProjectFilesAdapter var1, View itemView) {
                 super(itemView);
                 B = var1;
                 t = itemView.findViewById(2131230893);
