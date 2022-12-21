@@ -228,7 +228,7 @@ public class Fw extends qA {
         f = root.findViewById(2131231442);
         f.setHasFixedSize(true);
         f.setLayoutManager(new LinearLayoutManager(getContext()));
-        projectFilesAdapter = new ProjectFilesAdapter(this, f);
+        projectFilesAdapter = new ProjectFilesAdapter(f);
         f.setAdapter(projectFilesAdapter);
         l = root.findViewById(2131231997);
         l.setText(xB.b().a(getActivity(), 2131625290));
@@ -244,11 +244,9 @@ public class Fw extends qA {
     }
 
     public class ProjectFilesAdapter extends RecyclerView.a<ProjectFilesAdapter.ViewHolder> {
-        public final Fw d;
         public int layoutPosition;
 
-        public ProjectFilesAdapter(Fw var1, RecyclerView recyclerView) {
-            d = var1;
+        public ProjectFilesAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.a(new RecyclerView.m() {
@@ -270,7 +268,7 @@ public class Fw extends qA {
 
         @Override
         public int a() {
-            return d.activitiesFiles != null ? d.activitiesFiles.size() : 0;
+            return activitiesFiles != null ? activitiesFiles.size() : 0;
         }
 
         @Override
@@ -279,7 +277,7 @@ public class Fw extends qA {
             viewHolder.y.setVisibility(View.GONE);
             if (position == 0) {
                 viewHolder.t.setVisibility(View.GONE);
-            } else if (d.k) {
+            } else if (k) {
                 viewHolder.y.setVisibility(View.VISIBLE);
                 viewHolder.v.setVisibility(View.GONE);
             } else {
@@ -287,7 +285,7 @@ public class Fw extends qA {
                 viewHolder.v.setVisibility(View.VISIBLE);
             }
 
-            ProjectFileBean projectFileBean = d.activitiesFiles.get(position);
+            ProjectFileBean projectFileBean = activitiesFiles.get(position);
             viewHolder.v.setImageResource(getImageResByOptions(projectFileBean.options));
             viewHolder.w.setText(projectFileBean.getXmlName());
             viewHolder.x.setText(projectFileBean.getJavaName());
@@ -300,7 +298,7 @@ public class Fw extends qA {
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(this, LayoutInflater.from(parent.getContext()).inflate(2131427571, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_view_list_item, parent, false));
         }
 
         private int getImageResByOptions(int options) {
@@ -310,7 +308,7 @@ public class Fw extends qA {
         }
 
         public class ViewHolder extends RecyclerView.v {
-            public final ProjectFilesAdapter B;
+
             public ImageView A;
             public CheckBox t;
             public View u;
@@ -320,9 +318,8 @@ public class Fw extends qA {
             public LinearLayout y;
             public ImageView z;
 
-            public ViewHolder(ProjectFilesAdapter var1, View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
-                B = var1;
                 t = itemView.findViewById(2131230893);
                 u = itemView.findViewById(2131232322);
                 v = itemView.findViewById(2131231104);
