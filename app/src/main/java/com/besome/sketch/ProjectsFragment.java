@@ -44,6 +44,7 @@ import java.util.HashMap;
 import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.MA;
+import a.a.a.St;
 import a.a.a.ci;
 import a.a.a.gB;
 import a.a.a.lC;
@@ -62,6 +63,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private static final int REQUEST_CODE_RESTORE_PROJECT = 700;
 
     private SwipeRefreshLayout swipeRefresh;
+    private SearchView projectsSearchView;
     private ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private RecyclerView myProjects;
     private CardView cvRestoreProjects;
@@ -88,6 +90,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private void initialize(ViewGroup parent) {
         preference = new DB(getContext(), "project");
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
+        projectsSearchView = parent.findViewById(R.id.projectsSearchView);
         swipeRefresh.setOnRefreshListener(() -> {
             if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
 
@@ -163,22 +166,34 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         collapseAnimatorSet.setDuration(300L);
         expandAnimatorSet.setDuration(300L);
 
+        projectsSearchView.setOnQueryTextListener(new SearchView.c() {
+            @Override
+            public boolean onQueryTextChange(String s) {
+                myProjects.getAdapter().c();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                myProjects.getAdapter().c();
+                return false;
+            }
+        });
 
         refreshProjectsList();
     }
 
-    public void a(boolean isEmpty) {
+    public void refreshProjectsList() {
         // Don't load project list without having permissions
         if (!c()) return;
 
         projectsList = lC.a();
         if (projectsList.size() > 0) {
-            //noinspection Java8ListSort
             Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
         }
 
         myProjects.getAdapter().c();
-        showHideSearchBox(isEmpty);
+        showHideSearchBox(projectsList.isEmpty());
     }
 
     @Override
@@ -231,11 +246,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     private void showHideSearchBox(boolean hide) {
-       // projectsSearchView.setVisibility(hide ? View.GONE : View.VISIBLE);
-    }
-
-    public void refreshProjectsList() {
-        a(true);
+        projectsSearchView.setVisibility(hide ? View.GONE : View.VISIBLE);
     }
 
 
@@ -364,10 +375,39 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             return projectsList.size();
         }
 
+        private boolean matchesQuery( HashMap<String, Object> projectMap){
+            final String searchQuery = projectsSearchView.getQuery().toString().toLowerCase();
+            if(searchQuery.isEmpty()) return true;
+
+            String scId = yB.c(projectMap, "sc_id").toLowerCase();
+            if(searchQuery.contains(scId) || scId.contains(searchQuery)) return true;
+
+            String appName = yB.c(projectMap, "my_ws_name").toLowerCase();
+            if(searchQuery.contains(appName) || appName.contains(searchQuery)) return true;
+
+            String projectName = yB.c(projectMap, "my_app_name").toLowerCase();
+            if(searchQuery.contains(projectName) || projectName.contains(searchQuery)) return true;
+
+            String packageName = yB.c(projectMap, "my_sc_pkg_name").toLowerCase();
+            return searchQuery.contains(packageName) || packageName.contains(searchQuery);
+        }
+
         @Override
         public void b(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
+
+            //Show hide based on search query
+            if (matchesQuery(projectMap)) {
+                viewHolder.b.setVisibility(View.VISIBLE);
+                viewHolder.b.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            } else {
+                viewHolder.b.setVisibility(View.GONE);
+                viewHolder.b.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+
+            }
+
+
             float rotation;
             int visibility;
             if (yB.a(projectMap, "expand")) {

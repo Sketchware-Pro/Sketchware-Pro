@@ -117,7 +117,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     public void n() {
         if (projectsFragment != null) {
-            projectsFragment.a(false);
+            projectsFragment.refreshProjectsList();
         }
     }
 
