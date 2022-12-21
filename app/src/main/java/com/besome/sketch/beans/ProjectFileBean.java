@@ -266,14 +266,15 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         dest.writeString(presetName);
     }
 
-    @IntDef({OPTION_ACTIVITY_FAB,
-            OPTION_ACTIVITY_DRAWER,
-            OPTION_ACTIVITY_MASK,
-            OPTION_ACTIVITY_FULLSCREEN,
-            OPTION_ACTIVITY_SHIFT,
-            OPTION_ACTIVITY_TOOLBAR})
+    @IntDef(flag = true,
+            value = {OPTION_ACTIVITY_FAB,
+                    OPTION_ACTIVITY_DRAWER,
+                    OPTION_ACTIVITY_MASK,
+                    OPTION_ACTIVITY_FULLSCREEN,
+                    OPTION_ACTIVITY_SHIFT,
+                    OPTION_ACTIVITY_TOOLBAR})
     @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.PARAMETER,ElementType.METHOD})
+    @Target({ElementType.PARAMETER, ElementType.METHOD})
     private @interface ActivityOption {
     }
 }
