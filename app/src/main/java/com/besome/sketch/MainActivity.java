@@ -27,7 +27,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sketchware.remod.R;
 
@@ -62,7 +61,6 @@ import mod.tyron.backup.SingleCopyAsyncTask;
 
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
 
-    private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
     private l drawerToggle;
     private MainDrawer drawer;
@@ -192,7 +190,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         a(toolbar);
         d().d(true);
         d().e(true);
-        ImageView logo = findViewById(R.id.img_title_logo);
+        ImageView logo = findViewById(R.id.layout_main_logo);
         logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(R.id.left_drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -206,7 +204,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
         viewPager.a(this);
 
-        fab = findViewById(R.id.fab);
         coordinator = findViewById(R.id.layout_coordinator);
 
         boolean hasStorageAccess = j();
@@ -389,7 +386,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 dialog.a("Skip", Helper.getDialogDismissListener(dialog));
                 dialog.configureDefaultButton("Don't show anymore", v -> {
                     try {
-                        optOutFile.createNewFile();
+                        if(!optOutFile.createNewFile())
+                            throw new IOException("Unknown error.");
                     } catch (IOException e) {
                         Log.e("MainActivity", "Error while trying to create " +
                                 "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
@@ -444,14 +442,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     // ViewPager.OnPageChangeListener#onPageSelected(int)
     public void b(int position) {
-        if (position == 0) {
-            if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0) {
+        if (position == 0)
+            if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0)
                 projectsFragment.refreshProjectsList();
-            }
-            projectsFragment.showCreateNewProjectLayout();
-        } else if (position == 1) {
-            fab.c();
-        }
     }
 
     private void tryLoadingCustomizedAppStrings() {

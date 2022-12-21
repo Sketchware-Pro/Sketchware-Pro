@@ -12,7 +12,7 @@
     app:contentInsetStart="0dp"
     app:titleTextAppearance="@style/ToolbarTextAppearance">
     <ImageView
-        android:id="@+id/img_title_logo"
+        android:id="@+id/layout_main_logo"
         android:layout_width="wrap_content"
         android:scaleType="fitCenter"
         android:layout_gravity="center"

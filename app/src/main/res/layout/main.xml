@@ -36,20 +36,6 @@
             android:background="@android:color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center|right"
-            android:layout_marginLeft="16.0dip"
-            android:layout_marginRight="16.0dip"
-            android:layout_marginBottom="32.0dip"
-            android:src="@drawable/plus_96"
-            app:backgroundTint="#ffffffff"
-            app:elevation="6.0dip"
-            app:fabSize="normal"
-            app:layout_anchorGravity="center" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.besome.sketch.MainDrawer

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,13 +64,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private SwipeRefreshLayout swipeRefresh;
     private ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private RecyclerView myProjects;
-    private CardView cvCreateNew;
     private CardView cvRestoreProjects;
     private Boolean isCollapsed;
     private AnimatorSet collapseAnimatorSet;
     private AnimatorSet expandAnimatorSet;
     private ProjectsAdapter projectsAdapter;
-    private FloatingActionButton floatingActionButton;
     private DB preference;
 
     private void toProjectSettingOrRequestPermission(int position) {
@@ -98,8 +97,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 ((MainActivity) getActivity()).s();
             }
         });
-        floatingActionButton = getActivity().findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(this);
 
         myProjects = parent.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
@@ -108,13 +105,17 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         myProjects.setAdapter(projectsAdapter);
         myProjects.setItemAnimator(new ci());
 
-        cvCreateNew = parent.findViewById(R.id.cv_create_new);
+        CardView cvCreateNew = parent.findViewById(R.id.cv_create_new);
         cvCreateNew.setOnClickListener(this);
+
+        ImageView ivCreateNew = parent.findViewById(R.id.iv_create_new);
+        TextView tvCreateNew = parent.findViewById(R.id.tv_create_new);
 
         isCollapsed = false;
 
         cvRestoreProjects = parent.findViewById(R.id.cv_restore_projects);
         cvRestoreProjects.setOnClickListener(this);
+
         ImageView ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
         TextView tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
 
@@ -123,15 +124,31 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         ValueAnimator collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
         collapseValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
+            cvCreateNew.getLayoutParams().height = (int) value;
+            cvCreateNew.requestLayout();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
         });
         ValueAnimator expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
         expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
+            cvCreateNew.getLayoutParams().height = (int) value;
+            cvCreateNew.requestLayout();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
         });
+
+        collapseAnimatorSet.playTogether(collapseValueAnimator,
+                ObjectAnimator.ofFloat(tvCreateNew, View.TRANSLATION_Y, 0.0F, -100.0F),
+                ObjectAnimator.ofFloat(tvCreateNew, View.ALPHA, 1.0F, 0.0F),
+                ObjectAnimator.ofFloat(ivCreateNew, View.SCALE_X, 1.0F, 0.5F),
+                ObjectAnimator.ofFloat(ivCreateNew, View.SCALE_Y, 1.0F, 0.5F));
+        expandAnimatorSet.playTogether(expandValueAnimator,
+                ObjectAnimator.ofFloat(tvCreateNew, View.TRANSLATION_Y, -100.0F, 0.0F),
+                ObjectAnimator.ofFloat(tvCreateNew, View.ALPHA, 0.0F, 1.0F),
+                ObjectAnimator.ofFloat(ivCreateNew, View.SCALE_X, 0.5F, 1.0F),
+                ObjectAnimator.ofFloat(ivCreateNew, View.SCALE_Y, 0.5F, 1.0F));
+
         collapseAnimatorSet.playTogether(collapseValueAnimator,
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 1.0F, 0.0F),
@@ -142,17 +159,17 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 0.0F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 0.5F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F));
+
         collapseAnimatorSet.setDuration(300L);
         expandAnimatorSet.setDuration(300L);
+
+
         refreshProjectsList();
     }
 
     public void a(boolean isEmpty) {
         // Don't load project list without having permissions
-        if (!c()) {
-            showCreateNewProjectLayout();
-            return;
-        }
+        if (!c()) return;
 
         projectsList = lC.a();
         if (projectsList.size() > 0) {
@@ -161,7 +178,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
 
         myProjects.getAdapter().c();
-        if (isEmpty) showCreateNewProjectLayout();
+        showHideSearchBox(isEmpty);
     }
 
     @Override
@@ -213,19 +230,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         startActivity(intent);
     }
 
+    private void showHideSearchBox(boolean hide) {
+       // projectsSearchView.setVisibility(hide ? View.GONE : View.VISIBLE);
+    }
+
     public void refreshProjectsList() {
         a(true);
     }
 
-    public void showCreateNewProjectLayout() {
-        if (projectsList.size() > 0) {
-            cvCreateNew.setVisibility(View.GONE);
-            floatingActionButton.f();
-        } else {
-            cvCreateNew.setVisibility(View.VISIBLE);
-            floatingActionButton.c();
-        }
-    }
 
     private void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
