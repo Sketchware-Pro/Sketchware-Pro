@@ -3,7 +3,14 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.IntDef;
+
 import com.google.gson.annotations.Expose;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 public class ProjectFileBean extends SelectableBean implements Parcelable {
     public static final Creator<ProjectFileBean> CREATOR = new Creator<>() {
@@ -205,7 +212,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         return options;
     }
 
-    public void setActivityOptions(int options) {
+    public void setActivityOptions(@ActivityOption int options) {
         this.options = options;
     }
 
@@ -230,7 +237,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         return getXmlName(fileName);
     }
 
-    public boolean hasActivityOption(int option) {
+    public boolean hasActivityOption(@ActivityOption int option) {
         return ((options & OPTION_ACTIVITY_MASK) & option) == option;
     }
 
@@ -257,5 +264,16 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         dest.writeInt(keyboardSetting);
         dest.writeInt(options);
         dest.writeString(presetName);
+    }
+
+    @IntDef({OPTION_ACTIVITY_FAB,
+            OPTION_ACTIVITY_DRAWER,
+            OPTION_ACTIVITY_MASK,
+            OPTION_ACTIVITY_FULLSCREEN,
+            OPTION_ACTIVITY_SHIFT,
+            OPTION_ACTIVITY_TOOLBAR})
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.PARAMETER,ElementType.METHOD})
+    private @interface ActivityOption {
     }
 }
