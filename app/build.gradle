@@ -95,12 +95,11 @@ dependencies {
     implementation "com.android.tools:annotations:30.2.2"
     implementation "com.google.guava:guava:31.1-jre"
 
-    def codeEditorVersion = "0.17.2"
     def editorGroupId = "io.github.Rosemoe.sora-editor"
-
-    implementation "$editorGroupId:editor:$codeEditorVersion"
-    implementation "$editorGroupId:language-java:$codeEditorVersion"
-    implementation "$editorGroupId:language-textmate:$codeEditorVersion"
+    implementation platform("$editorGroupId:bom:0.19.0")
+    implementation "$editorGroupId:editor"
+    implementation "$editorGroupId:language-java"
+    implementation "$editorGroupId:language-textmate"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"

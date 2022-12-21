@@ -80,19 +80,9 @@ public class SrcCodeEditor extends AppCompatActivity {
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
-        EditorColorScheme scheme;
+        if (!(ed.getColorScheme() instanceof TextMateColorScheme)) {
+            EditorColorScheme scheme;
 
-        if (ed.getColorScheme() instanceof TextMateColorScheme) {
-            switch (which) {
-                case 1:
-                    scheme = CodeEditorColorSchemes.GITHUB;
-                    break;
-
-                case 3:
-                default:
-                    scheme = CodeEditorColorSchemes.DRACULA;
-            }
-        } else {
             switch (which) {
                 default:
                 case 0:
@@ -119,9 +109,9 @@ public class SrcCodeEditor extends AppCompatActivity {
                     scheme = new SchemeNotepadXX();
                     break;
             }
-        }
 
-        ed.setColorScheme(scheme);
+            ed.setColorScheme(scheme);
+        }
     }
 
     public static String prettifyXml(String xml, int indentAmount, Intent extras) {
@@ -223,10 +213,10 @@ public class SrcCodeEditor extends AppCompatActivity {
             editor.setEditorLanguage(new JavaLanguage());
         } else if (title.endsWith(".kt")) {
             editor.setEditorLanguage(CodeEditorLanguages.KOTLIN);
-            editor.setColorScheme(CodeEditorColorSchemes.DRACULA);
+            editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
         } else if (title.endsWith(".xml")) {
             editor.setEditorLanguage(CodeEditorLanguages.XML);
-            editor.setColorScheme(CodeEditorColorSchemes.DRACULA);
+            editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
         }
 
         loadCESettings(this, editor, "act");

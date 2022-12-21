@@ -1,41 +1,50 @@
 package mod.jbk.code;
 
-import android.content.res.AssetManager;
-
 import com.besome.sketch.SketchApplication;
-
-import org.eclipse.tm4e.core.registry.IGrammarSource;
-import org.eclipse.tm4e.core.registry.IThemeSource;
 
 import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
+import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry;
+import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry;
+import io.github.rosemoe.sora.langs.textmate.registry.dsl.LanguageDefinitionListBuilder;
+import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver;
+import kotlin.Unit;
 import mod.jbk.util.LogUtil;
 
 public class CodeEditorLanguages {
-
     private static final String TAG = "CodeEditorLanguages";
 
     public static final Language KOTLIN;
     public static final Language XML;
 
+    public static final String[] LANGUAGES = {"kotlin.tmLanguage", "xml.tmLanguage.json"};
+    public static final String SCOPE_NAME_KOTLIN = "source.kotlin";
+    public static final String SCOPE_NAME_XML = "text.xml";
+
     static {
-        AssetManager assets = SketchApplication.getContext().getAssets();
+        FileProviderRegistry.getInstance().addFileProvider(
+                new AssetsFileResolver(SketchApplication.getContext().getAssets()));
+
+        for (String language : LANGUAGES) {
+            LanguageDefinitionListBuilder builder = new LanguageDefinitionListBuilder();
+            String languageName = language.substring(0, language.indexOf('.'));
+            builder.language(languageName, languageDefinitionBuilder -> {
+                languageDefinitionBuilder.grammar = "textmate/" + language;
+                languageDefinitionBuilder.defaultScopeName(language.equals(LANGUAGES[1]) ? "text" : "source");
+                return Unit.INSTANCE;
+            });
+
+            try {
+                GrammarRegistry.getInstance().loadGrammars(builder);
+            } catch (Exception e) {
+                LogUtil.e(TAG, "Failed to load language '" + language + "'", e);
+            }
+        }
 
         Language kotlinLanguage;
         try {
-            kotlinLanguage = TextMateLanguage.create(
-                    IGrammarSource.fromInputStream(
-                            assets.open("textmate/kotlin.tmLanguage"),
-                            "kotlin.tmLanguage",
-                            null
-                    ),
-                    IThemeSource.fromInputStream(
-                            assets.open("textmate/themes/dracula.json"),
-                            "dracula.json",
-                            null
-                    )
-            );
+            kotlinLanguage = TextMateLanguage.create(SCOPE_NAME_KOTLIN, true);
         } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create Kotlin TextMate language, using empty one as default Kotlin language", e);
             kotlinLanguage = new EmptyLanguage();
@@ -44,18 +53,7 @@ public class CodeEditorLanguages {
 
         Language xmlLanguage;
         try {
-            xmlLanguage = TextMateLanguage.create(
-                    IGrammarSource.fromInputStream(
-                            assets.open("textmate/xml.tmLanguage.json"),
-                            "xml.tmLanguage.json",
-                            null
-                    ),
-                    IThemeSource.fromInputStream(
-                            assets.open("textmate/themes/dracula.json"),
-                            "dracula.json",
-                            null
-                    )
-            );
+            xmlLanguage = TextMateLanguage.create(SCOPE_NAME_XML, true);
         } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create XML TextMate language, using empty one as default XML language", e);
             xmlLanguage = new EmptyLanguage();

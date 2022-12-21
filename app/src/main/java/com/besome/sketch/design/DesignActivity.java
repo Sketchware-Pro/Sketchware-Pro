@@ -740,7 +740,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
                 if (filename.endsWith(".xml")) {
-                    editor.setColorScheme(CodeEditorColorSchemes.GITHUB);
+                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
                     editor.setEditorLanguage(CodeEditorLanguages.XML);
                 } else {
                     editor.setColorScheme(new EditorColorScheme());
