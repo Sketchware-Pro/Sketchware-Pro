@@ -75,7 +75,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         if (super.c()) {
             Intent intent = new Intent(getContext(), MyProjectSettingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("sc_id", yB.c(projectsList.get(position), "sc_id"));
+            intent.putExtra("sc_id", yB.c(projectsAdapter.data.get(position), "sc_id"));
             intent.putExtra("is_update", true);
             intent.putExtra("advanced_open", false);
             intent.putExtra("index", position);
@@ -102,7 +102,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         myProjects = parent.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
         myProjects.setLayoutManager(new LinearLayoutManager(getContext()));
-        projectsAdapter = new ProjectsAdapter(myProjects);
+        projectsAdapter = new ProjectsAdapter(myProjects, projectsList);
         myProjects.setAdapter(projectsAdapter);
         myProjects.setItemAnimator(new ci());
 
@@ -167,7 +167,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         projectsSearchView.setOnQueryTextListener(new SearchView.c() {
             @Override
             public boolean onQueryTextChange(String s) {
-                myProjects.getAdapter().c();
+                projectsAdapter.filterData(s);
                 return false;
             }
 
@@ -181,6 +181,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         refreshProjectsList();
     }
 
+
     public void refreshProjectsList() {
         // Don't load project list without having permissions
         if (!c()) return;
@@ -190,7 +191,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
         }
 
-        myProjects.getAdapter().c();
+        projectsAdapter.filterData(projectsSearchView.getQuery().toString());
         showHideSearchBox(projectsList.isEmpty());
     }
 
@@ -239,7 +240,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private void toExportProjectActivity(int position) {
         Intent intent = new Intent(getContext(), ExportProjectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", yB.c(projectsList.get(position), "sc_id"));
+        intent.putExtra("sc_id", yB.c(projectsAdapter.data.get(position), "sc_id"));
         startActivity(intent);
     }
 
@@ -259,12 +260,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     private void showProjectSettingDialog(int position) {
-        (new ProjectSettingsDialog(getActivity(), yB.c(projectsList.get(position), "sc_id"))).show();
+        (new ProjectSettingsDialog(getActivity(), yB.c(projectsAdapter.data.get(position), "sc_id"))).show();
     }
 
     private void backupProject(int position) {
-        String sc_id = yB.c(projectsList.get(position), "sc_id");
-        String appName = yB.c(projectsList.get(position), "my_ws_name");
+        String sc_id = yB.c(projectsAdapter.data.get(position), "sc_id");
+        String appName = yB.c(projectsAdapter.data.get(position), "my_ws_name");
         (new BackupRestoreManager(getActivity())).backup(sc_id, appName);
     }
 
@@ -317,8 +318,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         @Override
         public void a() {
-            if (position < projectsList.size()) {
-                projectsList.remove(position);
+            if (position < projectsAdapter.data.size()) {
+                projectsAdapter.data.remove(position);
                 projectsAdapter.e(position);
                 projectsAdapter.a(position, projectsAdapter.a());
             }
@@ -333,8 +334,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         @Override
         public void b() {
-            if (position < projectsList.size()) {
-                lC.a(super.a, yB.c(projectsList.get(position), "sc_id"));
+            if (position < projectsAdapter.data.size()) {
+                lC.a(super.a, yB.c(projectsAdapter.data.get(position), "sc_id"));
             }
         }
 
@@ -346,9 +347,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
         private int layoutPosition;
+        private ArrayList<HashMap<String, Object>> data;
 
-        public ProjectsAdapter(RecyclerView recyclerView) {
+        public ProjectsAdapter(RecyclerView recyclerView, ArrayList<HashMap<String, Object>> projectsList) {
+            this.data = projectsList;
             layoutPosition = -1;
+            //noinspection ConstantConditions
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.a(new RecyclerView.m() {
                     @Override
@@ -368,13 +372,29 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         }
 
-        @Override
-        public int a() {
-            return projectsList.size();
+        public void filterData(String query) {
+            if (query.isEmpty()) {
+                this.data = projectsList;
+                c();
+                return;
+            }
+
+            ArrayList<HashMap<String, Object>> filteredProjectsList = new ArrayList<>();
+            for (HashMap<String, Object> project : projectsList)
+                if (matchesQuery(project, query))
+                    filteredProjectsList.add(project);
+
+            this.data = filteredProjectsList;
+            c();
+
         }
 
-        private boolean matchesQuery(HashMap<String, Object> projectMap) {
-            final String searchQuery = projectsSearchView.getQuery().toString().toLowerCase();
+        @Override
+        public int a() {
+            return data.size();
+        }
+
+        private boolean matchesQuery(HashMap<String, Object> projectMap, String searchQuery) {
             if (searchQuery.isEmpty()) return true;
 
             String scId = yB.c(projectMap, "sc_id").toLowerCase();
@@ -392,19 +412,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         @Override
         public void b(ViewHolder viewHolder, int position) {
-            HashMap<String, Object> projectMap = projectsList.get(position);
+            HashMap<String, Object> projectMap = data.get(position);
             String scId = yB.c(projectMap, "sc_id");
-
-            //Show hide based on search query
-            if (matchesQuery(projectMap)) {
-                viewHolder.b.setVisibility(View.VISIBLE);
-                viewHolder.b.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            } else {
-                viewHolder.b.setVisibility(View.GONE);
-                viewHolder.b.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
-
-            }
-
 
             float rotation;
             int visibility;
@@ -496,8 +505,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectButtonLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
                         layoutPosition = j();
-                        if (layoutPosition <= projectsList.size()) {
-                            HashMap<String, Object> projectMap = projectsList.get(layoutPosition);
+                        if (layoutPosition <= data.size()) {
+                            HashMap<String, Object> projectMap = data.get(layoutPosition);
                             if (v instanceof MyProjectButton) {
                                 switch (((MyProjectButton) v).b) {
                                     case 0:
@@ -538,12 +547,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectOne.setOnClickListener(v -> {
                     if (!mB.a()) {
                         layoutPosition = j();
-                        toDesignActivity(yB.c(projectsList.get(layoutPosition), "sc_id"));
+                        toDesignActivity(yB.c(data.get(layoutPosition), "sc_id"));
                     }
                 });
                 projectOne.setOnLongClickListener(v -> {
                     layoutPosition = j();
-                    if (yB.a(projectsList.get(layoutPosition), "expand")) {
+                    if (yB.a(data.get(layoutPosition), "expand")) {
                         collapse();
                     } else {
                         expand();
@@ -559,7 +568,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 expand.setOnClickListener(v -> {
                     if (!mB.a()) {
                         layoutPosition = j();
-                        if (yB.a(projectsList.get(layoutPosition), "expand")) {
+                        if (yB.a(data.get(layoutPosition), "expand")) {
                             collapse();
                         } else {
                             expand();
@@ -569,7 +578,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
 
             public void collapse() {
-                projectsList.get(layoutPosition).put("expand", false);
+                data.get(layoutPosition).put("expand", false);
                 gB.a(expand, 0.0F, null);
                 gB.a(projectOptionLayout, 300, new AnimatorListenerAdapter() {
                     @Override
@@ -581,7 +590,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
             public void expand() {
                 projectOptionLayout.setVisibility(View.VISIBLE);
-                projectsList.get(layoutPosition).put("expand", true);
+                data.get(layoutPosition).put("expand", true);
                 gB.a(expand, -180.0F, null);
                 gB.b(projectOptionLayout, 300, null);
             }
