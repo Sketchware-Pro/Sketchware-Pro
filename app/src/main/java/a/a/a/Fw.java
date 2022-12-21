@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -21,11 +20,11 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.ManageViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-@SuppressLint("ResourceType")
 public class Fw extends qA {
 
     public RecyclerView f;
@@ -103,13 +102,13 @@ public class Fw extends qA {
         newProjectFile.keyboardSetting = projectFileBean.keyboardSetting;
         newProjectFile.orientation = projectFileBean.orientation;
         newProjectFile.options = projectFileBean.options;
-        if (projectFileBean.hasActivityOption(4)) {
+        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ((ManageViewActivity) getActivity()).b(ProjectFileBean.getDrawerName(newProjectFile.fileName));
         } else {
             ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(newProjectFile.fileName));
         }
 
-        if (projectFileBean.hasActivityOption(4) || projectFileBean.hasActivityOption(8)) {
+        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
             jC.c(sc_id).c().useYn = "Y";
         }
     }
@@ -171,7 +170,7 @@ public class Fw extends qA {
             ProjectFileBean projectFileBean = activitiesFiles.get(i);
             if (projectFileBean.isSelected) {
                 activitiesFiles.remove(projectFileBean);
-                if (projectFileBean.hasActivityOption(4)) {
+                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                     ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(projectFileBean.fileName));
                 }
             }
@@ -223,15 +222,15 @@ public class Fw extends qA {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) layoutInflater.inflate(2131427442, parent, false);
+        ViewGroup root = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_view_list, parent, false);
         activitiesFiles = new ArrayList<>();
-        f = root.findViewById(2131231442);
+        f = root.findViewById(R.id.list_activities);
         f.setHasFixedSize(true);
         f.setLayoutManager(new LinearLayoutManager(getContext()));
         projectFilesAdapter = new ProjectFilesAdapter(f);
         f.setAdapter(projectFilesAdapter);
-        l = root.findViewById(2131231997);
-        l.setText(xB.b().a(getActivity(), 2131625290));
+        l = root.findViewById(R.id.tv_guide);
+        l.setText(xB.b().a(getActivity(), R.string.design_manager_view_description_guide_create_activity));
         return root;
     }
 
@@ -290,9 +289,9 @@ public class Fw extends qA {
             viewHolder.w.setText(projectFileBean.getXmlName());
             viewHolder.x.setText(projectFileBean.getJavaName());
             if (projectFileBean.isSelected) {
-                viewHolder.z.setImageResource(2131165707);
+                viewHolder.z.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                viewHolder.z.setImageResource(2131165875);
+                viewHolder.z.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
         }
 
@@ -320,14 +319,14 @@ public class Fw extends qA {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(2131230893);
-                u = itemView.findViewById(2131232322);
-                v = itemView.findViewById(2131231104);
-                w = itemView.findViewById(2131232144);
-                x = itemView.findViewById(2131231863);
-                y = itemView.findViewById(2131230959);
-                z = itemView.findViewById(2131231132);
-                A = itemView.findViewById(0x7f0801c0);
+                t = itemView.findViewById(R.id.chk_select);
+                u = itemView.findViewById(R.id.view_item);
+                v = itemView.findViewById(R.id.img_activity);
+                w = itemView.findViewById(R.id.tv_screen_name);
+                x = itemView.findViewById(R.id.tv_activity_name);
+                y = itemView.findViewById(R.id.delete_img_container);
+                z = itemView.findViewById(R.id.img_delete);
+                A = itemView.findViewById(R.id.img_preset_setting);
                 t.setVisibility(View.GONE);
                 u.setOnClickListener(view -> {
                     if (!mB.a()) {
