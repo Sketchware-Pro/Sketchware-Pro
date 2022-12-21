@@ -27,6 +27,8 @@ import java.util.Iterator;
 
 public class Fw extends qA {
 
+    private static final int REQUEST_CODE_PRESET_ACTIVITY = 276;
+    private static final int REQUEST_CODE_ADD_VIEW_ACTIVITY = 265;
     public RecyclerView f;
     public Boolean k = false;
     public TextView l;
@@ -207,12 +209,12 @@ public class Fw extends qA {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 265) {
+        if (requestCode == REQUEST_CODE_ADD_VIEW_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 b(data.getParcelableExtra("project_file"));
                 projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
             }
-        } else if (requestCode == 276 && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == REQUEST_CODE_PRESET_ACTIVITY && resultCode == Activity.RESULT_OK) {
             ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
             b(projectFileBean);
             c(projectFileBean);
@@ -339,8 +341,8 @@ public class Fw extends qA {
                         } else {
                             Intent intent = new Intent(getContext(), AddViewActivity.class);
                             intent.putExtra("project_file", activitiesFiles.get(layoutPosition));
-                            intent.putExtra("request_code", 265);
-                            startActivityForResult(intent, 265);
+                            intent.putExtra("request_code", REQUEST_CODE_ADD_VIEW_ACTIVITY);
+                            startActivityForResult(intent, REQUEST_CODE_ADD_VIEW_ACTIVITY);
                         }
                     }
                 });
@@ -355,9 +357,9 @@ public class Fw extends qA {
                     if (!mB.a()) {
                         layoutPosition = j();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
-                        intent.putExtra("request_code", 276);
+                        intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);
-                        startActivityForResult(intent, 276);
+                        startActivityForResult(intent, REQUEST_CODE_PRESET_ACTIVITY);
                     }
                 });
             }
