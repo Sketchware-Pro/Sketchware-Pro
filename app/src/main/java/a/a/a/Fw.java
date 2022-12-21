@@ -29,10 +29,10 @@ public class Fw extends qA {
 
     private static final int REQUEST_CODE_PRESET_ACTIVITY = 276;
     private static final int REQUEST_CODE_ADD_VIEW_ACTIVITY = 265;
-    public RecyclerView f;
-    public Boolean k = false;
-    public TextView l;
-    public int[] m = new int[19];
+    private RecyclerView activitiesList;
+    private Boolean k = false;
+    private TextView tvGuide;
+    private final int[] m = new int[19];
     private ProjectFilesAdapter projectFilesAdapter = null;
     private String sc_id;
     private String isAppCompatUsed = "N";
@@ -182,11 +182,11 @@ public class Fw extends qA {
     public void g() {
         if (activitiesFiles != null) {
             if (activitiesFiles.size() == 0) {
-                l.setVisibility(View.VISIBLE);
-                f.setVisibility(View.GONE);
+                tvGuide.setVisibility(View.VISIBLE);
+                activitiesList.setVisibility(View.GONE);
             } else {
-                f.setVisibility(View.VISIBLE);
-                l.setVisibility(View.GONE);
+                activitiesList.setVisibility(View.VISIBLE);
+                tvGuide.setVisibility(View.GONE);
             }
         }
     }
@@ -226,13 +226,13 @@ public class Fw extends qA {
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_view_list, parent, false);
         activitiesFiles = new ArrayList<>();
-        f = root.findViewById(R.id.list_activities);
-        f.setHasFixedSize(true);
-        f.setLayoutManager(new LinearLayoutManager(getContext()));
-        projectFilesAdapter = new ProjectFilesAdapter(f);
-        f.setAdapter(projectFilesAdapter);
-        l = root.findViewById(R.id.tv_guide);
-        l.setText(xB.b().a(getActivity(), R.string.design_manager_view_description_guide_create_activity));
+        activitiesList = root.findViewById(R.id.list_activities);
+        activitiesList.setHasFixedSize(true);
+        activitiesList.setLayoutManager(new LinearLayoutManager(getContext()));
+        projectFilesAdapter = new ProjectFilesAdapter(activitiesList);
+        activitiesList.setAdapter(projectFilesAdapter);
+        tvGuide = root.findViewById(R.id.tv_guide);
+        tvGuide.setText(xB.b().a(getActivity(), R.string.design_manager_view_description_guide_create_activity));
         return root;
     }
 
@@ -274,26 +274,26 @@ public class Fw extends qA {
 
         @Override
         public void b(ViewHolder viewHolder, int position) {
-            viewHolder.v.setVisibility(View.VISIBLE);
-            viewHolder.y.setVisibility(View.GONE);
+            viewHolder.imgActivity.setVisibility(View.VISIBLE);
+            viewHolder.deleteImgContainer.setVisibility(View.GONE);
             if (position == 0) {
-                viewHolder.t.setVisibility(View.GONE);
+                viewHolder.checkBox.setVisibility(View.GONE);
             } else if (k) {
-                viewHolder.y.setVisibility(View.VISIBLE);
-                viewHolder.v.setVisibility(View.GONE);
+                viewHolder.deleteImgContainer.setVisibility(View.VISIBLE);
+                viewHolder.imgActivity.setVisibility(View.GONE);
             } else {
-                viewHolder.y.setVisibility(View.GONE);
-                viewHolder.v.setVisibility(View.VISIBLE);
+                viewHolder.deleteImgContainer.setVisibility(View.GONE);
+                viewHolder.imgActivity.setVisibility(View.VISIBLE);
             }
 
             ProjectFileBean projectFileBean = activitiesFiles.get(position);
-            viewHolder.v.setImageResource(getImageResByOptions(projectFileBean.options));
-            viewHolder.w.setText(projectFileBean.getXmlName());
-            viewHolder.x.setText(projectFileBean.getJavaName());
+            viewHolder.imgActivity.setImageResource(getImageResByOptions(projectFileBean.options));
+            viewHolder.tvScreenName.setText(projectFileBean.getXmlName());
+            viewHolder.tvActivityName.setText(projectFileBean.getJavaName());
             if (projectFileBean.isSelected) {
-                viewHolder.z.setImageResource(R.drawable.ic_checkmark_green_48dp);
+                viewHolder.imgDelete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                viewHolder.z.setImageResource(R.drawable.ic_trashcan_white_48dp);
+                viewHolder.imgDelete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
         }
 
@@ -310,32 +310,32 @@ public class Fw extends qA {
 
         public class ViewHolder extends RecyclerView.v {
 
-            public ImageView A;
-            public CheckBox t;
-            public View u;
-            public ImageView v;
-            public TextView w;
-            public TextView x;
-            public LinearLayout y;
-            public ImageView z;
+            public ImageView imgPresetSettingd;
+            public CheckBox checkBox;
+            public View viewItem;
+            public ImageView imgActivity;
+            public TextView tvScreenName;
+            public TextView tvActivityName;
+            public LinearLayout deleteImgContainer;
+            public ImageView imgDelete;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.chk_select);
-                u = itemView.findViewById(R.id.view_item);
-                v = itemView.findViewById(R.id.img_activity);
-                w = itemView.findViewById(R.id.tv_screen_name);
-                x = itemView.findViewById(R.id.tv_activity_name);
-                y = itemView.findViewById(R.id.delete_img_container);
-                z = itemView.findViewById(R.id.img_delete);
-                A = itemView.findViewById(R.id.img_preset_setting);
-                t.setVisibility(View.GONE);
-                u.setOnClickListener(view -> {
+                checkBox = itemView.findViewById(R.id.chk_select);
+                viewItem = itemView.findViewById(R.id.view_item);
+                imgActivity = itemView.findViewById(R.id.img_activity);
+                tvScreenName = itemView.findViewById(R.id.tv_screen_name);
+                tvActivityName = itemView.findViewById(R.id.tv_activity_name);
+                deleteImgContainer = itemView.findViewById(R.id.delete_img_container);
+                imgDelete = itemView.findViewById(R.id.img_delete);
+                imgPresetSettingd = itemView.findViewById(R.id.img_preset_setting);
+                checkBox.setVisibility(View.GONE);
+                viewItem.setOnClickListener(view -> {
                     if (!mB.a()) {
                         layoutPosition = j();
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
-                                activitiesFiles.get(layoutPosition).isSelected = t.isChecked();
+                                activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                                 ProjectFilesAdapter.this.c(layoutPosition);
                             }
                         } else {
@@ -346,14 +346,14 @@ public class Fw extends qA {
                         }
                     }
                 });
-                u.setOnLongClickListener(view -> {
+                viewItem.setOnLongClickListener(view -> {
                     ((ManageViewActivity) getActivity()).a(true);
                     layoutPosition = j();
-                    t.setChecked(!t.isChecked());
-                    activitiesFiles.get(layoutPosition).isSelected = t.isChecked();
+                    checkBox.setChecked(!checkBox.isChecked());
+                    activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
-                A.setOnClickListener(view -> {
+                imgPresetSettingd.setOnClickListener(view -> {
                     if (!mB.a()) {
                         layoutPosition = j();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
