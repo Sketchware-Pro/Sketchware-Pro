@@ -741,7 +741,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                 if (filename.endsWith(".xml")) {
                     editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-                    editor.setEditorLanguage(CodeEditorLanguages.XML);
+                    editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
                 } else {
                     editor.setColorScheme(new EditorColorScheme());
                     editor.setEditorLanguage(new JavaLanguage());

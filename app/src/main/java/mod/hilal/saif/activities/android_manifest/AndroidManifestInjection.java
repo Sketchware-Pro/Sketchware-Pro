@@ -513,7 +513,7 @@ public class AndroidManifestInjection extends Activity {
                 editor.setTypefaceText(Typeface.MONOSPACE);
                 editor.setEditable(false);
                 editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-                editor.setEditorLanguage(CodeEditorLanguages.XML);
+                editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
                 editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);

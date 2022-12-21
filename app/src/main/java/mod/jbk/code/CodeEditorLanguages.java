@@ -15,9 +15,6 @@ import mod.jbk.util.LogUtil;
 public class CodeEditorLanguages {
     private static final String TAG = "CodeEditorLanguages";
 
-    public static final Language KOTLIN;
-    public static final Language XML;
-
     public static final String[] LANGUAGES = {"kotlin.tmLanguage", "xml.tmLanguage.json"};
     public static final String SCOPE_NAME_KOTLIN = "source.kotlin";
     public static final String SCOPE_NAME_XML = "text.xml";
@@ -41,23 +38,18 @@ public class CodeEditorLanguages {
                 LogUtil.e(TAG, "Failed to load language '" + language + "'", e);
             }
         }
+    }
 
-        Language kotlinLanguage;
+    public static Language loadTextMateLanguage(String scopeName) {
+        Language language;
+
         try {
-            kotlinLanguage = TextMateLanguage.create(SCOPE_NAME_KOTLIN, true);
+            language = TextMateLanguage.create(scopeName, true);
         } catch (Exception | NoSuchMethodError e) {
             LogUtil.e(TAG, "Failed to create Kotlin TextMate language, using empty one as default Kotlin language", e);
-            kotlinLanguage = new EmptyLanguage();
+            language = new EmptyLanguage();
         }
-        KOTLIN = kotlinLanguage;
 
-        Language xmlLanguage;
-        try {
-            xmlLanguage = TextMateLanguage.create(SCOPE_NAME_XML, true);
-        } catch (Exception | NoSuchMethodError e) {
-            LogUtil.e(TAG, "Failed to create XML TextMate language, using empty one as default XML language", e);
-            xmlLanguage = new EmptyLanguage();
-        }
-        XML = xmlLanguage;
+        return language;
     }
 }

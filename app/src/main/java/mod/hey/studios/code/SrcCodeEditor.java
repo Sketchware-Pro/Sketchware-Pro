@@ -212,10 +212,10 @@ public class SrcCodeEditor extends AppCompatActivity {
         if (title.endsWith(".java")) {
             editor.setEditorLanguage(new JavaLanguage());
         } else if (title.endsWith(".kt")) {
-            editor.setEditorLanguage(CodeEditorLanguages.KOTLIN);
+            editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN));
             editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
         } else if (title.endsWith(".xml")) {
-            editor.setEditorLanguage(CodeEditorLanguages.XML);
+            editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
             editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
         }
 
@@ -238,7 +238,6 @@ public class SrcCodeEditor extends AppCompatActivity {
                     .setMessage("You have unsaved changes. Are you sure you want to exit?")
                     .setPositiveButton(R.string.common_word_exit, (dialog, which) -> finish())
                     .setNegativeButton(R.string.common_word_cancel, null)
-                    .create()
                     .show();
         }
     }

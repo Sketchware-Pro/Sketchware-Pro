@@ -134,7 +134,7 @@ public class SrcViewerActivity extends AppCompatActivity {
     private void setCorrectCodeEditorLanguage() {
         if (currentPageFileName.endsWith(".xml")) {
             codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-            codeViewer.setEditorLanguage(CodeEditorLanguages.XML);
+            codeViewer.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
         } else {
             codeViewer.setColorScheme(new EditorColorScheme());
             codeViewer.setEditorLanguage(new JavaLanguage());
