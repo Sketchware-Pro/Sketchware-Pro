@@ -33,7 +33,6 @@ import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
 import com.besome.sketch.projects.MyProjectButtonLayout;
 import com.besome.sketch.projects.MyProjectSettingActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -44,7 +43,6 @@ import java.util.HashMap;
 import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.MA;
-import a.a.a.St;
 import a.a.a.ci;
 import a.a.a.gB;
 import a.a.a.lC;
@@ -124,7 +122,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         collapseAnimatorSet = new AnimatorSet();
         expandAnimatorSet = new AnimatorSet();
-        ValueAnimator collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
+        ValueAnimator collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 78.0F), wB.a(getContext(), 42.0F));
         collapseValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvCreateNew.getLayoutParams().height = (int) value;
@@ -132,7 +130,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
         });
-        ValueAnimator expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
+        ValueAnimator expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 42.0F), wB.a(getContext(), 78.0F));
         expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvCreateNew.getLayoutParams().height = (int) value;
@@ -375,18 +373,18 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             return projectsList.size();
         }
 
-        private boolean matchesQuery( HashMap<String, Object> projectMap){
+        private boolean matchesQuery(HashMap<String, Object> projectMap) {
             final String searchQuery = projectsSearchView.getQuery().toString().toLowerCase();
-            if(searchQuery.isEmpty()) return true;
+            if (searchQuery.isEmpty()) return true;
 
             String scId = yB.c(projectMap, "sc_id").toLowerCase();
-            if(searchQuery.contains(scId) || scId.contains(searchQuery)) return true;
+            if (searchQuery.contains(scId) || scId.contains(searchQuery)) return true;
 
             String appName = yB.c(projectMap, "my_ws_name").toLowerCase();
-            if(searchQuery.contains(appName) || appName.contains(searchQuery)) return true;
+            if (searchQuery.contains(appName) || appName.contains(searchQuery)) return true;
 
             String projectName = yB.c(projectMap, "my_app_name").toLowerCase();
-            if(searchQuery.contains(projectName) || projectName.contains(searchQuery)) return true;
+            if (searchQuery.contains(projectName) || projectName.contains(searchQuery)) return true;
 
             String packageName = yB.c(projectMap, "my_sc_pkg_name").toLowerCase();
             return searchQuery.contains(packageName) || packageName.contains(searchQuery);
