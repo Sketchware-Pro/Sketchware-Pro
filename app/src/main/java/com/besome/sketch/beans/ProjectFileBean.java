@@ -3,7 +3,14 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.IntDef;
+
 import com.google.gson.annotations.Expose;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 public class ProjectFileBean extends SelectableBean implements Parcelable {
     public static final Creator<ProjectFileBean> CREATOR = new Creator<>() {
@@ -48,7 +55,8 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
     @Expose
     public int keyboardSetting;
     @Expose
-    public int options = THEME_DEFAULT;
+    @ActivityOption
+    public int options = OPTION_ACTIVITY_SHIFT;
     @Expose
     public int orientation;
     public String presetName;
@@ -65,7 +73,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
             presetName = "Basic Drawer";
         }
         if (fileType == PROJECT_FILE_TYPE_ACTIVITY) {
-            options |= THEME_NOACTIONBAR;
+            options |= OPTION_ACTIVITY_TOOLBAR;
             orientation = THEME_DEFAULT;
         } else {
             orientation = THEME_FULLSCREEN;
@@ -74,7 +82,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         theme = THEME_NONE;
     }
 
-    public ProjectFileBean(int fileType, String filename, int orientation, int keyboardSetting, int options) {
+    public ProjectFileBean(int fileType, String filename, int orientation, int keyboardSetting, @ActivityOption int options) {
         this.fileType = fileType;
         fileName = filename;
         this.orientation = orientation;
@@ -92,10 +100,10 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         presetName = "Basic Activity";
         theme = THEME_NONE;
         if (noActionBar) {
-            options |= THEME_NOACTIONBAR;
+            options |= OPTION_ACTIVITY_TOOLBAR;
         }
         if (fullscreen) {
-            options |= THEME_FULLSCREEN;
+            options |= OPTION_ACTIVITY_FULLSCREEN;
         }
         if (hasFab) {
             options |= OPTION_ACTIVITY_FAB;
@@ -110,7 +118,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         fileName = filename;
         this.presetName = presetName;
         if (fileType == PROJECT_FILE_TYPE_ACTIVITY) {
-            options |= THEME_NOACTIONBAR;
+            options |= OPTION_ACTIVITY_TOOLBAR;
             orientation = THEME_DEFAULT;
         } else {
             orientation = THEME_FULLSCREEN;
@@ -127,10 +135,10 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         this.presetName = presetName;
         theme = THEME_NONE;
         if (noActionBar) {
-            options |= THEME_NOACTIONBAR;
+            options |= OPTION_ACTIVITY_TOOLBAR;
         }
         if (fullscreen) {
-            options |= THEME_FULLSCREEN;
+            options |= OPTION_ACTIVITY_FULLSCREEN;
         }
         if (hasFab) {
             options |= OPTION_ACTIVITY_FAB;
@@ -205,7 +213,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         return options;
     }
 
-    public void setActivityOptions(int options) {
+    public void setActivityOptions(@ActivityOption int options) {
         this.options = options;
     }
 
@@ -230,7 +238,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         return getXmlName(fileName);
     }
 
-    public boolean hasActivityOption(int option) {
+    public boolean hasActivityOption(@ActivityOption int option) {
         return ((options & OPTION_ACTIVITY_MASK) & option) == option;
     }
 
@@ -239,11 +247,11 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
 
     public void setOptionsByTheme() {
         if (theme != THEME_NONE) {
-            options = THEME_DEFAULT;
+            options = OPTION_ACTIVITY_SHIFT;
             if (theme == THEME_DEFAULT) {
-                options |= THEME_NOACTIONBAR;
+                options |= OPTION_ACTIVITY_TOOLBAR;
             } else if (theme != THEME_NOACTIONBAR) {
-                options |= THEME_FULLSCREEN;
+                options |= OPTION_ACTIVITY_FULLSCREEN;
             }
             theme = THEME_NONE;
         }
@@ -257,5 +265,17 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         dest.writeInt(keyboardSetting);
         dest.writeInt(options);
         dest.writeString(presetName);
+    }
+
+    @IntDef(flag = true,
+            value = {OPTION_ACTIVITY_FAB,
+                    OPTION_ACTIVITY_DRAWER,
+                    OPTION_ACTIVITY_MASK,
+                    OPTION_ACTIVITY_FULLSCREEN,
+                    OPTION_ACTIVITY_SHIFT,
+                    OPTION_ACTIVITY_TOOLBAR})
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
+    private @interface ActivityOption {
     }
 }
