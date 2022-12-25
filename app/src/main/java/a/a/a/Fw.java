@@ -256,10 +256,10 @@ public class Fw extends qA {
                         super.a(recyclerView, i, i1);
                         if (i1 > 2) {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
-                                ((ManageViewActivity) getActivity()).s.c();
+                                ((ManageViewActivity) getActivity()).s.hide();
                             }
                         } else if (i1 < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
-                            ((ManageViewActivity) getActivity()).s.f();
+                            ((ManageViewActivity) getActivity()).s.show();
                         }
                     }
                 });
