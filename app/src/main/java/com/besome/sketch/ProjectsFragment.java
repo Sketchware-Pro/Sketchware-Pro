@@ -220,10 +220,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     public void showCreateNewProjectLayout() {
         if (projectsList.size() > 0) {
             cvCreateNew.setVisibility(View.GONE);
-            floatingActionButton.f();
+            floatingActionButton.show();
         } else {
             cvCreateNew.setVisibility(View.VISIBLE);
-            floatingActionButton.c();
+            floatingActionButton.hide();
         }
     }
 

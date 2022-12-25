@@ -296,13 +296,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 super.a(recyclerView, dx, dy);
                 if (dy > 2) {
                     if (fab.isEnabled()) {
-                        // FloatingActionButton#hide()
-                        fab.c();
+                        fab.hide();
                     }
                 } else if (dy < -2) {
                     if (fab.isEnabled()) {
-                        // FloatingActionButton#show()
-                        fab.f();
+                        fab.show();
                     }
                 }
             }
@@ -957,7 +955,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                         deleteMoreBlock(eventBean);
                                     }
                                 }
-                                fab.f();
+                                fab.show();
                             }
                         }
                     }

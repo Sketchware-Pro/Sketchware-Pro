@@ -134,7 +134,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
     @Override
     public void b(int var1) {
-        s.f();
+        s.show();
     }
 
     // signature mustn't be changed: used in La/a/a/Fw;->b(Lcom/besome/sketch/beans/ProjectFileBean;)V
@@ -236,7 +236,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                     activitiesFragment.g();
                     customViewsFragment.g();
                     bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
-                    s.f();
+                    s.show();
                 }
             } else if (viewId == R.id.fab) {
                 a(false);

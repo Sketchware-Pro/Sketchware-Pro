@@ -392,8 +392,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         changeDeletingItemsState(false);
         int id = getCurrentCategoryItemId();
         if (id == 0 || id == 1 || id == 2) {
-            // FloatingActionButton#show()
-            fab.f();
+            fab.show();
         }
 
         bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_complete_delete), 1).show();
@@ -868,15 +867,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         if (collectionAdapter.currentViewType == 0) {
                             collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
                             // FloatingActionButton#show()
-                            fab.f();
+                            fab.show();
                         } else {
                             collection.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
                             if (collectionAdapter.currentViewType != 1 && collectionAdapter.currentViewType != 2) {
-                                // FloatingActionButton#hide()
-                                fab.c();
+                                fab.hide();
                             } else {
-                                // FloatingActionButton#show()
-                                fab.f();
+                                fab.show();
                             }
                         }
 
@@ -910,11 +907,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         if (!fab.isEnabled()) {
                             return;
                         }
-                        // FloatingActionButton#hide()
-                        fab.c();
+                        fab.hide();
                     } else if (dy < -2 && fab.isEnabled()) {
-                        // FloatingActionButton#show()
-                        fab.f();
+                        fab.show();
                     }
                 }
             });

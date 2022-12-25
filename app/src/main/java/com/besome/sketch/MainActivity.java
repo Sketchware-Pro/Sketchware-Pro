@@ -450,7 +450,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
             projectsFragment.showCreateNewProjectLayout();
         } else if (position == 1) {
-            fab.c();
+            fab.show();
         }
     }
 
