@@ -543,7 +543,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.a(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
+                    fromFile = FileProvider.getUriFromFile(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
                 } else {
                     fromFile = Uri.fromFile(new File(jC.d(B).f(str)));
                 }

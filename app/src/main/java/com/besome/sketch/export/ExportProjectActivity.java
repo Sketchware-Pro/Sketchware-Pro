@@ -583,8 +583,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             intent.putExtra(Intent.EXTRA_TEXT, Helper.getResString(R.string.myprojects_export_src_title_email_body, export_src_filename));
             String filePath = export_src_full_path + File.separator + export_src_filename;
             if (Build.VERSION.SDK_INT >= 24) {
-                intent.putExtra(Intent.EXTRA_STREAM, FileProvider.a(getApplicationContext(),
-                        getApplicationContext().getPackageName() + ".provider", new File(filePath)));
+                intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriFromFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(filePath)));
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);

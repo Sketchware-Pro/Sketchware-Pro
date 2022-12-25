@@ -390,7 +390,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 String iconFolder = wq.e() + File.separator + scId;
                 if (VERSION.SDK_INT >= 24) {
                     String providerPath = getContext().getPackageName() + ".provider";
-                    uri = FileProvider.a(getContext(), providerPath, new File(iconFolder, "icon.png"));
+                    uri = FileProvider.getUriFromFile(getContext(), providerPath, new File(iconFolder, "icon.png"));
                 } else {
                     uri = Uri.fromFile(new File(iconFolder, "icon.png"));
                 }
