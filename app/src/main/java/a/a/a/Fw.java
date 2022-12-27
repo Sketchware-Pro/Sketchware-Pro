@@ -309,15 +309,14 @@ public class Fw extends qA {
         }
 
         public class ViewHolder extends RecyclerView.v {
-
-            public ImageView imgPresetSettings;
-            public CheckBox checkBox;
-            public View viewItem;
-            public ImageView imgActivity;
-            public TextView tvScreenName;
-            public TextView tvActivityName;
-            public LinearLayout deleteImgContainer;
-            public ImageView imgDelete;
+            public final ImageView imgPresetSettings;
+            public final CheckBox checkBox;
+            public final View viewItem;
+            public final ImageView imgActivity;
+            public final TextView tvScreenName;
+            public final TextView tvActivityName;
+            public final LinearLayout deleteImgContainer;
+            public final ImageView imgDelete;
 
             public ViewHolder(View itemView) {
                 super(itemView);
