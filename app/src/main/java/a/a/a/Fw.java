@@ -250,29 +250,32 @@ public class Fw extends qA {
         public ProjectFilesAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                // RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)
                 recyclerView.a(new RecyclerView.m() {
                     @Override
-                    public void a(RecyclerView recyclerView, int i, int i1) {
-                        super.a(recyclerView, i, i1);
-                        if (i1 > 2) {
+                    // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
+                    public void a(RecyclerView recyclerView, int dx, int dy) {
+                        super.a(recyclerView, dx, dy);
+                        if (dy > 2) {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
                                 ((ManageViewActivity) getActivity()).s.c();
                             }
-                        } else if (i1 < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
+                        } else if (dy < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
                             ((ManageViewActivity) getActivity()).s.f();
                         }
                     }
                 });
             }
-
         }
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return activitiesFiles != null ? activitiesFiles.size() : 0;
         }
 
         @Override
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(ViewHolder viewHolder, int position) {
             viewHolder.imgActivity.setVisibility(View.VISIBLE);
             viewHolder.deleteImgContainer.setVisibility(View.GONE);
@@ -298,6 +301,7 @@ public class Fw extends qA {
         }
 
         @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_view_list_item, parent, false));
         }
