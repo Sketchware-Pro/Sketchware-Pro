@@ -176,7 +176,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_manage_googlemap);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -186,9 +186,9 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             googleMapLibraryBean = savedInstanceState.getParcelable("google_map");
         }
 
-        d().a("GoogleMap Settings");
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle("GoogleMap Settings");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);

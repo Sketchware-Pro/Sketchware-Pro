@@ -2254,10 +2254,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         H = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
         k = findViewById(R.id.toolbar);
-        a(k);
+        setSupportActionBar(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().d(true);
-        d().e(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         k.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
@@ -2269,15 +2269,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         String stringExtra = getIntent().getStringExtra("event_text");
         if (C.equals("onCreate")) {
-            d = d();
+            d = getSupportActionBar();
         } else if (C.equals("_fab")) {
-            d = d();
+            d = getSupportActionBar();
             stringExtra = "fab : " + stringExtra;
         } else {
-            d = d();
+            d = getSupportActionBar();
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
-        d.a(stringExtra);
+        d.setTitle(stringExtra);
         l = findViewById(R.id.palette_selector);
         l.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);

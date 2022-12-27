@@ -438,10 +438,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().d(true);
-        d().e(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
         // Replaced empty anonymous class with null
@@ -568,7 +568,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         k();
 
         HashMap<String, Object> projectInfo = lC.b(sc_id);
-        d().a(yB.c(projectInfo, "my_ws_name"));
+        getSupportActionBar().setTitle(yB.c(projectInfo, "my_ws_name"));
         q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
         try {

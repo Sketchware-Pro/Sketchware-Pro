@@ -189,9 +189,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
-        d().d(true);
-        d().e(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         ImageView logo = findViewById(R.id.img_title_logo);
         logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(R.id.left_drawer);
@@ -199,7 +199,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         drawerToggle = new l(this, drawerLayout, R.string.app_name, R.string.app_name);
         // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
         drawerLayout.a((DrawerLayout.c) drawerToggle);
-        d().a("");
+        getSupportActionBar().setTitle("");
 
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));

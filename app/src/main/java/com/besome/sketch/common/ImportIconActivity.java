@@ -104,11 +104,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         setContentView(R.layout.import_icon);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
