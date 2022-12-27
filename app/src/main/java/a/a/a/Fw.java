@@ -104,10 +104,12 @@ public class Fw extends qA {
         newProjectFile.keyboardSetting = projectFileBean.keyboardSetting;
         newProjectFile.orientation = projectFileBean.orientation;
         newProjectFile.options = projectFileBean.options;
+
+        String drawerName = ProjectFileBean.getDrawerName(newProjectFile.fileName);
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-            ((ManageViewActivity) getActivity()).b(ProjectFileBean.getDrawerName(newProjectFile.fileName));
+            ((ManageViewActivity) getActivity()).b(drawerName);
         } else {
-            ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(newProjectFile.fileName));
+            ((ManageViewActivity) getActivity()).c(drawerName);
         }
 
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
@@ -281,23 +283,16 @@ public class Fw extends qA {
             viewHolder.deleteImgContainer.setVisibility(View.GONE);
             if (position == 0) {
                 viewHolder.checkBox.setVisibility(View.GONE);
-            } else if (k) {
-                viewHolder.deleteImgContainer.setVisibility(View.VISIBLE);
-                viewHolder.imgActivity.setVisibility(View.GONE);
             } else {
-                viewHolder.deleteImgContainer.setVisibility(View.GONE);
-                viewHolder.imgActivity.setVisibility(View.VISIBLE);
+                viewHolder.deleteImgContainer.setVisibility(k ? View.VISIBLE : View.GONE);
+                viewHolder.imgActivity.setVisibility(k ? View.GONE : View.VISIBLE);
             }
 
             ProjectFileBean projectFileBean = activitiesFiles.get(position);
             viewHolder.imgActivity.setImageResource(getImageResByOptions(projectFileBean.options));
             viewHolder.tvScreenName.setText(projectFileBean.getXmlName());
             viewHolder.tvActivityName.setText(projectFileBean.getJavaName());
-            if (projectFileBean.isSelected) {
-                viewHolder.imgDelete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                viewHolder.imgDelete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
+            viewHolder.imgDelete.setImageResource(projectFileBean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
         }
 
         @Override
