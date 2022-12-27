@@ -96,7 +96,7 @@ dependencies {
     implementation "com.google.guava:guava:31.1-jre"
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
-    implementation platform("$editorGroupId:bom:0.19.0")
+    implementation platform("$editorGroupId:bom:0.20.1")
     implementation "$editorGroupId:editor"
     implementation "$editorGroupId:language-java"
     implementation "$editorGroupId:language-textmate"
