@@ -197,9 +197,14 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         super.onPostCreate(savedInstanceState);
 
         MoreBlockCollectionBean moreBlock = Pp.h().a(moreBlockName);
-        addHeaderBlock(moreBlock.spec);
-        addBlocks(moreBlock.blocks);
-        resizeBottomViews();
+        if (moreBlock != null) {
+            addHeaderBlock(moreBlock.spec);
+            addBlocks(moreBlock.blocks);
+            resizeBottomViews();
+        } else {
+            SketchwareUtil.toastError("Can't open corrupt More Block");
+            finish();
+        }
     }
 
     private Rs getBlock(BlockBean blockBean) {

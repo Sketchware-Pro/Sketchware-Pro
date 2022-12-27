@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.beans.BlockCollectionBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
@@ -163,8 +164,15 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        addBlocks(Mp.h().a(blockName).blocks, 10, 10);
-        resizeBottomViews();
+
+        BlockCollectionBean block = Mp.h().a(blockName);
+        if (block != null) {
+            addBlocks(block.blocks, 10, 10);
+            resizeBottomViews();
+        } else {
+            SketchwareUtil.toastError("Can't open corrupt Block");
+            finish();
+        }
     }
 
     private Rs getBlock(BlockBean blockBean) {
