@@ -12,10 +12,11 @@ place** to contribute to Sketchware Pro.
 
 You must use Gradle to build the app. It's highly recommended to use Android Studio, though.
 
-There are two build variants with the same features but slightly different:
+There are two build variants with different features:
 
- - `MinApi26:` This variant supports exporting AABs from projects. However, it works only on Android 8.0 (O) and above.
- - `MinApi21:` This variant can't produce AABs from projects, but it supports down to Android 5.
+ - `minApi26:` Supports exporting AABs from projects, as well as compiling Java 1.8, 1.9, 10, and 11 code.
+However, it **only works on Android 8.0 (O) and above**.
+ - `minApi21:` Can't produce AABs from projects, and can only compile Java 1.7 code, but it supports down to Android 5.
 
 You must select the appropriate build variant in Android Studio using the Build Variants tab
 or use the appropriate build Gradle command.
