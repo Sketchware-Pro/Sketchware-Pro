@@ -310,7 +310,7 @@ public class Fw extends qA {
 
         public class ViewHolder extends RecyclerView.v {
 
-            public ImageView imgPresetSettingd;
+            public ImageView imgPresetSettings;
             public CheckBox checkBox;
             public View viewItem;
             public ImageView imgActivity;
@@ -328,7 +328,7 @@ public class Fw extends qA {
                 tvActivityName = itemView.findViewById(R.id.tv_activity_name);
                 deleteImgContainer = itemView.findViewById(R.id.delete_img_container);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgPresetSettingd = itemView.findViewById(R.id.img_preset_setting);
+                imgPresetSettings = itemView.findViewById(R.id.img_preset_setting);
                 checkBox.setVisibility(View.GONE);
                 viewItem.setOnClickListener(view -> {
                     if (!mB.a()) {
@@ -353,7 +353,7 @@ public class Fw extends qA {
                     activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
-                imgPresetSettingd.setOnClickListener(view -> {
+                imgPresetSettings.setOnClickListener(view -> {
                     if (!mB.a()) {
                         layoutPosition = j();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
