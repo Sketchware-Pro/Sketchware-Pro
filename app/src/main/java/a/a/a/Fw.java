@@ -250,7 +250,7 @@ public class Fw extends qA {
         public ProjectFilesAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.m() {
                     @Override
                     public void a(RecyclerView recyclerView, int i, int i1) {
                         super.a(recyclerView, i, i1);

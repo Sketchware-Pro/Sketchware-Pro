@@ -879,8 +879,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         public CollectionAdapter(RecyclerView target) {
             lastSelectedItemPosition = -1;
             currentViewType = -1;
-            // RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)
-            target.a(new RecyclerView.m() {
+            target.addOnScrollListener(new RecyclerView.m() {
                 @Override
                 // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
                 public void a(RecyclerView recyclerView, int dx, int dy) {

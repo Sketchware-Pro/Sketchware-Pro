@@ -288,8 +288,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         eventAdapter = new EventAdapter();
         eventList.setAdapter(eventAdapter);
         fab.setOnClickListener(this);
-        // RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)
-        eventList.a(new RecyclerView.m() {
+        eventList.addOnScrollListener(new RecyclerView.m() {
             @Override
             // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
             public void a(RecyclerView recyclerView, int dx, int dy) {

@@ -329,7 +329,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         public ProjectsAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.m() {
                     @Override
                     public void a(RecyclerView recyclerView1, int var2, int var3) {
                         super.a(recyclerView1, var2, var3);

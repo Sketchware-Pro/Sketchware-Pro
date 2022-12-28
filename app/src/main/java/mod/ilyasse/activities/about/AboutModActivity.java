@@ -119,13 +119,9 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView.addOnScrollListener(RecyclerView$OnScrollListener) got obfuscated
-        // to RecyclerView.a(RecyclerView$m)
-        moddersRecycler.a(new OnScrollListener());
+        moddersRecycler.addOnScrollListener(new OnScrollListener());
 
-        // RecyclerView.addOnScrollListener(RecyclerView$OnScrollListener) got obfuscated
-        // to RecyclerView.a(RecyclerView$m)
-        changelogRecycler.a(new OnScrollListener());
+        changelogRecycler.addOnScrollListener(new OnScrollListener());
 
         fab.setOnClickListener(v -> {
             try {
