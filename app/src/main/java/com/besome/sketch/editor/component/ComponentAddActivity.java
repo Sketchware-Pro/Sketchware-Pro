@@ -546,7 +546,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     recyclerView.getLocationInWindow(recyclerViewLocationInWindow);
                     int i = itemViewLocationInWindow[0] - recyclerViewLocationInWindow[0];
                     w.put(layoutPosition, new Pair<>(i, (int) (((float) (itemViewLocationInWindow[1] - recyclerViewLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
-                    ComponentsAdapter.this.notifyDataSetChanged();
+                    notifyDataSetChanged();
                 }
             }
         }

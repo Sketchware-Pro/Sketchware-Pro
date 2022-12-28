@@ -265,7 +265,7 @@ public class gt extends LinearLayout {
                     layoutPosition = getAdapterPosition();
                     variableItemAdapter.setData(allVariablesWithCategoryIndex.get(layoutPosition));
                     variableItemAdapter.notifyDataSetChanged();
-                    CategoryItemAdapter.this.notifyDataSetChanged();
+                    notifyDataSetChanged();
                 });
             }
         }

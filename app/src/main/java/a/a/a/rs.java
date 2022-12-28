@@ -780,9 +780,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             @Override
             public void onClick(View v) {
-                CategoryAdapter.this.notifyItemChanged(index);
+                notifyItemChanged(index);
                 index = getAdapterPosition();
-                CategoryAdapter.this.notifyItemChanged(index);
+                notifyItemChanged(index);
                 initializeEvents(events.get(index));
                 if (index == 4) {
                     importMoreBlockFromCollection.setVisibility(View.VISIBLE);

@@ -819,9 +819,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             stopMusicPlayback(sounds);
                         }
 
-                        CategoryAdapter.this.notifyItemChanged(currentItemId);
+                        notifyItemChanged(currentItemId);
                         currentItemId = getAdapterPosition();
-                        CategoryAdapter.this.notifyItemChanged(currentItemId);
+                        notifyItemChanged(currentItemId);
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
                         switch (currentItemId) {
@@ -1221,7 +1221,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
+                        notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openBlockDetails(lastSelectedItemPosition);
                     }
@@ -1263,7 +1263,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
+                        notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openFontDetails(lastSelectedItemPosition);
                     }
@@ -1301,7 +1301,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
+                        notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openImageDetails(lastSelectedItemPosition);
                     }
@@ -1339,7 +1339,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
+                        notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openMoreBlockDetails(lastSelectedItemPosition);
                     }
@@ -1443,7 +1443,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
+                        notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openSoundDetails(lastSelectedItemPosition);
                     }
@@ -1481,7 +1481,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
+                        notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openWidgetDetails(lastSelectedItemPosition);
                     }

@@ -478,7 +478,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                                     (new DeleteProjectTask(layoutPosition)).execute();
                                 } else if (v.getId() == R.id.confirm_no) {
                                     projectMap.put("confirmation", false);
-                                    ProjectsAdapter.this.notifyItemChanged(layoutPosition);
+                                    notifyItemChanged(layoutPosition);
                                 }
 
                             }

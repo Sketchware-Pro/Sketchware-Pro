@@ -336,7 +336,7 @@ public class Fw extends qA {
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
                                 activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
-                                ProjectFilesAdapter.this.notifyItemChanged(layoutPosition);
+                                notifyItemChanged(layoutPosition);
                             }
                         } else {
                             Intent intent = new Intent(getContext(), AddViewActivity.class);

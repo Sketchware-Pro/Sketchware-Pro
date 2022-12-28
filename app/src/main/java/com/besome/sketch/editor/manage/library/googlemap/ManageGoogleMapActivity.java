@@ -317,7 +317,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                     }
 
                     projectsList.get(index).put("selected", true);
-                    ProjectAdapter.this.notifyDataSetChanged();
+                    notifyDataSetChanged();
                 }
             }
         }
