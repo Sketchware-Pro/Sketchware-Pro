@@ -160,7 +160,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
         }
 
-        myProjects.getAdapter().c();
+        myProjects.getAdapter().notifyDataSetChanged();
         if (isEmpty) showCreateNewProjectLayout();
     }
 
@@ -298,8 +298,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         public void a() {
             if (position < projectsList.size()) {
                 projectsList.remove(position);
-                projectsAdapter.e(position);
-                projectsAdapter.a(position, projectsAdapter.a());
+                projectsAdapter.notifyItemRemoved(position);
+                projectsAdapter.notifyItemRangeChanged(position, projectsAdapter.a());
             }
 
             ProjectsFragment.this.a();
@@ -445,7 +445,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectOption.addView(projectButtonLayout);
                 projectButtonLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         if (layoutPosition <= projectsList.size()) {
                             HashMap<String, Object> projectMap = projectsList.get(layoutPosition);
                             if (v instanceof MyProjectButton) {
@@ -478,7 +478,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                                     (new DeleteProjectTask(layoutPosition)).execute();
                                 } else if (v.getId() == R.id.confirm_no) {
                                     projectMap.put("confirmation", false);
-                                    ProjectsAdapter.this.c(layoutPosition);
+                                    ProjectsAdapter.this.notifyItemChanged(layoutPosition);
                                 }
 
                             }
@@ -487,12 +487,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 });
                 projectOne.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         toDesignActivity(yB.c(projectsList.get(layoutPosition), "sc_id"));
                     }
                 });
                 projectOne.setOnLongClickListener(v -> {
-                    layoutPosition = j();
+                    layoutPosition = getAdapterPosition();
                     if (yB.a(projectsList.get(layoutPosition), "expand")) {
                         collapse();
                     } else {
@@ -503,12 +503,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 });
                 appIconLayout.setOnClickListener(v -> {
                     mB.a(v);
-                    layoutPosition = j();
+                    layoutPosition = getAdapterPosition();
                     toProjectSettingOrRequestPermission(layoutPosition);
                 });
                 expand.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         if (yB.a(projectsList.get(layoutPosition), "expand")) {
                             collapse();
                         } else {

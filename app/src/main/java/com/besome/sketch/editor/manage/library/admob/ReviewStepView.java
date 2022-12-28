@@ -138,7 +138,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
         setInterstitialDetails(projectLibraryBean.reserved2);
         setRewardedAdDetails(projectLibraryBean.reserved3);
         testDevices = projectLibraryBean.testDevices;
-        adapter.c();
+        adapter.notifyDataSetChanged();
     }
 
     public class TestDevicesAdapter extends RecyclerView.a<TestDevicesAdapter.ViewHolder> {

@@ -221,8 +221,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             sounds.get(E).curSoundPosition = 0;
             E = -1;
             D = -1;
-            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-            collectionAdapter.c();
+            collectionAdapter.notifyDataSetChanged();
         }
 
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
@@ -244,8 +243,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private int getLengthOfSong(String filePath) {
@@ -396,8 +394,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_complete_delete), 1).show();
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private int getCurrentCategoryItemId() {
@@ -606,8 +603,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         if (collectionAdapter != null) {
-            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-            collectionAdapter.c();
+            collectionAdapter.notifyDataSetChanged();
         }
     }
 
@@ -630,13 +626,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.setData(images);
             collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
             categoryAdapter.currentItemId = 0;
-            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-            categoryAdapter.c();
+            categoryAdapter.notifyDataSetChanged();
         }
 
         if (collectionAdapter != null) {
-            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-            collectionAdapter.c();
+            collectionAdapter.notifyDataSetChanged();
         }
     }
 
@@ -647,8 +641,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.currentViewType = 0;
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private void loadSounds() {
@@ -658,8 +651,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.currentViewType = 1;
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private void loadFonts() {
@@ -669,8 +661,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.currentViewType = 2;
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private void loadWidgets() {
@@ -680,8 +671,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.currentViewType = 3;
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private void loadBlocks() {
@@ -691,8 +681,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.currentViewType = 4;
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private void loadMoreBlocks() {
@@ -702,8 +691,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             collectionAdapter.currentViewType = 5;
         }
 
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        collectionAdapter.c();
+        collectionAdapter.notifyDataSetChanged();
     }
 
     private void unselectToBeDeletedItems() {
@@ -826,16 +814,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    if (j() != -1 && j() != currentItemId) {
+                    if (getAdapterPosition() != -1 && getAdapterPosition() != currentItemId) {
                         if (currentItemId == 1) {
                             stopMusicPlayback(sounds);
                         }
 
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CategoryAdapter.this.c(currentItemId);
-                        currentItemId = j();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CategoryAdapter.this.c(currentItemId);
+                        CategoryAdapter.this.notifyItemChanged(currentItemId);
+                        currentItemId = getAdapterPosition();
+                        CategoryAdapter.this.notifyItemChanged(currentItemId);
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
                         switch (currentItemId) {
@@ -877,8 +863,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             }
                         }
 
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-                        collectionAdapter.c();
+                        collectionAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -1233,19 +1218,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CollectionAdapter.this.c(lastSelectedItemPosition);
+                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openBlockDetails(lastSelectedItemPosition);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1276,19 +1260,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 preview.setText(Helper.getResString(R.string.common_word_preview));
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CollectionAdapter.this.c(lastSelectedItemPosition);
+                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openFontDetails(lastSelectedItemPosition);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return false;
@@ -1315,19 +1298,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 ninePatchIcon = itemView.findViewById(R.id.img_nine_patch);
                 checkBox.setVisibility(View.GONE);
                 image.setOnClickListener(v -> {
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CollectionAdapter.this.c(lastSelectedItemPosition);
+                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openImageDetails(lastSelectedItemPosition);
                     }
                 });
                 image.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1354,19 +1336,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 blockArea = itemView.findViewById(R.id.block_area);
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CollectionAdapter.this.c(lastSelectedItemPosition);
+                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openMoreBlockDetails(lastSelectedItemPosition);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1402,7 +1383,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 play.setOnClickListener(v -> {
                     if (selectingToBeDeletedItems) {
-                        int position = j();
+                        int position = getAdapterPosition();
 
                         if (E == position) {
                             if (mediaPlayer != null) {
@@ -1410,13 +1391,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                                     soundPlaybackTimeCounter.cancel();
                                     mediaPlayer.pause();
                                     ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = mediaPlayer.getCurrentPosition();
-                                    // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                                    collectionAdapter.c(E);
+                                    collectionAdapter.notifyItemChanged(E);
                                 } else {
                                     mediaPlayer.start();
                                     scheduleSoundPlaybackTimeCounter(position);
-                                    // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-                                    collectionAdapter.c();
+                                    collectionAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
@@ -1428,27 +1407,23 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
                             if (D != -1) {
                                 ((ProjectResourceBean) currentCollectionTypeItems.get(D)).curSoundPosition = 0;
-                                // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                                collectionAdapter.c(D);
+                                collectionAdapter.notifyItemChanged(D);
                             }
 
                             E = position;
                             D = position;
-                            // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                            collectionAdapter.c(E);
+                            collectionAdapter.notifyItemChanged(E);
                             mediaPlayer = new MediaPlayer();
                             mediaPlayer.setAudioStreamType(3);
                             mediaPlayer.setOnPreparedListener(mp -> {
                                 mediaPlayer.start();
                                 scheduleSoundPlaybackTimeCounter(position);
-                                // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                                collectionAdapter.c(E);
+                                collectionAdapter.notifyItemChanged(E);
                             });
                             mediaPlayer.setOnCompletionListener(mp -> {
                                 soundPlaybackTimeCounter.cancel();
                                 ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = 0;
-                                // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                                collectionAdapter.c(E);
+                                collectionAdapter.notifyItemChanged(E);
                                 E = -1;
                                 D = -1;
                             });
@@ -1458,27 +1433,25 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                                 mediaPlayer.prepare();
                             } catch (Exception e) {
                                 E = -1;
-                                // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                                collectionAdapter.c(E);
+                                collectionAdapter.notifyItemChanged(E);
                                 e.printStackTrace();
                             }
                         }
                     }
                 });
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CollectionAdapter.this.c(lastSelectedItemPosition);
+                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openSoundDetails(lastSelectedItemPosition);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1505,19 +1478,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        CollectionAdapter.this.c(lastSelectedItemPosition);
+                        CollectionAdapter.this.notifyItemChanged(lastSelectedItemPosition);
                     } else {
                         openWidgetDetails(lastSelectedItemPosition);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = j();
+                    lastSelectedItemPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;

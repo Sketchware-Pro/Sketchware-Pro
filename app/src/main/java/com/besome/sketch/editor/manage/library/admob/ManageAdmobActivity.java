@@ -305,7 +305,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         setInterAdUnit(admobLibraryBean.reserved2);
         setRewardAdUnit(admobLibraryBean.reserved3);
         testDeviceList = admobLibraryBean.testDevices;
-        testDeviceAdapter.c();
+        testDeviceAdapter.notifyDataSetChanged();
     }
 
     private class TestDeviceAdapter extends RecyclerView.a<TestDeviceAdapter.ViewHolder> {

@@ -206,11 +206,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 icon.setOnClickListener(v -> {
                     if (!mB.a()) {
                         int lastSelectedPosition = selectedIconPosition;
-                        selectedIconPosition = j();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        IconAdapter.this.c(selectedIconPosition);
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        IconAdapter.this.c(lastSelectedPosition);
+                        selectedIconPosition = getAdapterPosition();
+                        IconAdapter.this.notifyItemChanged(selectedIconPosition);
+                        IconAdapter.this.notifyItemChanged(lastSelectedPosition);
                         setIconName(selectedIconPosition);
                     }
                 });
@@ -292,8 +290,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             h();
             iconName.setText("");
             adapter.selectedIconPosition = -1;
-            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-            adapter.c();
+            adapter.notifyDataSetChanged();
         }
 
         @Override

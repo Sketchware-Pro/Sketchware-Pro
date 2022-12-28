@@ -61,7 +61,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 String name = edName.getText().toString();
                 String id = edAdUnitId.getText().toString();
                 adUnitBeanArrayList.add(new AdUnitBean(id, name));
-                adUnitsAdapter.d(adUnitBeanArrayList.size() - 1);
+                adUnitsAdapter.notifyItemInserted(adUnitBeanArrayList.size() - 1);
                 dialog.dismiss();
             }
         });
@@ -76,7 +76,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         dialog.a(Helper.getResString(R.string.design_library_admob_dialog_confirm_delete_adunit));
         dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
             adUnitBeanArrayList.remove(position);
-            adUnitsAdapter.e(position);
+            adUnitsAdapter.notifyItemRemoved(position);
             bB.a(getContext(), Helper.getResString(R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
@@ -126,7 +126,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
         adUnitBeanArrayList = projectLibraryBean.adUnits;
-        adUnitsAdapter.c();
+        adUnitsAdapter.notifyDataSetChanged();
     }
 
     private class AdUnitsAdapter extends RecyclerView.a<AdUnitsAdapter.ViewHolder> {
@@ -163,7 +163,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 tvName = itemView.findViewById(R.id.tv_name);
                 tvUnitId = itemView.findViewById(R.id.tv_unit_id);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgDelete.setOnClickListener(view -> deleteAdUnit(j()));
+                imgDelete.setOnClickListener(view -> deleteAdUnit(getAdapterPosition()));
             }
         }
     }

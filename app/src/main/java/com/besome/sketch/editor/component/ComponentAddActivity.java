@@ -346,7 +346,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_ONESIGNAL));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL));
-        componentsAdapter.c();
+        componentsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -380,7 +380,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                             Helper.setViewsVisibility(true, descriptionLayout, tvDescription, imgBack, imgIconLayout);
                             componentsList.setVisibility(View.VISIBLE);
                             tvComponentTitle.setText(Helper.getResString(R.string.component_title_add_component));
-                            componentsAdapter.c();
+                            componentsAdapter.notifyDataSetChanged();
                         }
                     }).start();
         }
@@ -538,7 +538,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             public void onClick(View v) {
                 if (!y) {
                     y = true;
-                    layoutPosition = j();
+                    layoutPosition = getAdapterPosition();
                     x = true;
                     int[] itemViewLocationInWindow = new int[2];
                     v.getLocationInWindow(itemViewLocationInWindow);
@@ -546,7 +546,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     recyclerView.getLocationInWindow(recyclerViewLocationInWindow);
                     int i = itemViewLocationInWindow[0] - recyclerViewLocationInWindow[0];
                     w.put(layoutPosition, new Pair<>(i, (int) (((float) (itemViewLocationInWindow[1] - recyclerViewLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
-                    ComponentsAdapter.this.c();
+                    ComponentsAdapter.this.notifyDataSetChanged();
                 }
             }
         }

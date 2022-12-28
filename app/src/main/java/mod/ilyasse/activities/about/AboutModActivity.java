@@ -661,9 +661,7 @@ public class AboutModActivity extends AppCompatActivity {
                 }
                 animateLayoutChanges(log_background);
 
-                // RecyclerView$Adapter<VH extends ViewHolder>#notifyItemChanged(int) got obfuscated to
-                // RecyclerView$a<VH extends RecyclerView.v>.c(int)
-                c(position);
+                notifyItemChanged(position);
             });
             if (0 == position) {
                 advancedCorners(leftLine, "#008dcd");

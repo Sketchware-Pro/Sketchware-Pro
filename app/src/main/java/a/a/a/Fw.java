@@ -90,13 +90,13 @@ public class Fw extends qA {
 
     public void a(ProjectFileBean var1) {
         activitiesFiles.add(var1);
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
     }
 
     public void a(boolean var1) {
         k = var1;
         e();
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
     }
 
     public final void b(ProjectFileBean projectFileBean) {
@@ -166,7 +166,7 @@ public class Fw extends qA {
     public void f() {
         for (int i = 0, filesSize = activitiesFiles.size(); i < filesSize; i++) {
             if (i < 0) {
-                projectFilesAdapter.c();
+                projectFilesAdapter.notifyDataSetChanged();
                 return;
             }
             ProjectFileBean projectFileBean = activitiesFiles.get(i);
@@ -202,7 +202,7 @@ public class Fw extends qA {
             activitiesFiles = savedInstanceState.getParcelableArrayList("activities");
         }
 
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
         g();
     }
 
@@ -212,13 +212,13 @@ public class Fw extends qA {
         if (requestCode == REQUEST_CODE_ADD_VIEW_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 b(data.getParcelableExtra("project_file"));
-                projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
+                projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
             }
         } else if (requestCode == REQUEST_CODE_PRESET_ACTIVITY && resultCode == Activity.RESULT_OK) {
             ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
             b(projectFileBean);
             c(projectFileBean);
-            projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
+            projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
         }
     }
 
@@ -332,11 +332,11 @@ public class Fw extends qA {
                 checkBox.setVisibility(View.GONE);
                 viewItem.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
                                 activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
-                                ProjectFilesAdapter.this.c(layoutPosition);
+                                ProjectFilesAdapter.this.notifyItemChanged(layoutPosition);
                             }
                         } else {
                             Intent intent = new Intent(getContext(), AddViewActivity.class);
@@ -348,14 +348,14 @@ public class Fw extends qA {
                 });
                 viewItem.setOnLongClickListener(view -> {
                     ((ManageViewActivity) getActivity()).a(true);
-                    layoutPosition = j();
+                    layoutPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
                 imgPresetSettingd.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
                         intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);

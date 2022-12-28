@@ -243,7 +243,7 @@ public class LogReaderActivity extends AppCompatActivity {
 
         public void updateList(final HashMap<String, Object> _map) {
             data.add(_map);
-            recyclerview.getAdapter().d(data.size() + 1);
+            recyclerview.getAdapter().notifyItemInserted(data.size() + 1);
 
             if (autoScroll) {
                 ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(data.size() - 1);
@@ -252,7 +252,7 @@ public class LogReaderActivity extends AppCompatActivity {
 
         public void deleteAll() {
             data.clear();
-            recyclerview.getAdapter().c();
+            recyclerview.getAdapter().notifyDataSetChanged();
         }
 
         public Adapter(ArrayList<HashMap<String, Object>> data) {

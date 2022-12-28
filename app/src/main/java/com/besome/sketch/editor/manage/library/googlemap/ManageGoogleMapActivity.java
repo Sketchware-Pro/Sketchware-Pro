@@ -74,7 +74,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             Collections.sort(projectsList, new ProjectComparator());
         }
 
-        projectAdapter.c();
+        projectAdapter.notifyDataSetChanged();
     }
 
     private void openDoc() {
@@ -305,7 +305,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = j();
+                    selectedProjectIndex = getAdapterPosition();
                     selectProject(selectedProjectIndex);
                 }
             }
@@ -317,7 +317,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                     }
 
                     projectsList.get(index).put("selected", true);
-                    ProjectAdapter.this.c();
+                    ProjectAdapter.this.notifyDataSetChanged();
                 }
             }
         }

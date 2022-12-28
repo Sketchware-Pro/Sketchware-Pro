@@ -159,7 +159,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             Collections.sort(projects, new ProjectComparator());
         }
 
-        adapter.c();
+        adapter.notifyDataSetChanged();
     }
 
     private void nextStep() {
@@ -411,7 +411,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = j();
+                    selectedProjectIndex = getAdapterPosition();
                     selectProject(selectedProjectIndex);
                 }
             }
@@ -423,7 +423,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     }
 
                     projects.get(i).put("selected", true);
-                    adapter.c();
+                    adapter.notifyDataSetChanged();
                 }
             }
         }

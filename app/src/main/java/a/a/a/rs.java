@@ -207,7 +207,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             if (categoryAdapter.index == -1) {
                 eventAdapter.a(events.get(0));
                 categoryAdapter.index = 0;
-                categoryAdapter.c();
+                categoryAdapter.notifyDataSetChanged();
             }
             if (categoryAdapter.index == 4) {
                 importMoreBlockFromCollection.setVisibility(View.VISIBLE);
@@ -216,10 +216,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             }
             if (eventAdapter != null) {
                 if (categoryAdapter != null) {
-                    categoryAdapter.c();
+                    categoryAdapter.notifyDataSetChanged();
                 }
                 eventAdapter.a(events.get(categoryAdapter.index));
-                eventAdapter.c();
+                eventAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -255,8 +255,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             jC.a(sc_id).n(currentActivity.getJavaName(), moreBlock.targetId);
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             events.get(categoryAdapter.index).remove(eventAdapter.lastSelectedItem);
-            eventAdapter.e(eventAdapter.lastSelectedItem);
-            eventAdapter.a(eventAdapter.lastSelectedItem, eventAdapter.a());
+            eventAdapter.notifyItemRemoved(eventAdapter.lastSelectedItem);
+            eventAdapter.notifyItemRangeChanged(eventAdapter.lastSelectedItem, eventAdapter.a());
         }
     }
 
@@ -267,7 +267,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     bean.initValue();
                 }
             }
-            eventAdapter.c();
+            eventAdapter.notifyDataSetChanged();
         }
     }
 
@@ -583,8 +583,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         a2.k(javaName, event.targetId + "_" + event.eventName);
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
         events.get(categoryAdapter.index).remove(eventAdapter.lastSelectedItem);
-        eventAdapter.e(eventAdapter.lastSelectedItem);
-        eventAdapter.a(eventAdapter.lastSelectedItem, eventAdapter.a());
+        eventAdapter.notifyItemRemoved(eventAdapter.lastSelectedItem);
+        eventAdapter.notifyItemRangeChanged(eventAdapter.lastSelectedItem, eventAdapter.a());
     }
 
     private void copyImageFromCollectionsToProject(String imageName) {
@@ -781,9 +781,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             @Override
             public void onClick(View v) {
-                CategoryAdapter.this.c(index);
-                index = j();
-                CategoryAdapter.this.c(index);
+                CategoryAdapter.this.notifyItemChanged(index);
+                index = getAdapterPosition();
+                CategoryAdapter.this.notifyItemChanged(index);
                 initializeEvents(events.get(index));
                 if (index == 4) {
                     importMoreBlockFromCollection.setVisibility(View.VISIBLE);
@@ -791,7 +791,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     importMoreBlockFromCollection.setVisibility(View.GONE);
                 }
                 eventAdapter.a(events.get(index));
-                eventAdapter.c();
+                eventAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -922,7 +922,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 options.addView(optionsLayout);
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        lastSelectedItem = j();
+                        lastSelectedItem = getAdapterPosition();
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(lastSelectedItem);
                         if (v instanceof CollapsibleButton) {
                             int i = ((CollapsibleButton) v).b;
@@ -930,23 +930,23 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                 eventBean.buttonPressed = i;
                                 eventBean.isConfirmation = false;
                                 eventBean.isCollapsed = false;
-                                EventAdapter.this.c(lastSelectedItem);
+                                EventAdapter.this.notifyItemChanged(lastSelectedItem);
                                 showSaveMoreBlockToCollectionsDialog(lastSelectedItem);
                             } else {
                                 eventBean.buttonPressed = i;
                                 eventBean.isConfirmation = true;
-                                EventAdapter.this.c(lastSelectedItem);
+                                EventAdapter.this.notifyItemChanged(lastSelectedItem);
                             }
                         } else {
                             if (v.getId() == R.id.confirm_no) {
                                 eventBean.isConfirmation = false;
-                                EventAdapter.this.c(lastSelectedItem);
+                                EventAdapter.this.notifyItemChanged(lastSelectedItem);
                             } else if (v.getId() == R.id.confirm_yes) {
                                 if (eventBean.buttonPressed == 0) {
                                     eventBean.isConfirmation = false;
                                     eventBean.isCollapsed = true;
                                     resetEvent(eventBean);
-                                    EventAdapter.this.c(lastSelectedItem);
+                                    EventAdapter.this.notifyItemChanged(lastSelectedItem);
                                 } else if (eventBean.buttonPressed == 1) {
                                     eventBean.isConfirmation = false;
                                     if (categoryAdapter.index != 4) {
@@ -961,7 +961,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                 });
                 menu.setOnClickListener(v -> {
-                    lastSelectedItem = j();
+                    lastSelectedItem = getAdapterPosition();
                     EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
@@ -972,7 +972,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                 });
                 itemView.setOnLongClickListener(v -> {
-                    lastSelectedItem = j();
+                    lastSelectedItem = getAdapterPosition();
                     EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
@@ -985,7 +985,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 });
                 itemView.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        lastSelectedItem = j();
+                        lastSelectedItem = getAdapterPosition();
                         EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                         openEvent(eventBean.targetId, eventBean.eventName, description.getText().toString());
                     }

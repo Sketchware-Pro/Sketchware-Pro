@@ -82,8 +82,7 @@ public class ViewEvents extends LinearLayout {
                 events.add(eventBean);
             }
         }
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        eventsList.getAdapter().c();
+        eventsList.getAdapter().notifyDataSetChanged();
     }
 
     private void createEvent(int eventPosition) {
@@ -91,7 +90,7 @@ public class ViewEvents extends LinearLayout {
         if (!eventBean.isSelected) {
             eventBean.isSelected = true;
             jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            eventsList.getAdapter().c(eventPosition);
+            eventsList.getAdapter().notifyItemChanged(eventPosition);
             bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
         if (eventClickListener != null) {
@@ -113,7 +112,7 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                itemView.setOnClickListener(v -> createEvent(j()));
+                itemView.setOnClickListener(v -> createEvent(getAdapterPosition()));
             }
         }
 
