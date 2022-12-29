@@ -1169,7 +1169,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(RecyclerView.v holder, int position) {
             // RecyclerView.ViewHolder#getItemViewType()
-            int viewType = holder.i();
+            int viewType = holder.getItemViewType();
 
             switch (viewType) {
                 case 0:

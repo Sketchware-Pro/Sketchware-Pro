@@ -410,8 +410,7 @@ public class LogicClickListener implements View.OnClickListener {
         // RecyclerView.Adapter#onBindViewHolder(VH, int)
         public void b(RecyclerView.v holder, int position) {
             Item item = data.get(position);
-            // RecyclerView.ViewHolder#getItemViewType()
-            int viewType = holder.i();
+            int viewType = holder.getItemViewType();
 
             if (viewType == Item.TYPE_TITLE) {
                 TitleHolder titleHolder = (TitleHolder) holder;
