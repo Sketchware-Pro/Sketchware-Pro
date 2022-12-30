@@ -365,8 +365,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (freeMegabytes < 100 && freeMegabytes > 0) {
             showNoticeNotEnoughFreeStorageSpace();
         }
-        if (j() && storageAccessDenied != null && storageAccessDenied.j()) {
-            storageAccessDenied.c();
+        if (j() && storageAccessDenied != null && storageAccessDenied.isShown()) {
+            storageAccessDenied.dismiss();
         }
     }
 
@@ -427,17 +427,17 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public void s() {
-        if (storageAccessDenied == null || !storageAccessDenied.j()) {
-            storageAccessDenied = Snackbar.a(coordinator, Helper.getResString(R.string.common_message_permission_denied), -2);
-            storageAccessDenied.a(Helper.getResString(R.string.common_word_settings), v -> {
-                storageAccessDenied.c();
+        if (storageAccessDenied == null || !storageAccessDenied.isShown()) {
+            storageAccessDenied = Snackbar.makeText(coordinator, Helper.getResString(R.string.common_message_permission_denied), -2);
+            storageAccessDenied.setAction(Helper.getResString(R.string.common_word_settings), v -> {
+                storageAccessDenied.dismiss();
                 nd.a(this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE},
                         9501);
             });
-            storageAccessDenied.f(Color.YELLOW);
-            storageAccessDenied.n();
+            storageAccessDenied.setActionTextColor(Color.YELLOW);
+            storageAccessDenied.show();
         }
     }
 
