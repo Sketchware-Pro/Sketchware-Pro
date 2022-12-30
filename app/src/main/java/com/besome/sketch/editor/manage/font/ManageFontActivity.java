@@ -170,7 +170,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         public SaveAsyncTask(Context context) {
             super(context);
-            ManageFontActivity.this.a(this);
+            ManageFontActivity.this.addTask(this);
         }
 
         @Override

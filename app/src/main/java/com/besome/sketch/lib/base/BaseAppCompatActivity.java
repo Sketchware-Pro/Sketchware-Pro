@@ -24,12 +24,16 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Deprecated
     public Context e;
     public Zo j;
-    private ZA lottieDialog;
     protected _A progressDialog;
+    private ZA lottieDialog;
     private ArrayList<MA> taskList;
 
     public void a(MA var1) {
         taskList.add(var1);
+    }
+
+    public void addTask(MA task) {
+        taskList.add(task);
     }
 
     public void a(OnCancelListener cancelListener) {

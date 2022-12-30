@@ -627,7 +627,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata = exportProjectActivity.project_metadata;
             loading_sign_apk = new WeakReference<>(exportProjectActivity.loading_sign_apk);
             // Register as AsyncTask with dialog to Activity
-            activity.get().a((MA) this);
+            activity.get().addTask((MA) this);
             // Make a simple ProgressDialog show and set its OnCancelListener
             activity.get().a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button

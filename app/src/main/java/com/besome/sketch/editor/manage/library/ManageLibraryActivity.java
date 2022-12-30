@@ -306,7 +306,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         public SaveLibraryTask(ManageLibraryActivity activity) {
             super(activity);
             this.activity = new WeakReference<>(activity);
-            activity.a(this);
+            activity.addTask(this);
         }
 
         @Override

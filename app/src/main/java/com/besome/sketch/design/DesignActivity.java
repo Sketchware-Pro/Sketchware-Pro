@@ -932,7 +932,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public BuildAsyncTask(Context context) {
             super(context);
-            DesignActivity.this.a((MA) this);
+            DesignActivity.this.addTask((MA) this);
             dialog = new BuildingDialog(DesignActivity.this);
             maybeShow();
             dialog.setIsCancelableOnBackPressed(false);
@@ -1197,7 +1197,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public ProjectLoader(Context context, Bundle savedInstanceState) {
             super(context);
-            DesignActivity.this.a(this);
+            DesignActivity.this.addTask(this);
             this.savedInstanceState = savedInstanceState;
         }
 
@@ -1239,7 +1239,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public DiscardChangesProjectCloser(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            DesignActivity.this.addTask(this);
         }
 
         @Override
@@ -1271,7 +1271,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public ProjectSaver(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            DesignActivity.this.addTask(this);
         }
 
         @Override
@@ -1309,7 +1309,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public SaveChangesProjectCloser(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            DesignActivity.this.addTask(this);
         }
 
         @Override
@@ -1346,7 +1346,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public UnsavedChangesSaver(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            DesignActivity.this.addTask(this);
         }
 
         @Override

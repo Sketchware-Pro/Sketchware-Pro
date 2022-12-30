@@ -291,7 +291,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             super(getContext());
             this.position = position;
             ProjectsFragment.this.b();
-            ProjectsFragment.this.a(this);
+            ProjectsFragment.this.addTask(this);
         }
 
         @Override

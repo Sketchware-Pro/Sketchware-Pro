@@ -589,7 +589,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
         public SaveProjectAsyncTask(Context context) {
             super(context);
-            MyProjectSettingActivity.this.a(this);
+            MyProjectSettingActivity.this.addTask(this);
             k();
         }
 

@@ -2867,7 +2867,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         public ProjectSaver(LogicEditorActivity logicEditorActivity) {
             super(logicEditorActivity);
             activity = new WeakReference<>(logicEditorActivity);
-            logicEditorActivity.a(this);
+            logicEditorActivity.addTask(this);
         }
 
         @Override
