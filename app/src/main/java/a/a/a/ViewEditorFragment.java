@@ -25,7 +25,7 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
-public class jr extends qA {
+public class ViewEditorFragment extends qA {
 
     private ProjectFileBean projectFileBean;
     private ViewEditor viewEditor;
@@ -37,7 +37,7 @@ public class jr extends qA {
     private boolean q = false;
     private String sc_id;
 
-    public jr() {
+    public ViewEditorFragment() {
     }
 
     private void initialize(ViewGroup viewGroup) {
@@ -84,7 +84,7 @@ public class jr extends qA {
                     viewProperty.e();
                 }
 
-                jr.this.a(var1);
+                ViewEditorFragment.this.a(var1);
             }
         });
         viewEditor.setOnDraggingListener(new _x() {

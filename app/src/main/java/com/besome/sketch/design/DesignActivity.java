@@ -69,7 +69,7 @@ import a.a.a.br;
 import a.a.a.cC;
 import a.a.a.gg;
 import a.a.a.jC;
-import a.a.a.jr;
+import a.a.a.ViewEditorFragment;
 import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -135,7 +135,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
-    private jr viewTabAdapter = null;
+    private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
     private br componentTabAdapter = null;
 
@@ -1402,7 +1402,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public Object a(ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.a(container, position);
             if (position == 0) {
-                viewTabAdapter = (jr) fragment;
+                viewTabAdapter = (ViewEditorFragment) fragment;
             } else if (position == 1) {
                 eventTabAdapter = (rs) fragment;
             } else {
@@ -1416,7 +1416,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         // FragmentPagerAdapter#getItem(int)
         public Fragment c(int position) {
             if (position == 0) {
-                return new jr();
+                return new ViewEditorFragment();
             } else {
                 return position == 1 ? new rs() : new br();
             }
