@@ -380,7 +380,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case 1:
-                            new BuildSettingsDialog(DesignActivity.this, sc_id).show();
+                            new BuildSettingsDialog(this, sc_id).show();
                             break;
 
                         case 2:
@@ -392,7 +392,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 3:
-                            new CompileErrorSaver(sc_id).showLastErrors(DesignActivity.this);
+                            new CompileErrorSaver(sc_id).showLastErrors(this);
                             break;
 
                         case 4:
@@ -714,7 +714,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     private void showCurrentActivitySrcCode() {
-        ProgressDialog progress = new ProgressDialog(DesignActivity.this);
+        ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Generating source...");
         progress.setCancelable(false);
         progress.show();
@@ -723,7 +723,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             String filename = projectFileSelector.getFileName();
             final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                     .setTitle(filename)
                     .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
@@ -732,7 +732,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 if (isFinishing()) return;
                 progress.dismiss();
 
-                CodeEditor editor = new CodeEditor(DesignActivity.this);
+                CodeEditor editor = new CodeEditor(this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
                 editor.setEditable(false);
                 editor.setTextSize(14);
@@ -932,7 +932,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public BuildAsyncTask(Context context) {
             super(context);
-            DesignActivity.this.addTask((MA) this);
+            addTask(this);
             dialog = new BuildingDialog(DesignActivity.this);
             maybeShow();
             dialog.setIsCancelableOnBackPressed(false);
@@ -1197,7 +1197,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public ProjectLoader(Context context, Bundle savedInstanceState) {
             super(context);
-            DesignActivity.this.addTask(this);
+            addTask(this);
             this.savedInstanceState = savedInstanceState;
         }
 
@@ -1239,7 +1239,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public DiscardChangesProjectCloser(Context context) {
             super(context);
-            DesignActivity.this.addTask(this);
+            addTask(this);
         }
 
         @Override
@@ -1271,7 +1271,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public ProjectSaver(Context context) {
             super(context);
-            DesignActivity.this.addTask(this);
+            addTask(this);
         }
 
         @Override
@@ -1309,7 +1309,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public SaveChangesProjectCloser(Context context) {
             super(context);
-            DesignActivity.this.addTask(this);
+            addTask(this);
         }
 
         @Override
@@ -1346,7 +1346,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public UnsavedChangesSaver(Context context) {
             super(context);
-            DesignActivity.this.addTask(this);
+            addTask(this);
         }
 
         @Override

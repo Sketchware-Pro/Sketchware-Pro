@@ -408,7 +408,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         dialog.a(Helper.getResString(R.string.common_message_permission_need_load_project));
         dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             dialog.dismiss();
-            nd.a(MainActivity.this, new String[]{
+            nd.a(this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     9501);
@@ -431,7 +431,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             storageAccessDenied = Snackbar.a(coordinator, Helper.getResString(R.string.common_message_permission_denied), -2);
             storageAccessDenied.a(Helper.getResString(R.string.common_word_settings), v -> {
                 storageAccessDenied.c();
-                nd.a(MainActivity.this, new String[]{
+                nd.a(this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE},
                         9501);

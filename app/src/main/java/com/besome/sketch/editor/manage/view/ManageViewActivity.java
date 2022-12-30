@@ -329,7 +329,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public class a extends MA {
         public a(Context var2) {
             super(var2);
-            ManageViewActivity.this.addTask(this);
+            addTask(this);
         }
 
         @Override

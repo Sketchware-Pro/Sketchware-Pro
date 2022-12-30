@@ -251,7 +251,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private class InitialIconLoader extends MA {
         public InitialIconLoader(Context context) {
             super(context);
-            ImportIconActivity.this.addTask(this);
+            addTask(this);
         }
 
         @Override
@@ -281,7 +281,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private class IconColorChangedIconLoader extends MA {
         public IconColorChangedIconLoader(Context context) {
             super(context);
-            ImportIconActivity.this.addTask(this);
+            addTask(this);
             k();
         }
 

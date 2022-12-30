@@ -33,7 +33,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.a(Helper.getResString(R.string.common_message_permission_storage));
             dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
                 if (!mB.a()) {
-                    nd.a(BasePermissionAppCompatActivity.this,
+                    nd.a(this,
                             new String[]{
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                     Manifest.permission.READ_EXTERNAL_STORAGE
@@ -67,7 +67,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
 
     @Override
     public void onRequestPermissionsResult(int i, String[] strArr, int[] iArr) {
-        BasePermissionAppCompatActivity.super.onRequestPermissionsResult(i, strArr, iArr);
+        super.onRequestPermissionsResult(i, strArr, iArr);
         for (String str : strArr) {
             if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(str)) {
                 if (iArr.length > 0 && iArr[0] == 0 && iArr[1] == 0) {

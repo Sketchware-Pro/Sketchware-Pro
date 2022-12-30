@@ -155,7 +155,7 @@ public class ComponentsMaker extends Activity {
         more_icon.setVisibility(View.VISIBLE);
         more_icon.setImageResource(R.drawable.ic_more_vert_white_24dp);
         more_icon.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(ComponentsMaker.this, more_icon);
+            PopupMenu popupMenu = new PopupMenu(this, more_icon);
             Menu menu = popupMenu.getMenu();
             menu.add("Import components");
             menu.add("Export components");

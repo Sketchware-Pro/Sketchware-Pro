@@ -195,7 +195,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         fab.setOnClickListener(this);
         gridView.setOnItemLongClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(frc.listFileResource.get(position))) {
-                PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, view);
+                PopupMenu popupMenu = new PopupMenu(this, view);
                 popupMenu.getMenu().add("Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {
                     showDeleteDialog(position);

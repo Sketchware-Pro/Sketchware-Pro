@@ -77,7 +77,7 @@ public class LogReaderActivity extends AppCompatActivity {
         optionsMenu.setVisibility(View.VISIBLE);
         optionsMenu.setImageResource(R.drawable.ic_more_vert_white_24dp);
 
-        filterEdittext = new EditText(LogReaderActivity.this);
+        filterEdittext = new EditText(this);
         {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1f);
             params.leftMargin = dpToPx(8);
@@ -109,7 +109,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setTitle("Filter by package name")
                             .setMessage("For multiple package names, separate them with a comma (,).");
-                    final EditText _e = new EditText(LogReaderActivity.this);
+                    final EditText _e = new EditText(this);
                     _e.setText(pkgFilter);
                     builder.setView(_e);
                     builder.setPositiveButton("Apply", (dialog, which) -> {
@@ -133,7 +133,7 @@ public class LogReaderActivity extends AppCompatActivity {
             return true;
         });
 
-        recyclerview = new RecyclerView(LogReaderActivity.this);
+        recyclerview = new RecyclerView(this);
         recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         recyclerview.setPadding(dpToPx(4), 0, dpToPx(4), 0);
         root.addView(recyclerview);

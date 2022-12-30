@@ -439,7 +439,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         layoutExportAppBundle.setVisibility(View.GONE);
 
         btnExportAppBundle.setOnClickListener(v -> {
-            aB dialog = new aB(ExportProjectActivity.this);
+            aB dialog = new aB(this);
             if (BuildConfig.FLAVOR.equals(BuildConfig.FLAVOR_NAME_WITHOUT_AABS)) {
                 dialog.a(R.drawable.break_warning_96_red);
                 dialog.b("Can't generate App Bundle");
@@ -449,7 +449,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.b(Helper.getResString(R.string.common_word_close), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             } else {
-                GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
+                GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                         R.drawable.color_about_96, "Sign outputted AAB", "The generated .aab file must be signed.\n" +
                         "Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
                         "and enter the alias' password.");
@@ -528,7 +528,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         loading_sign_apk.setVisibility(View.GONE);
         layout_apk_path.setVisibility(View.GONE);
         btn_sign_apk.setOnClickListener(v -> {
-            GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
+            GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                     R.drawable.color_about_96,
                     "Sign an APK",
                     "To sign an APK, you need a keystore. Use your already created one, and copy it to " +
@@ -627,7 +627,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata = exportProjectActivity.project_metadata;
             loading_sign_apk = new WeakReference<>(exportProjectActivity.loading_sign_apk);
             // Register as AsyncTask with dialog to Activity
-            activity.get().addTask((MA) this);
+            activity.get().addTask(this);
             // Make a simple ProgressDialog show and set its OnCancelListener
             activity.get().a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button

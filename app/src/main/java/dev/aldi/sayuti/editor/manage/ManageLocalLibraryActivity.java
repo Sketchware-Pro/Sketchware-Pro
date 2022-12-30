@@ -58,10 +58,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 .setTitle("Dexer")
                 .setMessage("Would you like to use Dx or D8 to dex the library?\n" +
                         "D8 supports Java 8, whereas Dx does not. Limitation: D8 only works on Android 8 and above.")
-                .setPositiveButton("D8", (dialog, which) -> new LibraryDownloader(ManageLocalLibraryActivity.this,
-                        true).showDialog(ManageLocalLibraryActivity.this))
-                .setNegativeButton("Dx", (dialog, which) -> new LibraryDownloader(ManageLocalLibraryActivity.this,
-                        false).showDialog(ManageLocalLibraryActivity.this))
+                .setPositiveButton("D8", (dialog, which) -> new LibraryDownloader(this,
+                        true).showDialog(this))
+                .setNegativeButton("Dx", (dialog, which) -> new LibraryDownloader(this,
+                        false).showDialog(this))
                 .setNeutralButton("Cancel", null)
                 .show();
     }
