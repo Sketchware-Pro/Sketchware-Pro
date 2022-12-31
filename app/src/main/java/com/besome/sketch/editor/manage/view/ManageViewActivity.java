@@ -290,7 +290,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(new ManageViewActivity.b(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(TAB_COUNT);
-        viewPager.a(this);
+        viewPager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
         s = findViewById(R.id.fab);
         s.setOnClickListener(this);

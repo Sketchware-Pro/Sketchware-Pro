@@ -204,7 +204,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
-        viewPager.a(this);
+        viewPager.addOnPageChangeListener(this);
 
         fab = findViewById(R.id.fab);
         coordinator = findViewById(R.id.layout_coordinator);

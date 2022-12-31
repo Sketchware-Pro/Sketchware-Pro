@@ -103,7 +103,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         pager = findViewById(R.id.view_pager);
         pager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
         pager.setOffscreenPageLimit(2);
-        pager.a(this);
+        pager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(pager);
     }
 

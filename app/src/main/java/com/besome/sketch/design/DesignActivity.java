@@ -487,7 +487,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), this));
         viewPager.setOffscreenPageLimit(3);
-        viewPager.a(new ViewPager.e() {
+        viewPager.addOnPageChangeListener(new ViewPager.e() {
 
             @Override
             public void a(int i) {

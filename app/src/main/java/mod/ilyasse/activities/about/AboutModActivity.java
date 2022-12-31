@@ -243,7 +243,7 @@ public class AboutModActivity extends AppCompatActivity {
         // ViewPager.addOnPageChangeListener(ViewPager$OnPageChangeListener) got
         // obfuscated to ViewPager.a(ViewPager$e)
         // ViewPager$OnPageChangeListener got obfuscated to ViewPager$e
-        viewPager.a(new ViewPager.e() {
+        viewPager.addOnPageChangeListener(new ViewPager.e() {
 
             // ViewPager$OnPageChangeListener.onPageScrolled(int, float, int) got obfuscated
             // to ViewPager$e.a(int, float, int)
