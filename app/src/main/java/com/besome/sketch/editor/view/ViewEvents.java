@@ -51,7 +51,7 @@ public class ViewEvents extends LinearLayout {
         eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.b(0);
+        linearLayoutManager.setOrientation(0);
         eventsList.setLayoutManager(linearLayoutManager);
         eventsList.setAdapter(new EventAdapter());
         eventsList.setItemAnimator(new ci());
