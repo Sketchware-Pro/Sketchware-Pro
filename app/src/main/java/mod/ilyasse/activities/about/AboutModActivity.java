@@ -272,21 +272,21 @@ public class AboutModActivity extends AppCompatActivity {
         });
     }
 
-    private void circularImage(final ImageView image, final String url) {
+    private void circularImage(ImageView image, String url) {
         Glide.with(this)
                 .load(url)
                 .placeholder(R.drawable.ic_user)
                 .into(image);
     }
 
-    private void advancedCorners(final View view, final String color) {
+    private void advancedCorners(View view, String color) {
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(color));
         gd.setCornerRadii(new float[]{0, 0, 30, 30, 30, 30, 0, 0});
         view.setBackground(gd);
     }
 
-    private void shadAnim(final View view, final String propertyName, final double value, final double duration) {
+    private void shadAnim(View view, String propertyName, double value, double duration) {
         ObjectAnimator anim = new ObjectAnimator();
         anim.setTarget(view);
         anim.setPropertyName(propertyName);
@@ -295,14 +295,14 @@ public class AboutModActivity extends AppCompatActivity {
         anim.start();
     }
 
-    private void animateLayoutChanges(final LinearLayout view) {
+    private void animateLayoutChanges(LinearLayout view) {
         //i used this instead of the xml attribute because this one looks better and smoother.
         AutoTransition autoTransition = new AutoTransition();
         autoTransition.setDuration((short) 300);
         TransitionManager.beginDelayedTransition(view, autoTransition);
     }
 
-    private void rippleRound(final View view, final String focus, final String pressed, final double round) {
+    private void rippleRound(View view, String focus, String pressed, double round) {
         GradientDrawable GG = new GradientDrawable();
         GG.setColor(Color.parseColor(focus));
         GG.setCornerRadius((float) round);
@@ -438,15 +438,15 @@ public class AboutModActivity extends AppCompatActivity {
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @Override
-        public void b(ViewHolder holder, final int position) {
+        public void b(ViewHolder holder, int position) {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
-            final TextView title = itemView.findViewById(R.id.tv_title);
-            final LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
-            final ImageView userIcon = itemView.findViewById(R.id.img_user_icon);
-            final TextView userName = itemView.findViewById(R.id.tv_user_name);
-            final TextView description = itemView.findViewById(R.id.tv_description);
+            TextView title = itemView.findViewById(R.id.tv_title);
+            LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
+            ImageView userIcon = itemView.findViewById(R.id.img_user_icon);
+            TextView userName = itemView.findViewById(R.id.tv_user_name);
+            TextView description = itemView.findViewById(R.id.tv_description);
 
             Object modder_img = modders.get(position).get("modder_img");
             if (modder_img instanceof String) {
@@ -541,20 +541,20 @@ public class AboutModActivity extends AppCompatActivity {
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @SuppressLint("SetTextI18n")
         @Override
-        public void b(ViewHolder holder, final int position) {
+        public void b(ViewHolder holder, int position) {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
             //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
             //get less lazy when.
-            final TextView variant = itemView.findViewWithTag("tv_variant");
-            final LinearLayout leftLine = itemView.findViewById(R.id.view_leftline);
-            final TextView title = itemView.findViewById(R.id.tv_title);
-            final TextView releasedOn = itemView.findViewById(R.id.tv_release_note);
-            final TextView subtitle = itemView.findViewById(R.id.tv_sub_title);
-            final LinearLayout log_background = itemView.findViewWithTag("log_background");
-            final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
-            final ImageButton arrow = itemView.findViewWithTag("ic_arrow");
+            TextView variant = itemView.findViewWithTag("tv_variant");
+            LinearLayout leftLine = itemView.findViewById(R.id.view_leftline);
+            TextView title = itemView.findViewById(R.id.tv_title);
+            TextView releasedOn = itemView.findViewById(R.id.tv_release_note);
+            TextView subtitle = itemView.findViewById(R.id.tv_sub_title);
+            LinearLayout log_background = itemView.findViewWithTag("log_background");
+            LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
+            ImageButton arrow = itemView.findViewWithTag("ic_arrow");
 
             HashMap<String, Object> release = changelog.get(position);
 
