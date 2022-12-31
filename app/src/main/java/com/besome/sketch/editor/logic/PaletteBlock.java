@@ -3,7 +3,9 @@ package com.besome.sketch.editor.logic;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.sketchware.remod.R;
 import a.a.a.Rs;
 import a.a.a.Ts;
 import a.a.a.wB;
+import mod.hey.studios.moreblock.MoreblockActionListener;
 
 public class PaletteBlock extends LinearLayout {
 
@@ -22,6 +25,7 @@ public class PaletteBlock extends LinearLayout {
     private CustomHorizontalScrollView horizontalScrollView;
     private LinearLayout blockBuilder;
     public float f = 0.0F;
+    private MoreblockActionListener moreblockActionListener;
 
     public PaletteBlock(Context context) {
         super(context);
@@ -33,23 +37,45 @@ public class PaletteBlock extends LinearLayout {
         initialize(context);
     }
 
-    public Ts a(String var1, String var2, String var3) {
-        View view = new View(a);
-        view.setLayoutParams(new LayoutParams(-1, (int) (f * 8.0F)));
-        blockBuilder.addView(view);
-        Rs blockView = new Rs(a, -1, var1, var2, var3);
-        blockView.setBlockType(1);
-        blockBuilder.addView(blockView);
-        return blockView;
+    public void setMoreblockActionListener(MoreblockActionListener moreblockActionListener) {
+        this.moreblockActionListener = moreblockActionListener;
     }
 
-    public Ts a(String var1, String var2, String var3, String var4) {
+    public Ts a(String spec, String type, String opCode) {
+        return a(spec, type, "", opCode);
+    }
+
+    public Ts a(String spec, String type, String typeName, String opCode) {
         View view = new View(a);
         view.setLayoutParams(new LayoutParams(-1, (int) (f * 8.0F)));
         blockBuilder.addView(view);
-        Rs blockView = new Rs(a, -1, var1, var2, var3, var4);
+
+        Rs blockView = new Rs(a, -1, spec, type, typeName, opCode);
         blockView.setBlockType(1);
-        blockBuilder.addView(blockView);
+
+        if ("definedFunc".equals(opCode)) {
+            LinearLayout container = new LinearLayout(a);
+            container.setLayoutParams(new LayoutParams(-1, -2));
+            container.setOrientation(LinearLayout.HORIZONTAL);
+            container.setGravity(Gravity.CENTER_VERTICAL);
+            blockBuilder.addView(container);
+
+            ImageView igGoto = new ImageView(a);
+            igGoto.setImageResource(R.drawable.ic_goto);
+            LayoutParams igGotoLayoutParams = new LayoutParams(32, 32);
+            igGotoLayoutParams.setMargins((int) f * 8, 0, 0, (int) f * 2);
+            igGoto.setLayoutParams(igGotoLayoutParams);
+
+            if (moreblockActionListener != null) {
+                igGoto.setOnClickListener(v -> moreblockActionListener.onGotoMoreblock(spec, type, typeName));
+            }
+
+            container.addView(blockView);
+            container.addView(igGoto);
+        } else {
+            blockBuilder.addView(blockView);
+        }
+
         return blockView;
     }
 

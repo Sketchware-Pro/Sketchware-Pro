@@ -116,13 +116,14 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.hasrat.menu.ExtraMenuBean;
+import mod.hey.studios.moreblock.MoreblockActionListener;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
-public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
+public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack, MoreblockActionListener {
     public final Handler Z = new Handler();
     public Vibrator F;
     public boolean G;
@@ -497,25 +498,29 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return a2;
     }
 
-    public View a(String str, String str2) {
-        Ts a2 = m.a("", str, str2);
-        a2.setTag(str2);
-        a2.setClickable(true);
-        a2.setOnTouchListener(this);
-        return a2;
+    @Override
+    public void onGotoMoreblock(String spec, String type, String typeName) {
+        Intent intent = new Intent(this, LogicEditorActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", this.B);
+        intent.putExtra("id", spec);
+        intent.putExtra("event", "moreBlock");
+        intent.putExtra("project_file", this.M);
+        intent.putExtra("event_text", ReturnMoreblockManager.getMbTypeList(spec));
+        startActivity(intent);
     }
 
-    public final View a(String str, String str2, String str3) {
-        Ts a2 = m.a(str, str2, str3);
-        a2.setTag(str3);
-        a2.setClickable(true);
-        a2.setOnTouchListener(this);
-        return a2;
+    public View a(String type, String opCode) {
+        return a("", type, opCode);
     }
 
-    public final View a(String str, String str2, String str3, String str4) {
-        Ts a2 = m.a(str, str2, str3, str4);
-        a2.setTag(str4);
+    public final View a(String spec, String type, String opCode) {
+        return a(spec, type, "", opCode);
+    }
+
+    public final View a(String spec, String type, String typeName, String opCode) {
+        Ts a2 = m.a(spec, type, typeName, opCode);
+        a2.setTag(opCode);
         a2.setClickable(true);
         a2.setOnTouchListener(this);
         return a2;
@@ -2281,6 +2286,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         l = findViewById(R.id.palette_selector);
         l.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
+        m.setMoreblockActionListener(this);
         p = findViewById(R.id.dummy);
         n = findViewById(R.id.editor);
         o = n.getBlockPane();
