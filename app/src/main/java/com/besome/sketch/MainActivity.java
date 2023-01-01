@@ -108,8 +108,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void selectPageZero() {
         if (viewPager != null) {
-            // ViewPager#setCurrentItem(int, boolean)
-            viewPager.a(0, true);
+            viewPager.setCurrentItem(0, true);
         }
     }
 
