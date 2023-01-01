@@ -342,8 +342,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onBackPressed() {
-        if (drawer.f(Gravity.END)) {
-            drawer.a(Gravity.END);
+        if (drawer.isDrawerOpen(Gravity.END)) {
+            drawer.closeDrawer(Gravity.END);
         } else if (viewTabAdapter.g()) {
             viewTabAdapter.a(false);
         } else {
@@ -551,8 +551,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
-            if (!drawer.f(Gravity.END)) {
-                drawer.h(Gravity.END);
+            if (!drawer.isDrawerOpen (Gravity.END)) {
+                drawer.openDrawer(Gravity.END);
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             k();

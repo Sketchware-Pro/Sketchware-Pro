@@ -155,8 +155,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onBackPressed() {
         if (drawer.isShown()) {
-            // DrawerLayout#closeDrawers()
-            drawerLayout.b();
+            drawerLayout.closeDrawers();
         } else {
             finish();
         }
@@ -165,8 +164,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // ActionBarDrawerToggle#onConfigurationChanged(Configuration)
-        drawerToggle.a(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -197,7 +195,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new l(this, drawerLayout, R.string.app_name, R.string.app_name);
         // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
-        drawerLayout.a((DrawerLayout.c) drawerToggle);
+        drawerLayout.addDrawerListener((DrawerLayout.c) drawerToggle);
         getSupportActionBar().setTitle("");
 
         viewPager = findViewById(R.id.viewpager);
@@ -341,8 +339,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             //Refresh projects
             n();
         }
-        // ActionBarDrawerToggle#onOptionsItemSelected(MenuItem)
-        if (drawerToggle.a(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -352,8 +349,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // ActionBarDrawerToggle#syncState()
-        drawerToggle.b();
+        drawerToggle.syncState();
     }
 
     @Override
