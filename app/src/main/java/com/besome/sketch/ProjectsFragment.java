@@ -90,7 +90,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         preference = new DB(getContext(), "project");
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
         swipeRefresh.setOnRefreshListener(() -> {
-            if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
+            if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
 
             if (c()) {
                 refreshProjectsList();
