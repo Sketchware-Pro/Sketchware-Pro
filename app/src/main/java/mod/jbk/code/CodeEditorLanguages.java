@@ -46,7 +46,7 @@ public class CodeEditorLanguages {
         try {
             language = TextMateLanguage.create(scopeName, true);
         } catch (Exception | NoSuchMethodError e) {
-            LogUtil.e(TAG, "Failed to create Kotlin TextMate language, using empty one as default Kotlin language", e);
+            LogUtil.e(TAG, "Failed to create language from scope name '" + scopeName + "', using empty one as default language", e);
             language = new EmptyLanguage();
         }
 
