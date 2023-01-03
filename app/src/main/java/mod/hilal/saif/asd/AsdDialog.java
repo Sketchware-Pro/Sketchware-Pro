@@ -154,7 +154,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         break;
 
                     case "Paste":
-                        codeEditor.setText(SrcCodeEditor.paste(act));
+                        codeEditor.pasteText();
                         break;
 
                     default:

@@ -168,21 +168,6 @@ public class SrcCodeEditor extends AppCompatActivity {
         }
     }
 
-    public static String paste(Activity act) {
-        ClipboardManager clipboard = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
-
-        if (clipboard.hasPrimaryClip()) {
-            ClipDescription desc = clipboard.getPrimaryClipDescription();
-            ClipData data = clipboard.getPrimaryClip();
-
-            if (data != null && desc != null && desc.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                return String.valueOf(data.getItemAt(0).getText());
-            }
-        }
-
-        return "";
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
