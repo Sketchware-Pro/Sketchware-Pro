@@ -62,7 +62,7 @@ public class jr extends qA {
             invalidateOptionsMenu();
         });
         viewProperty.setOnEventClickListener(eventBean -> toLogicEditorActivity(eventBean.targetId, eventBean.eventName, eventBean.eventName));
-        viewProperty.setOnPropertyTargetChangeListener(this::a);
+        viewProperty.setOnPropertyTargetChangeListener(viewEditor::a);
         viewEditor.setOnWidgetSelectedListener(new cy() {
             @Override
             public void a() {
