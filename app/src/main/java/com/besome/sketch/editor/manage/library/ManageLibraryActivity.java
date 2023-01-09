@@ -86,9 +86,12 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         }
 
         for (int i = 0; i < libraryItemLayout.getChildCount(); i++) {
-            LibraryItemView libraryItemView = (LibraryItemView) libraryItemLayout.getChildAt(i);
-            if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
-                libraryItemView.setData(libraryBean);
+            View child = libraryItemLayout.getChildAt(i);
+            if (child instanceof LibraryItemView) {
+                LibraryItemView libraryItemView = (LibraryItemView) child;
+                if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
+                    libraryItemView.setData(libraryBean);
+                }
             }
         }
     }
