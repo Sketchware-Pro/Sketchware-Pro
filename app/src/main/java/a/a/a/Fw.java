@@ -166,17 +166,20 @@ public class Fw extends qA {
     }
 
     public void f() {
-        for (int i = 0, filesSize = activitiesFiles.size(); i < filesSize; i++) {
-            if (i < 0) {
+        int i = activitiesFiles.size();
+        while (true) {
+            i--;
+            if (i >= 0) {
+                ProjectFileBean projectFileBean = activitiesFiles.get(i);
+                if (projectFileBean.isSelected) {
+                    activitiesFiles.remove(i);
+                    if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                        ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(projectFileBean.fileName));
+                    }
+                }
+            } else {
                 projectFilesAdapter.c();
                 return;
-            }
-            ProjectFileBean projectFileBean = activitiesFiles.get(i);
-            if (projectFileBean.isSelected) {
-                activitiesFiles.remove(projectFileBean);
-                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                    ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(projectFileBean.fileName));
-                }
             }
         }
     }
@@ -333,6 +336,7 @@ public class Fw extends qA {
                         layoutPosition = j();
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
+                                checkBox.setChecked(!checkBox.isChecked());
                                 activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                                 ProjectFilesAdapter.this.c(layoutPosition);
                             }
