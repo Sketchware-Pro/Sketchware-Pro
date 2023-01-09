@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -39,11 +41,31 @@ public class LibraryItemView extends CardView {
         setLayoutParams(layoutParams);
     }
 
-    public void setData(ProjectLibraryBean projectLibraryBean) {
-        icon.setImageResource(ProjectLibraryBean.getLibraryIcon(projectLibraryBean.libType));
-        title.setText(xB.b().a(getContext(), ProjectLibraryBean.getLibraryResName(projectLibraryBean.libType)));
-        description.setText(xB.b().a(getContext(), ProjectLibraryBean.getLibraryResDesc(projectLibraryBean.libType)));
-        enabled.setText("Y".equals(projectLibraryBean.useYn) ? "ON" : "OFF");
-        enabled.setSelected("Y".equals(projectLibraryBean.useYn));
+    public void setData(@Nullable ProjectLibraryBean projectLibraryBean) {
+        @DrawableRes
+        int iconId;
+        CharSequence titleContent;
+        CharSequence descriptionContent;
+        boolean enabledChecked;
+        CharSequence enabledLabel;
+
+        if (projectLibraryBean != null) {
+            iconId = ProjectLibraryBean.getLibraryIcon(projectLibraryBean.libType);
+            titleContent = xB.b().a(getContext(), ProjectLibraryBean.getLibraryResName(projectLibraryBean.libType));
+            descriptionContent = xB.b().a(getContext(), ProjectLibraryBean.getLibraryResDesc(projectLibraryBean.libType));
+            enabledChecked = ProjectLibraryBean.LIB_USE_Y.equals(projectLibraryBean.useYn);
+        } else {
+            iconId = R.drawable.ic_detail_setting_48dp;
+            titleContent = "(Advanced) Exclude built-in libraries";
+            descriptionContent = "Use custom Library versions";
+            enabledChecked = false;
+        }
+        enabledLabel = enabledChecked ? "ON" : "OFF";
+
+        icon.setImageResource(iconId);
+        title.setText(titleContent);
+        description.setText(descriptionContent);
+        enabled.setText(enabledLabel);
+        enabled.setSelected(enabledChecked);
     }
 }

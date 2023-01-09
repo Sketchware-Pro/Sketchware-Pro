@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Space;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -23,6 +26,7 @@ import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
+import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -45,10 +49,10 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
 
-    private void addLibraryItem(ProjectLibraryBean libraryBean) {
+    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
         LibraryItemView libraryItemView = new LibraryItemView(this);
         libraryItemView.a(R.layout.manage_library_common_item);
-        libraryItemView.setTag(libraryBean.libType);
+        libraryItemView.setTag(libraryBean != null ? libraryBean.libType : null);
         libraryItemView.setData(libraryBean);
         libraryItemView.setOnClickListener(this);
         libraryItemLayout.addView(libraryItemView);
@@ -179,23 +183,29 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            int vTag = (Integer) v.getTag();
-            switch (vTag) {
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
-                    toFirebaseActivity(firebaseLibraryBean);
-                    break;
+            Object tag = v.getTag();
 
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
-                    toCompatActivity(compatLibraryBean, firebaseLibraryBean);
-                    break;
+            if (tag != null) {
+                int vTag = (Integer) tag;
+                switch (vTag) {
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
+                        toFirebaseActivity(firebaseLibraryBean);
+                        break;
 
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
-                    toAdmobActivity(admobLibraryBean);
-                    break;
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
+                        toCompatActivity(compatLibraryBean, firebaseLibraryBean);
+                        break;
 
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
-                    toGoogleMapActivity(googleMapLibraryBean);
-                    break;
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
+                        toAdmobActivity(admobLibraryBean);
+                        break;
+
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
+                        toGoogleMapActivity(googleMapLibraryBean);
+                        break;
+                }
+            } else {
+                SketchwareUtil.toast("TODO");
             }
         }
     }
@@ -266,6 +276,14 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         addLibraryItem(firebaseLibraryBean);
         addLibraryItem(admobLibraryBean);
         addLibraryItem(googleMapLibraryBean);
+
+        Space space = new Space(this);
+        space.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
+                1));
+        libraryItemLayout.addView(space);
+        addLibraryItem(null);
     }
 
     @Override
