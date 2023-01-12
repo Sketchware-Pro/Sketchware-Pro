@@ -26,7 +26,6 @@ import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
-import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -89,7 +88,8 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             View child = libraryItemLayout.getChildAt(i);
             if (child instanceof LibraryItemView) {
                 LibraryItemView libraryItemView = (LibraryItemView) child;
-                if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
+                Object tag = libraryItemView.getTag();
+                if (tag != null && libraryBean.libType == (Integer) tag) {
                     libraryItemView.setData(libraryBean);
                 }
             }
