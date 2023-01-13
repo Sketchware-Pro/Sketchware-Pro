@@ -486,7 +486,6 @@ public class BuiltInLibraries {
     }
 
     public static class BuiltInLibrary {
-
         private final String name;
         private final List<String> dependencyNames;
         private final String packageName;
@@ -531,6 +530,16 @@ public class BuiltInLibraries {
 
         public boolean hasResources() {
             return hasResources;
+        }
+
+        @Override
+        public String toString() {
+            return "BuiltInLibrary{" +
+                    "name='" + name + '\'' +
+                    ", dependencyNames=" + dependencyNames +
+                    ", packageName='" + packageName + '\'' +
+                    ", hasResources=" + hasResources +
+                    '}';
         }
     }
 }
