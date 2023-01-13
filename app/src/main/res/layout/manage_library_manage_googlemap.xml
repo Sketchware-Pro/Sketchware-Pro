@@ -21,8 +21,7 @@
             android:background="?selectableItemBackground"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingVertical="8dp">
 
             <TextView
                 android:id="@+id/tv_enable"
