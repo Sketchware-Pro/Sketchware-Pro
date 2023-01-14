@@ -128,7 +128,7 @@ public class Dp {
         yq = yqVar;
         fpu = new FilePathUtil();
         mll = new ManageLocalLibrary(yqVar.sc_id);
-        builtInLibraryManager = new Kp();
+        builtInLibraryManager = new Kp(yqVar.sc_id);
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
         proguard = new ProguardHandler(yqVar.sc_id);
