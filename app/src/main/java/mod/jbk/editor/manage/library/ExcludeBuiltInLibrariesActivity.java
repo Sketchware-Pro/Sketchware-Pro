@@ -1,5 +1,6 @@
 package mod.jbk.editor.manage.library;
 
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -28,6 +29,8 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -264,6 +267,21 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         aB dialog = new aB(this);
         dialog.b("Select built-in libraries");
         RecyclerView list = new RecyclerView(this);
+
+        // magic to initialize scrollbars even without android:scrollbars defined in XML
+        // https://stackoverflow.com/a/48698300/10929762
+        TypedArray typedArray = obtainStyledAttributes(null, new int[0]);
+        try {
+            //noinspection JavaReflectionMemberAccess
+            Method method = View.class.getDeclaredMethod("initializeScrollbars", TypedArray.class);
+            method.setAccessible(true);
+            method.invoke(list, typedArray);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            LogUtil.e(TAG, "Couldn't add scrollbars to RecyclerView", e);
+        }
+        typedArray.recycle();
+        list.setVerticalScrollBarEnabled(true);
+
         list.setLayoutManager(new LinearLayoutManager(null));
         BuiltInLibraryAdapter adapter = new BuiltInLibraryAdapter(excludedLibraries);
         list.setAdapter(adapter);
