@@ -25,14 +25,14 @@ or use the appropriate build Gradle command.
 
 | Class | Role |
 | ----- | ---- |
-| `a.a.a.Dp` | Helper for compiling an entire project |
-| `a.a.a.Ix` | Responsible for generating AndroidManifest.xml |
-| `a.a.a.Jx` | Generates source code of activities |
+| `a.a.a.Dp` | Helper for compiling an entire project. |
+| `a.a.a.Ix` | Responsible for generating AndroidManifest.xml.|
+| `a.a.a.Jx` | Generates source code of activities.|
 | `a.a.a.Lx` | Generates source code of components, such as listeners, etc. |
-| `a.a.a.Ox` | Responsible for generating XML files of layouts |
-| `a.a.a.qq` | Registry of built-in libraries' dependencies |
-| `a.a.a.tq` | Responsible for the compiling dialog's quizzes |
-| `a.a.a.yq` | Organizes Sketchware projects' file paths |
+| `a.a.a.Ox` | Responsible for generating XML files of layouts.|
+| `a.a.a.qq` | Registry of built-in libraries' dependencies.|
+| `a.a.a.tq` | Responsible for the compiling dialog's quizzes.|
+| `a.a.a.yq` | Organizes Sketchware projects' file paths.|
 
 You can also check the `mod` package that has the majority of contributors' changes.
 
@@ -56,8 +56,8 @@ be thoroughly reviewed.
 
 ### What changes we'll (most likely) not accept
 
-Most changes might be UI-related, and we think it's more or less a waste of time. If something design-related gets changed,
-ideally the whole app must follow the new style too, and that's hard to accomplish, especially for mods. That's why:
+Most changes might be UI-related, and we think it is more or less waste of time. If a something design-related gets changed,
+ideally the whole app must follow the new style too, and that is hard to accomplish, especially for mods. That's why:
 
 - Major changes to the UI (components which exist in vanilla Sketchware) are unlikely to be accepted.
 
@@ -85,7 +85,7 @@ Examples:
 
 
 ## Thanks for contributing
-They help keeping Sketchware Pro alive. Each (helpful) accepted contribution will get noted down in the "About Modders" activity. We'll use your GitHub name and profile picture initially, but they can be
+They help keeping Sketchware Pro alive. Each (helpful) accepted contribution will get noted down in the "About Modders" activity. We'll use your GitHub name and a profile picture initially, but they can be
 changed of course.
 
 ## Discord
@@ -94,11 +94,11 @@ Wanna chat with us, talk about changes, or just hang out? We have a Discord serv
 [![Join our Discord server!](https://invidget.switchblade.xyz/kq39yhT4rX)](http://discord.gg/kq39yhT4rX)
 
 ## Disclaimer
-This mod was not meant for any harmful purposes, such as harming Sketchware; Quite the opposite actually.
+This mod was not meant for any harmful purposes, such as harming Sketchware; Quite the opposite, actually.
 It was made to keep Sketchware alive by the community for the community. Please use it at your own discretion
-and be a Patreon backer of them, for example. Sadly, all other ways to support them aren't working anymore,
-so it's the only way available currently.
+and be a Patreon backer of them, for an example. Sadly, all other ways to support them are not working anymore,
+so it is the only way available currently.
 [Here's their Patreon page.](https://www.patreon.com/sketchware)
 
-We love Sketchware very much, and we are grateful to Sketchware's developers for making such an amazing app, but unfortunately, we haven't received updates for a long time.
-That's why we decided to keep Sketchware alive by making this mod, plus we don't demand any money, it's completely free :)
+We love Sketchware very much, and we are grateful to Sketchware's developers for making such an amazing app, but unfortunately, we have not received updates for long time.
+That is why we decided to keep Sketchware alive by making this mod, plus we do not demand any money, it is completely free :).
