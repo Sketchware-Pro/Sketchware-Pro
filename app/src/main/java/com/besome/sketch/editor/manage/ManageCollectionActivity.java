@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -50,6 +51,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
@@ -71,7 +73,9 @@ import a.a.a.ef;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
+import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.LogUtil;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -212,7 +216,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             target.setBackgroundResource(R.drawable.bg_outline_album);
         }
 
-        metadataRetriever.release();
+        try {
+            metadataRetriever.release();
+        } catch (IOException e) {
+            String message = "Couldn't close file " + filePath;
+            LogUtil.e("ManageCollectionActivity", message, e);
+            SketchwareUtil.toastError(message, Toast.LENGTH_LONG);
+        }
     }
 
     private void stopMusicPlayback(ArrayList<ProjectResourceBean> sounds) {
