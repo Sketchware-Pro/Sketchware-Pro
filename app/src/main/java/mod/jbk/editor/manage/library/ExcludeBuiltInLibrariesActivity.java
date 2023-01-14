@@ -77,6 +77,11 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back);
+        ImageView reset = findViewById(R.id.ig_toolbar_load_file);
+        reset.setImageResource(R.drawable.ic_restore_white);
+        reset.setVisibility(View.VISIBLE);
+        reset.setOnClickListener(this);
+        Helper.applyRippleToToolbarView(reset);
 
         TextView enable = findViewById(R.id.tv_enable);
         enable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
@@ -132,6 +137,8 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
             showSelectBuiltInLibrariesDialog();
         } else if (id == R.id.layout_switch) {
             enabled.setChecked(!enabled.isChecked());
+        } else if (id == R.id.ig_toolbar_load_file) {
+            showResetDialog();
         }
     }
 
@@ -158,6 +165,22 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
             libraries = "None selected. Tap here to configure.";
         }
         preview.setText(libraries);
+    }
+
+    private void showResetDialog() {
+        aB dialog = new aB(this);
+        dialog.a(R.drawable.rollback_96);
+        dialog.b(Helper.getResString(R.string.common_word_reset));
+        dialog.a("Reset excluded built-in libraries? This action cannot be undone.");
+        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
+            saveConfig(sc_id, false, Collections.emptyList());
+            enabled.setChecked(false);
+            excludedLibraries = Collections.emptyList();
+            refreshPreview();
+            dialog.dismiss();
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     private static File getConfigPath(String sc_id) {
