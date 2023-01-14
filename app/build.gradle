@@ -4,8 +4,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdk 33
+    buildToolsVersion "33.0.1"
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
 
