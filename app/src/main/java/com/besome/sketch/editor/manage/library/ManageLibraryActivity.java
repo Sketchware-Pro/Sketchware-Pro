@@ -27,6 +27,7 @@ import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -49,9 +50,15 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private String originalGoogleMapUseYn = "N";
 
     private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
-        LibraryItemView libraryItemView = new LibraryItemView(this);
+        LibraryItemView libraryItemView;
+        if (libraryBean != null) {
+            libraryItemView = new LibraryItemView(this);
+        } else {
+            libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
+        }
         libraryItemView.a(R.layout.manage_library_common_item);
         libraryItemView.setTag(libraryBean != null ? libraryBean.libType : null);
+        //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
         libraryItemView.setData(libraryBean);
         libraryItemView.setOnClickListener(this);
         libraryItemLayout.addView(libraryItemView);
