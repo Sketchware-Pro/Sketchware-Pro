@@ -1,5 +1,8 @@
 package mod.jbk.build;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.SketchApplication;
@@ -485,7 +488,7 @@ public class BuiltInLibraries {
         }
     }
 
-    public static class BuiltInLibrary {
+    public static class BuiltInLibrary implements Parcelable {
         private final String name;
         private final List<String> dependencyNames;
         private final String packageName;
@@ -516,6 +519,25 @@ public class BuiltInLibraries {
             this(name, List.of());
         }
 
+        protected BuiltInLibrary(Parcel in) {
+            name = in.readString();
+            dependencyNames = in.createStringArrayList();
+            packageName = in.readString();
+            hasResources = in.readInt() != 0;
+        }
+
+        public static final Creator<BuiltInLibrary> CREATOR = new Creator<>() {
+            @Override
+            public BuiltInLibrary createFromParcel(Parcel in) {
+                return new BuiltInLibrary(in);
+            }
+
+            @Override
+            public BuiltInLibrary[] newArray(int size) {
+                return new BuiltInLibrary[size];
+            }
+        };
+
         public String getName() {
             return name;
         }
@@ -540,6 +562,19 @@ public class BuiltInLibraries {
                     ", packageName='" + packageName + '\'' +
                     ", hasResources=" + hasResources +
                     '}';
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(name);
+            dest.writeStringList(dependencyNames);
+            dest.writeString(packageName);
+            dest.writeBoolean(hasResources);
         }
     }
 }
