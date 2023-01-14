@@ -34,8 +34,10 @@ public class LibraryItemView extends CardView {
         LayoutParams layoutParams = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.leftMargin = (int) wB.a(context, 8f);
         layoutParams.topMargin = (int) wB.a(context, 4f);
         layoutParams.bottomMargin = (int) wB.a(context, 4f);
+        layoutParams.rightMargin = (int) wB.a(context, 8f);
         setLayoutParams(layoutParams);
     }
 
