@@ -27,6 +27,7 @@ import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -215,7 +216,10 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                         break;
                 }
             } else {
-                SketchwareUtil.toast("TODO");
+                Intent intent = new Intent(getApplicationContext(), ExcludeBuiltInLibrariesActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("sc_id", sc_id);
+                startActivity(intent); // TODO: handle result code
             }
         }
     }

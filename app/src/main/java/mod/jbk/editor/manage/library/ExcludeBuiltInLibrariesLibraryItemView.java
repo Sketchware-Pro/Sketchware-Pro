@@ -18,10 +18,11 @@ public class ExcludeBuiltInLibrariesLibraryItemView extends LibraryItemView {
 
     @Override
     public void setData(@Nullable ProjectLibraryBean projectLibraryBean) {
+        boolean excludingEnabled = ExcludeBuiltInLibrariesActivity.isExcludingEnabled(sc_id);
         icon.setImageResource(R.drawable.ic_detail_setting_48dp);
-        title.setText("(Advanced) Exclude built-in libraries");
-        description.setText("Use custom Library versions");
-        enabled.setText(false ? "ON" : "OFF");
-        enabled.setSelected(false);
+        title.setText(ExcludeBuiltInLibrariesActivity.getItemTitle());
+        description.setText(ExcludeBuiltInLibrariesActivity.getItemDescription());
+        enabled.setText(excludingEnabled ? "ON" : "OFF");
+        enabled.setSelected(excludingEnabled);
     }
 }

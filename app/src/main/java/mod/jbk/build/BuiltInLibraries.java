@@ -538,6 +538,16 @@ public class BuiltInLibraries {
             }
         };
 
+        public static Optional<BuiltInLibrary> ofName(String name) {
+            for (BuiltInLibrary builtInLibrary : KNOWN_BUILT_IN_LIBRARIES) {
+                if (builtInLibrary.getName().equals(name)) {
+                    return Optional.of(builtInLibrary);
+                }
+            }
+
+            return Optional.empty();
+        }
+
         public String getName() {
             return name;
         }
