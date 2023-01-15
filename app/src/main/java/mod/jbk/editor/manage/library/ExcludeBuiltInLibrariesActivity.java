@@ -256,7 +256,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
     }
 
     public static String getItemTitle() {
-        return "(Advanced) Exclude built-in libraries";
+        return "Exclude built-in libraries";
     }
 
     public static String getDefaultItemDescription() {

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -61,6 +63,13 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
         libraryItemView.setData(libraryBean);
         libraryItemView.setOnClickListener(this);
+
+        if (libraryItemView instanceof ExcludeBuiltInLibrariesLibraryItemView) {
+            TextView title = findViewById(R.id.title);
+            title.setText("Advanced");
+            ((ViewGroup) title.getParent()).removeView(title);
+            libraryItemLayout.addView(title);
+        }
         libraryItemLayout.addView(libraryItemView);
     }
 
