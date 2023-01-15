@@ -259,8 +259,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         return "(Advanced) Exclude built-in libraries";
     }
 
-    public static String getItemDescription() {
+    public static String getDefaultItemDescription() {
         return "Use custom Library versions";
+    }
+
+    public static String getSelectedLibrariesItemDescription() {
+        return "%1$d/%2$d built-in libraries excluded";
     }
 
     private void showSelectBuiltInLibrariesDialog() {
