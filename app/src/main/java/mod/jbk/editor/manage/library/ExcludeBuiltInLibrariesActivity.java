@@ -52,7 +52,7 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 
 public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "ExcludeBuiltInLibrariesActivity";
+    private static final String TAG = "ExcludeBuiltInLibraries";
 
     private Switch enabled;
     private TextView preview;
