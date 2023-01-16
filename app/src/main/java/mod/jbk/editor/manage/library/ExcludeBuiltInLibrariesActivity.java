@@ -376,7 +376,9 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
 
             View.OnClickListener selectingListener = v -> {
                 CheckBox selected = holder.selected;
-                selected.setChecked(!selected.isChecked());
+                if (v.getId() != R.id.chk_select) {
+                    selected.setChecked(!selected.isChecked());
+                }
 
                 if (selected.isChecked()) {
                     checkedIndices.put(position, null);
