@@ -24,7 +24,7 @@ public class ExcludeBuiltInLibrariesLibraryItemView extends LibraryItemView {
     public void setData(@Nullable ProjectLibraryBean projectLibraryBean) {
         boolean excludingEnabled = ExcludeBuiltInLibrariesActivity.isExcludingEnabled(sc_id);
         List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(sc_id);
-        icon.setImageResource(R.drawable.ic_detail_setting_48dp);
+        icon.setImageResource(ExcludeBuiltInLibrariesActivity.getItemIcon());
         title.setText(ExcludeBuiltInLibrariesActivity.getItemTitle());
         description.setText(
                 !excludingEnabled ? ExcludeBuiltInLibrariesActivity.getDefaultItemDescription()
