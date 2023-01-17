@@ -288,6 +288,8 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
 
         list.setLayoutManager(new LinearLayoutManager(null));
         BuiltInLibraryAdapter adapter = new BuiltInLibraryAdapter(excludedLibraries);
+        // replacement for RecyclerView.Adapter#setHasStableIds(boolean)
+        adapter.b = true;
         list.setAdapter(adapter);
         dialog.a(list);
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -352,6 +354,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         // RecyclerView.Adapter#getItemCount()
         public int a() {
             return libraries.size();
+        }
+
+        @Override
+        // RecyclerView.Adapter#getItemId(int)
+        public long a(int position) {
+            return position;
         }
 
         @Override
