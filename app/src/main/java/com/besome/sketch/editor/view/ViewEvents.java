@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,10 +52,10 @@ public class ViewEvents extends LinearLayout {
         eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(0);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         eventsList.setLayoutManager(linearLayoutManager);
         eventsList.setAdapter(new EventAdapter());
-        eventsList.setItemAnimator(new ci());
+        eventsList.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void setOnEventClickListener(Qs listener) {
@@ -98,9 +99,9 @@ public class ViewEvents extends LinearLayout {
         }
     }
 
-    private class EventAdapter extends RecyclerView.a<EventAdapter.ViewHolder> {
+    private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout container;
             public final ImageView icon;
             public final ImageView addAvailableIcon;
@@ -117,8 +118,7 @@ public class ViewEvents extends LinearLayout {
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             EventBean eventBean = events.get(position);
             if (eventBean.isSelected) {
                 holder.addAvailableIcon.setVisibility(View.GONE);
@@ -132,14 +132,12 @@ public class ViewEvents extends LinearLayout {
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.event_grid_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return events.size();
         }
     }

@@ -218,7 +218,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         tvRewardName = findViewById(R.id.tv_reward_name);
 
         RecyclerView listTestDevice = findViewById(R.id.list_test_device);
-        listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+        listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         testDeviceAdapter = new TestDeviceAdapter();
         listTestDevice.setAdapter(testDeviceAdapter);
 
@@ -308,28 +308,25 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         testDeviceAdapter.notifyDataSetChanged();
     }
 
-    private class TestDeviceAdapter extends RecyclerView.a<TestDeviceAdapter.ViewHolder> {
+    private class TestDeviceAdapter extends RecyclerView.Adapter<TestDeviceAdapter.ViewHolder> {
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return testDeviceList.size();
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             holder.tvDeviceId.setText(testDeviceList.get(position).deviceId);
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             private final TextView tvDeviceId;
 

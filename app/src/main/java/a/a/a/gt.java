@@ -140,12 +140,12 @@ public class gt extends LinearLayout {
         allVariablesWithCategoryIndex.put(1, viewsVariableList);
         allVariablesWithCategoryIndex.put(2, componentsVariableList);
         varTypeCategory.setHasFixedSize(true);
-        varTypeCategory.setLayoutManager(new LinearLayoutManager(activity, 1, false));
+        varTypeCategory.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.VERTICAL, false));
         categoryItemAdapter = new CategoryItemAdapter();
         categoryItemAdapter.setData(allVariablesWithCategoryIndex);
         varTypeCategory.setAdapter(categoryItemAdapter);
         varTypeList.setHasFixedSize(true);
-        varTypeList.setLayoutManager(new LinearLayoutManager(activity, 1, false));
+        varTypeList.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.VERTICAL, false));
         variableItemAdapter = new VariableItemAdapter();
         varTypeList.setAdapter(variableItemAdapter);
         categoryItemAdapter.layoutPosition = 0;
@@ -201,7 +201,7 @@ public class gt extends LinearLayout {
         return new Pair<>(selectedVariableItem.type, selectedVariableItem.name);
     }
 
-    private class CategoryItemAdapter extends RecyclerView.a<CategoryItemAdapter.ViewHolder> {
+    private class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapter.ViewHolder> {
         private HashMap<Integer, ArrayList<VariableItem>> categories;
         private int layoutPosition;
 
@@ -210,14 +210,12 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return categories.size();
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             if (position != 0) {
                 if (position != 1) {
                     if (position == 2) {
@@ -246,12 +244,11 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.var_type_category, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout container;
             public final ImageView icon;
             public final TextView name;
@@ -284,18 +281,16 @@ public class gt extends LinearLayout {
         }
     }
 
-    private class VariableItemAdapter extends RecyclerView.a<VariableItemAdapter.ViewHolder> {
+    private class VariableItemAdapter extends RecyclerView.Adapter<VariableItemAdapter.ViewHolder> {
         private ArrayList<VariableItem> variables;
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return variables.size();
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             VariableItem variableItem = variables.get(position);
             viewHolder.name.setText(getTypeName(variableItem.type, variableItem.name));
             viewHolder.icon.setImageResource(variableItem.icon);
@@ -306,12 +301,11 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(wB.a(getContext(), R.layout.var_type_spinner_item));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final TextView name;
             public final ImageView icon;
 

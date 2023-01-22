@@ -104,13 +104,10 @@ public class AboutModActivity extends AppCompatActivity {
         rippleRound(back, "#ffffff", "#1F000000", 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        // RecyclerView$OnScrollListener got obfuscated to RecyclerView$m
-        class OnScrollListener extends RecyclerView.m {
+        class OnScrollListener extends RecyclerView.OnScrollListener {
 
-            // RecyclerView$OnScrollListener.onScrolled(RecyclerView, int, int) got
-            // obfuscated to RecyclerView$m.a(RecyclerView, int, int)
             @Override
-            public void a(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 8) {
                     fabLabel.setVisibility(View.GONE);
                 } else if (dy < -8) {
@@ -395,10 +392,7 @@ public class AboutModActivity extends AppCompatActivity {
         }
     }
 
-    // RecyclerView$Adapter<T extends RecyclerView.ViewHolder> got obfuscated to
-    // RecyclerView$a<VH extends RecyclerView.v>
-    // VH stands for ViewHolder?
-    private class ModdersRecyclerAdapter extends RecyclerView.a<ModdersRecyclerAdapter.ViewHolder> {
+    private class ModdersRecyclerAdapter extends RecyclerView.Adapter<ModdersRecyclerAdapter.ViewHolder> {
 
         private final ArrayList<HashMap<String, Object>> modders;
 
@@ -406,10 +400,8 @@ public class AboutModActivity extends AppCompatActivity {
             modders = data;
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onCreateViewHolder(ViewGroup, int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = getLayoutInflater().inflate(R.layout.about_moddersview, null);
             v.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -417,12 +409,9 @@ public class AboutModActivity extends AppCompatActivity {
             return new ViewHolder(v);
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @Override
-        public void b(ViewHolder holder, int position) {
-            // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
-            View itemView = holder.b;
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            View itemView = holder.itemView;
 
             TextView title = itemView.findViewById(R.id.tv_title);
             LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
@@ -480,14 +469,12 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
-        // to RecyclerView$a<VH extends RecyclerView.v>.a()
         @Override
-        public int a() {
+        public int getItemCount() {
             return modders.size();
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public ViewHolder(View v) {
                 super(v);
@@ -495,10 +482,7 @@ public class AboutModActivity extends AppCompatActivity {
         }
     }
 
-    // RecyclerView$Adapter<T extends RecyclerView.ViewHolder> got obfuscated to
-    // RecyclerView$a<VH extends RecyclerView.v>
-    // VH stands for ViewHolder?
-    private class ChangelogRecyclerAdapter extends RecyclerView.a<ChangelogRecyclerAdapter.ViewHolder> {
+    private class ChangelogRecyclerAdapter extends RecyclerView.Adapter<ChangelogRecyclerAdapter.ViewHolder> {
 
         private static final String CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO = "showingAdditionalInfo";
         private final ArrayList<HashMap<String, Object>> changelog;
@@ -507,10 +491,8 @@ public class AboutModActivity extends AppCompatActivity {
             changelog = data;
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onCreateViewHolder(ViewGroup, int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, null);
             aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -519,13 +501,10 @@ public class AboutModActivity extends AppCompatActivity {
             return new ViewHolder(aboutChangelog);
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @SuppressLint("SetTextI18n")
         @Override
-        public void b(ViewHolder holder, int position) {
-            // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
-            View itemView = holder.b;
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            View itemView = holder.itemView;
 
             //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
             //get less lazy when.
@@ -648,14 +627,12 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
-        // to RecyclerView$a<VH extends RecyclerView.v>.a()
         @Override
-        public int a() {
+        public int getItemCount() {
             return changelog.size();
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public ViewHolder(View v) {
                 super(v);

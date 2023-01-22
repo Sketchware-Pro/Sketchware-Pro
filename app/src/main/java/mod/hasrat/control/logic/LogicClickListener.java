@@ -359,7 +359,7 @@ public class LogicClickListener implements View.OnClickListener {
         return editText;
     }
 
-    private static class RemoveAdapter extends RecyclerView.a<RecyclerView.v> {
+    private static class RemoveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final Context context;
         private final List<Item> data;
         private final Function<String, Boolean> isInUseChecker;
@@ -374,14 +374,12 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return data.size();
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public RecyclerView.v b(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == Item.TYPE_TITLE) {
                 TextView textView = new TextView(context);
                 textView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -407,8 +405,7 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(RecyclerView.v holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             Item item = data.get(position);
             int viewType = holder.getItemViewType();
 
@@ -437,12 +434,11 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         @Override
-        // RecyclerView.Adapter#getItemViewType(int)
-        public int b(int position) {
+        public int getItemViewType(int position) {
             return data.get(position).type;
         }
 
-        private static class CheckBoxHolder extends RecyclerView.v {
+        private static class CheckBoxHolder extends RecyclerView.ViewHolder {
             public final CheckBox checkBox;
 
             public CheckBoxHolder(View itemView) {
@@ -451,7 +447,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
         }
 
-        private static class TitleHolder extends RecyclerView.v {
+        private static class TitleHolder extends RecyclerView.ViewHolder {
             public final TextView title;
 
             public TitleHolder(View itemView) {

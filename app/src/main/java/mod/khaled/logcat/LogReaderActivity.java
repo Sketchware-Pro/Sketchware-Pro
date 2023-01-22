@@ -125,7 +125,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     menuItem.setChecked(!menuItem.isChecked());
                     autoScroll = menuItem.isChecked();
                     if (autoScroll) {
-                        ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(recyclerview.getAdapter().a() - 1);
+                        recyclerview.getLayoutManager().scrollToPosition(recyclerview.getAdapter().getItemCount() - 1);
                     }
                     break;
                 }
@@ -237,7 +237,7 @@ public class LogReaderActivity extends AppCompatActivity {
         unregisterReceiver(logger);
     }
 
-    private class Adapter extends RecyclerView.a<Adapter.ViewHolder> {
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         private final ArrayList<HashMap<String, Object>> data;
 
@@ -260,7 +260,7 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             final LinearLayout _v = new LinearLayout(LogReaderActivity.this);
             _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             _v.setOrientation(LinearLayout.VERTICAL);
@@ -335,7 +335,7 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public void b(ViewHolder holder, final int position) {
+        public void onBindViewHolder(ViewHolder holder, final int position) {
             if (data.get(position).containsKey("pkgName")) {
                 holder.packageName.setText(data.get(position).get("pkgName").toString());
                 holder.packageName.setVisibility(View.VISIBLE);
@@ -418,11 +418,11 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return data.size();
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             public final LinearLayout root;
             public final LinearLayout divider;

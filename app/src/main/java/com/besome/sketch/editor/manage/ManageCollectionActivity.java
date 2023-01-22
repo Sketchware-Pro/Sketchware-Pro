@@ -312,7 +312,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void deleteSelectedToBeDeletedItems() {
-        for (int i = 0; i < categoryAdapter.a(); i++) {
+        for (int i = 0; i < categoryAdapter.getItemCount(); i++) {
             switch (i) {
                 case 0:
                     for (ProjectResourceBean bean : images) {
@@ -420,7 +420,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (mediaPlayer == null) {
                         soundPlaybackTimeCounter.cancel();
                     } else {
-                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.d(position);
+                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.findViewHolderForAdapterPosition(position);
                         int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
                         viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
                         viewHolder.playbackProgress.setProgress(mediaPlayer.getCurrentPosition() / 1000);
@@ -447,9 +447,10 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         noItemsNote.setText(Helper.getResString(R.string.event_message_no_events));
         RecyclerView categories = findViewById(R.id.category_list);
         categories.setHasFixedSize(true);
-        categories.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+        categories.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         // ((androidx.recyclerview.widget.SimpleItemAnimator) …).setSupportsChangeAnimations(false);
-        ((Bi) categories.getItemAnimator()).a(false);
+        //TODO: do this
+        //((Bi) categories.getItemAnimator()).a(false); need inspection
         categoryAdapter = new CategoryAdapter();
         categories.setAdapter(categoryAdapter);
         collection = findViewById(R.id.collection_list);
@@ -532,8 +533,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (collectionAdapter.currentViewType == 0) {
-            // GridLayoutManager#setSpanCount(int)
-            ((GridLayoutManager) collection.getLayoutManager()).d(getGridLayoutColumnCount());
+            ((GridLayoutManager) collection.getLayoutManager()).setSpanCount(getGridLayoutColumnCount());
             collection.requestLayout();
         }
     }
@@ -730,7 +730,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private class CategoryAdapter extends RecyclerView.a<CategoryAdapter.ViewHolder> {
+    private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
         private int currentItemId;
 
@@ -739,14 +739,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return 6;
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(CategoryAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(CategoryAdapter.ViewHolder holder, int position) {
             holder.name.setText(ManageCollectionActivity.getCategoryLabel(getApplicationContext(), position));
             holder.icon.setImageResource(ManageCollectionActivity.getCategoryIcon(position));
             ef var3;
@@ -792,12 +790,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public CategoryAdapter.ViewHolder b(ViewGroup parent, int viewType) {
+        public CategoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             public final ImageView icon;
             public final TextView name;
@@ -855,7 +852,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             // FloatingActionButton#show()
                             fab.show();
                         } else {
-                            collection.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+                            collection.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                             if (collectionAdapter.currentViewType != 1 && collectionAdapter.currentViewType != 2) {
                                 fab.hide();
                             } else {
@@ -870,7 +867,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private class CollectionAdapter extends RecyclerView.a<RecyclerView.v> {
+    private class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private int lastSelectedItemPosition;
         private int currentViewType;
@@ -879,11 +876,10 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         public CollectionAdapter(RecyclerView target) {
             lastSelectedItemPosition = -1;
             currentViewType = -1;
-            target.addOnScrollListener(new RecyclerView.m() {
+            target.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
-                public void a(RecyclerView recyclerView, int dx, int dy) {
-                    super.a(recyclerView, dx, dy);
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
                     if (currentViewType == 3 || currentViewType == 4 || currentViewType == 5) {
                         return;
                     }
@@ -901,8 +897,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return currentCollectionTypeItems.size();
         }
 
@@ -1122,8 +1117,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        // RecyclerView.Adapter#getItemViewType(int)
-        public int b(int position) {
+        public int getItemViewType(int position) {
             position = currentViewType;
 
             if (position == 0) {
@@ -1142,8 +1136,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public RecyclerView.v b(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType) {
                 case 0:
                     return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
@@ -1166,9 +1159,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(RecyclerView.v holder, int position) {
-            // RecyclerView.ViewHolder#getItemViewType()
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             int viewType = holder.getItemViewType();
 
             switch (viewType) {
@@ -1198,7 +1189,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class BlockCollectionViewHolder extends RecyclerView.v {
+        private class BlockCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final CardView cardView;
             public final CheckBox checkBox;
@@ -1236,7 +1227,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class FontCollectionViewHolder extends RecyclerView.v {
+        private class FontCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final CardView cardView;
             public final CheckBox checkBox;
@@ -1278,7 +1269,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class ImageCollectionViewHolder extends RecyclerView.v {
+        private class ImageCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final CheckBox checkBox;
             public final TextView name;
@@ -1316,7 +1307,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class MoreBlockCollectionViewHolder extends RecyclerView.v {
+        private class MoreBlockCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final CardView cardView;
             public final CheckBox checkBox;
@@ -1354,7 +1345,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class SoundCollectionViewHolder extends RecyclerView.v {
+        private class SoundCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final ProgressBar playbackProgress;
             public final TextView totalDuration;
@@ -1458,7 +1449,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class WidgetCollectionViewHolder extends RecyclerView.v {
+        private class WidgetCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final CardView cardView;
             public final CheckBox checkBox;

@@ -256,7 +256,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             events.get(categoryAdapter.index).remove(eventAdapter.lastSelectedItem);
             eventAdapter.notifyItemRemoved(eventAdapter.lastSelectedItem);
-            eventAdapter.notifyItemRangeChanged(eventAdapter.lastSelectedItem, eventAdapter.a());
+            eventAdapter.notifyItemRangeChanged(eventAdapter.lastSelectedItem, eventAdapter.getItemCount());
         }
     }
 
@@ -279,20 +279,21 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         noEvents.setVisibility(View.GONE);
         noEvents.setText(xB.b().a(getContext(), R.string.event_message_no_events));
         eventList.setHasFixedSize(true);
-        eventList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        eventList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         categoryList.setHasFixedSize(true);
-        categoryList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        ((Bi) categoryList.getItemAnimator()).a(false);
+        categoryList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        //TODO: do this
+        //((Bi) categoryList.getItemAnimator()).a(false);
         categoryAdapter = new CategoryAdapter();
         categoryList.setAdapter(categoryAdapter);
         eventAdapter = new EventAdapter();
         eventList.setAdapter(eventAdapter);
         fab.setOnClickListener(this);
-        eventList.addOnScrollListener(new RecyclerView.m() {
+        eventList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
-            public void a(RecyclerView recyclerView, int dx, int dy) {
-                super.a(recyclerView, dx, dy);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
                 if (dy > 2) {
                     if (fab.isEnabled()) {
                         fab.hide();
@@ -583,7 +584,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
         events.get(categoryAdapter.index).remove(eventAdapter.lastSelectedItem);
         eventAdapter.notifyItemRemoved(eventAdapter.lastSelectedItem);
-        eventAdapter.notifyItemRangeChanged(eventAdapter.lastSelectedItem, eventAdapter.a());
+        eventAdapter.notifyItemRangeChanged(eventAdapter.lastSelectedItem, eventAdapter.getItemCount());
     }
 
     private void copyImageFromCollectionsToProject(String imageName) {
@@ -708,12 +709,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         refreshEvents();
     }
 
-    private class CategoryAdapter extends RecyclerView.a<CategoryAdapter.ViewHolder> {
+    private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
         private int index = -1;
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             holder.name.setText(rs.a(getContext(), position));
             holder.icon.setImageResource(rs.a(position));
             if (index == position) {
@@ -754,18 +754,16 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return events.size();
         }
 
-        private class ViewHolder extends RecyclerView.v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public final ImageView icon;
             public final TextView name;
             public final View pointerLeft;
@@ -795,19 +793,17 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
     }
 
-    private class EventAdapter extends RecyclerView.a<EventAdapter.ViewHolder> {
+    private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
         private int lastSelectedItem = -1;
         private ArrayList<EventBean> currentCategoryEvents = new ArrayList<>();
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return currentCategoryEvents.size();
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             EventBean eventBean = currentCategoryEvents.get(position);
             holder.targetType.setVisibility(View.VISIBLE);
             holder.previewContainer.setVisibility(View.VISIBLE);
@@ -884,12 +880,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final ImageView menu;
             public final ImageView preview;
             public final LinearLayout previewContainer;

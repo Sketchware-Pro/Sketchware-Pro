@@ -91,7 +91,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         tvWarning = findViewById(R.id.tv_warning);
 
         RecyclerView listAdUnit = findViewById(R.id.list_ad_unit);
-        listAdUnit.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        listAdUnit.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adUnitsAdapter = new AdUnitsAdapter();
         listAdUnit.setAdapter(adUnitsAdapter);
     }
@@ -129,9 +129,9 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         adUnitsAdapter.notifyDataSetChanged();
     }
 
-    private class AdUnitsAdapter extends RecyclerView.a<AdUnitsAdapter.ViewHolder> {
+    private class AdUnitsAdapter extends RecyclerView.Adapter<AdUnitsAdapter.ViewHolder> {
         @Override
-        public int a() {
+        public int getItemCount() {
             if (adUnitBeanArrayList.size() == 0) {
                 tvWarning.setVisibility(View.VISIBLE);
             } else {
@@ -142,18 +142,18 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             AdUnitBean adUnitBean = adUnitBeanArrayList.get(position);
             viewHolder.tvName.setText(adUnitBean.name);
             viewHolder.tvUnitId.setText(adUnitBean.id);
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_adunit_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final TextView tvName;
             public final TextView tvUnitId;
             public final ImageView imgDelete;

@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.v;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
@@ -313,7 +313,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ProjectsAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new ci());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadProjects();
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
@@ -348,17 +348,17 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.show();
     }
 
-    private class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
+    private class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
         private int selectedProjectIndex = -1;
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return projects.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projects.get(position);
             String projectSc_id = yB.c(projectMap, "sc_id");
             String iconDir = wq.e() + File.separator + projectSc_id;
@@ -383,11 +383,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        private class ViewHolder extends v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final CircleImageView icon;
             private final TextView projectName;

@@ -449,32 +449,28 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         dialog.show();
     }
 
-    // RecyclerView$Adapter<VH extends RecyclerView$ViewHolder> got obfuscated to RecyclerView$a<VH extends RecyclerView$v>
-    private class ComponentsAdapter extends RecyclerView.a<ComponentsAdapter.ViewHolder> {
+    private class ComponentsAdapter extends RecyclerView.Adapter<ComponentsAdapter.ViewHolder> {
 
         private int layoutPosition = -1;
         private RecyclerView recyclerView;
 
         @Override
-        // RecyclerView.Adapter#getItemId(int)
-        public long a(int position) {
+        public long getItemId(int position) {
             return position;
         }
 
         @Override
-        // RecyclerView.Adapter#onAttachedToRecyclerView(RecyclerView)
-        public void a(RecyclerView recyclerView) {
-            super.a(recyclerView);
+        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
             this.recyclerView = recyclerView;
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             String componentName = ComponentBean.getComponentName(getApplicationContext(), componentList.get(position).type);
-            holder.b.setAlpha(1.0f);
-            holder.b.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-            holder.b.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+            holder.itemView.setAlpha(1.0f);
+            holder.itemView.setTranslationX(LayoutParams.FLEX_GROW_DEFAULT);
+            holder.itemView.setTranslationY(LayoutParams.FLEX_GROW_DEFAULT);
             holder.itemName.setAlpha(1.0f);
             holder.itemName.setText(componentName);
             holder.itemIcon.setImageResource(ComponentBean.getIconResource(componentList.get(position).type));
@@ -487,7 +483,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                         .setDuration(100)
                         .alpha(FlexItem.FLEX_GROW_DEFAULT)
                         .start();
-                holder.b.animate()
+                holder.itemView.animate()
                         .setStartDelay(300)
                         .translationX((float) (-pair.first))
                         .translationY((float) (-pair.second))
@@ -502,14 +498,13 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                         }).start();
                 return;
             }
-            holder.b.animate()
+            holder.itemView.animate()
                     .alpha(FlexItem.FLEX_GROW_DEFAULT)
                     .start();
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = wB.a(parent.getContext(), R.layout.component_add_item);
             int lengthAndWidth = (int) wB.a(parent.getContext(), 76.0f);
             itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
@@ -517,12 +512,11 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return componentList.size();
         }
 
-        private class ViewHolder extends RecyclerView.v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final ImageView itemIcon;
             private final TextView itemName;

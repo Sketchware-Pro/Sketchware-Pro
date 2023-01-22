@@ -244,16 +244,16 @@ public class Fw extends qA {
         super.onSaveInstanceState(newState);
     }
 
-    public class ProjectFilesAdapter extends RecyclerView.a<ProjectFilesAdapter.ViewHolder> {
+    public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapter.ViewHolder> {
         public int layoutPosition;
 
         public ProjectFilesAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    public void a(RecyclerView recyclerView, int i, int i1) {
-                        super.a(recyclerView, i, i1);
+                    public void onScrolled(RecyclerView recyclerView, int i, int i1) {
+                        super.onScrolled(recyclerView, i, i1);
                         if (i1 > 2) {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
                                 ((ManageViewActivity) getActivity()).s.hide();
@@ -268,12 +268,12 @@ public class Fw extends qA {
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return activitiesFiles != null ? activitiesFiles.size() : 0;
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             viewHolder.imgActivity.setVisibility(View.VISIBLE);
             viewHolder.deleteImgContainer.setVisibility(View.GONE);
             if (position == 0) {
@@ -298,7 +298,7 @@ public class Fw extends qA {
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_view_list_item, parent, false));
         }
 
@@ -308,7 +308,7 @@ public class Fw extends qA {
             return resources.getIdentifier("activity_" + option, "drawable", getContext().getPackageName());
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public ImageView imgPresetSettingd;
             public CheckBox checkBox;

@@ -182,7 +182,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         availableFilesDialog.a(R.drawable.java_96);
         View customView = wB.a(getContext(), R.layout.file_selector_popup_select_java);
         RecyclerView recyclerView = customView.findViewById(R.id.file_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(new JavaFileAdapter());
         availableFilesDialog.a(customView);
         availableFilesDialog.show();
@@ -214,9 +214,9 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         ((Activity) getContext()).startActivityForResult(intent, 263);
     }
 
-    private class JavaFileAdapter extends RecyclerView.a<JavaFileAdapter.ViewHolder> {
+    private class JavaFileAdapter extends RecyclerView.Adapter<JavaFileAdapter.ViewHolder> {
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final TextView javaFileName;
             public final TextView xmlFileName;
 
@@ -237,8 +237,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             holder.javaFileName.setVisibility(View.VISIBLE);
             holder.xmlFileName.setVisibility(View.VISIBLE);
             ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
@@ -249,14 +248,12 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return jC.b(sc_id).b().size();
         }
     }

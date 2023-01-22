@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.MA;
-import a.a.a.ci;
 import a.a.a.gB;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -106,7 +106,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         myProjects.setLayoutManager(new LinearLayoutManager(getContext()));
         projectsAdapter = new ProjectsAdapter(myProjects);
         myProjects.setAdapter(projectsAdapter);
-        myProjects.setItemAnimator(new ci());
+        myProjects.setItemAnimator(new DefaultItemAnimator());
 
         cvCreateNew = parent.findViewById(R.id.cv_create_new);
         cvCreateNew.setOnClickListener(this);
@@ -299,7 +299,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             if (position < projectsList.size()) {
                 projectsList.remove(position);
                 projectsAdapter.notifyItemRemoved(position);
-                projectsAdapter.notifyItemRangeChanged(position, projectsAdapter.a());
+                projectsAdapter.notifyItemRangeChanged(position, projectsAdapter.getItemCount());
             }
 
             ProjectsFragment.this.a();
@@ -323,16 +323,16 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
+    public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
         private int layoutPosition;
 
         public ProjectsAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    public void a(RecyclerView recyclerView1, int var2, int var3) {
-                        super.a(recyclerView1, var2, var3);
+                    public void onScrolled(RecyclerView recyclerView1, int var2, int var3) {
+                        super.onScrolled(recyclerView1, var2, var3);
                         if (var3 > 4) {
                             if (isCollapsed) return;
                             collapseAnimatorSet.start();
@@ -348,12 +348,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return projectsList.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
             float rotation;
@@ -405,16 +405,16 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             viewHolder.projectVersion.setText(version);
             viewHolder.tvPublished.setVisibility(View.VISIBLE);
             viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
-            viewHolder.b.setTag("custom");
+            viewHolder.itemView.setTag("custom");
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             public final TextView tvPublished;
             public final ImageView expand;
             public final MyProjectButtonLayout projectButtonLayout;

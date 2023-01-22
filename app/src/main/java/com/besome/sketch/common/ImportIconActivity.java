@@ -94,7 +94,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ((GridLayoutManager) iconsList.getLayoutManager()).d(getGridLayoutColumnCount());
+        ((GridLayoutManager) iconsList.getLayoutManager()).setSpanCount(getGridLayoutColumnCount());
         iconsList.requestLayout();
     }
 
@@ -188,11 +188,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    private class IconAdapter extends RecyclerView.a<IconAdapter.ViewHolder> {
+    private class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
 
         private int selectedIconPosition = -1;
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             public final RelativeLayout background;
             public final TextView name;
@@ -216,8 +216,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             if (position != selectedIconPosition) {
                 if (iconType == 2) {
                     holder.background.setBackgroundColor(0xffbdbdbd);
@@ -236,14 +235,12 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return icons.size();
         }
     }

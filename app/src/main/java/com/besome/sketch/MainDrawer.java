@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +25,6 @@ import com.sketchware.remod.R;
 
 import a.a.a.GB;
 import a.a.a.bB;
-import a.a.a.ci;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
@@ -54,7 +54,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         RecyclerView recyclerView = findViewById(R.id.menu_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new ci());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         DrawerItemAdapter drawerItemAdapter = new DrawerItemAdapter();
         recyclerView.setAdapter(drawerItemAdapter);
         initializeDrawerItems();
@@ -204,20 +204,20 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private class DrawerItemAdapter extends RecyclerView.a<RecyclerView.v> {
+    private class DrawerItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return DrawerItem.values().length + 1;
         }
 
         @Override
-        public int b(int i) {
+        public int getItemViewType(int i) {
             return i == 0 ? 0 : 1;
         }
 
         @Override
-        public RecyclerView.v b(ViewGroup viewGroup, int i) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             if (i == 0) {
                 return new EmptyViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
                         R.layout.main_drawer_header,
@@ -233,7 +233,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        public void b(RecyclerView.v viewHolder, int i) {
+        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
             if (!(viewHolder instanceof EmptyViewHolder)) {
                 if (viewHolder instanceof MenuItemHolder) {
                     MenuItemHolder menuItemHolder = (MenuItemHolder) viewHolder;
@@ -245,13 +245,13 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
             }
         }
 
-        private class EmptyViewHolder extends RecyclerView.v {
+        private class EmptyViewHolder extends RecyclerView.ViewHolder {
             public EmptyViewHolder(View view) {
                 super(view);
             }
         }
 
-        private class MenuItemHolder extends RecyclerView.v implements View.OnClickListener {
+        private class MenuItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final ImageView name;
             private final TextView icon;
