@@ -26,9 +26,9 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexItem;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.FlexboxLayoutManager.LayoutParams;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -363,10 +363,10 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             y = true;
-            tvDescription.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            inputsLayout.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            addButton.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            docsButton.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
+            tvDescription.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
+            inputsLayout.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
+            addButton.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
+            docsButton.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
             Pair<Integer, Integer> pair = w.get(componentsAdapter.layoutPosition);
             imgIconLayout.animate()
                     .translationX((float) pair.first)
@@ -389,8 +389,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private void s() {
         Helper.setViewsVisibility(false, imgIcon, descriptionLayout, inputsLayout, imgIconLayout, tvDescription, imgBack);
         componentsList.setVisibility(View.GONE);
-        imgIconLayout.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-        imgIconLayout.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+        imgIconLayout.setTranslationX(LayoutParams.FLEX_GROW_DEFAULT);
+        imgIconLayout.setTranslationY(LayoutParams.FLEX_GROW_DEFAULT);
         ComponentBean componentBean = componentList.get(componentsAdapter.layoutPosition);
         Helper.setViewsVisibility(true, tvWarning, tiInputFilename, tvDescFirebasePath, tvDescFilePicker, tiInputFirebasePath, inputFilePickerLayout);
         switch (componentBean.type) {
@@ -417,14 +417,14 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         imgIcon.setImageResource(ComponentBean.getIconResource(componentBean.type));
         tvComponentTitle.setText(ComponentBean.getComponentName(getApplicationContext(), componentBean.type));
         tvDescription.setText(ComponentsHandler.description(componentBean.type));
-        tvDescription.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        inputsLayout.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        addButton.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        docsButton.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
+        tvDescription.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
+        inputsLayout.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
+        addButton.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
+        docsButton.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
         inputsLayout.setTranslationY(300.0f);
         tvDescription.animate().alpha(1.0f).start();
         imgBack.animate().alpha(1.0f).start();
-        inputsLayout.animate().alpha(1.0f).translationY(FlexItem.FLEX_GROW_DEFAULT).start();
+        inputsLayout.animate().alpha(1.0f).translationY(LayoutParams.FLEX_GROW_DEFAULT).start();
         addButton.animate().setStartDelay(150).alpha(1.0f).start();
         docsButton.animate().setStartDelay(150).alpha(1.0f).start();
     }
@@ -481,7 +481,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 Pair<Integer, Integer> pair = w.get(position);
                 holder.itemName.animate()
                         .setDuration(100)
-                        .alpha(FlexItem.FLEX_GROW_DEFAULT)
+                        .alpha(LayoutParams.FLEX_GROW_DEFAULT)
                         .start();
                 holder.itemView.animate()
                         .setStartDelay(300)
@@ -499,7 +499,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 return;
             }
             holder.itemView.animate()
-                    .alpha(FlexItem.FLEX_GROW_DEFAULT)
+                    .alpha(LayoutParams.FLEX_GROW_DEFAULT)
                     .start();
         }
 
