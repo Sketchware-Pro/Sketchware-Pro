@@ -33,6 +33,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -61,15 +63,13 @@ import a.a.a.DB;
 import a.a.a.Dp;
 import a.a.a.GB;
 import a.a.a.MA;
-import a.a.a.Xf;
+import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.bC;
 import a.a.a.br;
 import a.a.a.cC;
-import a.a.a.gg;
 import a.a.a.jC;
-import a.a.a.ViewEditorFragment;
 import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -445,7 +445,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
         // Replaced empty anonymous class with null
-        getSupportFragmentManager().a((Xf.c) null);
+        getSupportFragmentManager().addOnBackStackChangedListener(null);
         drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(1 /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
@@ -487,18 +487,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), this));
         viewPager.setOffscreenPageLimit(3);
-        viewPager.addOnPageChangeListener(new ViewPager.e() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void a(int i) {
+            public void onPageScrollStateChanged(int i) {
             }
 
             @Override
-            public void a(int i, float v, int i1) {
+            public void onPageScrolled(int i, float v, int i1) {
             }
 
             @Override
-            public void b(int i) {
+            public void onPageSelected(int i) {
                 if (currentTabNumber == 1) {
                     if (eventTabAdapter != null) {
                         eventTabAdapter.c();
@@ -537,7 +537,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 currentTabNumber = i;
             }
         });
-        viewPager.getAdapter().b();
+        viewPager.getAdapter().notifyDataSetChanged();
         ((TabLayout) findViewById(R.id.tab_layout)).setupWithViewPager(viewPager);
     }
 
@@ -1373,11 +1373,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class ViewPagerAdapter extends gg {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] labels;
 
-        public ViewPagerAdapter(Xf xf, Context context) {
+        public ViewPagerAdapter(FragmentManager xf, Context context) {
             super(xf);
             labels = new String[]{
                     Helper.getResString(R.string.design_tab_title_view),
@@ -1386,21 +1386,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         @Override
-        // PagerAdapter#getCount()
-        public int a() {
+        public int getCount() {
             return 3;
         }
 
         @Override
-        // PagerAdapter#getPageTitle(int)
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             return labels[position];
         }
 
         @Override
-        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
-        public Object a(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.a(container, position);
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
                 viewTabAdapter = (ViewEditorFragment) fragment;
             } else if (position == 1) {
@@ -1413,8 +1410,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         @Override
-        // FragmentPagerAdapter#getItem(int)
-        public Fragment c(int position) {
+        public Fragment getItem(int position) {
             if (position == 0) {
                 return new ViewEditorFragment();
             } else {

@@ -23,6 +23,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.editor.manage.library.ProjectComparator;
@@ -36,10 +38,8 @@ import java.io.IOException;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.Xf;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.gg;
 import a.a.a.l;
 import a.a.a.mB;
 import a.a.a.nd;
@@ -60,7 +60,7 @@ import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
-public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
+public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
@@ -75,12 +75,12 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
-    public void a(int state) {
+    public void onPageScrollStateChanged(int state) {
     }
 
     @Override
     // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
-    public void a(int position, float positionOffset, int positionOffsetPixels) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
@@ -200,7 +200,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
         viewPager.addOnPageChangeListener(this);
 
         fab = findViewById(R.id.fab);
@@ -437,8 +436,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageSelected(int)
-    public void b(int position) {
+    public void onPageSelected(int position) {
         if (position == 0) {
             if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0) {
                 projectsFragment.refreshProjectsList();
@@ -473,35 +471,31 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    private class PagerAdapter extends gg {
+    private class PagerAdapter extends FragmentPagerAdapter {
 
-        public PagerAdapter(Xf xf) {
+        public PagerAdapter(FragmentManager xf) {
             super(xf);
         }
 
         @Override
-        // PagerAdapter#getCount()
-        public int a() {
+        public int getCount() {
             return 1;
         }
 
         @Override
-        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
-        public Object a(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.a(container, position);
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
             projectsFragment = (ProjectsFragment) fragment;
             return fragment;
         }
 
         @Override
-        // FragmentPagerAdapter#getItem(int)
-        public Fragment c(int position) {
+        public Fragment getItem(int position) {
             return new ProjectsFragment();
         }
 
         @Override
-        // PagerAdapter#getPageTitle(int)
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             return Helper.getResString(R.string.main_tab_title_myproject);
         }
     }

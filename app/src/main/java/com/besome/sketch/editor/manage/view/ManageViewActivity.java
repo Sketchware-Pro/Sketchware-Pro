@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.beans.EventBean;
@@ -40,7 +42,7 @@ import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.xw;
 
-public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.e {
+public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
     private static final int TAB_COUNT = 2;
     private static final int REQUEST_CODE_ADD_ACTIVITY = 264;
     private static final int REQUEST_CODE_ADD_CUSTOM_VIEW = 266;
@@ -100,11 +102,11 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public void a(int var1) {
+    public void onPageScrollStateChanged(int var1) {
     }
 
     @Override
-    public void a(int var1, float var2, int var3) {
+    public void onPageScrolled(int var1, float var2, int var3) {
     }
 
     public final void a(ProjectFileBean var1, ArrayList<ViewBean> var2) {
@@ -133,7 +135,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public void b(int var1) {
+    public void onPageSelected(int var1) {
         s.show();
     }
 
@@ -365,27 +367,27 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
     }
 
-    public class b extends gg {
+    public class b extends FragmentPagerAdapter {
         public String[] f;
 
-        public b(Xf var2) {
+        public b(FragmentManager var2) {
             super(var2);
             f = new String[]{xB.b().a(getApplicationContext(), R.string.common_word_view).toUpperCase(), xB.b().a(getApplicationContext(), R.string.common_word_custom_view).toUpperCase()};
         }
 
         @Override
-        public int a() {
+        public int getCount() {
             return TAB_COUNT;
         }
 
         @Override
-        public CharSequence a(int var1) {
+        public CharSequence getPageTitle(int var1) {
             return f[var1];
         }
 
         @Override
-        public Object a(ViewGroup var1, int var2) {
-            Fragment var3 = (Fragment) super.a(var1, var2);
+        public Object instantiateItem(ViewGroup var1, int var2) {
+            Fragment var3 = (Fragment) super.instantiateItem(var1, var2);
             if (var2 != 0) {
                 customViewsFragment = (xw) var3;
             } else {
@@ -396,7 +398,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         @Override
-        public Fragment c(int var1) {
+        public Fragment getItem(int var1) {
             return var1 != 0 ? new xw() : new Fw();
         }
     }

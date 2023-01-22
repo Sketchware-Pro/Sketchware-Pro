@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +49,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import a.a.a.kk;
 import mod.RequestNetwork;
 import mod.RequestNetworkController;
 import mod.SketchwareUtil;
@@ -233,28 +233,21 @@ public class AboutModActivity extends AppCompatActivity {
         viewPager.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        viewPager.setAdapter(new PagerAdapter());
+        viewPager.setAdapter(new PagerAdapterImpl());
         viewPager.setCurrentItem(0);
         root.addView(viewPager);
 
         tablayout.setSelectedTabIndicatorColor(0xff008dcd);
         tablayout.setupWithViewPager(viewPager);
 
-        // ViewPager.addOnPageChangeListener(ViewPager$OnPageChangeListener) got
-        // obfuscated to ViewPager.a(ViewPager$e)
-        // ViewPager$OnPageChangeListener got obfuscated to ViewPager$e
-        viewPager.addOnPageChangeListener(new ViewPager.e() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            // ViewPager$OnPageChangeListener.onPageScrolled(int, float, int) got obfuscated
-            // to ViewPager$e.a(int, float, int)
             @Override
-            public void a(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
-            // ViewPager$OnPageChangeListener.onPageSelected(int) got obfuscated to
-            // ViewPager$e.b(int)
             @Override
-            public void b(int position) {
+            public void onPageSelected(int position) {
                 if (viewPager.getCurrentItem() == 0) {
                     fabLabel.setVisibility(View.VISIBLE);
                 } else {
@@ -264,10 +257,8 @@ public class AboutModActivity extends AppCompatActivity {
                 }
             }
 
-            // ViewPager$OnPageChangeListener.onPageScrollStateChanged(int) got obfuscated to
-            // ViewPager$e.a(int)
             @Override
-            public void a(int state) {
+            public void onPageScrollStateChanged(int state) {
             }
         });
     }
@@ -316,19 +307,15 @@ public class AboutModActivity extends AppCompatActivity {
         ArrayList<HashMap<String, Object>> changelog;
     }
 
-    // PagerAdapter got obfuscated to kk
-    private class PagerAdapter extends kk {
+    private class PagerAdapterImpl extends PagerAdapter {
 
-        // PagerAdapter.getCount() got obfuscated to kk.a()
         @Override
-        public int a() {
+        public int getCount() {
             return 3;
         }
 
-        // PagerAdapter.instantiateItem(ViewGroup, int) got obfuscated to
-        // kk.a(ViewGroup, int)
         @Override
-        public Object a(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, int position) {
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(R.layout.about_empty_viewpager, null);
 
@@ -374,17 +361,14 @@ public class AboutModActivity extends AppCompatActivity {
             return v;
         }
 
-        // PagerAdapter.destroyItem(ViewGroup, int, Object) got obfuscated to
-        // kk.a(ViewGroup, int, Object)
         @Override
-        public void a(ViewGroup container, int position, Object object) {
+        public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
             trash.addView((View) object);
         }
 
-        // PagerAdapter.getPageTitle(int) got obfuscated to kk.a(int)
         @Override
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return "Modder Team";
@@ -400,15 +384,13 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // PagerAdapter.isViewFromObject(View, Object) got obfuscated to kk.a(View, Object)
         @Override
-        public boolean a(View view, Object object) {
+        public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
 
-        // PagerAdapter.saveState() got obfuscated to kk.c()
         @Override
-        public Parcelable c() {
+        public Parcelable saveState() {
             return null;
         }
     }
