@@ -256,7 +256,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                     String providerPath = getPackageName() + ".provider";
                     String iconPath = wq.e() + File.separator + sc_id;
                     iconUri =
-                            FileProvider.getUriFromFile(applicationContext, providerPath, new File(iconPath, "icon.png"));
+                            FileProvider.getUriForFile(applicationContext, providerPath, new File(iconPath, "icon.png"));
                 } else {
                     String iconPath = wq.e() + File.separator + sc_id;
                     iconUri = Uri.fromFile(new File(iconPath, "icon.png"));

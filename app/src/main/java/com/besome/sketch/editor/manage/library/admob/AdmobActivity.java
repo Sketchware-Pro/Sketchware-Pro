@@ -366,7 +366,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
-                    iconUri = FileProvider.getUriFromFile(getApplicationContext(), getPackageName() + ".provider", new File(iconDir, "icon.png"));
+                    iconUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", new File(iconDir, "icon.png"));
                 } else {
                     iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
                 }
