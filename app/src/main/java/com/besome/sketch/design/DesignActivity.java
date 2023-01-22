@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +30,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -342,8 +342,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(Gravity.END)) {
-            drawer.closeDrawer(Gravity.END);
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
         } else if (viewTabAdapter.g()) {
             viewTabAdapter.a(false);
         } else {
@@ -447,7 +447,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         // Replaced empty anonymous class with null
         getSupportFragmentManager().addOnBackStackChangedListener(null);
         drawer = findViewById(R.id.drawer_layout);
-        drawer.setDrawerLockMode(1 /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
         runProject = findViewById(R.id.btn_execute);
         runProject.setText(Helper.getResString(R.string.common_word_run));
@@ -551,8 +551,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
-            if (!drawer.isDrawerOpen (Gravity.END)) {
-                drawer.openDrawer(Gravity.END);
+            if (!drawer.isDrawerOpen (GravityCompat.END)) {
+                drawer.openDrawer(GravityCompat.END);
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             k();

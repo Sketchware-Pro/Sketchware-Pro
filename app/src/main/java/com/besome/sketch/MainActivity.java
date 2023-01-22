@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -64,7 +65,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
-    private l drawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
     private MainDrawer drawer;
     private ViewPager viewPager;
     private DB u;
@@ -193,9 +194,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(R.id.left_drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
-        drawerToggle = new l(this, drawerLayout, R.string.app_name, R.string.app_name);
-        // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
-        drawerLayout.addDrawerListener((DrawerLayout.c) drawerToggle);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(drawerToggle);
         getSupportActionBar().setTitle("");
 
         viewPager = findViewById(R.id.viewpager);
