@@ -179,7 +179,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(q.sc_id).writeLogsToFile(error);
-        Snackbar snackbar = Snackbar.makeText(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.setAction(Helper.getResString(R.string.common_word_show), v -> {
             if (!mB.a()) {
                 snackbar.dismiss();

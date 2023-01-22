@@ -422,7 +422,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     public void s() {
         if (storageAccessDenied == null || !storageAccessDenied.isShown()) {
-            storageAccessDenied = Snackbar.makeText(coordinator, Helper.getResString(R.string.common_message_permission_denied), -2);
+            storageAccessDenied = Snackbar.make(coordinator, Helper.getResString(R.string.common_message_permission_denied), Snackbar.LENGTH_INDEFINITE);
             storageAccessDenied.setAction(Helper.getResString(R.string.common_word_settings), v -> {
                 storageAccessDenied.dismiss();
                 nd.a(this, new String[]{
