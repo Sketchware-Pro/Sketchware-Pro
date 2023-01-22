@@ -10,10 +10,13 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_DEXER = "dexer";
     public static final String SETTING_INCREMENTAL_BUILD_ACTIVE = "incremental_build";
     public static final String SETTING_JAVA_VERSION = "java_ver";
+    public static final String SETTING_SHRINKER = "shrinker";
     public static final String SETTING_NO_HTTP_LEGACY = "no_http_legacy";
     public static final String SETTING_NO_WARNINGS = "no_warn";
     public static final String SETTING_ENABLE_LOGCAT = "enable_logcat";
 
+    public static final String SETTING_SHRINKER_PROGUARD = "Proguard";
+    public static final String SETTING_SHRINKER_R8 = "R8";
     public static final String SETTING_DEXER_D8 = "D8";
     public static final String SETTING_DEXER_DX = "Dx";
     public static final String SETTING_JAVA_VERSION_1_7 = "1.7";

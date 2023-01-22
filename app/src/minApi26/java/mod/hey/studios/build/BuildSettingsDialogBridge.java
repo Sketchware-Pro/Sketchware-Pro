@@ -1,10 +1,6 @@
 package mod.hey.studios.build;
 
-import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_10;
-import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_11;
-import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_7;
-import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_8;
-import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_9;
+import static mod.hey.studios.build.BuildSettings.*;
 
 import mod.SketchwareUtil;
 
@@ -16,6 +12,13 @@ public class BuildSettingsDialogBridge {
                 SETTING_JAVA_VERSION_1_9,
                 SETTING_JAVA_VERSION_10,
                 SETTING_JAVA_VERSION_11,
+        };
+    }
+
+    public static String[] getAvailableShrinkers() {
+        return new String[] {
+            SETTING_SHRINKER_PROGUARD,
+            SETTING_SHRINKER_R8
         };
     }
 
