@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,9 +42,7 @@ import a.a.a.DB;
 import a.a.a.GB;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.l;
 import a.a.a.mB;
-import a.a.a.nd;
 import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wB;
@@ -402,7 +401,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         dialog.a(Helper.getResString(R.string.common_message_permission_need_load_project));
         dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             dialog.dismiss();
-            nd.a(this, new String[]{
+            ActivityCompat.requestPermissions(this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     9501);
@@ -425,7 +424,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             storageAccessDenied = Snackbar.make(coordinator, Helper.getResString(R.string.common_message_permission_denied), Snackbar.LENGTH_INDEFINITE);
             storageAccessDenied.setAction(Helper.getResString(R.string.common_word_settings), v -> {
                 storageAccessDenied.dismiss();
-                nd.a(this, new String[]{
+                ActivityCompat.requestPermissions(this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE},
                         9501);
