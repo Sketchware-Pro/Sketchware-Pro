@@ -97,6 +97,7 @@ dependencies {
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "com.google.android.material:material:1.0.0-rc01"
+    implementation "com.airbnb.android:lottie:3.1.0"
 
     implementation "androidx.annotation:annotation:1.5.0"
     implementation "com.android.tools:annotations:30.2.2"
