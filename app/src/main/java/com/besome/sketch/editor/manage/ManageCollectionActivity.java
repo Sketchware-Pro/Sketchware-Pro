@@ -29,6 +29,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.BlockCollectionBean;
@@ -55,7 +56,6 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import a.a.a.Bi;
 import a.a.a.FB;
 import a.a.a.Mp;
 import a.a.a.Np;
@@ -448,9 +448,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         RecyclerView categories = findViewById(R.id.category_list);
         categories.setHasFixedSize(true);
         categories.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-        // ((androidx.recyclerview.widget.SimpleItemAnimator) …).setSupportsChangeAnimations(false);
-        //TODO: do this
-        //((Bi) categories.getItemAnimator()).a(false); need inspection
+        ((SimpleItemAnimator) categories.getItemAnimator()).setSupportsChangeAnimations(false);
         categoryAdapter = new CategoryAdapter();
         categories.setAdapter(categoryAdapter);
         collection = findViewById(R.id.collection_list);

@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
@@ -282,8 +283,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         eventList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         categoryList.setHasFixedSize(true);
         categoryList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        //TODO: do this
-        //((Bi) categoryList.getItemAnimator()).a(false);
+        ((SimpleItemAnimator) categoryList.getItemAnimator()).setSupportsChangeAnimations(false);
         categoryAdapter = new CategoryAdapter();
         categoryList.setAdapter(categoryAdapter);
         eventAdapter = new EventAdapter();
