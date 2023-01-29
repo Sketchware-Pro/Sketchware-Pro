@@ -566,8 +566,7 @@ public class Jx {
                     .replaceAll(".setLayoutManager\\(new LinearLayoutManager\\(this", ".setLayoutManager(new LinearLayoutManager(getContext()")
                     .replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()")
                     .replaceAll("getSupportFragmentManager\\(\\)", "getActivity().getSupportFragmentManager()");
-        }
-        if (buildConfig.g) {
+        } else if (buildConfig.g) {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
 
