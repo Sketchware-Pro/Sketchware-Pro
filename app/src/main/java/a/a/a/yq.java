@@ -652,8 +652,18 @@ public class yq {
             Mx mx = new Mx();
             mx.a("google_play_services_version", 12451000);
             if (N.isFirebaseEnabled) {
-                mx.a("firebase_database_url", "https://" + firebaseLibrary.data, false);
-                mx.a("project_id", firebaseLibrary.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
+                String databaseUrl;
+                String projectId;
+                String libraryData = firebaseLibrary.data;
+                if (libraryData.contains(".")) {
+                    databaseUrl = "https://" + libraryData;
+                    projectId = libraryData.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, "");
+                } else {
+                    databaseUrl = "https://" + libraryData + ".firebaseio.com";
+                    projectId = libraryData;
+                }
+                mx.a("firebase_database_url", databaseUrl, false);
+                mx.a("project_id", projectId, false);
                 mx.a("google_app_id", firebaseLibrary.reserved1, false);
                 if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
                     mx.a("google_api_key", firebaseLibrary.reserved2, false);
