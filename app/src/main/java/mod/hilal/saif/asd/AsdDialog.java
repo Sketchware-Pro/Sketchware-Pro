@@ -48,7 +48,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
             new Pair<>("Default", EditorColorScheme.class),
             new Pair<>("GitHub", SchemeGitHub.class),
             new Pair<>("Eclipse", SchemeEclipse.class),
-            new Pair<>("Dracula", SchemeDarcula.class),
+            new Pair<>("Darcula", SchemeDarcula.class),
             new Pair<>("VS2019", SchemeVS2019.class),
             new Pair<>("NotepadXX", SchemeNotepadXX.class)
     );
