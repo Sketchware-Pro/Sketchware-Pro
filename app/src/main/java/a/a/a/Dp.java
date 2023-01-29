@@ -9,7 +9,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.StrictMode;
 import android.system.Os;
 import android.text.TextUtils;
@@ -26,8 +25,6 @@ import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
-
-import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,8 +43,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import kellinwood.security.zipsigner.ZipSigner;
-import kellinwood.security.zipsigner.optional.KeyStoreFileManager;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.FieldId;
@@ -61,7 +56,6 @@ import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
@@ -72,6 +66,7 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
+import mod.jbk.util.TestkeySignBridge;
 import proguard.Configuration;
 import proguard.ConfigurationParser;
 import proguard.ParseException;
@@ -786,15 +781,7 @@ public class Dp {
      * This method uses apksigner, but kellinwood's zipsigner as fallback.
      */
     public void signDebugApk() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        if (Build.VERSION.SDK_INT >= 26) {
-            ApkSigner signer = new ApkSigner();
-            signer.signWithTestKey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath, null);
-        } else {
-            ZipSigner zipSigner = new ZipSigner();
-            KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
-        }
+        TestkeySignBridge.signWithTestkey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
     }
 
     private void mergeDexes(File target, List<Dex> dexes) throws IOException {
