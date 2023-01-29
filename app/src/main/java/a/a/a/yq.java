@@ -181,12 +181,6 @@ public class yq {
     public final String compiledClassesPath;
 
     /**
-     * Path of the unaligned but signed APK,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.signed.unaligned
-     */
-    public final String unalignedSignedApkPath;
-
-    /**
      * Project's generated R.java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/gen
      */
@@ -257,7 +251,6 @@ public class yq {
         classesDexPath = binDirectoryPath + File.separator + "classes.dex";
         unsignedUnalignedApkPath = binDirectoryPath + File.separator + projectName + ".apk.unsigned";
         unsignedAlignedApkPath = unsignedUnalignedApkPath + ".aligned";
-        unalignedSignedApkPath = binDirectoryPath + File.separator + projectName + ".apk.signed.unaligned";
         finalToInstallApkPath = binDirectoryPath + File.separator + projectName + ".apk";
         releaseApkPath = wq.o() + File.separator + projectName + "_release.apk";
     }

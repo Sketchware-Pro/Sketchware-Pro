@@ -815,11 +815,19 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         return;
                     }
 
+                    publishProgress("Aligning APK...");
+                    dp.runZipalign(dp.yq.unsignedUnalignedApkPath, dp.yq.unsignedAlignedApkPath);
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
                     publishProgress("Signing APK...");
+                    String outputLocation = getCorrectResultFilename(dp.yq.releaseApkPath);
                     if (signWithTestkey) {
                         ZipSigner signer = new ZipSigner();
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
+                        signer.signZip(dp.yq.unsignedAlignedApkPath, outputLocation);
                     } else if (isResultJarSigningEnabled()) {
                         Security.addProvider(new BouncyCastleProvider());
                         CustomKeySigner.signZip(
@@ -829,19 +837,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                 signingAliasName,
                                 signingKeystorePassword,
                                 signingAlgorithm,
-                                dp.yq.unsignedUnalignedApkPath,
-                                dp.yq.unalignedSignedApkPath
+                                dp.yq.unsignedAlignedApkPath,
+                                outputLocation
                         );
                     } else {
-                        FileUtil.copyFile(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
+                        FileUtil.copyFile(dp.yq.unsignedAlignedApkPath, outputLocation);
                     }
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Aligning APK...");
-                    dp.runZipalign(dp.yq.unalignedSignedApkPath, getCorrectResultFilename(dp.yq.releaseApkPath));
                 }
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
