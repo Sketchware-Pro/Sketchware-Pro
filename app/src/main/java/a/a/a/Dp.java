@@ -936,13 +936,6 @@ public class Dp {
         }
     }
 
-    /**
-     * Calls {@link #runZipalign(String, String)} with {@link yq#unsignedUnalignedApkPath} and {@link yq#unsignedAlignedApkPath}.
-     */
-    public void runZipalign() throws By {
-        runZipalign(yq.unsignedUnalignedApkPath, yq.unsignedAlignedApkPath);
-    }
-
     public void runZipalign(String inPath, String outPath) throws By {
         LogUtil.d(TAG, "About to zipalign " + inPath + " to " + outPath);
         long savedTimeMillis = System.currentTimeMillis();
