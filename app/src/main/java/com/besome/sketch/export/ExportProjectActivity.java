@@ -70,6 +70,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
+import mod.jbk.util.TestkeySignBridge;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
@@ -825,9 +826,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     publishProgress("Signing APK...");
                     String outputLocation = getCorrectResultFilename(dp.yq.releaseApkPath);
                     if (signWithTestkey) {
-                        ZipSigner signer = new ZipSigner();
-                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(dp.yq.unsignedAlignedApkPath, outputLocation);
+                        TestkeySignBridge.signWithTestkey(dp.yq.unsignedAlignedApkPath, outputLocation);
                     } else if (isResultJarSigningEnabled()) {
                         Security.addProvider(new BouncyCastleProvider());
                         CustomKeySigner.signZip(
