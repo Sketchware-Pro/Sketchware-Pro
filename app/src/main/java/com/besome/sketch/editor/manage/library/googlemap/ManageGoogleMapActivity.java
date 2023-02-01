@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.v;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
@@ -36,7 +36,6 @@ import java.util.HashMap;
 import a.a.a.GB;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.ci;
 import a.a.a.iC;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -74,7 +73,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             Collections.sort(projectsList, new ProjectComparator());
         }
 
-        projectAdapter.c();
+        projectAdapter.notifyDataSetChanged();
     }
 
     private void openDoc() {
@@ -107,7 +106,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         projectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         projectAdapter = new ProjectAdapter();
         projectRecyclerView.setAdapter(projectAdapter);
-        projectRecyclerView.setItemAnimator(new ci());
+        projectRecyclerView.setItemAnimator(new DefaultItemAnimator());
         initializeProjectList();
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
@@ -176,7 +175,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_manage_googlemap);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -186,9 +185,9 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             googleMapLibraryBean = savedInstanceState.getParcelable("google_map");
         }
 
-        d().a("GoogleMap Settings");
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle("GoogleMap Settings");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
@@ -235,16 +234,16 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         editApiKey.setText(googleMapLibraryBean.data);
     }
 
-    private class ProjectAdapter extends RecyclerView.a<ProjectAdapter.ViewHolder> {
+    private class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
         private int selectedProjectIndex = -1;
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return projectsList.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int index) {
+        public void onBindViewHolder(ViewHolder viewHolder, int index) {
             HashMap<String, Object> projectMap = projectsList.get(index);
             String sc_id = yB.c(projectMap, "sc_id");
             viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
@@ -256,10 +255,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                     String providerPath = getPackageName() + ".provider";
                     String iconPath = wq.e() + File.separator + sc_id;
                     iconUri =
-                            FileProvider.a(
-                                    applicationContext,
-                                    providerPath,
-                                    new File(iconPath, "icon.png"));
+                            FileProvider.getUriForFile(applicationContext, providerPath, new File(iconPath, "icon.png"));
                 } else {
                     String iconPath = wq.e() + File.separator + sc_id;
                     iconUri = Uri.fromFile(new File(iconPath, "icon.png"));
@@ -280,11 +276,11 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int index) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int index) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        private class ViewHolder extends v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public final LinearLayout projectLayout;
             public final CircleImageView imgIcon;
             public final TextView projectName;
@@ -308,7 +304,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = j();
+                    selectedProjectIndex = getAdapterPosition();
                     selectProject(selectedProjectIndex);
                 }
             }
@@ -320,7 +316,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                     }
 
                     projectsList.get(index).put("selected", true);
-                    ProjectAdapter.this.c();
+                    notifyDataSetChanged();
                 }
             }
         }

@@ -6,6 +6,7 @@ import android.os.AsyncTask.Status;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.analytics.Tracker;
 
@@ -16,7 +17,6 @@ import a.a.a.ZA;
 import a.a.a.Zo;
 import a.a.a._A;
 import a.a.a.lC;
-import a.a.a.zd;
 
 public class BaseAppCompatActivity extends AppCompatActivity {
 
@@ -24,12 +24,16 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Deprecated
     public Context e;
     public Zo j;
-    private ZA lottieDialog;
     protected _A progressDialog;
+    private ZA lottieDialog;
     private ArrayList<MA> taskList;
 
     public void a(MA var1) {
         taskList.add(var1);
+    }
+
+    public void addTask(MA task) {
+        taskList.add(task);
     }
 
     public void a(OnCancelListener cancelListener) {
@@ -78,7 +82,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     public boolean j() {
-        return zd.a(this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && zd.a(this, "android.permission.READ_EXTERNAL_STORAGE") == 0;
+        return ContextCompat.checkSelfPermission(this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") == 0;
     }
 
     public void k() {

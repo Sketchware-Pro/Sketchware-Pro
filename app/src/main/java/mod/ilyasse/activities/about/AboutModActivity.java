@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +49,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import a.a.a.kk;
 import mod.RequestNetwork;
 import mod.RequestNetworkController;
 import mod.SketchwareUtil;
@@ -104,13 +104,10 @@ public class AboutModActivity extends AppCompatActivity {
         rippleRound(back, "#ffffff", "#1F000000", 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        // RecyclerView$OnScrollListener got obfuscated to RecyclerView$m
-        class OnScrollListener extends RecyclerView.m {
+        class OnScrollListener extends RecyclerView.OnScrollListener {
 
-            // RecyclerView$OnScrollListener.onScrolled(RecyclerView, int, int) got
-            // obfuscated to RecyclerView$m.a(RecyclerView, int, int)
             @Override
-            public void a(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 8) {
                     fabLabel.setVisibility(View.GONE);
                 } else if (dy < -8) {
@@ -119,13 +116,9 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView.addOnScrollListener(RecyclerView$OnScrollListener) got obfuscated
-        // to RecyclerView.a(RecyclerView$m)
-        moddersRecycler.a(new OnScrollListener());
+        moddersRecycler.addOnScrollListener(new OnScrollListener());
 
-        // RecyclerView.addOnScrollListener(RecyclerView$OnScrollListener) got obfuscated
-        // to RecyclerView.a(RecyclerView$m)
-        changelogRecycler.a(new OnScrollListener());
+        changelogRecycler.addOnScrollListener(new OnScrollListener());
 
         fab.setOnClickListener(v -> {
             try {
@@ -237,28 +230,21 @@ public class AboutModActivity extends AppCompatActivity {
         viewPager.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        viewPager.setAdapter(new PagerAdapter());
+        viewPager.setAdapter(new PagerAdapterImpl());
         viewPager.setCurrentItem(0);
         root.addView(viewPager);
 
         tablayout.setSelectedTabIndicatorColor(0xff008dcd);
         tablayout.setupWithViewPager(viewPager);
 
-        // ViewPager.addOnPageChangeListener(ViewPager$OnPageChangeListener) got
-        // obfuscated to ViewPager.a(ViewPager$e)
-        // ViewPager$OnPageChangeListener got obfuscated to ViewPager$e
-        viewPager.a(new ViewPager.e() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            // ViewPager$OnPageChangeListener.onPageScrolled(int, float, int) got obfuscated
-            // to ViewPager$e.a(int, float, int)
             @Override
-            public void a(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
-            // ViewPager$OnPageChangeListener.onPageSelected(int) got obfuscated to
-            // ViewPager$e.b(int)
             @Override
-            public void b(int position) {
+            public void onPageSelected(int position) {
                 if (viewPager.getCurrentItem() == 0) {
                     fabLabel.setVisibility(View.VISIBLE);
                 } else {
@@ -268,29 +254,27 @@ public class AboutModActivity extends AppCompatActivity {
                 }
             }
 
-            // ViewPager$OnPageChangeListener.onPageScrollStateChanged(int) got obfuscated to
-            // ViewPager$e.a(int)
             @Override
-            public void a(int state) {
+            public void onPageScrollStateChanged(int state) {
             }
         });
     }
 
-    private void circularImage(final ImageView image, final String url) {
+    private void circularImage(ImageView image, String url) {
         Glide.with(this)
                 .load(url)
                 .placeholder(R.drawable.ic_user)
                 .into(image);
     }
 
-    private void advancedCorners(final View view, final String color) {
+    private void advancedCorners(View view, String color) {
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(color));
         gd.setCornerRadii(new float[]{0, 0, 30, 30, 30, 30, 0, 0});
         view.setBackground(gd);
     }
 
-    private void shadAnim(final View view, final String propertyName, final double value, final double duration) {
+    private void shadAnim(View view, String propertyName, double value, double duration) {
         ObjectAnimator anim = new ObjectAnimator();
         anim.setTarget(view);
         anim.setPropertyName(propertyName);
@@ -299,14 +283,14 @@ public class AboutModActivity extends AppCompatActivity {
         anim.start();
     }
 
-    private void animateLayoutChanges(final LinearLayout view) {
+    private void animateLayoutChanges(LinearLayout view) {
         //i used this instead of the xml attribute because this one looks better and smoother.
         AutoTransition autoTransition = new AutoTransition();
         autoTransition.setDuration((short) 300);
         TransitionManager.beginDelayedTransition(view, autoTransition);
     }
 
-    private void rippleRound(final View view, final String focus, final String pressed, final double round) {
+    private void rippleRound(View view, String focus, String pressed, double round) {
         GradientDrawable GG = new GradientDrawable();
         GG.setColor(Color.parseColor(focus));
         GG.setCornerRadius((float) round);
@@ -320,19 +304,15 @@ public class AboutModActivity extends AppCompatActivity {
         ArrayList<HashMap<String, Object>> changelog;
     }
 
-    // PagerAdapter got obfuscated to kk
-    private class PagerAdapter extends kk {
+    private class PagerAdapterImpl extends PagerAdapter {
 
-        // PagerAdapter.getCount() got obfuscated to kk.a()
         @Override
-        public int a() {
+        public int getCount() {
             return 3;
         }
 
-        // PagerAdapter.instantiateItem(ViewGroup, int) got obfuscated to
-        // kk.a(ViewGroup, int)
         @Override
-        public Object a(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, int position) {
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(R.layout.about_empty_viewpager, null);
 
@@ -378,17 +358,14 @@ public class AboutModActivity extends AppCompatActivity {
             return v;
         }
 
-        // PagerAdapter.destroyItem(ViewGroup, int, Object) got obfuscated to
-        // kk.a(ViewGroup, int, Object)
         @Override
-        public void a(ViewGroup container, int position, Object object) {
+        public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
             trash.addView((View) object);
         }
 
-        // PagerAdapter.getPageTitle(int) got obfuscated to kk.a(int)
         @Override
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return "Modder Team";
@@ -404,23 +381,18 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // PagerAdapter.isViewFromObject(View, Object) got obfuscated to kk.a(View, Object)
         @Override
-        public boolean a(View view, Object object) {
+        public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
 
-        // PagerAdapter.saveState() got obfuscated to kk.c()
         @Override
-        public Parcelable c() {
+        public Parcelable saveState() {
             return null;
         }
     }
 
-    // RecyclerView$Adapter<T extends RecyclerView.ViewHolder> got obfuscated to
-    // RecyclerView$a<VH extends RecyclerView.v>
-    // VH stands for ViewHolder?
-    private class ModdersRecyclerAdapter extends RecyclerView.a<ModdersRecyclerAdapter.ViewHolder> {
+    private class ModdersRecyclerAdapter extends RecyclerView.Adapter<ModdersRecyclerAdapter.ViewHolder> {
 
         private final ArrayList<HashMap<String, Object>> modders;
 
@@ -428,10 +400,8 @@ public class AboutModActivity extends AppCompatActivity {
             modders = data;
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onCreateViewHolder(ViewGroup, int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = getLayoutInflater().inflate(R.layout.about_moddersview, null);
             v.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -439,18 +409,15 @@ public class AboutModActivity extends AppCompatActivity {
             return new ViewHolder(v);
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @Override
-        public void b(ViewHolder holder, final int position) {
-            // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
-            View itemView = holder.b;
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            View itemView = holder.itemView;
 
-            final TextView title = itemView.findViewById(R.id.tv_title);
-            final LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
-            final ImageView userIcon = itemView.findViewById(R.id.img_user_icon);
-            final TextView userName = itemView.findViewById(R.id.tv_user_name);
-            final TextView description = itemView.findViewById(R.id.tv_description);
+            TextView title = itemView.findViewById(R.id.tv_title);
+            LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
+            ImageView userIcon = itemView.findViewById(R.id.img_user_icon);
+            TextView userName = itemView.findViewById(R.id.tv_user_name);
+            TextView description = itemView.findViewById(R.id.tv_description);
 
             Object modder_img = modders.get(position).get("modder_img");
             if (modder_img instanceof String) {
@@ -502,14 +469,12 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
-        // to RecyclerView$a<VH extends RecyclerView.v>.a()
         @Override
-        public int a() {
+        public int getItemCount() {
             return modders.size();
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public ViewHolder(View v) {
                 super(v);
@@ -517,10 +482,7 @@ public class AboutModActivity extends AppCompatActivity {
         }
     }
 
-    // RecyclerView$Adapter<T extends RecyclerView.ViewHolder> got obfuscated to
-    // RecyclerView$a<VH extends RecyclerView.v>
-    // VH stands for ViewHolder?
-    private class ChangelogRecyclerAdapter extends RecyclerView.a<ChangelogRecyclerAdapter.ViewHolder> {
+    private class ChangelogRecyclerAdapter extends RecyclerView.Adapter<ChangelogRecyclerAdapter.ViewHolder> {
 
         private static final String CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO = "showingAdditionalInfo";
         private final ArrayList<HashMap<String, Object>> changelog;
@@ -529,10 +491,8 @@ public class AboutModActivity extends AppCompatActivity {
             changelog = data;
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onCreateViewHolder(ViewGroup, int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, null);
             aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -541,24 +501,21 @@ public class AboutModActivity extends AppCompatActivity {
             return new ViewHolder(aboutChangelog);
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
-        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @SuppressLint("SetTextI18n")
         @Override
-        public void b(ViewHolder holder, final int position) {
-            // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
-            View itemView = holder.b;
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            View itemView = holder.itemView;
 
             //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
             //get less lazy when.
-            final TextView variant = itemView.findViewWithTag("tv_variant");
-            final LinearLayout leftLine = itemView.findViewById(R.id.view_leftline);
-            final TextView title = itemView.findViewById(R.id.tv_title);
-            final TextView releasedOn = itemView.findViewById(R.id.tv_release_note);
-            final TextView subtitle = itemView.findViewById(R.id.tv_sub_title);
-            final LinearLayout log_background = itemView.findViewWithTag("log_background");
-            final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
-            final ImageButton arrow = itemView.findViewWithTag("ic_arrow");
+            TextView variant = itemView.findViewWithTag("tv_variant");
+            LinearLayout leftLine = itemView.findViewById(R.id.view_leftline);
+            TextView title = itemView.findViewById(R.id.tv_title);
+            TextView releasedOn = itemView.findViewById(R.id.tv_release_note);
+            TextView subtitle = itemView.findViewById(R.id.tv_sub_title);
+            LinearLayout log_background = itemView.findViewWithTag("log_background");
+            LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
+            ImageButton arrow = itemView.findViewWithTag("ic_arrow");
 
             HashMap<String, Object> release = changelog.get(position);
 
@@ -661,9 +618,7 @@ public class AboutModActivity extends AppCompatActivity {
                 }
                 animateLayoutChanges(log_background);
 
-                // RecyclerView$Adapter<VH extends ViewHolder>#notifyItemChanged(int) got obfuscated to
-                // RecyclerView$a<VH extends RecyclerView.v>.c(int)
-                c(position);
+                notifyItemChanged(position);
             });
             if (0 == position) {
                 advancedCorners(leftLine, "#008dcd");
@@ -672,14 +627,12 @@ public class AboutModActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
-        // to RecyclerView$a<VH extends RecyclerView.v>.a()
         @Override
-        public int a() {
+        public int getItemCount() {
             return changelog.size();
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public ViewHolder(View v) {
                 super(v);

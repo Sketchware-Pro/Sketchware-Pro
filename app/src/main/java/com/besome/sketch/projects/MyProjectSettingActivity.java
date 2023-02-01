@@ -234,7 +234,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             projectHasCustomIcon = yB.a(metadata, "custom_icon");
             if (projectHasCustomIcon) {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    appIcon.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
+                    appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
                 } else {
                     appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
                 }
@@ -274,7 +274,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             projectHasCustomIcon = getIntent().getBooleanExtra("custom_icon", false);
             if (projectHasCustomIcon) {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    appIcon.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
+                    appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
                 } else {
                     appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
                 }
@@ -473,7 +473,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private void pickCustomIcon() {
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
-            uri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
+            uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
         } else {
             uri = Uri.fromFile(getCustomIcon());
         }
@@ -492,7 +492,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         Intent intent = new Intent(Intent.ACTION_PICK);
         if (Build.VERSION.SDK_INT >= 24) {
             Context applicationContext = getApplicationContext();
-            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", getCustomIcon());
+            uri = FileProvider.getUriForFile(applicationContext, getApplicationContext().getPackageName() + ".provider", getCustomIcon());
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -589,7 +589,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
         public SaveProjectAsyncTask(Context context) {
             super(context);
-            MyProjectSettingActivity.this.a(this);
+            addTask(this);
             k();
         }
 

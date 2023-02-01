@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/common_google_signin_btn_text_dark_disabled" android:state_enabled="false" />
-    <item android:color="@color/common_google_signin_btn_text_dark_pressed" android:state_pressed="true" />
-    <item android:color="@color/common_google_signin_btn_text_dark_focused" android:state_focused="true" />
-    <item android:color="@color/common_google_signin_btn_text_dark_default" />
-</selector>

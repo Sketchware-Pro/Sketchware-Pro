@@ -90,13 +90,13 @@ public class Fw extends qA {
 
     public void a(ProjectFileBean var1) {
         activitiesFiles.add(var1);
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
     }
 
     public void a(boolean var1) {
         k = var1;
         e();
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
     }
 
     public final void b(ProjectFileBean projectFileBean) {
@@ -207,7 +207,7 @@ public class Fw extends qA {
             activitiesFiles = savedInstanceState.getParcelableArrayList("activities");
         }
 
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
         g();
     }
 
@@ -217,13 +217,13 @@ public class Fw extends qA {
         if (requestCode == REQUEST_CODE_ADD_VIEW_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 b(data.getParcelableExtra("project_file"));
-                projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
+                projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
             }
         } else if (requestCode == REQUEST_CODE_PRESET_ACTIVITY && resultCode == Activity.RESULT_OK) {
             ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
             b(projectFileBean);
             c(projectFileBean);
-            projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
+            projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
         }
     }
 
@@ -249,24 +249,22 @@ public class Fw extends qA {
         super.onSaveInstanceState(newState);
     }
 
-    public class ProjectFilesAdapter extends RecyclerView.a<ProjectFilesAdapter.ViewHolder> {
+    public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapter.ViewHolder> {
         public int layoutPosition;
 
         public ProjectFilesAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                // RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)
-                recyclerView.a(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
-                    public void a(RecyclerView recyclerView, int dx, int dy) {
-                        super.a(recyclerView, dx, dy);
-                        if (dy > 2) {
+                    public void onScrolled(RecyclerView recyclerView, int i, int i1) {
+                        super.onScrolled(recyclerView, i, i1);
+                        if (i1 > 2) {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
-                                ((ManageViewActivity) getActivity()).s.c();
+                                ((ManageViewActivity) getActivity()).s.hide();
                             }
                         } else if (dy < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
-                            ((ManageViewActivity) getActivity()).s.f();
+                            ((ManageViewActivity) getActivity()).s.show();
                         }
                     }
                 });
@@ -274,14 +272,12 @@ public class Fw extends qA {
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return activitiesFiles != null ? activitiesFiles.size() : 0;
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
             viewHolder.imgActivity.setVisibility(View.VISIBLE);
             viewHolder.deleteImgContainer.setVisibility(View.GONE);
             if (position == 0) {
@@ -299,8 +295,7 @@ public class Fw extends qA {
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_view_list_item, parent, false));
         }
 
@@ -310,7 +305,7 @@ public class Fw extends qA {
             return resources.getIdentifier("activity_" + option, "drawable", getContext().getPackageName());
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             public final ImageView imgPresetSettings;
             public final CheckBox checkBox;
             public final View viewItem;
@@ -333,12 +328,12 @@ public class Fw extends qA {
                 checkBox.setVisibility(View.GONE);
                 viewItem.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
                                 checkBox.setChecked(!checkBox.isChecked());
                                 activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
-                                ProjectFilesAdapter.this.c(layoutPosition);
+                                notifyItemChanged(layoutPosition);
                             }
                         } else {
                             Intent intent = new Intent(getContext(), AddViewActivity.class);
@@ -350,14 +345,14 @@ public class Fw extends qA {
                 });
                 viewItem.setOnLongClickListener(view -> {
                     ((ManageViewActivity) getActivity()).a(true);
-                    layoutPosition = j();
+                    layoutPosition = getAdapterPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
                 imgPresetSettings.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getAdapterPosition();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
                         intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);

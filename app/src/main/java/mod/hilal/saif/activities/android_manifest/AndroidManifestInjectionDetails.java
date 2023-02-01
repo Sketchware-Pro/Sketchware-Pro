@@ -249,7 +249,7 @@ public class AndroidManifestInjectionDetails extends Activity {
             actComponent.setTypeface(Typeface.DEFAULT_BOLD);
             par.addView(actComponent);
             actComponent.setOnClickListener(v -> {
-                ActComponentsDialog acd = new ActComponentsDialog(AndroidManifestInjectionDetails.this, src_id, activityName);
+                ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
                 acd.show();
             });
         }

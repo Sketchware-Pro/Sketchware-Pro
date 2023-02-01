@@ -94,7 +94,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ((GridLayoutManager) iconsList.getLayoutManager()).d(getGridLayoutColumnCount());
+        ((GridLayoutManager) iconsList.getLayoutManager()).setSpanCount(getGridLayoutColumnCount());
         iconsList.requestLayout();
     }
 
@@ -104,11 +104,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         setContentView(R.layout.import_icon);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
@@ -188,11 +188,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    private class IconAdapter extends RecyclerView.a<IconAdapter.ViewHolder> {
+    private class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
 
         private int selectedIconPosition = -1;
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             public final RelativeLayout background;
             public final TextView name;
@@ -206,11 +206,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 icon.setOnClickListener(v -> {
                     if (!mB.a()) {
                         int lastSelectedPosition = selectedIconPosition;
-                        selectedIconPosition = j();
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        IconAdapter.this.c(selectedIconPosition);
-                        // RecyclerView.Adapter<VH extends ViewHolder>#notifyItemChanged(int)
-                        IconAdapter.this.c(lastSelectedPosition);
+                        selectedIconPosition = getAdapterPosition();
+                        notifyItemChanged(selectedIconPosition);
+                        notifyItemChanged(lastSelectedPosition);
                         setIconName(selectedIconPosition);
                     }
                 });
@@ -218,8 +216,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             if (position != selectedIconPosition) {
                 if (iconType == 2) {
                     holder.background.setBackgroundColor(0xffbdbdbd);
@@ -238,14 +235,12 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return icons.size();
         }
     }
@@ -253,7 +248,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private class InitialIconLoader extends MA {
         public InitialIconLoader(Context context) {
             super(context);
-            ImportIconActivity.this.a(this);
+            addTask(this);
         }
 
         @Override
@@ -283,7 +278,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private class IconColorChangedIconLoader extends MA {
         public IconColorChangedIconLoader(Context context) {
             super(context);
-            ImportIconActivity.this.a(this);
+            addTask(this);
             k();
         }
 
@@ -292,8 +287,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             h();
             iconName.setText("");
             adapter.selectedIconPosition = -1;
-            // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-            adapter.c();
+            adapter.notifyDataSetChanged();
         }
 
         @Override

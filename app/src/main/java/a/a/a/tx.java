@@ -82,7 +82,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     Uri uri;
                     if (VERSION.SDK_INT >= 24) {
                         String providerName = getContext().getPackageName() + ".provider";
-                        uri = FileProvider.a(getContext(), providerName, iconFile);
+                        uri = FileProvider.getUriForFile(getContext(), providerName, iconFile);
                     } else {
                         uri = Uri.fromFile(iconFile);
                     }
@@ -248,7 +248,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     Uri uri;
                     if (VERSION.SDK_INT >= 24) {
                         String providerName = getContext().getPackageName() + ".provider";
-                        uri = FileProvider.a(getContext(), providerName, iconFile);
+                        uri = FileProvider.getUriForFile(getContext(), providerName, iconFile);
                     } else {
                         uri = Uri.fromFile(iconFile);
                     }

@@ -260,11 +260,11 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
         setContentView(R.layout.manage_library);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_actionbar_title_library));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_library));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         libraryItemLayout = findViewById(R.id.contents);
     }
@@ -353,7 +353,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         public SaveLibraryTask(ManageLibraryActivity activity) {
             super(activity);
             this.activity = new WeakReference<>(activity);
-            activity.a(this);
+            activity.addTask(this);
         }
 
         @Override

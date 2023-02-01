@@ -19,10 +19,14 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.editor.manage.library.ProjectComparator;
@@ -36,13 +40,9 @@ import java.io.IOException;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.Xf;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.gg;
-import a.a.a.l;
 import a.a.a.mB;
-import a.a.a.nd;
 import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wB;
@@ -60,11 +60,11 @@ import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
-public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
+public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
-    private l drawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
     private MainDrawer drawer;
     private ViewPager viewPager;
     private DB u;
@@ -75,12 +75,12 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
-    public void a(int state) {
+    public void onPageScrollStateChanged(int state) {
     }
 
     @Override
     // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
-    public void a(int position, float positionOffset, int positionOffsetPixels) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
@@ -108,8 +108,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void selectPageZero() {
         if (viewPager != null) {
-            // ViewPager#setCurrentItem(int, boolean)
-            viewPager.a(0, true);
+            viewPager.setCurrentItem(0, true);
         }
     }
 
@@ -156,8 +155,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onBackPressed() {
         if (drawer.isShown()) {
-            // DrawerLayout#closeDrawers()
-            drawerLayout.b();
+            drawerLayout.closeDrawers();
         } else {
             finish();
         }
@@ -166,8 +164,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // ActionBarDrawerToggle#onConfigurationChanged(Configuration)
-        drawerToggle.a(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -189,22 +186,20 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
-        d().d(true);
-        d().e(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         ImageView logo = findViewById(R.id.img_title_logo);
         logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(R.id.left_drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
-        drawerToggle = new l(this, drawerLayout, R.string.app_name, R.string.app_name);
-        // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
-        drawerLayout.a((DrawerLayout.c) drawerToggle);
-        d().a("");
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(drawerToggle);
+        getSupportActionBar().setTitle("");
 
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
-        viewPager.a(this);
+        viewPager.addOnPageChangeListener(this);
 
         fab = findViewById(R.id.fab);
         coordinator = findViewById(R.id.layout_coordinator);
@@ -322,6 +317,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
             preference.a("sortBy", sortValue, true);
             dialog.dismiss();
+            n();
         });
         dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
         dialog.show();
@@ -336,14 +332,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.sortProject) {
-            if (!mB.a()) {
-                showProjectSortingDialog();
-            }
-            //Refresh projects
-            n();
+            if (!mB.a()) showProjectSortingDialog();
         }
-        // ActionBarDrawerToggle#onOptionsItemSelected(MenuItem)
-        if (drawerToggle.a(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -353,8 +344,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // ActionBarDrawerToggle#syncState()
-        drawerToggle.b();
+        drawerToggle.syncState();
     }
 
     @Override
@@ -365,8 +355,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (freeMegabytes < 100 && freeMegabytes > 0) {
             showNoticeNotEnoughFreeStorageSpace();
         }
-        if (j() && storageAccessDenied != null && storageAccessDenied.j()) {
-            storageAccessDenied.c();
+        if (j() && storageAccessDenied != null && storageAccessDenied.isShown()) {
+            storageAccessDenied.dismiss();
         }
     }
 
@@ -408,7 +398,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         dialog.a(Helper.getResString(R.string.common_message_permission_need_load_project));
         dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             dialog.dismiss();
-            nd.a(MainActivity.this, new String[]{
+            ActivityCompat.requestPermissions(this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     9501);
@@ -427,30 +417,29 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public void s() {
-        if (storageAccessDenied == null || !storageAccessDenied.j()) {
-            storageAccessDenied = Snackbar.a(coordinator, Helper.getResString(R.string.common_message_permission_denied), -2);
-            storageAccessDenied.a(Helper.getResString(R.string.common_word_settings), v -> {
-                storageAccessDenied.c();
-                nd.a(MainActivity.this, new String[]{
+        if (storageAccessDenied == null || !storageAccessDenied.isShown()) {
+            storageAccessDenied = Snackbar.make(coordinator, Helper.getResString(R.string.common_message_permission_denied), Snackbar.LENGTH_INDEFINITE);
+            storageAccessDenied.setAction(Helper.getResString(R.string.common_word_settings), v -> {
+                storageAccessDenied.dismiss();
+                ActivityCompat.requestPermissions(this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE},
                         9501);
             });
-            storageAccessDenied.f(Color.YELLOW);
-            storageAccessDenied.n();
+            storageAccessDenied.setActionTextColor(Color.YELLOW);
+            storageAccessDenied.show();
         }
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageSelected(int)
-    public void b(int position) {
+    public void onPageSelected(int position) {
         if (position == 0) {
             if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0) {
                 projectsFragment.refreshProjectsList();
             }
             projectsFragment.showCreateNewProjectLayout();
         } else if (position == 1) {
-            fab.c();
+            fab.show();
         }
     }
 
@@ -478,35 +467,31 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    private class PagerAdapter extends gg {
+    private class PagerAdapter extends FragmentPagerAdapter {
 
-        public PagerAdapter(Xf xf) {
+        public PagerAdapter(FragmentManager xf) {
             super(xf);
         }
 
         @Override
-        // PagerAdapter#getCount()
-        public int a() {
+        public int getCount() {
             return 1;
         }
 
         @Override
-        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
-        public Object a(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.a(container, position);
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
             projectsFragment = (ProjectsFragment) fragment;
             return fragment;
         }
 
         @Override
-        // FragmentPagerAdapter#getItem(int)
-        public Fragment c(int position) {
+        public Fragment getItem(int position) {
             return new ProjectsFragment();
         }
 
         @Override
-        // PagerAdapter#getPageTitle(int)
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             return Helper.getResString(R.string.main_tab_title_myproject);
         }
     }

@@ -190,7 +190,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         fab.setOnClickListener(this);
         gridView.setOnItemLongClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
-                PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, view);
+                PopupMenu menu = new PopupMenu(this, view);
 
                 menu.getMenu().add("Delete");
                 menu.setOnMenuItemClickListener(item -> {
