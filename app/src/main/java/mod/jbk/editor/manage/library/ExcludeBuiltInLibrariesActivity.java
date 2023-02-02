@@ -288,8 +288,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
 
         list.setLayoutManager(new LinearLayoutManager(null));
         BuiltInLibraryAdapter adapter = new BuiltInLibraryAdapter(excludedLibraries);
-        // replacement for RecyclerView.Adapter#setHasStableIds(boolean)
-        adapter.b = true;
+        adapter.setHasStableIds(true);
         list.setAdapter(adapter);
         dialog.a(list);
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -333,7 +332,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         }
     }
 
-    private static class BuiltInLibraryAdapter extends RecyclerView.a<BuiltInLibraryAdapter.ViewHolder> {
+    private static class BuiltInLibraryAdapter extends RecyclerView.Adapter<BuiltInLibraryAdapter.ViewHolder> {
         private final List<BuiltInLibraries.BuiltInLibrary> libraries;
         private final Map<Integer, Void> checkedIndices;
 
@@ -351,26 +350,22 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return libraries.size();
         }
 
         @Override
-        // RecyclerView.Adapter#getItemId(int)
-        public long a(int position) {
+        public long getItemId(int position) {
             return position;
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_exclude_builtin_libraries_list_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             BuiltInLibraries.BuiltInLibrary library = libraries.get(position);
             holder.selected.setChecked(checkedIndices.containsKey(position));
             holder.name.setText(library.getName());
@@ -407,7 +402,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
             return selectedLibraries;
         }
 
-        private static class ViewHolder extends RecyclerView.v {
+        private static class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout selectableItem;
             public final CheckBox selected;
             public final TextView name;

@@ -178,7 +178,7 @@ public class Fw extends qA {
                     }
                 }
             } else {
-                projectFilesAdapter.c();
+                projectFilesAdapter.notifyDataSetChanged();
                 return;
             }
         }
@@ -263,7 +263,7 @@ public class Fw extends qA {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
                                 ((ManageViewActivity) getActivity()).s.hide();
                             }
-                        } else if (dy < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
+                        } else if (i1 < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
                             ((ManageViewActivity) getActivity()).s.show();
                         }
                     }
