@@ -107,7 +107,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {

@@ -142,7 +142,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         setSupportActionBar(l);
         findViewById(2131231370).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(2131625739));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         l.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();

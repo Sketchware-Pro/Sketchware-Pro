@@ -2257,7 +2257,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         setSupportActionBar(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         k.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();

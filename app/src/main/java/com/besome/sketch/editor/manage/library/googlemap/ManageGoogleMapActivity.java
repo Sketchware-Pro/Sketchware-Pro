@@ -186,7 +186,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         getSupportActionBar().setTitle("GoogleMap Settings");
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         LinearLayout switchLayout = findViewById(R.id.layout_switch);

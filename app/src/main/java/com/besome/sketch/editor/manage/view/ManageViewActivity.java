@@ -264,7 +264,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         setSupportActionBar(m);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_view));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         m.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();

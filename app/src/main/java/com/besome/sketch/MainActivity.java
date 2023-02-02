@@ -188,7 +188,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
         ImageView logo = findViewById(R.id.img_title_logo);
         logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(R.id.left_drawer);
