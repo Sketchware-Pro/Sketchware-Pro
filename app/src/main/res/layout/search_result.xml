@@ -4,7 +4,6 @@
     <LinearLayout android:orientation="vertical" android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <include layout="@layout/toolbar" />
         <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <include android:visibility="gone" layout="@layout/no_connection" />
             <com.google.android.material.tabs.TabLayout android:layout_gravity="bottom" android:id="@id/tab_layout" android:layout_width="fill_parent" android:layout_height="40.0dip" style="@style/MainTabLayout" />
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@id/swipe_refresh" android:layout_width="fill_parent" android:layout_height="fill_parent">
                 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
