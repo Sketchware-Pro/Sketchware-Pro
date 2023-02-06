@@ -1,4 +1,4 @@
-package mod.khaled.externallibrarymanager;
+package mod.khaled.librarymanager;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -32,6 +32,10 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+
+        if (getActivity() instanceof DialogDismissedListener)
+            ((DialogDismissedListener) getActivity()).onDismissDownloaderDialog();
+
     }
 
     @Nullable
@@ -118,5 +122,9 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
 
     private interface DownloadFinishedCallback {
         void complete(@Nullable String error);
+    }
+
+    public interface DialogDismissedListener {
+        void onDismissDownloaderDialog();
     }
 }

@@ -28,8 +28,8 @@ import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
-import mod.khaled.externallibrarymanager.ExternalLibraryManagerActivity;
-import mod.khaled.externallibrarymanager.ExternalLibraryManagerActivityItemView;
+import mod.khaled.librarymanager.ExternalLibraryManagerActivity;
+import mod.khaled.librarymanager.ExternalLibraryManagerActivityItemView;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 

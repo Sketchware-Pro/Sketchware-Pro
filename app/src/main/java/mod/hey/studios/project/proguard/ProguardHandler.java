@@ -179,19 +179,15 @@ public class ProguardHandler {
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }
 
-    public boolean libIsProguardFMEnabled(String library) {
-        boolean enabled;
+    public boolean libIsProguardFMEnabled(String libraryHash) {
         if (isProguardEnabled() && FileUtil.isExistFile(fm_config_path)) {
             String configContent = FileUtil.readFile(fm_config_path);
 
-            if (configContent.isEmpty()) {
-                return false;
-            }
+            if (configContent.isEmpty()) return false;
 
             try {
                 ArrayList<String> config = new Gson().fromJson(configContent, arrayListStringType);
-                enabled = config.contains(library);
-                return enabled;
+                return config.contains(libraryHash);
             } catch (Exception ignored) {
             }
         }

@@ -13,10 +13,9 @@ import android.widget.TextView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.util.Helper;
+import mod.khaled.librarymanager.ExternalLibraryManager;
 
 //changed in 6.3.0
 public class ManageProguardActivity extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -38,39 +37,34 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
     }
 
     private void fmDialog() {
-        ManageLocalLibrary mll = new ManageLocalLibrary(getIntent().getStringExtra("sc_id"));
+        ExternalLibraryManager mll = new ExternalLibraryManager(getIntent().getStringExtra("sc_id"));
 
-        final String[] libraries = new String[mll.list.size()];
-        final boolean[] enabledLibraries = new boolean[mll.list.size()];
+        final String[] libraryNames = new String[mll.getLibrariesInProjectHashes().size()];
+        final String[] libraryHashes = new String[mll.getLibrariesInProjectHashes().size()];
+        final boolean[] enabledLibraries = new boolean[mll.getLibrariesInProjectHashes().size()];
 
-        for (int i = 0; i < mll.list.size(); i++) {
-            HashMap<String, Object> current = mll.list.get(i);
-
-            Object name = current.get("name");
-            if (name instanceof String) {
-                libraries[i] = (String) name;
-                enabledLibraries[i] = pg.libIsProguardFMEnabled(libraries[i]);
-            } else {
-                libraries[i] = "(broken library configuration)";
-                enabledLibraries[i] = false;
-            }
+        for (int i = 0; i < mll.getLibrariesInProjectHashes().size(); i++) {
+            String libraryHash = mll.getLibrariesInProjectHashes().get(i);
+            libraryNames[i] = mll.getLibraryNameFromHash(libraryHash);
+            libraryHashes[i] = libraryHash;
+            enabledLibraries[i] = pg.libIsProguardFMEnabled(libraryHash);
         }
 
+        //FIXME
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setTitle("Select Local libraries");
-        bld.setMultiChoiceItems(libraries, enabledLibraries, (dialog, which, isChecked) -> enabledLibraries[which] = isChecked);
+        bld.setMultiChoiceItems(libraryNames, enabledLibraries, (dialog, which, isChecked) -> enabledLibraries[which] = isChecked);
         bld.setPositiveButton(R.string.common_word_save, (dialog, which) -> {
 
             ArrayList<String> finalList = new ArrayList<>();
 
-            for (int i = 0; i < libraries.length; i++) {
+            for (int i = 0; i < libraryNames.length; i++) {
                 if (enabledLibraries[i]) {
-                    finalList.add(libraries[i]);
+                    finalList.add(libraryHashes[i]);
                 }
             }
 
             pg.setProguardFMLibs(finalList);
-
             dialog.dismiss();
         });
         bld.setNegativeButton(R.string.common_word_cancel, null);

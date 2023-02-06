@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.hasrat.control.logic.PermissionManager;
 import mod.hey.studios.build.BuildSettings;
@@ -23,6 +22,7 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
+import mod.khaled.librarymanager.ExternalLibraryManager;
 
 public class Jx {
 
@@ -55,7 +55,7 @@ public class Jx {
      * e.g. {"_drawer.addDrawerListener(_toggle);"}
      */
     private final ArrayList<String> initializeMethodCode = new ArrayList<>();
-    private final ManageLocalLibrary mll;
+    private final ExternalLibraryManager mll;
     /**
      * Component initializer lines which get added to <code>_initialize(Bundle)</code>
      */
@@ -81,7 +81,7 @@ public class Jx {
         this.projectFileBean = projectFileBean;
         projectDataManager = eCVar;
         buildConfig = jqVar;
-        mll = new ManageLocalLibrary(eCVar.a);
+        mll = new ExternalLibraryManager(eCVar.a);
         settings = new ProjectSettings(eCVar.a);
         permissionManager = new PermissionManager(eCVar.a, projectFileBean.getJavaName());
     }

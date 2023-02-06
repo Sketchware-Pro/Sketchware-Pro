@@ -4,6 +4,9 @@ import android.os.Environment;
 
 import java.io.File;
 
+import mod.khaled.librarymanager.ExternalLibraryItem;
+
+//FIXME: Why is everything not static???
 public class FilePathUtil {
 
     private static final File SKETCHWARE_DATA = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/");
@@ -49,6 +52,10 @@ public class FilePathUtil {
         return new File(SKETCHWARE_DATA, sc_id + "/local_library").getAbsolutePath();
     }
 
+    public String getPathExternalLibrary(String sc_id) {
+        return new File(SKETCHWARE_DATA, sc_id + "/external_library").getAbsolutePath();
+    }
+
     public String getJarPathLocalLibrary(String libraryName) {
         return new File(SKETCHWARE_LOCAL_LIBS, libraryName + "/classes.jar").getAbsolutePath();
     }
@@ -87,5 +94,13 @@ public class FilePathUtil {
 
     public String getManifestService(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/service").getAbsolutePath();
+    }
+
+    public static String getExternalLibrariesDir() {
+        return FileUtil.getExternalStorageDir().concat("/.sketchware/libs/external_libs/");
+    }
+
+    public static String getExternalLibraryDir(String libraryPkg) {
+        return getExternalLibrariesDir().concat(libraryPkg.replace(":", ExternalLibraryItem.LIBRARY_PKG_SEPERATOR));
     }
 }

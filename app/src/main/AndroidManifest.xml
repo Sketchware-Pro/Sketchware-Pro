@@ -317,7 +317,7 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
         <activity
-            android:name="mod.khaled.externallibrarymanager.ExternalLibraryManagerActivity"
+            android:name="mod.khaled.librarymanager.ExternalLibraryManagerActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
     </application>

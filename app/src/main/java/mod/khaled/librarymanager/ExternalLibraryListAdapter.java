@@ -1,4 +1,4 @@
-package mod.khaled.externallibrarymanager;
+package mod.khaled.librarymanager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +17,15 @@ import java.util.ArrayList;
 public class ExternalLibraryListAdapter extends RecyclerView.Adapter<ExternalLibraryListAdapter.LibraryItemViewHolder> {
 
     private final ArrayList<ExternalLibraryItem> data;
+    private final String sc_id;
 
-    ExternalLibraryListAdapter(ArrayList<ExternalLibraryItem> data) {
+    ExternalLibraryListAdapter(ArrayList<ExternalLibraryItem> data, String sc_id) {
         this.data = data;
+        this.sc_id = sc_id;
+    }
+
+    private boolean isLibraryInProject(String libraryHash) {
+        return false;
     }
 
     @NonNull
@@ -56,7 +62,9 @@ public class ExternalLibraryListAdapter extends RecyclerView.Adapter<ExternalLib
         }
 
         void bind(ExternalLibraryItem libraryItem) {
-
+            libraryName.setText(libraryItem.getLibraryName());
+            libraryPkg.setText(libraryItem.getLibraryPkg());
+            libraryEnabledSwitch.setChecked(false);
         }
     }
 }

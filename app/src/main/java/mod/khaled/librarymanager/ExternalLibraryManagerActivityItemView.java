@@ -1,4 +1,4 @@
-package mod.khaled.externallibrarymanager;
+package mod.khaled.librarymanager;
 
 import android.content.Context;
 

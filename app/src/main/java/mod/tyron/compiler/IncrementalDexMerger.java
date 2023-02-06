@@ -16,7 +16,7 @@ import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dx.command.dexer.DxContext;
 import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
-import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
+import mod.khaled.librarymanager.ExternalLibraryManager;
 
 public class IncrementalDexMerger extends Compiler {
 
@@ -25,7 +25,7 @@ public class IncrementalDexMerger extends Compiler {
     public final String DEX_PATH;
 
     private final yq projectConfig;
-    private final ManageLocalLibrary manageLocalLibrary;
+    private final ExternalLibraryManager manageLocalLibrary;
     private final ArrayList<String> builtInLibraries;
     private final List<String> generatedDexes = new ArrayList<>();
     private int currentDexNo = 0;
@@ -36,7 +36,7 @@ public class IncrementalDexMerger extends Compiler {
         this.projectConfig = projectConfig;
         this.builtInLibraries = builtInLibraries;
 
-        this.manageLocalLibrary = new ManageLocalLibrary(projectConfig.sc_id);
+        this.manageLocalLibrary = new ExternalLibraryManager(projectConfig.sc_id);
         DEX_PATH = projectConfig.projectMyscPath + "/incremental/build";
     }
 
