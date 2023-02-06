@@ -28,8 +28,8 @@ import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
-import mod.khaled.librarymanager.LibraryManagerActivity;
-import mod.khaled.librarymanager.LibraryManagerActivityItemView;
+import mod.khaled.externallibrarymanager.ExternalLibraryManagerActivity;
+import mod.khaled.externallibrarymanager.ExternalLibraryManagerActivityItemView;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -66,7 +66,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         if (libraryBean.libType == EXCLUDE_BUILT_IN_LIBRARY)
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
         else if (libraryBean.libType == EXTERNAL_LIBRARY_MANAGER)
-            libraryItemView = new LibraryManagerActivityItemView(this);
+            libraryItemView = new ExternalLibraryManagerActivityItemView(this);
         else
             libraryItemView = new LibraryItemView(this);
 
@@ -160,7 +160,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     }
 
     private void toExternalLibraryManagerActivity() {
-        Intent intent = new Intent(getApplicationContext(), LibraryManagerActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ExternalLibraryManagerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, REQUEST_CODE_EXTERNAL_LIBRARY_MANAGER_ACTIVITY);

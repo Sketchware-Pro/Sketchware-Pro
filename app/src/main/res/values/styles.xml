@@ -343,4 +343,9 @@
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
         <item name="android:windowTranslucentStatus">false</item>
     </style>
+
+    <style name="ExpandedDialogFragment" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowMinWidthMajor">97%</item>
+        <item name="android:windowMinWidthMinor">97%</item>
+    </style>
 </resources>
