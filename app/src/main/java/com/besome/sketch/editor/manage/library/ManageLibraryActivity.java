@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -29,6 +28,8 @@ import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
+import mod.khaled.librarymanager.LibraryManagerActivity;
+import mod.khaled.librarymanager.LibraryManagerActivityItemView;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -37,6 +38,11 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private static final int REQUEST_CODE_FIREBASE_ACTIVITY = 230;
     private static final int REQUEST_CODE_GOOGLE_MAPS_ACTIVITY = 241;
     private static final int REQUEST_CODE_EXCLUDE_BUILTIN_LIBRARIES_ACTIVITY = 242;
+    private static final int REQUEST_CODE_EXTERNAL_LIBRARY_MANAGER_ACTIVITY = 243;
+
+
+    private static final int EXCLUDE_BUILT_IN_LIBRARY = 99;
+    private static final int EXTERNAL_LIBRARY_MANAGER = 100;
 
     private String sc_id;
     private LinearLayout libraryItemLayout;
@@ -46,21 +52,26 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private ProjectLibraryBean admobLibraryBean;
     private ProjectLibraryBean googleMapLibraryBean;
 
+    private final ProjectLibraryBean excludeBuiltInLibraryBean = new ProjectLibraryBean(EXCLUDE_BUILT_IN_LIBRARY);
+    private final ProjectLibraryBean externalLibraryManagerBean = new ProjectLibraryBean(EXTERNAL_LIBRARY_MANAGER);
+
     private String originalFirebaseUseYn = "N";
     private String originalCompatUseYn = "N";
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
 
-    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
+    private void addLibraryItem(ProjectLibraryBean libraryBean) {
         LibraryItemView libraryItemView;
-        if (libraryBean != null) {
-            libraryItemView = new LibraryItemView(this);
-        } else {
+
+        if (libraryBean.libType == EXCLUDE_BUILT_IN_LIBRARY)
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
-        }
+        else if (libraryBean.libType == EXTERNAL_LIBRARY_MANAGER)
+            libraryItemView = new LibraryManagerActivityItemView(this);
+        else
+            libraryItemView = new LibraryItemView(this);
+
         libraryItemView.a(R.layout.manage_library_base_item);
-        libraryItemView.setTag(libraryBean != null ? libraryBean.libType : null);
-        //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
+        libraryItemView.setTag(libraryBean.libType);
         libraryItemView.setData(libraryBean);
         libraryItemView.setOnClickListener(this);
 
@@ -81,38 +92,32 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         startActivityForResult(intent, REQUEST_CODE_APPCOMPAT_ACTIVITY);
     }
 
-    private void initializeLibrary(@Nullable ProjectLibraryBean libraryBean) {
-        if (libraryBean != null) {
-            switch (libraryBean.libType) {
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
-                    firebaseLibraryBean = libraryBean;
-                    break;
+    private void initializeLibrary(ProjectLibraryBean libraryBean) {
+        switch (libraryBean.libType) {
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
+                firebaseLibraryBean = libraryBean;
+                break;
 
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
-                    compatLibraryBean = libraryBean;
-                    break;
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
+                compatLibraryBean = libraryBean;
+                break;
 
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
-                    admobLibraryBean = libraryBean;
-                    break;
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
+                admobLibraryBean = libraryBean;
+                break;
 
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
-                    googleMapLibraryBean = libraryBean;
-                    break;
-            }
+            case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
+                googleMapLibraryBean = libraryBean;
+                break;
         }
 
         for (int i = 0; i < libraryItemLayout.getChildCount(); i++) {
             View child = libraryItemLayout.getChildAt(i);
-            if (child instanceof ExcludeBuiltInLibrariesLibraryItemView) {
-                if (libraryBean == null) {
-                    ((ExcludeBuiltInLibrariesLibraryItemView) child).setData(null);
-                }
-            } else if (child instanceof LibraryItemView) {
-                LibraryItemView libraryItemView = (LibraryItemView) child;
-                if (libraryBean != null && libraryBean.libType == (Integer) libraryItemView.getTag()) {
-                    libraryItemView.setData(libraryBean);
-                }
+            if (!(child instanceof LibraryItemView)) continue;
+
+            LibraryItemView libraryItemView = (LibraryItemView) child;
+            if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
+                libraryItemView.setData(libraryBean);
             }
         }
     }
@@ -152,6 +157,13 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, REQUEST_CODE_EXCLUDE_BUILTIN_LIBRARIES_ACTIVITY);
+    }
+
+    private void toExternalLibraryManagerActivity() {
+        Intent intent = new Intent(getApplicationContext(), LibraryManagerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
+        startActivityForResult(intent, REQUEST_CODE_EXTERNAL_LIBRARY_MANAGER_ACTIVITY);
     }
 
     private void saveLibraryConfiguration() {
@@ -196,10 +208,11 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     break;
 
                 case REQUEST_CODE_EXCLUDE_BUILTIN_LIBRARIES_ACTIVITY:
-                    initializeLibrary(null);
+                    initializeLibrary(excludeBuiltInLibraryBean);
                     break;
 
-                default:
+                case REQUEST_CODE_EXTERNAL_LIBRARY_MANAGER_ACTIVITY:
+                    initializeLibrary(externalLibraryManagerBean);
             }
         }
     }
@@ -218,32 +231,35 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            Object tag = v.getTag();
+            int vTag = (Integer) v.getTag();
+            switch (vTag) {
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
+                    toFirebaseActivity(firebaseLibraryBean);
+                    break;
 
-            if (tag != null) {
-                int vTag = (Integer) tag;
-                switch (vTag) {
-                    case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
-                        toFirebaseActivity(firebaseLibraryBean);
-                        break;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
+                    toCompatActivity(compatLibraryBean, firebaseLibraryBean);
+                    break;
 
-                    case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
-                        toCompatActivity(compatLibraryBean, firebaseLibraryBean);
-                        break;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
+                    toAdmobActivity(admobLibraryBean);
+                    break;
 
-                    case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
-                        toAdmobActivity(admobLibraryBean);
-                        break;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
+                    toGoogleMapActivity(googleMapLibraryBean);
+                    break;
 
-                    case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
-                        toGoogleMapActivity(googleMapLibraryBean);
-                        break;
-                }
-            } else {
-                toExcludeBuiltinLibrariesActivity();
+                case EXCLUDE_BUILT_IN_LIBRARY:
+                    toExcludeBuiltinLibrariesActivity();
+                    break;
+
+                case EXTERNAL_LIBRARY_MANAGER:
+                    toExternalLibraryManagerActivity();
+                    break;
             }
         }
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -312,7 +328,9 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         addLibraryItem(admobLibraryBean);
         addLibraryItem(googleMapLibraryBean);
         // Exclude built-in libraries
-        addLibraryItem(null);
+        addLibraryItem(excludeBuiltInLibraryBean);
+        // New external library manager
+        addLibraryItem(externalLibraryManagerBean);
     }
 
     @Override
