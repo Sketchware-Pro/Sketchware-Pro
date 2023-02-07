@@ -261,7 +261,7 @@ public class gt extends LinearLayout {
                 icon = itemView.findViewById(R.id.icon);
                 name = itemView.findViewById(R.id.name);
                 itemView.setOnClickListener(view -> {
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     variableItemAdapter.setData(allVariablesWithCategoryIndex.get(layoutPosition));
                     variableItemAdapter.notifyDataSetChanged();
                     notifyDataSetChanged();
@@ -317,7 +317,7 @@ public class gt extends LinearLayout {
                 name = itemView.findViewById(R.id.name);
                 icon = itemView.findViewById(R.id.icon);
                 itemView.setOnClickListener(view -> {
-                    setPreview(allVariablesWithCategoryIndex.get(categoryItemAdapter.layoutPosition).get(getAdapterPosition()));
+                    setPreview(allVariablesWithCategoryIndex.get(categoryItemAdapter.layoutPosition).get(getLayoutPosition()));
                     dialog.hide();
                 });
             }

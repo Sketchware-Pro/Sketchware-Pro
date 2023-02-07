@@ -330,7 +330,7 @@ public class Fw extends qA {
                 checkBox.setVisibility(View.GONE);
                 viewItem.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = getAdapterPosition();
+                        layoutPosition = getLayoutPosition();
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
                                 checkBox.setChecked(!checkBox.isChecked());
@@ -347,14 +347,14 @@ public class Fw extends qA {
                 });
                 viewItem.setOnLongClickListener(view -> {
                     ((ManageViewActivity) getActivity()).a(true);
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
                 imgPresetSettings.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = getAdapterPosition();
+                        layoutPosition = getLayoutPosition();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
                         intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);

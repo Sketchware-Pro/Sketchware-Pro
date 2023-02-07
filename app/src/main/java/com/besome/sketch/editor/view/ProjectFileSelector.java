@@ -226,7 +226,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
                 javaFileName = itemView.findViewById(R.id.tv_filename);
                 xmlFileName = itemView.findViewById(R.id.tv_linked_filename);
                 itemView.setOnClickListener(v -> {
-                    ProjectFileBean projectFileBean = jC.b(sc_id).b().get(getAdapterPosition());
+                    ProjectFileBean projectFileBean = jC.b(sc_id).b().get(getLayoutPosition());
                     setJavaFileName(projectFileBean.getJavaName());
                     if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                         currentXmlFileName = projectFileBean.getXmlName();

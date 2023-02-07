@@ -207,7 +207,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 icon.setOnClickListener(v -> {
                     if (!mB.a()) {
                         int lastSelectedPosition = selectedIconPosition;
-                        selectedIconPosition = getAdapterPosition();
+                        selectedIconPosition = getLayoutPosition();
                         notifyItemChanged(selectedIconPosition);
                         notifyItemChanged(lastSelectedPosition);
                         setIconName(selectedIconPosition);

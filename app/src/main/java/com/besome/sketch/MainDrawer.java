@@ -268,7 +268,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    int id = getAdapterPosition() - 1;
+                    int id = getLayoutPosition() - 1;
                     notifyItemChanged(id);
                     Activity activity = (Activity) getContext();
                     if (id == DrawerItem.MENU_ABOUT_MODDERS.ordinal()) {

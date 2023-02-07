@@ -306,7 +306,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = getAdapterPosition();
+                    selectedProjectIndex = getLayoutPosition();
                     selectProject(selectedProjectIndex);
                 }
             }

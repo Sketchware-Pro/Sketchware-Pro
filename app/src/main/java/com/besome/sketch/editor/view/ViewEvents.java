@@ -113,7 +113,7 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                itemView.setOnClickListener(v -> createEvent(getAdapterPosition()));
+                itemView.setOnClickListener(v -> createEvent(getLayoutPosition()));
             }
         }
 

@@ -165,7 +165,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 tvName = itemView.findViewById(R.id.tv_name);
                 tvUnitId = itemView.findViewById(R.id.tv_unit_id);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgDelete.setOnClickListener(view -> deleteAdUnit(getAdapterPosition()));
+                imgDelete.setOnClickListener(view -> deleteAdUnit(getLayoutPosition()));
             }
         }
     }

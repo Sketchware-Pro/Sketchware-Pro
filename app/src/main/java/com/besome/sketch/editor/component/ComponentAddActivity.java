@@ -534,7 +534,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             public void onClick(View v) {
                 if (!y) {
                     y = true;
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     x = true;
                     int[] itemViewLocationInWindow = new int[2];
                     v.getLocationInWindow(itemViewLocationInWindow);

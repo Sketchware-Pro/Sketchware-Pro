@@ -782,7 +782,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             @Override
             public void onClick(View v) {
                 notifyItemChanged(index);
-                index = getAdapterPosition();
+                index = getLayoutPosition();
                 notifyItemChanged(index);
                 initializeEvents(events.get(index));
                 if (index == 4) {
@@ -920,7 +920,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 options.addView(optionsLayout);
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        lastSelectedItem = getAdapterPosition();
+                        lastSelectedItem = getLayoutPosition();
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(lastSelectedItem);
                         if (v instanceof CollapsibleButton) {
                             int i = ((CollapsibleButton) v).b;
@@ -959,7 +959,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                 });
                 menu.setOnClickListener(v -> {
-                    lastSelectedItem = getAdapterPosition();
+                    lastSelectedItem = getLayoutPosition();
                     EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
@@ -970,7 +970,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                 });
                 itemView.setOnLongClickListener(v -> {
-                    lastSelectedItem = getAdapterPosition();
+                    lastSelectedItem = getLayoutPosition();
                     EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
@@ -983,7 +983,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 });
                 itemView.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        lastSelectedItem = getAdapterPosition();
+                        lastSelectedItem = getLayoutPosition();
                         EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                         openEvent(eventBean.targetId, eventBean.eventName, description.getText().toString());
                     }

@@ -446,7 +446,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectOption.addView(projectButtonLayout);
                 projectButtonLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = getAdapterPosition();
+                        layoutPosition = getLayoutPosition();
                         if (layoutPosition <= projectsList.size()) {
                             HashMap<String, Object> projectMap = projectsList.get(layoutPosition);
                             if (v instanceof MyProjectButton) {
@@ -488,12 +488,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 });
                 projectOne.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = getAdapterPosition();
+                        layoutPosition = getLayoutPosition();
                         toDesignActivity(yB.c(projectsList.get(layoutPosition), "sc_id"));
                     }
                 });
                 projectOne.setOnLongClickListener(v -> {
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     if (yB.a(projectsList.get(layoutPosition), "expand")) {
                         collapse();
                     } else {
@@ -504,12 +504,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 });
                 appIconLayout.setOnClickListener(v -> {
                     mB.a(v);
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     toProjectSettingOrRequestPermission(layoutPosition);
                 });
                 expand.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = getAdapterPosition();
+                        layoutPosition = getLayoutPosition();
                         if (yB.a(projectsList.get(layoutPosition), "expand")) {
                             collapse();
                         } else {
