@@ -23,11 +23,38 @@ public class ExternalLibraryManager {
         }
     }
 
+
+    public void addLibraryToProject(String libraryHash) {
+        if (librariesInProjectHashes.contains(libraryHash)) return;
+
+        librariesInProjectHashes.add(libraryHash);
+        FileUtil.writeFile(new FilePathUtil().getPathExternalLibrary(sc_id),
+                String.join(",", librariesInProjectHashes));
+    }
+
+    public void removeLibraryFromProject(String libraryHash) {
+        if (!librariesInProjectHashes.contains(libraryHash)) return;
+
+        librariesInProjectHashes.remove(libraryHash);
+        FileUtil.writeFile(new FilePathUtil().getPathExternalLibrary(sc_id),
+                String.join(",", librariesInProjectHashes));
+    }
+
     public ArrayList<ExternalLibraryItem> getExternalLibraryItemArrayList() {
         return externalLibraryItemArrayList;
     }
 
     public ArrayList<String> getLibrariesInProjectHashes() {
+        return librariesInProjectHashes;
+    }
+
+    public static ArrayList<String> getLibrariesInProjectHashes(String sc_id) {
+        ArrayList<String> librariesInProjectHashes = new ArrayList<>();
+        String externalLibraryDataPath = new FilePathUtil().getPathExternalLibrary(sc_id);
+        if (!FileUtil.readFile(externalLibraryDataPath).isBlank()) {
+            String[] libraryHashes = FileUtil.readFile(externalLibraryDataPath).split(",");
+            librariesInProjectHashes.addAll(Arrays.asList(libraryHashes));
+        }
         return librariesInProjectHashes;
     }
 

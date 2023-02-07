@@ -66,7 +66,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         if (libraryBean.libType == EXCLUDE_BUILT_IN_LIBRARY)
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
         else if (libraryBean.libType == EXTERNAL_LIBRARY_MANAGER)
-            libraryItemView = new ExternalLibraryManagerActivityItemView(this);
+            libraryItemView = new ExternalLibraryManagerActivityItemView(this, sc_id);
         else
             libraryItemView = new LibraryItemView(this);
 
@@ -213,6 +213,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
                 case REQUEST_CODE_EXTERNAL_LIBRARY_MANAGER_ACTIVITY:
                     initializeLibrary(externalLibraryManagerBean);
+                    break;
             }
         }
     }

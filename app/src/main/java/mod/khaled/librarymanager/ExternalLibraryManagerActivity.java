@@ -25,6 +25,7 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
 
         initializeView();
         initializeLogic();
+        setResult(RESULT_OK);
     }
 
     private void initializeView() {
@@ -39,17 +40,20 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
         recyclerview = findViewById(R.id.libraryListRecycler);
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLibraryList);
-        swipeRefreshLayout.setOnRefreshListener(() -> recyclerview.setAdapter(new ExternalLibraryListAdapter(externalLibraryManager.loadExternalLibraries(), sc_id)));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerview.setAdapter(new ExternalLibraryListAdapter(this, externalLibraryManager.loadExternalLibraries(), sc_id));
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     private void initializeLogic() {
-        recyclerview.setAdapter(new ExternalLibraryListAdapter(externalLibraryManager.getExternalLibraryItemArrayList(), sc_id));
+        recyclerview.setAdapter(new ExternalLibraryListAdapter(this, externalLibraryManager.getExternalLibraryItemArrayList(), sc_id));
     }
 
     @Override
     public void onDismissDownloaderDialog() {
         swipeRefreshLayout.setRefreshing(true);
-        recyclerview.setAdapter(new ExternalLibraryListAdapter(externalLibraryManager.loadExternalLibraries(), sc_id));
+        recyclerview.setAdapter(new ExternalLibraryListAdapter(this, externalLibraryManager.loadExternalLibraries(), sc_id));
         swipeRefreshLayout.setRefreshing(false);
     }
 }
