@@ -407,27 +407,19 @@ public class AboutModActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            View itemView = holder.itemView;
-
-            TextView title = itemView.findViewById(R.id.tv_title);
-            LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
-            ImageView userIcon = itemView.findViewById(R.id.img_user_icon);
-            TextView userName = itemView.findViewById(R.id.tv_user_name);
-            TextView description = itemView.findViewById(R.id.tv_description);
-
             Object modder_img = modders.get(position).get("modder_img");
             if (modder_img instanceof String) {
-                circularImage(userIcon, (String) modder_img);
+                circularImage(holder.icon, (String) modder_img);
             }
 
             Object modder_username = modders.get(position).get("modder_username");
             if (modder_username instanceof String) {
-                userName.setText((String) modder_username);
+                holder.username.setText((String) modder_username);
             }
 
             Object modder_description = modders.get(position).get("modder_description");
             if (modder_description instanceof String) {
-                description.setText((String) modder_description);
+                holder.description.setText((String) modder_description);
             }
 
             Object isTitled = modders.get(position).get("isTitled");
@@ -449,19 +441,19 @@ public class AboutModActivity extends AppCompatActivity {
             Object titleText = modders.get(position).get("title");
             if (isTitle) {
                 if (titleText instanceof String) {
-                    title.setText((String) titleText);
-                    title.setVisibility(View.VISIBLE);
+                    holder.title.setText((String) titleText);
+                    holder.title.setVisibility(View.VISIBLE);
                 } else {
-                    title.setVisibility(View.GONE);
+                    holder.title.setVisibility(View.GONE);
                 }
             } else {
-                title.setVisibility(View.GONE);
+                holder.title.setVisibility(View.GONE);
             }
 
             if (isMainModderBool) {
-                advancedCorners(sidebar, "#008DCD");
+                advancedCorners(holder.sidebar, "#008DCD");
             } else {
-                advancedCorners(sidebar, "#00CDAB");
+                advancedCorners(holder.sidebar, "#00CDAB");
             }
         }
 
@@ -471,9 +463,19 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
+            public final TextView title;
+            public final LinearLayout sidebar;
+            public final ImageView icon;
+            public final TextView username;
+            public final TextView description;
 
-            public ViewHolder(View v) {
-                super(v);
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                title = itemView.findViewById(R.id.tv_title);
+                sidebar = itemView.findViewById(R.id.view_leftline);
+                icon = itemView.findViewById(R.id.img_user_icon);
+                username = itemView.findViewById(R.id.tv_user_name);
+                description = itemView.findViewById(R.id.tv_description);
             }
         }
     }
@@ -496,19 +498,6 @@ public class AboutModActivity extends AppCompatActivity {
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            View itemView = holder.itemView;
-
-            //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
-            //get less lazy when.
-            TextView variant = itemView.findViewWithTag("tv_variant");
-            LinearLayout leftLine = itemView.findViewById(R.id.view_leftline);
-            TextView title = itemView.findViewById(R.id.tv_title);
-            TextView releasedOn = itemView.findViewById(R.id.tv_release_note);
-            TextView subtitle = itemView.findViewById(R.id.tv_sub_title);
-            LinearLayout log_background = itemView.findViewWithTag("log_background");
-            LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
-            ImageButton arrow = itemView.findViewWithTag("ic_arrow");
-
             HashMap<String, Object> release = changelog.get(position);
 
             Object isTitled = release.get("isTitled");
@@ -520,17 +509,17 @@ public class AboutModActivity extends AppCompatActivity {
             }
 
             if (isTitle) {
-                title.setVisibility(View.VISIBLE);
+                holder.title.setVisibility(View.VISIBLE);
                 Object titleText = release.get("title");
 
                 if (titleText instanceof String) {
-                    title.setText((String) titleText);
+                    holder.title.setText((String) titleText);
                 } else {
-                    title.setText("We've messed something up, sorry for the inconvenience!\n" +
+                    holder.title.setText("We've messed something up, sorry for the inconvenience!\n" +
                             "(Details: Invalid data type of \"title\")");
                 }
             } else {
-                title.setVisibility(View.GONE);
+                holder.title.setVisibility(View.GONE);
             }
 
 
@@ -555,31 +544,31 @@ public class AboutModActivity extends AppCompatActivity {
                 }
             }
 
-            variant.setVisibility(previousIsBetaValueDiffers ? View.VISIBLE : View.GONE);
+            holder.variant.setVisibility(previousIsBetaValueDiffers ? View.VISIBLE : View.GONE);
             if (previousIsBetaValueDiffers) {
-                variant.setText(isBetaVersion ? "Beta" : "Official");
+                holder.variant.setText(isBetaVersion ? "Beta" : "Official");
             }
 
 
             Object releaseDate = release.get("releaseDate");
 
             if (releaseDate instanceof Double) {
-                releasedOn.setVisibility(View.VISIBLE);
+                holder.releasedOn.setVisibility(View.VISIBLE);
                 long timestamp = ((Double) releaseDate).longValue();
 
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                releasedOn.setText("Released on: " + formatter.format(new Date(timestamp)));
+                holder.releasedOn.setText("Released on: " + formatter.format(new Date(timestamp)));
             } else {
-                releasedOn.setVisibility(View.GONE);
+                holder.releasedOn.setVisibility(View.GONE);
             }
 
             Object description = release.get("description");
 
             if (description instanceof String) {
-                subtitle.setText((String) description);
-                Linkify.addLinks(subtitle, Linkify.WEB_URLS);
+                holder.subtitle.setText((String) description);
+                Linkify.addLinks(holder.subtitle, Linkify.WEB_URLS);
             } else {
-                subtitle.setText("We've messed something up, sorry for the inconvenience!\n" +
+                holder.subtitle.setText("We've messed something up, sorry for the inconvenience!\n" +
                         "(Details: Invalid data type of \"description\")");
             }
 
@@ -591,31 +580,31 @@ public class AboutModActivity extends AppCompatActivity {
                 showingAdditionalInfo = true;
             }
 
-            view_additional_info.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
-            arrow.setRotation(showingAdditionalInfo ? 0 : 180);
+            holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
+            holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
 
-            rippleRound(log_background, "#ffffff", "#1F000000", 0);
-            rippleRound(arrow, "#ffffff", "#1F000000", 90);
-            arrow.setOnClickListener(v -> log_background.performClick());
+            rippleRound(holder.logBackground, "#ffffff", "#1F000000", 0);
+            rippleRound(holder.arrow, "#ffffff", "#1F000000", 90);
+            holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
-            log_background.setOnClickListener(v -> {
-                if (view_additional_info.getVisibility() == View.VISIBLE) {
-                    shadAnim(arrow, "rotation", 180, 220);
-                    view_additional_info.setVisibility(View.GONE);
+            holder.logBackground.setOnClickListener(v -> {
+                if (holder.viewAdditionalInfo.getVisibility() == View.VISIBLE) {
+                    shadAnim(holder.arrow, "rotation", 180, 220);
+                    holder.viewAdditionalInfo.setVisibility(View.GONE);
                     release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, false);
                 } else {
-                    shadAnim(arrow, "rotation", 0, 220);
-                    view_additional_info.setVisibility(View.VISIBLE);
+                    shadAnim(holder.arrow, "rotation", 0, 220);
+                    holder.viewAdditionalInfo.setVisibility(View.VISIBLE);
                     release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, true);
                 }
-                animateLayoutChanges(log_background);
+                animateLayoutChanges(holder.logBackground);
 
                 notifyItemChanged(position);
             });
             if (0 == position) {
-                advancedCorners(leftLine, "#008dcd");
+                advancedCorners(holder.leftLine, "#008dcd");
             } else {
-                leftLine.setBackground(null);
+                holder.leftLine.setBackground(null);
             }
         }
 
@@ -625,9 +614,25 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
+            public final TextView variant;
+            public final LinearLayout leftLine;
+            public final TextView title;
+            public final TextView releasedOn;
+            public final TextView subtitle;
+            public final LinearLayout logBackground;
+            public final LinearLayout viewAdditionalInfo;
+            public final ImageButton arrow;
 
-            public ViewHolder(View v) {
-                super(v);
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                variant = itemView.findViewWithTag("tv_variant");
+                leftLine = itemView.findViewById(R.id.view_leftline);
+                title = itemView.findViewById(R.id.tv_title);
+                releasedOn = itemView.findViewById(R.id.tv_release_note);
+                subtitle = itemView.findViewById(R.id.tv_sub_title);
+                logBackground = itemView.findViewWithTag("log_background");
+                viewAdditionalInfo = itemView.findViewWithTag("view_additional_info");
+                arrow = itemView.findViewWithTag("ic_arrow");
             }
         }
     }
