@@ -20,12 +20,10 @@ public class ExternalLibraryListAdapter extends RecyclerView.Adapter<ExternalLib
 
     private final Context context;
     private final ArrayList<ExternalLibraryItem> data;
-    private final String sc_id;
     private final ExternalLibraryManager externalLibraryManager;
 
     ExternalLibraryListAdapter(Context context, ArrayList<ExternalLibraryItem> data, String sc_id) {
         this.data = data;
-        this.sc_id = sc_id;
         this.context = context;
         this.externalLibraryManager = new ExternalLibraryManager(sc_id);
     }

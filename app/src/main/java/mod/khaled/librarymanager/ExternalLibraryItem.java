@@ -3,6 +3,8 @@ package mod.khaled.librarymanager;
 import androidx.annotation.Nullable;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -15,10 +17,22 @@ public class ExternalLibraryItem {
     private final String libraryPkg;
 
     public String getPackageName() {
+
         File packageNameFile = new File(getPackageNamePath());
         if (FileUtil.isExistFile(packageNameFile.getAbsolutePath()))
             return FileUtil.readFile(packageNameFile.getAbsolutePath());
-        return libraryPkg.replace(LIBRARY_PKG_SEPERATOR, ":").split(LIBRARY_PKG_SEPERATOR)[0];
+
+        // Fallback: use manifest
+        if (FileUtil.isExistFile(getManifestPath())) {
+            String content = FileUtil.readFile(getManifestPath());
+
+            Pattern p = Pattern.compile("<manifest.*package=\"(.*?)\"", Pattern.DOTALL);
+            Matcher m = p.matcher(content);
+
+            if (m.find()) return m.group(1);
+        }
+        //Fallback: use dependency name
+        return getLibraryPkg().split(":")[0];
     }
 
     public String getPackageNamePath() {
@@ -51,8 +65,8 @@ public class ExternalLibraryItem {
 
 
     public ExternalLibraryItem(String libraryName, String libraryPkg) {
-        this.libraryName = libraryName;
-        this.libraryPkg = libraryPkg;
+        this.libraryName = libraryName.trim();
+        this.libraryPkg = libraryPkg.trim();
 
         this.libraryPath = FilePathUtil.getExternalLibraryDir(libraryPkg);
     }
@@ -94,8 +108,7 @@ public class ExternalLibraryItem {
     public void renameLibrary(@Nullable String newName) {
         if (!FileUtil.isExistFile(libraryPath)) return;
         File libraryNameFile = new File(libraryPath, "libraryName");
-        if (!FileUtil.isExistFile(libraryNameFile.getAbsolutePath()))
-            FileUtil.writeFile(libraryNameFile.getAbsolutePath(), newName == null ? generateLibName(getLibraryPkg()) : newName);
+        FileUtil.writeFile(libraryNameFile.getAbsolutePath(), newName == null ? generateLibName(getLibraryPkg()) : newName);
 
         this.libraryName = FileUtil.readFile(libraryNameFile.getAbsolutePath());
     }

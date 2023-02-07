@@ -87,17 +87,7 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
 
             if (libraryDetailsView.getVisibility() == View.VISIBLE && !startButton.getText().equals("Save")) {
                 startDownloadingLibrary(libraryNameInput.getEditText().getText().toString(),
-                        libraryPkgInput.getEditText().getText().toString(), error -> {
-                            if (error == null) {
-                                SketchwareUtil.toast("Downloaded library " + libraryNameInput.getEditText().getText());
-                                dismiss();
-                                return;
-                            }
-                            SketchwareUtil.toastError(error);
-                            startButton.setText("Retry");
-                            startButton.setVisibility(View.VISIBLE);
-                            stopButton.setVisibility(View.GONE);
-                        });
+                        libraryPkgInput.getEditText().getText().toString());
 
                 stopButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.GONE);
@@ -108,21 +98,41 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
     }
 
     private String parseGradleImplementation(String input) {
-        return input;
+        return input.trim(); //TODO
     }
 
     private String parseLibraryName(String input) {
-        return input;
+        return ExternalLibraryItem.generateLibName(input);
     }
 
-    private void startDownloadingLibrary(String libraryName, String libraryPkg, DownloadFinishedCallback callback) {
+    private void startDownloadingLibrary(String libraryName, String libraryPkg) {
+        ExternalLibraryItem externalLibraryItem = new ExternalLibraryItem(libraryName, libraryPkg);
 
-        callback.complete(null);
+        new ExternalLibraryDownloader(requireActivity())
+                .startDownloadingLibrary(externalLibraryItem, new ExternalLibraryDownloader.DownloadStatusListener() {
+                    @Override
+                    public void onDownloadComplete(String tempLibPath) {
+                        //TODO: Confirmation for saving
+                        SketchwareUtil.toast("Downloaded library " + externalLibraryItem.getLibraryPkg());
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onError(String errMessage) {
+                        SketchwareUtil.toastError(errMessage);
+                        startButton.setText("Retry");
+                        startButton.setVisibility(View.VISIBLE);
+                        stopButton.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onProgressChange(int newProgress, String newMessage) {
+
+                    }
+                });
+
     }
 
-    private interface DownloadFinishedCallback {
-        void complete(@Nullable String error);
-    }
 
     public interface DialogDismissedListener {
         void onDismissDownloaderDialog();

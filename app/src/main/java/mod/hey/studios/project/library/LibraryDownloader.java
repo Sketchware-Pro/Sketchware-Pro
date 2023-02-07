@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import a.a.a.Dp;
 import a.a.a.bB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.dx.command.dexer.Main;
@@ -260,7 +259,7 @@ public class LibraryDownloader {
         }
     }
 
-    private void _unZipFile(String str, String str2) {
+    public void _unZipFile(String str, String str2) {
         try {
             File file = new File(str2);
             ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(str));
@@ -585,7 +584,7 @@ public class LibraryDownloader {
         void onComplete();
     }
 
-    private class BackTask extends AsyncTask<String, String, String> implements BuildProgressReceiver {
+    public class BackTask extends AsyncTask<String, String, String> implements BuildProgressReceiver {
         private ProgressDialog progressDialog;
         boolean success = false;
 
