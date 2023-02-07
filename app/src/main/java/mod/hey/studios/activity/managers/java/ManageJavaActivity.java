@@ -508,7 +508,7 @@ public class ManageJavaActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, parent, false);
             }
 
             TextView name = convertView.findViewById(R.id.title);

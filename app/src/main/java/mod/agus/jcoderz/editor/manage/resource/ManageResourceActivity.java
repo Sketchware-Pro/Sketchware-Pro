@@ -337,7 +337,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, parent, false);
             }
             TextView name = convertView.findViewById(R.id.title);
             ImageView icon = convertView.findViewById(R.id.icon);

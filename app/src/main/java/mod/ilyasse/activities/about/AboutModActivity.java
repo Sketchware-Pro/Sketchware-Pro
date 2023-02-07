@@ -313,7 +313,7 @@ public class AboutModActivity extends AppCompatActivity {
         @NonNull
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             LayoutInflater inflater = getLayoutInflater();
-            View v = inflater.inflate(R.layout.about_empty_viewpager, null);
+            View v = inflater.inflate(R.layout.about_empty_viewpager, container, false);
 
             LinearLayout viewContainer = v.findViewById(R.id.linearLayout);
 
@@ -402,7 +402,7 @@ public class AboutModActivity extends AppCompatActivity {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = getLayoutInflater().inflate(R.layout.about_moddersview, null);
+            View v = getLayoutInflater().inflate(R.layout.about_moddersview, parent, false);
             v.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -494,7 +494,7 @@ public class AboutModActivity extends AppCompatActivity {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, null);
+            View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, parent, false);
             aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT

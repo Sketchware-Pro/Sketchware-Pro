@@ -507,7 +507,7 @@ public class BlocksManager extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater _inflater = getLayoutInflater();
             if (convertView == null) {
-                convertView = _inflater.inflate(R.layout.pallet_customview, null);
+                convertView = _inflater.inflate(R.layout.pallet_customview, parent, false);
             }
 
             final LinearLayout background = convertView.findViewById(R.id.background);
