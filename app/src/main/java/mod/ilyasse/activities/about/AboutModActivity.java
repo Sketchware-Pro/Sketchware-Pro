@@ -402,11 +402,7 @@ public class AboutModActivity extends AppCompatActivity {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = getLayoutInflater().inflate(R.layout.about_moddersview, parent, false);
-            v.setLayoutParams(new RecyclerView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            return new ViewHolder(v);
+            return new ViewHolder(getLayoutInflater().inflate(R.layout.about_moddersview, parent, false));
         }
 
         @Override
@@ -494,12 +490,7 @@ public class AboutModActivity extends AppCompatActivity {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, parent, false);
-            aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            return new ViewHolder(aboutChangelog);
+            return new ViewHolder(getLayoutInflater().inflate(R.layout.about_changelog, parent, false));
         }
 
         @SuppressLint("SetTextI18n")
