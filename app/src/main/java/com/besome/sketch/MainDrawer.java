@@ -212,35 +212,35 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        public int getItemViewType(int i) {
-            return i == 0 ? 0 : 1;
+        public int getItemViewType(int position) {
+            return position == 0 ? 0 : 1;
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            if (i == 0) {
-                return new EmptyViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == 0) {
+                return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.main_drawer_header,
-                        viewGroup,
+                        parent,
                         false
                 ));
             }
-            return new MenuItemHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
+            return new MenuItemHolder(LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.main_drawer_item,
-                    viewGroup,
+                    parent,
                     false
             ));
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-            if (!(viewHolder instanceof EmptyViewHolder)) {
-                if (viewHolder instanceof MenuItemHolder) {
-                    MenuItemHolder menuItemHolder = (MenuItemHolder) viewHolder;
-                    menuItemHolder.name.setImageResource(DrawerItem.values()[i > 0 ? i - 1 : i].getIcon());
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (!(holder instanceof EmptyViewHolder)) {
+                if (holder instanceof MenuItemHolder) {
+                    MenuItemHolder menuItemHolder = (MenuItemHolder) holder;
+                    menuItemHolder.name.setImageResource(DrawerItem.values()[position > 0 ? position - 1 : position].getIcon());
                     DrawerItem[] values = DrawerItem.values();
-                    if (i > 0) i--;
-                    menuItemHolder.icon.setText(values[i].getTitle());
+                    if (position > 0) position--;
+                    menuItemHolder.icon.setText(values[position].getTitle());
                 }
             }
         }

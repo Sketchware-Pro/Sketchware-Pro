@@ -257,13 +257,13 @@ public class Fw extends qA {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    public void onScrolled(RecyclerView recyclerView, int i, int i1) {
-                        super.onScrolled(recyclerView, i, i1);
-                        if (i1 > 2) {
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
                                 ((ManageViewActivity) getActivity()).s.hide();
                             }
-                        } else if (i1 < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
+                        } else if (dy < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
                             ((ManageViewActivity) getActivity()).s.show();
                         }
                     }

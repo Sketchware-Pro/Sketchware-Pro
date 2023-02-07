@@ -74,12 +74,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     private ProjectsFragment projectsFragment = null;
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
     public void onPageScrollStateChanged(int state) {
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
@@ -467,9 +465,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {
-
-        public PagerAdapter(FragmentManager xf) {
-            super(xf);
+        public PagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
 
         @Override

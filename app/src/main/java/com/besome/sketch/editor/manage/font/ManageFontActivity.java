@@ -31,17 +31,14 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     private St thisProjectFontsFragment;
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
     public void onPageScrollStateChanged(int state) {
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageSelected(int)
     public void onPageSelected(int position) {
     }
 

@@ -105,7 +105,6 @@ public class AboutModActivity extends AppCompatActivity {
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 8) {
@@ -238,7 +237,6 @@ public class AboutModActivity extends AppCompatActivity {
         tablayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -305,7 +303,6 @@ public class AboutModActivity extends AppCompatActivity {
     }
 
     private class PagerAdapterImpl extends PagerAdapter {
-
         @Override
         public int getCount() {
             return 3;

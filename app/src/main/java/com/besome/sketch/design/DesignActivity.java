@@ -179,7 +179,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(q.sc_id).writeLogsToFile(error);
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(Helper.getResString(R.string.common_word_show), v -> {
             if (!mB.a()) {
                 snackbar.dismiss();
@@ -446,7 +446,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         // Replaced empty anonymous class with null
         getSupportFragmentManager().addOnBackStackChangedListener(null);
         drawer = findViewById(R.id.drawer_layout);
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
         runProject = findViewById(R.id.btn_execute);
         runProject.setText(Helper.getResString(R.string.common_word_run));
@@ -489,15 +489,15 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrollStateChanged(int i) {
+            public void onPageScrollStateChanged(int state) {
             }
 
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
-            public void onPageSelected(int i) {
+            public void onPageSelected(int position) {
                 if (currentTabNumber == 1) {
                     if (eventTabAdapter != null) {
                         eventTabAdapter.c();
@@ -505,14 +505,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 } else if (currentTabNumber == 2 && componentTabAdapter != null) {
                     componentTabAdapter.c();
                 }
-                if (i == 0) {
+                if (position == 0) {
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(true);
                         xmlLayoutOrientation.setVisibility(View.VISIBLE);
                         projectFileSelector.setFileType(0);
                         projectFileSelector.syncState();
                     }
-                } else if (i == 1) {
+                } else if (position == 1) {
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         viewTabAdapter.c(false);
@@ -533,7 +533,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         }
                     }
                 }
-                currentTabNumber = i;
+                currentTabNumber = position;
             }
         });
         viewPager.getAdapter().notifyDataSetChanged();
@@ -550,7 +550,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
-            if (!drawer.isDrawerOpen (GravityCompat.END)) {
+            if (!drawer.isDrawerOpen(GravityCompat.END)) {
                 drawer.openDrawer(GravityCompat.END);
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {

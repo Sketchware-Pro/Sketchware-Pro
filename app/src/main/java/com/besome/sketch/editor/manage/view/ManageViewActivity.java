@@ -368,8 +368,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public class b extends FragmentPagerAdapter {
         public String[] f;
 
-        public b(FragmentManager var2) {
-            super(var2);
+        public b(FragmentManager fragmentManager) {
+            super(fragmentManager);
             f = new String[]{xB.b().a(getApplicationContext(), R.string.common_word_view).toUpperCase(), xB.b().a(getApplicationContext(), R.string.common_word_custom_view).toUpperCase()};
         }
 
@@ -379,14 +379,14 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         @Override
-        public CharSequence getPageTitle(int var1) {
-            return f[var1];
+        public CharSequence getPageTitle(int position) {
+            return f[position];
         }
 
         @Override
-        public Object instantiateItem(ViewGroup var1, int var2) {
-            Fragment var3 = (Fragment) super.instantiateItem(var1, var2);
-            if (var2 != 0) {
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment var3 = (Fragment) super.instantiateItem(container, position);
+            if (position != 0) {
                 customViewsFragment = (xw) var3;
             } else {
                 activitiesFragment = (Fw) var3;
@@ -396,8 +396,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         @Override
-        public Fragment getItem(int var1) {
-            return var1 != 0 ? new xw() : new Fw();
+        public Fragment getItem(int position) {
+            return position != 0 ? new xw() : new Fw();
         }
     }
 }

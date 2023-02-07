@@ -331,14 +331,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    public void onScrolled(RecyclerView recyclerView1, int var2, int var3) {
-                        super.onScrolled(recyclerView1, var2, var3);
-                        if (var3 > 4) {
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 4) {
                             if (isCollapsed) return;
                             collapseAnimatorSet.start();
                             isCollapsed = true;
                         } else {
-                            if (var3 >= -4 || !isCollapsed) return;
+                            if (dy >= -4 || !isCollapsed) return;
                             expandAnimatorSet.start();
                             isCollapsed = false;
                         }
@@ -353,7 +353,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             HashMap<String, Object> projectMap = projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
             float rotation;
@@ -365,15 +365,15 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 visibility = View.GONE;
                 rotation = 0.0F;
             }
-            viewHolder.projectOptionLayout.setVisibility(visibility);
-            viewHolder.expand.setRotation(rotation);
+            holder.projectOptionLayout.setVisibility(visibility);
+            holder.expand.setRotation(rotation);
             if (yB.a(projectMap, "confirmation")) {
-                viewHolder.projectButtonLayout.b();
+                holder.projectButtonLayout.b();
             } else {
-                viewHolder.projectButtonLayout.a();
+                holder.projectButtonLayout.a();
             }
 
-            viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
+            holder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
                 projectMap.put("sc_ver_code", "1");
                 projectMap.put("sc_ver_name", "1.0");
@@ -395,17 +395,17 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                     uri = Uri.fromFile(new File(iconFolder, "icon.png"));
                 }
 
-                viewHolder.imgIcon.setImageURI(uri);
+                holder.imgIcon.setImageURI(uri);
             }
 
-            viewHolder.appName.setText(yB.c(projectMap, "my_ws_name"));
-            viewHolder.projectName.setText(yB.c(projectMap, "my_app_name"));
-            viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            holder.appName.setText(yB.c(projectMap, "my_ws_name"));
+            holder.projectName.setText(yB.c(projectMap, "my_app_name"));
+            holder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
             String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
-            viewHolder.projectVersion.setText(version);
-            viewHolder.tvPublished.setVisibility(View.VISIBLE);
-            viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
-            viewHolder.itemView.setTag("custom");
+            holder.projectVersion.setText(version);
+            holder.tvPublished.setVisibility(View.VISIBLE);
+            holder.tvPublished.setText(yB.c(projectMap, "sc_id"));
+            holder.itemView.setTag("custom");
         }
 
         @Override

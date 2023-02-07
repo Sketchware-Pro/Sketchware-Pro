@@ -1,5 +1,6 @@
 package com.besome.sketch.lib.base;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask.Status;
@@ -82,7 +83,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     public boolean j() {
-        return ContextCompat.checkSelfPermission(this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") == 0;
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
     }
 
     public void k() {

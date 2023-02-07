@@ -243,8 +243,8 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int index) {
-            HashMap<String, Object> projectMap = projectsList.get(index);
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+            HashMap<String, Object> projectMap = projectsList.get(position);
             String sc_id = yB.c(projectMap, "sc_id");
             viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
@@ -276,7 +276,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int index) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
