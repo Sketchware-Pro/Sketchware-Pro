@@ -443,8 +443,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
-        // Replaced empty anonymous class with null
-        getSupportFragmentManager().addOnBackStackChangedListener(null);
         drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
