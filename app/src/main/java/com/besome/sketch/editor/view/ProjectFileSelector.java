@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -237,7 +238,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.javaFileName.setVisibility(View.VISIBLE);
             holder.xmlFileName.setVisibility(View.VISIBLE);
             ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
@@ -248,7 +249,8 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_java_list_item, parent, false));
         }
 

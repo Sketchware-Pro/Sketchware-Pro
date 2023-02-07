@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -106,7 +107,7 @@ public class AboutModActivity extends AppCompatActivity {
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 8) {
                     fabLabel.setVisibility(View.GONE);
                 } else if (dy < -8) {
@@ -309,7 +310,8 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(R.layout.about_empty_viewpager, null);
 
@@ -356,7 +358,7 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
             trash.addView((View) object);
         }
@@ -379,7 +381,7 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
@@ -398,7 +400,8 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = getLayoutInflater().inflate(R.layout.about_moddersview, null);
             v.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -407,7 +410,7 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             View itemView = holder.itemView;
 
             TextView title = itemView.findViewById(R.id.tv_title);
@@ -489,7 +492,8 @@ public class AboutModActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, null);
             aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -500,7 +504,7 @@ public class AboutModActivity extends AppCompatActivity {
 
         @SuppressLint("SetTextI18n")
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             View itemView = holder.itemView;
 
             //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>

@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
@@ -752,7 +753,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public void onBindViewHolder(CategoryAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
             holder.name.setText(ManageCollectionActivity.getCategoryLabel(getApplicationContext(), position));
             holder.icon.setImageResource(ManageCollectionActivity.getCategoryIcon(position));
             ViewPropertyAnimatorCompat var3;
@@ -798,7 +799,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public CategoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
@@ -886,7 +888,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             currentViewType = -1;
             target.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     if (currentViewType == 3 || currentViewType == 4 || currentViewType == 5) {
                         return;
@@ -1144,7 +1146,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             switch (viewType) {
                 case 0:
                     return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
@@ -1167,7 +1170,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             int viewType = holder.getItemViewType();
 
             switch (viewType) {

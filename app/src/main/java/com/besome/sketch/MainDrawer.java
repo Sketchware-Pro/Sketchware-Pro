@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -217,7 +218,8 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == 0) {
                 return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.main_drawer_header,
@@ -233,7 +235,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (!(holder instanceof EmptyViewHolder)) {
                 if (holder instanceof MenuItemHolder) {
                     MenuItemHolder menuItemHolder = (MenuItemHolder) holder;

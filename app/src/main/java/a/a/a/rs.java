@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -293,7 +294,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         fab.setOnClickListener(this);
         eventList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 2) {
                     if (fab.isEnabled()) {
@@ -714,7 +715,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         private int index = -1;
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.name.setText(rs.a(getContext(), position));
             holder.icon.setImageResource(rs.a(position));
             if (index == position) {
@@ -755,7 +756,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
@@ -804,7 +806,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EventBean eventBean = currentCategoryEvents.get(position);
             holder.targetType.setVisibility(View.VISIBLE);
             holder.previewContainer.setVisibility(View.VISIBLE);
@@ -881,7 +883,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item, parent, false));
         }
 
