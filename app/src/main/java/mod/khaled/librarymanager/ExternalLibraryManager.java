@@ -1,23 +1,26 @@
 package mod.khaled.librarymanager;
 
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class ExternalLibraryManager {
     final String sc_id;
-    private final ArrayList<ExternalLibraryItem> externalLibraryItemArrayList = new ArrayList<>();
-    private final ArrayList<String> librariesInProjectHashes = new ArrayList<>();
+    private final List<ExternalLibraryItem> externalLibraryItemArrayList = new ArrayList<>();
+    private final List<String> librariesInProjectHashes = new ArrayList<>();
 
-    public ExternalLibraryManager(String sc_id) {
+    public ExternalLibraryManager(@Nullable String sc_id) {
         this.sc_id = sc_id;
         loadExternalLibraries();
 
         String externalLibraryDataPath = new FilePathUtil().getPathExternalLibrary(sc_id);
-        if (!FileUtil.readFile(externalLibraryDataPath).isBlank()) {
+        if (sc_id != null && !FileUtil.readFile(externalLibraryDataPath).isBlank()) {
             String[] libraryHashes = FileUtil.readFile(externalLibraryDataPath).split(",");
             librariesInProjectHashes.addAll(Arrays.asList(libraryHashes));
         }
@@ -26,6 +29,7 @@ public class ExternalLibraryManager {
 
     public void addLibraryToProject(String libraryHash) {
         if (librariesInProjectHashes.contains(libraryHash)) return;
+        if (sc_id == null) return;
 
         librariesInProjectHashes.add(libraryHash);
         FileUtil.writeFile(new FilePathUtil().getPathExternalLibrary(sc_id),
@@ -34,22 +38,23 @@ public class ExternalLibraryManager {
 
     public void removeLibraryFromProject(String libraryHash) {
         if (!librariesInProjectHashes.contains(libraryHash)) return;
+        if (sc_id == null) return;
 
         librariesInProjectHashes.remove(libraryHash);
         FileUtil.writeFile(new FilePathUtil().getPathExternalLibrary(sc_id),
                 String.join(",", librariesInProjectHashes));
     }
 
-    public ArrayList<ExternalLibraryItem> getExternalLibraryItemArrayList() {
+    public List<ExternalLibraryItem> getExternalLibraryItemArrayList() {
         return externalLibraryItemArrayList;
     }
 
-    public ArrayList<String> getLibrariesInProjectHashes() {
+    public List<String> getLibrariesInProjectHashes() {
         return librariesInProjectHashes;
     }
 
-    public static ArrayList<String> getLibrariesInProjectHashes(String sc_id) {
-        ArrayList<String> librariesInProjectHashes = new ArrayList<>();
+    public static List<String> getLibrariesInProjectHashes(String sc_id) {
+        List<String> librariesInProjectHashes = new ArrayList<>();
         String externalLibraryDataPath = new FilePathUtil().getPathExternalLibrary(sc_id);
         if (!FileUtil.readFile(externalLibraryDataPath).isBlank()) {
             String[] libraryHashes = FileUtil.readFile(externalLibraryDataPath).split(",");
@@ -58,7 +63,7 @@ public class ExternalLibraryManager {
         return librariesInProjectHashes;
     }
 
-    ArrayList<ExternalLibraryItem> loadExternalLibraries() {
+    List<ExternalLibraryItem> loadExternalLibraries() {
         String externalLibrariesDir = FilePathUtil.getExternalLibrariesDir();
 
         if (!FileUtil.isExistFile(externalLibrariesDir)) return new ArrayList<>();
@@ -72,8 +77,8 @@ public class ExternalLibraryManager {
         return externalLibraryItemArrayList;
     }
 
-    public ArrayList<String> getAssets() {
-        ArrayList<String> assetsPath = new ArrayList<>();
+    public List<String> getAssets() {
+        List<String> assetsPath = new ArrayList<>();
 
         for (ExternalLibraryItem externalLibraryItem : externalLibraryItemArrayList) {
             if (!librariesInProjectHashes.contains(externalLibraryItem.getLibraryHash())) continue;
@@ -85,8 +90,8 @@ public class ExternalLibraryManager {
         return assetsPath;
     }
 
-    public ArrayList<String> getDexLocalLibrary() {
-        ArrayList<String> dexPaths = new ArrayList<>();
+    public List<String> getDexLocalLibrary() {
+        List<String> dexPaths = new ArrayList<>();
 
         for (ExternalLibraryItem externalLibraryItem : externalLibraryItemArrayList) {
             if (!librariesInProjectHashes.contains(externalLibraryItem.getLibraryHash())) continue;
@@ -99,8 +104,8 @@ public class ExternalLibraryManager {
     }
 
 
-    public ArrayList<String> getExtraDexes() {
-        ArrayList<String> extraDexes = new ArrayList<>();
+    public List<String> getExtraDexes() {
+        List<String> extraDexes = new ArrayList<>();
 
         for (String localLibraryDexPath : getDexLocalLibrary()) {
             File dexPath = new File(localLibraryDexPath);
@@ -124,8 +129,8 @@ public class ExternalLibraryManager {
     }
 
 
-    public ArrayList<String> getImportLocalLibrary() {
-        ArrayList<String> imports = new ArrayList<>();
+    public List<String> getImportLocalLibrary() {
+        List<String> imports = new ArrayList<>();
 
         for (String packageName : getPackageNames()) {
             if (!packageName.isEmpty()) {
@@ -150,8 +155,8 @@ public class ExternalLibraryManager {
         return classpath.toString();
     }
 
-    public ArrayList<String> getNativeLibs() {
-        ArrayList<String> nativeLibraryDirectories = new ArrayList<>();
+    public List<String> getNativeLibs() {
+        List<String> nativeLibraryDirectories = new ArrayList<>();
 
         for (String localLibraryDexPath : getDexLocalLibrary()) {
             File localLibraryDexFile = new File(localLibraryDexPath);
@@ -164,8 +169,8 @@ public class ExternalLibraryManager {
         return nativeLibraryDirectories;
     }
 
-    public ArrayList<String> getPackageNames() {
-        ArrayList<String> packageNames = new ArrayList<>();
+    public List<String> getPackageNames() {
+        List<String> packageNames = new ArrayList<>();
 
         for (ExternalLibraryItem externalLibraryItem : externalLibraryItemArrayList) {
             if (!librariesInProjectHashes.contains(externalLibraryItem.getLibraryPkg())) continue;
@@ -188,8 +193,8 @@ public class ExternalLibraryManager {
         return packageNames.toString();
     }
 
-    public ArrayList<String> getPgRules() {
-        ArrayList<String> proguardRules = new ArrayList<>();
+    public List<String> getPgRules() {
+        List<String> proguardRules = new ArrayList<>();
 
         for (ExternalLibraryItem externalLibraryItem : externalLibraryItemArrayList) {
             if (!librariesInProjectHashes.contains(externalLibraryItem.getLibraryHash())) continue;
@@ -201,8 +206,8 @@ public class ExternalLibraryManager {
         return proguardRules;
     }
 
-    public ArrayList<String> getResLocalLibrary() {
-        ArrayList<String> localLibraryRes = new ArrayList<>();
+    public List<String> getResLocalLibrary() {
+        List<String> localLibraryRes = new ArrayList<>();
 
         for (ExternalLibraryItem externalLibraryItem : externalLibraryItemArrayList) {
             if (!librariesInProjectHashes.contains(externalLibraryItem.getLibraryHash())) continue;

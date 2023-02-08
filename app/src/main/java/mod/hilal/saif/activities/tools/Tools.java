@@ -226,7 +226,7 @@ public class Tools extends Activity {
         CardView localLibraryManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout localLibraryManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         localLibraryManager.addView(localLibraryManagerLayout);
-        makeup(localLibraryManagerLayout, R.drawable.colored_box_96, "External library manager", "Manage 3rd party libraries for projects");
+        makeup(localLibraryManagerLayout, R.drawable.colored_box_96, getString(R.string.external_library_manager), getString(R.string.external_libmanager_description_alt));
         base.addView(localLibraryManager);
         localLibraryManagerLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ExternalLibraryManagerActivity.class)));

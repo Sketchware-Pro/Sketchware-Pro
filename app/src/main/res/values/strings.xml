@@ -2589,4 +2589,14 @@ Please check the URL again."</string>
     <string name="paste">Paste</string>
     <string name="saveToProject" translatable="false">Project</string>
     <string name="selectAll">Select All</string>
+    <string name="stop">Stop</string>
+    <string name="download_new_library">Download New Library</string>
+    <string name="library_will_be_overwritten_warning">This library already exist in the list. Re-downloading will remove/overwrite the existing.</string>
+    <string name="redownload">Re-download</string>
+    <string name="retry">Retry</string>
+    <string name="starting_library_download_progress">Starting.....</string>
+    <string name="compiling_downloaded_library_progress">Compiling library...</string>
+    <string name="external_library_manager">External Library Manager</string>
+    <string name="external_bib_manager_description">Add 3rd party libraries to project</string>
+    <string name="external_libmanager_description_alt">Manage 3rd party libraries for projects</string>
 </resources>

@@ -101,6 +101,6 @@ public class FilePathUtil {
     }
 
     public static String getExternalLibraryDir(String libraryPkg) {
-        return getExternalLibrariesDir().concat(libraryPkg.replace(":", ExternalLibraryItem.LIBRARY_PKG_SEPERATOR));
+        return getExternalLibrariesDir().concat(libraryPkg.replace(":", ExternalLibraryItem.LIBRARY_PKG_SEPARATOR));
     }
 }

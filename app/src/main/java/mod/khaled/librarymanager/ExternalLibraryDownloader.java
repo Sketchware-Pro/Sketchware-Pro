@@ -21,7 +21,7 @@ import mod.hey.studios.project.library.LibraryDownloader;
 //TODO: Better implementation maybe
 public class ExternalLibraryDownloader {
 
-    private final ArrayList<Repository> repositoriesList = new ArrayList<>();
+    private final List<Repository> repositoriesList = new ArrayList<>();
 
     private int libraryDownloaderInstanceId;
 
@@ -164,8 +164,8 @@ public class ExternalLibraryDownloader {
         //TODO: Load from file somewhere
     }
 
+    //TODO
     private void deleteResidueAfterBuildingLibrary(String path) {
-//TODO
         if (true) return;
 
         // 6.3.0

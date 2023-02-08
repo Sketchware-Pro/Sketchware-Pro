@@ -10,7 +10,7 @@ import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class ExternalLibraryItem {
-    public static final String LIBRARY_PKG_SEPERATOR = "@";
+    public static final String LIBRARY_PKG_SEPARATOR = "@";
 
     private final String libraryPath;
     private String libraryName;
@@ -81,11 +81,11 @@ public class ExternalLibraryItem {
     }
 
     public String getLibraryPkg() {
-        return libraryPkg.replace(LIBRARY_PKG_SEPERATOR, ":");
+        return libraryPkg.replace(LIBRARY_PKG_SEPARATOR, ":");
     }
 
     public String getLibraryFolderName() {
-        return libraryPkg.replace(":", LIBRARY_PKG_SEPERATOR);
+        return libraryPkg.replace(":", LIBRARY_PKG_SEPARATOR);
     }
 
     ExternalLibraryItem(String libraryFolderPath) {

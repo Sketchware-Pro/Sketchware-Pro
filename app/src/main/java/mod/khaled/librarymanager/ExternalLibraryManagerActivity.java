@@ -33,7 +33,7 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
         LinearLayout toolbar = findViewById(R.id.toolbar);
 
         toolbar.findViewById(R.id.ig_toolbar_back).setOnClickListener((v) -> finish());
-        ((TextView) toolbar.findViewById(R.id.tx_toolbar_title)).setText("External Library Manager");
+        ((TextView) toolbar.findViewById(R.id.tx_toolbar_title)).setText(R.string.external_library_manager);
 
         findViewById(R.id.addNewFab).setOnClickListener((v) ->
                 new ExternalLibraryDownloaderDialog().show(getSupportFragmentManager(), ""));
