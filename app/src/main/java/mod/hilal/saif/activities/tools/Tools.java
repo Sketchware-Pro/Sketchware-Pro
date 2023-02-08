@@ -33,13 +33,13 @@ import com.sketchware.remod.R;
 import java.io.File;
 
 import a.a.a.aB;
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
+import mod.khaled.librarymanager.ExternalLibraryManagerActivity;
 import mod.khaled.logcat.LogReaderActivity;
 
 public class Tools extends Activity {
@@ -226,11 +226,10 @@ public class Tools extends Activity {
         CardView localLibraryManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout localLibraryManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         localLibraryManager.addView(localLibraryManagerLayout);
-        makeup(localLibraryManagerLayout, R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries");
+        makeup(localLibraryManagerLayout, R.drawable.colored_box_96, "External library manager", "Manage 3rd party libraries for projects");
         base.addView(localLibraryManager);
         localLibraryManagerLayout.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), ManageLocalLibraryActivity.class),
-                new Pair<>("sc_id", "system")));
+                new Intent(getApplicationContext(), ExternalLibraryManagerActivity.class)));
 
         CardView modSettings = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout modSettingsLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);

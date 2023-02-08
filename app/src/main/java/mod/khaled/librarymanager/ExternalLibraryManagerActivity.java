@@ -20,7 +20,7 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sc_id = getIntent().getStringExtra("sc_id");
+        sc_id = getIntent().hasExtra("sc_id") ? getIntent().getStringExtra("sc_id") : null;
         externalLibraryManager = new ExternalLibraryManager(sc_id);
 
         initializeView();

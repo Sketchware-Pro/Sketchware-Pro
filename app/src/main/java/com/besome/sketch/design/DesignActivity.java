@@ -79,7 +79,6 @@ import a.a.a.yB;
 import a.a.a.yq;
 import a.a.a.zy;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
@@ -550,7 +549,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
-            if (!drawer.isDrawerOpen (GravityCompat.END)) {
+            if (!drawer.isDrawerOpen(GravityCompat.END)) {
                 drawer.openDrawer(GravityCompat.END);
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
@@ -810,13 +809,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     void toJavaManager() {
         launchActivity(ManageJavaActivity.class, null,
                 new Pair<>("pkgName", q.packageName));
-    }
-
-    /**
-     * Opens {@link ManageLocalLibraryActivity}.
-     */
-    void toLocalLibraryManager() {
-        launchActivity(ManageLocalLibraryActivity.class, null);
     }
 
     /**

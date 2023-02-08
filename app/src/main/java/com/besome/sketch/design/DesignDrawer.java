@@ -98,10 +98,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         menusLayout.addView(addDrawerItem(20, false,
                 R.drawable.block_96_blue, R.string.design_drawer_menu_customblocks, R.string.design_drawer_menu_customblocks_subtitle
         ));
-        /* Add Local library Manager */
-        menusLayout.addView(addDrawerItem(14, false,
-                R.drawable.open_box_48, R.string.text_title_menu_local_library, R.string.text_subtitle_menu_local_library
-        ));
         /* Add Native library Manager */
         menusLayout.addView(addDrawerItem(19, false,
                 R.drawable.cpp, R.string.design_drawer_menu_nativelibs, R.string.design_drawer_menu_nativelibs_subtitle));
@@ -116,8 +112,8 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         menusLayout.addView(addDrawerItem(16, false,
                 R.drawable.code_icon, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
         /* Add Logcat Reader */
-        menusLayout.addView(addDrawerItem(22,false,
-                R.drawable.icons8_app_components,R.string.design_drawer_menu_title_logcat_reader,R.string.design_drawer_menu_subtitle_logcat_reader));
+        menusLayout.addView(addDrawerItem(22, false,
+                R.drawable.icons8_app_components, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader));
     }
 
     @Override
@@ -172,10 +168,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
                     case 13:
                         designActivity.toAndroidManifestManager();
-                        return;
-
-                    case 14:
-                        designActivity.toLocalLibraryManager();
                         return;
 
                     case 16:

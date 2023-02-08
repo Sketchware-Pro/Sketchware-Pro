@@ -233,9 +233,6 @@
             android:name="dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity"
             android:configChanges="orientation|screenSize" />
         <activity
