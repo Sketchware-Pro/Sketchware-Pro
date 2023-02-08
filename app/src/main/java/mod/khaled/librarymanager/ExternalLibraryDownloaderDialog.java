@@ -19,6 +19,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
@@ -108,6 +110,13 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
 
 
             if (libraryDetailsView.getVisibility() == View.VISIBLE && !startButton.getText().equals("Save")) {
+                stopButton.setVisibility(View.VISIBLE);
+                startButton.setVisibility(View.GONE);
+                libraryNameInput.setEnabled(false);
+                libraryPkgInput.setEnabled(false);
+                libraryDownloadProgressView.setVisibility(View.VISIBLE);
+                libraryDownloadProgressBar.setProgress(0);
+                libraryDownloadProgressText.setText("0%");
 
                 externalLibraryDownloader.
                         startDownloadingLibrary(externalLibraryItem, new ExternalLibraryDownloader.DownloadStatusListener() {
@@ -145,15 +154,6 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                             }
                         });
 
-
-                stopButton.setVisibility(View.VISIBLE);
-                startButton.setVisibility(View.GONE);
-                libraryNameInput.setEnabled(false);
-                libraryPkgInput.setEnabled(false);
-                libraryDownloadProgressView.setVisibility(View.VISIBLE);
-                libraryDownloadMessage.setText(R.string.starting_library_download_progress);
-                libraryDownloadProgressBar.setProgress(0);
-                libraryDownloadProgressText.setText("0%");
                 return;
             }
 
@@ -189,7 +189,12 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
     }
 
     private String parseGradleImplementation(String input) {
-        return input.trim(); //TODO
+        final Matcher matcher = Pattern.
+                compile("['\"](.*)['\"]", Pattern.MULTILINE)
+                .matcher(input);
+
+        if (matcher.find()) return matcher.group(1);
+        return input.trim();
     }
 
     private String parseLibraryName(String input) {

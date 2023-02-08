@@ -61,6 +61,10 @@ public class ExternalLibraryDownloader {
         final String fullAARUrl = repositoriesList.get(currentRepo).url + getAAREndpoint(libraryItem.getLibraryPkg());
         final File libraryTempFile = new File(FilePathUtil.getExternalLibraryDir(libraryItem.getLibraryFolderName()).concat(".zip"));
 
+        final String searchingMessage = "Searching... " + (currentRepo) + "/" + repositoriesList.size()
+                + " [" + repositoriesList.get(currentRepo).name + "]";
+        downloadStatusListener.onProgressChange(0, searchingMessage);
+
         return PRDownloader
                 .download(fullAARUrl, FilePathUtil.getExternalLibrariesDir(), libraryTempFile.getName())
                 .build()
@@ -122,10 +126,6 @@ public class ExternalLibraryDownloader {
                             return;
                         }
 
-                        Repository nextRepository = repositoriesList.get(currentRepo + 1);
-                        String progressMessage = "Searching... " + (currentRepo + 1) + "/" + repositoriesList.size() + " [" + nextRepository.name + "]";
-                        downloadStatusListener.onProgressChange(0, progressMessage);
-
                         libraryDownloaderInstanceId = tryDownloadAAR(libraryItem, currentRepo + 1, downloadStatusListener);
                     }
                 });
@@ -164,33 +164,27 @@ public class ExternalLibraryDownloader {
         //TODO: Load from file somewhere
     }
 
-    //TODO
-    private void deleteResidueAfterBuildingLibrary(String path) {
-        if (true) return;
-
-        // 6.3.0
-        String[] list = {
+    private void deleteResidueAfterBuildingLibrary(String libraryPath) {
+        List<String> validFiles = Arrays.asList(
                 "res",
                 "classes.dex",
                 "classes.jar",
-                "config",
+                "packageName",
                 "AndroidManifest.xml",
                 "jni",
                 "assets",
-                "proguard.txt"
-        };
+                "proguard.txt",
+                "libraryName"
+        );
 
-        List<String> validFiles = new ArrayList<>(Arrays.asList(list));
-        ArrayList<String> files = new ArrayList<>();
-        FileUtil.listDir(path, files);
+        ArrayList<String> filePaths = new ArrayList<>();
+        FileUtil.listDir(libraryPath, filePaths);
 
-        for (String f : files) {
-            // 6.3.0
-            // Skip all dex files
-            String p = "getLastSegment(f);";
-
-            if (p.startsWith("classes") && p.endsWith(".dex")) continue;
-            if (!validFiles.contains(p)) FileUtil.deleteFile(f);
+        for (String filePath : filePaths) {
+            File file = new File(filePath);
+            // 6.3.0 Skip all dex files
+            if (file.getName().startsWith("classes") && file.getName().endsWith(".dex")) continue;
+            if (!validFiles.contains(file.getName())) FileUtil.deleteFile(filePath);
         }
     }
 
