@@ -1,7 +1,6 @@
 package mod.khaled.librarymanager;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Build;
 
 import androidx.annotation.Nullable;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.lib.JarCheck;
@@ -23,25 +23,30 @@ public class ExternalLibraryDownloader {
 
     private final ArrayList<Repository> repositoriesList = new ArrayList<>();
 
-    private final LibraryDownloader libraryDownloader;
-
-    private final ProgressDialog progressDialog;
-
     private int libraryDownloaderInstanceId;
 
     private final boolean shouldUseD8 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
 
-    public ExternalLibraryDownloader(Activity activity) {
-        libraryDownloader = new LibraryDownloader(activity, shouldUseD8);
+    public ExternalLibraryDownloader() {
         initializeRepositories();
-        progressDialog = new ProgressDialog(activity);
-        progressDialog.setCancelable(false);
     }
 
 
-    void saveLibraryToDisk() {
+    public void saveLibraryToDisk(Activity activity, ExternalLibraryItem libraryItem, OnSaveToDiskListener saveToDiskListener) {
+        String[] test = {libraryItem.getJarPath()};
+        new LibraryDownloader.BackTask(activity, false, null, shouldUseD8, (error) -> {
+            if (error == null) {
+                FileUtil.writeFile(libraryItem.getPackageNamePath(), libraryItem.getPackageName());
+                libraryItem.renameLibrary(libraryItem.getLibraryName());
+                deleteResidueAfterBuildingLibrary(FilePathUtil.getExternalLibraryDir(libraryItem.getLibraryFolderName()));
+            } else {
+                SketchwareUtil.showAnErrorOccurredDialog(activity, error);
+                libraryItem.deleteLibraryFromStorage();
+            }
 
+            saveToDiskListener.onSaveComplete();
+        }).execute(test);
     }
 
     void startDownloadingLibrary(ExternalLibraryItem libraryItem, DownloadStatusListener downloadStatusListener) {
@@ -56,25 +61,20 @@ public class ExternalLibraryDownloader {
         final String fullAARUrl = repositoriesList.get(currentRepo).url + getAAREndpoint(libraryItem.getLibraryPkg());
         final File libraryTempFile = new File(FilePathUtil.getExternalLibraryDir(libraryItem.getLibraryFolderName()).concat(".zip"));
 
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-
-
         return PRDownloader
                 .download(fullAARUrl, FilePathUtil.getExternalLibrariesDir(), libraryTempFile.getName())
                 .build()
                 .setOnStartOrResumeListener(() -> {
-                    progressDialog.setMessage("Library found. Downloading...");
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressDialog.setIndeterminate(false);
-                })
-                .setOnCancelListener(() -> {
-
+                    final String progressMessage = "[" + repositoriesList.get(currentRepo).name + "] Library found. Downloading...";
+                    downloadStatusListener.onProgressChange(0, progressMessage);
                 })
                 .setOnProgressListener(progress -> {
                     int progressPercent = (int) (progress.currentBytes * 100 / progress.totalBytes);
-                    progressDialog.setProgress(progressPercent);
                     downloadStatusListener.onProgressChange(progressPercent, null);
+                })
+                .setOnCancelListener(() -> {
+                    FileUtil.deleteFile(FilePathUtil.getExternalLibraryDir(libraryItem.getLibraryPkg()));
+                    FileUtil.deleteFile(libraryTempFile.getAbsolutePath());
                 })
                 .start(new PRDownloader.OnDownloadListener() {
                     @Override
@@ -84,11 +84,10 @@ public class ExternalLibraryDownloader {
                         if (FileUtil.isExistFile(libraryTargetDir))
                             FileUtil.deleteFile(libraryTargetDir);
                         FileUtil.makeDir(libraryTargetDir);
-                        libraryDownloader._unZipFile(libraryTempFile.getAbsolutePath(), libraryTargetDir);
+                        LibraryDownloader._unZipFile(libraryTempFile.getAbsolutePath(), libraryTargetDir);
 
 
                         if (!FileUtil.isExistFile(libraryItem.getJarPath())) {
-                            progressDialog.setMessage("Library doesn't contain a jar file.");
                             FileUtil.deleteFile(libraryTempFile.getAbsolutePath());
                             FileUtil.deleteFile(libraryTargetDir);
                             downloadStatusListener.onError("Library doesn't contain a jar file.");
@@ -96,48 +95,36 @@ public class ExternalLibraryDownloader {
                         }
 
                         if (!shouldUseD8 && !JarCheck.checkJar(libraryItem.getLibraryName(), 44, 51)) {
-                            progressDialog.setMessage("This jar is not supported by your device's compiler.");
                             FileUtil.deleteFile(libraryTempFile.getAbsolutePath());
                             FileUtil.deleteFile(libraryTargetDir);
                             downloadStatusListener.onError("This jar is not supported by your device's compiler.");
                             return;
                         }
 
-                        progressDialog.setMessage("Download completed.");
-                        downloadStatusListener.onDownloadComplete(libraryTempFile.getAbsolutePath());
-
-                        //TODO: Send file path for confirmation weather to save.
-                        String[] test = {libraryItem.getJarPath()};
-                        libraryDownloader.new BackTask().execute(test);
-
-                        FileUtil.writeFile(libraryItem.getPackageNamePath(), libraryItem.getPackageName());
-                        libraryItem.renameLibrary(libraryItem.getLibraryName());
-
+                        final String progressMessage = "[" + repositoriesList.get(currentRepo).name + "] Library downloaded.";
+                        downloadStatusListener.onProgressChange(100, progressMessage);
+                        downloadStatusListener.onDownloadComplete(libraryItem);
                         FileUtil.deleteFile(libraryTempFile.getAbsolutePath());
-                        deleteResidueAfterBuildingLibrary(FilePathUtil.getExternalLibraryDir(libraryItem.getLibraryFolderName()));
-                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void onError(PRDownloader.Error e) {
                         if (e.isConnectionError()) {
-                            progressDialog.setMessage("Downloading failed. No network");
+                            downloadStatusListener.onError("Download failed. No internet.");
                             return;
                         }
 
                         if (!e.isServerError()) return;
 
-                        if (repositoriesList.size() <= currentRepo) {
+                        if (currentRepo + 1 >= repositoriesList.size()) {
                             FileUtil.deleteFile(libraryTempFile.getAbsolutePath());
-                            progressDialog.setMessage("Library was not found in any of the loaded repositories.");
+                            downloadStatusListener.onError("Library was not found in any of the loaded repositories.");
                             return;
                         }
 
                         Repository nextRepository = repositoriesList.get(currentRepo + 1);
                         String progressMessage = "Searching... " + (currentRepo + 1) + "/" + repositoriesList.size() + " [" + nextRepository.name + "]";
-
                         downloadStatusListener.onProgressChange(0, progressMessage);
-                        progressDialog.setMessage(progressMessage);
 
                         libraryDownloaderInstanceId = tryDownloadAAR(libraryItem, currentRepo + 1, downloadStatusListener);
                     }
@@ -217,8 +204,12 @@ public class ExternalLibraryDownloader {
         }
     }
 
+    interface OnSaveToDiskListener {
+        void onSaveComplete();
+    }
+
     interface DownloadStatusListener {
-        void onDownloadComplete(String tempLibPath);
+        void onDownloadComplete(ExternalLibraryItem libraryItem);
 
         void onError(String errMessage);
 

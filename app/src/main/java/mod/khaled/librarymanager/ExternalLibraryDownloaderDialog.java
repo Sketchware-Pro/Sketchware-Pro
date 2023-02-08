@@ -1,5 +1,6 @@
 package mod.khaled.librarymanager;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,10 +19,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 
 public class ExternalLibraryDownloaderDialog extends DialogFragment {
 
-    TextView startButton, cancelButton, stopButton;
+    private final ExternalLibraryDownloader externalLibraryDownloader = new ExternalLibraryDownloader();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +39,6 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
 
         if (getActivity() instanceof DialogDismissedListener)
             ((DialogDismissedListener) getActivity()).onDismissDownloaderDialog();
-
     }
 
     @Nullable
@@ -48,14 +51,14 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
         ((ImageView) root.findViewById(R.id.common_dialog_icon)).setImageResource(R.drawable.language_download_96);
         ((TextView) root.findViewById(R.id.common_dialog_tv_title)).setText("Download New Library");
 
-        startButton = root.findViewById(R.id.common_dialog_ok_button);
-        stopButton = root.findViewById(R.id.common_dialog_cancel_button);
-        cancelButton = root.findViewById(R.id.common_dialog_default_button);
+        TextView startButton = root.findViewById(R.id.common_dialog_ok_button);
+        TextView stopButton = root.findViewById(R.id.common_dialog_cancel_button);
+        TextView cancelButton = root.findViewById(R.id.common_dialog_default_button);
 
         cancelButton.setText("Cancel");
         startButton.setText("Next");
         stopButton.setText("Stop");
-        stopButton.setVisibility(View.GONE); //TODO:Implement
+        stopButton.setVisibility(View.GONE);
 
         cancelButton.setOnClickListener((v) -> dismiss());
 
@@ -67,10 +70,16 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
         TextInputLayout libraryNameInput = contentLayout.findViewById(R.id.libraryNameInput);
         TextInputLayout libraryPkgInput = contentLayout.findViewById(R.id.libraryPkgInput);
 
+        LinearLayout libraryDownloadProgressView = contentLayout.findViewById(R.id.libraryDownloadProgressView);
+        ProgressBar libraryDownloadProgressBar = libraryDownloadProgressView.findViewById(R.id.libraryDownloadProgressBar);
+        TextView libraryDownloadProgressText = libraryDownloadProgressView.findViewById(R.id.libraryDownloadProgressText);
+        TextView libraryDownloadMessage = libraryDownloadProgressView.findViewById(R.id.libraryDownloadMessage);
 
         startButton.setOnClickListener((v) -> {
             String libraryPkg = parseGradleImplementation(gradleImplementationInput.getEditText().getText().toString());
             String libraryName = parseLibraryName(libraryPkg);
+
+
             if (libraryPkg.isEmpty()) {
                 gradleImplementationInput.setError("Parsing of gradle implementation failed.");
                 return;
@@ -81,17 +90,97 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                 ((View) gradleImplementationInput.getParent()).setVisibility(View.GONE);
                 libraryNameInput.getEditText().setText(libraryName);
                 libraryPkgInput.getEditText().setText(libraryPkg);
-                startButton.setText("Download");
+
+                ExternalLibraryItem externalLibraryItem = new ExternalLibraryItem(libraryNameInput.getEditText().getText().toString(),
+                        libraryPkgInput.getEditText().getText().toString());
+
+                if (FileUtil.isExistFile(FilePathUtil.getExternalLibraryDir(externalLibraryItem.getLibraryPkg()))) {
+                    SketchwareUtil.toast("This library already exist in the list. Re-downloading will remove/overwrite the existing.");
+                    startButton.setText("Re-Download");
+                } else startButton.setText("Download");
                 return;
             }
 
+            final ExternalLibraryItem externalLibraryItem = new ExternalLibraryItem(libraryNameInput.getEditText().getText().toString(),
+                    libraryPkgInput.getEditText().getText().toString());
+
+
             if (libraryDetailsView.getVisibility() == View.VISIBLE && !startButton.getText().equals("Save")) {
-                startDownloadingLibrary(libraryNameInput.getEditText().getText().toString(),
-                        libraryPkgInput.getEditText().getText().toString());
+
+                externalLibraryDownloader.
+                        startDownloadingLibrary(externalLibraryItem, new ExternalLibraryDownloader.DownloadStatusListener() {
+                            @Override
+                            public void onDownloadComplete(ExternalLibraryItem libraryItem) {
+                                startButton.setText("Save");
+                                startButton.setVisibility(View.VISIBLE);
+                                stopButton.setVisibility(View.GONE);
+                                libraryNameInput.setEnabled(true);
+
+                                //Canceling now should also delete downloaded files
+                                cancelButton.setOnClickListener((_v) -> {
+                                    externalLibraryItem.deleteLibraryFromStorage();
+                                    dismiss();
+                                });
+                            }
+
+                            @Override
+                            public void onError(String errMessage) {
+                                SketchwareUtil.toastError(errMessage);
+                                startButton.setText("Retry");
+                                startButton.setVisibility(View.VISIBLE);
+                                stopButton.setVisibility(View.GONE);
+                                libraryDownloadProgressView.setVisibility(View.GONE);
+                                libraryNameInput.setEnabled(true);
+                                libraryPkgInput.setEnabled(true);
+                            }
+
+                            @Override
+                            public void onProgressChange(int newProgress, String newMessage) {
+                                libraryDownloadProgressBar.setProgress(newProgress);
+                                libraryDownloadProgressText.setText(String.valueOf(newProgress).concat("%"));
+                                if (newMessage != null)
+                                    libraryDownloadMessage.setText(newMessage);
+                            }
+                        });
+
 
                 stopButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.GONE);
+                libraryNameInput.setEnabled(false);
+                libraryPkgInput.setEnabled(false);
+                libraryDownloadProgressView.setVisibility(View.VISIBLE);
+                libraryDownloadMessage.setText("Starting.....");
+                libraryDownloadProgressBar.setProgress(0);
+                libraryDownloadProgressText.setText("0%");
+                return;
             }
+
+            if (libraryDownloadProgressView.getVisibility() == View.VISIBLE && startButton.getText().equals("Save")) {
+                ProgressDialog progressDialog = new ProgressDialog(requireContext());
+                progressDialog.setMessage("Compiling library...");
+                progressDialog.show();
+                externalLibraryDownloader.saveLibraryToDisk(requireActivity(), externalLibraryItem, () -> {
+                    progressDialog.dismiss();
+                    SketchwareUtil.toast("Library " + externalLibraryItem.getLibraryPkg()
+                            + " saved successfully with the following name: " + externalLibraryItem.getLibraryName());
+                    dismiss();
+                });
+            }
+        });
+
+        stopButton.setOnClickListener((v) -> {
+            externalLibraryDownloader.cancelDownloadingLibrary();
+            startButton.setText("Start");
+            startButton.setVisibility(View.VISIBLE);
+            stopButton.setVisibility(View.GONE);
+            libraryNameInput.setEnabled(true);
+            libraryPkgInput.setEnabled(true);
+            libraryDownloadProgressView.setVisibility(View.GONE);
+        });
+
+        cancelButton.setOnClickListener((v) -> {
+            externalLibraryDownloader.cancelDownloadingLibrary();
+            dismiss();
         });
 
         return root;
@@ -104,35 +193,6 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
     private String parseLibraryName(String input) {
         return ExternalLibraryItem.generateLibName(input);
     }
-
-    private void startDownloadingLibrary(String libraryName, String libraryPkg) {
-        ExternalLibraryItem externalLibraryItem = new ExternalLibraryItem(libraryName, libraryPkg);
-
-        new ExternalLibraryDownloader(requireActivity())
-                .startDownloadingLibrary(externalLibraryItem, new ExternalLibraryDownloader.DownloadStatusListener() {
-                    @Override
-                    public void onDownloadComplete(String tempLibPath) {
-                        //TODO: Confirmation for saving
-                        SketchwareUtil.toast("Downloaded library " + externalLibraryItem.getLibraryPkg());
-                        dismiss();
-                    }
-
-                    @Override
-                    public void onError(String errMessage) {
-                        SketchwareUtil.toastError(errMessage);
-                        startButton.setText("Retry");
-                        startButton.setVisibility(View.VISIBLE);
-                        stopButton.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onProgressChange(int newProgress, String newMessage) {
-
-                    }
-                });
-
-    }
-
 
     public interface DialogDismissedListener {
         void onDismissDownloaderDialog();

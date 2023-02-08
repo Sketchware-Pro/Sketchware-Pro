@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.android.tools.r8.D8;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -220,7 +222,7 @@ public class LibraryDownloader {
         return split[split.length - 2] + "_V_" + split[split.length - 1];
     }
 
-    private void _jar2dex(String _path) throws Exception {
+    private static void _jar2dex(String _path, boolean use_d8) throws Exception {
         // 6.3.0
         if (use_d8) {
             File libs = BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH;
@@ -259,7 +261,7 @@ public class LibraryDownloader {
         }
     }
 
-    public void _unZipFile(String str, String str2) {
+    public static void _unZipFile(String str, String str2) {
         try {
             File file = new File(str2);
             ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(str));
@@ -440,7 +442,7 @@ public class LibraryDownloader {
                                     message.setText("Download completed.");
 
                                     String[] test = {libName.concat("/classes.jar")};
-                                    new BackTask().execute(test);
+                                    new BackTask(context, true, dialog, use_d8, listener).execute(test);
                                     FileUtil.deleteFile(path2.toString());
 
                                     FileUtil.writeFile(libName + "/config", findPackageName(libName + "/", library.getText().toString()));
@@ -581,16 +583,34 @@ public class LibraryDownloader {
     }
 
     public interface OnCompleteListener {
-        void onComplete();
+        void onComplete(@Nullable String error);
     }
 
-    public class BackTask extends AsyncTask<String, String, String> implements BuildProgressReceiver {
+    public static class BackTask extends AsyncTask<String, String, String> implements BuildProgressReceiver {
         private ProgressDialog progressDialog;
         boolean success = false;
+
+        private final boolean showProgressDialog;
+        private final Activity context;
+        private final OnCompleteListener listener;
+        private final boolean use_d8;
+        private final AlertDialog dialog;
+
+        public BackTask(Activity context, boolean showProgressDialog,
+                        @Nullable AlertDialog dialog,
+                        boolean use_d8,
+                        OnCompleteListener listener) {
+            this.showProgressDialog = showProgressDialog;
+            this.context = context;
+            this.listener = listener;
+            this.use_d8 = use_d8;
+            this.dialog = dialog;
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!showProgressDialog) return;
             progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Please wait");
             progressDialog.setCancelable(false);
@@ -602,7 +622,7 @@ public class LibraryDownloader {
             try {
                 BuiltInLibraries.maybeExtractAndroidJar(this);
                 publishProgress((use_d8 ? "D8" : "Dx") + " is running...");
-                _jar2dex(params[0]);
+                _jar2dex(params[0], use_d8);
                 success = true;
             } catch (Exception e) {
                 success = false;
@@ -615,22 +635,25 @@ public class LibraryDownloader {
         @Override
         protected void onPostExecute(String s) {
             if (success) {
-                bB.a(context, "The library has been downloaded and imported to local libraries successfully.", 1).show();
-                listener.onComplete();
+                if (showProgressDialog)
+                    bB.a(context, "The library has been downloaded and imported to local libraries successfully.", 1).show();
+                listener.onComplete(null);
             } else {
-                SketchwareUtil.showAnErrorOccurredDialog(context, s);
+                if (showProgressDialog) SketchwareUtil.showAnErrorOccurredDialog(context, s);
+                listener.onComplete(s);
             }
 
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
-
-            progressDialog.dismiss();
+            if (showProgressDialog)
+                progressDialog.dismiss();
         }
 
         @Override
         protected void onProgressUpdate(String... values) {
-            progressDialog.setMessage(values[0]);
+            if (showProgressDialog)
+                progressDialog.setMessage(values[0]);
         }
 
         @Override

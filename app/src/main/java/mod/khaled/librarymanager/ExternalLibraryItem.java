@@ -73,7 +73,7 @@ public class ExternalLibraryItem {
 
     //TODO: Actual hashing when
     public String getLibraryHash() {
-        return String.valueOf((libraryName + libraryPkg).hashCode());
+        return String.valueOf((libraryPkg).hashCode());
     }
 
     public String getLibraryName() {

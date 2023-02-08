@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -67,7 +69,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     }
 
     @Override
-    public void onComplete() {
+    public void onComplete(@Nullable String error) {
         loadFiles();
     }
 
