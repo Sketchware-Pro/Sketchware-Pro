@@ -2598,4 +2598,6 @@ Please check the URL again."</string>
     <string name="external_library_manager">External Library Manager</string>
     <string name="external_bib_manager_description">Add 3rd party libraries to project</string>
     <string name="external_libmanager_description_alt">Manage 3rd party libraries for projects</string>
+    <string name="reset_library_selections">Reset library selections</string>
+    <string name="custom_repositories">Custom Repositories</string>
 </resources>

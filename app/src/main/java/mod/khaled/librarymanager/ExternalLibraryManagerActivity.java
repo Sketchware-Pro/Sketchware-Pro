@@ -1,7 +1,10 @@
 package mod.khaled.librarymanager;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.sketchware.remod.R;
+
+import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 
 public class ExternalLibraryManagerActivity extends AppCompatActivity implements ExternalLibraryDownloaderDialog.DialogDismissedListener {
 
@@ -34,6 +41,32 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
 
         toolbar.findViewById(R.id.ig_toolbar_back).setOnClickListener((v) -> finish());
         ((TextView) toolbar.findViewById(R.id.tx_toolbar_title)).setText(R.string.external_library_manager);
+        ImageView moreIcon = toolbar.findViewById(R.id.ig_toolbar_load_file);
+        moreIcon.setVisibility(View.VISIBLE);
+        moreIcon.setImageResource(R.drawable.ic_more_vert_white_24dp);
+
+        moreIcon.setOnClickListener((v -> {
+            PopupMenu menu = new PopupMenu(this, moreIcon);
+            if (sc_id != null)
+                menu.getMenu().add(0, 0, 0, R.string.reset_library_selections);
+            menu.getMenu().add(0, 1, 1, R.string.custom_repositories);
+
+            menu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case 0: // Reset library selections
+                        FileUtil.deleteFile(new FilePathUtil().getPathExternalLibrary(sc_id));
+                        onDismissDownloaderDialog();
+                        break;
+
+                    case 1: // Custom Repositories
+                        SketchwareUtil.toast("For now just....");
+                        break;
+                }
+                return true;
+            });
+
+            menu.show();
+        }));
 
         findViewById(R.id.addNewFab).setOnClickListener((v) ->
                 new ExternalLibraryDownloaderDialog().show(getSupportFragmentManager(), ""));

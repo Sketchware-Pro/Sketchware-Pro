@@ -56,18 +56,6 @@ public class FilePathUtil {
         return new File(SKETCHWARE_DATA, sc_id + "/external_library").getAbsolutePath();
     }
 
-    public String getJarPathLocalLibrary(String libraryName) {
-        return new File(SKETCHWARE_LOCAL_LIBS, libraryName + "/classes.jar").getAbsolutePath();
-    }
-
-    public String getDexPathLocalLibrary(String libraryName) {
-        return new File(SKETCHWARE_LOCAL_LIBS, libraryName + "/classes.dex").getAbsolutePath();
-    }
-
-    public String getResPathLocalLibrary(String libraryName) {
-        return new File(SKETCHWARE_LOCAL_LIBS, libraryName + "/res").getAbsolutePath();
-    }
-
     public String getJarPathLocalLibraryUser(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/files/library/jar").getAbsolutePath();
     }
@@ -102,5 +90,9 @@ public class FilePathUtil {
 
     public static String getExternalLibraryDir(String libraryPkg) {
         return getExternalLibrariesDir().concat(libraryPkg.replace(":", ExternalLibraryItem.LIBRARY_PKG_SEPARATOR));
+    }
+
+    public static String getCustomExternalRepositoriesFile() {
+        return new File(SKETCHWARE_DATA, "/libs/custom_repositories.txt").getAbsolutePath();
     }
 }
