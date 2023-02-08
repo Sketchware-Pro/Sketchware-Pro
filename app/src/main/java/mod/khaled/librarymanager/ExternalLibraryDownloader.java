@@ -2,6 +2,7 @@ package mod.khaled.librarymanager;
 
 import android.app.Activity;
 import android.os.Build;
+import android.webkit.URLUtil;
 
 import androidx.annotation.Nullable;
 
@@ -134,6 +135,8 @@ public class ExternalLibraryDownloader {
 
     private String getAAREndpoint(String libraryPkg) {
         String[] split = libraryPkg.split(":");
+        if (split.length < 2) return "";
+
         String str2 = "/";
 
         for (int i = 0; i < split.length - 1; i++) {
@@ -145,6 +148,8 @@ public class ExternalLibraryDownloader {
 
     private String getAARName(String libraryPkg) {
         String[] split = libraryPkg.split(":");
+        if (split.length < 2) return "";
+
         return split[split.length - 2] + "-" + split[split.length - 1] + ".aar";
     }
 
@@ -161,7 +166,21 @@ public class ExternalLibraryDownloader {
         repositoriesList.add(new Repository("Apache Maven", "https://repo.maven.apache.org/maven2"));
         repositoriesList.add(new Repository("Google Maven", "https://dl.google.com/dl/android/maven2"));
         repositoriesList.add(new Repository("Maven Central", "https://repo1.maven.org/maven2"));
-        //TODO: Load from file somewhere
+
+        //Load custom repositories
+        if (FileUtil.readFile(FilePathUtil.getCustomExternalRepositoriesFile()).isBlank())
+            writeCustomRepositoryFile();
+
+        String[] customRepositoryData = FileUtil.readFile(FilePathUtil.getCustomExternalRepositoriesFile()).split("\n");
+        for (String customRepo : customRepositoryData) {
+            if (customRepo.startsWith("#")) continue; //Skip comments
+            if (customRepo.split("\\|").length != 2) continue; //Skip broken stuffs
+
+            String name = customRepo.split("\\|")[0].trim();
+            String url = customRepo.split("\\|")[1].trim();
+            if (name.isBlank() || !URLUtil.isValidUrl(url)) continue;
+            repositoriesList.add(new Repository(name, url));
+        }
     }
 
     private void deleteResidueAfterBuildingLibrary(String libraryPath) {
@@ -186,6 +205,18 @@ public class ExternalLibraryDownloader {
             if (file.getName().startsWith("classes") && file.getName().endsWith(".dex")) continue;
             if (!validFiles.contains(file.getName())) FileUtil.deleteFile(filePath);
         }
+    }
+
+    public static void writeCustomRepositoryFile() {
+        String customRepoCommentsBuilder =
+                "# To add custom repos, just add\n" +
+                        "# a new line with following format\n" +
+                        "# Repository Name | https://repo.url\n" +
+                        "# Example: JitPack | https://jitpack.io\n" +
+                        "# NOTE: Any line starting with # will be ignored.\n#\n";
+
+        FileUtil.writeFile(FilePathUtil.getCustomExternalRepositoriesFile(), customRepoCommentsBuilder);
+
     }
 
     private static class Repository {

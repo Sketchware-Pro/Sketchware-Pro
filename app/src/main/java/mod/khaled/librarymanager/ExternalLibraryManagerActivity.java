@@ -1,5 +1,7 @@
 package mod.khaled.librarymanager;
 
+import static mod.khaled.librarymanager.ExternalLibraryDownloader.writeCustomRepositoryFile;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,10 +58,15 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
                     case 0: // Reset library selections
                         FileUtil.deleteFile(new FilePathUtil().getPathExternalLibrary(sc_id));
                         onDismissDownloaderDialog();
+                        SketchwareUtil.toast("Done");
                         break;
 
                     case 1: // Custom Repositories
-                        SketchwareUtil.toast("For now just....");
+                        SketchwareUtil.toast("Custom repositories can be loaded by adding entries to: "
+                                + FilePathUtil.getCustomExternalRepositoriesFile()
+                                + "\nOpen the file in a text editor to learn how.");
+                        if (FileUtil.readFile(FilePathUtil.getCustomExternalRepositoriesFile()).isBlank())
+                            writeCustomRepositoryFile();
                         break;
                 }
                 return true;

@@ -89,6 +89,7 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                 return;
             }
 
+
             if (libraryDetailsView.getVisibility() != View.VISIBLE) {
                 libraryDetailsView.setVisibility(View.VISIBLE);
                 ((View) gradleImplementationInput.getParent()).setVisibility(View.GONE);
@@ -107,6 +108,11 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
 
             final ExternalLibraryItem externalLibraryItem = new ExternalLibraryItem(Objects.requireNonNull(libraryNameInput.getEditText()).getText().toString(),
                     Objects.requireNonNull(libraryPkgInput.getEditText()).getText().toString());
+
+            if (externalLibraryItem.getLibraryPkg().isEmpty()) {
+                libraryPkgInput.setError("Invalid gradle implementation package.");
+                return;
+            }
 
 
             if (libraryDetailsView.getVisibility() == View.VISIBLE && !startButton.getText().equals("Save")) {

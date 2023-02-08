@@ -10,7 +10,6 @@ import mod.khaled.librarymanager.ExternalLibraryItem;
 public class FilePathUtil {
 
     private static final File SKETCHWARE_DATA = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/");
-    private static final File SKETCHWARE_LOCAL_LIBS = new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs");
 
     public static String getLastCompileLogPath(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/compile_log").getAbsolutePath();
@@ -93,6 +92,6 @@ public class FilePathUtil {
     }
 
     public static String getCustomExternalRepositoriesFile() {
-        return new File(SKETCHWARE_DATA, "/libs/custom_repositories.txt").getAbsolutePath();
+        return new File(Environment.getExternalStorageDirectory(), "/.sketchware/libs/custom_repositories.txt").getAbsolutePath();
     }
 }
