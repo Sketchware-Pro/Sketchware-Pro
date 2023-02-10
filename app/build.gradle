@@ -100,7 +100,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.1.0"
 
     implementation "androidx.annotation:annotation:1.5.0"
-    implementation "com.android.tools:annotations:30.2.2"
+    implementation "com.android.tools:annotations:30.4.0"
     implementation "com.google.guava:guava:31.1-jre"
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
@@ -117,7 +117,7 @@ dependencies {
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:3.3.75"
+    implementation "com.android.tools:r8:4.0.48"
 
     implementation "com.google.code.gson:gson:2.9.0"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
