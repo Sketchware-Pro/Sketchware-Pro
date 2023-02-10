@@ -1,10 +1,13 @@
 package mod.khaled.librarymanager;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.webkit.URLUtil;
 
 import androidx.annotation.Nullable;
+
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,9 +37,19 @@ public class ExternalLibraryDownloader {
     }
 
 
-    public void saveLibraryToDisk(Activity activity, ExternalLibraryItem libraryItem, OnSaveToDiskListener saveToDiskListener) {
+    public void saveLibraryToDisk(Activity activity, ProgressDialog progressDialog, ExternalLibraryItem libraryItem, boolean useDxForCompiling, OnSaveToDiskListener saveToDiskListener) {
+
+        if (useDxForCompiling && !JarCheck.checkJar(libraryItem.getLibraryName(), 44, 51)) {
+            SketchwareUtil.toast("This library can't be compiled with Dx. Using D8 instead.");
+            useDxForCompiling = false;
+        }
+
+        final String compilerName = (!useDxForCompiling && shouldUseD8) ? "[D8] " : "[Dx] ";
+        if (progressDialog != null)
+            progressDialog.setMessage(compilerName + activity.getString(R.string.compiling_downloaded_library_progress));
+
         String[] test = {libraryItem.getJarPath()};
-        new LibraryDownloader.BackTask(activity, false, null, shouldUseD8, (error) -> {
+        new LibraryDownloader.BackTask(activity, false, null, !useDxForCompiling, (error) -> {
             if (error == null) {
                 FileUtil.writeFile(libraryItem.getPackageNamePath(), libraryItem.getPackageName());
                 libraryItem.renameLibrary(libraryItem.getLibraryName());
@@ -166,7 +179,7 @@ public class ExternalLibraryDownloader {
         repositoriesList.add(new Repository("Sonatype", "https://oss.sonatype.org/content/repositories/releases"));
         repositoriesList.add(new Repository("Spring Plugins", "https://repo.spring.io/plugins-release"));
         repositoriesList.add(new Repository("Spring Milestone", "https://repo.spring.io/libs-milestone"));
-      
+
         //Load custom repositories
         if (FileUtil.readFile(FilePathUtil.getCustomExternalRepositoriesFile()).isBlank())
             writeCustomRepositoryFile();

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -75,11 +76,13 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
         LinearLayout libraryDetailsView = contentLayout.findViewById(R.id.libraryDetailsView);
         TextInputLayout libraryNameInput = contentLayout.findViewById(R.id.libraryNameInput);
         TextInputLayout libraryPkgInput = contentLayout.findViewById(R.id.libraryPkgInput);
+        CheckBox useDxForCompiling = contentLayout.findViewById(R.id.useDxForCompilingCheckbox);
 
         LinearLayout libraryDownloadProgressView = contentLayout.findViewById(R.id.libraryDownloadProgressView);
         ProgressBar libraryDownloadProgressBar = libraryDownloadProgressView.findViewById(R.id.libraryDownloadProgressBar);
         TextView libraryDownloadProgressText = libraryDownloadProgressView.findViewById(R.id.libraryDownloadProgressText);
         TextView libraryDownloadMessage = libraryDownloadProgressView.findViewById(R.id.libraryDownloadMessage);
+
 
         startButton.setOnClickListener((v) -> {
             String libraryPkg = parseGradleImplementation(Objects.requireNonNull(gradleImplementationInput.getEditText()).getText().toString());
@@ -122,6 +125,7 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                 startButton.setVisibility(View.GONE);
                 libraryNameInput.setEnabled(false);
                 libraryPkgInput.setEnabled(false);
+                useDxForCompiling.setEnabled(false);
                 libraryDownloadProgressView.setVisibility(View.VISIBLE);
                 libraryDownloadProgressBar.setProgress(0);
                 libraryDownloadProgressText.setText("0%");
@@ -137,7 +141,7 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                                 ProgressDialog progressDialog = new ProgressDialog(requireContext());
                                 progressDialog.setMessage(getString(R.string.compiling_downloaded_library_progress));
                                 progressDialog.show();
-                                externalLibraryDownloader.saveLibraryToDisk(requireActivity(), externalLibraryItem, () -> {
+                                externalLibraryDownloader.saveLibraryToDisk(requireActivity(), progressDialog, externalLibraryItem, useDxForCompiling.isChecked(), () -> {
                                     progressDialog.dismiss();
                                     SketchwareUtil.toast("Library " + externalLibraryItem.getLibraryPkg()
                                             + " saved successfully with the following name: " + externalLibraryItem.getLibraryName());
@@ -154,6 +158,7 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                                 libraryDownloadProgressView.setVisibility(View.GONE);
                                 libraryNameInput.setEnabled(true);
                                 libraryPkgInput.setEnabled(true);
+                                useDxForCompiling.setEnabled(true);
                             }
 
                             @Override
@@ -174,6 +179,7 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
             stopButton.setVisibility(View.GONE);
             libraryNameInput.setEnabled(true);
             libraryPkgInput.setEnabled(true);
+            useDxForCompiling.setEnabled(true);
             libraryDownloadProgressView.setVisibility(View.GONE);
         });
 
