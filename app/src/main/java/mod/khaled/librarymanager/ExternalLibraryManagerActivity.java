@@ -2,6 +2,7 @@ package mod.khaled.librarymanager;
 
 import static mod.khaled.librarymanager.ExternalLibraryDownloader.writeCustomRepositoryFile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,9 @@ import com.sketchware.remod.R;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.code.SrcCodeEditor;
+import mod.hey.studios.code.SrcCodeEditorLegacy;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class ExternalLibraryManagerActivity extends AppCompatActivity implements ExternalLibraryDownloaderDialog.DialogDismissedListener {
 
@@ -49,7 +53,7 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
 
         moreIcon.setOnClickListener((v -> {
             PopupMenu menu = new PopupMenu(this, moreIcon);
-            if (sc_id != null)
+            if (sc_id != null && !externalLibraryManager.getLibrariesInProjectHashes().isEmpty())
                 menu.getMenu().add(0, 0, 0, R.string.reset_library_selections);
             menu.getMenu().add(0, 1, 1, R.string.custom_repositories);
 
@@ -67,6 +71,14 @@ public class ExternalLibraryManagerActivity extends AppCompatActivity implements
                                 + "\nOpen the file in a text editor to learn how.");
                         if (FileUtil.readFile(FilePathUtil.getCustomExternalRepositoriesFile()).isBlank())
                             writeCustomRepositoryFile();
+
+                        //Open the file using sora/legacy editor
+                        startActivity(new Intent(this,
+                                ConfigActivity.isLegacyCeEnabled()
+                                        ? SrcCodeEditorLegacy.class :
+                                        SrcCodeEditor.class)
+                                .putExtra("title", "Custom Repositories")
+                                .putExtra("content", FilePathUtil.getCustomExternalRepositoriesFile()));
                         break;
                 }
                 return true;

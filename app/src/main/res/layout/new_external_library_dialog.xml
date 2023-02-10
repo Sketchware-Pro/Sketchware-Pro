@@ -24,7 +24,7 @@
             android:id="@+id/gradleImplementationInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="Paste The Gradle Implementation Here">
+            app:helperText="Paste The Gradle Implementation Here.\ne.g: implementation('org.joe.biden:mamalib:0.6.9')">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

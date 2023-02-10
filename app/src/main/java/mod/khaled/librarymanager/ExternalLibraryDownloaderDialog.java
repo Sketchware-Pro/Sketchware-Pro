@@ -1,11 +1,13 @@
 package mod.khaled.librarymanager;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -124,19 +126,22 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                 libraryDownloadProgressBar.setProgress(0);
                 libraryDownloadProgressText.setText("0%");
 
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
                 externalLibraryDownloader.
                         startDownloadingLibrary(externalLibraryItem, new ExternalLibraryDownloader.DownloadStatusListener() {
                             @Override
                             public void onDownloadComplete(ExternalLibraryItem libraryItem) {
-                                startButton.setText(R.string.common_word_save);
-                                startButton.setVisibility(View.VISIBLE);
-                                stopButton.setVisibility(View.GONE);
-                                libraryNameInput.setEnabled(true);
-
-                                //Canceling now should also delete downloaded files
-                                cancelButton.setOnClickListener((_v) -> {
-                                    externalLibraryItem.deleteLibraryFromStorage();
-                                    dismiss();
+                                //Just save without any second thoughts.
+                                ProgressDialog progressDialog = new ProgressDialog(requireContext());
+                                progressDialog.setMessage(getString(R.string.compiling_downloaded_library_progress));
+                                progressDialog.show();
+                                externalLibraryDownloader.saveLibraryToDisk(requireActivity(), externalLibraryItem, () -> {
+                                    progressDialog.dismiss();
+                                    SketchwareUtil.toast("Library " + externalLibraryItem.getLibraryPkg()
+                                            + " saved successfully with the following name: " + externalLibraryItem.getLibraryName());
+                                    dismiss(); //Dismiss main dialog later because it causes list to refresh
                                 });
                             }
 
@@ -159,20 +164,6 @@ public class ExternalLibraryDownloaderDialog extends DialogFragment {
                                     libraryDownloadMessage.setText(newMessage);
                             }
                         });
-
-                return;
-            }
-
-            if (libraryDownloadProgressView.getVisibility() == View.VISIBLE && startButton.getText().equals("Save")) {
-                ProgressDialog progressDialog = new ProgressDialog(requireContext());
-                progressDialog.setMessage(getString(R.string.compiling_downloaded_library_progress));
-                progressDialog.show();
-                externalLibraryDownloader.saveLibraryToDisk(requireActivity(), externalLibraryItem, () -> {
-                    progressDialog.dismiss();
-                    SketchwareUtil.toast("Library " + externalLibraryItem.getLibraryPkg()
-                            + " saved successfully with the following name: " + externalLibraryItem.getLibraryName());
-                    dismiss();
-                });
             }
         });
 

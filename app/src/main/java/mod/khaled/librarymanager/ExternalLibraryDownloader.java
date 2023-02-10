@@ -156,17 +156,17 @@ public class ExternalLibraryDownloader {
 
     private void initializeRepositories() {
         repositoriesList.clear();
-        repositoriesList.add(new Repository("HortanWorks", "https://repo.hortonworks.com/content/repositories/releases"));
-        repositoriesList.add(new Repository("Atlassin", "https://maven.atlassian.com/content/repositories/atlassian-public"));
+        repositoriesList.add(new Repository("Maven Central", "https://repo1.maven.org/maven2"));
         repositoriesList.add(new Repository("JitPack", "https://jitpack.io"));
         repositoriesList.add(new Repository("JCenter", "https://jcenter.bintray.com"));
+        repositoriesList.add(new Repository("Apache Maven", "https://repo.maven.apache.org/maven2"));
+        repositoriesList.add(new Repository("Google Maven", "https://dl.google.com/dl/android/maven2"));
+        repositoriesList.add(new Repository("HortanWorks", "https://repo.hortonworks.com/content/repositories/releases"));
+        repositoriesList.add(new Repository("Atlassin", "https://maven.atlassian.com/content/repositories/atlassian-public"));
         repositoriesList.add(new Repository("Sonatype", "https://oss.sonatype.org/content/repositories/releases"));
         repositoriesList.add(new Repository("Spring Plugins", "https://repo.spring.io/plugins-release"));
         repositoriesList.add(new Repository("Spring Milestone", "https://repo.spring.io/libs-milestone"));
-        repositoriesList.add(new Repository("Apache Maven", "https://repo.maven.apache.org/maven2"));
-        repositoriesList.add(new Repository("Google Maven", "https://dl.google.com/dl/android/maven2"));
-        repositoriesList.add(new Repository("Maven Central", "https://repo1.maven.org/maven2"));
-
+      
         //Load custom repositories
         if (FileUtil.readFile(FilePathUtil.getCustomExternalRepositoriesFile()).isBlank())
             writeCustomRepositoryFile();
