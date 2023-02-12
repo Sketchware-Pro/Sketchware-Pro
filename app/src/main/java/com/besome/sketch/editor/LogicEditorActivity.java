@@ -2231,24 +2231,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
-        Parcelable parcelable;
-        ActionBar d;
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.logic_editor);
         if (!super.j()) {
             finish();
         }
-        if (bundle == null) {
+        Parcelable parcelable;
+        if (savedInstanceState == null) {
             B = getIntent().getStringExtra("sc_id");
             C = getIntent().getStringExtra("id");
             D = getIntent().getStringExtra("event");
             parcelable = getIntent().getParcelableExtra("project_file");
         } else {
-            B = bundle.getString("sc_id");
-            C = bundle.getString("id");
-            D = bundle.getString("event");
-            parcelable = bundle.getParcelable("project_file");
+            B = savedInstanceState.getString("sc_id");
+            C = savedInstanceState.getString("id");
+            D = savedInstanceState.getString("event");
+            parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
         H = new DB(this, "P1");
@@ -2268,6 +2267,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         A = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         String stringExtra = getIntent().getStringExtra("event_text");
+        ActionBar d;
         if (C.equals("onCreate")) {
             d = getSupportActionBar();
         } else if (C.equals("_fab")) {

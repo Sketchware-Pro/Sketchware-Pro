@@ -93,8 +93,8 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         e = getApplicationContext();
         j = new Zo(getApplicationContext());
         d = new Tracker();
