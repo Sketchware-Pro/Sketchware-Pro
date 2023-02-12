@@ -299,7 +299,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             sortOrderDesc.setChecked(true);
         }
         dialog.setView(root);
-        dialog.setPositiveButton("Save", view -> {
+        dialog.setPositiveButton("Save", v -> {
             int sortValue = 0;
             if (sortByName.isChecked()) {
                 sortValue |= ProjectComparator.SORT_BY_NAME;
@@ -317,7 +317,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             dialog.dismiss();
             n();
         });
-        dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
+        dialog.setNegativeButton("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
