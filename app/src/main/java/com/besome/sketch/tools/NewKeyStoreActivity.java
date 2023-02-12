@@ -25,22 +25,25 @@ import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
-
-    public RB A, B, C, D, y, z;
-    public iI E;
-    public int k = 25;
-    public Toolbar l;
-    public EditText m;
-    public EditText n;
-    public EditText o;
-    public EditText p;
-    public EditText q;
-    public EditText r;
-    public EditText s;
-    public EditText t;
-    public EditText u;
-    public VB v;
-    public SB w, x;
+    private RB organizationValidator;
+    private RB localityValidator;
+    private RB stateValidator;
+    private RB countryValidator;
+    private RB commonNameValidator;
+    private RB organizationalUnitValidator;
+    private iI E;
+    private int validityInYears = 25;
+    private EditText alias;
+    private EditText password;
+    private EditText passwordConfirm;
+    private EditText commonName;
+    private EditText organizationalUnit;
+    private EditText organization;
+    private EditText locality;
+    private EditText state;
+    private EditText country;
+    private VB aliasValidator;
+    private SB passwordValidator, passwordConfirmValidator;
 
     private void showDoneDialog(boolean success, String password) {
         aB dialog = new aB(this);
@@ -70,45 +73,45 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     }
 
     private void save() {
-        if (w.b() && x.b()) {
-            String text = n.getText().toString();
-            if (!text.equals(o.getText().toString())) {
+        if (passwordValidator.b() && passwordConfirmValidator.b()) {
+            String text = password.getText().toString();
+            if (!text.equals(passwordConfirm.getText().toString())) {
                 bB.b(getApplicationContext(), Helper.getResString(R.string.myprojects_sign_apk_incorrect_password), 0).show();
-                n.setText("");
-                o.setText("");
+                password.setText("");
+                passwordConfirm.setText("");
                 return;
             }
 
-            if (!v.b()) return;
+            if (!aliasValidator.b()) return;
 
-            if (!y.b()) return;
+            if (!commonNameValidator.b()) return;
 
-            if (!z.b()) return;
+            if (!organizationalUnitValidator.b()) return;
 
-            if (!A.b()) return;
+            if (!organizationValidator.b()) return;
 
-            if (!B.b()) return;
+            if (!localityValidator.b()) return;
 
-            if (!C.b()) return;
+            if (!stateValidator.b()) return;
 
-            if (!D.b()) return;
+            if (!countryValidator.b()) return;
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("CN=");
-            stringBuilder.append(p.getText().toString());
+            stringBuilder.append(commonName.getText().toString());
             stringBuilder.append("OU=");
-            stringBuilder.append(q.getText().toString());
+            stringBuilder.append(organizationalUnit.getText().toString());
             stringBuilder.append("O=");
-            stringBuilder.append(r.getText().toString());
+            stringBuilder.append(organization.getText().toString());
             stringBuilder.append("L=");
-            stringBuilder.append(s.getText().toString());
+            stringBuilder.append(locality.getText().toString());
             stringBuilder.append("ST=");
-            stringBuilder.append(t.getText().toString());
+            stringBuilder.append(state.getText().toString());
             stringBuilder.append("C=");
-            stringBuilder.append(u.getText().toString());
+            stringBuilder.append(country.getText().toString());
 
             try {
-                E.a(wq.j(), stringBuilder.toString(), k, m.getText().toString(), text);
+                E.a(wq.j(), stringBuilder.toString(), validityInYears, alias.getText().toString(), text);
                 showDoneDialog(true, text);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -138,13 +141,13 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         }
 
         setContentView(R.layout.keystore_new);
-        l = findViewById(R.id.toolbar);
-        setSupportActionBar(l);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        l.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
         ((TextView) findViewById(R.id.tv_new_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
         Button var2 = findViewById(R.id.btn_keystore_save);
@@ -154,44 +157,44 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         var2.setText(Helper.getResString(R.string.common_word_cancel));
         var2.setOnClickListener(this);
         ((TextView) findViewById(R.id.tv_keystore_path)).setText(wq.D);
-        m = findViewById(R.id.et_keystore_alias);
+        alias = findViewById(R.id.et_keystore_alias);
         ((TextInputLayout) findViewById(R.id.ti_keystore_alias)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_certificate_name));
-        n = findViewById(R.id.et_keystore_passwd);
+        password = findViewById(R.id.et_keystore_passwd);
         ((TextInputLayout) findViewById(R.id.ti_keystore_passwd)).setHint(Helper.getResString(R.string.myprojects_sign_apk_hint_enter_new_password));
-        o = findViewById(R.id.et_keystore_passwd1);
+        passwordConfirm = findViewById(R.id.et_keystore_passwd1);
         ((TextInputLayout) findViewById(R.id.ti_keystore_passwd1)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_confirm_password));
-        EditText var3 = findViewById(R.id.et_valid_year);
+        EditText validity = findViewById(R.id.et_valid_year);
         ((TextInputLayout) findViewById(R.id.ti_valid_year)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_validity));
-        var3.setText(String.valueOf(k));
+        validity.setText(String.valueOf(validityInYears));
         ((TextView) findViewById(R.id.tv_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
-        p = findViewById(R.id.et_dn_cn);
+        commonName = findViewById(R.id.et_dn_cn);
         ((TextInputLayout) findViewById(R.id.ti_dn_cn)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_first_and_last_name));
-        q = findViewById(R.id.et_dn_ou);
+        organizationalUnit = findViewById(R.id.et_dn_ou);
         ((TextInputLayout) findViewById(R.id.ti_dn_ou)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_organizational_unit));
-        r = findViewById(R.id.et_dn_o);
+        organization = findViewById(R.id.et_dn_o);
         ((TextInputLayout) findViewById(R.id.ti_dn_o)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_organization));
-        s = findViewById(R.id.et_dn_l);
+        locality = findViewById(R.id.et_dn_l);
         ((TextInputLayout) findViewById(R.id.ti_dn_l)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_city));
-        t = findViewById(R.id.et_dn_st);
+        state = findViewById(R.id.et_dn_st);
         ((TextInputLayout) findViewById(R.id.ti_dn_st)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_state));
-        u = findViewById(R.id.et_dn_c);
+        country = findViewById(R.id.et_dn_c);
         ((TextInputLayout) findViewById(R.id.ti_dn_c)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_country_code));
-        v = new VB(getApplicationContext(), findViewById(R.id.ti_keystore_alias));
-        w = new SB(getApplicationContext(), findViewById(R.id.ti_keystore_passwd), 4, 32);
-        x = new SB(getApplicationContext(), findViewById(R.id.ti_keystore_passwd1), 4, 32);
-        y = new RB(getApplicationContext(), findViewById(R.id.ti_dn_cn));
-        z = new RB(getApplicationContext(), findViewById(R.id.ti_dn_ou));
-        A = new RB(getApplicationContext(), findViewById(R.id.ti_dn_o));
-        B = new RB(getApplicationContext(), findViewById(R.id.ti_dn_l));
-        C = new RB(getApplicationContext(), findViewById(R.id.ti_dn_st));
-        D = new RB(getApplicationContext(), findViewById(R.id.ti_dn_c));
-        m.setPrivateImeOptions("defaultInputmode=english;");
-        p.setPrivateImeOptions("defaultInputmode=english;");
-        q.setPrivateImeOptions("defaultInputmode=english;");
-        r.setPrivateImeOptions("defaultInputmode=english;");
-        s.setPrivateImeOptions("defaultInputmode=english;");
-        t.setPrivateImeOptions("defaultInputmode=english;");
-        u.setPrivateImeOptions("defaultInputmode=english;");
+        aliasValidator = new VB(getApplicationContext(), findViewById(R.id.ti_keystore_alias));
+        passwordValidator = new SB(getApplicationContext(), findViewById(R.id.ti_keystore_passwd), 4, 32);
+        passwordConfirmValidator = new SB(getApplicationContext(), findViewById(R.id.ti_keystore_passwd1), 4, 32);
+        commonNameValidator = new RB(getApplicationContext(), findViewById(R.id.ti_dn_cn));
+        organizationalUnitValidator = new RB(getApplicationContext(), findViewById(R.id.ti_dn_ou));
+        organizationValidator = new RB(getApplicationContext(), findViewById(R.id.ti_dn_o));
+        localityValidator = new RB(getApplicationContext(), findViewById(R.id.ti_dn_l));
+        stateValidator = new RB(getApplicationContext(), findViewById(R.id.ti_dn_st));
+        countryValidator = new RB(getApplicationContext(), findViewById(R.id.ti_dn_c));
+        alias.setPrivateImeOptions("defaultInputmode=english;");
+        commonName.setPrivateImeOptions("defaultInputmode=english;");
+        organizationalUnit.setPrivateImeOptions("defaultInputmode=english;");
+        organization.setPrivateImeOptions("defaultInputmode=english;");
+        locality.setPrivateImeOptions("defaultInputmode=english;");
+        state.setPrivateImeOptions("defaultInputmode=english;");
+        country.setPrivateImeOptions("defaultInputmode=english;");
     }
 
     @Override
