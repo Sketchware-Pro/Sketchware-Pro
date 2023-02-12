@@ -121,12 +121,11 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     @Override
     public void onClick(View var1) {
         if (!mB.a()) {
-            switch (var1.getId()) {
-                case R.id.btn_keystore_cancel:
-                    finish();
-                    break;
-                case R.id.btn_keystore_save:
-                    l();
+            int id = var1.getId();
+            if (id == R.id.btn_keystore_cancel) {
+                finish();
+            } else if (id == R.id.btn_keystore_save) {
+                l();
             }
         }
     }
