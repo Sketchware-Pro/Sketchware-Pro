@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import a.a.a.RB;
 import a.a.a.SB;
@@ -43,16 +44,16 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
     private void a(boolean var1, String var2) {
         aB var3 = new aB(this);
-        var3.b(Helper.getResString(2131625738));
+        var3.b(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
         if (var1) {
-            var3.a(2131165404);
-            var3.a(Helper.getResString(2131625719));
+            var3.a(R.drawable.certificate_96_blue);
+            var3.a(Helper.getResString(R.string.myprojects_sign_apk_dialog_complete_create_certificate));
         } else {
-            var3.a(2131165548);
-            var3.a(Helper.getResString(2131625722));
+            var3.a(R.drawable.error_96_yellow);
+            var3.a(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
         }
 
-        var3.b(Helper.getResString(2131624977), view -> {
+        var3.b(Helper.getResString(R.string.common_word_close), view -> {
             if (!mB.a()) {
                 var3.dismiss();
                 if (var1) {
@@ -72,7 +73,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         if (w.b() && x.b()) {
             String text = n.getText().toString();
             if (!text.equals(o.getText().toString())) {
-                bB.b(getApplicationContext(), Helper.getResString(2131625727), 0).show();
+                bB.b(getApplicationContext(), Helper.getResString(R.string.myprojects_sign_apk_incorrect_password), 0).show();
                 n.setText("");
                 o.setText("");
                 return;
@@ -121,10 +122,10 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     public void onClick(View var1) {
         if (!mB.a()) {
             switch (var1.getId()) {
-                case 2131230833:
+                case R.id.btn_keystore_cancel:
                     finish();
                     break;
-                case 2131230834:
+                case R.id.btn_keystore_save:
                     l();
             }
         }
@@ -137,54 +138,54 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
             finish();
         }
 
-        setContentView(2131427471);
-        l = findViewById(2131231847);
+        setContentView(R.layout.keystore_new);
+        l = findViewById(R.id.toolbar);
         setSupportActionBar(l);
-        findViewById(2131231370).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(2131625739));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         l.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
-        ((TextView) findViewById(2131232058)).setText(Helper.getResString(2131625739));
-        Button var2 = findViewById(2131230834);
-        var2.setText(Helper.getResString(2131625729));
+        ((TextView) findViewById(R.id.tv_new_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
+        Button var2 = findViewById(R.id.btn_keystore_save);
+        var2.setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_button_create));
         var2.setOnClickListener(this);
-        var2 = findViewById(2131230833);
-        var2.setText(Helper.getResString(2131624974));
+        var2 = findViewById(R.id.btn_keystore_cancel);
+        var2.setText(Helper.getResString(R.string.common_word_cancel));
         var2.setOnClickListener(this);
-        ((TextView) findViewById(2131232022)).setText(wq.D);
-        m = findViewById(2131231035);
-        ((TextInputLayout) findViewById(2131231820)).setHint(Helper.getResString(2131625730));
-        n = findViewById(2131231036);
-        ((TextInputLayout) findViewById(2131231821)).setHint(Helper.getResString(2131625726));
-        o = findViewById(2131231037);
-        ((TextInputLayout) findViewById(2131231822)).setHint(Helper.getResString(2131625732));
-        EditText var3 = findViewById(2131231045);
-        ((TextInputLayout) findViewById(2131231832)).setHint(Helper.getResString(2131625740));
+        ((TextView) findViewById(R.id.tv_keystore_path)).setText(wq.D);
+        m = findViewById(R.id.et_keystore_alias);
+        ((TextInputLayout) findViewById(R.id.ti_keystore_alias)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_certificate_name));
+        n = findViewById(R.id.et_keystore_passwd);
+        ((TextInputLayout) findViewById(R.id.ti_keystore_passwd)).setHint(Helper.getResString(R.string.myprojects_sign_apk_hint_enter_new_password));
+        o = findViewById(R.id.et_keystore_passwd1);
+        ((TextInputLayout) findViewById(R.id.ti_keystore_passwd1)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_confirm_password));
+        EditText var3 = findViewById(R.id.et_valid_year);
+        ((TextInputLayout) findViewById(R.id.ti_valid_year)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_validity));
         var3.setText(String.valueOf(k));
-        ((TextView) findViewById(2131231898)).setText(Helper.getResString(2131625738));
-        p = findViewById(2131231029);
-        ((TextInputLayout) findViewById(2131231811)).setHint(Helper.getResString(2131625734));
-        q = findViewById(2131231032);
-        ((TextInputLayout) findViewById(2131231814)).setHint(Helper.getResString(2131625736));
-        r = findViewById(2131231031);
-        ((TextInputLayout) findViewById(2131231813)).setHint(Helper.getResString(2131625735));
-        s = findViewById(2131231030);
-        ((TextInputLayout) findViewById(2131231812)).setHint(Helper.getResString(2131625731));
-        t = findViewById(2131231033);
-        ((TextInputLayout) findViewById(2131231815)).setHint(Helper.getResString(2131625737));
-        u = findViewById(2131231028);
-        ((TextInputLayout) findViewById(2131231810)).setHint(Helper.getResString(2131625733));
-        v = new VB(getApplicationContext(), findViewById(2131231820));
-        w = new SB(getApplicationContext(), findViewById(2131231821), 4, 32);
-        x = new SB(getApplicationContext(), findViewById(2131231822), 4, 32);
-        y = new RB(getApplicationContext(), findViewById(2131231811));
-        z = new RB(getApplicationContext(), findViewById(2131231814));
-        A = new RB(getApplicationContext(), findViewById(2131231813));
-        B = new RB(getApplicationContext(), findViewById(2131231812));
-        C = new RB(getApplicationContext(), findViewById(2131231815));
-        D = new RB(getApplicationContext(), findViewById(2131231810));
+        ((TextView) findViewById(R.id.tv_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
+        p = findViewById(R.id.et_dn_cn);
+        ((TextInputLayout) findViewById(R.id.ti_dn_cn)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_first_and_last_name));
+        q = findViewById(R.id.et_dn_ou);
+        ((TextInputLayout) findViewById(R.id.ti_dn_ou)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_organizational_unit));
+        r = findViewById(R.id.et_dn_o);
+        ((TextInputLayout) findViewById(R.id.ti_dn_o)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_organization));
+        s = findViewById(R.id.et_dn_l);
+        ((TextInputLayout) findViewById(R.id.ti_dn_l)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_city));
+        t = findViewById(R.id.et_dn_st);
+        ((TextInputLayout) findViewById(R.id.ti_dn_st)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_state));
+        u = findViewById(R.id.et_dn_c);
+        ((TextInputLayout) findViewById(R.id.ti_dn_c)).setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_country_code));
+        v = new VB(getApplicationContext(), findViewById(R.id.ti_keystore_alias));
+        w = new SB(getApplicationContext(), findViewById(R.id.ti_keystore_passwd), 4, 32);
+        x = new SB(getApplicationContext(), findViewById(R.id.ti_keystore_passwd1), 4, 32);
+        y = new RB(getApplicationContext(), findViewById(R.id.ti_dn_cn));
+        z = new RB(getApplicationContext(), findViewById(R.id.ti_dn_ou));
+        A = new RB(getApplicationContext(), findViewById(R.id.ti_dn_o));
+        B = new RB(getApplicationContext(), findViewById(R.id.ti_dn_l));
+        C = new RB(getApplicationContext(), findViewById(R.id.ti_dn_st));
+        D = new RB(getApplicationContext(), findViewById(R.id.ti_dn_c));
         m.setPrivateImeOptions("defaultInputmode=english;");
         p.setPrivateImeOptions("defaultInputmode=english;");
         q.setPrivateImeOptions("defaultInputmode=english;");
