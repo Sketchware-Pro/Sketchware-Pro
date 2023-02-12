@@ -11,6 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+
 import com.sketchware.remod.R;
 
 /**
@@ -37,7 +39,7 @@ public class aB extends Dialog {
     /**
      * Set the dialog's image's resource ID
      */
-    public void a(int resId) {
+    public void a(@DrawableRes int resId) {
         dialogImageResId = resId;
     }
 
