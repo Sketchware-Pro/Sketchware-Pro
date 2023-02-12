@@ -278,7 +278,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void showProjectSortingDialog() {
         SketchDialog dialog = new SketchDialog(this);
-        dialog.setTitle("Sort Project");
+        dialog.setTitle("Sort options");
         View root = wB.a(this, R.layout.sort_project_dialog);
         RadioButton sortByName = root.findViewById(R.id.sortByName);
         RadioButton sortByID = root.findViewById(R.id.sortByID);
