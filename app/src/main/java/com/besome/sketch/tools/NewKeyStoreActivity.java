@@ -42,23 +42,23 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     public VB v;
     public SB w, x;
 
-    private void a(boolean var1, String var2) {
-        aB var3 = new aB(this);
-        var3.b(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
-        if (var1) {
-            var3.a(R.drawable.certificate_96_blue);
-            var3.a(Helper.getResString(R.string.myprojects_sign_apk_dialog_complete_create_certificate));
+    private void showDoneDialog(boolean success, String password) {
+        aB dialog = new aB(this);
+        dialog.b(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
+        if (success) {
+            dialog.a(R.drawable.certificate_96_blue);
+            dialog.a(Helper.getResString(R.string.myprojects_sign_apk_dialog_complete_create_certificate));
         } else {
-            var3.a(R.drawable.error_96_yellow);
-            var3.a(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
+            dialog.a(R.drawable.error_96_yellow);
+            dialog.a(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
         }
 
-        var3.b(Helper.getResString(R.string.common_word_close), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_close), v -> {
             if (!mB.a()) {
-                var3.dismiss();
-                if (var1) {
+                dialog.dismiss();
+                if (success) {
                     Intent intent = new Intent();
-                    intent.putExtra("pwd", var2);
+                    intent.putExtra("pwd", password);
                     setResult(-1, intent);
                     finish();
                 } else {
@@ -66,10 +66,10 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
                 }
             }
         });
-        var3.show();
+        dialog.show();
     }
 
-    private void l() {
+    private void save() {
         if (w.b() && x.b()) {
             String text = n.getText().toString();
             if (!text.equals(o.getText().toString())) {
@@ -109,30 +109,30 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
             try {
                 E.a(wq.j(), stringBuilder.toString(), k, m.getText().toString(), text);
-                a(true, text);
+                showDoneDialog(true, text);
             } catch (Exception e) {
                 e.printStackTrace();
-                a(false, null);
+                showDoneDialog(false, null);
             }
         }
 
     }
 
     @Override
-    public void onClick(View var1) {
+    public void onClick(View v) {
         if (!mB.a()) {
-            int id = var1.getId();
+            int id = v.getId();
             if (id == R.id.btn_keystore_cancel) {
                 finish();
             } else if (id == R.id.btn_keystore_save) {
-                l();
+                save();
             }
         }
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (!super.j()) {
             finish();
         }
