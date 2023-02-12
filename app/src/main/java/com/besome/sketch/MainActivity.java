@@ -300,7 +300,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
         dialog.setView(root);
         dialog.setPositiveButton("Save", view -> {
-            int sortValue = ProjectComparator.DEFAULT;
+            int sortValue = 0;
             if (sortByName.isChecked()) {
                 sortValue |= ProjectComparator.SORT_BY_NAME;
             }
