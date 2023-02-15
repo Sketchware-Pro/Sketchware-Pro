@@ -216,9 +216,9 @@ public class ExtraPaletteBlock {
             if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
 
             String[] split = customVariables2.get(i).split(" ");
-            if (split.length == 2) {
+            if (split.length == 2 || split.length == 4) {
                 logicEditor.a(split[1], "v", split[0], "getVar").setTag(customVariables2.get(i));
-            } else if (split.length > 2) {
+            } else if (split.length == 3 || split.length== 5) {
                 logicEditor.a(split[2], "v", split[1], "getVar").setTag(customVariables2.get(i));
             } else {
                 SketchwareUtil.toastError("Found invalid data of Custom Variable #" + (i + 1) + ": \"" + customVariables2.get(i) + "\"");
