@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppBaseTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+    <style name="AppBaseTheme" parent="@style/Theme.Material3.Light.NoActionBar" />
 
     <style name="AppTheme" parent="@style/AppBaseTheme">
         <item name="colorAccent">@color/color_accent</item>
