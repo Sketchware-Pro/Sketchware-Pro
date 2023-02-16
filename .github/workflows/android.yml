@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Original at https://github.com/tyron12233/CodeAssist/blob/main/.github/workflows/build-apk.yml
 # Changes: Minor adjustments, removal of Cancel previous runs step, but every change can be found with a simple diff.
-
+ 
 name: Android CI
 
 on:
