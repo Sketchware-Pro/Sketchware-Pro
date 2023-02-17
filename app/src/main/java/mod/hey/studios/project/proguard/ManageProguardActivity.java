@@ -31,7 +31,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
         if (id == R.id.ig_toolbar_back) {
             finish();
         } else if (id == R.id.ln_pg_rules) {
-            new ProguardRulesDialog(ManageProguardActivity.this, pg).show();
+            new ProguardRulesDialog(this, pg).show();
         } else if (id == R.id.ln_pg_fm) {
             fmDialog();
         }

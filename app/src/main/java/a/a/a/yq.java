@@ -181,12 +181,6 @@ public class yq {
     public final String compiledClassesPath;
 
     /**
-     * Path of the unaligned but signed APK,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.signed.unaligned
-     */
-    public final String unalignedSignedApkPath;
-
-    /**
      * Project's generated R.java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/gen
      */
@@ -257,7 +251,6 @@ public class yq {
         classesDexPath = binDirectoryPath + File.separator + "classes.dex";
         unsignedUnalignedApkPath = binDirectoryPath + File.separator + projectName + ".apk.unsigned";
         unsignedAlignedApkPath = unsignedUnalignedApkPath + ".aligned";
-        unalignedSignedApkPath = binDirectoryPath + File.separator + projectName + ".apk.signed.unaligned";
         finalToInstallApkPath = binDirectoryPath + File.separator + projectName + ".apk";
         releaseApkPath = wq.o() + File.separator + projectName + "_release.apk";
     }
@@ -652,8 +645,18 @@ public class yq {
             Mx mx = new Mx();
             mx.a("google_play_services_version", 12451000);
             if (N.isFirebaseEnabled) {
-                mx.a("firebase_database_url", "https://" + firebaseLibrary.data, false);
-                mx.a("project_id", firebaseLibrary.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
+                String databaseUrl;
+                String projectId;
+                String libraryData = firebaseLibrary.data;
+                if (libraryData.contains(".")) {
+                    databaseUrl = "https://" + libraryData;
+                    projectId = libraryData.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, "");
+                } else {
+                    databaseUrl = "https://" + libraryData + ".firebaseio.com";
+                    projectId = libraryData;
+                }
+                mx.a("firebase_database_url", databaseUrl, false);
+                mx.a("project_id", projectId, false);
                 mx.a("google_app_id", firebaseLibrary.reserved1, false);
                 if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
                     mx.a("google_api_key", firebaseLibrary.reserved2, false);

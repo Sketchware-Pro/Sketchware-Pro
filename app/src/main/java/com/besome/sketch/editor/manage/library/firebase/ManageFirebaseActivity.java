@@ -166,11 +166,11 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         setContentView(R.layout.manage_library_manage_firebase);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_library_firebase_title_firebase_manager));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_firebase_title_firebase_manager));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         s = new DB(getApplicationContext(), "P1");

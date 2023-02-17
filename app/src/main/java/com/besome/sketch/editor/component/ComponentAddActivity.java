@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ComponentBean;
@@ -26,9 +27,9 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexItem;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.FlexboxLayoutManager.LayoutParams;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -346,7 +347,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_ONESIGNAL));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL));
-        componentsAdapter.c();
+        componentsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -363,10 +364,10 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             y = true;
-            tvDescription.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            inputsLayout.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            addButton.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            docsButton.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
+            tvDescription.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
+            inputsLayout.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
+            addButton.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
+            docsButton.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
             Pair<Integer, Integer> pair = w.get(componentsAdapter.layoutPosition);
             imgIconLayout.animate()
                     .translationX((float) pair.first)
@@ -380,7 +381,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                             Helper.setViewsVisibility(true, descriptionLayout, tvDescription, imgBack, imgIconLayout);
                             componentsList.setVisibility(View.VISIBLE);
                             tvComponentTitle.setText(Helper.getResString(R.string.component_title_add_component));
-                            componentsAdapter.c();
+                            componentsAdapter.notifyDataSetChanged();
                         }
                     }).start();
         }
@@ -389,8 +390,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private void s() {
         Helper.setViewsVisibility(false, imgIcon, descriptionLayout, inputsLayout, imgIconLayout, tvDescription, imgBack);
         componentsList.setVisibility(View.GONE);
-        imgIconLayout.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-        imgIconLayout.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+        imgIconLayout.setTranslationX(LayoutParams.FLEX_GROW_DEFAULT);
+        imgIconLayout.setTranslationY(LayoutParams.FLEX_GROW_DEFAULT);
         ComponentBean componentBean = componentList.get(componentsAdapter.layoutPosition);
         Helper.setViewsVisibility(true, tvWarning, tiInputFilename, tvDescFirebasePath, tvDescFilePicker, tiInputFirebasePath, inputFilePickerLayout);
         switch (componentBean.type) {
@@ -417,14 +418,14 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         imgIcon.setImageResource(ComponentBean.getIconResource(componentBean.type));
         tvComponentTitle.setText(ComponentBean.getComponentName(getApplicationContext(), componentBean.type));
         tvDescription.setText(ComponentsHandler.description(componentBean.type));
-        tvDescription.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        inputsLayout.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        addButton.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        docsButton.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
+        tvDescription.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
+        inputsLayout.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
+        addButton.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
+        docsButton.setAlpha(LayoutParams.FLEX_GROW_DEFAULT);
         inputsLayout.setTranslationY(300.0f);
         tvDescription.animate().alpha(1.0f).start();
         imgBack.animate().alpha(1.0f).start();
-        inputsLayout.animate().alpha(1.0f).translationY(FlexItem.FLEX_GROW_DEFAULT).start();
+        inputsLayout.animate().alpha(1.0f).translationY(LayoutParams.FLEX_GROW_DEFAULT).start();
         addButton.animate().setStartDelay(150).alpha(1.0f).start();
         docsButton.animate().setStartDelay(150).alpha(1.0f).start();
     }
@@ -449,32 +450,28 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         dialog.show();
     }
 
-    // RecyclerView$Adapter<VH extends RecyclerView$ViewHolder> got obfuscated to RecyclerView$a<VH extends RecyclerView$v>
-    private class ComponentsAdapter extends RecyclerView.a<ComponentsAdapter.ViewHolder> {
+    private class ComponentsAdapter extends RecyclerView.Adapter<ComponentsAdapter.ViewHolder> {
 
         private int layoutPosition = -1;
         private RecyclerView recyclerView;
 
         @Override
-        // RecyclerView.Adapter#getItemId(int)
-        public long a(int position) {
+        public long getItemId(int position) {
             return position;
         }
 
         @Override
-        // RecyclerView.Adapter#onAttachedToRecyclerView(RecyclerView)
-        public void a(RecyclerView recyclerView) {
-            super.a(recyclerView);
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
             this.recyclerView = recyclerView;
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String componentName = ComponentBean.getComponentName(getApplicationContext(), componentList.get(position).type);
-            holder.b.setAlpha(1.0f);
-            holder.b.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-            holder.b.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+            holder.itemView.setAlpha(1.0f);
+            holder.itemView.setTranslationX(LayoutParams.FLEX_GROW_DEFAULT);
+            holder.itemView.setTranslationY(LayoutParams.FLEX_GROW_DEFAULT);
             holder.itemName.setAlpha(1.0f);
             holder.itemName.setText(componentName);
             holder.itemIcon.setImageResource(ComponentBean.getIconResource(componentList.get(position).type));
@@ -485,9 +482,9 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 Pair<Integer, Integer> pair = w.get(position);
                 holder.itemName.animate()
                         .setDuration(100)
-                        .alpha(FlexItem.FLEX_GROW_DEFAULT)
+                        .alpha(LayoutParams.FLEX_GROW_DEFAULT)
                         .start();
-                holder.b.animate()
+                holder.itemView.animate()
                         .setStartDelay(300)
                         .translationX((float) (-pair.first))
                         .translationY((float) (-pair.second))
@@ -502,14 +499,14 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                         }).start();
                 return;
             }
-            holder.b.animate()
-                    .alpha(FlexItem.FLEX_GROW_DEFAULT)
+            holder.itemView.animate()
+                    .alpha(LayoutParams.FLEX_GROW_DEFAULT)
                     .start();
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = wB.a(parent.getContext(), R.layout.component_add_item);
             int lengthAndWidth = (int) wB.a(parent.getContext(), 76.0f);
             itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
@@ -517,12 +514,11 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return componentList.size();
         }
 
-        private class ViewHolder extends RecyclerView.v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final ImageView itemIcon;
             private final TextView itemName;
@@ -538,7 +534,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             public void onClick(View v) {
                 if (!y) {
                     y = true;
-                    layoutPosition = j();
+                    layoutPosition = getLayoutPosition();
                     x = true;
                     int[] itemViewLocationInWindow = new int[2];
                     v.getLocationInWindow(itemViewLocationInWindow);
@@ -546,7 +542,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     recyclerView.getLocationInWindow(recyclerViewLocationInWindow);
                     int i = itemViewLocationInWindow[0] - recyclerViewLocationInWindow[0];
                     w.put(layoutPosition, new Pair<>(i, (int) (((float) (itemViewLocationInWindow[1] - recyclerViewLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
-                    ComponentsAdapter.this.c();
+                    notifyDataSetChanged();
                 }
             }
         }

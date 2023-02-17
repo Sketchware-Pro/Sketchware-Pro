@@ -45,11 +45,11 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         setContentView(R.layout.system_settings);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
-        d().d(true);
-        d().e(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.main_drawer_title_system_settings));
+        getSupportActionBar().setTitle(Helper.getResString(R.string.main_drawer_title_system_settings));
         toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });

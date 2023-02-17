@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -190,11 +191,11 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_library_admob_title_admob_manager));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_admob_title_admob_manager));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         A = new DB(getApplicationContext(), "P1");
@@ -218,7 +219,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         tvRewardName = findViewById(R.id.tv_reward_name);
 
         RecyclerView listTestDevice = findViewById(R.id.list_test_device);
-        listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+        listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         testDeviceAdapter = new TestDeviceAdapter();
         listTestDevice.setAdapter(testDeviceAdapter);
 
@@ -305,31 +306,28 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         setInterAdUnit(admobLibraryBean.reserved2);
         setRewardAdUnit(admobLibraryBean.reserved3);
         testDeviceList = admobLibraryBean.testDevices;
-        testDeviceAdapter.c();
+        testDeviceAdapter.notifyDataSetChanged();
     }
 
-    private class TestDeviceAdapter extends RecyclerView.a<TestDeviceAdapter.ViewHolder> {
+    private class TestDeviceAdapter extends RecyclerView.Adapter<TestDeviceAdapter.ViewHolder> {
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return testDeviceList.size();
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.tvDeviceId.setText(testDeviceList.get(position).deviceId);
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             private final TextView tvDeviceId;
 

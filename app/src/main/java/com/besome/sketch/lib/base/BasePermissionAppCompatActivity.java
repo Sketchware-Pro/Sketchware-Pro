@@ -2,13 +2,14 @@ package com.besome.sketch.lib.base;
 
 import android.Manifest;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.sketchware.remod.R;
 
 import a.a.a.Sp;
 import a.a.a.aB;
 import a.a.a.mB;
-import a.a.a.nd;
-import a.a.a.zd;
 import mod.hey.studios.util.Helper;
 
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {
@@ -33,7 +34,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.a(Helper.getResString(R.string.common_message_permission_storage));
             dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
                 if (!mB.a()) {
-                    nd.a(BasePermissionAppCompatActivity.this,
+                    ActivityCompat.requestPermissions(this,
                             new String[]{
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                     Manifest.permission.READ_EXTERNAL_STORAGE
@@ -56,9 +57,9 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
 
     @Override
     public boolean j() {
-        return zd.a(getApplicationContext(),
+        return ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0
-                && zd.a(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
     }
 
     public abstract void l();
@@ -67,7 +68,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
 
     @Override
     public void onRequestPermissionsResult(int i, String[] strArr, int[] iArr) {
-        BasePermissionAppCompatActivity.super.onRequestPermissionsResult(i, strArr, iArr);
+        super.onRequestPermissionsResult(i, strArr, iArr);
         for (String str : strArr) {
             if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(str)) {
                 if (iArr.length > 0 && iArr[0] == 0 && iArr[1] == 0) {

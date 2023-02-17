@@ -249,7 +249,7 @@ public class AndroidManifestInjectionDetails extends Activity {
             actComponent.setTypeface(Typeface.DEFAULT_BOLD);
             par.addView(actComponent);
             actComponent.setOnClickListener(v -> {
-                ActComponentsDialog acd = new ActComponentsDialog(AndroidManifestInjectionDetails.this, src_id, activityName);
+                ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
                 acd.show();
             });
         }
@@ -281,7 +281,7 @@ public class AndroidManifestInjectionDetails extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
 
             LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);

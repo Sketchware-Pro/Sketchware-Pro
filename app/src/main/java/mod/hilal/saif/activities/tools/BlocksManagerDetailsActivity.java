@@ -544,7 +544,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.block_customview, null);
+                convertView = getLayoutInflater().inflate(R.layout.block_customview, parent, false);
             }
 
             final HashMap<String, Object> block = blocks.get(position);

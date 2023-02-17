@@ -13,11 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.v;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
@@ -35,7 +36,6 @@ import a.a.a.Tu;
 import a.a.a.Uu;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.ci;
 import a.a.a.iC;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -159,7 +159,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             Collections.sort(projects, new ProjectComparator());
         }
 
-        adapter.c();
+        adapter.notifyDataSetChanged();
     }
 
     private void nextStep() {
@@ -313,7 +313,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ProjectsAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new ci());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadProjects();
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
@@ -348,17 +348,17 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.show();
     }
 
-    private class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
+    private class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
         private int selectedProjectIndex = -1;
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return projects.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projects.get(position);
             String projectSc_id = yB.c(projectMap, "sc_id");
             String iconDir = wq.e() + File.separator + projectSc_id;
@@ -366,7 +366,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
-                    iconUri = FileProvider.a(getApplicationContext(), getPackageName() + ".provider", new File(iconDir, "icon.png"));
+                    iconUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", new File(iconDir, "icon.png"));
                 } else {
                     iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
                 }
@@ -383,11 +383,12 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
-        private class ViewHolder extends v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final CircleImageView icon;
             private final TextView projectName;
@@ -411,7 +412,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = j();
+                    selectedProjectIndex = getLayoutPosition();
                     selectProject(selectedProjectIndex);
                 }
             }
@@ -423,7 +424,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     }
 
                     projects.get(i).put("selected", true);
-                    adapter.c();
+                    adapter.notifyDataSetChanged();
                 }
             }
         }

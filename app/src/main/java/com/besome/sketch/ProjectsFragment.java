@@ -19,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -43,7 +45,6 @@ import java.util.HashMap;
 import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.MA;
-import a.a.a.ci;
 import a.a.a.gB;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -90,7 +91,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         preference = new DB(getContext(), "project");
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
         swipeRefresh.setOnRefreshListener(() -> {
-            if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
+            if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
 
             if (c()) {
                 refreshProjectsList();
@@ -106,7 +107,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         myProjects.setLayoutManager(new LinearLayoutManager(getContext()));
         projectsAdapter = new ProjectsAdapter(myProjects);
         myProjects.setAdapter(projectsAdapter);
-        myProjects.setItemAnimator(new ci());
+        myProjects.setItemAnimator(new DefaultItemAnimator());
 
         cvCreateNew = parent.findViewById(R.id.cv_create_new);
         cvCreateNew.setOnClickListener(this);
@@ -160,7 +161,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
         }
 
-        myProjects.getAdapter().c();
+        myProjects.getAdapter().notifyDataSetChanged();
         if (isEmpty) showCreateNewProjectLayout();
     }
 
@@ -220,10 +221,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     public void showCreateNewProjectLayout() {
         if (projectsList.size() > 0) {
             cvCreateNew.setVisibility(View.GONE);
-            floatingActionButton.f();
+            floatingActionButton.show();
         } else {
             cvCreateNew.setVisibility(View.VISIBLE);
-            floatingActionButton.c();
+            floatingActionButton.hide();
         }
     }
 
@@ -291,15 +292,15 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             super(getContext());
             this.position = position;
             ProjectsFragment.this.b();
-            ProjectsFragment.this.a(this);
+            addTask(this);
         }
 
         @Override
         public void a() {
             if (position < projectsList.size()) {
                 projectsList.remove(position);
-                projectsAdapter.e(position);
-                projectsAdapter.a(position, projectsAdapter.a());
+                projectsAdapter.notifyItemRemoved(position);
+                projectsAdapter.notifyItemRangeChanged(position, projectsAdapter.getItemCount());
             }
 
             ProjectsFragment.this.a();
@@ -323,22 +324,22 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
+    public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
         private int layoutPosition;
 
         public ProjectsAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    public void a(RecyclerView recyclerView1, int var2, int var3) {
-                        super.a(recyclerView1, var2, var3);
-                        if (var3 > 4) {
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 4) {
                             if (isCollapsed) return;
                             collapseAnimatorSet.start();
                             isCollapsed = true;
                         } else {
-                            if (var3 >= -4 || !isCollapsed) return;
+                            if (dy >= -4 || !isCollapsed) return;
                             expandAnimatorSet.start();
                             isCollapsed = false;
                         }
@@ -348,12 +349,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return projectsList.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> projectMap = projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
             float rotation;
@@ -365,15 +366,15 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 visibility = View.GONE;
                 rotation = 0.0F;
             }
-            viewHolder.projectOptionLayout.setVisibility(visibility);
-            viewHolder.expand.setRotation(rotation);
+            holder.projectOptionLayout.setVisibility(visibility);
+            holder.expand.setRotation(rotation);
             if (yB.a(projectMap, "confirmation")) {
-                viewHolder.projectButtonLayout.b();
+                holder.projectButtonLayout.b();
             } else {
-                viewHolder.projectButtonLayout.a();
+                holder.projectButtonLayout.a();
             }
 
-            viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
+            holder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
                 projectMap.put("sc_ver_code", "1");
                 projectMap.put("sc_ver_name", "1.0");
@@ -390,31 +391,31 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 String iconFolder = wq.e() + File.separator + scId;
                 if (VERSION.SDK_INT >= 24) {
                     String providerPath = getContext().getPackageName() + ".provider";
-                    uri = FileProvider.a(getContext(), providerPath, new File(iconFolder, "icon.png"));
+                    uri = FileProvider.getUriForFile(getContext(), providerPath, new File(iconFolder, "icon.png"));
                 } else {
                     uri = Uri.fromFile(new File(iconFolder, "icon.png"));
                 }
 
-                viewHolder.imgIcon.setImageURI(uri);
+                holder.imgIcon.setImageURI(uri);
             }
 
-            viewHolder.appName.setText(yB.c(projectMap, "my_ws_name"));
-            viewHolder.projectName.setText(yB.c(projectMap, "my_app_name"));
-            viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            holder.appName.setText(yB.c(projectMap, "my_ws_name"));
+            holder.projectName.setText(yB.c(projectMap, "my_app_name"));
+            holder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
             String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
-            viewHolder.projectVersion.setText(version);
-            viewHolder.tvPublished.setVisibility(View.VISIBLE);
-            viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
-            viewHolder.b.setTag("custom");
+            holder.projectVersion.setText(version);
+            holder.tvPublished.setVisibility(View.VISIBLE);
+            holder.tvPublished.setText(yB.c(projectMap, "sc_id"));
+            holder.itemView.setTag("custom");
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             public final TextView tvPublished;
             public final ImageView expand;
             public final MyProjectButtonLayout projectButtonLayout;
@@ -445,7 +446,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectOption.addView(projectButtonLayout);
                 projectButtonLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getLayoutPosition();
                         if (layoutPosition <= projectsList.size()) {
                             HashMap<String, Object> projectMap = projectsList.get(layoutPosition);
                             if (v instanceof MyProjectButton) {
@@ -478,7 +479,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                                     (new DeleteProjectTask(layoutPosition)).execute();
                                 } else if (v.getId() == R.id.confirm_no) {
                                     projectMap.put("confirmation", false);
-                                    ProjectsAdapter.this.c(layoutPosition);
+                                    notifyItemChanged(layoutPosition);
                                 }
 
                             }
@@ -487,12 +488,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 });
                 projectOne.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getLayoutPosition();
                         toDesignActivity(yB.c(projectsList.get(layoutPosition), "sc_id"));
                     }
                 });
                 projectOne.setOnLongClickListener(v -> {
-                    layoutPosition = j();
+                    layoutPosition = getLayoutPosition();
                     if (yB.a(projectsList.get(layoutPosition), "expand")) {
                         collapse();
                     } else {
@@ -503,12 +504,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 });
                 appIconLayout.setOnClickListener(v -> {
                     mB.a(v);
-                    layoutPosition = j();
+                    layoutPosition = getLayoutPosition();
                     toProjectSettingOrRequestPermission(layoutPosition);
                 });
                 expand.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getLayoutPosition();
                         if (yB.a(projectsList.get(layoutPosition), "expand")) {
                             collapse();
                         } else {

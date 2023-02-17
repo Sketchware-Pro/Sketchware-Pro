@@ -70,6 +70,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
+import mod.jbk.util.TestkeySignBridge;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
@@ -104,11 +105,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.export_project);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.myprojects_export_project_actionbar_title));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_export_project_actionbar_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -126,8 +127,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (loading_export_src.h()) {
-            loading_export_src.e();
+        if (loading_export_src.isAnimating()) {
+            loading_export_src.cancelAnimation();
         }
     }
 
@@ -143,8 +144,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private void f(String filePath) {
         layout_apk_path.setVisibility(View.VISIBLE);
         btn_sign_apk.setVisibility(View.GONE);
-        if (loading_sign_apk.h()) {
-            loading_sign_apk.e();
+        if (loading_sign_apk.isAnimating()) {
+            loading_sign_apk.cancelAnimation();
         }
         loading_sign_apk.setVisibility(View.GONE);
         SketchwareUtil.toast(Helper.getResString(R.string.sign_apk_title_export_apk_file));
@@ -439,7 +440,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         layoutExportAppBundle.setVisibility(View.GONE);
 
         btnExportAppBundle.setOnClickListener(v -> {
-            aB dialog = new aB(ExportProjectActivity.this);
+            aB dialog = new aB(this);
             if (BuildConfig.FLAVOR.equals(BuildConfig.FLAVOR_NAME_WITHOUT_AABS)) {
                 dialog.a(R.drawable.break_warning_96_red);
                 dialog.b("Can't generate App Bundle");
@@ -449,7 +450,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.b(Helper.getResString(R.string.common_word_close), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             } else {
-                GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
+                GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                         R.drawable.color_about_96, "Sign outputted AAB", "The generated .aab file must be signed.\n" +
                         "Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
                         "and enter the alias' password.");
@@ -500,7 +501,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             btn_export_src.setVisibility(View.GONE);
             layout_export_src.setVisibility(View.GONE);
             loading_export_src.setVisibility(View.VISIBLE);
-            loading_export_src.j();
+            loading_export_src.playAnimation();
             new Thread() {
                 @Override
                 public void run() {
@@ -528,7 +529,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         loading_sign_apk.setVisibility(View.GONE);
         layout_apk_path.setVisibility(View.GONE);
         btn_sign_apk.setOnClickListener(v -> {
-            GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
+            GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                     R.drawable.color_about_96,
                     "Sign an APK",
                     "To sign an APK, you need a keystore. Use your already created one, and copy it to " +
@@ -539,7 +540,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 btn_sign_apk.setVisibility(View.GONE);
                 layout_apk_path.setVisibility(View.GONE);
                 loading_sign_apk.setVisibility(View.VISIBLE);
-                loading_sign_apk.j();
+                loading_sign_apk.playAnimation();
 
                 BuildingAsyncTask task = new BuildingAsyncTask(this);
                 if (credentials != null) {
@@ -583,8 +584,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             intent.putExtra(Intent.EXTRA_TEXT, Helper.getResString(R.string.myprojects_export_src_title_email_body, export_src_filename));
             String filePath = export_src_full_path + File.separator + export_src_filename;
             if (Build.VERSION.SDK_INT >= 24) {
-                intent.putExtra(Intent.EXTRA_STREAM, FileProvider.a(getApplicationContext(),
-                        getApplicationContext().getPackageName() + ".provider", new File(filePath)));
+                intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(filePath)));
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -601,7 +601,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      */
     private void initializeAfterExportedSourceViews(String exportedSrcFilename) {
         export_src_filename = exportedSrcFilename;
-        loading_export_src.e();
+        loading_export_src.cancelAnimation();
         loading_export_src.setVisibility(View.GONE);
         layout_export_src.setVisibility(View.VISIBLE);
         tv_src_path.setText(export_src_postfix + File.separator + export_src_filename);
@@ -628,7 +628,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata = exportProjectActivity.project_metadata;
             loading_sign_apk = new WeakReference<>(exportProjectActivity.loading_sign_apk);
             // Register as AsyncTask with dialog to Activity
-            activity.get().a((MA) this);
+            activity.get().addTask(this);
             // Make a simple ProgressDialog show and set its OnCancelListener
             activity.get().a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button
@@ -815,11 +815,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         return;
                     }
 
+                    publishProgress("Aligning APK...");
+                    dp.runZipalign(dp.yq.unsignedUnalignedApkPath, dp.yq.unsignedAlignedApkPath);
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
                     publishProgress("Signing APK...");
+                    String outputLocation = getCorrectResultFilename(dp.yq.releaseApkPath);
                     if (signWithTestkey) {
-                        ZipSigner signer = new ZipSigner();
-                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
+                        TestkeySignBridge.signWithTestkey(dp.yq.unsignedAlignedApkPath, outputLocation);
                     } else if (isResultJarSigningEnabled()) {
                         Security.addProvider(new BouncyCastleProvider());
                         CustomKeySigner.signZip(
@@ -829,19 +835,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                 signingAliasName,
                                 signingKeystorePassword,
                                 signingAlgorithm,
-                                dp.yq.unsignedUnalignedApkPath,
-                                dp.yq.unalignedSignedApkPath
+                                dp.yq.unsignedAlignedApkPath,
+                                outputLocation
                         );
                     } else {
-                        FileUtil.copyFile(dp.yq.unsignedUnalignedApkPath, dp.yq.unalignedSignedApkPath);
+                        FileUtil.copyFile(dp.yq.unsignedAlignedApkPath, outputLocation);
                     }
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Aligning APK...");
-                    dp.runZipalign(dp.yq.unalignedSignedApkPath, getCorrectResultFilename(dp.yq.releaseApkPath));
                 }
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
@@ -877,8 +876,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             activity.get().i();
             activity.get().layout_apk_path.setVisibility(View.GONE);
             LottieAnimationView loading_sign_apk = this.loading_sign_apk.get();
-            if (loading_sign_apk.h()) {
-                loading_sign_apk.e();
+            if (loading_sign_apk.isAnimating()) {
+                loading_sign_apk.cancelAnimation();
             }
             loading_sign_apk.setVisibility(View.GONE);
             activity.get().btn_sign_apk.setVisibility(View.VISIBLE);
@@ -945,8 +944,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             SketchwareUtil.showAnErrorOccurredDialog(activity.get(), str);
             activity.get().layout_apk_path.setVisibility(View.GONE);
             LottieAnimationView loading_sign_apk = this.loading_sign_apk.get();
-            if (loading_sign_apk.h()) {
-                loading_sign_apk.e();
+            if (loading_sign_apk.isAnimating()) {
+                loading_sign_apk.cancelAnimation();
             }
             loading_sign_apk.setVisibility(View.GONE);
             activity.get().btn_sign_apk.setVisibility(View.VISIBLE);

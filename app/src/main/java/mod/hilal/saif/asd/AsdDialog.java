@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +24,34 @@ import android.widget.TextView;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.sketchware.remod.R;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
+
 import a.a.a.Lx;
 import a.a.a.Ss;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+import io.github.rosemoe.sora.widget.schemes.SchemeEclipse;
+import io.github.rosemoe.sora.widget.schemes.SchemeGitHub;
+import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX;
+import io.github.rosemoe.sora.widget.schemes.SchemeVS2019;
 import mod.SketchwareUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
+    public static final List<Pair<String, Class<? extends EditorColorScheme>>> KNOWN_COLOR_SCHEMES = List.of(
+            new Pair<>("Default", EditorColorScheme.class),
+            new Pair<>("GitHub", SchemeGitHub.class),
+            new Pair<>("Eclipse", SchemeEclipse.class),
+            new Pair<>("Darcula", SchemeDarcula.class),
+            new Pair<>("VS2019", SchemeVS2019.class),
+            new Pair<>("NotepadXX", SchemeNotepadXX.class)
+    );
 
     private static SharedPreferences pref;
     private final Activity act;
@@ -102,18 +121,20 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         break;
 
                     case "Switch theme":
-                        String[] themeItems = {
-                                "Default",
-                                "GitHub",
-                                "Eclipse",
-                                "Dracula",
-                                "VS2019",
-                                "NotepadXX"
-                        };
+                        EditorColorScheme currentScheme = codeEditor.getColorScheme();
+                        int selectedThemeIndex = KNOWN_COLOR_SCHEMES.stream()
+                                .sorted(Comparator.comparing((Function<Pair<String, Class<? extends EditorColorScheme>>, String>) pair -> pair.first).reversed())
+                                .filter(pair -> pair.second.isInstance(currentScheme))
+                                .map(KNOWN_COLOR_SCHEMES::indexOf)
+                                .findFirst()
+                                .orElse(-1);
+                        String[] themeItems = KNOWN_COLOR_SCHEMES.stream()
+                                .map(pair -> pair.first)
+                                .toArray(String[]::new);
                         new AlertDialog.Builder(act)
                                 .setTitle("Switch theme")
                                 .setSingleChoiceItems(
-                                        themeItems, -1, (dialog, which) -> {
+                                        themeItems, selectedThemeIndex, (dialog, which) -> {
                                             SrcCodeEditor.selectTheme(codeEditor, which);
                                             AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
                                             if (isDark()) {

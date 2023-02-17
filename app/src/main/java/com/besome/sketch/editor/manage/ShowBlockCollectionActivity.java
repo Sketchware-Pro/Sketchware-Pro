@@ -136,11 +136,11 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         setContentView(R.layout.manage_collection_show_block);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         blockName = getIntent().getStringExtra("block_name");

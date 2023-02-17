@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -17,13 +19,11 @@ import com.sketchware.remod.R;
 import a.a.a.MA;
 import a.a.a.Np;
 import a.a.a.St;
-import a.a.a.Xf;
 import a.a.a.Zt;
-import a.a.a.gg;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 
-public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.e {
+public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private String sc_id;
     private ViewPager pager;
@@ -31,18 +31,15 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     private St thisProjectFontsFragment;
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
-    public void a(int state) {
+    public void onPageScrollStateChanged(int state) {
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
-    public void a(int position, float positionOffset, int positionOffsetPixels) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageSelected(int)
-    public void b(int position) {
+    public void onPageSelected(int position) {
     }
 
     public void f(int i) {
@@ -83,11 +80,11 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_actionbar_title_manager_font));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_manager_font));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
@@ -103,7 +100,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         pager = findViewById(R.id.view_pager);
         pager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
         pager.setOffscreenPageLimit(2);
-        pager.a(this);
+        pager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(pager);
     }
 
@@ -121,26 +118,24 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         super.onSaveInstanceState(outState);
     }
 
-    private class TabLayoutAdapter extends gg {
+    private class TabLayoutAdapter extends FragmentPagerAdapter {
 
         private final String[] labels = new String[2];
 
-        public TabLayoutAdapter(Xf xf) {
+        public TabLayoutAdapter(FragmentManager xf) {
             super(xf);
             labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project).toUpperCase();
             labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
-        // PagerAdapter#getCount()
-        public int a() {
+        public int getCount() {
             return 2;
         }
 
         @Override
-        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
-        public Object a(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.a(container, position);
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
                 myCollectionFontsFragment = (Zt) fragment;
             } else {
@@ -150,8 +145,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
-        // FragmentPagerAdapter#getItem(int)
-        public Fragment c(int position) {
+        public Fragment getItem(int position) {
             if (position == 0) {
                 return new Zt();
             } else {
@@ -160,8 +154,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
-        // PagerAdapter#getPageTitle(int)
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             return labels[position];
         }
     }
@@ -170,7 +163,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         public SaveAsyncTask(Context context) {
             super(context);
-            ManageFontActivity.this.a(this);
+            addTask(this);
         }
 
         @Override

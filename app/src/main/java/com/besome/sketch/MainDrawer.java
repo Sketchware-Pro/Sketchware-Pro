@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +26,6 @@ import com.sketchware.remod.R;
 
 import a.a.a.GB;
 import a.a.a.bB;
-import a.a.a.ci;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
@@ -54,7 +55,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         RecyclerView recyclerView = findViewById(R.id.menu_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new ci());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         DrawerItemAdapter drawerItemAdapter = new DrawerItemAdapter();
         recyclerView.setAdapter(drawerItemAdapter);
         initializeDrawerItems();
@@ -204,54 +205,55 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private class DrawerItemAdapter extends RecyclerView.a<RecyclerView.v> {
+    private class DrawerItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return DrawerItem.values().length + 1;
         }
 
         @Override
-        public int b(int i) {
-            return i == 0 ? 0 : 1;
+        public int getItemViewType(int position) {
+            return position == 0 ? 0 : 1;
         }
 
         @Override
-        public RecyclerView.v b(ViewGroup viewGroup, int i) {
-            if (i == 0) {
-                return new EmptyViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
+        @NonNull
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if (viewType == 0) {
+                return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.main_drawer_header,
-                        viewGroup,
+                        parent,
                         false
                 ));
             }
-            return new MenuItemHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
+            return new MenuItemHolder(LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.main_drawer_item,
-                    viewGroup,
+                    parent,
                     false
             ));
         }
 
         @Override
-        public void b(RecyclerView.v viewHolder, int i) {
-            if (!(viewHolder instanceof EmptyViewHolder)) {
-                if (viewHolder instanceof MenuItemHolder) {
-                    MenuItemHolder menuItemHolder = (MenuItemHolder) viewHolder;
-                    menuItemHolder.name.setImageResource(DrawerItem.values()[i > 0 ? i - 1 : i].getIcon());
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if (!(holder instanceof EmptyViewHolder)) {
+                if (holder instanceof MenuItemHolder) {
+                    MenuItemHolder menuItemHolder = (MenuItemHolder) holder;
+                    menuItemHolder.name.setImageResource(DrawerItem.values()[position > 0 ? position - 1 : position].getIcon());
                     DrawerItem[] values = DrawerItem.values();
-                    if (i > 0) i--;
-                    menuItemHolder.icon.setText(values[i].getTitle());
+                    if (position > 0) position--;
+                    menuItemHolder.icon.setText(values[position].getTitle());
                 }
             }
         }
 
-        private class EmptyViewHolder extends RecyclerView.v {
+        private class EmptyViewHolder extends RecyclerView.ViewHolder {
             public EmptyViewHolder(View view) {
                 super(view);
             }
         }
 
-        private class MenuItemHolder extends RecyclerView.v implements View.OnClickListener {
+        private class MenuItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final ImageView name;
             private final TextView icon;
@@ -266,8 +268,8 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    int id = j() - 1;
-                    DrawerItemAdapter.this.c(id);
+                    int id = getLayoutPosition() - 1;
+                    notifyItemChanged(id);
                     Activity activity = (Activity) getContext();
                     if (id == DrawerItem.MENU_ABOUT_MODDERS.ordinal()) {
                         Intent intent = new Intent(activity, AboutModActivity.class);

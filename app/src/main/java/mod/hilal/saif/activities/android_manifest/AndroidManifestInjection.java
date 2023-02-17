@@ -572,7 +572,7 @@ public class AndroidManifestInjection extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
             LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
             TextView textView = convertView.findViewById(R.id.cus_attr_text);
