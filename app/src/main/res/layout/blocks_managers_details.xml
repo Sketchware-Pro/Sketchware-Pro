@@ -1,78 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="#ffeeeeee"
-        android:orientation="vertical">
-
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
         <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff008dcd"
             android:gravity="center|left"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="8dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="8dp">
-
+            android:id="@id/toolbar"
+            android:background="#ff008dcd"
+            android:paddingLeft="10.0dip"
+            android:paddingTop="8.0dip"
+            android:paddingRight="4.0dip"
+            android:paddingBottom="8.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/backicon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/abc_vector_test" />
-
+                android:id="@id/backicon"
+                android:padding="8.0dip"
+                android:layout_width="40.0dip"
+                android:layout_height="40.0dip"
+                android:src="@drawable/abc_vector_test"
+                android:scaleType="fitXY" />
             <TextView
-                android:id="@+id/pagetitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:padding="8dp"
-                android:text="Blocks Manager"
+                android:textSize="16.0sp"
+                android:textStyle="bold"
                 android:textColor="#ffffffff"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
+                android:id="@id/pagetitle"
+                android:padding="8.0dip"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8.0dip"
+                android:text="Blocks Manager"
+                android:layout_weight="1.0" />
             <ImageView
-                android:id="@+id/swap"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_menu_white_24dp" />
-
+                android:id="@id/swap"
+                android:padding="8.0dip"
+                android:layout_width="40.0dip"
+                android:layout_height="40.0dip"
+                android:src="@drawable/ic_menu_white_24dp"
+                android:scaleType="fitXY" />
             <ImageView
-                android:id="@+id/import_export"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_more_vert_white_24dp" />
+                android:id="@id/import_export"
+                android:padding="8.0dip"
+                android:layout_width="40.0dip"
+                android:layout_height="40.0dip"
+                android:src="@drawable/ic_more_vert_white_24dp"
+                android:scaleType="fitXY" />
         </LinearLayout>
-
         <ListView
-            android:id="@+id/listview"
-            android:layout_width="match_parent"
+            android:id="@id/listview"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:choiceMode="none"
             android:divider="@null"
-            android:dividerHeight="0dp" />
+            android:dividerHeight="0.0dip"
+            android:choiceMode="none" />
     </LinearLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:layout_gravity="bottom|center|right"
+        android:id="@id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center|right"
-        android:layout_margin="16dp"
+        android:layout_margin="16.0dip"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
