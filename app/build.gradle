@@ -1,6 +1,8 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    id "com.google.gms.google-services"
+    id "com.google.firebase.crashlytics"
 }
 
 android {
@@ -142,6 +144,11 @@ dependencies {
     minApi26Implementation project(path: ":kotlinc")
 
     implementation "com.github.topjohnwu.libsu:core:5.0.2"
+
+    //Analytics and Crashlytics
+    implementation platform("com.google.firebase:firebase-bom:31.2.1")
+    implementation "com.google.firebase:firebase-crashlytics"
+    implementation "com.google.firebase:firebase-analytics"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
