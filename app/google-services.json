@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1013839767896",
+    "project_id": "sketchware-pro-analysis",
+    "storage_bucket": "sketchware-pro-analysis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013839767896:android:7ffb109ff7a4f82dd51d2d",
+        "android_client_info": {
+          "package_name": "com.sketchware.remod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013839767896-l91s6318g0krk9evbk0ipie1u498nm67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBml5JywGcpVq3pUDKOhp3TYeUSjf12WG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013839767896-l91s6318g0krk9evbk0ipie1u498nm67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
