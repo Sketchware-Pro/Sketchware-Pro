@@ -1162,7 +1162,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="component_message_component_block_added">New blocks have been added in the Logic Editor</string>
     <string name="component_message_no_components">No components to display</string>
     <string name="component_title_add_component">Add Component</string>
-    <string name="default_web_client_id">539401594864-chmbirvfd4hlokmkmjt1k5g24vspe10m.apps.googleusercontent.com</string>
     <string name="desc_expired_date">Paid service : Until %s</string>
     <string name="desc_purchase_1month">"You'll have access to all the premium features. Best deal for short term users."</string>
     <string name="desc_purchase_1year">This plan saves you %s in comparison to the monthly plan. Grab this deal while it lasts.</string>
