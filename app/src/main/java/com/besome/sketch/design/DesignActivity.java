@@ -802,6 +802,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     void toCustomBlocksViewer() {
         CustomBlocksDialog.show(this, sc_id);
     }
+    
+    /**
+     * Shows a {@link ReplaceWholeProject}.
+     */
+    void toReplaceProject() {
+        
+    }
 
     /**
      * Opens {@link ManageJavaActivity}.
