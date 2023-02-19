@@ -214,6 +214,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void generateProjectDebugFiles() {
         q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
     }
+    
+    private void RefreshActivity(String sc_id) {
+        Intent intent = new Intent(getContext(), DesignActivity.class);
+        //ProjectTracker.setScId(sc_id);
+        intent.putExtra("sc_id", sc_id);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 
     /**
      * Opens the debug APK to install.
@@ -807,7 +815,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Shows a {@link ReplaceWholeProject}.
      */
     void toReplaceProject() {
-        
+        RefreshActivity(sc_id);
     }
 
     /**
