@@ -216,9 +216,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
     
     private void RefreshActivity(String sc_id) {
-        Intent intent = new Intent(getContext(), DesignActivity.class);
-        //ProjectTracker.setScId(sc_id);
+        Intent intent = new Intent(getApplicationContext(), DesignActivity.class);
         intent.putExtra("sc_id", sc_id);
+        finish();
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
