@@ -152,3 +152,8 @@ dependencies {
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
+
+def secrets = System.getenv("GOOGLE_SERVICES_JSON")
+if (secrets != null) {
+    new File("$projectDir/google-services.json").text = secrets;
+}
