@@ -118,7 +118,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         /* Add Logcat Reader */
         menusLayout.addView(addDrawerItem(22,false,
                 R.drawable.icons8_app_components,R.string.design_drawer_menu_title_logcat_reader,R.string.design_drawer_menu_subtitle_logcat_reader));
-        /* Add Logcat Reader */
+        /* Add Replace whole Project */
         menusLayout.addView(addDrawerItem(23,false,
                 R.drawable.icons9_app_androx,R.string.design_drawer_menu_title_replace_project,R.string.design_drawer_menu_subtitle_replace_project));
     }
