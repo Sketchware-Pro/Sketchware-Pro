@@ -207,7 +207,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     private void checkForUnsavedProjectData() {
         if (jC.c(sc_id).g() || jC.b(sc_id).g() || jC.d(sc_id).q() || jC.a(sc_id).d() || jC.a(sc_id).c()) {
-            askIfToRestoreOldUnsavedProjectData();
+            
+            if(!getIntent().hasExtra("replace_project")) {
+               askIfToRestoreOldUnsavedProjectData();
+            }else{
+              try {
+                 k();
+                 new ProjectSaver(getApplicationContext()).execute();
+               } catch (Exception e) {
+                  e.printStackTrace();
+               }
+            }
         }
     }
 
@@ -216,8 +226,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
     
     private void RefreshActivity(String sc_id) {
+        
         Intent intent = new Intent(getApplicationContext(), DesignActivity.class);
         intent.putExtra("sc_id", sc_id);
+        intent.putExtra("replace_project", "true");
         finish();
         startActivity(intent);
         overridePendingTransition(0, 0);
