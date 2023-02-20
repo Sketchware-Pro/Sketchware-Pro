@@ -46,13 +46,19 @@ jobs:
           java-version: 17
           distribution: temurin
 
+      - name: Set environmental variables
+        env:
+          JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        if: ${{ env.JSON_CONTENT != '' }}
+        run: |
+          echo "GOOGLE_SERVICES_JSON=$JSON_CONTENT" >> $GITHUB_ENV
+
       - name: Build debug APK
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi26Debug
         env:
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v3
@@ -72,13 +78,19 @@ jobs:
           java-version: 17
           distribution: temurin
 
+      - name: Set environmental variables
+        env:
+          JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        if: ${{ env.JSON_CONTENT != '' }}
+        run: |
+          echo "GOOGLE_SERVICES_JSON=$JSON_CONTENT" >> $GITHUB_ENV
+
       - name: Build debug APK
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi21Debug
         env:
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v3
