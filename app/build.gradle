@@ -147,7 +147,7 @@ dependencies {
 
     minApi26Implementation project(path: ":kotlinc")
 
-    implementation "com.github.topjohnwu.libsu:core:5.0.2"
+    implementation "com.github.topjohnwu.libsu:core:5.0.4"
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {
