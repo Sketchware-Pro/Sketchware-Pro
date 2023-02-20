@@ -2576,7 +2576,7 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_customblocks_subtitle">See used custom blocks</string>
     <string name="design_drawer_menu_title_logcat_reader">Logcat Reader</string>
     <string name="design_drawer_menu_subtitle_logcat_reader">Read logs from enabled projects</string>
-    <string name="design_drawer_menu_title_replace_project">Replace Project</string>
+    <string name="design_drawer_menu_title_replace_project">Refactor Project</string>
     <string name="design_drawer_menu_subtitle_replace_project">You will be able to find and replace on Whole Project</string>
     <string name="cancel">Cancel</string>
     <string name="copy">Copy</string>
