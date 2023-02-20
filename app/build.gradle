@@ -1,8 +1,12 @@
-plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "com.google.gms.google-services"
-    id "com.google.firebase.crashlytics"
+def secrets = System.getenv("GOOGLE_SERVICES_JSON")
+def analyticsEnabled = secrets != null
+
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+
+if (analyticsEnabled) {
+    apply plugin: "com.google.gms.google-services"
+    apply plugin: "com.google.firebase.crashlytics"
 }
 
 android {
@@ -143,9 +147,12 @@ dependencies {
 
     minApi26Implementation project(path: ":kotlinc")
 
-    implementation "com.github.topjohnwu.libsu:core:5.0.2"
+    implementation "com.github.topjohnwu.libsu:core:5.0.4"
 
-    //Analytics and Crashlytics
+    // Analytics and Crashlytics
+    if (analyticsEnabled) {
+        new File("$projectDir/google-services.json").text = secrets;
+    }
     implementation platform("com.google.firebase:firebase-bom:31.2.1")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
