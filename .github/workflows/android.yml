@@ -51,6 +51,7 @@ jobs:
         with:
           arguments: assembleMinApi26Debug
         env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
       - name: Upload debug APK
