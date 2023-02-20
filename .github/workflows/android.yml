@@ -47,11 +47,12 @@ jobs:
           distribution: temurin
 
       - name: Set environmental variables
+        shell: bash
         env:
           JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         if: ${{ env.JSON_CONTENT != '' }}
         run: |
-          echo "GOOGLE_SERVICES_JSON=$JSON_CONTENT" >> $GITHUB_ENV
+          printf 'GOOGLE_SERVICES_JSON=$JSON_CONTENT' >> $GITHUB_ENV
 
       - name: Build debug APK
         uses: gradle/gradle-build-action@v2
@@ -79,11 +80,12 @@ jobs:
           distribution: temurin
 
       - name: Set environmental variables
+        shell: bash
         env:
           JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         if: ${{ env.JSON_CONTENT != '' }}
         run: |
-          echo "GOOGLE_SERVICES_JSON=$JSON_CONTENT" >> $GITHUB_ENV
+          printf 'GOOGLE_SERVICES_JSON=$JSON_CONTENT' >> $GITHUB_ENV
 
       - name: Build debug APK
         uses: gradle/gradle-build-action@v2
