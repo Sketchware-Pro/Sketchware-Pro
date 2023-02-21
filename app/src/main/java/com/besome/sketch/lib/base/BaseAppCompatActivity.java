@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ import a.a.a._A;
 import a.a.a.lC;
 
 public class BaseAppCompatActivity extends AppCompatActivity {
+
+    public FirebaseAnalytics mAnalytics;
 
     public Tracker d;
     @Deprecated
@@ -102,6 +105,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         lottieDialog = new ZA(this);
         lC.a(getApplicationContext(), false);
         progressDialog = new _A(this);
+        mAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override
