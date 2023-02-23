@@ -59,7 +59,7 @@ public class Lx {
                 "implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n";
 
         if (metadata.g) {
-            content += "implementation 'androidx.appcompat:appcompat:1.4.0'\r\n" +
+            content += "implementation 'androidx.appcompat:appcompat:1.6.0'\r\n" +
                     "implementation 'com.google.android.material:material:1.6.1'\r\n";
         }
 
@@ -88,7 +88,7 @@ public class Lx {
         }
 
         if (metadata.isGsonUsed) {
-            content += "implementation 'com.google.code.gson:gson:2.8.7'\r\n";
+            content += "implementation 'com.google.code.gson:gson:2.9.0'\r\n";
         }
 
         if (metadata.isHttp3Used) {
