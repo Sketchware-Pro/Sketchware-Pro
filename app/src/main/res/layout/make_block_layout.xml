@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffffff"
@@ -95,7 +96,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="8dp"
-                    android:text="Select Moreblock type"
+                    android:text="Return: "
                     android:textColor="@color/color_primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -222,6 +223,7 @@
                             android:layout_height="48dp"
                             android:gravity="center"
                             android:padding="8dp"
+                            android:text="@string/add"
                             android:textColor="#ffffffff"
                             android:textSize="12sp"
                             android:theme="@style/AppTheme.Button.Blue" />
@@ -273,6 +275,7 @@
                         android:layout_height="48dp"
                         android:gravity="center"
                         android:padding="8dp"
+                        android:text="@string/add"
                         android:textColor="#ffffffff"
                         android:textSize="12sp"
                         android:theme="@style/AppTheme.Button.Blue" />
@@ -321,11 +324,12 @@
                             android:id="@+id/parameter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="parameter (without %)"
+                            android:hint="@string/parameter_without"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:lines="1"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            tools:ignore="HardcodedText" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -339,7 +343,7 @@
                             android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="name"
+                            android:hint="@string/name"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:lines="1"
@@ -352,7 +356,7 @@
                         android:layout_height="48dp"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="ADD"
+                        android:text="@string/add"
                         android:textColor="#ffffffff"
                         android:textSize="12sp"
                         android:theme="@style/AppTheme.Button.Blue" />

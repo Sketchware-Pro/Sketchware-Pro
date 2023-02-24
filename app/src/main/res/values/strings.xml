@@ -2582,4 +2582,7 @@ Please check the URL again."</string>
     <string name="paste">Paste</string>
     <string name="saveToProject" translatable="false">Project</string>
     <string name="selectAll">Select All</string>
+    <string name="add">ADD</string>
+    <string name="name">name</string>
+    <string name="parameter_without">parameter (without %)</string>
 </resources>
