@@ -35,8 +35,8 @@ public class Helper {
     };
     public static Type TYPE_MAP_LIST = new TypeToken<ArrayList<HashMap<String, Object>>>() {
     }.getType();
-    public static Type TYPE_STRING = new TypeToken<ArrayList<String>>() {
-    }.getType();
+    public static final TypeToken<ArrayList<String>> TYPE_STRING = new TypeToken<>() {
+    };
     public static final TypeToken<HashMap<String, String>> TYPE_STRING_MAP = new TypeToken<>() {
     };
 
