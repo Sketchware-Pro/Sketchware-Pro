@@ -31,15 +31,14 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 
 public class Helper {
-
-    public static Type TYPE_MAP = new TypeToken<HashMap<String, Object>>() {
-    }.getType();
+    public static final TypeToken<HashMap<String, Object>> TYPE_MAP = new TypeToken<>() {
+    };
     public static Type TYPE_MAP_LIST = new TypeToken<ArrayList<HashMap<String, Object>>>() {
     }.getType();
     public static Type TYPE_STRING = new TypeToken<ArrayList<String>>() {
     }.getType();
-    public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {
-    }.getType();
+    public static final TypeToken<HashMap<String, String>> TYPE_STRING_MAP = new TypeToken<>() {
+    };
 
     private Helper() {
     }
