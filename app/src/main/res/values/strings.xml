@@ -1162,7 +1162,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="component_message_component_block_added">New blocks have been added in the Logic Editor</string>
     <string name="component_message_no_components">No components to display</string>
     <string name="component_title_add_component">Add Component</string>
-    <string name="default_web_client_id">539401594864-chmbirvfd4hlokmkmjt1k5g24vspe10m.apps.googleusercontent.com</string>
     <string name="desc_expired_date">Paid service : Until %s</string>
     <string name="desc_purchase_1month">"You'll have access to all the premium features. Best deal for short term users."</string>
     <string name="desc_purchase_1year">This plan saves you %s in comparison to the monthly plan. Grab this deal while it lasts.</string>
@@ -1438,11 +1437,6 @@ Do you want to continue?"</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
     <string name="firebase_database_url">https://dependable-flag-825.firebaseio.com</string>
     <string name="ga_trackingId">UA-80718117-1</string>
-    <string name="gcm_defaultSenderId">539401594864</string>
-    <string name="google_api_key">AIzaSyBv696FDTPStkyYTGrW26Hb209wM2d6h_Q</string>
-    <string name="google_app_id">1:539401594864:android:19f04706c42794de</string>
-    <string name="google_crash_reporting_api_key">AIzaSyBv696FDTPStkyYTGrW26Hb209wM2d6h_Q</string>
-    <string name="google_storage_bucket">dependable-flag-825.appspot.com</string>
     <string name="ideas_url">https://ideas.sketchware.io/</string>
     <string name="import_project_desc_download_complete">Download for %s completed.</string>
     <string name="import_project_desc_download_complete_is_not_root">Download for %s completed. Refresh Project list in the project tab and check the downloaded project.</string>
@@ -1812,7 +1806,6 @@ Do you want to continue?"</string>
     <string name="program_information_title_share_with_friends">Share with Friends</string>
     <string name="program_information_title_suggest_ideas">Suggest Ideas</string>
     <string name="program_information_title_system_information">System Information</string>
-    <string name="project_id">dependable-flag-825</string>
     <string name="promotion_checkin_button_check_in">CHECK IN</string>
     <string name="promotion_checkin_button_redeem_coupon">REDEEM COUPON</string>
     <string name="promotion_checkin_description_checkin_rule">Check in every day to win a free discount coupon!</string>
