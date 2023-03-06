@@ -40,30 +40,30 @@ public class JarBuilder {
 
     private static void add(String parentPath, File source, JarOutputStream target) throws IOException {
         var name = source.getPath().substring(parentPath.length() + 1);
-        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(source))) {
-            if (source.isDirectory()) {
-                if (!name.isEmpty()) {
-                    if (!name.endsWith("/")) name += "/";
-                    
-                    // Add the Entry
-                    var entry = new JarEntry(name);
+        
+        if (source.isDirectory()) {
+            if (!name.isEmpty()) {
+                if (!name.endsWith("/")) name += "/";
 
-                    entry.setTime(source.lastModified());
-                    target.putNextEntry(entry);
-                    target.closeEntry();
-                }
+                // Add the Entry
+                var entry = new JarEntry(name);
 
-                for (var nestedFile : source.listFiles()) {
-                    add(parentPath, nestedFile, target);
-                }
-
-                return;
+                entry.setTime(source.lastModified());
+                target.putNextEntry(entry);
+                target.closeEntry();
             }
 
-            var entry = new JarEntry(name);
+            for (var nestedFile : source.listFiles()) {
+                add(parentPath, nestedFile, target);
+            }
 
-            entry.setTime(source.lastModified());
-            target.putNextEntry(entry);
+            return;
+        }
+
+        var entry = new JarEntry(name);
+        entry.setTime(source.lastModified());
+        target.putNextEntry(entry);
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(source))) {
             var buffer = new byte[1024];
 
             while (true) {
@@ -71,10 +71,10 @@ public class JarBuilder {
                 if (count == -1) break;
                 target.write(buffer, 0, count);
             }
-
-            target.closeEntry();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        target.closeEntry();
     }
 }
