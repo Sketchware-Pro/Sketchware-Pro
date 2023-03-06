@@ -21,7 +21,7 @@ import mod.hey.studios.util.Helper;
 public class AppCompatInjection {
 
     // maps sc_id to (activity filename mapped to (list of injections))
-    private static final Map<String, Map<String, List<Map<String, Object>>>> INJECTIONS = new HashMap<>();
+    private static final Map<String, Map<String, List<? extends Map<String, Object>>>> INJECTIONS = new HashMap<>();
 
     private final String sc_id;
     private final ProjectFileBean projectFile;
@@ -42,7 +42,7 @@ public class AppCompatInjection {
             if (!INJECTIONS.containsKey(sc_id)) {
                 INJECTIONS.put(sc_id, new HashMap<>());
             }
-            Map<String, List<Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
+            Map<String, List<? extends Map<String, Object>>> projectInjections = INJECTIONS.get(sc_id);
             if (!Objects.requireNonNull(projectInjections).containsKey(projectFile.fileName)) {
                 projectInjections.put(projectFile.fileName, readAppCompatInjections(sc_id, projectFile.fileName));
             }
@@ -56,7 +56,7 @@ public class AppCompatInjection {
         }
     }
 
-    private static List<Map<String, Object>> readAppCompatInjections(String sc_id, String activityFilename) {
+    private static List<? extends Map<String, Object>> readAppCompatInjections(String sc_id, String activityFilename) {
         String toParse;
 
         File injectionFile = new File(Environment.getExternalStorageDirectory(),
@@ -72,8 +72,8 @@ public class AppCompatInjection {
     }
 
     public static void refreshInjections() {
-        for (Map.Entry<String, Map<String, List<Map<String, Object>>>> project : INJECTIONS.entrySet()) {
-            Map<String, List<Map<String, Object>>> projectInjections = project.getValue();
+        for (Map.Entry<String, Map<String, List<? extends Map<String, Object>>>> project : INJECTIONS.entrySet()) {
+            Map<String, List<? extends Map<String, Object>>> projectInjections = project.getValue();
 
             List<String> activityFilenames = new LinkedList<>();
             for (Iterator<String> iterator = Objects.requireNonNull(projectInjections).keySet().iterator(); iterator.hasNext(); iterator.remove()) {
