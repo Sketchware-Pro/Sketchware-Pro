@@ -1,20 +1,15 @@
 package mod.RockAriful.AndroXStudio;
 
 import androidx.core.content.FileProvider;
-
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
-
 import org.spongycastle.jce.provider.BouncyCastleProvider;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import a.a.a.Dp;
 import a.a.a.KB;
 import a.a.a.MA;
@@ -131,28 +126,27 @@ public class ExportToGitHub {
 
             new KB().a(exportedSourcesZipPath, toCompress, toExclude);
             project_metadata.e();
-            runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
+          //  runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
         } catch (Exception e) {
             runOnUiThread(() -> {
                 Log.e("ProjectExporter", "While trying to export project's sources: "
                         + e.getMessage(), e);
+                        /*
                 SketchwareUtil.showAnErrorOccurredDialog(this, Log.getStackTraceString(e));
                 layout_export_src.setVisibility(View.GONE);
                 loading_export_src.setVisibility(View.GONE);
                 btn_export_src.setVisibility(View.VISIBLE);
+                */
             });
         }
     }
     
     private void initializeOutputDirectories() {
-        signed_apk_postfix = File.separator + "sketchware" + File.separator + "signed_apk";
+        
         export_src_postfix = File.separator + "sketchware" + File.separator + ".github_src";
         /* /sdcard/sketchware/signed_apk */
-        String signed_apk_full_path = wq.s() + File.separator + "signed_apk";
         export_src_full_path = wq.s() + File.separator + ".github_src";
-
         /* Check if they exist, if not, create them */
-        file_utility.f(signed_apk_full_path);
         file_utility.f(export_src_full_path);
     }
     
