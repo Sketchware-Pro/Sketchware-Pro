@@ -1,5 +1,4 @@
-private Toolbar _toolbar;
-	private AppBarLayout _app_bar; mod.RockAriful.AndroXStudio;
+package mod.RockAriful.AndroXStudio;
 
 import android.Manifest;
 import android.animation.*;
