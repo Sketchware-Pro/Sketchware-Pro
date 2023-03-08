@@ -1,4 +1,4 @@
-package com.Androx.GiTHUB.Studio;
+package mod.RockAriful.AndroXStudio;
 
 import android.Manifest;
 import android.animation.*;
@@ -264,4 +264,4 @@ public class GithubConfigActivity extends AppCompatActivity {
 	public int getDisplayHeightPixels() {
 		return getResources().getDisplayMetrics().heightPixels;
 	}
-}
+}
