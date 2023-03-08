@@ -87,6 +87,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private EditText username;
 	private TextView textview6;
 	private EditText pass;
+
+        private String sc_id ="";
 	
 	private Intent Ctoken = new Intent();
 	
@@ -170,10 +172,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 					map.put("username", username.getText().toString());
 					map.put("token", pass.getText().toString());
 					JsonMAP.add(map);
-					FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), new Gson().toJson(JsonMAP));
+					FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", new Gson().toJson(JsonMAP));
 				}
 				else {
-					FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), "[]");
+					FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", "[]");
 				}
 			}
 		});
@@ -181,8 +183,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		setTitle("Github Settings");
-		if (FileUtil.isExistFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config")) && !FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config")).equals("[]")) {
-			JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config")), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
+                sc_id = getIntent().getStringExtra("sc_id");
+
+		if (FileUtil.isExistFile(FileUtil.getExternalStorageDir() +"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
+			JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
 			url.setText(JsonMAP.get((int)0).get("repository").toString());
 			setRefSpecs.setText(JsonMAP.get((int)0).get("RefSpecs").toString());
 			username.setText(JsonMAP.get((int)0).get("username").toString());
@@ -191,7 +195,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		}
 		else {
 			enable.setChecked(false);
-			FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), "[]");
+			FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", "[]");
 		}
 		_setBackground(create_token, 12, 2, "#E91E63", true);
 	}
