@@ -55,7 +55,7 @@ public class ExportToGitHub {
     
     public ExportToGitHub(Context  context, final String sc_id){
         mContext = context;
-        mContext.sc_id = sc_id;
+        sc_id = sc_id;
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(mContext, wq.d(sc_id), sc_metadata);
         initializeOutputDirectories();
