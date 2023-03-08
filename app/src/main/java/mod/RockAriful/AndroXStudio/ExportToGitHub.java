@@ -132,7 +132,7 @@ public class ExportToGitHub {
             
             String filePath = export_src_full_path + File.separator + export_src_filename;
             _UnZip(filePath,filePath.replace(".zip",""));
-            FileUtil.extractFileFromZip(filePath,filePath.replace(".zip","")+"Aaded");
+           
           // runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
         } catch (Exception e) {
             
