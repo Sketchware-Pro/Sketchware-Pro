@@ -108,8 +108,8 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         /* Add ProGuard Manager */
         menusLayout.addView(addDrawerItem(17, false,
                 R.drawable.connected_96, R.string.design_drawer_menu_proguard, R.string.design_drawer_menu_proguard_subtitle));
-       menusLayout.addView(addDrawerItem(23, false,
-                R.drawable.icon9_github, "Github Repository", "Push project to github"));         
+        menusLayout.addView(addDrawerItem(23, false,
+                R.drawable.icon9_github, R.string.design_drawer_menu_github, R.string.design_drawer_menu_github_subtitle));         
         /* Add StringFog Manager */
         /* INCLUDES SECTION SEPARATOR */
         menusLayout.addView(addDrawerItem(18, true,
@@ -204,7 +204,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         designActivity.toLogReader();
                         return;
                     case 23:
-                        designActivity.GithubConfig();
+                        designActivity.toGithubConfig();
                         return;
                             
                     case 2:
