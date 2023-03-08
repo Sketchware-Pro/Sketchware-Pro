@@ -2576,6 +2576,10 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_customblocks_subtitle">See used custom blocks</string>
     <string name="design_drawer_menu_title_logcat_reader">Logcat Reader</string>
     <string name="design_drawer_menu_subtitle_logcat_reader">Read logs from enabled projects</string>
+
+    <string name="design_drawer_menu_github">Github Manager</string>
+    <string name="design_drawer_menu_github_subtitle">Push project to github repository </string>
+
     <string name="cancel">Cancel</string>
     <string name="copy">Copy</string>
     <string name="cut">Cut</string>
