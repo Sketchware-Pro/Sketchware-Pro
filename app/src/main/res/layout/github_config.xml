@@ -70,7 +70,7 @@
 						android:id="@+id/imageview2"
 						android:layout_width="30dp"
 						android:layout_height="30dp"
-						android:src="@drawable/app_logo"
+						android:src="@drawable/icon_manage_github"
 						android:scaleType="fitCenter" />
 					<TextView
 						android:id="@+id/textview13"
