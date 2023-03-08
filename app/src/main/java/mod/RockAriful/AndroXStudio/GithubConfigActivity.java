@@ -46,21 +46,19 @@ import com.github.angads25.filepicker.*;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.googlecode.*;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.*;
-import org.eclipse.jgit.*;
+
 import org.json.*;
-import org.slf4j.*;
 
 public class GithubConfigActivity extends AppCompatActivity {
 	
-	private Toolbar _toolbar;
-	private AppBarLayout _app_bar;
+	
 	private CoordinatorLayout _coordinator;
 	private HashMap<String, Object> map = new HashMap<>();
 	
@@ -115,7 +113,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 	
 	private void initialize(Bundle _savedInstanceState) {
-		_app_bar = findViewById(R.id._app_bar);
+		Toolbar _toolbar = findViewById(R.id.toolbar);
+        
 		_coordinator = findViewById(R.id._coordinator);
 		_toolbar = findViewById(R.id._toolbar);
 		setSupportActionBar(_toolbar);
