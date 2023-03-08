@@ -1,4 +1,4 @@
-package com.Androx.GiTHUB.Studio;
+package mod.RockAriful.AndroXStudio;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
