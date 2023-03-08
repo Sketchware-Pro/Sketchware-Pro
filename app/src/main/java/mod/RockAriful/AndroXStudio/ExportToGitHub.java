@@ -5,6 +5,7 @@ import androidx.core.content.FileProvider;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
+import mod.SketchwareUtil;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -131,8 +132,9 @@ public class ExportToGitHub {
             project_metadata.e();
             
             String filePath = export_src_full_path + File.separator + export_src_filename;
-            _UnZip(filePath,filePath.replace(".zip",""));
-           
+            _UnZip(exportedSourcesZipPath,exportedSourcesZipPath.replace(".zip",""));
+            SketchwareUtil.toast(filePath + ": export to : " +exportedSourcesZipPath);
+            FileUtil.deleteFile(exportedSourcesZipPath);
           // runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
         } catch (Exception e) {
             
