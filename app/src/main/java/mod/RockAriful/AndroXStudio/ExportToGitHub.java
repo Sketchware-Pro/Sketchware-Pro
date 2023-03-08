@@ -126,18 +126,9 @@ public class ExportToGitHub {
 
             new KB().a(exportedSourcesZipPath, toCompress, toExclude);
             project_metadata.e();
-          //  runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
+          // runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
         } catch (Exception e) {
-            runOnUiThread(() -> {
-                Log.e("ProjectExporter", "While trying to export project's sources: "
-                        + e.getMessage(), e);
-                        /*
-                SketchwareUtil.showAnErrorOccurredDialog(this, Log.getStackTraceString(e));
-                layout_export_src.setVisibility(View.GONE);
-                loading_export_src.setVisibility(View.GONE);
-                btn_export_src.setVisibility(View.VISIBLE);
-                */
-            });
+            
         }
     }
     
