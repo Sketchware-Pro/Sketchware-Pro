@@ -93,6 +93,7 @@ import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
+import mod.RockAriful.AndroXStudio.GithubConfigActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.build.BuildSettingsDialog;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
@@ -413,8 +414,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
                             
                         case 6:
-                            new ExportToGitHub(this,sc_id);
-                            break;
+                            new Thread(() -> {
+                                new ExportToGitHub(this,sc_id);
+                                runOnUiThread(() ->
+                                        SketchwareUtil.toast("Repository Generated!"));
+                            }).start();
+                            eak;
 
                         default:
                             return false;
@@ -895,6 +900,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toSoundManager() {
         launchActivity(ManageSoundActivity.class, REQUEST_CODE_SOUND_MANAGER);
+    }
+    
+        /**
+     * Opens {@link GithubConfigActivity}.
+     */
+    void GithubConfig() {
+        launchActivity(GithubConfigActivity.class, REQUEST_CODE_SOUND_MANAGER);
     }
 
     /**
