@@ -48,14 +48,14 @@ public class ExportToGitHub {
     private Context mContext;
     private String export_src_full_path;
     private String export_src_filename;
-    private String sc_id;
+    private String sc_id = "";
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
     
     
     public ExportToGitHub(Context  context, final String sc_id){
         mContext = context;
-        sc_id = sc_id;
+        mContext.sc_id = sc_id;
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(mContext, wq.d(sc_id), sc_metadata);
         initializeOutputDirectories();
