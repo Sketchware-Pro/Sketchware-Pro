@@ -44,7 +44,7 @@ public class ExportToGitHub {
     
     private String export_src_postfix;
     private final oB file_utility = new oB();
-    
+    private Context mContext;
     private String export_src_full_path;
     private String export_src_filename;
     private String sc_id;
@@ -53,9 +53,9 @@ public class ExportToGitHub {
     
     
     public ExportToGitHub(Context  context, final String sc_id){
-        
+        mContext = context;
         sc_metadata = lC.b(sc_id);
-        project_metadata = new yq(getApplicationContext(), wq.d(sc_id), sc_metadata);
+        project_metadata = new yq(mContext, wq.d(sc_id), sc_metadata);
         initializeOutputDirectories();
     }
     
@@ -76,7 +76,7 @@ public class ExportToGitHub {
             iCVar.i();
 
             /* Extract project type template */
-            project_metadata.a(getApplicationContext(), wq.e(xq.a(sc_id) ? "600" : sc_id));
+            project_metadata.a(mContext, wq.e(xq.a(sc_id) ? "600" : sc_id));
 
             /* Start generating project files */
             project_metadata.b(hCVar, eCVar, iCVar, true);
