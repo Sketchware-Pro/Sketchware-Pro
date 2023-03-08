@@ -905,7 +905,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         /**
      * Opens {@link GithubConfigActivity}.
      */
-    void GithubConfig() {
+    void toGithubConfig() {
         launchActivity(GithubConfigActivity.class, REQUEST_CODE_SOUND_MANAGER);
     }
 
