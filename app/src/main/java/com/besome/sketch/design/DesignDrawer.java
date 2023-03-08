@@ -203,7 +203,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                     case 22:
                         designActivity.toLogReader();
                         return;
-                    case 22:
+                    case 23:
                         designActivity.GithubConfig();
                         return;
                             
