@@ -182,9 +182,14 @@ public class GithubConfigActivity extends AppCompatActivity {
 					map.put("token", pass.getText().toString());
 					JsonMAP.add(map);
 					FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", new Gson().toJson(JsonMAP));
+
+					push_data.setVisibility(View.VISIBLE);
+					create_token.setVisibility(View.GONE);
 				}
 				else {
 					FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", "[]");
+					push_data.setVisibility(View.GONE);
+					create_token.setVisibility(View.VISIBLE);
 				}
 			}
 		});
