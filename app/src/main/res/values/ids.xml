@@ -1762,4 +1762,12 @@
     <item type="id" name="show_edited_code" />
     <item type="id" name="spinner_edited" />
     <item type="id" name="restore_all" />
+    
+     <item type="id" name="id_cv" />
+    <item type="id" name="title_git_src" />
+    <item type="id" name="btn_git_apk" />
+    <item type="id" name="layout_git_path" />
+    <item type="id" name="title_git_path" />
+    <item type="id" name="tv_git_path" />
+    <item type="id" name="loading_git_apk" />
 </resources>
