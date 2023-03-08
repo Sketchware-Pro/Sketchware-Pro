@@ -71,9 +71,9 @@
 					android:orientation="horizontal">
 					<ImageView
 						android:id="@+id/imageview2"
-						android:layout_width="25dp"
-						android:layout_height="25dp"
-						android:src="@drawable/ic_dev_email_icon"
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/icon9_github"
 						android:scaleType="fitCenter" />
 					<TextView
 						android:id="@+id/textview13"
