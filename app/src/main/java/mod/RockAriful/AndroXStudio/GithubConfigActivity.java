@@ -30,6 +30,10 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.annotation.*;
+
+import com.sketchware.remod.R;
+import mod.SketchwareUtil; 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
