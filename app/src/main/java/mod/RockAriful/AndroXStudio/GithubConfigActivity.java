@@ -118,7 +118,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		Toolbar toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
     	        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-	        getSupportActionBar().setTitle(Helper.getResString("Github Manager"));
+	        getSupportActionBar().setTitle("Github Manager");
 	        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	        getSupportActionBar().setDisplayShowTitleEnabled(true);
 	        
