@@ -55,6 +55,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 import com.topjohnwu.superuser.Shell;
 
+import mod.RockAriful.AndroXStudio.*;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -373,6 +375,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
+                
+                menu.add(Menu.NONE, 6, Menu.NONE, "Push on Github");
+                
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
                 }
@@ -405,6 +410,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         case 5:
                             showCurrentActivitySrcCode();
+                            break;
+                            
+                        case 6:
+                            new ExportToGitHub(this,sc_id);
                             break;
 
                         default:
