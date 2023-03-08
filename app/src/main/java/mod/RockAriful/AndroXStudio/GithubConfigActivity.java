@@ -71,6 +71,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private LinearLayout linear13;
 	private LinearLayout all_item_layout;
 	private LinearLayout linear14;
+        private TextView push_data;
 	private TextView create_token;
 	private TextView textview1;
 	private Switch enable;
@@ -134,6 +135,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		linear13 = findViewById(R.id.linear13);
 		all_item_layout = findViewById(R.id.all_item_layout);
 		linear14 = findViewById(R.id.linear14);
+ 		push_data = findViewById(R.id.push_data);
 		create_token = findViewById(R.id.create_token);
 		textview1 = findViewById(R.id.textview1);
 		enable = findViewById(R.id.enable);
@@ -151,7 +153,14 @@ public class GithubConfigActivity extends AppCompatActivity {
 		username = findViewById(R.id.username);
 		textview6 = findViewById(R.id.textview6);
 		pass = findViewById(R.id.pass);
-		
+
+		push_data.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				
+			}
+		});
+
 		create_token.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
@@ -192,12 +201,17 @@ public class GithubConfigActivity extends AppCompatActivity {
 			username.setText(JsonMAP.get((int)0).get("username").toString());
 			pass.setText(JsonMAP.get((int)0).get("token").toString());
 			enable.setChecked(true);
+			push_data.setVisibility(View.VISIBLE);
+			create_token.setVisibility(View.GONE);
 		}
 		else {
 			enable.setChecked(false);
+			push_data.setVisibility(View.GONE);
+			create_token.setVisibility(View.VISIBLE);
 			FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", "[]");
 		}
 		_setBackground(create_token, 12, 2, "#E91E63", true);
+		_setBackground(push_data, 12, 2, "#4caf50", true);
 	}
 	
 	public void _setBackground(final View _view, final double _radius, final double _shadow, final String _color, final boolean _ripple) {
@@ -220,55 +234,4 @@ public class GithubConfigActivity extends AppCompatActivity {
 		}
 	}
 	
-	
-	@Deprecated
-	public void showMessage(String _s) {
-		Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();
-	}
-	
-	@Deprecated
-	public int getLocationX(View _v) {
-		int _location[] = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[0];
-	}
-	
-	@Deprecated
-	public int getLocationY(View _v) {
-		int _location[] = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[1];
-	}
-	
-	@Deprecated
-	public int getRandom(int _min, int _max) {
-		Random random = new Random();
-		return random.nextInt(_max - _min + 1) + _min;
-	}
-	
-	@Deprecated
-	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<Double>();
-		SparseBooleanArray _arr = _list.getCheckedItemPositions();
-		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
-			if (_arr.valueAt(_iIdx))
-			_result.add((double)_arr.keyAt(_iIdx));
-		}
-		return _result;
-	}
-	
-	@Deprecated
-	public float getDip(int _input) {
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());
-	}
-	
-	@Deprecated
-	public int getDisplayWidthPixels() {
-		return getResources().getDisplayMetrics().widthPixels;
-	}
-	
-	@Deprecated
-	public int getDisplayHeightPixels() {
-		return getResources().getDisplayMetrics().heightPixels;
-	}
 }
