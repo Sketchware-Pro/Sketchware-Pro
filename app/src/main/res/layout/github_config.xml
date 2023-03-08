@@ -1,0 +1,229 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/_coordinator"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/_app_bar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:theme="@style/AppTheme.AppBarOverlay">
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			app:popupTheme="@style/AppTheme.PopupOverlay" />
+	</com.google.android.material.appbar.AppBarLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		<ScrollView
+			android:id="@+id/vscroll1"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:fillViewport="true"
+			android:overScrollMode="never">
+			<LinearLayout
+				android:id="@+id/linear1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="8dp"
+				android:background="#FFFFFF"
+				android:orientation="vertical"
+				android:layout_gravity="center_horizontal|center_vertical">
+				<LinearLayout
+					android:id="@+id/linear2"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:padding="8dp"
+					android:gravity="center_vertical"
+					android:orientation="horizontal">
+					<TextView
+						android:id="@+id/textview1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:padding="8dp"
+						android:text="Enable"
+						android:textSize="16sp"
+						android:textColor="#FF5252"
+						android:layout_weight="1" />
+					<Switch
+						android:id="@+id/enable"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:padding="8dp"
+						android:textSize="12sp"
+						android:textColor="#000000" />
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/linear13"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:padding="8dp"
+					android:orientation="horizontal">
+					<ImageView
+						android:id="@+id/imageview2"
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/app_logo"
+						android:scaleType="fitCenter" />
+					<TextView
+						android:id="@+id/textview13"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingLeft="10dp"
+						android:paddingRight="8dp"
+						android:paddingBottom="8dp"
+						android:text="Github push can be operated. You must enter repository url, branch reference, username and token to operate this function."
+						android:textSize="14sp"
+						android:textColor="#424242" />
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/all_item_layout"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5dp"
+					android:layout_marginTop="25dp"
+					android:layout_marginRight="5dp"
+					android:padding="1dp"
+					android:orientation="vertical">
+					<LinearLayout
+						android:id="@+id/is_url"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingTop="8dp"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/textview7"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="4dp"
+							android:text="Repository URL"
+							android:textSize="14sp"
+							android:textStyle="bold"
+							android:textColor="#616161" />
+						<EditText
+							android:id="@+id/url"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:textSize="16sp"
+							android:textColor="#424242"
+							android:textColorHint="#607D8B"
+							android:inputType="textNoSuggestions"
+							android:background="@drawable/bg_round_light_grey" />
+					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/linear12"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:orientation="horizontal">
+						<TextView
+							android:id="@+id/textview11"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="4dp"
+							android:text="setRefSpecs"
+							android:textSize="14sp"
+							android:textStyle="bold"
+							android:textColor="#757575" />
+						<TextView
+							android:id="@+id/important_btn"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="4dp"
+							android:text="* Important"
+							android:textSize="11sp"
+							android:textStyle="bold"
+							android:textColor="#F44336" />
+					</LinearLayout>
+					<EditText
+						android:id="@+id/setRefSpecs"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:padding="8dp"
+						android:text="refs/heads/master:refs/heads/main"
+						android:textSize="14sp"
+						android:textColor="#424242"
+						android:hint="refs/heads/main:refs/heads/main"
+						android:textColorHint="#607D8B"
+						android:inputType="textNoSuggestions"
+						android:background="@drawable/bg_round_light_grey" />
+					<LinearLayout
+						android:id="@+id/credential_layout"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="8dp"
+						android:paddingBottom="8dp"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/textview5"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="4dp"
+							android:text="Username"
+							android:textSize="14sp"
+							android:textStyle="bold"
+							android:textColor="#757575" />
+						<EditText
+							android:id="@+id/username"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:textSize="14sp"
+							android:textColor="#424242"
+							android:textColorHint="#607D8B"
+							android:inputType="textNoSuggestions"
+							android:background="@drawable/bg_round_light_grey" />
+						<TextView
+							android:id="@+id/textview6"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="4dp"
+							android:text="Access Token"
+							android:textSize="14sp"
+							android:textStyle="bold"
+							android:textColor="#757575" />
+						<EditText
+							android:id="@+id/pass"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:textSize="14sp"
+							android:textColor="#424242"
+							android:textColorHint="#607D8B"
+							android:background="@drawable/bg_round_light_grey" />
+					</LinearLayout>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/linear14"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:padding="8dp"
+					android:orientation="vertical"
+					android:layout_weight="1" />
+				<TextView
+					android:id="@+id/create_token"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_margin="10dp"
+					android:paddingLeft="8dp"
+					android:paddingTop="10dp"
+					android:paddingRight="8dp"
+					android:paddingBottom="10dp"
+					android:background="#E91E63"
+					android:gravity="center_horizontal|center_vertical"
+					android:text="Create Access token"
+					android:textSize="16sp"
+					android:textStyle="bold"
+					android:textColor="#FFFFFF" />
+			</LinearLayout>
+		</ScrollView>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
