@@ -377,7 +377,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 
-                menu.add(Menu.NONE, 6, Menu.NONE, "Push on Github");
+                if (FileUtil.isExistFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
+                    menu.add(Menu.NONE, 6, Menu.NONE, "Push on Github");
+                }
                 
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
