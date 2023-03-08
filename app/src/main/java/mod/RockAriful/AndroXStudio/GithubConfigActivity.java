@@ -116,7 +116,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		Toolbar _toolbar = findViewById(R.id.toolbar);
         
 		_coordinator = findViewById(R.id._coordinator);
-		_toolbar = findViewById(R.id._toolbar);
+		
 		setSupportActionBar(_toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
