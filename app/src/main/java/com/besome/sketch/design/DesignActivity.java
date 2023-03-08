@@ -419,7 +419,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                 runOnUiThread(() ->
                                         SketchwareUtil.toast("Repository Generated!"));
                             }).start();
-                            eak;
+                            break;
 
                         default:
                             return false;
