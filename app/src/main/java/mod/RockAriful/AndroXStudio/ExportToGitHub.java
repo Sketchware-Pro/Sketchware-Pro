@@ -48,7 +48,7 @@ public class ExportToGitHub {
     private Context mContext;
     private String export_src_full_path;
     private String export_src_filename;
-    private String sc_id = "";
+    private String sc_id ="";
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
     
@@ -59,7 +59,6 @@ public class ExportToGitHub {
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(mContext, wq.d(sc_id), sc_metadata);
         initializeOutputDirectories();
-        exportSrc();
     }
     
     
@@ -116,7 +115,7 @@ public class ExportToGitHub {
             toCompress.add(project_metadata.projectMyscPath);
             String exportedFilename = yB.c(sc_metadata, "my_ws_name") + ".zip";
 
-            String exportedSourcesZipPath = wq.s() + File.separator + "export_src" + File.separator + exportedFilename;
+            String exportedSourcesZipPath = wq.s() + File.separator + ".github_src" + File.separator + exportedFilename;
             if (file_utility.e(exportedSourcesZipPath)) {
                 file_utility.c(exportedSourcesZipPath);
             }
@@ -129,6 +128,9 @@ public class ExportToGitHub {
 
             new KB().a(exportedSourcesZipPath, toCompress, toExclude);
             project_metadata.e();
+            
+            String filePath = export_src_full_path + File.separator + export_src_filename;
+            _UnZip(filePath,filePath.replace(".zip",""));
           // runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
         } catch (Exception e) {
             
@@ -143,5 +145,57 @@ public class ExportToGitHub {
         /* Check if they exist, if not, create them */
         file_utility.f(export_src_full_path);
     }
+    
+    public void _UnZip(final String _fileZip, final String _destDir) {
+		try
+		{
+			java.io.File outdir = new java.io.File(_destDir);
+			java.util.zip.ZipInputStream zin = new java.util.zip.ZipInputStream(new java.io.FileInputStream(_fileZip));
+			java.util.zip.ZipEntry entry;
+			String name, dir;
+			while ((entry = zin.getNextEntry()) != null)
+			{
+				name = entry.getName();
+				if(entry.isDirectory())
+				{
+					mkdirs(outdir, name);
+					continue;
+				}
+				
+				dir = dirpart(name);
+				if(dir != null)
+				mkdirs(outdir, dir);
+				
+				extractFile(zin, outdir, name);
+			}
+			zin.close();
+		}
+		catch (java.io.IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	private static void extractFile(java.util.zip.ZipInputStream in, java.io.File outdir, String name) throws java.io.IOException
+	{
+		byte[] buffer = new byte[4096];
+		java.io.BufferedOutputStream out = new java.io.BufferedOutputStream(new java.io.FileOutputStream(new java.io.File(outdir, name)));
+		int count = -1;
+		while ((count = in.read(buffer)) != -1)
+		out.write(buffer, 0, count);
+		out.close();
+	}
+	
+	private static void mkdirs(java.io.File outdir, String path)
+	{
+		java.io.File d = new java.io.File(outdir, path);
+		if(!d.exists())
+		d.mkdirs();
+	}
+	
+	private static String dirpart(String name)
+	{
+		int s = name.lastIndexOf(java.io.File.separatorChar);
+		return s == -1 ? null : name.substring(0, s);
+	}
     
 }
