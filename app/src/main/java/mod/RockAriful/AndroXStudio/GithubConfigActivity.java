@@ -115,14 +115,16 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 	
 	private void initialize(Bundle _savedInstanceState) {
-		Toolbar _toolbar = findViewById(R.id.toolbar);
-        
+		Toolbar toolbar = findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+    	        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+	        getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_library));
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	        getSupportActionBar().setDisplayShowTitleEnabled(true);
+	        
 		_coordinator = findViewById(R.id._coordinator);
 		
-		setSupportActionBar(_toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
-		_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _v) {
 				onBackPressed();
