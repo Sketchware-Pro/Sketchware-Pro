@@ -1,4 +1,5 @@
-package mod.RockAriful.AndroXStudio;
+private Toolbar _toolbar;
+	private AppBarLayout _app_bar; mod.RockAriful.AndroXStudio;
 
 import android.Manifest;
 import android.animation.*;
@@ -58,7 +59,8 @@ import org.json.*;
 
 public class GithubConfigActivity extends AppCompatActivity {
 	
-	
+	private Toolbar _toolbar;
+	private AppBarLayout _app_bar;
 	private CoordinatorLayout _coordinator;
 	private HashMap<String, Object> map = new HashMap<>();
 	
@@ -115,16 +117,13 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 	
 	private void initialize(Bundle _savedInstanceState) {
-		Toolbar toolbar = findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
-    	        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-	        getSupportActionBar().setTitle("Github Manager");
-	        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	        getSupportActionBar().setDisplayShowTitleEnabled(true);
-	        
+		_app_bar = findViewById(R.id._app_bar);
 		_coordinator = findViewById(R.id._coordinator);
-		
-		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		_toolbar = findViewById(R.id._toolbar);
+		setSupportActionBar(_toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _v) {
 				onBackPressed();
