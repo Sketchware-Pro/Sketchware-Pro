@@ -191,7 +191,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 	
 	private void initializeLogic() {
-		setTitle("Github Settings");
+		setTitle("Github Manager");
                 sc_id = getIntent().getStringExtra("sc_id");
 
 		if (FileUtil.isExistFile(FileUtil.getExternalStorageDir() +"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
