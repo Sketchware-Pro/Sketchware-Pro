@@ -54,7 +54,7 @@ import java.util.HashMap;
 import java.util.regex.*;
 
 import org.json.*;
-import org.slf4j.*;
+
 import org.eclipse.jgit.*;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.*;
