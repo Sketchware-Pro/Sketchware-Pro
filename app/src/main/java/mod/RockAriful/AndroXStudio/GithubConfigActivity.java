@@ -444,11 +444,11 @@ public class GithubConfigActivity extends AppCompatActivity {
            
 	        new Thread(() -> {                 
                isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id).pushREPO(filename.getText().toString());
-               runOnUiThread(() -> 
-               _Uber_progress(false)
-               progressbar1.setVisibility(View.GONE)
-		 	  push_btn_title.setVisibility(View.VISIBLE)
-               );
+               runOnUiThread(() ->{
+               _Uber_progress(false);
+               progressbar1.setVisibility(View.GONE);
+	       push_btn_title.setVisibility(View.VISIBLE);
+               });
             }).start();
 
         });
