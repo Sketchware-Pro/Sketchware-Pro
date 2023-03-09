@@ -106,6 +106,8 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.1.0"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
 
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:4.6.0.201612231935-r'
+
     implementation "androidx.annotation:annotation:1.5.0"
     implementation "com.android.tools:annotations:30.4.1"
     implementation "com.google.guava:guava:31.1-jre"
@@ -156,7 +158,6 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:31.2.1")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
-    implementation 'org.eclipse.jgit:org.eclipse.jgit:4.6.0.201612231935-r'
-
+    
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
