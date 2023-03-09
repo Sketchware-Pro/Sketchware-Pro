@@ -382,7 +382,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 
                 if (FileUtil.isExistFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
-                    menu.add(Menu.NONE, 6, Menu.NONE, "Push on Github");
+                    menu.add(Menu.NONE, 6, Menu.NONE, "Push on GitHub");
                 }
                 
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
@@ -1470,7 +1470,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             new Thread(() -> {                 
                isSucces = new PushToGitHub(DesignActivity.this,sc_id).pushREPO(filename.getText().toString());
                runOnUiThread(() -> 
-                _Uber_progress(false);
+                _Uber_progress(false)
                );
             }).start();
 
