@@ -206,22 +206,22 @@ public class GithubConfigActivity extends AppCompatActivity {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
 					if (url.getText().toString().trim().equals("")) {
-						SketchwareUtil.toast("Please enter repository URL")
+						SketchwareUtil.toast("Please enter repository URL");
 						enable.setChecked(false);
 					}
 					else {
 						if (setRefSpecs.getText().toString().trim().equals("")) {
-							SketchwareUtil.toast("Please enter RefSpecs/ Branch Reference")
+							SketchwareUtil.toast("Please enter RefSpecs/ Branch Reference");
 							enable.setChecked(false);
 						}
 						else {
 							if (username.getText().toString().trim().equals("")) {
-								SketchwareUtil.toast("Please enter Github username")
+								SketchwareUtil.toast("Please enter Github username");
 								enable.setChecked(false);
 							}
 							else {
 								if (pass.getText().toString().trim().equals("")) {
-									SketchwareUtil.toast("Please enter Github access token")
+									SketchwareUtil.toast("Please enter Github access token");
 									enable.setChecked(false);
 								}
 								else {
@@ -302,7 +302,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	 	        git.commit().setMessage(_setMessage).call();
 	 	        //Push git 
 	 	        PushCommand push = git.push();
-                        push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
+                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
   		        push.setRemote(_RemoteURL);
  	 	        push.setRefSpecs(new RefSpec(_setRefSpecs));
  		        push.setForce(true);
