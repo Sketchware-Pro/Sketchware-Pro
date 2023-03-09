@@ -55,7 +55,7 @@ public class ExportForGitHub {
     private static yq project_metadata = null;
     
     
-    public ExportToGitHub(Context  context, final String _sc_id){
+    public ExportForGitHub(Context  context, final String _sc_id){
         mContext = context;
         sc_id = _sc_id;
         sc_metadata = lC.b(sc_id);
