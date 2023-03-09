@@ -188,7 +188,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		  	 if(!url.getText().toString().trim().equals("")){			   
 	    		    new Thread(() -> {
                        exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
-                        runOnUiThread(() -> GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());)
+                        runOnUiThread(() -> GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());
                      }).start();
 			   			   
 		  	 }
