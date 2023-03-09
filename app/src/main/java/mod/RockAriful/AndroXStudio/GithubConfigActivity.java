@@ -22,6 +22,10 @@ import android.view.View.*;
 import android.view.animation.*;
 import android.webkit.*;
 import android.widget.*;
+
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -127,6 +131,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 	//boolean&string for fatchin fushing result
 	private String Result ="";
 	private boolean isSucces = false;
+    
+    private Calendar calender = Calendar.getInstance();
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -197,13 +203,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onClick(View _view) {
                 
 		  	 if (enable.isChecked()) {
-			      _Uber_progress(true);
-                  progressbar1.setVisibility(View.VISIBLE);
-		 	     push_btn_title.setVisibility(View.GONE);
-	    		    new Thread(() -> {                 
-                        exportedSourcesPath = new ExportToGitHub(GithubConfigActivity.this,sc_id).exportSrc();
-                        runOnUiThread(() -> _GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString()));
-                    }).start();
+                   commitRepoDialog();
 		  	 }else{SketchwareUtil.toastError("Please enable GitHub service first!");}
 		    }
 		});
@@ -268,9 +268,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 	
 	private void initializeLogic() {
-		setTitle("Github Manager");
+        calender = Calendar.getInstance();
+        
+		setTitle("GitHub Manager");
         sc_id = getIntent().getStringExtra("sc_id");
-
 		if (FileUtil.isExistFile(FileUtil.getExternalStorageDir() +"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
 			JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
 			url.setText(JsonMAP.get((int)0).get("repository").toString());
@@ -312,6 +313,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 
    public void _GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
+       
+            
          if(!FileUtil.isExistFile(_filePATH)){
     	   SketchwareUtil.toastError(_filePATH+" Not Exist!");
   	     return;
@@ -410,5 +413,48 @@ public class GithubConfigActivity extends AppCompatActivity {
 			}
 		}
 	}
+    
+    private void commitRepoDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        final View view = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
+        final View fileType = view.findViewById(R.id.dialog_radio_filetype);
+        final EditText filename = view.findViewById(R.id.dialog_edittext_name);
+        final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
+        final TextView save = view.findViewById(R.id.dialog_text_save);
+
+        title.setText("Commit changes");
+        save.setText("Push")
+        fileType.setVisibility(View.GONE);
+        
+        filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
+        
+        save.setOnClickListener(v -> {
+            if (filename.getText().toString().isEmpty()) {
+                SketchwareUtil.toastError("Pleass write commit message! ");
+                return;
+            }
+            
+            _Uber_progress(true);
+           progressbar1.setVisibility(View.VISIBLE);
+		   push_btn_title.setVisibility(View.GONE);
+           dialog.dismiss();
+	        new Thread(() -> {                 
+               exportedSourcesPath = new ExportToGitHub(GithubConfigActivity.this,sc_id).exportSrc();
+               runOnUiThread(() -> _GiTPUSHAll(exportedSourcesPath, filename.getText().toString() , username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString()));
+            }).start();
+
+        });
+        
+        cancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.setView(view);
+        dialog.show();
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        filename.requestFocus();
+    }
 	
 }
