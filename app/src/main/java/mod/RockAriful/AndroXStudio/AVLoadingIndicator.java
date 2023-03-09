@@ -1,4 +1,4 @@
-package com.ViSa.androx.card;
+package mod.RockAriful.AndroXStudio;
 
 import android.app.Activity;
 import android.app.*;
