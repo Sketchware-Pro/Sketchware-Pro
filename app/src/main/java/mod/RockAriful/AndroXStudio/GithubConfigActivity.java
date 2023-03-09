@@ -189,7 +189,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	    		    new Thread(() -> {
                        exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
                         runOnUiThread(() ->
-			     	  try (Git git = Git.init().setDirectory(new File(exportedSourcesPath)).call()){
+			     	  try(Git git = Git.init().setDirectory(new File(exportedSourcesPath)).call()){
 				          GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());     
 			     	  }catch(GitAPIException e){
 		 	             SketchwareUtil.toast(e.toString());
