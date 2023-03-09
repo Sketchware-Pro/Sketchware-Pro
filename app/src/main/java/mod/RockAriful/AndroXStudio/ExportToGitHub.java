@@ -46,7 +46,7 @@ public class ExportToGitHub {
     
     private static String export_src_postfix;
     private static final oB file_utility = new oB();
-    private Context mContext;
+    private static Context mContext;
     private static String export_src_full_path;
     private static String export_src_filename;
     private static String sc_id ="";
