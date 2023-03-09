@@ -51,8 +51,8 @@ public class ExportToGitHub {
     private static String export_src_filename;
     private static String sc_id ="";
     private static String exportedSourcesZipPath = "";
-    private HashMap<String, Object> sc_metadata = null;
-    private yq project_metadata = null;
+    private static HashMap<String, Object> sc_metadata = null;
+    private static yq project_metadata = null;
     
     
     public ExportToGitHub(Context  context, final String _sc_id){
