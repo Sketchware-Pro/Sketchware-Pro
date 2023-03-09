@@ -424,7 +424,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         final TextView save = view.findViewById(R.id.dialog_text_save);
 
         title.setText("Commit changes");
-        save.setText("Push")
+        save.setText("Push");
         fileType.setVisibility(View.GONE);
         
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
