@@ -184,7 +184,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 		push_data.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				
+
+	    		    new Thread(() -> {
+                                new ExportToGitHub(this,sc_id);
+                                runOnUiThread(() ->                             
+                            }).start();
+
 			}
 		});
 
