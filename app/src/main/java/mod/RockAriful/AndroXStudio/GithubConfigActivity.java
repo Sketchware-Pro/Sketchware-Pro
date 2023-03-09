@@ -187,8 +187,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 
 	    		    new Thread(() -> {
-                                String exportedSourcesPath = new ExportToGitHub(this,sc_id);
-                                runOnUiThread(() ->                       
+                                String exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
+                                runOnUiThread(() ->               
                             }).start();
 
 			}
