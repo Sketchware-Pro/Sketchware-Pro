@@ -211,22 +211,41 @@
 					android:padding="8dp"
 					android:orientation="vertical"
 					android:layout_weight="1" />
-				<TextView
+				<LinearLayout
 					android:id="@+id/push_data"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
+					android:layout_height="45dp"
 					android:layout_margin="10dp"
 					android:paddingLeft="8dp"
-					android:paddingTop="10dp"
 					android:paddingRight="8dp"
-					android:paddingBottom="10dp"
 					android:background="#4CAF50"
 					android:gravity="center_horizontal|center_vertical"
-					android:text="Push to GitHub"
-					android:textSize="16sp"
-					android:textStyle="bold"
-					android:textColor="#FFFFFF"
+					android:orientation="horizontal"
 					android:visibility="gone" />
+					<ProgressBar
+						android:id="@+id/progressbar1"
+						android:layout_width="wrap_content"
+						android:layout_height="30dp"
+						android:indeterminate="true"
+						style="?android:progressBarStyle"
+						android:visibility="gone"
+						android:indeterminateTintMode="src_atop"
+						android:indeterminateTint="#ffffff" />
+					<TextView
+						android:id="@+id/push_btn_title"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingLeft="8dp"
+						android:paddingTop="10dp"
+						android:paddingRight="8dp"
+						android:paddingBottom="10dp"
+						android:gravity="center_horizontal|center_vertical"
+						android:text="Push to GitHub"
+						android:textSize="16sp"
+						android:textStyle="bold"
+						android:textColor="#FFFFFF"
+						android:layout_weight="1" />
+				</LinearLayout>
 				<TextView
 					android:id="@+id/create_token"
 					android:layout_width="match_parent"
