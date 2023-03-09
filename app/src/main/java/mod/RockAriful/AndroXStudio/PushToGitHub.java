@@ -5,12 +5,16 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
+import android.content.*;
 import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.*;
+
+import java.util.concurrent.*;
+import android.os.*;
 
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.*;
@@ -108,18 +112,15 @@ public class PushToGitHub {
 		  	handler.post(new Runnable() {
 				 @Override
 				  public void run() {
-                      
 					  if(isSucces){
 					     SketchwareUtil.toast(Result);
-                         return true;
 					  }else{
 					     SketchwareUtil.toastError(Result);
-                         return false;
 					  }
 				  }
 			   });
 		   }
 		});
-        return false;
+        return isSucces;
 	}
 }
