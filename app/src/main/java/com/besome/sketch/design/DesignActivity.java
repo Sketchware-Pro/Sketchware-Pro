@@ -56,6 +56,8 @@ import com.sketchware.remod.R;
 import com.topjohnwu.superuser.Shell;
 
 import mod.RockAriful.AndroXStudio.*;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 import java.io.File;
 import java.util.HashMap;
@@ -142,7 +144,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
     private br componentTabAdapter = null;
+    
     private String exportedSourcesZipPath ="";
+    private Calendar calender = Calendar.getInstance();
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
      */
@@ -416,11 +420,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
                             
                         case 6:
-                            new Thread(() -> {
-                             String exportedSourcesZipPath = new ExportToGitHub(this,sc_id).exportSrc();
-                                runOnUiThread(() ->
-                                        SketchwareUtil.toast("Repository Generated! At:"+exportedSourcesZipPath));
-                            }).start();
+                            commitRepoDialog();
                             break;
 
                         default:
@@ -1440,4 +1440,103 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
     }
+    
+    private void commitRepoDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        final View view = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
+        final View fileType = view.findViewById(R.id.dialog_radio_filetype);
+        final EditText filename = view.findViewById(R.id.dialog_edittext_name);
+        final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
+        final TextView save = view.findViewById(R.id.dialog_text_save);
+
+        title.setText("Commit changes");
+        save.setText("Push");
+        fileType.setVisibility(View.GONE);
+        
+        filename.setHint("setMessage");
+        filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
+        
+        
+        
+        save.setOnClickListener(v -> {
+            if (filename.getText().toString().isEmpty()) {
+                SketchwareUtil.toastError("Pleass write commit message! ");
+                return;
+            }
+            
+            dialog.dismiss();
+            _Uber_progress(true);
+            new Thread(() -> {                 
+               isSucces = new PushToGitHub(DesignActivity.this,sc_id).pushREPO(filename.getText().toString());
+               runOnUiThread(() -> 
+                _Uber_progress(false);
+               );
+            }).start();
+
+        });
+        
+        cancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.setView(view);
+        dialog.show();
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        filename.requestFocus();
+    }
+    
+    public void _Uber_progress(final boolean _ifShow) {
+		if (_ifShow) {
+			prog = new AlertDialog.Builder(this).create();
+			prog.setCancelable(false);
+			prog.setCanceledOnTouchOutside(false);
+			
+			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+			prog.getWindow().setDimAmount(0.4f);
+			View inflate = getLayoutInflater().inflate(R.layout.rockariful_avloading, null);
+			prog.setView(inflate);
+            
+			final LinearLayout lin1 = (LinearLayout) inflate.findViewById(R.id.linear1);
+            _setBackground(lin1, 10, 1, "#16aee0", false);
+            
+			AVLoadingIndicator.AVLoadingIndicatorView v = new AVLoadingIndicator. AVLoadingIndicatorView(this);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+			v.setLayoutParams(lp);
+			lin1.addView(v);
+			v.show();
+			v.setIndicatorColor(Color.parseColor("#ffffff"));
+			v.setIndicatorName("CubeTransition");
+			
+			prog.show();
+		}
+		else {
+			if (prog != null){
+				prog.dismiss();
+			}
+		}
+	}
+    
+    public void _setBackground(final View _view, final double _radius, final double _shadow, final String _color, final boolean _ripple) {
+		if (_ripple) {
+			android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+			gd.setColor(Color.parseColor(_color));
+			gd.setCornerRadius((int)_radius);
+			_view.setElevation((int)_shadow);
+			android.content.res.ColorStateList clrb = new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor("#9e9e9e")});
+			android.graphics.drawable.RippleDrawable ripdrb = new android.graphics.drawable.RippleDrawable(clrb , gd, null);
+			_view.setClickable(true);
+			_view.setBackground(ripdrb);
+		}
+		else {
+			android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+			gd.setColor(Color.parseColor(_color));
+			gd.setCornerRadius((int)_radius);
+			_view.setBackground(gd);
+			_view.setElevation((int)_shadow);
+		}
+	}
 }
+
+
