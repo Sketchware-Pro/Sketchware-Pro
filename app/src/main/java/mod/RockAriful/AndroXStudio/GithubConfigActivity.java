@@ -120,6 +120,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 
         private String sc_id ="";
 	
+	//boolean&string for fatchin fushing result
+	private String Result ="";
+	private boolean isSucces = false;
+	
 	private Intent Ctoken = new Intent();
 	
 	@Override
@@ -265,6 +269,63 @@ public class GithubConfigActivity extends AppCompatActivity {
 			_view.setBackground(gd);
 			_view.setElevation((int)_shadow);
 		}
+	}
+
+ 	public void GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		final Handler handler = new Handler(Looper.getMainLooper());
+		
+		 executor.execute(new Runnable() {
+				@Override
+			    public void run() {
+						try(Git git = Git.open(new File(_filePATH))) {
+					          //Add Files to git
+					          git.add().addFilepattern(".").call();
+					          //Set Commit -m
+					          git.commit().setMessage(_setMessage).call();
+					          //Push git 
+					          PushCommand push = git.push();
+					          push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
+					          push.setRemote(_RemoteURL);
+					          push.setRefSpecs(new RefSpec(_setRefSpecs));
+					          push.setForce(true);
+					          push.call();
+					          
+					          Iterable<PushResult> results = push.call();
+					          for (PushResult r : results) {
+						              for(RemoteRefUpdate update : r.getRemoteUpdates()) {
+							                  System.out.println("Having result: " + update);
+							                 if(update.getStatus() != RemoteRefUpdate.Status.OK && update.getStatus() != RemoteRefUpdate.Status.UP_TO_DATE) {
+								                      Result = "Push failed: "+ update.getStatus();
+								                      isSucces = false;
+								                       throw new RuntimeException(Result);
+								                  }else{
+								                      Result = "Successfully Pushed  & " + update.getStatus().toString();
+								                      isSucces = true;
+								                  }
+							               }
+						           }
+					             
+					        }catch(IOException | GitAPIException | JGitInternalException e) {
+					          Result = e.getMessage();
+					          isSucces = false;
+					          e.printStackTrace();
+					        }
+				        
+				   	handler.post(new Runnable() {
+							  @Override
+							   public void run() {
+						             prog.hide();
+						             if(isSucces){
+							                new ToastMessage(getApplicationContext(),Result,false);
+							             }else{
+							                 new ToastMessage(getApplicationContext(),Result,true);
+							             }
+						           }
+					       });
+				    }
+		});
+		
 	}
 	
 }
