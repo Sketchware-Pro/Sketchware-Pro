@@ -50,7 +50,7 @@ public class ExportToGitHub {
     private String export_src_full_path;
     private String export_src_filename;
     private String sc_id ="";
-    private String exportedSourcesZipPath = "";
+    private static String exportedSourcesZipPath = "";
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
     
@@ -152,7 +152,7 @@ public class ExportToGitHub {
         file_utility.f(export_src_full_path);
     }
     
-    public void _UnZip(final String _fileZip, final String _destDir) {
+    public static void _UnZip(final String _fileZip, final String _destDir) {
 		try
 		{
 			java.io.File outdir = new java.io.File(_destDir);
