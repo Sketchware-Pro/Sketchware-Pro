@@ -3,6 +3,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+	maven {
+  	  url "https://repo.eclipse.org/content/groups/releases/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.0'
