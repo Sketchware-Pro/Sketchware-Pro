@@ -197,14 +197,14 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onClick(View _view) {
                 
 		  	 if (enable.isChecked()) {
-	    		    new Thread(() -> {
-                        _Uber_progress(true);
-                        progressbar1.setVisibility(View.VISIBLE);
-		 	       	push_btn_title.setVisibility(View.GONE);
+			      _Uber_progress(true);
+                  progressbar1.setVisibility(View.VISIBLE);
+		 	     push_btn_title.setVisibility(View.GONE);
+	    		    new Thread(() -> {                 
                         exportedSourcesPath = new ExportToGitHub(GithubConfigActivity.this,sc_id).exportSrc();
                         runOnUiThread(() -> _GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString()));
-                     }).start();
-		  	 }
+                    }).start();
+		  	 }else{SketchwareUtil.toastError("Please enable GitHub service first!");}
 		    }
 		});
 
@@ -242,6 +242,9 @@ public class GithubConfigActivity extends AppCompatActivity {
 									enable.setChecked(false);
 								}
 								else {
+                                    push_data.setVisibility(View.VISIBLE);
+		 	     			  	create_token.setVisibility(View.GONE);
+                    
 									map = new HashMap<>();
 									map.put("repository", url.getText().toString());
 									map.put("RefSpecs", setRefSpecs.getText().toString());
@@ -253,8 +256,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 							}
 						}
 					}
-                    push_data.setVisibility(View.VISIBLE);
-		 	   	create_token.setVisibility(View.GONE);
+                    
 				}
 				else {
 					FileUtil.writeFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config", "[]");
