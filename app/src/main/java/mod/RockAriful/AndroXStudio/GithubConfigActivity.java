@@ -205,21 +205,40 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2) {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
-					map = new HashMap<>();
-					map.put("repository", url.getText().toString());
-					map.put("RefSpecs", setRefSpecs.getText().toString());
-					map.put("username", username.getText().toString());
-					map.put("token", pass.getText().toString());
-					JsonMAP.add(map);
-					FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", new Gson().toJson(JsonMAP));
-
-					push_data.setVisibility(View.VISIBLE);
-					create_token.setVisibility(View.GONE);
+					if (url.getText().toString().trim().equals("")) {
+						SketchwareUtil.toast("Please enter repository URL")
+						enable.setChecked(false);
+					}
+					else {
+						if (setRefSpecs.getText().toString().trim().equals("")) {
+							SketchwareUtil.toast("Please enter RefSpecs/ Branch Reference")
+							enable.setChecked(false);
+						}
+						else {
+							if (username.getText().toString().trim().equals("")) {
+								SketchwareUtil.toast("Please enter Github username")
+								enable.setChecked(false);
+							}
+							else {
+								if (pass.getText().toString().trim().equals("")) {
+									SketchwareUtil.toast("Please enter Github access token")
+									enable.setChecked(false);
+								}
+								else {
+									map = new HashMap<>();
+									map.put("repository", url.getText().toString());
+									map.put("RefSpecs", setRefSpecs.getText().toString());
+									map.put("username", username.getText().toString());
+									map.put("token", pass.getText().toString());
+									JsonMAP.add(map);
+									FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), new Gson().toJson(JsonMAP));
+								}
+							}
+						}
+					}
 				}
 				else {
-					FileUtil.writeFile(FileUtil.getExternalStorageDir()+ "/.sketchware/data/"+sc_id+"/github_config", "[]");
-					push_data.setVisibility(View.GONE);
-					create_token.setVisibility(View.VISIBLE);
+					FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), "[]");
 				}
 			}
 		});
