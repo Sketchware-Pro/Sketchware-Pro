@@ -221,7 +221,7 @@
 					android:background="#4CAF50"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="horizontal"
-					android:visibility="gone" />
+					android:visibility="gone" >
 					<ProgressBar
 						android:id="@+id/progressbar1"
 						android:layout_width="wrap_content"
