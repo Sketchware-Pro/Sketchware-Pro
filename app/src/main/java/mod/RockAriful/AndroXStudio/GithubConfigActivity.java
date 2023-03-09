@@ -426,7 +426,8 @@ public class GithubConfigActivity extends AppCompatActivity {
         title.setText("Commit changes");
         save.setText("Push");
         fileType.setVisibility(View.GONE);
-        
+
+        calender = Calendar.getInstance();
         filename.setHint("setMessage");
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
         
