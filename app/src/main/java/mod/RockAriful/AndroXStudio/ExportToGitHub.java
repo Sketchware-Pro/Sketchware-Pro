@@ -50,6 +50,7 @@ public class ExportToGitHub {
     private String export_src_full_path;
     private String export_src_filename;
     private String sc_id ="";
+    private String exportedSourcesZipPath = "";
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
     
@@ -65,7 +66,7 @@ public class ExportToGitHub {
     
     
     
-    private void exportSrc() {
+    public static String exportSrc() {
         try {
             FileUtil.deleteFile(project_metadata.projectMyscPath);
 
@@ -139,6 +140,7 @@ public class ExportToGitHub {
         } catch (Exception e) {
             
         }
+      return exportedSourcesZipPath.replace(".zip","");
     }
     
     private void initializeOutputDirectories() {
