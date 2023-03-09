@@ -319,7 +319,7 @@ public class GithubConfigActivity extends AppCompatActivity {
   		        push.setRemote(_RemoteURL);
  	 	        push.setRefSpecs(new RefSpec(_setRefSpecs));
  		        push.setForce(true);
- 			push.call();
+ 			
 					          
 		  	 Iterable<PushResult> results = push.call();
 	   		for (PushResult r : results) {
