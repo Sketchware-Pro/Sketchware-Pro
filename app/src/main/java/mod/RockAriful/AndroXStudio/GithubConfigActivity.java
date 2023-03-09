@@ -293,7 +293,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 
  	public void GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
-         
+         if(!FileUtil.isExistFile(_filePATH){
+ 	   SketchwareUtil.toast(_filePATH+"Not Exist!");
+	   return;
+	 }
          try(Git git = Git.init().setDirectory(new File(_filePATH)).call()){
              
          }catch(GitAPIException e){
