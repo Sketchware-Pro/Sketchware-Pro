@@ -61,7 +61,7 @@ public class ExportToGitHub {
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(mContext, wq.d(sc_id), sc_metadata);
         initializeOutputDirectories();
-        exportSrc();
+       
     }
     
     
