@@ -71,14 +71,19 @@ public class PushToGitHub {
         new Thread(() -> {
            _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
             runOnUiThread(() ->
-            try{
-		   	JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-	   		_RepositoryURL = JsonMAP.get((int)0).get("repository").toString();
-		   	_setRefSpecs = JsonMAP.get((int)0).get("RefSpecs").toString();
-		    	_UserName = JsonMAP.get((int)0).get("username").toString();
-	    		_AccessToken = JsonMAP.get((int)0).get("token").toString();
-	    	}catch(Exception e){});
+              FatchString()
+            );
          }).start();
+    }
+    
+    public void  FatchString(){
+        try{
+			JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
+	    	_RepositoryURL = JsonMAP.get((int)0).get("repository").toString();
+	    	_setRefSpecs = JsonMAP.get((int)0).get("RefSpecs").toString();
+			_UserName = JsonMAP.get((int)0).get("username").toString();
+	    	_AccessToken = JsonMAP.get((int)0).get("token").toString();
+		}catch(Exception e){}
     }
     
     public static boolean pushREPO(final String _setMessage) {
