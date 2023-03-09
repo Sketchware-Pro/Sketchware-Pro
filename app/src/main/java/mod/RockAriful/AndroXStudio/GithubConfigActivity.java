@@ -187,14 +187,14 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 		  	 if(!url.getText().toString().trim().equals("")){			   
 	    		    new Thread(() -> {
-                                String exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
-                                runOnUiThread(() ->
-				  try (Git git = Git.init().setDirectory(new File(exportedSourcesPath)).call()){
-				     GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());     
-				  }catch(GitAPIException e){
-			             SketchwareUtil.toast(e.toString());
-				  })
-                            }).start();
+                       exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
+                        runOnUiThread(() ->
+			     	  try (Git git = Git.init().setDirectory(new File(exportedSourcesPath)).call()){
+				          GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());     
+			     	  }catch(GitAPIException e){
+		 	             SketchwareUtil.toast(e.toString());
+			           })
+                     }).start();
 			   			   
 		  	 }
 		    }
