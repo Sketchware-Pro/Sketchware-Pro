@@ -106,7 +106,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.1.0"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
 
-    implementation 'org.eclipse.jgit:org.eclipse.jgit:4.6.0.201612231935-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
 
     implementation "androidx.annotation:annotation:1.5.0"
     implementation "com.android.tools:annotations:30.4.1"
