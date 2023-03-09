@@ -43,8 +43,9 @@ import org.eclipse.jgit.util.FileUtils;
 
 public class PushToGitHub {
     
-	private String Result ="";
-	private boolean isSucces = false;
+	private static String Result ="";
+	private static boolean isSucces = false;
+    private Context mContext;
     
     
     public PushToGitHub(Context  context){
