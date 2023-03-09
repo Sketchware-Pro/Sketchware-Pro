@@ -278,16 +278,16 @@ public class GithubConfigActivity extends AppCompatActivity {
 		   public void run() {
 		     try(Git git = Git.open(new File(_filePATH))) {
 		      //Add Files to git
-	 	       git.add().addFilepattern(".").call();
+	 	        git.add().addFilepattern(".").call();
 		        //Set Commit -m
-	 	      git.commit().setMessage(_setMessage).call();
-	 	       //Push git 
-	 	      PushCommand push = git.push();
-     	      push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
-  			 push.setRemote(_RemoteURL);
- 	 		 push.setRefSpecs(new RefSpec(_setRefSpecs));
- 			  push.setForce(true);
- 			  push.call();
+	 	        git.commit().setMessage(_setMessage).call();
+	 	        //Push git 
+	 	        PushCommand push = git.push();
+                        push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
+  		        push.setRemote(_RemoteURL);
+ 	 	        push.setRefSpecs(new RefSpec(_setRefSpecs));
+ 		        push.setForce(true);
+ 			push.call();
 					          
 		  	 Iterable<PushResult> results = push.call();
 	   		for (PushResult r : results) {
