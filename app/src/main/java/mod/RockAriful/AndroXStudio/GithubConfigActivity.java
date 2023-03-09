@@ -114,9 +114,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private EditText username;
 	private TextView textview6;
 	private EditText pass;
-    private Intent Ctoken = new Intent();
+        private String exportedSourcesPath ="";
+        private Intent Ctoken = new Intent();
 
-    private String sc_id ="";
+        private String sc_id ="";
 	//boolean&string for fatchin fushing result
 	private String Result ="";
 	private boolean isSucces = false;
@@ -186,8 +187,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 
 	    		    new Thread(() -> {
-                                new ExportToGitHub(this,sc_id);
-                                runOnUiThread(() ->                             
+                                String exportedSourcesPath = new ExportToGitHub(this,sc_id);
+                                runOnUiThread(() ->                       
                             }).start();
 
 			}
