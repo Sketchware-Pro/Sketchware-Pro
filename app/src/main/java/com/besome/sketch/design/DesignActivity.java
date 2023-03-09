@@ -142,7 +142,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
     private br componentTabAdapter = null;
-
+    private String exportedSourcesZipPath ="";
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
      */
@@ -419,7 +419,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             new Thread(() -> {
                              String exportedSourcesZipPath = new ExportToGitHub(this,sc_id).exportSrc();
                                 runOnUiThread(() ->
-                                        SketchwareUtil.toast("Repository Generated!"));
+                                        SketchwareUtil.toast("Repository Generated! At:"+exportedSourcesZipPath));
                             }).start();
                             break;
 
