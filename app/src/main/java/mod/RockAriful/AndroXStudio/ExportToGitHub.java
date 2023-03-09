@@ -136,11 +136,11 @@ public class ExportToGitHub {
             _UnZip(exportedSourcesZipPath,exportedSourcesZipPath.replace(".zip",""));
             SketchwareUtil.toast(filePath + ": export to : " +exportedSourcesZipPath);
             FileUtil.deleteFile(exportedSourcesZipPath);
-          // runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
+            runOnUiThread(() -> return exportedSourcesZipPath.replace(".zip",""));
         } catch (Exception e) {
             
         }
-      return exportedSourcesZipPath.replace(".zip","");
+      return "Failed to Export";
     }
     
     private void initializeOutputDirectories() {
