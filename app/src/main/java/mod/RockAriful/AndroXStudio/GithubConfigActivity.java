@@ -96,7 +96,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private LinearLayout linear13;
 	private LinearLayout all_item_layout;
 	private LinearLayout linear14;
-        private TextView push_data;
+    private TextView push_data;
 	private TextView create_token;
 	private TextView textview1;
 	private Switch enable;
@@ -114,10 +114,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private EditText username;
 	private TextView textview6;
 	private EditText pass;
-        private String exportedSourcesPath ="";
-        private Intent Ctoken = new Intent();
+    private String exportedSourcesPath ="";
+    private Intent Ctoken = new Intent();
 
-        private String sc_id ="";
+    private String sc_id ="";
 	//boolean&string for fatchin fushing result
 	private String Result ="";
 	private boolean isSucces = false;
@@ -185,12 +185,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 		push_data.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-		  	 if(!url.getText().toString().trim().equals("")){			   
+                
+		  	 if (enable.isChecked()) {
 	    		    new Thread(() -> {
-                       exportedSourcesPath = new ExportToGitHub(GithubConfigActivity.this,sc_id).exportSrc();
-                        runOnUiThread(() -> GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString()));
+                        exportedSourcesPath = new ExportToGitHub(GithubConfigActivity.this,sc_id).exportSrc();
+                        runOnUiThread(() -> _GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString()));
                      }).start();
-			   			   
 		  	 }
 		    }
 		});
@@ -210,22 +210,22 @@ public class GithubConfigActivity extends AppCompatActivity {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
 					if (url.getText().toString().trim().equals("")) {
-						SketchwareUtil.toast("Please enter repository URL");
+						SketchwareUtil.toastError("Please enter repository URL");
 						enable.setChecked(false);
 					}
 					else {
 						if (setRefSpecs.getText().toString().trim().equals("")) {
-							SketchwareUtil.toast("Please enter RefSpecs/ Branch Reference");
+							SketchwareUtil.toastError("Please enter RefSpecs/ Branch Reference");
 							enable.setChecked(false);
 						}
 						else {
 							if (username.getText().toString().trim().equals("")) {
-								SketchwareUtil.toast("Please enter Github username");
+								SketchwareUtil.toastError("Please enter Github username");
 								enable.setChecked(false);
 							}
 							else {
 								if (pass.getText().toString().trim().equals("")) {
-									SketchwareUtil.toast("Please enter Github access token");
+									SketchwareUtil.toastError("Please enter Github access token");
 									enable.setChecked(false);
 								}
 								else {
@@ -235,14 +235,18 @@ public class GithubConfigActivity extends AppCompatActivity {
 									map.put("username", username.getText().toString());
 									map.put("token", pass.getText().toString());
 									JsonMAP.add(map);
-									FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), new Gson().toJson(JsonMAP));
+									FileUtil.writeFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config", new Gson().toJson(JsonMAP));
 								}
 							}
 						}
 					}
+                    push_data.setVisibility(View.VISIBLE);
+		 	   	create_token.setVisibility(View.GONE);
 				}
 				else {
-					FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/1079/github_config"), "[]");
+					FileUtil.writeFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config", "[]");
+                    push_data.setVisibility(View.GONE);
+			    	create_token.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -250,7 +254,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		setTitle("Github Manager");
-                sc_id = getIntent().getStringExtra("sc_id");
+        sc_id = getIntent().getStringExtra("sc_id");
 
 		if (FileUtil.isExistFile(FileUtil.getExternalStorageDir() +"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
 			JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
@@ -292,15 +296,15 @@ public class GithubConfigActivity extends AppCompatActivity {
 		}
 	}
 
- 	public void GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
+   public void _GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
          if(!FileUtil.isExistFile(_filePATH)){
- 	   SketchwareUtil.toast(_filePATH+"Not Exist!");
-	   return;
-	 }
+    	   SketchwareUtil.toastError(_filePATH+" Not Exist!");
+  	     return;
+    	 }
          try(Git git = Git.init().setDirectory(new File(_filePATH)).call()){
              
          }catch(GitAPIException e){
-			    SketchwareUtil.toast(e.toString());
+			    SketchwareUtil.toastError(e.toString());
          }
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		final Handler handler = new Handler(Looper.getMainLooper());
@@ -348,7 +352,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 					  if(isSucces){
 					     SketchwareUtil.toast(Result);
 					  }else{
-					     SketchwareUtil.toast(Result);
+					     SketchwareUtil.toastError(Result);
 					  }
 				  }
 			   });
