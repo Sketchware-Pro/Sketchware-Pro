@@ -188,12 +188,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		  	 if(!url.getText().toString().trim().equals("")){			   
 	    		    new Thread(() -> {
                        exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
-                        runOnUiThread(() ->
-			     	  try(Git git = Git.init().setDirectory(new File(exportedSourcesPath)).call()){
-				          GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());     
-			     	  }catch(GitAPIException e){
-		 	             SketchwareUtil.toast(e.toString());
-			           })
+                        runOnUiThread(() -> GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());)
                      }).start();
 			   			   
 		  	 }
@@ -298,6 +293,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 
  	public void GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
+         
+         try(Git git = Git.init().setDirectory(new File(_filePATH)).call()){
+             
+         }catch(GitAPIException e){
+			    SketchwareUtil.toast(e.toString());
+         }
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		final Handler handler = new Handler(Looper.getMainLooper());
 		
