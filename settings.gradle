@@ -4,7 +4,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit" }
+        maven {
+          url "https://repo.eclipse.org/content/groups/releases/"
+        }
     }
 }
 rootProject.name = "Sketchware Pro"
