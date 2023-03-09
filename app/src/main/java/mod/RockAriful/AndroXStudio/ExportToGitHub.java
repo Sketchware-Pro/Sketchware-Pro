@@ -44,12 +44,12 @@ import mod.jbk.util.TestkeySignBridge;
 
 public class ExportToGitHub {
     
-    private String export_src_postfix;
-    private final oB file_utility = new oB();
+    private static String export_src_postfix;
+    private static final oB file_utility = new oB();
     private Context mContext;
-    private String export_src_full_path;
-    private String export_src_filename;
-    private String sc_id ="";
+    private static String export_src_full_path;
+    private static String export_src_filename;
+    private static String sc_id ="";
     private static String exportedSourcesZipPath = "";
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
