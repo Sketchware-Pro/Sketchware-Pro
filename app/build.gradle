@@ -156,6 +156,7 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:31.2.1")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
+    implementation files('libs/RockAriful_JGITS-4.6.0.201612231935-R.jar')
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
