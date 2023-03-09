@@ -129,7 +129,6 @@ public class GithubConfigActivity extends AppCompatActivity {
     private AlertDialog prog;
     private String sc_id ="";
 	//boolean&string for fatchin fushing result
-	private String Result ="";
 	private boolean isSucces = false;
     
     private Calendar calender = Calendar.getInstance();
@@ -311,7 +310,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 			_view.setElevation((int)_shadow);
 		}
 	}
-
+  
+   /*
    public void _GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
        
             
@@ -382,7 +382,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 		});
 		
 	}
-    
+    */
     public void _Uber_progress(final boolean _ifShow) {
 		if (_ifShow) {
 			prog = new AlertDialog.Builder(this).create();
@@ -427,6 +427,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         save.setText("Push");
         fileType.setVisibility(View.GONE);
         
+        filename.setHint("setMessage");
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
         
         save.setOnClickListener(v -> {
@@ -435,13 +436,19 @@ public class GithubConfigActivity extends AppCompatActivity {
                 return;
             }
             
-            _Uber_progress(true);
+            
+           _Uber_progress(true);
            progressbar1.setVisibility(View.VISIBLE);
 		   push_btn_title.setVisibility(View.GONE);
            dialog.dismiss();
+           
 	        new Thread(() -> {                 
-               exportedSourcesPath = new ExportToGitHub(GithubConfigActivity.this,sc_id).exportSrc();
-               runOnUiThread(() -> _GiTPUSHAll(exportedSourcesPath, filename.getText().toString() , username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString()));
+               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id).pushREPO(filename.getText().toString());
+               runOnUiThread(() -> 
+               _Uber_progress(false)
+               progressbar1.setVisibility(View.GONE)
+		 	  push_btn_title.setVisibility(View.VISIBLE)
+               );
             }).start();
 
         });
