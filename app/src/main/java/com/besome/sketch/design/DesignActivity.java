@@ -417,7 +417,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             
                         case 6:
                             new Thread(() -> {
-                             String exportedSourcesZipPath = new ExportToGitHub(this,sc_id);
+                             String exportedSourcesZipPath = new ExportToGitHub(this,sc_id).exportSrc();
                                 runOnUiThread(() ->
                                         SketchwareUtil.toast("Repository Generated!"));
                             }).start();
