@@ -1444,17 +1444,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     
     private void commitRepoDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View view = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
-        final View fileType = view.findViewById(R.id.dialog_radio_filetype);
+        
         final EditText filename = view.findViewById(R.id.dialog_edittext_name);
         final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
         final TextView save = view.findViewById(R.id.dialog_text_save);
 
         title.setText("Commit changes");
         save.setText("Push");
-        fileType.setVisibility(View.GONE);
-
+        
         calender = Calendar.getInstance();
         filename.setHint("setMessage");
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
