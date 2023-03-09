@@ -5,6 +5,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
+import android.app.Activity;
 import android.content.*;
 import java.io.*;
 import java.text.*;
@@ -51,10 +52,10 @@ import org.eclipse.jgit.util.FileUtils;
 public class PushToGitHub {
     
     private ArrayList<HashMap<String, Object>> JsonMAP = new ArrayList<>();
-	private static String Result ="";
+    private static String Result ="";
     private static String sc_id ="";
-	private static boolean isSucces = false;
-    private Context mContext;
+    private static boolean isSucces = false;
+    private Activity mContext;
     
     private static String _FilePATH ="";
     private static String _RepositoryURL ="";
@@ -64,7 +65,7 @@ public class PushToGitHub {
     private static String _CommitMessage ="";
     
     
-    public PushToGitHub(Context  context,  final String _sc_id){
+    public PushToGitHub(Activity  context,  final String _sc_id){
         mContext = context;
         sc_id = _sc_id;
         
