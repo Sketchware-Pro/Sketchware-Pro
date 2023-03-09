@@ -42,7 +42,7 @@ import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 
 
-public class ExportToGitHub {
+public class ExportForGitHub {
     
     private static String export_src_postfix;
     private static final oB file_utility = new oB();
