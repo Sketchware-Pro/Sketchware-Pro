@@ -333,9 +333,9 @@ public class GithubConfigActivity extends AppCompatActivity {
 				 @Override
 				  public void run() {
 					  if(isSucces){
-					     new ToastMessage(getApplicationContext(),Result,false);
+					     SketchwareUtil.toast(Result);
 					  }else{
-					     new ToastMessage(getApplicationContext(),Result,true);
+					     SketchwareUtil.toast(Result);
 					  }
 				  }
 			   });
