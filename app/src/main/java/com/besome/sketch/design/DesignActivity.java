@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -147,6 +147,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     
     private String exportedSourcesZipPath ="";
     private Calendar calender = Calendar.getInstance();
+    private AlertDialog prog;
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
      */
