@@ -185,13 +185,14 @@ public class GithubConfigActivity extends AppCompatActivity {
 		push_data.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-
+			 if(!url.getText().toString().trim().equals("")){
 	    		    new Thread(() -> {
                                 String exportedSourcesPath = new ExportToGitHub(this,sc_id).exportSrc();
-                                runOnUiThread(() ->               
+                                runOnUiThread(() ->
+				 GiTPUSHAll(exportedSourcesPath, "Now Testing", username.getText().toString(), pass.getText().toString(), url.getText().toString(), setRefSpecs.getText().toString());     
                             }).start();
-
-			}
+			 }
+		     }
 		});
 
 		create_token.setOnClickListener(new View.OnClickListener() {
