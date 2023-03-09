@@ -70,7 +70,7 @@ public class PushToGitHub {
         
         new Thread(() -> {
            _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
-            runOnUiThread(() ->
+            mContext.runOnUiThread(() ->
               FatchString()
             );
          }).start();
