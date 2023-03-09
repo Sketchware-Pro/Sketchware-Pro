@@ -1469,7 +1469,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             dialog.dismiss();
             _Uber_progress(true);
             new Thread(() -> {                 
-               isSucces = new PushToGitHub(DesignActivity.this,sc_id).pushREPO(filename.getText().toString());
+               boolean isSucces = new PushToGitHub(DesignActivity.this,sc_id).pushREPO(filename.getText().toString());
                runOnUiThread(() -> 
                 _Uber_progress(false)
                );
