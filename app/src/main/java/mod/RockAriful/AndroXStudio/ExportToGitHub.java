@@ -136,7 +136,7 @@ public class ExportToGitHub {
             _UnZip(exportedSourcesZipPath,exportedSourcesZipPath.replace(".zip",""));
             SketchwareUtil.toast(filePath + ": export to : " +exportedSourcesZipPath);
             FileUtil.deleteFile(exportedSourcesZipPath);
-            runOnUiThread(() -> return exportedSourcesZipPath.replace(".zip",""));
+            runOnUiThread(() -> return exportedSourcesZipPath.replace(".zip",""););
         } catch (Exception e) {
             
         }
