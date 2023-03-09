@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.*;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.concurrent.*;
 import android.os.*;
 
@@ -47,23 +50,44 @@ import org.eclipse.jgit.util.FileUtils;
 
 public class PushToGitHub {
     
+    private ArrayList<HashMap<String, Object>> JsonMAP = new ArrayList<>();
 	private static String Result ="";
+    private static String sc_id ="";
 	private static boolean isSucces = false;
     private Context mContext;
     
+    private static String _FilePATH ="";
+    private static String _RepositoryURL ="";
+    private static String _setRefSpecs ="";
+    private static String _UserName ="";
+    private static String _AccessToken ="";
+    private static String _CommitMessage ="";
     
-    public PushToGitHub(Context  context){
+    
+    public PushToGitHub(Context  context,  final String _sc_id){
         mContext = context;
+        sc_id = _sc_id;
+        
+        new Thread(() -> {
+           _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
+            runOnUiThread(() ->
+            try{
+		   	JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
+	   		_RepositoryURL = JsonMAP.get((int)0).get("repository").toString();
+		   	_setRefSpecs = JsonMAP.get((int)0).get("RefSpecs").toString();
+		    	_UserName = JsonMAP.get((int)0).get("username").toString();
+	    		_AccessToken = JsonMAP.get((int)0).get("token").toString();
+	    	}catch(Exception e){});
+         }).start();
     }
     
-    public static boolean _pushREPO(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
+    public static boolean pushREPO(final String _setMessage) {
        
-            
-         if(!FileUtil.isExistFile(_filePATH)){
-    	   SketchwareUtil.toastError(_filePATH+" Not Exist!");
+         if(!FileUtil.isExistFile(_FilePATH)){
+    	   SketchwareUtil.toastError(_FilePATH+" Not Exist!");
   	     return false;
     	 }
-         try(Git git = Git.init().setDirectory(new File(_filePATH)).call()){
+         try(Git git = Git.init().setDirectory(new File(_FilePATH)).call()){
              
          }catch(GitAPIException e){
 			 SketchwareUtil.toastError(e.toString());
@@ -76,14 +100,14 @@ public class PushToGitHub {
 		 executor.execute(new Runnable() {
 		    @Override
 		   public void run() {
-		     try(Git git = Git.open(new File(_filePATH))) {
+		     try(Git git = Git.open(new File(_FilePATH))) {
 		         
 	 	        git.add().addFilepattern(".").call();
 	 	        git.commit().setMessage(_setMessage).call();
 	 	        
 	 	        PushCommand push = git.push();
-                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
-  		       push.setRemote(_RemoteURL);
+                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _AccessToken));
+  		       push.setRemote(_RepositoryURL);
  	 	       push.setRefSpecs(new RefSpec(_setRefSpecs));
  		        push.setForce(true);
  			
