@@ -4,7 +4,9 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
