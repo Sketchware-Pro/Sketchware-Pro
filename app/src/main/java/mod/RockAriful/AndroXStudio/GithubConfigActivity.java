@@ -167,18 +167,19 @@ public class GithubConfigActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(final MenuItem item){
 		switch(item.getItemId()){
 	  	case 1:
- 			Intent i = new Intent();
-             i.setClass(getApplicationContext(), GithubLogActivity.class);
-             i.putExtra("sc_id",sc_id);
-             i.putExtra("TYPE","CPreview");
-             startActivity(i);
+ 			Intent is = new Intent();
+             is.setClass(getApplicationContext(), GithubLogActivity.class);
+             is.putExtra("sc_id",sc_id);
+             is.putExtra("TYPE","CPreview");
+             startActivity(is);
+             
 			break;
 	  	case 2:
-			Intent i = new Intent();
-             i.setClass(getApplicationContext(), GithubLogActivity.class);
-             i.putExtra("sc_id",sc_id);
-             i.putExtra("TYPE","LOG");
-             startActivity(i);
+			Intent is = new Intent();
+             is.setClass(getApplicationContext(), GithubLogActivity.class);
+             is.putExtra("sc_id",sc_id);
+             is.putExtra("TYPE","LOG");
+             startActivity(is);
              
 			break;
     	}
