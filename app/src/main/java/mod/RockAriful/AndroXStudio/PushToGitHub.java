@@ -5,8 +5,8 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
-import android.app.Activity;
 import android.content.*;
+import android.app.*;
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -52,11 +52,11 @@ import org.eclipse.jgit.util.FileUtils;
 public class PushToGitHub {
     
     private ArrayList<HashMap<String, Object>> JsonMAP = new ArrayList<>();
-    private static String Result ="";
+	private static String Result ="";
     private static String sc_id ="";
-    private static boolean isSucces = false;
-    private Activity mContext;
-    
+	private static boolean isSucces = false;
+    private Context mContext;
+    private AlertDialog prog;
     private static String _FilePATH ="";
     private static String _RepositoryURL ="";
     private static String _setRefSpecs ="";
@@ -65,13 +65,13 @@ public class PushToGitHub {
     private static String _CommitMessage ="";
     
     
-    public PushToGitHub(Activity  context,  final String _sc_id){
+    public PushToGitHub(Context  context,  final String _sc_id){
         mContext = context;
         sc_id = _sc_id;
-        
+         _Uber_progress(true);
         new Thread(() -> {
            _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
-            mContext.runOnUiThread(() ->
+           mContext.runOnUiThread(() ->
               FatchString()
             );
          }).start();
@@ -91,12 +91,14 @@ public class PushToGitHub {
        
          if(!FileUtil.isExistFile(_FilePATH)){
     	   SketchwareUtil.toastError(_FilePATH+" Not Exist!");
+           _Uber_progress(false);
   	     return false;
     	 }
          try(Git git = Git.init().setDirectory(new File(_FilePATH)).call()){
              
          }catch(GitAPIException e){
 			 SketchwareUtil.toastError(e.toString());
+             _Uber_progress(false);
              return false;
          }
          
@@ -127,7 +129,7 @@ public class PushToGitHub {
 	 	             isSucces = false;
 	    		     throw new RuntimeException(Result);
    	 		    }else{
-    			      Result = "Successfully Pushed! Status: " + update.getStatus().toString() +" with :-"+ update.getNewObjectId().getName();
+    			      Result = "Successfully Pushed  & " + update.getStatus().toString();
 	    		      isSucces = true;
 		    		}
 	   	 	 }
@@ -142,6 +144,7 @@ public class PushToGitHub {
 		  	handler.post(new Runnable() {
 				 @Override
 				  public void run() {
+                      _Uber_progress(false);
 					  if(isSucces){
 					     SketchwareUtil.toast(Result);
 					  }else{
@@ -152,5 +155,23 @@ public class PushToGitHub {
 		   }
 		});
         return isSucces;
+	}
+    
+    public void _Uber_progress(final boolean _ifShow) {
+		if (_ifShow) {
+			prog = new AlertDialog.Builder(mContext).create();
+			prog.setCancelable(false);
+			prog.setCanceledOnTouchOutside(false);
+			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+			prog.getWindow().setDimAmount(0.4f);
+			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+			prog.setView(inflate)	
+			prog.show();
+		}
+		else {
+			if (prog != null){
+				prog.dismiss();
+			}
+		}
 	}
 }
