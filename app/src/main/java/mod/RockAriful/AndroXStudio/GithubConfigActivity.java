@@ -392,7 +392,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        filename.requestFocus();
+        
     }
 	
 }
