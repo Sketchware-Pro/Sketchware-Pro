@@ -168,14 +168,18 @@ public class PushToGitHub {
     
     public static void _Uber_progress(final boolean _ifShow) {
 		if (_ifShow) {
-			prog = new AlertDialog.Builder(mContext).create();
-			prog.setCancelable(false);
-			prog.setCanceledOnTouchOutside(false);
-			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-			prog.getWindow().setDimAmount(0.4f);
-			View inflate = mContext.getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
-			prog.setView(inflate);
-			prog.show();
+            mContext.runOnUiThread(new Runnable() {
+              public void run() {
+                prog = new AlertDialog.Builder(mContext).create();
+				prog.setCancelable(false);
+				prog.setCanceledOnTouchOutside(false);
+				prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+				prog.getWindow().setDimAmount(0.4f);
+				View inflate = mContext.getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+				prog.setView(inflate);
+				prog.show();
+ 	  	   }
+			});
 		}
 		else {
 			if (prog != null){
