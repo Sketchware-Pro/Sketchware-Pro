@@ -88,7 +88,9 @@ public class GithubLogActivity extends AppCompatActivity {
 	private LinearLayout linear1;
 	private TextView tv_log;
 
-	private String ProjectNAME = "";
+	private String ProjectNAME = yB.c(projectInfo, "my_ws_name");
+	Private String RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/"+ProjectNAME+"/.git/";
+	Private String GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -118,21 +120,26 @@ public class GithubLogActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		sc_id = getIntent().getStringExtra("sc_id");
-		ProjectNAME = yB.c(projectInfo, "my_ws_name");
-
+		
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
-			
-		}
-		else {
-			
+		  tv_log.setText(_FatchCommitLOG());
+		} else {
+		  new Thread(() -> {                 
+                      _FatchDiff()
+             		runOnUiThread(() ->{
+			 tv_log.setText(FileUtil.readFile(GitHubLast_PATH));
+                     });
+           	   }).start();
+
+		  
 		}
 	}
-	public String _FatchCommitLOG(final String _Repository) {
+	public String _FatchCommitLOG() {
 		 try{
 			     
 			     StringBuilder AddList = new  StringBuilder();
 			     
-			    Repository repoo = new FileRepository("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/");
+			    Repository repoo = new FileRepository(RepositoryPATH);
 			    Git gits = new Git(repoo);
 			    RevWalk walk = new RevWalk(repoo);
 			
@@ -176,7 +183,7 @@ public class GithubLogActivity extends AppCompatActivity {
 			     
 			     
 			     
-			     Repository repo = CookbookHelper.openJGitCookbookRepository("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/");
+			     Repository repo = CookbookHelper.openJGitCookbookRepository(RepositoryPATH);
 			     
 			     
 			     Iterable<RevCommit> logs = new Git(repo).log()
@@ -203,15 +210,15 @@ public class GithubLogActivity extends AppCompatActivity {
 	}
 	
 	
-	public void _FatchDiff(final String _Output) {
+	public void _FatchDiff() {
 		   try{
 			      Repository repository = new FileRepositoryBuilder()
-			            .setGitDir(new File("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/")).build();
+			            .setGitDir(new File(RepositoryPATH)).build();
 			    // Here we get the head commit and it's first parent.
 			    // Adjust to your needs to locate the proper commits.
 			     RevCommit headCommit = getHeadCommit(repository);
 			     RevCommit diffWith = headCommit.getParent(0);
-			     FileOutputStream stdout = new FileOutputStream("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/erros.php");
+			     FileOutputStream stdout = new FileOutputStream(GitHubLast_PATH);
 			     try (DiffFormatter diffFormatter = new DiffFormatter(stdout)) {
 				        diffFormatter.setRepository(repository);
 				        for (DiffEntry entry : diffFormatter.scan(diffWith, headCommit)) {
