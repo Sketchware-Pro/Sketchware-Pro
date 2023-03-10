@@ -1472,8 +1472,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             
             new Thread(() -> {                 
                boolean isSucces = new PushToGitHub(DesignActivity.this,sc_id).pushREPO(filename.getText().toString());
-               runOnUiThread(() -> 
-               );
+              //runOnUiThread(() ->);
+               
             }).start();
 
         });
