@@ -33,8 +33,12 @@ import java.text.*;
 import java.util.*;
 import java.util.regex.*;
 import org.json.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import a.a.a.yB;
+import a.a.a.lC;
 
 import mod.RockAriful.AndroXStudio.*;
 import com.sketchware.remod.R;
@@ -120,13 +124,18 @@ public class GithubLogActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		sc_id = getIntent().getStringExtra("sc_id");
+
+		HashMap<String, Object> projectInfo = lC.b(sc_id);
 		ProjectNAME = yB.c(projectInfo, "my_ws_name");
+
 		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/"+ProjectNAME+"/.git/";
 		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
 	
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
+		  setTitle("Show commit logs");
 		  tv_log.setText(_FatchCommitLOG());
 		} else {
+		  setTitle("GitHub Last Changes");
 		  new Thread(() -> {                 
                       _FatchDiff();
              		runOnUiThread(() ->{
