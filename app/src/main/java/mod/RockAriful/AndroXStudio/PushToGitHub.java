@@ -76,15 +76,14 @@ public class PushToGitHub {
     public PushToGitHub(Activity context,  final String _sc_id){
         mContext = context;
         sc_id = _sc_id;
-         _Uber_progress(true);
-
-	_FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
-	new Handler(Looper.getMainLooper()).post(new Runnable() {
-	    @Override
-	    public void run() {
-              FatchString();
-	    }
-	  });        
+        
+        new Thread(() -> {
+	   _Uber_progress(true);
+           _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
+           mContext.runOnUiThread(() ->
+              FatchString()
+            );
+         }).start();
     }
     
     public void  FatchString(){
