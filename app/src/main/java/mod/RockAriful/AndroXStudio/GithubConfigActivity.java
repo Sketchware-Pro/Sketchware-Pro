@@ -126,6 +126,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private EditText pass;
     private String exportedSourcesPath ="";
     private Intent Ctoken = new Intent();
+    private Intent GoToLog = new Intent();
     
     private String sc_id ="";
 	//boolean&string for fatchin fushing result
@@ -167,20 +168,20 @@ public class GithubConfigActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(final MenuItem item){
 		switch(item.getItemId()){
 	  	case 1:
- 			Intent is = new Intent();
-             is.setClass(getApplicationContext(), GithubLogActivity.class);
-             is.putExtra("sc_id",sc_id);
-             is.putExtra("TYPE","CPreview");
-             startActivity(is);
-             
+ 			GoToLog.setClass(getApplicationContext(), GithubLogActivity.class);
+             GoToLog.putExtra("sc_id",sc_id);
+             GoToLog.putExtra("TYPE","CPreview");
+             startActivity(GoToLog);
+            
 			break;
+
 	  	case 2:
-			Intent is = new Intent();
-             is.setClass(getApplicationContext(), GithubLogActivity.class);
-             is.putExtra("sc_id",sc_id);
-             is.putExtra("TYPE","LOG");
-             startActivity(is);
-             
+			
+             GoToLog.setClass(getApplicationContext(), GithubLogActivity.class);
+             GoToLog.putExtra("sc_id",sc_id);
+             GoToLog.putExtra("TYPE","LOG");
+             startActivity(GoToLog);   
+          
 			break;
     	}
 		return super.onOptionsItemSelected(item);
