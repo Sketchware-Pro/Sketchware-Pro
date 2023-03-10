@@ -181,31 +181,8 @@ public class GithubLogActivity extends AppCompatActivity {
 						                AddList.append(commit.getFullMessage());
 						            }
 					        }
-				    }
-			     
-			     
-			     
-			     
-			     Repository repo = CookbookHelper.openJGitCookbookRepository(RepositoryPATH);
-			     
-			     
-			     Iterable<RevCommit> logs = new Git(repo).log()
-			            .call();
-			     int count = 0;
-			     for (RevCommit rev : logs) {
-				        AddList.append("Commit: " + rev + ", name: " + rev.getName() + ", id: " + rev.getId().getName());
-				        count++;
-				     }
-			     
-			     FileRepositoryBuilder builder = new FileRepositoryBuilder();
-				 Repository repos = builder.setGitDir(new File("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/")).setMustExist(true).build();
-				 Git git = new Git(repos);
-				 Iterable<RevCommit> log = git.log().call();
-				 for (Iterator<RevCommit> iterator = log.iterator(); iterator.hasNext();) {
-				  	 RevCommit rev = iterator.next();
-					   AddList.append(rev.getFullMessage());
-					 }
-			
+				    }			     
+			     			     			     			    		
 			    return AddList.toString();
 			 }catch(GitAPIException | IOException | NullPointerException e){
 			     return e.toString();
@@ -229,7 +206,7 @@ public class GithubLogActivity extends AppCompatActivity {
 					        }
 				     }
 			   }catch(Exception e) {
-			       SketchwareUtil.showMessage(getApplicationContext(), e.toString());
+			       SketchwareUtil.toastError(e.toString());
 			   }
 		 }
 	    private static RevCommit getHeadCommit(Repository repository) throws Exception {
