@@ -7,8 +7,8 @@
 	android:orientation="vertical">
 	<com.airbnb.lottie.LottieAnimationView
 		android:id="@+id/lottie1"
-		android:layout_width="70dp"
-		android:layout_height="70dp"
+		android:layout_width="80dp"
+		android:layout_height="80dp"
 		android:padding="0dp"
 		android:layout_gravity="center_horizontal|center_vertical"
 		android:scaleType="fitCenter"
