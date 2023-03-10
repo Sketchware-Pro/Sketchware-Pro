@@ -126,7 +126,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private EditText pass;
     private String exportedSourcesPath ="";
     private Intent Ctoken = new Intent();
-    private AlertDialog prog;
+    
     private String sc_id ="";
 	//boolean&string for fatchin fushing result
 	private boolean isSucces = false;
@@ -310,97 +310,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 			_view.setElevation((int)_shadow);
 		}
 	}
-  
-   /*
-   public void _GiTPUSHAll(final String _filePATH, final String _setMessage, final String _UserName, final String _PassWord, final String _RemoteURL, final String _setRefSpecs) {
-       
-            
-         if(!FileUtil.isExistFile(_filePATH)){
-    	   SketchwareUtil.toastError(_filePATH+" Not Exist!");
-  	     return;
-    	 }
-         try(Git git = Git.init().setDirectory(new File(_filePATH)).call()){
-             
-         }catch(GitAPIException e){
-			    SketchwareUtil.toastError(e.toString());
-         }
-		ExecutorService executor = Executors.newSingleThreadExecutor();
-		final Handler handler = new Handler(Looper.getMainLooper());
-		
-		 executor.execute(new Runnable() {
-		    @Override
-		   public void run() {
-		     try(Git git = Git.open(new File(_filePATH))) {
-		      //Add Files to git
-	 	        git.add().addFilepattern(".").call();
-		        //Set Commit -m
-	 	        git.commit().setMessage(_setMessage).call();
-	 	        //Push git 
-	 	        PushCommand push = git.push();
-                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _PassWord));
-  		        push.setRemote(_RemoteURL);
- 	 	        push.setRefSpecs(new RefSpec(_setRefSpecs));
- 		        push.setForce(true);
- 			
-					          
-		  	 Iterable<PushResult> results = push.call();
-	   		for (PushResult r : results) {
-   			  for(RemoteRefUpdate update : r.getRemoteUpdates()) {
-	     	 	  System.out.println("Having result: " + update);
-    		 	  if(update.getStatus() != RemoteRefUpdate.Status.OK && update.getStatus() != RemoteRefUpdate.Status.UP_TO_DATE) {
-		  	        Result = "Push failed: "+ update.getStatus();
-	 	             isSucces = false;
-	    		     throw new RuntimeException(Result);
-   	 		    }else{
-    			      Result = "Successfully Pushed  & " + update.getStatus().toString();
-	    		      isSucces = true;
-		    		}
-	   	 	 }
-	   		}
-					             
-	    	 }catch(IOException | GitAPIException | JGitInternalException e) {
-			    Result = e.getMessage();
-			    isSucces = false;
-			    e.printStackTrace();
-			 }
-				        
-		  	handler.post(new Runnable() {
-				 @Override
-				  public void run() {
-                      _Uber_progress(false);
-                      progressbar1.setVisibility(View.GONE);
-		 	         push_btn_title.setVisibility(View.VISIBLE);
-                        
-					  if(isSucces){
-					     SketchwareUtil.toast(Result);
-					  }else{
-					     SketchwareUtil.toastError(Result);
-					  }
-				  }
-			   });
-		   }
-		});
-		
-	}
-    */
-    public void _Uber_progress(final boolean _ifShow) {
-		if (_ifShow) {
-			prog = new AlertDialog.Builder(this).create();
-			prog.setCancelable(false);
-			prog.setCanceledOnTouchOutside(false);
-			
-			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-			prog.getWindow().setDimAmount(0.4f);
-			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
-			prog.setView(inflate)	
-			prog.show();
-		}
-		else {
-			if (prog != null){
-				prog.dismiss();
-			}
-		}
-	}
+
     
     private void commitRepoDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -426,7 +336,7 @@ public class GithubConfigActivity extends AppCompatActivity {
             }
             
             
-           _Uber_progress(true);
+           
            progressbar1.setVisibility(View.VISIBLE);
 		   push_btn_title.setVisibility(View.GONE);
            dialog.dismiss();
@@ -434,7 +344,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	        new Thread(() -> {                 
                isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id).pushREPO(filename.getText().toString());
                runOnUiThread(() ->{
-               _Uber_progress(false);
+               
                progressbar1.setVisibility(View.GONE);
 	       push_btn_title.setVisibility(View.VISIBLE);
                });
