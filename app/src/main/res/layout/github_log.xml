@@ -1,34 +1,52 @@
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/_coordinator"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
-	<ScrollView
-		android:id="@+id/vscroll1"
+	android:layout_height="match_parent">
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/_app_bar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:theme="@style/AppTheme.AppBarOverlay">
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			app:popupTheme="@style/AppTheme.PopupOverlay" />
+	</com.google.android.material.appbar.AppBarLayout>
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="#FFFFFF"
-		android:fillViewport="true"
-		android:overScrollMode="never">
-		<LinearLayout
-			android:id="@+id/linear1"
+		android:orientation="vertical"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		<ScrollView
+			android:id="@+id/vscroll1"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="4dp"
-			android:paddingTop="4dp"
-			android:paddingRight="4dp"
-			android:paddingBottom="8dp"
-			android:orientation="vertical">
-			<TextView
-				android:id="@+id/tv_log"
-				android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:background="#FFFFFF"
+			android:fillViewport="true"
+			android:overScrollMode="never">
+			<LinearLayout
+				android:id="@+id/linear1"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:padding="8dp"
-				android:text="No logs found.!"
-				android:textSize="14sp"
-				android:textColor="#212121" />
-		</LinearLayout>
-	</ScrollView>
-</LinearLayout>
+				android:paddingLeft="4dp"
+				android:paddingTop="4dp"
+				android:paddingRight="4dp"
+				android:paddingBottom="8dp"
+				android:orientation="vertical">
+				<TextView
+					android:id="@+id/tv_log"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="8dp"
+					android:text="No logs found.!"
+					android:textSize="14sp"
+					android:textColor="#212121" />
+			</LinearLayout>
+		</ScrollView>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
