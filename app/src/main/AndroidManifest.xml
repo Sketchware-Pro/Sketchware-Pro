@@ -320,6 +320,9 @@
         <activity
             android:name="mod.RockAriful.AndroXStudio.GithubConfigActivity"
             android:configChanges="orientation|screenSize" />
+	<activity
+            android:name="mod.RockAriful.AndroXStudio.GithubLogActivity"
+            android:configChanges="orientation|screenSize" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
