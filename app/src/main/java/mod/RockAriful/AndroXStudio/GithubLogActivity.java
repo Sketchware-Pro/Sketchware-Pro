@@ -89,8 +89,8 @@ public class GithubLogActivity extends AppCompatActivity {
 	private TextView tv_log;
 
 	private String ProjectNAME = "";
-	Private String RepositoryPATH = "";
-	Private String GitHubLast_PATH = "";
+	private String RepositoryPATH = "";
+	private String GitHubLast_PATH = "";
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
