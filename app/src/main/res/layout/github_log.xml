@@ -1,0 +1,34 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	<ScrollView
+		android:id="@+id/vscroll1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#FFFFFF"
+		android:fillViewport="true"
+		android:overScrollMode="never">
+		<LinearLayout
+			android:id="@+id/linear1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="4dp"
+			android:paddingTop="4dp"
+			android:paddingRight="4dp"
+			android:paddingBottom="8dp"
+			android:orientation="vertical">
+			<TextView
+				android:id="@+id/tv_log"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="8dp"
+				android:text="No logs found.!"
+				android:textSize="14sp"
+				android:textColor="#212121" />
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
