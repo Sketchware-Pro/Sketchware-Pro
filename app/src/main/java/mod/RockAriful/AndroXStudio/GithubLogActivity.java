@@ -34,6 +34,47 @@ import java.util.*;
 import java.util.regex.*;
 import org.json.*;
 
+import mod.RockAriful.AndroXStudio.*;
+import com.sketchware.remod.R;
+import mod.SketchwareUtil; 
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.agus.jcoderz.lib.FileUtil;
+
+import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.errors.*;
+import java.io.BufferedWriter; 
+import java.io.File; 
+import java.io.FileOutputStream; 
+import java.io.OutputStreamWriter; 
+import java.text.MessageFormat; 
+import java.util.Date; 
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean; 
+ 
+import org.eclipse.jgit.api.CloneCommand; 
+import org.eclipse.jgit.api.Git; 
+import org.eclipse.jgit.api.ResetCommand.ResetType; 
+import org.eclipse.jgit.api.ListBranchCommand.ListMode;
+import org.eclipse.jgit.api.errors.GitAPIException; 
+import org.eclipse.jgit.lib.Constants; 
+import org.eclipse.jgit.revwalk.RevCommit; 
+import org.eclipse.jgit.transport.CredentialsProvider; 
+import org.eclipse.jgit.transport.PushResult; 
+import org.eclipse.jgit.transport.RefSpec; 
+import org.eclipse.jgit.transport.*;
+import org.eclipse.jgit.transport.RemoteRefUpdate; 
+import org.eclipse.jgit.transport.RemoteRefUpdate.Status; 
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider; 
+import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.util.FileUtils; 
+
+import org.eclipse.jgit.revwalk.RevCommitList;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.internal.storage.file.*;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.diff.*;
+import org.eclipse.jgit.treewalk.*;
+
 public class GithubLogActivity extends AppCompatActivity {
 	
 	private Toolbar _toolbar;
