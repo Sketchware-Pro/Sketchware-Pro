@@ -8,6 +8,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import android.content.*;
 import android.app.*;
 import android.app.Activity;
+import android.graphics.*;
+import android.graphics.drawable.*;
 
 import java.io.*;
 import java.text.*;
@@ -61,7 +63,7 @@ public class PushToGitHub {
     private static String Result ="";
     private static String sc_id ="";
     private static boolean isSucces = false;
-    private Context mContext;
+    private static Activity mContext;
     private static AlertDialog prog;
     private static String _FilePATH ="";
     private static String _RepositoryURL ="";
@@ -172,7 +174,7 @@ public class PushToGitHub {
 			prog.setCanceledOnTouchOutside(false);
 			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
 			prog.getWindow().setDimAmount(0.4f);
-			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+			View inflate = mContext.getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
 			prog.setView(inflate);
 			prog.show();
 		}
