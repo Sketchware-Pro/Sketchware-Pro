@@ -189,17 +189,43 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(Helper.getResString(R.string.common_word_show), v -> {
             if (!mB.a()) {
-                snackbar.dismiss();
-                Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
-                intent.putExtra("error", error);
-                intent.putExtra("sc_id", sc_id);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                if(isActivityForeground){
+                	snackbar.dismiss();
+                	Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
+                	intent.putExtra("error", error);
+                	intent.putExtra("sc_id", sc_id);
+                	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                	startActivity(intent);
+                }else{
+                	Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
+                	intent.putExtra("error", error);
+                	intent.putExtra("sc_id", sc_id);
+                	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                	PendingIntent i = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+			NotificationManager appBuildFailed = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+    			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+	    			NotificationChannel ntc = new NotificationChannel(
+	                	"Error", "Show Error", NotificationManager.IMPORTANCE_HIGH);
+	        		appBuildFailed.createNotificationChannel(ntc);
+	    		}
+
+			androidx.core.app.NotificationCompat.Builder BuildFail = new androidx.core.app.NotificationCompat.Builder(getApplicationContext(), "Build Fail");
+			BuildFail.setSmallIcon(R.drawable.sketch_app_icon);
+			BuildFail.setContentTitle("Build failed");
+			BuildFail.setOngoing(false);
+			BuildFail.setContentText("App build has been failed.");
+			BuildFail.addAction(R.drawable.sketch_app_icon,"Show Compile Log",i);
+			appBuildFailed.notify(1, BuildFail.build());
+                }
             }
         });
         /* Set the text color to yellow */
         snackbar.setActionTextColor(Color.YELLOW);
-        snackbar.show();
+        /* show snackbar only in foreground */
+        if (isActivityForeground){
+        	snackbar.show();
+        }
     }
 
     @Override
@@ -277,20 +303,20 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         else{
         	PendingIntent i = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
-			NotificationManager installApk = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-    			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-	    			NotificationChannel ntc = new NotificationChannel(
-	                	"install", "Install Debug apk", NotificationManager.IMPORTANCE_HIGH);
-	        		installApk.createNotificationChannel(ntc);
-	    		}
+		NotificationManager installApk = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+    		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+	    		NotificationChannel ntc = new NotificationChannel(
+	               	"install", "Install Debug apk", NotificationManager.IMPORTANCE_HIGH);
+	        	installApk.createNotificationChannel(ntc);
+	    	}
 
-			androidx.core.app.NotificationCompat.Builder InstallApkBuilder = new androidx.core.app.NotificationCompat.Builder(getApplicationContext(), "install");
-			InstallApkBuilder.setSmallIcon(R.drawable.sketch_app_icon);
-			InstallApkBuilder.setContentTitle("Install Build Apk");
-			InstallApkBuilder.setOngoing(false);
-			InstallApkBuilder.setContentText("App built successfully and ready to install.");
-			InstallApkBuilder.addAction(R.drawable.sketch_app_icon,"Install",i);
-			installApk.notify(1, InstallApkBuilder.build());
+		androidx.core.app.NotificationCompat.Builder InstallApkBuilder = new androidx.core.app.NotificationCompat.Builder(getApplicationContext(), "install");
+		InstallApkBuilder.setSmallIcon(R.drawable.sketch_app_icon);
+		InstallApkBuilder.setContentTitle("Install Build Apk");
+		InstallApkBuilder.setOngoing(false);
+		InstallApkBuilder.setContentText("App built successfully and ready to install.");
+		InstallApkBuilder.addAction(R.drawable.sketch_app_icon,"Install",i);
+		installApk.notify(1, InstallApkBuilder.build());
         }
     }
 
