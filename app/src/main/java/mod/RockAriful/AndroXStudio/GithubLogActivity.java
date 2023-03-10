@@ -128,7 +128,7 @@ public class GithubLogActivity extends AppCompatActivity {
 		HashMap<String, Object> projectInfo = lC.b(sc_id);
 		ProjectNAME = yB.c(projectInfo, "my_ws_name");
 
-		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/"+ProjectNAME+"/.git/";
+		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/.git/";
 		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
 	
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
