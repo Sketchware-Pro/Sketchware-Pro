@@ -7,6 +7,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 
 import android.content.*;
 import android.app.*;
+import android.app.Activity;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -19,6 +21,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.concurrent.*;
 import android.os.*;
+
+import android.widget.*;
+import android.view.*;
+import android.view.View;
 
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.*;
@@ -65,7 +71,7 @@ public class PushToGitHub {
     private static String _CommitMessage ="";
     
     
-    public PushToGitHub(Context  context,  final String _sc_id){
+    public PushToGitHub(Activity context,  final String _sc_id){
         mContext = context;
         sc_id = _sc_id;
          _Uber_progress(true);
@@ -157,7 +163,7 @@ public class PushToGitHub {
         return isSucces;
 	}
     
-    public void _Uber_progress(final boolean _ifShow) {
+    public static void _Uber_progress(final boolean _ifShow) {
 		if (_ifShow) {
 			prog = new AlertDialog.Builder(mContext).create();
 			prog.setCancelable(false);
@@ -165,7 +171,7 @@ public class PushToGitHub {
 			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
 			prog.getWindow().setDimAmount(0.4f);
 			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
-			prog.setView(inflate);
+			prog.setView(inflate)	
 			prog.show();
 		}
 		else {
