@@ -334,6 +334,9 @@
         <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
     <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">true</item>
