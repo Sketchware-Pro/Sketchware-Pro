@@ -154,6 +154,36 @@ public class GithubConfigActivity extends AppCompatActivity {
 			initializeLogic();
 		}
 	}
+    
+     @Override
+ 	public boolean onCreateOptionsMenu(Menu menu){
+       menu.add(Menu.NONE, 1, Menu.NONE, "Preview Last Changes ");
+   	menu.add(Menu.NONE, 2, Menu.NONE, "Show last commit log");
+       
+   	
+   	return true;
+	 }
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item){
+		switch(item.getItemId()){
+	  	case 1:
+ 			Intent i = new Intent();
+             i.setClass(getApplicationContext(), GithubLogActivity.class);
+             i.putExtra("sc_id",sc_id);
+             i.putExtra("TYPE","CPreview");
+             startActivity(i);
+			break;
+	  	case 2:
+			Intent i = new Intent();
+             i.setClass(getApplicationContext(), GithubLogActivity.class);
+             i.putExtra("sc_id",sc_id);
+             i.putExtra("TYPE","LOG");
+             startActivity(i);
+             
+			break;
+    	}
+		return super.onOptionsItemSelected(item);
+    }
 	
 	private void initialize(Bundle _savedInstanceState) {
 		_app_bar = findViewById(R.id._app_bar);
