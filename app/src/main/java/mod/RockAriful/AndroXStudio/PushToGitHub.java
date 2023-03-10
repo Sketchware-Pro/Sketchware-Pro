@@ -171,7 +171,7 @@ public class PushToGitHub {
 			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
 			prog.getWindow().setDimAmount(0.4f);
 			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
-			prog.setView(inflate)	
+			prog.setView(inflate);
 			prog.show();
 		}
 		else {
