@@ -88,9 +88,9 @@ public class GithubLogActivity extends AppCompatActivity {
 	private LinearLayout linear1;
 	private TextView tv_log;
 
-	private String ProjectNAME = yB.c(projectInfo, "my_ws_name");
-	Private String RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/"+ProjectNAME+"/.git/";
-	Private String GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
+	private String ProjectNAME = "";
+	Private String RepositoryPATH = "";
+	Private String GitHubLast_PATH = "";
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -120,12 +120,15 @@ public class GithubLogActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		sc_id = getIntent().getStringExtra("sc_id");
-		
+		ProjectNAME = yB.c(projectInfo, "my_ws_name");
+		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/"+ProjectNAME+"/.git/";
+		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
+	
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
 		  tv_log.setText(_FatchCommitLOG());
 		} else {
 		  new Thread(() -> {                 
-                      _FatchDiff()
+                      _FatchDiff();
              		runOnUiThread(() ->{
 			 tv_log.setText(FileUtil.readFile(GitHubLast_PATH));
                      });
