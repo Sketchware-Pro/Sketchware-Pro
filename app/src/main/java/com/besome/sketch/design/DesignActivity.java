@@ -4,6 +4,7 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -119,7 +120,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private static final int REQUEST_CODE_FONT_MANAGER = 228;
     private static final int REQUEST_CODE_COLLECTION_MANAGER = 233;
     private static final int REQUEST_CODE_SOURCE_CODE_VIEWER = 240;
-
+    
+    private Boolean isActivityForeground = false;
+    private NotificationManager installApk;
+    
     private ImageView xmlLayoutOrientation;
     private boolean B = false;
     private int currentTabNumber;
@@ -265,8 +269,27 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
         }
+        if (isActivityForeground){
+          startActivity(intent);
+        }
+        else{
+        	PendingIntent i = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
-        startActivity(intent);
+			NotificationManager installApk = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+    			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+	    			NotificationChannel ntc = new NotificationChannel(
+	                	"install", "Install Debug apk", NotificationManager.IMPORTANCE_HIGH);
+	        		installApk.createNotificationChannel(ntc);
+	    		}
+
+			androidx.core.app.NotificationCompat.Builder InstallApkBuilder = new androidx.core.app.NotificationCompat.Builder(getApplicationContext(), "install");
+			InstallApkBuilder.setSmallIcon(R.drawable.default_image);
+			InstallApkBuilder.setContentTitle("Install Build Apk");
+			InstallApkBuilder.setOngoing(false);
+			InstallApkBuilder.setContentText("Click on install to install your debug apk.");
+			InstallApkBuilder.addAction(R.drawable.default_image,"Install",i);
+			installApk.notify(1, InstallApkBuilder.build());
+        }
     }
 
     @Override
@@ -579,6 +602,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        isActivityForeground = true;
         if (!j()) {
             finish();
         }
@@ -587,6 +611,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         if (freeMegabytes < 100L && freeMegabytes > 0L) {
             warnAboutInsufficientStorageSpace();
         }
+    }
+    
+    @Override
+    public void onPause(){
+      super.onPause();
+      isActivityForeground = false;
     }
 
     @Override
