@@ -138,7 +138,7 @@ public class PushToGitHub {
 	 	             isSucces = false;
 	    		     throw new RuntimeException(Result);
    	 		    }else{
-    			      Result = "Successfully Pushed  & " + update.getStatus().toString();
+    			      Result = "Successfully Pushed! Status : " + update.getStatus().toString()+" with :- "+update.getNewObjectId().getName();
 	    		      isSucces = true;
 		    		}
 	   	 	 }
