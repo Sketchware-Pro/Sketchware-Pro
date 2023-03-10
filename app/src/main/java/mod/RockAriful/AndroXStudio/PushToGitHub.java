@@ -58,11 +58,11 @@ import org.eclipse.jgit.util.FileUtils;
 public class PushToGitHub {
     
     private ArrayList<HashMap<String, Object>> JsonMAP = new ArrayList<>();
-	private static String Result ="";
+    private static String Result ="";
     private static String sc_id ="";
-	private static boolean isSucces = false;
+    private static boolean isSucces = false;
     private Context mContext;
-    private AlertDialog prog;
+    private static AlertDialog prog;
     private static String _FilePATH ="";
     private static String _RepositoryURL ="";
     private static String _setRefSpecs ="";
@@ -75,12 +75,14 @@ public class PushToGitHub {
         mContext = context;
         sc_id = _sc_id;
          _Uber_progress(true);
-        new Thread(() -> {
-           _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
-           mContext.runOnUiThread(() ->
-              FatchString()
-            );
-         }).start();
+
+	_FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
+	new Handler(Looper.getMainLooper()).post(new Runnable() {
+	    @Override
+	    public void run() {
+              FatchString();
+	    }
+	  });        
     }
     
     public void  FatchString(){
