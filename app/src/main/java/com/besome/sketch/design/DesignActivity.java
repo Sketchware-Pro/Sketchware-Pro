@@ -288,7 +288,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 			InstallApkBuilder.setSmallIcon(R.drawable.sketch_app_icon);
 			InstallApkBuilder.setContentTitle("Install Build Apk");
 			InstallApkBuilder.setOngoing(false);
-			InstallApkBuilder.setContentText("Click on install to install your debug apk.");
+			InstallApkBuilder.setContentText("App built successfully and ready to install.");
 			InstallApkBuilder.addAction(R.drawable.sketch_app_icon,"Install",i);
 			installApk.notify(1, InstallApkBuilder.build());
         }
