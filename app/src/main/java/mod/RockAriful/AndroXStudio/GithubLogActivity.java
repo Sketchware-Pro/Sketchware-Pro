@@ -34,6 +34,8 @@ import java.util.*;
 import java.util.regex.*;
 import org.json.*;
 
+import a.a.a.yB;
+
 import mod.RockAriful.AndroXStudio.*;
 import com.sketchware.remod.R;
 import mod.SketchwareUtil; 
@@ -85,6 +87,8 @@ public class GithubLogActivity extends AppCompatActivity {
 	private ScrollView vscroll1;
 	private LinearLayout linear1;
 	private TextView tv_log;
+
+	private String ProjectNAME = "";
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -114,12 +118,116 @@ public class GithubLogActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		sc_id = getIntent().getStringExtra("sc_id");
+		ProjectNAME = yB.c(projectInfo, "my_ws_name");
+
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
 			
 		}
 		else {
 			
 		}
+	}
+	public String _FatchCommitLOG(final String _Repository) {
+		 try{
+			     
+			     StringBuilder AddList = new  StringBuilder();
+			     
+			    Repository repoo = new FileRepository("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/");
+			    Git gits = new Git(repoo);
+			    RevWalk walk = new RevWalk(repoo);
+			
+			    List<Ref> branches = gits.branchList().call();
+			
+			    for (Ref branch : branches) {
+				        String branchName = branch.getName();
+				
+				        AddList.append("Commits of branch: " + branch.getName());
+				        AddList.append("-------------------------------------");
+				
+				        Iterable<RevCommit> commits = gits.log().all().call();
+				
+				        for (RevCommit commit : commits) {
+					            boolean foundInThisBranch = false;
+					
+					            RevCommit targetCommit = walk.parseCommit(repoo.resolve(
+					                    commit.getName()));
+					            for (Map.Entry<String, Ref> e : repoo.getAllRefs().entrySet()) {
+						                if (e.getKey().startsWith(Constants.R_HEADS)) {
+							                    if (walk.isMergedInto(targetCommit, walk.parseCommit(
+							                            e.getValue().getObjectId()))) {
+								                        String foundInBranch = e.getValue().getName();
+								                        if (branchName.equals(foundInBranch)) {
+									                            foundInThisBranch = true;
+									                            break;
+									                        }
+								                    }
+							                }
+						            }
+					
+					            if (foundInThisBranch) {
+						                AddList.append(commit.getName());
+						                AddList.append(commit.getAuthorIdent().getName());
+						                AddList.append(new Date(commit.getCommitTime() * 1000L));
+						                AddList.append(commit.getFullMessage());
+						            }
+					        }
+				    }
+			     
+			     
+			     
+			     
+			     Repository repo = CookbookHelper.openJGitCookbookRepository("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/");
+			     
+			     
+			     Iterable<RevCommit> logs = new Git(repo).log()
+			            .call();
+			     int count = 0;
+			     for (RevCommit rev : logs) {
+				        AddList.append("Commit: " + rev + ", name: " + rev.getName() + ", id: " + rev.getId().getName());
+				        count++;
+				     }
+			     
+			     FileRepositoryBuilder builder = new FileRepositoryBuilder();
+				 Repository repos = builder.setGitDir(new File("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/")).setMustExist(true).build();
+				 Git git = new Git(repos);
+				 Iterable<RevCommit> log = git.log().call();
+				 for (Iterator<RevCommit> iterator = log.iterator(); iterator.hasNext();) {
+				  	 RevCommit rev = iterator.next();
+					   AddList.append(rev.getFullMessage());
+					 }
+			
+			    return AddList.toString();
+			 }catch(GitAPIException | IOException | NullPointerException e){
+			     return e.toString();
+			 }
+	}
+	
+	
+	public void _FatchDiff(final String _Output) {
+		   try{
+			      Repository repository = new FileRepositoryBuilder()
+			            .setGitDir(new File("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/")).build();
+			    // Here we get the head commit and it's first parent.
+			    // Adjust to your needs to locate the proper commits.
+			     RevCommit headCommit = getHeadCommit(repository);
+			     RevCommit diffWith = headCommit.getParent(0);
+			     FileOutputStream stdout = new FileOutputStream("/storage/emulated/0/.KiTHUB/Projects/SKMigrator/.git/erros.php");
+			     try (DiffFormatter diffFormatter = new DiffFormatter(stdout)) {
+				        diffFormatter.setRepository(repository);
+				        for (DiffEntry entry : diffFormatter.scan(diffWith, headCommit)) {
+					            diffFormatter.format(diffFormatter.toFileHeader(entry));
+					        }
+				     }
+			   }catch(Exception e) {
+			       SketchwareUtil.showMessage(getApplicationContext(), e.toString());
+			   }
+		 }
+	    private static RevCommit getHeadCommit(Repository repository) throws Exception {
+		    try (Git git = new Git(repository)) {
+			        Iterable<RevCommit> history = git.log().setMaxCount(1).call();
+			        return history.iterator().next();
+			    }
+		
 	}
 
 }
