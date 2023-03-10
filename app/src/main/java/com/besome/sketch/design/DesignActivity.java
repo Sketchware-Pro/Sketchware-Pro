@@ -283,11 +283,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 	    		}
 
 			androidx.core.app.NotificationCompat.Builder InstallApkBuilder = new androidx.core.app.NotificationCompat.Builder(getApplicationContext(), "install");
-			InstallApkBuilder.setSmallIcon(R.drawable.default_image);
+			InstallApkBuilder.setSmallIcon(R.drawable.sketch_app_icon);
 			InstallApkBuilder.setContentTitle("Install Build Apk");
 			InstallApkBuilder.setOngoing(false);
 			InstallApkBuilder.setContentText("Click on install to install your debug apk.");
-			InstallApkBuilder.addAction(R.drawable.default_image,"Install",i);
+			InstallApkBuilder.addAction(R.drawable.sketch_app_icon,"Install",i);
 			installApk.notify(1, InstallApkBuilder.build());
         }
     }
