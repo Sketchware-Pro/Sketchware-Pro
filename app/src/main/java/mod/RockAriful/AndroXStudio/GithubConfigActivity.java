@@ -391,20 +391,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 			
 			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
 			prog.getWindow().setDimAmount(0.4f);
-			View inflate = getLayoutInflater().inflate(R.layout.rockariful_avloading, null);
-			prog.setView(inflate);
-            
-			final LinearLayout lin1 = (LinearLayout) inflate.findViewById(R.id.linear1);
-            _setBackground(lin1, 10, 1, "#16aee0", false);
-            
-			AVLoadingIndicator.AVLoadingIndicatorView v = new AVLoadingIndicator. AVLoadingIndicatorView(this);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-			v.setLayoutParams(lp);
-			lin1.addView(v);
-			v.show();
-			v.setIndicatorColor(Color.parseColor("#ffffff"));
-			v.setIndicatorName("CubeTransition");
-			
+			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+			prog.setView(inflate)	
 			prog.show();
 		}
 		else {
