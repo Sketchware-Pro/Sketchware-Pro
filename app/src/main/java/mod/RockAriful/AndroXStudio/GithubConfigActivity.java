@@ -353,8 +353,8 @@ public class GithubConfigActivity extends AppCompatActivity {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
-        final RadioButton fileType = view.findViewById(R.id.radio_file_format);
-        final RadioButton ScType = view.findViewById(R.id.redio_sc_type);
+        final RadioGroup fileType = view.findViewById(R.id.radio_file_format);
+        final RadioGroup ScType = view.findViewById(R.id.redio_sc_type);
         final com.google.android.material.textfield.TextInputLayout addFileType =  view.findViewById(R.id.dialog_custom_edittext_input);
         
         final EditText filename = view.findViewById(R.id.dialog_edittext_name);
