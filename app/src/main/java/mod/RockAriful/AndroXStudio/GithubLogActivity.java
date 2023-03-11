@@ -91,8 +91,7 @@ public class GithubLogActivity extends AppCompatActivity {
 	private AppBarLayout _app_bar;
 	private CoordinatorLayout _coordinator;
 	private String sc_id = "";
-	
-	private ScrollView vscroll1;
+	private AlertDialog prog;
 	private io.github.rosemoe.sora.widget.CodeEditor editor;
 	
 
@@ -141,15 +140,17 @@ public class GithubLogActivity extends AppCompatActivity {
 
 		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/.git/";
 		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
-	
+		_Uber_progress(true);
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
 		  setTitle("Show commit logs");
-		  tv_log.setText(_FatchCommitLOG());
+          editor.setText(Html.fromHtml(_FatchCommitLOG()));
+          _Uber_progress(false);
 		} else {
 		  setTitle("GitHub Last Changes");
 		  new Thread(() -> {                 
                       _FatchDiff();
              		runOnUiThread(() ->{
+                          _Uber_progress(false);
                           _DiffyViewer(tv_log,FileUtil.readFile(GitHubLast_PATH));
                      });
            	   }).start();
@@ -171,8 +172,8 @@ public class GithubLogActivity extends AppCompatActivity {
 			    for (Ref branch : branches) {
 				        String branchName = branch.getName();
 				
-				        AddList.append("\nCommits of branch: " + branch.getName());
-				        AddList.append("-------------------------------------");
+				        AddList.append("<br><font color='#d81b60'> Commits of branch:</font>" + branch.getName());
+				        AddList.append("------------------[START]----------------------");
 				
 				        Iterable<RevCommit> commits = gits.log().all().call();
 				
@@ -195,11 +196,11 @@ public class GithubLogActivity extends AppCompatActivity {
 						            }
 					
 					            if (foundInThisBranch) {
-						                AddList.append("\n"+commit.getName());
-						                AddList.append("\n"+commit.getAuthorIdent().getName());
-						                AddList.append("\n"+ new Date(commit.getCommitTime() * 1000L));
-						                AddList.append("\n"+commit.getFullMessage());
-                                        AddList.append("\n"+"-----------------------[END]-------------------"+"\n");
+						                AddList.append("<br>"+commit.getName());
+						                AddList.append("<br>"+commit.getAuthorIdent().getName());
+						                AddList.append("<br>"+ new Date(commit.getCommitTime() * 1000L));
+						                AddList.append("<br>"+commit.getFullMessage());
+                                        AddList.append("<br>"+"-----------------------[END]-------------------"+"<br>");
 						            }
 					        }
 				    }			     
@@ -270,6 +271,24 @@ public class GithubLogActivity extends AppCompatActivity {
 		}   
 		 _tv_view.setText(spannable1);
  	}
+     
+     public static void _Uber_progress(final boolean _ifShow) {
+		if (_ifShow) {
+           prog = new AlertDialog.Builder(this).create();
+	   	prog.setCancelable(false);
+			prog.setCanceledOnTouchOutside(false);
+			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+			prog.getWindow().setDimAmount(0.4f);
+			View inflate = mContext.getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+			prog.setView(inflate);
+			prog.show();
+		}
+		else {
+			if (prog != null){
+				prog.dismiss();
+			}
+		}
+	}
 
 }
 
