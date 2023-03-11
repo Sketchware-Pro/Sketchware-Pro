@@ -280,7 +280,7 @@ public class GithubLogActivity extends AppCompatActivity {
 			prog.setCanceledOnTouchOutside(false);
 			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
 			prog.getWindow().setDimAmount(0.4f);
-			View inflate = mContext.getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
 			prog.setView(inflate);
 			prog.show();
 		}
