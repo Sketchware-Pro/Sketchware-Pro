@@ -1443,7 +1443,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
     
-    private void commitRepoDialog(final boolean _force) {
+    private void commitRepoDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
