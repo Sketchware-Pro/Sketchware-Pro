@@ -354,7 +354,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
         
-        final RadioGroup ScType = view.findViewById(R.id.redio_sc_type);
+        final LinearLayout ScType = view.findViewById(R.id.redio_sc_type);
         
         final EditText Fileformat = view.findViewById(R.id.dialog_custom_file);
         final EditText filename = view.findViewById(R.id.dialog_edittext_name);
@@ -369,7 +369,23 @@ public class GithubConfigActivity extends AppCompatActivity {
         filename.setHint("setMessage");
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));       
         
-        ScType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+        
+        final RadioButton[ ] rb = new RadioButton[2];
+		RadioGroup rg = new RadioGroup(this);
+		rg.setOrientation(RadioGroup.HORIZONTAL);
+		
+		rb[0]  = new RadioButton(this); 
+		rb[0].setText("Source code");
+		rb[0].setId(1);
+		rg.addView(rb[0]);
+        
+        rb[1]  = new RadioButton(this); 
+		rb[1].setText("Project files");
+		rb[1].setId(1);
+		rg.addView(rb[1]);
+		ScType.addView(rg);
+
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 		 @Override
 			public void onCheckedChanged(RadioGroup group, int checkedId){
 			  switch((int)checkedId) {
