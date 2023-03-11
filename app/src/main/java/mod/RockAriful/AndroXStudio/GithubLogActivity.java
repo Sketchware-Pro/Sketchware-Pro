@@ -285,7 +285,7 @@ public class GithubLogActivity extends AppCompatActivity {
                _text.replace("+++ b/","<--------------[Recent Commit file :]------------>");
            }else if (lines[i].contains("--- a/")){
                _text.replace("--- a/","<--------------[Previous Commit file :]------------>");
-           }else if(lines[i].contains("\ No newline at end of file")){
+           }else if(lines[i].contains("No newline at end of file")){
                _text.replace(lines[i],"<--------------[END]------------>");
            }
          }
