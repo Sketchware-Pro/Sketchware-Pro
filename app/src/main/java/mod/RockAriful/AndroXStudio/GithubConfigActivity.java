@@ -377,9 +377,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 		rb[0]  = new RadioButton(this); 
 		rb[0].setText("Source code");
 		rb[0].setId(1);
+		rb[0].setChecked(true);
 		rg.addView(rb[0]);
         
-        rb[1]  = new RadioButton(this); 
+      	        rb[1]  = new RadioButton(this); 
 		rb[1].setText("Project files");
 		rb[1].setId(1);
 		rg.addView(rb[1]);
@@ -389,13 +390,16 @@ public class GithubConfigActivity extends AppCompatActivity {
 		 @Override
 			public void onCheckedChanged(RadioGroup group, int checkedId){
 			  switch((int)checkedId) {
-				case ((int)0): {
+				case ((int)1): {
 					SketchwareUtil.toast("1");
+
 					break;
 				}
-				case ((int)1): {
+				case ((int)2): {
 					SketchwareUtil.toast("2");
 					break;
+					default:
+                      		        return false;
 				}
 		  	}
 			}
