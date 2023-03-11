@@ -28,6 +28,9 @@ import android.widget.*;
 import android.view.*;
 import android.view.View;
 
+import a.a.a.yB;
+import a.a.a.lC;
+
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.*;
 import java.io.BufferedWriter; 
@@ -73,17 +76,29 @@ public class PushToGitHub {
     private static String _CommitMessage ="";
     
     
-    public PushToGitHub(Activity context,  final String _sc_id){
+    public PushToGitHub(Activity context,  final String _sc_id, final boolean _Force){
         mContext = context;
         sc_id = _sc_id;
         
+       if(_Force){
+         new Thread(() -> {
+	 	  _Uber_progress(true);
+           HashMap<String, Object> projectInfo = lC.b(sc_id);
+           _FilePATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+yB.c(projectInfo, "my_ws_name");
+           mContext.runOnUiThread(() ->
+              FatchString()
+            );
+         }).start();
+            
+       }else{
         new Thread(() -> {
-	   _Uber_progress(true);
+	 	  _Uber_progress(true);
            _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
            mContext.runOnUiThread(() ->
               FatchString()
             );
          }).start();
+       }
     }
     
     public void  FatchString(){
