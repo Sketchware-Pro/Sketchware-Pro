@@ -89,8 +89,8 @@ public class GithubLogActivity extends AppCompatActivity {
 	private String sc_id = "";
 	
 	private ScrollView vscroll1;
-	private LinearLayout linear1;
-	private TextView tv_log;
+	private io.github.rosemoe.sora.widget.CodeEditor editor;
+	
 
 	private String ProjectNAME = "";
 	private String RepositoryPATH = "";
@@ -118,8 +118,8 @@ public class GithubLogActivity extends AppCompatActivity {
 			}
 		});
 		vscroll1 = findViewById(R.id.vscroll1);
-		linear1 = findViewById(R.id.linear1);
-		tv_log = findViewById(R.id.tv_log);
+		editor = findViewById(R.id.editor);
+		
 	}
 	
 	private void initializeLogic() {
@@ -227,7 +227,7 @@ public class GithubLogActivity extends AppCompatActivity {
 		
     	}
         
-     public void _DiffyViewer(final TextView _tv_view, final String _DiffyString) {
+     public void _DiffyViewer(final io.github.rosemoe.sora.widget.CodeEditor _tv_view, final String _DiffyString) {
 		final String[] lines;
 		Spannable spannable1 = new SpannableString(_DiffyString);
 		android.text.style.ForegroundColorSpan fgSpan = new android.text.style.ForegroundColorSpan(Color.parseColor("#ffffff"));
