@@ -352,18 +352,53 @@ public class GithubConfigActivity extends AppCompatActivity {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
+        final RadioButton fileType = view.findViewById(R.id.)radio_file_format;
+        final RadioButton ScType = view.findViewById(R.id.redio_sc_type);
+        final com.google.android.material.textfield.TextInputLayout addFileType =  view.findViewById(R.id.dialog_custom_edittext_input);
         
         final EditText filename = view.findViewById(R.id.dialog_edittext_name);
         final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
         final TextView save = view.findViewById(R.id.dialog_text_save);
 
-        title.setText("Commit changes");
+        title.setText("Commit changes with");
         save.setText("Push");
         
 
         calender = Calendar.getInstance();
         filename.setHint("setMessage");
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
+        
+        fileType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+		 @Override
+			public void onCheckedChanged(RadioGroup group, int checkedId){
+			  switch((int)checkedId) {
+				case ((int)0): {
+					addFileType.setVisibility(View.GONE);
+					break;
+				}
+				case ((int)1): {
+					addFileType.setVisibility(View.VISIBLE);
+					break;
+				}
+		  	}
+			}
+        });
+        
+        ScType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+		 @Override
+			public void onCheckedChanged(RadioGroup group, int checkedId){
+			  switch((int)checkedId) {
+				case ((int)0): {
+					
+					break;
+				}
+				case ((int)1): {
+					
+					break;
+				}
+		  	}
+			}
+        });
         
         save.setOnClickListener(v -> {
             if (filename.getText().toString().isEmpty()) {
