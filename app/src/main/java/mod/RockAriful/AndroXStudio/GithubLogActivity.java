@@ -139,7 +139,7 @@ public class GithubLogActivity extends AppCompatActivity {
 		  new Thread(() -> {                 
                       _FatchDiff();
              		runOnUiThread(() ->{
-			 tv_log.setText(FileUtil.readFile(GitHubLast_PATH));
+                          _DiffyViewer(tv_log,FileUtil.readFile(GitHubLast_PATH));
                      });
            	   }).start();
 
@@ -160,7 +160,7 @@ public class GithubLogActivity extends AppCompatActivity {
 			    for (Ref branch : branches) {
 				        String branchName = branch.getName();
 				
-				        AddList.append("Commits of branch: " + branch.getName());
+				        AddList.append("\nCommits of branch: " + branch.getName());
 				        AddList.append("-------------------------------------");
 				
 				        Iterable<RevCommit> commits = gits.log().all().call();
@@ -184,10 +184,11 @@ public class GithubLogActivity extends AppCompatActivity {
 						            }
 					
 					            if (foundInThisBranch) {
-						                AddList.append(commit.getName());
-						                AddList.append(commit.getAuthorIdent().getName());
-						                AddList.append(new Date(commit.getCommitTime() * 1000L));
-						                AddList.append(commit.getFullMessage());
+						                AddList.append("\n"+commit.getName());
+						                AddList.append("\n"+commit.getAuthorIdent().getName());
+						                AddList.append("\n"+ new Date(commit.getCommitTime() * 1000L));
+						                AddList.append("\n"+commit.getFullMessage());
+                                        AddList.append("\n"+"-----------------------[END]-------------------"+"\n");
 						            }
 					        }
 				    }			     
@@ -224,7 +225,40 @@ public class GithubLogActivity extends AppCompatActivity {
 			        return history.iterator().next();
 			    }
 		
-	}
+    	}
+        
+     public void _DiffyViewer(final TextView _tv_view, final String _DiffyString) {
+		final String[] lines;
+		Spannable spannable1 = new SpannableString(_DiffyString);
+		android.text.style.ForegroundColorSpan fgSpan = new android.text.style.ForegroundColorSpan(Color.parseColor("#ffffff"));
+		android.text.style.BackgroundColorSpan bgSpan = new android.text.style.BackgroundColorSpan(Color.parseColor("#4caf50"));
+		android.text.style.BackgroundColorSpan RbgSpan = new android.text.style.BackgroundColorSpan(Color.parseColor("#d81b69"));
+		
+		lines = _DiffyString.split("\n");
+		int x = 0;
+		for (int i = 0; i < lines.length; i++) {
+		    if (lines[i].substring((int)(0), (int)(1)).replaceAll("\\s","").equals("+")) {
+			   int n = _DiffyString.indexOf(lines[i]);
+			   x = n+1;
+                 try{
+				   spannable1.setSpan(android.text.style.CharacterStyle.wrap(fgSpan),n, n+lines[i].length(), 0);
+				   spannable1.setSpan(android.text.style.CharacterStyle.wrap(bgSpan), n, n+lines[i].length(), 0);
+                 }catch(Exception e){
+                   SketchwareUtil.toastError(e.toString());
+                 }
+			 } else if (lines[i].substring((int)(0), (int)(1)).replaceAll("\\s","").equals("-")) {
+                int n = _DiffyString.indexOf(lines[i]);
+			   x = n+1;
+                try{
+                   spannable1.setSpan(android.text.style.CharacterStyle.wrap(fgSpan),n, n+lines[i].length(), 0);
+				   spannable1.setSpan(android.text.style.CharacterStyle.wrap(RbgSpan), n, n+lines[i].length(), 0);
+                }catch(Exception e){
+                  SketchwareUtil.toastError(e.toString());
+                }
+			 }else{}
+		}   
+		 _tv_view.setText(spannable1);
+ 	}
 
 }
 
