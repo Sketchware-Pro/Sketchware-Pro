@@ -50,27 +50,14 @@
             android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>   
 
-    <RadioGroup
+    <linearlayout
         android:id="@+id/redio_sc_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
-        android:paddingTop="5dp">
-        <RadioButton
-            android:id="@+id/radio_src"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Source code" />
-
-        <RadioButton
-            android:id="@+id/radio_swb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Project files" />
-    </RadioGroup>
-    
+        android:paddingTop="5dp"/>
+           
     <com.google.android.material.textfield.TextInputLayout
 	android:id="@+id/dialog_edittext_input"
         android:layout_width="match_parent"
