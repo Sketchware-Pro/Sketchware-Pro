@@ -46,9 +46,10 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
-import io.github.rosemoe.sora.*;
-import io.github.rosemoe.sora.langs.java.*;
-import io.github.rosemoe.sora.langs.textmate.*;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.Magnifier;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.*;
@@ -120,7 +121,7 @@ public class GithubLogActivity extends AppCompatActivity {
 				onBackPressed();
 			}
 		});
-		vscroll1 = findViewById(R.id.vscroll1);
+		
 		editor = findViewById(R.id.editor);
 		
 	}
@@ -151,7 +152,7 @@ public class GithubLogActivity extends AppCompatActivity {
                       _FatchDiff();
              		runOnUiThread(() ->{
                           _Uber_progress(false);
-                          _DiffyViewer(tv_log,FileUtil.readFile(GitHubLast_PATH));
+                          _DiffyViewer(editor,FileUtil.readFile(GitHubLast_PATH));
                      });
            	   }).start();
 
@@ -272,7 +273,7 @@ public class GithubLogActivity extends AppCompatActivity {
 		 _tv_view.setText(spannable1);
  	}
      
-     public static void _Uber_progress(final boolean _ifShow) {
+     public  void _Uber_progress(final boolean _ifShow) {
 		if (_ifShow) {
            prog = new AlertDialog.Builder(this).create();
 	   	prog.setCancelable(false);
