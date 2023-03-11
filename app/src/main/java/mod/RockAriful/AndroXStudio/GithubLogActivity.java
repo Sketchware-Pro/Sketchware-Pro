@@ -141,7 +141,7 @@ public class GithubLogActivity extends AppCompatActivity {
 		ProjectNAME = yB.c(projectInfo, "my_ws_name");
 
 		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/.git/";
-		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/GitHubLast_Changes";
+		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/.git/GiTChangeLog";
 		_Uber_progress(true);
         
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
