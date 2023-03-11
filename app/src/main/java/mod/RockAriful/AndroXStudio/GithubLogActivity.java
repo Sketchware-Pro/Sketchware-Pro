@@ -46,6 +46,10 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
+import io.github.rosemoe.sora.*;
+import io.github.rosemoe.sora.langs.java.*;
+import io.github.rosemoe.sora.langs.textmate.*;
+
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.*;
 import java.io.BufferedWriter; 
@@ -124,7 +128,14 @@ public class GithubLogActivity extends AppCompatActivity {
 	
 	private void initializeLogic() {
 		sc_id = getIntent().getStringExtra("sc_id");
-
+		
+                editor.setTypefaceText(Typeface.MONOSPACE);
+                editor.setEditable(false);
+                editor.setTextSize(14);                
+                editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
+		editor.setColorScheme(new EditorColorScheme());
+                editor.setEditorLanguage(new JavaLanguage());
+               
 		HashMap<String, Object> projectInfo = lC.b(sc_id);
 		ProjectNAME = yB.c(projectInfo, "my_ws_name");
 
