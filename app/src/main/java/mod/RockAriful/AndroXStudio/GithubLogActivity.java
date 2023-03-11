@@ -282,6 +282,8 @@ public class GithubLogActivity extends AppCompatActivity {
 			prog.getWindow().setDimAmount(0.4f);
 			View inflate = getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
 			prog.setView(inflate);
+			final TextView title = (TextView) inflate.findViewById(R.id.textview1);
+			title.setText("Now Loading");
 			prog.show();
 		}
 		else {
