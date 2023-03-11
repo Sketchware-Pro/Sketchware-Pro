@@ -24,7 +24,7 @@
             android:id="@+id/dialog_create_new_file_layoutTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Commit changes with"
+            android:text="Commit changes"
             android:textColor="#ff008dcd"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -47,7 +47,7 @@
             android:hint="FileName or Format | Empty for default"
             android:inputType="text"
             android:textColorHint="#008dcd"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>   
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:hint="setMessage"
             android:inputType="text"
             android:textColorHint="#008dcd"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
