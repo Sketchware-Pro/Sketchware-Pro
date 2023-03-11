@@ -124,7 +124,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private static final int REQUEST_CODE_SOURCE_CODE_VIEWER = 240;
     
     private Boolean isActivityForeground = false;
-    private NotificationManager installApk;
     
     private ImageView xmlLayoutOrientation;
     private boolean B = false;
