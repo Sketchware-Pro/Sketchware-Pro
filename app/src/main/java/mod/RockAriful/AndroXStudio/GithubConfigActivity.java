@@ -353,10 +353,10 @@ public class GithubConfigActivity extends AppCompatActivity {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
-        final RadioGroup fileType = view.findViewById(R.id.radio_file_format);
-        final RadioGroup ScType = view.findViewById(R.id.redio_sc_type);
-        final com.google.android.material.textfield.TextInputLayout addFileType =  view.findViewById(R.id.dialog_custom_edittext_input);
         
+        final RadioGroup ScType = view.findViewById(R.id.redio_sc_type);
+        
+        final EditText Fileformat = view.findViewById(R.id.dialog_custom_file);
         final EditText filename = view.findViewById(R.id.dialog_edittext_name);
         final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
         final TextView save = view.findViewById(R.id.dialog_text_save);
@@ -367,25 +367,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 
         calender = Calendar.getInstance();
         filename.setHint("setMessage");
-        filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));
-        
-        fileType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
-		 @Override
-			public void onCheckedChanged(RadioGroup group, int checkedId){
-			  switch((int)checkedId) {
-				case ((int)0): {
-					addFileType.setVisibility(View.GONE);
-					SketchwareUtil.toast("custome false");
-					break;
-				}
-				case ((int)1): {
-					addFileType.setVisibility(View.VISIBLE);
-					SketchwareUtil.toast("custom true");
-					break;
-				}
-		  	}
-			}
-        });
+        filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));       
         
         ScType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 		 @Override
