@@ -375,10 +375,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 			  switch((int)checkedId) {
 				case ((int)0): {
 					addFileType.setVisibility(View.GONE);
+					SketchwareUtil.toast("custome false");
 					break;
 				}
 				case ((int)1): {
 					addFileType.setVisibility(View.VISIBLE);
+					SketchwareUtil.toast("custom true");
 					break;
 				}
 		  	}
@@ -390,11 +392,11 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onCheckedChanged(RadioGroup group, int checkedId){
 			  switch((int)checkedId) {
 				case ((int)0): {
-					
+					SketchwareUtil.toast("1");
 					break;
 				}
 				case ((int)1): {
-					
+					SketchwareUtil.toast("2");
 					break;
 				}
 		  	}
