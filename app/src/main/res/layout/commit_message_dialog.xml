@@ -50,7 +50,7 @@
             android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>   
 
-    <linearlayout
+    <LinearLayout
         android:id="@+id/redio_sc_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
