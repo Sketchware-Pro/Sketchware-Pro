@@ -382,7 +382,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
                              
                 if (FileUtil.isExistFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
-		    menu.add(Menu.NONE, 7, Menu.NONE, "Show last commit log");
                     menu.add(Menu.NONE, 6, Menu.NONE, "Push on GitHub");
                 }
 
@@ -1444,7 +1443,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
     
-    private void commitRepoDialog() {
+    private void commitRepoDialog(final boolean _force) {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
@@ -1469,13 +1468,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
             
             dialog.dismiss();
-            
+          
             new Thread(() -> {                 
-               boolean isSucces = new PushToGitHub(DesignActivity.this,sc_id).pushREPO(filename.getText().toString());
+               boolean isSucces = new PushToGitHub(DesignActivity.this,sc_id,false).pushREPO(filename.getText().toString());
               //runOnUiThread(() ->);
                
             }).start();
-
+	  	
         });
         
         cancel.setOnClickListener(v -> {
@@ -1491,5 +1490,3 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     
     
 }
-
-
