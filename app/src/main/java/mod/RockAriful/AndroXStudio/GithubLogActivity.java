@@ -277,14 +277,14 @@ public class GithubLogActivity extends AppCompatActivity {
      */
      
      public void _DiffyParse(final String DiffyTEXT){
-     
+       _DiffyTEXT = DiffyTEXT;
         new Thread(() -> {                 
-         	_DiffyTEXT = DiffyTEXT.replace("diff --git a/","\n<--------------[START]------------>\n");
-             _DiffyTEXT = DiffyTEXT.replace("--- a/","\n<--------------[Old Commit File]------------>\n");
-             _DiffyTEXT = DiffyTEXT.replace("+++ b/","\n<--------------[New Commit File]------------>\n");
-             _DiffyTEXT = DiffyTEXT.replace("\\ No newline at end of file","\n<--------------[END]------------>\n");
-             _DiffyTEXT = DiffyTEXT.replace(" b/app/","\n<--------------[]------------>\napp/");
-             _DiffyTEXT = DiffyTEXT.replace("@@","\n<--------------[@@]------------>\n");
+             _DiffyTEXT = _DiffyTEXT.replace("diff --git a/","\n>--------------[START]------------<\n");
+             _DiffyTEXT = _DiffyTEXT.replace("--- a/","\n>--------------[Old Commit File]------------<\n");
+             _DiffyTEXT = _DiffyTEXT.replace("+++ b/","\n>--------------[New Commit File]------------<\n");
+             _DiffyTEXT = _DiffyTEXT.replace("\\ No newline at end of file","\n>--------------[END]------------<\n");
+             _DiffyTEXT = _DiffyTEXT.replace(" b/app/","\n>--------------[]------------<\napp/");
+             _DiffyTEXT = _DiffyTEXT.replace("@@","\n>--------------[@@]------------<\n");
    	      runOnUiThread(() ->{
                editor.setText(_DiffyTEXT);
    	      });
