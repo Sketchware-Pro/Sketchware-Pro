@@ -59,16 +59,16 @@
         android:paddingTop="5dp">
         <RadioButton
             android:id="@+id/radio_src"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="All files" />
+            android:text="Source code" />
 
         <RadioButton
             android:id="@+id/radio_swb"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Java files" />
+            android:text="Project files" />
     </RadioGroup>
    <com.google.android.material.textfield.TextInputLayout
 	android:id="@+id/dialog_custom_edittext_input"
