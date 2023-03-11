@@ -133,7 +133,7 @@ public class GithubLogActivity extends AppCompatActivity {
                 editor.setEditable(false);
                 editor.setTextSize(14);                
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
-		editor.setColorScheme(new EditorColorScheme());
+				editor.setColorScheme(new EditorColorScheme());
                 editor.setEditorLanguage(new JavaLanguage());
                
 		HashMap<String, Object> projectInfo = lC.b(sc_id);
@@ -142,21 +142,22 @@ public class GithubLogActivity extends AppCompatActivity {
 		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/.git/";
 		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
 		_Uber_progress(true);
+        
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
 		  setTitle("Show commit logs");
-          editor.setText(Html.fromHtml(_FatchCommitLOG()));
+          editor.setText(_FatchCommitLOG());
           _Uber_progress(false);
 		} else {
 		  setTitle("GitHub Last Changes");
 		  new Thread(() -> {                 
-                      _FatchDiff();
-             		runOnUiThread(() ->{
-                          _Uber_progress(false);
-                          _DiffyViewer(editor,FileUtil.readFile(GitHubLast_PATH));
-                     });
-           	   }).start();
+                _FatchDiff();
+               runOnUiThread(() ->{
+                   _Uber_progress(false);
+				  editor.setText(_DiffyParse(FileUtil.readFile(GitHubLast_PATH)));
+                   //_DiffyViewer(editor,FileUtil.readFile(GitHubLast_PATH));
+                });
+           }).start();
 
-		  
 		}
 	}
 	public String _FatchCommitLOG() {
@@ -173,8 +174,8 @@ public class GithubLogActivity extends AppCompatActivity {
 			    for (Ref branch : branches) {
 				        String branchName = branch.getName();
 				
-				        AddList.append("<br><font color='#d81b60'> Commits of branch:</font>" + branch.getName());
-				        AddList.append("------------------[START]----------------------");
+				        AddList.append("\nCommits of branch:" + branch.getName());
+				        AddList.append("\n<------------------[START]---------------------->");
 				
 				        Iterable<RevCommit> commits = gits.log().all().call();
 				
@@ -197,11 +198,11 @@ public class GithubLogActivity extends AppCompatActivity {
 						            }
 					
 					            if (foundInThisBranch) {
-						                AddList.append("<br>"+commit.getName());
-						                AddList.append("<br>"+commit.getAuthorIdent().getName());
-						                AddList.append("<br>"+ new Date(commit.getCommitTime() * 1000L));
-						                AddList.append("<br>"+commit.getFullMessage());
-                                        AddList.append("<br>"+"-----------------------[END]-------------------"+"<br>");
+						                AddList.append("\nCommit name: "+commit.getName());
+						                AddList.append("\nCommitAuthorIdent: "+commit.getAuthorIdent().getName());
+						                AddList.append("\nCommit time: "+ new Date(commit.getCommitTime() * 1000L));
+						                AddList.append("\nMessage: "+commit.getFullMessage());
+                                        AddList.append("\n"+"<-----------------------[END]------------------->"+"\n");
 						            }
 					        }
 				    }			     
@@ -239,7 +240,7 @@ public class GithubLogActivity extends AppCompatActivity {
 			    }
 		
     	}
-        
+      /*  
      public void _DiffyViewer(final io.github.rosemoe.sora.widget.CodeEditor _tv_view, final String _DiffyString) {
 		final String[] lines;
 		Spannable spannable1 = new SpannableString(_DiffyString);
@@ -272,7 +273,25 @@ public class GithubLogActivity extends AppCompatActivity {
 		}   
 		 _tv_view.setText(spannable1);
  	}
+     */
      
+     public String _DiffyParse(final String _text){
+         final String[] lines;
+         lines = _text.split("\n");
+         for (int i = 0; i < lines.length; i++) {
+           if (lines[i].contains("diff --git a/")) {
+               _text.replace(lines[i],"<--------------[START]------------>");
+           }else if(lines[i].contains("+++ b/")){
+               _text.replace("+++ b/","<--------------[Recent Commit file :]------------>");
+           }else if (lines[i].contains("--- a/")){
+               _text.replace("--- a/","<--------------[Previous Commit file :]------------>");
+           }else if(lines[i].contains("\ No newline at end of file")){
+               _text.replace(lines[i],"<--------------[END]------------>");
+           }
+         }
+         
+         return _text;
+     }
      public  void _Uber_progress(final boolean _ifShow) {
 		if (_ifShow) {
            prog = new AlertDialog.Builder(this).create();
@@ -294,4 +313,3 @@ public class GithubLogActivity extends AppCompatActivity {
 	}
 
 }
-
