@@ -29,27 +29,27 @@
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
-    
-    <RadioGroup
-        android:id="@+id/radio_file_format"
+ <com.google.android.material.textfield.TextInputLayout
+	android:id="@+id/dialog_custom_edittext_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingLeft="20dp"
-        android:paddingTop="5dp">
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp">
 
-        <RadioButton
-            android:id="@+id/radio_allSrc"
+        <EditText
+            android:id="@+id/dialog_custom_file"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="All files" />
-         <RadioButton
-            android:id="@+id/radio_own_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Custom file type" />   
-    </RadioGroup>
+            android:layout_height="match_parent"
+            android:autofillHints=""
+            android:hint="FileName or Format | Empty for default"
+            android:inputType="text"
+            android:textColorHint="#008dcd"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>   
+
     <RadioGroup
         android:id="@+id/redio_sc_type"
         android:layout_width="match_parent"
@@ -70,28 +70,6 @@
             android:layout_height="wrap_content"
             android:text="Project files" />
     </RadioGroup>
-   <com.google.android.material.textfield.TextInputLayout
-	android:id="@+id/dialog_custom_edittext_input"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:visibility ="gone"
-        android:paddingBottom="10dp">
-
-        <EditText
-            android:id="@+id/dialog_custom_file"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints=""
-            android:hint="setFile Format or Name"
-            android:inputType="text"
-            android:textColorHint="#008dcd"
-            android:textSize="18sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
     
     <com.google.android.material.textfield.TextInputLayout
 	android:id="@+id/dialog_edittext_input"
@@ -144,4 +122,3 @@
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>
-
