@@ -93,6 +93,7 @@ public class GithubLogActivity extends AppCompatActivity {
 	private CoordinatorLayout _coordinator;
 	private String sc_id = "";
 	private AlertDialog prog;
+    private String _DiffyTEXT ="";
 	private io.github.rosemoe.sora.widget.CodeEditor editor;
 	
 
@@ -140,7 +141,7 @@ public class GithubLogActivity extends AppCompatActivity {
 		ProjectNAME = yB.c(projectInfo, "my_ws_name");
 
 		RepositoryPATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/.git/";
-		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/GitHubLast_changes";
+		GitHubLast_PATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+ProjectNAME+"/GitHubLast_Changes";
 		_Uber_progress(true);
         
 		if (getIntent().getStringExtra("TYPE").equals("LOG")) {
@@ -153,7 +154,7 @@ public class GithubLogActivity extends AppCompatActivity {
                 _FatchDiff();
                runOnUiThread(() ->{
                    _Uber_progress(false);
-				  editor.setText(_DiffyParse(FileUtil.readFile(GitHubLast_PATH)));
+                   _DiffyParse(FileUtil.readFile(GitHubLast_PATH));
                    //_DiffyViewer(editor,FileUtil.readFile(GitHubLast_PATH));
                 });
            }).start();
@@ -275,23 +276,21 @@ public class GithubLogActivity extends AppCompatActivity {
  	}
      */
      
-     public String _DiffyParse(final String _text){
-         final String[] lines;
-         lines = _text.split("\n");
-         for (int i = 0; i < lines.length; i++) {
-           if (lines[i].contains("diff --git a/")) {
-               _text.replace(lines[i],"<--------------[START]------------>");
-           }else if(lines[i].contains("+++ b/")){
-               _text.replace("+++ b/","<--------------[Recent Commit file :]------------>");
-           }else if (lines[i].contains("--- a/")){
-               _text.replace("--- a/","<--------------[Previous Commit file :]------------>");
-           }else if(lines[i].contains("No newline at end of file")){
-               _text.replace(lines[i],"<--------------[END]------------>");
-           }
-         }
-         
-         return _text;
+     public void _DiffyParse(final String DiffyTEXT){
+     
+        new Thread(() -> {                 
+         	_DiffyTEXT = DiffyTEXT.replace("diff --git a/","\n<--------------[START]------------>\n");
+             _DiffyTEXT = DiffyTEXT.replace("--- a/","\n<--------------[Old Commit File]------------>\n");
+             _DiffyTEXT = DiffyTEXT.replace("+++ b/","\n<--------------[New Commit File]------------>\n");
+             _DiffyTEXT = DiffyTEXT.replace("\\ No newline at end of file","\n<--------------[END]------------>\n");
+             _DiffyTEXT = DiffyTEXT.replace(" b/app/","\n<--------------[]------------>\napp/");
+             _DiffyTEXT = DiffyTEXT.replace("@@","\n<--------------[@@]------------>\n");
+   	      runOnUiThread(() ->{
+               editor.setText(_DiffyTEXT);
+   	      });
+        }).start();
      }
+      
      public  void _Uber_progress(final boolean _ifShow) {
 		if (_ifShow) {
            prog = new AlertDialog.Builder(this).create();
