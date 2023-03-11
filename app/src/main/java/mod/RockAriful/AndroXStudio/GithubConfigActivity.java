@@ -158,8 +158,9 @@ public class GithubConfigActivity extends AppCompatActivity {
     
      @Override
  	public boolean onCreateOptionsMenu(Menu menu){
-       menu.add(Menu.NONE, 1, Menu.NONE, "Preview Last Changes ");
-   	menu.add(Menu.NONE, 2, Menu.NONE, "Show last commit log");
+       menu.add(Menu.NONE, 1, Menu.NONE, "Force To Push");
+       menu.add(Menu.NONE, 2, Menu.NONE, "Preview Last Changes ");
+   	menu.add(Menu.NONE, 3, Menu.NONE, "Show last commit log");
        
    	
    	return true;
@@ -168,21 +169,24 @@ public class GithubConfigActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(final MenuItem item){
 		switch(item.getItemId()){
 	  	case 1:
- 			GoToLog.setClass(getApplicationContext(), GithubLogActivity.class);
+             if (FileUtil.isExistFile(FileUtil.getExternalStorageDir() +"/.sketchware/data/"+sc_id+"/github_config") && !FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config").equals("[]")) {
+ 		  	commitRepoDialog(true);
+             }else{
+                 SketchwareUtil.toastError("Please enable GitHub service ");
+             }
+			break;
+	  	case 2:
+             GoToLog.setClass(getApplicationContext(), GithubLogActivity.class);
              GoToLog.putExtra("sc_id",sc_id);
              GoToLog.putExtra("TYPE","CPreview");
              startActivity(GoToLog);
-            
 			break;
-
-	  	case 2:
-			
+           case 3:
              GoToLog.setClass(getApplicationContext(), GithubLogActivity.class);
              GoToLog.putExtra("sc_id",sc_id);
              GoToLog.putExtra("TYPE","LOG");
              startActivity(GoToLog);   
-          
-			break;
+            break; 
     	}
 		return super.onOptionsItemSelected(item);
     }
@@ -234,7 +238,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 			public void onClick(View _view) {
                 
 		  	 if (enable.isChecked()) {
-                   commitRepoDialog();
+                   commitRepoDialog(false);
 		  	 }else{SketchwareUtil.toastError("Please enable GitHub service first!");}
 		    }
 		});
@@ -344,7 +348,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 	}
 
     
-    private void commitRepoDialog() {
+    private void commitRepoDialog(final boolean _force) {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
@@ -372,16 +376,23 @@ public class GithubConfigActivity extends AppCompatActivity {
            progressbar1.setVisibility(View.VISIBLE);
 		   push_btn_title.setVisibility(View.GONE);
            dialog.dismiss();
-           
-	        new Thread(() -> {                 
-               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id).pushREPO(filename.getText().toString());
+          if(_force){
+            new Thread(() -> {                 
+               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id,true).pushREPO(filename.getText().toString());
                runOnUiThread(() ->{
-               
-               progressbar1.setVisibility(View.GONE);
-	       push_btn_title.setVisibility(View.VISIBLE);
+                 progressbar1.setVisibility(View.GONE);
+  	     	  push_btn_title.setVisibility(View.VISIBLE);
+               });
+            }).start();  
+          }else{
+	        new Thread(() -> {                 
+               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id,false).pushREPO(filename.getText().toString());
+               runOnUiThread(() ->{
+                 progressbar1.setVisibility(View.GONE);
+  	     	  push_btn_title.setVisibility(View.VISIBLE);
                });
             }).start();
-
+		  }
         });
         
         cancel.setOnClickListener(v -> {
