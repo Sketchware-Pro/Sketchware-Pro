@@ -278,8 +278,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 									enable.setChecked(false);
 								}
 								else {
-                                    push_data.setVisibility(View.VISIBLE);
-		 	     			  	create_token.setVisibility(View.GONE);
+                           	        			 push_data.setVisibility(View.VISIBLE);
+		 	     			  	 create_token.setVisibility(View.GONE);
+							 url.setEnabled(false);
+							 setRefSpecs.setEnabled(false);
+							 username.setEnabled(false);
+							 pass.setEnabled(false);
                     
 									map = new HashMap<>();
 									map.put("repository", url.getText().toString());
@@ -296,8 +300,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 				}
 				else {
 					FileUtil.writeFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config", "[]");
-                    push_data.setVisibility(View.GONE);
-			    	create_token.setVisibility(View.VISIBLE);
+                 		        push_data.setVisibility(View.GONE);
+			    		create_token.setVisibility(View.VISIBLE);
+					url.setEnabled(true);
+					 setRefSpecs.setEnabled(true);
+					 username.setEnabled(true);
+					 pass.setEnabled(true);
 				}
 			}
 		});
