@@ -392,12 +392,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 			  switch((int)checkedId) {
 				case ((int)1): {
 					SketchwareUtil.toast("1");
-					group[1].setChecked(true);
+					
 					break;
 				}
 				case ((int)2): {
 					SketchwareUtil.toast("2");
-					group[0].setChecked(true);
+					
 					break;
 				
 				}
