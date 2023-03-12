@@ -382,7 +382,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         
       	        rb[1]  = new RadioButton(this); 
 		rb[1].setText("Project files");
-		rb[1].setId(1);
+		rb[1].setId(2);
 		rg.addView(rb[1]);
 		ScType.addView(rg);
 
@@ -392,7 +392,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 			  switch((int)checkedId) {
 				case ((int)1): {
 					SketchwareUtil.toast("1");
-					
+					group.setChecked(true);
 					break;
 				}
 				case ((int)2): {
