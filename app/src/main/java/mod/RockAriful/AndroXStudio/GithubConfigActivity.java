@@ -398,8 +398,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 				case ((int)2): {
 					SketchwareUtil.toast("2");
 					break;
-					default:
-                      		        return false;
+				
 				}
 		  	}
 			}
