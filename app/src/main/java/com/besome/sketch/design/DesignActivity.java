@@ -292,6 +292,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Opens the debug APK to install.
      */
     private void installBuiltApk() {
+    	isTaskRunning = false;
         if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
             requestPackageInstallerInstall();
         } else {
@@ -1252,7 +1253,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         cancel(true);
                         return;
                     }
-
+                    
+                    isTaskRunning = false;
+		    currentNotificationCache.title = "Install Build Apk";
+		    currentNotificationCache.description = "App build successfully and ready to install";
+		    currentNotificationCache.ProjectStage = 1;
                     installBuiltApk();
                 } catch (MissingFileException e) {
                     dismissNotification();
