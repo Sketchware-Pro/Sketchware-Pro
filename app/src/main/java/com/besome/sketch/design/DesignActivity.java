@@ -255,7 +255,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         		snackbar.setActionTextColor(Color.YELLOW);
         		/* show snackbar only in foreground */
         		snackbar.show();
-        	}else {
+        		currentNotificationCache.title = "Build Failed";
+        		currentNotificationCache.description = "App build has been failed";
+        		currentNotificationCache.ProjectStage = 2;
+        	} else {
         		Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
                 	intent.putExtra("error", error);
                 	intent.putExtra("sc_id", sc_id);
@@ -263,7 +266,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 	isTaskRunning = false;
                 	currentNotificationCache.title = "Build Failed";
                 	currentNotificationCache.description = "App build has been failed";
-                	currentNotificationCache.ProjectStage = 3;
+                	currentNotificationCache.ProjectStage = 2;
         		ProjectBuildingNotify(notificationId,"Build Failed","App build has been failed",false,false,"Show Compile Log",intent);
         	}
         }
@@ -689,6 +692,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
       if (isTaskRunning){
       	if(currentNotificationCache.ProjectStage == 0){
 	  ProjectBuildingNotify(notificationId,currentNotificationCache.title,currentNotificationCache.description,true,true);
+      	} else if(currentNotificationCache.ProjectStage == 1){
+      	  dismissNotification();
+      	} else if(currentNotificationCache.ProjectStage == 2){
+      	  dismissNotification();
       	}
       }
     }
