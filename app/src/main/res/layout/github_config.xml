@@ -95,11 +95,19 @@
 					android:layout_marginRight="5dp"
 					android:padding="1dp"
 					android:orientation="vertical">
+					
+					<LinearLayout
+					android:id="@+id/radio_group"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:padding="8dp"
+					android:orientation="horizontal">
+
 					<LinearLayout
 						android:id="@+id/is_url"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:paddingTop="8dp"
+						android:paddingTop="10dp"
 						android:orientation="vertical">
 						<TextView
 							android:id="@+id/textview7"
@@ -151,6 +159,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
+						android:layout_marginTop="6dp"
 						android:text="refs/heads/master:refs/heads/main"
 						android:textSize="14sp"
 						android:textColor="#424242"
@@ -172,6 +181,7 @@
 							android:padding="4dp"
 							android:text="Username"
 							android:textSize="14sp"
+							android:layout_marginTop="6dp"
 							android:textStyle="bold"
 							android:textColor="#757575" />
 						<EditText
@@ -189,6 +199,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="4dp"
+							android:layout_marginTop="6dp"
 							android:text="Access Token"
 							android:textSize="14sp"
 							android:textStyle="bold"
