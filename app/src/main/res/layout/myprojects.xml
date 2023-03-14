@@ -118,7 +118,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:clickable="false"
-                    android:src="@drawable/data_backup_96"
+                    android:src="@drawable/git_clone"
                     tools:ignore="ContentDescription" />
 
                 <TextView
