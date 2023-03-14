@@ -104,9 +104,9 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private LinearLayout all_item_layout;
 	private LinearLayout linear14;
     
-    private LinearLayout push_data;
-    private ProgressBar progressbar1;
-    private TextView push_btn_title;
+   	 private LinearLayout push_data;
+        private ProgressBar progressbar1;
+        private TextView push_btn_title;
 	private TextView create_token;
     
 	private TextView textview1;
@@ -125,11 +125,14 @@ public class GithubConfigActivity extends AppCompatActivity {
 	private EditText username;
 	private TextView textview6;
 	private EditText pass;
+	private LinearLayout radio_group;
     private String exportedSourcesPath ="";
     private Intent Ctoken = new Intent();
     private Intent GoToLog = new Intent();
     
     private String sc_id ="";
+    
+
 	//boolean&string for fatchin fushing result
 	private boolean isSucces = false;
     
@@ -159,8 +162,8 @@ public class GithubConfigActivity extends AppCompatActivity {
     
      @Override
  	public boolean onCreateOptionsMenu(Menu menu){
-       menu.add(Menu.NONE, 1, Menu.NONE, "Force To Push");
-       menu.add(Menu.NONE, 2, Menu.NONE, "Preview Last Changes ");
+        menu.add(Menu.NONE, 1, Menu.NONE, "Force To Push");
+        menu.add(Menu.NONE, 2, Menu.NONE, "Preview Last Changes ");
    	menu.add(Menu.NONE, 3, Menu.NONE, "Show last commit log");
        
    	
@@ -212,9 +215,9 @@ public class GithubConfigActivity extends AppCompatActivity {
 		all_item_layout = findViewById(R.id.all_item_layout);
 		linear14 = findViewById(R.id.linear14);
         
-    	push_data = findViewById(R.id.push_data);
+    		push_data = findViewById(R.id.push_data);
 		create_token = findViewById(R.id.create_token);
-        progressbar1 = findViewById(R.id.progressbar1);
+     		progressbar1 = findViewById(R.id.progressbar1);
 		push_btn_title = findViewById(R.id.push_btn_title);
         
 		textview1 = findViewById(R.id.textview1);
@@ -233,6 +236,44 @@ public class GithubConfigActivity extends AppCompatActivity {
 		username = findViewById(R.id.username);
 		textview6 = findViewById(R.id.textview6);
 		pass = findViewById(R.id.pass);
+		radio_group = findViewById(R.id.radio_group);
+
+
+		final RadioButton[ ] rb = new RadioButton[2];
+		RadioGroup rg = new RadioGroup(this);
+		rg.setOrientation(RadioGroup.HORIZONTAL);
+		
+		rb[0]  = new RadioButton(this); 
+		rb[0].setText("Source code");
+		rb[0].setId(1);
+		rb[0].setChecked(true);
+		rg.addView(rb[0]);
+        
+      	        rb[1]  = new RadioButton(this); 
+		rb[1].setText("Project files");
+		rb[1].setId(2);
+		rg.addView(rb[1]);
+		radio_group.addView(rg);
+
+		rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+		 @Override
+			public void onCheckedChanged(RadioGroup group, int checkedId){
+			  switch((int)checkedId) {
+				case ((int)1): {
+					SketchwareUtil.toast("1");
+					
+					break;
+				}
+				case ((int)2): {
+					SketchwareUtil.toast("2");
+					
+					break;
+				
+				}
+		  	   }
+			}
+    		    });
+
 
 		push_data.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -376,43 +417,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         calender = Calendar.getInstance();
         filename.setHint("setMessage");
         filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));       
-        
-        
-        final RadioButton[ ] rb = new RadioButton[2];
-		RadioGroup rg = new RadioGroup(this);
-		rg.setOrientation(RadioGroup.HORIZONTAL);
-		
-		rb[0]  = new RadioButton(this); 
-		rb[0].setText("Source code");
-		rb[0].setId(1);
-		rb[0].setChecked(true);
-		rg.addView(rb[0]);
-        
-      	        rb[1]  = new RadioButton(this); 
-		rb[1].setText("Project files");
-		rb[1].setId(2);
-		rg.addView(rb[1]);
-		ScType.addView(rg);
-
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
-		 @Override
-			public void onCheckedChanged(RadioGroup group, int checkedId){
-			  switch((int)checkedId) {
-				case ((int)1): {
-					SketchwareUtil.toast("1");
-					
-					break;
-				}
-				case ((int)2): {
-					SketchwareUtil.toast("2");
-					
-					break;
-				
-				}
-		  	}
-			}
-        });
-        
+               
         save.setOnClickListener(v -> {
             if (filename.getText().toString().isEmpty()) {
                 SketchwareUtil.toastError("Pleass write commit message! ");
