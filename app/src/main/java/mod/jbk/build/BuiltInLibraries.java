@@ -584,7 +584,7 @@ public class BuiltInLibraries {
             dest.writeString(name);
             dest.writeStringList(dependencyNames);
             dest.writeString(packageName);
-            dest.writeBoolean(hasResources);
+            dest.writeInt(hasResources ? 1 : 0);
         }
     }
 }

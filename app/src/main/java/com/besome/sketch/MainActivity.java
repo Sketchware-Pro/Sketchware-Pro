@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -33,6 +34,7 @@ import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -74,12 +76,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     private ProjectsFragment projectsFragment = null;
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
     public void onPageScrollStateChanged(int state) {
     }
 
     @Override
-    // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
@@ -279,7 +279,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void showProjectSortingDialog() {
         SketchDialog dialog = new SketchDialog(this);
-        dialog.setTitle("Sort Project");
+        dialog.setTitle("Sort options");
         View root = wB.a(this, R.layout.sort_project_dialog);
         RadioButton sortByName = root.findViewById(R.id.sortByName);
         RadioButton sortByID = root.findViewById(R.id.sortByID);
@@ -300,8 +300,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             sortOrderDesc.setChecked(true);
         }
         dialog.setView(root);
-        dialog.setPositiveButton("Save", view -> {
-            int sortValue = ProjectComparator.DEFAULT;
+        dialog.setPositiveButton("Save", v -> {
+            int sortValue = 0;
             if (sortByName.isChecked()) {
                 sortValue |= ProjectComparator.SORT_BY_NAME;
             }
@@ -318,7 +318,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             dialog.dismiss();
             n();
         });
-        dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
+        dialog.setNegativeButton("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -357,6 +357,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (j() && storageAccessDenied != null && storageAccessDenied.isShown()) {
             storageAccessDenied.dismiss();
         }
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
+        mAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
 
     private void allFilesAccessCheck() {
@@ -467,9 +471,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {
-
-        public PagerAdapter(FragmentManager xf) {
-            super(xf);
+        public PagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
 
         @Override
@@ -478,7 +481,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             projectsFragment = (ProjectsFragment) fragment;
             return fragment;

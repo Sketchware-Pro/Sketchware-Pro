@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -316,14 +317,14 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.tvDeviceId.setText(testDeviceList.get(position).deviceId);
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {

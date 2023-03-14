@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -142,14 +143,15 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             AdUnitBean adUnitBean = adUnitBeanArrayList.get(position);
             viewHolder.tvName.setText(adUnitBean.name);
             viewHolder.tvUnitId.setText(adUnitBean.id);
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_adunit_item, parent, false));
         }
 
@@ -163,7 +165,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 tvName = itemView.findViewById(R.id.tv_name);
                 tvUnitId = itemView.findViewById(R.id.tv_unit_id);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgDelete.setOnClickListener(view -> deleteAdUnit(getAdapterPosition()));
+                imgDelete.setOnClickListener(view -> deleteAdUnit(getLayoutPosition()));
             }
         }
     }

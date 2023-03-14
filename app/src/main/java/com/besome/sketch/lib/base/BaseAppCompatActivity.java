@@ -1,5 +1,6 @@
 package com.besome.sketch.lib.base;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask.Status;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,8 @@ import a.a.a._A;
 import a.a.a.lC;
 
 public class BaseAppCompatActivity extends AppCompatActivity {
+
+    public FirebaseAnalytics mAnalytics;
 
     public Tracker d;
     @Deprecated
@@ -82,7 +86,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     public boolean j() {
-        return ContextCompat.checkSelfPermission(this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") == 0;
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
     }
 
     public void k() {
@@ -92,8 +96,8 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         e = getApplicationContext();
         j = new Zo(getApplicationContext());
         d = new Tracker();
@@ -101,6 +105,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         lottieDialog = new ZA(this);
         lC.a(getApplicationContext(), false);
         progressDialog = new _A(this);
+        mAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override

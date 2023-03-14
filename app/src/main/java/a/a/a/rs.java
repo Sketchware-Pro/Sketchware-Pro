@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -293,8 +294,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         fab.setOnClickListener(this);
         eventList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            // RecyclerView.OnScrollListener#onScrolled(RecyclerView, int, int)
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 2) {
                     if (fab.isEnabled()) {
@@ -715,39 +715,39 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         private int index = -1;
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.name.setText(rs.a(getContext(), position));
             holder.icon.setImageResource(rs.a(position));
             if (index == position) {
-                ViewPropertyAnimatorCompat a2 = ViewCompat.animate(holder.icon);
-                a2.scaleX(1);
-                a2.scaleY(1);
-                a2.setDuration(300);
-                a2.setInterpolator(new AccelerateInterpolator());
-                a2.start();
-                ViewPropertyAnimatorCompat a3 = ViewCompat.animate(holder.icon);
-                a3.scaleX(1);
-                a3.scaleY(1);
-                a3.setDuration(300);
-                a3.setInterpolator(new AccelerateInterpolator());
-                a3.start();
+                ViewPropertyAnimatorCompat animator1 = ViewCompat.animate(holder.icon);
+                animator1.scaleX(1);
+                animator1.scaleY(1);
+                animator1.setDuration(300);
+                animator1.setInterpolator(new AccelerateInterpolator());
+                animator1.start();
+                ViewPropertyAnimatorCompat animator2 = ViewCompat.animate(holder.icon);
+                animator2.scaleX(1);
+                animator2.scaleY(1);
+                animator2.setDuration(300);
+                animator2.setInterpolator(new AccelerateInterpolator());
+                animator2.start();
                 holder.pointerLeft.setVisibility(View.VISIBLE);
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(1);
                 holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
             } else {
-                ViewPropertyAnimatorCompat a4 = ViewCompat.animate(holder.icon);
-                a4.scaleX(0.8f);
-                a4.scaleY(0.8f);
-                a4.setDuration(300);
-                a4.setInterpolator(new DecelerateInterpolator());
-                a4.start();
-                ViewPropertyAnimatorCompat a5 = ViewCompat.animate(holder.icon);
-                a5.scaleX(0.8f);
-                a5.scaleY(0.8f);
-                a5.setDuration(300);
-                a5.setInterpolator(new DecelerateInterpolator());
-                a5.start();
+                ViewPropertyAnimatorCompat animator1 = ViewCompat.animate(holder.icon);
+                animator1.scaleX(0.8f);
+                animator1.scaleY(0.8f);
+                animator1.setDuration(300);
+                animator1.setInterpolator(new DecelerateInterpolator());
+                animator1.start();
+                ViewPropertyAnimatorCompat animator2 = ViewCompat.animate(holder.icon);
+                animator2.scaleX(0.8f);
+                animator2.scaleY(0.8f);
+                animator2.setDuration(300);
+                animator2.setInterpolator(new DecelerateInterpolator());
+                animator2.start();
                 holder.pointerLeft.setVisibility(View.GONE);
                 ColorMatrix colorMatrix2 = new ColorMatrix();
                 colorMatrix2.setSaturation(0);
@@ -756,7 +756,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
@@ -781,7 +782,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             @Override
             public void onClick(View v) {
                 notifyItemChanged(index);
-                index = getAdapterPosition();
+                index = getLayoutPosition();
                 notifyItemChanged(index);
                 initializeEvents(events.get(index));
                 if (index == 4) {
@@ -805,7 +806,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EventBean eventBean = currentCategoryEvents.get(position);
             holder.targetType.setVisibility(View.VISIBLE);
             holder.previewContainer.setVisibility(View.VISIBLE);
@@ -882,7 +883,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item, parent, false));
         }
 
@@ -918,7 +920,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 options.addView(optionsLayout);
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        lastSelectedItem = getAdapterPosition();
+                        lastSelectedItem = getLayoutPosition();
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(lastSelectedItem);
                         if (v instanceof CollapsibleButton) {
                             int i = ((CollapsibleButton) v).b;
@@ -957,7 +959,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                 });
                 menu.setOnClickListener(v -> {
-                    lastSelectedItem = getAdapterPosition();
+                    lastSelectedItem = getLayoutPosition();
                     EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
@@ -968,7 +970,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     }
                 });
                 itemView.setOnLongClickListener(v -> {
-                    lastSelectedItem = getAdapterPosition();
+                    lastSelectedItem = getLayoutPosition();
                     EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                     if (eventBean.isCollapsed) {
                         eventBean.isCollapsed = false;
@@ -981,7 +983,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 });
                 itemView.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        lastSelectedItem = getAdapterPosition();
+                        lastSelectedItem = getLayoutPosition();
                         EventBean eventBean = events.get(categoryAdapter.index).get(lastSelectedItem);
                         openEvent(eventBean.targetId, eventBean.eventName, description.getText().toString());
                     }

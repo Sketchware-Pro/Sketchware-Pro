@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ComponentBean;
@@ -460,13 +461,13 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         }
 
         @Override
-        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
             this.recyclerView = recyclerView;
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String componentName = ComponentBean.getComponentName(getApplicationContext(), componentList.get(position).type);
             holder.itemView.setAlpha(1.0f);
             holder.itemView.setTranslationX(LayoutParams.FLEX_GROW_DEFAULT);
@@ -504,7 +505,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = wB.a(parent.getContext(), R.layout.component_add_item);
             int lengthAndWidth = (int) wB.a(parent.getContext(), 76.0f);
             itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
@@ -532,7 +534,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             public void onClick(View v) {
                 if (!y) {
                     y = true;
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     x = true;
                     int[] itemViewLocationInWindow = new int[2];
                     v.getLocationInWindow(itemViewLocationInWindow);

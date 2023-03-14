@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -243,8 +244,8 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int index) {
-            HashMap<String, Object> projectMap = projectsList.get(index);
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+            HashMap<String, Object> projectMap = projectsList.get(position);
             String sc_id = yB.c(projectMap, "sc_id");
             viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.a(projectMap, "custom_icon")) {
@@ -276,7 +277,8 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int index) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
@@ -304,7 +306,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = getAdapterPosition();
+                    selectedProjectIndex = getLayoutPosition();
                     selectProject(selectedProjectIndex);
                 }
             }

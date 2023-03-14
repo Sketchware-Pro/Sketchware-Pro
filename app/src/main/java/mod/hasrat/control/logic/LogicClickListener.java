@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -379,7 +380,8 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == Item.TYPE_TITLE) {
                 TextView textView = new TextView(context);
                 textView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -405,7 +407,7 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Item item = data.get(position);
             int viewType = holder.getItemViewType();
 

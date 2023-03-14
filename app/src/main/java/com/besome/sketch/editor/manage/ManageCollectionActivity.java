@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
@@ -752,7 +753,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public void onBindViewHolder(CategoryAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
             holder.name.setText(ManageCollectionActivity.getCategoryLabel(getApplicationContext(), position));
             holder.icon.setImageResource(ManageCollectionActivity.getCategoryIcon(position));
             ViewPropertyAnimatorCompat var3;
@@ -798,7 +799,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public CategoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
@@ -819,13 +821,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    if (getAdapterPosition() != -1 && getAdapterPosition() != currentItemId) {
+                    int layoutPosition = getLayoutPosition();
+                    if (layoutPosition != -1 && layoutPosition != currentItemId) {
                         if (currentItemId == 1) {
                             stopMusicPlayback(sounds);
                         }
 
                         notifyItemChanged(currentItemId);
-                        currentItemId = getAdapterPosition();
+                        currentItemId = layoutPosition;
                         notifyItemChanged(currentItemId);
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
@@ -886,7 +889,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             currentViewType = -1;
             target.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     if (currentViewType == 3 || currentViewType == 4 || currentViewType == 5) {
                         return;
@@ -1144,7 +1147,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             switch (viewType) {
                 case 0:
                     return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
@@ -1167,7 +1171,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             int viewType = holder.getItemViewType();
 
             switch (viewType) {
@@ -1216,7 +1220,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
@@ -1227,7 +1231,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1258,7 +1262,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 preview.setText(Helper.getResString(R.string.common_word_preview));
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
@@ -1269,7 +1273,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return false;
@@ -1296,7 +1300,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 ninePatchIcon = itemView.findViewById(R.id.img_nine_patch);
                 checkBox.setVisibility(View.GONE);
                 image.setOnClickListener(v -> {
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
@@ -1307,7 +1311,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 image.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1334,7 +1338,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 blockArea = itemView.findViewById(R.id.block_area);
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
@@ -1345,7 +1349,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1381,7 +1385,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 play.setOnClickListener(v -> {
                     if (selectingToBeDeletedItems) {
-                        int position = getAdapterPosition();
+                        int position = getLayoutPosition();
 
                         if (E == position) {
                             if (mediaPlayer != null) {
@@ -1438,7 +1442,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     }
                 });
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
@@ -1449,7 +1453,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;
@@ -1476,7 +1480,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
@@ -1487,7 +1491,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 cardView.setOnLongClickListener(v -> {
                     changeDeletingItemsState(true);
-                    lastSelectedItemPosition = getAdapterPosition();
+                    lastSelectedItemPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                     return true;

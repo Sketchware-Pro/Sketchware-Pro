@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -357,7 +358,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projects.get(position);
             String projectSc_id = yB.c(projectMap, "sc_id");
             String iconDir = wq.e() + File.separator + projectSc_id;
@@ -382,7 +383,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
@@ -410,7 +412,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = getAdapterPosition();
+                    selectedProjectIndex = getLayoutPosition();
                     selectProject(selectedProjectIndex);
                 }
             }

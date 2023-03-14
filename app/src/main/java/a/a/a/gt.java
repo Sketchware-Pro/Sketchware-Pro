@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -215,7 +216,7 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             if (position != 0) {
                 if (position != 1) {
                     if (position == 2) {
@@ -244,7 +245,8 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.var_type_category, parent, false));
         }
 
@@ -259,7 +261,7 @@ public class gt extends LinearLayout {
                 icon = itemView.findViewById(R.id.icon);
                 name = itemView.findViewById(R.id.name);
                 itemView.setOnClickListener(view -> {
-                    layoutPosition = getAdapterPosition();
+                    layoutPosition = getLayoutPosition();
                     variableItemAdapter.setData(allVariablesWithCategoryIndex.get(layoutPosition));
                     variableItemAdapter.notifyDataSetChanged();
                     notifyDataSetChanged();
@@ -290,7 +292,7 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             VariableItem variableItem = variables.get(position);
             viewHolder.name.setText(getTypeName(variableItem.type, variableItem.name));
             viewHolder.icon.setImageResource(variableItem.icon);
@@ -301,7 +303,8 @@ public class gt extends LinearLayout {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(wB.a(getContext(), R.layout.var_type_spinner_item));
         }
 
@@ -314,7 +317,7 @@ public class gt extends LinearLayout {
                 name = itemView.findViewById(R.id.name);
                 icon = itemView.findViewById(R.id.icon);
                 itemView.setOnClickListener(view -> {
-                    setPreview(allVariablesWithCategoryIndex.get(categoryItemAdapter.layoutPosition).get(getAdapterPosition()));
+                    setPreview(allVariablesWithCategoryIndex.get(categoryItemAdapter.layoutPosition).get(getLayoutPosition()));
                     dialog.hide();
                 });
             }

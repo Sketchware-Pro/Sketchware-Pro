@@ -1,6 +1,12 @@
-plugins {
-    id "com.android.application"
-    id "kotlin-android"
+def secrets = System.getenv("GOOGLE_SERVICES_JSON")
+def analyticsEnabled = secrets != null
+
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+
+if (analyticsEnabled) {
+    apply plugin: "com.google.gms.google-services"
+    apply plugin: "com.google.firebase.crashlytics"
 }
 
 android {
@@ -91,16 +97,17 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
 
-    implementation "androidx.appcompat:appcompat:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.0.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-    implementation "com.google.android.material:material:1.0.0-rc01"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation "com.google.android.material:material:1.8.0"
     implementation "com.airbnb.android:lottie:3.1.0"
+    implementation "com.google.android.flexbox:flexbox:3.0.0"
 
     implementation "androidx.annotation:annotation:1.5.0"
-    implementation "com.android.tools:annotations:30.2.2"
+    implementation "com.android.tools:annotations:30.4.1"
     implementation "com.google.guava:guava:31.1-jre"
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
@@ -117,9 +124,10 @@ dependencies {
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:3.3.75"
+    implementation "com.android.tools:r8:4.0.48"
+    implementation "com.github.Iyxan23:zipalign-java:1.0.0"
 
-    implementation "com.google.code.gson:gson:2.9.0"
+    implementation "com.google.code.gson:gson:2.10.1"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
 
     //noinspection GradleDependency
@@ -131,7 +139,7 @@ dependencies {
     minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
     minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
-    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
+    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
@@ -139,7 +147,15 @@ dependencies {
 
     minApi26Implementation project(path: ":kotlinc")
 
-    implementation "com.github.topjohnwu.libsu:core:5.0.2"
+    implementation "com.github.topjohnwu.libsu:core:5.0.4"
+
+    // Analytics and Crashlytics
+    if (analyticsEnabled) {
+        new File("$projectDir/google-services.json").text = secrets;
+    }
+    implementation platform("com.google.firebase:firebase-bom:31.2.1")
+    implementation "com.google.firebase:firebase-crashlytics"
+    implementation "com.google.firebase:firebase-analytics"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }

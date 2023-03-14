@@ -146,7 +146,7 @@ public class EventsMakerDetails extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, parent, false);
             }
             LinearLayout root = convertView.findViewById(R.id.custom_view_pro_background);
             a(root, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);

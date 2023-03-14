@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -260,7 +261,8 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final LinearLayout _v = new LinearLayout(LogReaderActivity.this);
             _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             _v.setOrientation(LinearLayout.VERTICAL);
@@ -335,7 +337,7 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
             if (data.get(position).containsKey("pkgName")) {
                 holder.packageName.setText(data.get(position).get("pkgName").toString());
                 holder.packageName.setVisibility(View.VISIBLE);
