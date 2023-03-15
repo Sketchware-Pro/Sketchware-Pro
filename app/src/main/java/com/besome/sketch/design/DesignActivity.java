@@ -183,6 +183,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
     
     public void ProjectBuildingNotify(int notificationId,String title,String content,boolean setProcess,boolean setUnCancelable,String ActionText,Intent IntentForPendingIntent){
+    	if(ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_PROJECT_COMPILING_NOTIFICATION)){
     		PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, IntentForPendingIntent, 0);
 
 		Notify = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -203,9 +204,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 		NotifyProjectBuild.setOnlyAlertOnce(true);
 		NotifyProjectBuild.addAction(R.drawable.sketch_app_icon,ActionText,pendingIntent);
 		Notify.notify(notificationId, NotifyProjectBuild.build());
+    	}
     }
     
     public void ProjectBuildingNotify(int notificationId,String title,String content,boolean setProcess,boolean setUnCancelable){
+    	if(ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_PROJECT_COMPILING_NOTIFICATION)){
 		Notify = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
     		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 	    		NotificationChannel ntc = new NotificationChannel(
@@ -224,6 +227,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 		NotifyProjectBuild.setOnlyAlertOnce(true);
 		// NotifyProjectBuild.addAction(R.drawable.sketch_app_icon,ActionText,pendingIntent);
 		Notify.notify(notificationId, NotifyProjectBuild.build());
+    	}
     }
     
     public void dismissNotification(){
