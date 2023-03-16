@@ -852,7 +852,7 @@ public class Dp {
 
     public void runProguard() throws IOException {
         long savedTimeMillis = System.currentTimeMillis();
-        if (isR8Enabled()) {
+        if (proguard.isR8Enabled()) {
             ArrayList<String> config = new ArrayList<>();
             config.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
             config.add(yq.aaptProGuardRules);

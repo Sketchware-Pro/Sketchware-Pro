@@ -29,6 +29,20 @@
                 android:textColor="#ffe53935"
                 android:textSize="16sp" />
 
+<!-- R8 code shrinker my beloved, I'll come to your house if your remove it -->
+            <Switch
+                android:id="@+id/r8_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:checked="true"
+                android:gravity="center|left"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Use R8"
+                android:textColor="#5271FF"
+                android:textSize="16sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
