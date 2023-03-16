@@ -201,7 +201,7 @@ public class ProguardHandler {
     }
     public void setR8Enabled(boolean r8Enabled) {
         HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
-        config.put("r8", String.valueOf(proguardEnabled));
+        config.put("r8", String.valueOf(r8Enabled));
 
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }

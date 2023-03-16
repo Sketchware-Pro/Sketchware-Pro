@@ -84,7 +84,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
         if (id == R.id.sw_pg_enabled) {
             pg.setProguardEnabled(isChecked);
         } else if (id == R.id.r8_enabled) {
-            pg.setR8(isChecked);
+            pg.setR8Enabled(isChecked);
         } else if (id == R.id.sw_pg_debug) {
             pg.setDebugEnabled(isChecked);
         }
