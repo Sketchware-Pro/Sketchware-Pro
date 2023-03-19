@@ -657,17 +657,17 @@ public class yq {
                 }
                 mx.addString("firebase_database_url", databaseUrl, false);
                 mx.addString("project_id", projectId, false);
-                mx.addInteger("google_app_id", firebaseLibrary.reserved1, false);
+                mx.addString("google_app_id", firebaseLibrary.reserved1, false);
                 if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
-                    mx.addInteger("google_api_key", firebaseLibrary.reserved2, false);
+                    mx.addString("google_api_key", firebaseLibrary.reserved2, false);
                 }
                 if (firebaseLibrary.reserved3 != null && firebaseLibrary.reserved3.length() > 0) {
-                    mx.addInteger("google_storage_bucket", firebaseLibrary.reserved3, false);
+                    mx.addString("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }
             if (N.isMapUsed) {
                 // if p3 is false, then "translatable="false" will be added
-                mx.addInteger("google_maps_key", projectLibraryManager.e().data, false);
+                mx.addString("google_maps_key", projectLibraryManager.e().data, false);
             }
             String filePath = "values/secrets.xml";
             fileUtil.b(resDirectoryPath + File.separator + filePath,
