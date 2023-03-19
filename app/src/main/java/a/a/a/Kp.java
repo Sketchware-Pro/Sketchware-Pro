@@ -47,7 +47,7 @@ public class Kp {
     }
 
     private void addDependencies(String libraryName) {
-        for (String libraryDependency : qq.a(libraryName)) {
+        for (String libraryDependency : BuiltInLibraryUtils.getKnownDependencies(libraryName)) {
             a(libraryDependency);
         }
     }
