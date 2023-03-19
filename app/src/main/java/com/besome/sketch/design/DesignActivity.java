@@ -263,15 +263,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         		currentNotificationCache.description = "App build has been failed";
         		currentNotificationCache.ProjectStage = 2;
         	} else {
-        		Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
-                	intent.putExtra("error", error);
-                	intent.putExtra("sc_id", sc_id);
-                	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                	isTaskRunning = false;
-                	currentNotificationCache.title = "Build Failed";
-                	currentNotificationCache.description = "App build has been failed";
-                	currentNotificationCache.ProjectStage = 2;
-        		ProjectBuildingNotify(notificationId,"Build Failed","App build has been failed",false,false,"Show Compile Log",intent);
+        		if (!mB.a()){
+        			Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
+                		intent.putExtra("error", error);
+                		intent.putExtra("sc_id", sc_id);
+                		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                		isTaskRunning = false;
+                		currentNotificationCache.title = "Build Failed";
+                		currentNotificationCache.description = "App build has been failed";
+                		currentNotificationCache.ProjectStage = 2;
+        			ProjectBuildingNotify(notificationId,"Build Failed","App build has been failed",false,false,"Show Compile Log",intent);
+        		}
         	}
         }
     
@@ -685,6 +687,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     	// 0 = Compiling or canceling Build
     	// 1 = Build successfully
     	// 2 = Build Failed
+	// 3 MissingFileException
     	public int ProjectStage;
     	
     }
@@ -699,6 +702,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
       	} else if(currentNotificationCache.ProjectStage == 1){
       	  dismissNotification();
       	} else if(currentNotificationCache.ProjectStage == 2){
+      	  dismissNotification();
+      	} else if(currentNotificationCache.ProjectStage == 3){
       	  dismissNotification();
       	}
       }
@@ -1277,6 +1282,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         aB dialog = new aB(DesignActivity.this);
                         if (isMissingDirectory) {
+                            currentNotificationCache.title = "Build Failed";
+        	            currentNotificationCache.description = "Missing directory detected...";
+        		    currentNotificationCache.ProjectStage = 3;
+        		    isTaskRunning = false;
+                	    if (!isActivityForeground){
+                	        ProjectBuildingNotify(notificationId,currentNotificationCache.title,currentNotificationCache.description,false,false);
+                	    }
                             dialog.b("Missing directory detected");
                             dialog.a("A directory important for building is missing. " +
                                     "Sketchware Pro can try creating " + e.getMissingFile().getAbsolutePath() +
@@ -1288,6 +1300,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                 }
                             });
                         } else {
+                            currentNotificationCache.title = "Build Failed";
+        	            currentNotificationCache.description = "Missing file detected...";
+        		    currentNotificationCache.ProjectStage = 3;
+        		    isTaskRunning = false;
+                	    if (!isActivityForeground){
+                	        ProjectBuildingNotify(notificationId,currentNotificationCache.title,currentNotificationCache.description,false,false);
+                	    }
                             dialog.b("Missing file detected");
                             dialog.a("A file needed for building is missing. " +
                                     "Put the correct file back to " + e.getMissingFile().getAbsolutePath() +
