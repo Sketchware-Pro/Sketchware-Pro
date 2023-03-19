@@ -1,7 +1,5 @@
 package a.a.a;
 
-package a.a.a;
-
 import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
@@ -901,4 +899,4 @@ public class yq {
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
         return a(hCVar, eCVar, iCVar, false);
     }
-}} 
+}
