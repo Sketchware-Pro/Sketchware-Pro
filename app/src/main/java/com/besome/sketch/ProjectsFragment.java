@@ -66,6 +66,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private RecyclerView myProjects;
     private CardView cvCreateNew;
     private CardView cvRestoreProjects;
+    private CardView cvGitCloneProjects;
     private Boolean isCollapsed;
     private AnimatorSet collapseAnimatorSet;
     private AnimatorSet expandAnimatorSet;
@@ -119,6 +120,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         ImageView ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
         TextView tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
 
+	cvGitCloneProjects = parent.findViewById(R.id.cv_gitClone_projects);
+        cvGitCloneProjects.setOnClickListener(this);
+        ImageView ivGitCloneProjects = parent.findViewById(R.id.iv_gitClone_projects);
+        TextView tvGitCloneProjects = parent.findViewById(R.id.tv_gitClone_projects);
+
+
         collapseAnimatorSet = new AnimatorSet();
         expandAnimatorSet = new AnimatorSet();
         ValueAnimator collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
@@ -126,23 +133,39 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
+	    cvGitCloneProjects.getLayoutParams().height = (int) value;
+            cvGitCloneProjects.requestLayout();
         });
         ValueAnimator expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
         expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
+	    cvGitCloneProjects.getLayoutParams().height = (int) value;
+            cvGitCloneProjects.requestLayout();
         });
         collapseAnimatorSet.playTogether(collapseValueAnimator,
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 1.0F, 0.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 1.0F, 0.5F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 1.0F, 0.5F));
+
+		ObjectAnimator.ofFloat(tvGitCloneProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
+                ObjectAnimator.ofFloat(tvGitCloneProjects, View.ALPHA, 1.0F, 0.0F),
+                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_X, 1.0F, 0.5F),
+                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_Y, 1.0F, 0.5F));
+
         expandAnimatorSet.playTogether(expandValueAnimator,
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, -100.0F, 0.0F),
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 0.0F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 0.5F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F));
+
+		ObjectAnimator.ofFloat(tvGitCloneProjects, View.TRANSLATION_Y, -100.0F, 0.0F),
+                ObjectAnimator.ofFloat(tvGitCloneProjects, View.ALPHA, 0.0F, 1.0F),
+                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_X, 0.5F, 1.0F),
+                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_Y, 0.5F, 1.0F));
+
         collapseAnimatorSet.setDuration(300L);
         expandAnimatorSet.setDuration(300L);
         refreshProjectsList();
