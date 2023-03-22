@@ -50,7 +50,7 @@
 		android:id="@+id/backuo_layout"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="8dp"
+		android:padding="0dp"
 		android:orientation="horizontal">
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_restore_projects"
