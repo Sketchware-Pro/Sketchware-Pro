@@ -297,6 +297,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             toProjectSettingsActivity();
         } else if (viewId == R.id.cv_restore_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
             restoreProject();
+        } else if (viewId == R.id.cv_gitClone_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
+            _showCloneRepo();
         }
     }
 
@@ -561,4 +563,55 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         }
     }
+
+    	public void _showCloneRepo() {
+		  prog = new AlertDialog.Builder(this).create();
+				prog.setCancelable(false);
+				prog.setCanceledOnTouchOutside(false);
+				View inflate = getLayoutInflater().inflate(R.layout.add_repo, null);
+				prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+				prog.setView(inflate);
+				
+		        final LinearLayout all_item_layout = (LinearLayout) inflate.findViewById(R.id.all_item_layout);
+		        final LinearLayout progress_layout = (LinearLayout) inflate.findViewById(R.id.progress_layout);
+		        final LinearLayout credential_layout = (LinearLayout) inflate.findViewById(R.id.credential_layout);
+		        
+		        final ProgressBar progressbar1 = (ProgressBar) inflate.findViewById(R.id.progressbar1);				final EditText username = (EditText) inflate.findViewById(R.id.username);
+			final EditText pass = (EditText) inflate.findViewById(R.id.pass);
+			final EditText url = (EditText) inflate.findViewById(R.id.url);				
+			final TextView no = (TextView) inflate.findViewById(R.id.no);
+			final TextView yes = (TextView) inflate.findViewById(R.id.yes);		        		        
+		
+			username.setFocusableInTouchMode(true);
+			pass.setFocusableInTouchMode(true);
+			url.setFocusableInTouchMode(true);
+			progressbar1.setIndeterminate(true);
+		        progressbar1.setMax((int)100);
+		        progressbar1.setProgress((int)98);
+
+		       yes.setOnClickListener(new View.OnClickListener() {
+			  public void onClick(View v) {
+								
+				if (url.getText().toString().equals("")) {				
+		  		}else{
+			 	no.setEnabled(false);
+				no.setTextColor(0xFFBDBDBD);
+					                    
+		 		all_item_layout.setVisibility(View.GONE);
+		                yes.setVisibility(View.GONE);
+			        progress_layout.setVisibility(View.VISIBLE);
+					                     
+				  //_CloneRepository(url.getText().toString(),nam.getText().toString(),username.getText().toString(),pass.getText().toString());
+				 }
+				                
+				}
+				});
+		        
+				no.setOnClickListener(new View.OnClickListener() {
+				 public void onClick(View v) {
+					prog.hide();
+				 }
+				});
+				prog.show();
+		 }
 }
