@@ -34,7 +34,7 @@
 					android:focusable="false"
 					android:layout_width="30dp"
 					android:layout_height="30dp"
-					android:src="@drawable/filepicker"
+					android:src="@drawable/git_clone"
 					android:scaleType="fitCenter" />
 				<TextView
 					android:id="@+id/textview1"
