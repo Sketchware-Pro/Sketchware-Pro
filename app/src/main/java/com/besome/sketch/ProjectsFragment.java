@@ -19,6 +19,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.util.*;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
