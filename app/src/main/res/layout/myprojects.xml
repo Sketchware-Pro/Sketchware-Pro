@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:clickable="false"
-                    android:text="Git Clone"
+                    android:text="Git clone"
                     android:textColor="@color/scolor_blue_01" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
