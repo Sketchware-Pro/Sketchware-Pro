@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.app.*;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -73,6 +74,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private ProjectsAdapter projectsAdapter;
     private FloatingActionButton floatingActionButton;
     private DB preference;
+    private AlertDialog prog;
 
     private void toProjectSettingOrRequestPermission(int position) {
         if (super.c()) {
