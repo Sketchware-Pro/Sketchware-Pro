@@ -88,55 +88,12 @@
 							android:inputType="textNoSuggestions" />
 					</LinearLayout>
 				</LinearLayout>
-				<TextView
-					android:id="@+id/textview3"
-					android:focusable="false"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:padding="4dp"
-					android:text="Repository Name"
-					android:textSize="12sp"
-					android:textColor="#757575" />
-				<LinearLayout
-					android:id="@+id/linear4"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="8dp"
-					android:paddingTop="8dp"
-					android:paddingRight="8dp"
-					android:paddingBottom="3dp"
-					android:orientation="horizontal">
-					<EditText
-						android:id="@+id/nam"
-						android:focusable="false"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:padding="8dp"
-						android:background="#ECF0F7"
-						android:textSize="14sp"
-						android:textColor="#000000"
-						android:hint="AndroXStudio"
-						android:textColorHint="#607D8B"
-						android:inputType="textNoSuggestions" />
-				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/credential_layout"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:paddingBottom="8dp"
 					android:orientation="vertical">
-					<TextView
-						android:id="@+id/invalid_repo_name"
-						android:focusable="false"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:paddingLeft="10dp"
-						android:paddingRight="4dp"
-						android:paddingBottom="4dp"
-						android:text="Already exist! Invalid Repository name. "
-						android:textSize="11sp"
-						android:textColor="#E91E63"
-						android:visibility="gone" />
 					<TextView
 						android:id="@+id/textview5"
 						android:focusable="false"
