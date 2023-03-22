@@ -23,6 +23,8 @@ import android.util.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
+import android.graphics.*;
+import android.graphics.drawable.*;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -571,7 +573,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     	public void _showCloneRepo() {
-		  prog = new AlertDialog.Builder(this).create();
+		  prog = new AlertDialog.Builder(getActivity()).create();
 				prog.setCancelable(false);
 				prog.setCanceledOnTouchOutside(false);
 				View inflate = getLayoutInflater().inflate(R.layout.add_repo, null);
