@@ -38,20 +38,16 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 
 public class ProjectsFragment extends DA implements View.OnClickListener {
-
-
     private static final int REQUEST_CODE_RESTORE_PROJECT = 700;
     private static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
     public static final int REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY = 206;
 
-
     private SwipeRefreshLayout swipeRefresh;
     private SearchView projectsSearchView;
     private RecyclerView myProjects;
-    ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private ProjectsAdapter projectsAdapter;
     private DB preference;
-
 
     private void initialize(ViewGroup parent) {
         preference = new DB(requireContext(), "project");
@@ -60,9 +56,13 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         requireActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
 
         swipeRefresh.setOnRefreshListener(() -> {
-            if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
-            if (!c()) ((MainActivity) requireActivity()).s(); //Check & Ask for storage permission
-            refreshProjectsList();
+            // Check storage access
+            if (!c()) {
+                // Ask for it
+                ((MainActivity) requireActivity()).s();
+            } else {
+                refreshProjectsList();
+            }
         });
 
         myProjects = parent.findViewById(R.id.myprojects);
@@ -75,15 +75,21 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         // Don't load project list without having permissions
         if (!c()) return;
 
-        projectsList = lC.a();
-        if (projectsList.size() > 0) {
-            Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
-        }
+        new Thread(() -> {
+            synchronized (projectsList) {
+                projectsList.clear();
+                projectsList.addAll(lC.a());
+                Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
+            }
 
-        projectsAdapter = new ProjectsAdapter(getActivity(), projectsList);
-        myProjects.setAdapter(projectsAdapter);
-        if (projectsSearchView != null)
-            projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+            requireActivity().runOnUiThread(() -> {
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                projectsAdapter = new ProjectsAdapter(getActivity(), new ArrayList<>(projectsList));
+                myProjects.setAdapter(projectsAdapter);
+                if (projectsSearchView != null)
+                    projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+            });
+        }).start();
     }
 
     @Override
@@ -125,9 +131,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     public int getProjectsCount() {
-        return projectsList.size();
+        synchronized (projectsList) {
+            return projectsList.size();
+        }
     }
-
 
     private void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
@@ -138,7 +145,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private void restoreProject() {
         (new BackupRestoreManager(getActivity(), this)).restore();
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -206,7 +212,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
@@ -259,6 +264,4 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         dialog.setNegativeButton("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
-
-
 }
