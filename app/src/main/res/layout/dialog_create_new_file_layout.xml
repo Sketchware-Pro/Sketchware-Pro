@@ -11,7 +11,8 @@
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
-        android:paddingBottom="5dp">
+        android:paddingBottom="5dp"
+        android:background="?attr/colorPrimaryContainer">
 
         <ImageView
             android:layout_width="30dp"
@@ -25,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create a new file"
-            android:textColor="#ff008dcd"
+            android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -74,6 +75,7 @@
             android:hint="Filename"
             android:inputType="text"
             android:textColorHint="#008dcd"
+            android:textColor="?attr/colorPrimary"
             android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -81,7 +83,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff09a7ec"
+        android:background="?attr/colorPrimary"
         android:gravity="right"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -94,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:text="@string/common_word_cancel"
-            android:textColor="#ffffffff"
+            android:textColor="?attr/colorOnPrimary"
             android:textStyle="bold" />
 
         <TextView
@@ -103,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="@string/common_word_save"
-            android:textColor="#ffffffff"
+            android:textColor="?attr/colorOnPrimary"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>
