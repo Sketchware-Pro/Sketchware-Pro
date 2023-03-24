@@ -35,7 +35,6 @@ import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.yB;
-import mod.SketchwareUtil;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
@@ -65,8 +64,6 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
 
         this.data = filteredProjectsList;
         c();
-        SketchwareUtil.toast(String.valueOf(data.size()));
-
     }
 
     @Override

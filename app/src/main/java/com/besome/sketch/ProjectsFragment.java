@@ -1,6 +1,7 @@
 package com.besome.sketch;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,7 +54,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private void initialize(ViewGroup parent) {
         preference = new DB(getContext(), "project");
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
-        projectsSearchView = new SearchView(requireActivity());
 
         getActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
 
@@ -65,21 +65,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         myProjects = parent.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
-
-
-        projectsSearchView.setOnQueryTextListener(new SearchView.c() {
-            @Override
-            public boolean onQueryTextChange(String s) {
-                projectsAdapter.filterData(s);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                myProjects.getAdapter().c();
-                return false;
-            }
-        });
 
         refreshProjectsList();
     }
@@ -93,10 +78,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
         }
 
-        showHideSearchBox(projectsList.isEmpty());
         projectsAdapter = new ProjectsAdapter(getActivity(), projectsList);
         myProjects.setAdapter(projectsAdapter);
-        projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+        if (projectsSearchView != null)
+            projectsAdapter.filterData(projectsSearchView.getQuery().toString());
     }
 
     @Override
@@ -142,11 +127,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
 
-    private void showHideSearchBox(boolean hide) {
-        projectsSearchView.setVisibility(hide ? View.GONE : View.VISIBLE);
-    }
-
-
     private void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -181,9 +161,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         int viewId = v.getId();
 
         if ((viewId == R.id.create_new_project) && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
-            toProjectSettingsActivity();
-        } else if (viewId == R.id.cv_restore_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
-            restoreProject();
+            final String[] actions = {"Create New Project", "Restore Project (.swb)"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Choose an action");
+            builder.setItems(actions, (dialog, which) -> {
+                if (which == 0) toProjectSettingsActivity();
+                else restoreProject();
+            });
+            builder.show();
         }
     }
 
@@ -192,12 +177,26 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         super.onCreateOptionsMenu(menu, menuInflater);
         menu.clear();
         menuInflater.inflate(R.menu.projects_fragment_menu, menu);
+        projectsSearchView = (SearchView) menu.findItem(R.id.searchProjects).getActionView();
+        projectsSearchView.setOnQueryTextListener(new SearchView.c() {
+            @Override
+            public boolean onQueryTextChange(String s) {
+                projectsAdapter.filterData(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                myProjects.getAdapter().c();
+                return false;
+            }
+        });
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sortProject)
-            showProjectSortingDialog();
+        if (item.getItemId() == R.id.sortProject) showProjectSortingDialog();
 
         return super.onOptionsItemSelected(item);
     }

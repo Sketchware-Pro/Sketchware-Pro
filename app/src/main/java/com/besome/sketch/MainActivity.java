@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -166,6 +165,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
+        a((Toolbar) findViewById(R.id.toolbar));
 
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
@@ -177,18 +177,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(u1I0 + 1));
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
-        d().d(true);
-        d().e(true);
-        ImageView logo = findViewById(R.id.layout_main_logo);
-        logo.setOnClickListener(v -> invalidateOptionsMenu());
+        d().d(true); //getSupportActionBar.setHomeButtonEnabled
+        d().a((CharSequence) null); //getSupportActionBar.setTitle
+
         drawer = findViewById(R.id.left_drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new l(this, drawerLayout, R.string.app_name, R.string.app_name);
         // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
         drawerLayout.a((DrawerLayout.c) drawerToggle);
-        d().a("");
 
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
@@ -381,6 +377,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 projectsFragment.refreshProjectsList();
     }
 
+    //This is annoying Please remove/togglize it
     private void tryLoadingCustomizedAppStrings() {
         // Refresh extracted provided strings file if necessary
         oB oB = new oB();

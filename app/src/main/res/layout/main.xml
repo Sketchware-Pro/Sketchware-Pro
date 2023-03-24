@@ -16,18 +16,8 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/action_bar_height"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="enterAlways|scroll"
-                app:titleEnabled="false">
-
-                <include layout="@layout/toolbar" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
+            <include layout="@layout/toolbar" />
+            
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
