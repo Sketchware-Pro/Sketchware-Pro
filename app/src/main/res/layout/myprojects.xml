@@ -1,124 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myprojects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff6f6f6"
-        android:orientation="vertical">
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
+        android:splitMotionEvents="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_create_new"
-                android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                android:elevation="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?selectableItemBackground"
-                    android:clickable="false"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/iv_create_new"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center"
-                        android:scaleType="centerInside"
-                        android:background="@color/transparent"
-                        android:clickable="false"
-                        android:src="@drawable/plus_96"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:id="@+id/tv_create_new"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:clickable="false"
-                        android:text="@string/myprojects_list_menu_title_create_a_new_project"
-                        android:textColor="@color/scolor_blue_01" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_restore_projects"
-                android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                android:elevation="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?selectableItemBackground"
-                    android:clickable="false"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/iv_restore_projects"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center"
-                        android:clickable="false"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/data_backup_96"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:id="@+id/tv_restore_projects"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:clickable="false"
-                        android:text="@string/myprojects_list_menu_title_restore_projects"
-                        android:textColor="@color/scolor_blue_01" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/transparent"
-            android:elevation="8dp">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/projectsSearchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@android:color/transparent"
-                app:queryHint="@string/search_projects" />
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myprojects"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:splitMotionEvents="false" />
-    </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
