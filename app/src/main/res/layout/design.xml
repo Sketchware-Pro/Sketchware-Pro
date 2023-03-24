@@ -84,7 +84,7 @@
                         android:elevation="4dp"
                         android:padding="4dp"
                         android:src="@drawable/sorting_options_48"
-                        android:theme="@style/AppTheme.Button.LightBlue" />
+                        android:theme="@style/MaterialTheme.Button" />
 
                     <Button
                         android:id="@+id/btn_execute"
@@ -94,7 +94,7 @@
                         android:textColor="#ffffffff"
                         android:textSize="@dimen/text_size_button_material"
                         android:textStyle="bold"
-                        android:theme="@style/AppTheme.Button.LightBlue" />
+                        android:theme="@style/MaterialTheme.Button" />
                 </LinearLayout>
             </LinearLayout>
 
