@@ -144,12 +144,12 @@ public class ManageJavaActivity extends Activity {
         noteNoFiles = findViewById(R.id.text_info);
         noteNoFiles.setText("No files");
 
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
         title.setText(R.string.text_title_menu_java);
 
         loadFile.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(loadFile);
+        Helper.applyRippleToToolbarView(loadFile,this);
         loadFile.setOnClickListener(v -> showLoadDialog());
     }
 

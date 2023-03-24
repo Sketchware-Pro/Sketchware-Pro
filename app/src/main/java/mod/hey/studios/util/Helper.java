@@ -2,6 +2,7 @@ package mod.hey.studios.util;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
+import android.R;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -103,16 +104,19 @@ public class Helper {
         );
     }
     /* Ripple color: Material Color */
-    public static void applyRippleToToolbarView(View view,Context context) {
+    public static void applyRippleToToolbarView(View view,Activity context) {
+    	TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
+        
         GradientDrawable content = new GradientDrawable();
-        content.setColor(context.getResources().getColor(android.R.attr.colorPrimary));
+        content.setColor(typedValue.resourceId);
         content.setCornerRadius(90);
 
         view.setBackground(
                 new RippleDrawable(
                         new ColorStateList(
                                 new int[][]{new int[]{0}},
-                                new int[]{context.getResources().getColor(android.R.attr.colorPrimaryContainer)}
+                                new int[]{Color.parseColor("#FFDAD2")}
                         ),
                         content,
                         null
