@@ -44,7 +44,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     private SwipeRefreshLayout swipeRefresh;
     private SearchView projectsSearchView;
-    private RecyclerView myProjects;
     private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private ProjectsAdapter projectsAdapter;
     private DB preference;
@@ -65,9 +64,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         });
 
-        myProjects = parent.findViewById(R.id.myprojects);
+        RecyclerView myProjects = parent.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
 
+        projectsAdapter = new ProjectsAdapter(getActivity(), new ArrayList<>(projectsList));
+        myProjects.setAdapter(projectsAdapter);
         refreshProjectsList();
     }
 
@@ -84,8 +85,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
             requireActivity().runOnUiThread(() -> {
                 if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
-                projectsAdapter = new ProjectsAdapter(getActivity(), new ArrayList<>(projectsList));
-                myProjects.setAdapter(projectsAdapter);
+                projectsAdapter.setProjectsList(new ArrayList<>(projectsList));
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
             });

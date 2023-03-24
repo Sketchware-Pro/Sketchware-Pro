@@ -45,11 +45,15 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
     private final Activity activity;
     private List<HashMap<String, Object>> data = new ArrayList<>();
-    private final ArrayList<HashMap<String, Object>> projectsList;
+    private List<HashMap<String, Object>> projectsList;
 
     public ProjectsAdapter(Activity context, ArrayList<HashMap<String, Object>> projectsList) {
         this.projectsList = projectsList;
         this.activity = context;
+    }
+
+    public void setProjectsList(List<HashMap<String, Object>> projects) {
+        projectsList = projects;
     }
 
     public void filterData(String query) {
