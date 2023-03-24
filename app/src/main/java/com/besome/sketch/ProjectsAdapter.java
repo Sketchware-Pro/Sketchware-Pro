@@ -50,7 +50,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
     public ProjectsAdapter(Activity context, ArrayList<HashMap<String, Object>> projectsList) {
         this.projectsList = projectsList;
         this.activity = context;
-        filterData("");
     }
 
     public void filterData(String query) {
@@ -294,9 +293,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
     private void deleteProject(HashMap<String, Object> project) {
         final ZA c = new ZA(activity); //Now loading
+        c.show();
 
         new Thread(() -> {
-            activity.runOnUiThread(c::show);
             lC.a(activity, yB.c(project, "sc_id"));
             activity.runOnUiThread(() -> {
                 c.dismiss();
