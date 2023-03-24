@@ -181,7 +181,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
                 deleteProject(projectMap);
             } else if (v.getId() == R.id.confirm_no) {
                 projectMap.put("confirmation", false);
-                notifyItemRemoved(position);
+                notifyItemChanged(position);
             }
 
         });

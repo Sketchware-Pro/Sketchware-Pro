@@ -179,6 +179,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         super.onCreateOptionsMenu(menu, menuInflater);
         menu.clear();
         menuInflater.inflate(R.menu.projects_fragment_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         projectsSearchView = (SearchView) menu.findItem(R.id.searchProjects).getActionView();
         projectsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -192,7 +197,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 return false;
             }
         });
-
     }
 
     @Override
