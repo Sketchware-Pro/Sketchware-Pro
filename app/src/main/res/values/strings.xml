@@ -1,44 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="abc_action_bar_home_description">Navigate home</string>
-    <string name="abc_action_bar_up_description">Navigate up</string>
-    <string name="abc_action_menu_overflow_description">More options</string>
-    <string name="abc_action_mode_done">Done</string>
-    <string name="abc_activity_chooser_view_see_all">See all</string>
-    <string name="abc_activitychooserview_choose_application">Choose an app</string>
-    <string name="abc_capital_off">OFF</string>
-    <string name="abc_capital_on">ON</string>
-    <string name="abc_font_family_body_1_material">sans-serif</string>
-    <string name="abc_font_family_body_2_material">sans-serif-medium</string>
-    <string name="abc_font_family_button_material">sans-serif-medium</string>
-    <string name="abc_font_family_caption_material">sans-serif</string>
-    <string name="abc_font_family_display_1_material">sans-serif</string>
-    <string name="abc_font_family_display_2_material">sans-serif</string>
-    <string name="abc_font_family_display_3_material">sans-serif</string>
-    <string name="abc_font_family_display_4_material">sans-serif-light</string>
-    <string name="abc_font_family_headline_material">sans-serif</string>
-    <string name="abc_font_family_menu_material">sans-serif</string>
-    <string name="abc_font_family_subhead_material">sans-serif</string>
-    <string name="abc_font_family_title_material">sans-serif-medium</string>
-    <string name="abc_menu_alt_shortcut_label">Alt+</string>
-    <string name="abc_menu_ctrl_shortcut_label">Ctrl+</string>
-    <string name="abc_menu_delete_shortcut_label">delete</string>
-    <string name="abc_menu_enter_shortcut_label">enter</string>
-    <string name="abc_menu_function_shortcut_label">Function+</string>
-    <string name="abc_menu_meta_shortcut_label">Meta+</string>
-    <string name="abc_menu_shift_shortcut_label">Shift+</string>
-    <string name="abc_menu_space_shortcut_label">space</string>
-    <string name="abc_menu_sym_shortcut_label">Sym+</string>
-    <string name="abc_prepend_shortcut_label">Menu+</string>
-    <string name="abc_search_hint">Search…</string>
-    <string name="abc_searchview_description_clear">Clear query</string>
-    <string name="abc_searchview_description_query">Search query</string>
-    <string name="abc_searchview_description_search">Search</string>
-    <string name="abc_searchview_description_submit">Submit query</string>
-    <string name="abc_searchview_description_voice">Voice search</string>
-    <string name="abc_shareactionprovider_share_with">Share with</string>
-    <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
-    <string name="abc_toolbar_collapse_description">Collapse</string>
     <string name="account_deactivate_actionbar_title">Deactivate Account</string>
     <string name="account_deactivate_button_deactivate_account">Deactivate account</string>
     <string name="account_deactivate_dialog_confirm_lost_data">"All information will be lost.
@@ -968,8 +929,6 @@ with a free Sketchware Account"</string>
     <string name="block_webview_zoom_out_head" />
     <string name="block_webview_zoom_out_tail">zoomOut</string>
     <string name="bottom_sheet_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
-    <string name="character_counter_content_description">Character limit exceeded %1$d of %2$d</string>
-    <string name="character_counter_pattern">%1$d / %2$d</string>
     <string name="collection_duplicated_name">Duplicate file name in my collection</string>
     <string name="collection_failed_to_copy">Failed to save to my collection</string>
     <string name="collection_no_exist_file">File does not exist</string>
@@ -1203,7 +1162,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="component_message_component_block_added">New blocks have been added in the Logic Editor</string>
     <string name="component_message_no_components">No components to display</string>
     <string name="component_title_add_component">Add Component</string>
-    <string name="default_web_client_id">539401594864-chmbirvfd4hlokmkmjt1k5g24vspe10m.apps.googleusercontent.com</string>
     <string name="desc_expired_date">Paid service : Until %s</string>
     <string name="desc_purchase_1month">"You'll have access to all the premium features. Best deal for short term users."</string>
     <string name="desc_purchase_1year">This plan saves you %s in comparison to the monthly plan. Grab this deal while it lasts.</string>
@@ -1474,19 +1432,11 @@ Do you want to continue?"</string>
     <string name="event_onuploadsuccess">onUploadSuccess</string>
     <string name="event_title_add_new_component">Add new component</string>
     <string name="event_title_add_new_event">Add new event</string>
-    <string name="fab_transformation_scrim_behavior">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
-    <string name="fab_transformation_sheet_behavior">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
     <string name="facebook_app_id">255022168522663</string>
     <string name="facebook_url">https://fb.com/sketchware</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
     <string name="firebase_database_url">https://dependable-flag-825.firebaseio.com</string>
     <string name="ga_trackingId">UA-80718117-1</string>
-    <string name="gcm_defaultSenderId">539401594864</string>
-    <string name="google_api_key">AIzaSyBv696FDTPStkyYTGrW26Hb209wM2d6h_Q</string>
-    <string name="google_app_id">1:539401594864:android:19f04706c42794de</string>
-    <string name="google_crash_reporting_api_key">AIzaSyBv696FDTPStkyYTGrW26Hb209wM2d6h_Q</string>
-    <string name="google_storage_bucket">dependable-flag-825.appspot.com</string>
-    <string name="hide_bottom_view_on_scroll_behavior">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
     <string name="ideas_url">https://ideas.sketchware.io/</string>
     <string name="import_project_desc_download_complete">Download for %s completed.</string>
     <string name="import_project_desc_download_complete_is_not_root">Download for %s completed. Refresh Project list in the project tab and check the downloaded project.</string>
@@ -1723,7 +1673,6 @@ But, components should be added manually for working correctly."</string>
     <string name="message_license_expired">"License expired.
 %s"</string>
     <string name="message_strings_xml_loaded">Your \"strings.xml\" file has been successfully loaded!</string>
-    <string name="mtrl_chip_close_icon_content_description">Remove %1$s</string>
     <string name="myprojects_confirm_project_delete">Are you sure you want to delete this project?</string>
     <string name="myprojects_confirm_project_overwrite">A project with the same name already exists. Would you like to overwrite?</string>
     <string name="myprojects_export_button_share">SHARE APK FILE</string>
@@ -1833,11 +1782,6 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_sign_apk_title_export_certificate">Export Certificate</string>
     <string name="notifiacation_description_project_comment">%s commented on your project</string>
     <string name="notifiacation_description_project_like">%s liked your project</string>
-    <string name="password_toggle_content_description">Show password</string>
-    <string name="path_password_eye">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
-    <string name="path_password_eye_mask_strike_through">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
-    <string name="path_password_eye_mask_visible">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
-    <string name="path_password_strike_through">M3.27,4.27 L19.74,20.74</string>
     <string name="picker_color_already_exist">This color already exists</string>
     <string name="picker_color_custom_color_not_found">No custom color found</string>
     <string name="picker_color_hint_enter_hex_color_code">Enter hex color code</string>
@@ -1862,7 +1806,6 @@ Do you want to continue?"</string>
     <string name="program_information_title_share_with_friends">Share with Friends</string>
     <string name="program_information_title_suggest_ideas">Suggest Ideas</string>
     <string name="program_information_title_system_information">System Information</string>
-    <string name="project_id">dependable-flag-825</string>
     <string name="promotion_checkin_button_check_in">CHECK IN</string>
     <string name="promotion_checkin_button_redeem_coupon">REDEEM COUPON</string>
     <string name="promotion_checkin_description_checkin_rule">Check in every day to win a free discount coupon!</string>
@@ -2260,7 +2203,6 @@ Click \"NEXT\" to upload the APK file"</string>
     <string name="s5">Create calendar event</string>
     <string name="s6">Allow Ad to create a calendar event?</string>
     <string name="s7">Test Ad</string>
-    <string name="search_menu_title">Search</string>
     <string name="search_recent_button_delete_all_recent_keyword">Delete All</string>
     <string name="search_recent_message_delete_keyword_dialog_delete_all">Do you want to delete all keywords?</string>
     <string name="search_recent_message_delete_keyword_dialog_delete_one">Do you want to delete this keyword?</string>
@@ -2481,7 +2423,6 @@ Please try again later"</string>
     <string name="slack_url_primary">http://slack.sketchware.io</string>
     <string name="slack_url_secondary">http://sketchware.slack.com</string>
     <string name="source_code_dialog_title_change_font_size">Change font size</string>
-    <string name="status_bar_notification_info_overflow">999+</string>
     <string name="subscribe_button_unlock">Watch a video to unlock</string>
     <string name="subscribe_desc_become_a_premium_user">Subscribe now to become a premium user!</string>
     <string name="subscribe_desc_five">Unlimited share, sign, and exports</string>
@@ -2638,13 +2579,7 @@ Please check the URL again."</string>
     <string name="cancel">Cancel</string>
     <string name="copy">Copy</string>
     <string name="cut">Cut</string>
-    <string name="last">Last</string>
-    <string name="more" translatable="false">More</string>
-    <string name="next">Next</string>
     <string name="paste">Paste</string>
-    <string name="replace">Replace</string>
-    <string name="replaceAll">Replace All</string>
-    <string name="replacement">Replacement</string>
     <string name="saveToProject" translatable="false">Project</string>
     <string name="selectAll">Select All</string>
     <string name="text_to_search">Text to search</string>

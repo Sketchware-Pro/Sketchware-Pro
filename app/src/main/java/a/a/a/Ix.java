@@ -325,7 +325,7 @@ public class Ix {
                         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN)) {
                             activityTag.addAttribute("android", "theme", "@style/AppTheme.FullScreen");
                         }
-                    } else if (projectFileBean.hasActivityOption(ProjectFileBean.PROJECT_FILE_TYPE_DRAWER)) {
+                    } else if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN)) {
                         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                             activityTag.addAttribute("android", "theme", "@style/NoStatusBar");
                         } else {

@@ -9,7 +9,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.StrictMode;
 import android.system.Os;
 import android.text.TextUtils;
@@ -26,8 +25,6 @@ import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
-
-import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,8 +43,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import kellinwood.security.zipsigner.ZipSigner;
-import kellinwood.security.zipsigner.optional.KeyStoreFileManager;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.FieldId;
@@ -61,7 +56,6 @@ import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
@@ -72,6 +66,7 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
+import mod.jbk.util.TestkeySignBridge;
 import proguard.Configuration;
 import proguard.ConfigurationParser;
 import proguard.ParseException;
@@ -86,7 +81,6 @@ public class Dp {
     private final Context context;
     public yq yq;
     public FilePathUtil fpu;
-    private final oB fileUtil;
     public ManageLocalLibrary mll;
     public Kp builtInLibraryManager;
     public String androidJarPath;
@@ -128,9 +122,8 @@ public class Dp {
         this.context = context;
         yq = yqVar;
         fpu = new FilePathUtil();
-        fileUtil = new oB(false);
         mll = new ManageLocalLibrary(yqVar.sc_id);
-        builtInLibraryManager = new Kp();
+        builtInLibraryManager = new Kp(yqVar.sc_id);
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
         proguard = new ProguardHandler(yqVar.sc_id);
@@ -168,7 +161,7 @@ public class Dp {
      * @param targetFile   The file on local storage
      * @return If the file in assets has been extracted
      */
-    private static boolean hasFileChanged(String fileInAssets, String targetFile) {
+    public static boolean hasFileChanged(String fileInAssets, String targetFile) {
         long length;
         File compareToFile = new File(targetFile);
         oB fileUtil = new oB();
@@ -740,53 +733,7 @@ public class Dp {
      * and extracts them, if needed. Also initializes used built-in libraries.
      */
     public void getBuiltInLibrariesReady() {
-        /* If l doesn't exist, create it */
-        if (!fileUtil.e(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath())) {
-            fileUtil.f(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
-        }
-        String dexsArchiveName = "dexs.zip";
-        String coreLambdaStubsJarName = "core-lambda-stubs.jar";
-        String libsArchiveName = "libs.zip";
-        String testkeyArchiveName = "testkey.zip";
-
-        String dexsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, dexsArchiveName).getAbsolutePath();
-        String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
-        String libsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, libsArchiveName).getAbsolutePath();
-        String testkeyArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, testkeyArchiveName).getAbsolutePath();
-        String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
-        String libsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH.getAbsolutePath();
-        String testkeyDirectoryPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey").getAbsolutePath();
-
-        String baseAssetsPath = "libs" + File.separator;
-        maybeExtractAndroidJar(progressReceiver);
-        if (hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
-            progressReceiver.onProgress("Extracting built-in libraries' DEX files...");
-            /* Delete the directory */
-            fileUtil.b(dexsDirectoryPath);
-            /* Create the directories */
-            fileUtil.f(dexsDirectoryPath);
-            /* Extract dexs.zip to dexs/ */
-            new KB().a(dexsArchivePath, dexsDirectoryPath);
-        }
-        if (hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
-            progressReceiver.onProgress("Extracting built-in libraries' resources...");
-            /* Delete the directory */
-            fileUtil.b(libsDirectoryPath);
-            /* Create the directories */
-            fileUtil.f(libsDirectoryPath);
-            /* Extract libs.zip to libs/ */
-            new KB().a(libsArchivePath, libsDirectoryPath);
-        }
-        hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
-        if (hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
-            progressReceiver.onProgress("Extracting built-in signing keys...");
-            /* Delete the directory */
-            fileUtil.b(testkeyDirectoryPath);
-            /* Create the directories */
-            fileUtil.f(testkeyDirectoryPath);
-            /* Extract testkey.zip to testkey/ */
-            new KB().a(testkeyArchivePath, testkeyDirectoryPath);
-        }
+        BuiltInLibraries.extractCompileAssets(progressReceiver);
         if (yq.N.g) {
             builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
             builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
@@ -828,33 +775,13 @@ public class Dp {
         ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
     }
 
-    public static void maybeExtractAndroidJar(BuildProgressReceiver optionalProgressReceiver) {
-        String androidJarArchiveName = "android.jar.zip";
-        String androidJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
-        if (hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
-            if (optionalProgressReceiver != null) optionalProgressReceiver.onProgress("Extracting built-in android.jar...");
-            /* Delete android.jar */
-            new oB().c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
-            /* Extract android.jar.zip to android.jar */
-            new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
-        }
-    }
-
     /**
      * Sign the debug APK file with testkey.
      * <p>
      * This method uses apksigner, but kellinwood's zipsigner as fallback.
      */
     public void signDebugApk() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        if (Build.VERSION.SDK_INT >= 26) {
-            ApkSigner signer = new ApkSigner();
-            signer.signWithTestKey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath, null);
-        } else {
-            ZipSigner zipSigner = new ZipSigner();
-            KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
-        }
+        TestkeySignBridge.signWithTestkey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
     }
 
     private void mergeDexes(File target, List<Dex> dexes) throws IOException {
@@ -994,13 +921,6 @@ public class Dp {
         } catch (Exception e) {
             LogUtil.e("StringFog", "Failed to run StringFog", e);
         }
-    }
-
-    /**
-     * Calls {@link #runZipalign(String, String)} with {@link yq#unsignedUnalignedApkPath} and {@link yq#unsignedAlignedApkPath}.
-     */
-    public void runZipalign() throws By {
-        runZipalign(yq.unsignedUnalignedApkPath, yq.unsignedAlignedApkPath);
     }
 
     public void runZipalign(String inPath, String outPath) throws By {

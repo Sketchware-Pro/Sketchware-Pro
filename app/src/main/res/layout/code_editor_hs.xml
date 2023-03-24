@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@id/toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#ff303030"
@@ -39,7 +39,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@id/menu_view_undo"
+            android:id="@+id/menu_view_undo"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:padding="6dp"
@@ -47,7 +47,7 @@
             android:src="@drawable/ic_undo_white_48dp" />
 
         <ImageView
-            android:id="@id/menu_view_redo"
+            android:id="@+id/menu_view_redo"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginLeft="8dp"
@@ -56,7 +56,7 @@
             android:src="@drawable/ic_redo_white_48dp" />
 
         <ImageView
-            android:id="@id/save"
+            android:id="@+id/save"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginLeft="8dp"
@@ -65,7 +65,7 @@
             android:src="@drawable/save_white_48" />
 
         <ImageView
-            android:id="@id/more"
+            android:id="@+id/more"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginLeft="8dp"
@@ -75,8 +75,8 @@
     </LinearLayout>
 
     <io.github.rosemoe.sora.widget.CodeEditor
-        android:id="@id/editor"
+        android:id="@+id/editor"
         style="@style/AppTheme.Et"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -613,7 +613,7 @@ public class OldResourceIdMapper {
             case 2131165489:
                 return R.drawable.common_google_signin_btn_icon_light_normal_background;
             case 2131165490:
-                return R.drawable.common_google_signin_btn_text_dark;
+                //return R.drawable.common_google_signin_btn_text_dark;
             case 2131165491:
                 return R.drawable.common_google_signin_btn_text_dark_focused;
             case 2131165492:
@@ -623,7 +623,7 @@ public class OldResourceIdMapper {
             case 2131165494:
                 return R.drawable.common_google_signin_btn_text_disabled;
             case 2131165495:
-                return R.drawable.common_google_signin_btn_text_light;
+                //return R.drawable.common_google_signin_btn_text_light;
             case 2131165496:
                 return R.drawable.common_google_signin_btn_text_light_focused;
             case 2131165497:

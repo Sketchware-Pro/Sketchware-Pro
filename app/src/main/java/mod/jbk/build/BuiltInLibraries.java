@@ -1,12 +1,21 @@
 package mod.jbk.build;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.SketchApplication;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import a.a.a.Dp;
 import a.a.a.Jp;
+import a.a.a.KB;
+import a.a.a.oB;
 
 public class BuiltInLibraries {
 
@@ -404,8 +413,82 @@ public class BuiltInLibraries {
         return getLibraryProGuardConfiguration(libraryName).getAbsolutePath();
     }
 
-    public static class BuiltInLibrary {
+    public static void extractCompileAssets(@NonNull BuildProgressReceiver... progressReceivers) {
+        if (!EXTRACTED_COMPILE_ASSETS_PATH.exists()) {
+            if (!EXTRACTED_COMPILE_ASSETS_PATH.mkdirs()) {
+                throw new RuntimeException(new IOException("Failed to create directory " + EXTRACTED_COMPILE_ASSETS_PATH));
+            }
+        }
 
+        String dexsArchiveName = "dexs.zip";
+        String coreLambdaStubsJarName = "core-lambda-stubs.jar";
+        String libsArchiveName = "libs.zip";
+        String testkeyArchiveName = "testkey.zip";
+
+        String dexsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, dexsArchiveName).getAbsolutePath();
+        String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
+        String libsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, libsArchiveName).getAbsolutePath();
+        String testkeyArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, testkeyArchiveName).getAbsolutePath();
+        String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
+        String libsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH.getAbsolutePath();
+        String testkeyDirectoryPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey").getAbsolutePath();
+
+        String baseAssetsPath = "libs" + File.separator;
+        oB fileUtil = new oB(false);
+
+        maybeExtractAndroidJar(progressReceivers);
+
+        if (Dp.hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
+            for (BuildProgressReceiver receiver : progressReceivers) {
+                receiver.onProgress("Extracting built-in libraries' DEX files...");
+            }
+            /* Delete the directory */
+            fileUtil.b(dexsDirectoryPath);
+            /* Create the directories */
+            fileUtil.f(dexsDirectoryPath);
+            /* Extract dexs.zip to dexs/ */
+            new KB().a(dexsArchivePath, dexsDirectoryPath);
+        }
+        if (Dp.hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
+            for (BuildProgressReceiver receiver : progressReceivers) {
+                receiver.onProgress("Extracting built-in libraries' resources...");
+            }
+            /* Delete the directory */
+            fileUtil.b(libsDirectoryPath);
+            /* Create the directories */
+            fileUtil.f(libsDirectoryPath);
+            /* Extract libs.zip to libs/ */
+            new KB().a(libsArchivePath, libsDirectoryPath);
+        }
+        Dp.hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
+        if (Dp.hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
+            for (BuildProgressReceiver receiver : progressReceivers) {
+                receiver.onProgress("Extracting built-in signing keys...");
+            }
+            /* Delete the directory */
+            fileUtil.b(testkeyDirectoryPath);
+            /* Create the directories */
+            fileUtil.f(testkeyDirectoryPath);
+            /* Extract testkey.zip to testkey/ */
+            new KB().a(testkeyArchivePath, testkeyDirectoryPath);
+        }
+    }
+
+    public static void maybeExtractAndroidJar(@NonNull BuildProgressReceiver... receivers) {
+        String androidJarArchiveName = "android.jar.zip";
+        String androidJarPath = new File(EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
+        if (Dp.hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
+            for (BuildProgressReceiver receiver : receivers) {
+                receiver.onProgress("Extracting built-in android.jar...");
+            }
+            /* Delete android.jar */
+            new oB().c(EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
+            /* Extract android.jar.zip to android.jar */
+            new KB().a(androidJarPath, EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
+        }
+    }
+
+    public static class BuiltInLibrary implements Parcelable {
         private final String name;
         private final List<String> dependencyNames;
         private final String packageName;
@@ -436,6 +519,35 @@ public class BuiltInLibraries {
             this(name, List.of());
         }
 
+        protected BuiltInLibrary(Parcel in) {
+            name = in.readString();
+            dependencyNames = in.createStringArrayList();
+            packageName = in.readString();
+            hasResources = in.readInt() != 0;
+        }
+
+        public static final Creator<BuiltInLibrary> CREATOR = new Creator<>() {
+            @Override
+            public BuiltInLibrary createFromParcel(Parcel in) {
+                return new BuiltInLibrary(in);
+            }
+
+            @Override
+            public BuiltInLibrary[] newArray(int size) {
+                return new BuiltInLibrary[size];
+            }
+        };
+
+        public static Optional<BuiltInLibrary> ofName(String name) {
+            for (BuiltInLibrary builtInLibrary : KNOWN_BUILT_IN_LIBRARIES) {
+                if (builtInLibrary.getName().equals(name)) {
+                    return Optional.of(builtInLibrary);
+                }
+            }
+
+            return Optional.empty();
+        }
+
         public String getName() {
             return name;
         }
@@ -450,6 +562,29 @@ public class BuiltInLibraries {
 
         public boolean hasResources() {
             return hasResources;
+        }
+
+        @Override
+        public String toString() {
+            return "BuiltInLibrary{" +
+                    "name='" + name + '\'' +
+                    ", dependencyNames=" + dependencyNames +
+                    ", packageName='" + packageName + '\'' +
+                    ", hasResources=" + hasResources +
+                    '}';
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(name);
+            dest.writeStringList(dependencyNames);
+            dest.writeString(packageName);
+            dest.writeInt(hasResources ? 1 : 0);
         }
     }
 }

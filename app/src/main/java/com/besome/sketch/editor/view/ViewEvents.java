@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +23,6 @@ import java.util.ArrayList;
 
 import a.a.a.Qs;
 import a.a.a.bB;
-import a.a.a.ci;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
@@ -51,10 +52,10 @@ public class ViewEvents extends LinearLayout {
         eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.b(0);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         eventsList.setLayoutManager(linearLayoutManager);
         eventsList.setAdapter(new EventAdapter());
-        eventsList.setItemAnimator(new ci());
+        eventsList.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void setOnEventClickListener(Qs listener) {
@@ -82,8 +83,7 @@ public class ViewEvents extends LinearLayout {
                 events.add(eventBean);
             }
         }
-        // RecyclerView.Adapter<VH extends ViewHolder>#notifyDataSetChanged()
-        eventsList.getAdapter().c();
+        eventsList.getAdapter().notifyDataSetChanged();
     }
 
     private void createEvent(int eventPosition) {
@@ -91,7 +91,7 @@ public class ViewEvents extends LinearLayout {
         if (!eventBean.isSelected) {
             eventBean.isSelected = true;
             jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            eventsList.getAdapter().c(eventPosition);
+            eventsList.getAdapter().notifyItemChanged(eventPosition);
             bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
         if (eventClickListener != null) {
@@ -99,9 +99,9 @@ public class ViewEvents extends LinearLayout {
         }
     }
 
-    private class EventAdapter extends RecyclerView.a<EventAdapter.ViewHolder> {
+    private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout container;
             public final ImageView icon;
             public final ImageView addAvailableIcon;
@@ -113,13 +113,12 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                itemView.setOnClickListener(v -> createEvent(j()));
+                itemView.setOnClickListener(v -> createEvent(getLayoutPosition()));
             }
         }
 
         @Override
-        // RecyclerView.Adapter#onBindViewHolder(VH, int)
-        public void b(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EventBean eventBean = events.get(position);
             if (eventBean.isSelected) {
                 holder.addAvailableIcon.setVisibility(View.GONE);
@@ -133,14 +132,13 @@ public class ViewEvents extends LinearLayout {
         }
 
         @Override
-        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.event_grid_item, parent, false));
         }
 
         @Override
-        // RecyclerView.Adapter#getItemCount()
-        public int a() {
+        public int getItemCount() {
             return events.size();
         }
     }

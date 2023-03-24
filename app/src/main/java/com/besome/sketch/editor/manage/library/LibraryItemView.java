@@ -14,11 +14,11 @@ import a.a.a.wB;
 import a.a.a.xB;
 
 public class LibraryItemView extends CardView {
-    private final Context context;
-    private ImageView icon;
-    private TextView title;
-    private TextView description;
-    private TextView enabled;
+    protected final Context context;
+    protected ImageView icon;
+    protected TextView title;
+    protected TextView description;
+    protected TextView enabled;
 
     public LibraryItemView(Context context) {
         super(context);
@@ -34,16 +34,21 @@ public class LibraryItemView extends CardView {
         LayoutParams layoutParams = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.leftMargin = (int) wB.a(context, 8f);
         layoutParams.topMargin = (int) wB.a(context, 4f);
         layoutParams.bottomMargin = (int) wB.a(context, 4f);
+        layoutParams.rightMargin = (int) wB.a(context, 8f);
         setLayoutParams(layoutParams);
     }
 
     public void setData(ProjectLibraryBean projectLibraryBean) {
+        boolean enabledChecked = ProjectLibraryBean.LIB_USE_Y.equals(projectLibraryBean.useYn);
+        CharSequence enabledLabel = enabledChecked ? "ON" : "OFF";
+
         icon.setImageResource(ProjectLibraryBean.getLibraryIcon(projectLibraryBean.libType));
         title.setText(xB.b().a(getContext(), ProjectLibraryBean.getLibraryResName(projectLibraryBean.libType)));
         description.setText(xB.b().a(getContext(), ProjectLibraryBean.getLibraryResDesc(projectLibraryBean.libType)));
-        enabled.setText("Y".equals(projectLibraryBean.useYn) ? "ON" : "OFF");
-        enabled.setSelected("Y".equals(projectLibraryBean.useYn));
+        enabled.setText(enabledLabel);
+        enabled.setSelected(enabledChecked);
     }
 }

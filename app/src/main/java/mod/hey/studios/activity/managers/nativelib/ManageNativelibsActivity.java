@@ -190,7 +190,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         fab.setOnClickListener(this);
         gridView.setOnItemLongClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
-                PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, view);
+                PopupMenu menu = new PopupMenu(this, view);
 
                 menu.getMenu().add("Delete");
                 menu.setOnMenuItemClickListener(item -> {
@@ -312,7 +312,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, parent, false);
             }
 
             TextView name = convertView.findViewById(R.id.title);

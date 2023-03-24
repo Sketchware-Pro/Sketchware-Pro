@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,13 +91,13 @@ public class Fw extends qA {
 
     public void a(ProjectFileBean var1) {
         activitiesFiles.add(var1);
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
     }
 
     public void a(boolean var1) {
         k = var1;
         e();
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
     }
 
     public final void b(ProjectFileBean projectFileBean) {
@@ -104,10 +105,12 @@ public class Fw extends qA {
         newProjectFile.keyboardSetting = projectFileBean.keyboardSetting;
         newProjectFile.orientation = projectFileBean.orientation;
         newProjectFile.options = projectFileBean.options;
+
+        String drawerName = ProjectFileBean.getDrawerName(newProjectFile.fileName);
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-            ((ManageViewActivity) getActivity()).b(ProjectFileBean.getDrawerName(newProjectFile.fileName));
+            ((ManageViewActivity) getActivity()).b(drawerName);
         } else {
-            ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(newProjectFile.fileName));
+            ((ManageViewActivity) getActivity()).c(drawerName);
         }
 
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
@@ -164,17 +167,20 @@ public class Fw extends qA {
     }
 
     public void f() {
-        for (int i = 0, filesSize = activitiesFiles.size(); i < filesSize; i++) {
-            if (i < 0) {
-                projectFilesAdapter.c();
-                return;
-            }
-            ProjectFileBean projectFileBean = activitiesFiles.get(i);
-            if (projectFileBean.isSelected) {
-                activitiesFiles.remove(projectFileBean);
-                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                    ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(projectFileBean.fileName));
+        int i = activitiesFiles.size();
+        while (true) {
+            i--;
+            if (i >= 0) {
+                ProjectFileBean projectFileBean = activitiesFiles.get(i);
+                if (projectFileBean.isSelected) {
+                    activitiesFiles.remove(i);
+                    if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                        ((ManageViewActivity) getActivity()).c(ProjectFileBean.getDrawerName(projectFileBean.fileName));
+                    }
                 }
+            } else {
+                projectFilesAdapter.notifyDataSetChanged();
+                return;
             }
         }
     }
@@ -202,7 +208,7 @@ public class Fw extends qA {
             activitiesFiles = savedInstanceState.getParcelableArrayList("activities");
         }
 
-        projectFilesAdapter.c();
+        projectFilesAdapter.notifyDataSetChanged();
         g();
     }
 
@@ -212,13 +218,13 @@ public class Fw extends qA {
         if (requestCode == REQUEST_CODE_ADD_VIEW_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 b(data.getParcelableExtra("project_file"));
-                projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
+                projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
             }
         } else if (requestCode == REQUEST_CODE_PRESET_ACTIVITY && resultCode == Activity.RESULT_OK) {
             ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
             b(projectFileBean);
             c(projectFileBean);
-            projectFilesAdapter.c(projectFilesAdapter.layoutPosition);
+            projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
         }
     }
 
@@ -244,61 +250,54 @@ public class Fw extends qA {
         super.onSaveInstanceState(newState);
     }
 
-    public class ProjectFilesAdapter extends RecyclerView.a<ProjectFilesAdapter.ViewHolder> {
+    public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapter.ViewHolder> {
         public int layoutPosition;
 
         public ProjectFilesAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new RecyclerView.m() {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
-                    public void a(RecyclerView recyclerView, int i, int i1) {
-                        super.a(recyclerView, i, i1);
-                        if (i1 > 2) {
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
                             if (((ManageViewActivity) getActivity()).s.isEnabled()) {
-                                ((ManageViewActivity) getActivity()).s.c();
+                                ((ManageViewActivity) getActivity()).s.hide();
                             }
-                        } else if (i1 < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
-                            ((ManageViewActivity) getActivity()).s.f();
+                        } else if (dy < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
+                            ((ManageViewActivity) getActivity()).s.show();
                         }
                     }
                 });
             }
-
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return activitiesFiles != null ? activitiesFiles.size() : 0;
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             viewHolder.imgActivity.setVisibility(View.VISIBLE);
             viewHolder.deleteImgContainer.setVisibility(View.GONE);
             if (position == 0) {
                 viewHolder.checkBox.setVisibility(View.GONE);
-            } else if (k) {
-                viewHolder.deleteImgContainer.setVisibility(View.VISIBLE);
-                viewHolder.imgActivity.setVisibility(View.GONE);
             } else {
-                viewHolder.deleteImgContainer.setVisibility(View.GONE);
-                viewHolder.imgActivity.setVisibility(View.VISIBLE);
+                viewHolder.deleteImgContainer.setVisibility(k ? View.VISIBLE : View.GONE);
+                viewHolder.imgActivity.setVisibility(k ? View.GONE : View.VISIBLE);
             }
 
             ProjectFileBean projectFileBean = activitiesFiles.get(position);
             viewHolder.imgActivity.setImageResource(getImageResByOptions(projectFileBean.options));
             viewHolder.tvScreenName.setText(projectFileBean.getXmlName());
             viewHolder.tvActivityName.setText(projectFileBean.getJavaName());
-            if (projectFileBean.isSelected) {
-                viewHolder.imgDelete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                viewHolder.imgDelete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
+            viewHolder.imgDelete.setImageResource(projectFileBean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_view_list_item, parent, false));
         }
 
@@ -308,16 +307,15 @@ public class Fw extends qA {
             return resources.getIdentifier("activity_" + option, "drawable", getContext().getPackageName());
         }
 
-        public class ViewHolder extends RecyclerView.v {
-
-            public ImageView imgPresetSettingd;
-            public CheckBox checkBox;
-            public View viewItem;
-            public ImageView imgActivity;
-            public TextView tvScreenName;
-            public TextView tvActivityName;
-            public LinearLayout deleteImgContainer;
-            public ImageView imgDelete;
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public final ImageView imgPresetSettings;
+            public final CheckBox checkBox;
+            public final View viewItem;
+            public final ImageView imgActivity;
+            public final TextView tvScreenName;
+            public final TextView tvActivityName;
+            public final LinearLayout deleteImgContainer;
+            public final ImageView imgDelete;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -328,15 +326,16 @@ public class Fw extends qA {
                 tvActivityName = itemView.findViewById(R.id.tv_activity_name);
                 deleteImgContainer = itemView.findViewById(R.id.delete_img_container);
                 imgDelete = itemView.findViewById(R.id.img_delete);
-                imgPresetSettingd = itemView.findViewById(R.id.img_preset_setting);
+                imgPresetSettings = itemView.findViewById(R.id.img_preset_setting);
                 checkBox.setVisibility(View.GONE);
                 viewItem.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getLayoutPosition();
                         if (Fw.this.k) {
                             if (layoutPosition != 0) {
+                                checkBox.setChecked(!checkBox.isChecked());
                                 activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
-                                ProjectFilesAdapter.this.c(layoutPosition);
+                                notifyItemChanged(layoutPosition);
                             }
                         } else {
                             Intent intent = new Intent(getContext(), AddViewActivity.class);
@@ -348,14 +347,14 @@ public class Fw extends qA {
                 });
                 viewItem.setOnLongClickListener(view -> {
                     ((ManageViewActivity) getActivity()).a(true);
-                    layoutPosition = j();
+                    layoutPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
                     activitiesFiles.get(layoutPosition).isSelected = checkBox.isChecked();
                     return true;
                 });
-                imgPresetSettingd.setOnClickListener(view -> {
+                imgPresetSettings.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = j();
+                        layoutPosition = getLayoutPosition();
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
                         intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);

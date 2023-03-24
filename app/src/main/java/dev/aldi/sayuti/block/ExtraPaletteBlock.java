@@ -215,13 +215,14 @@ public class ExtraPaletteBlock {
         for (int i = 0; i < customVariables2.size(); i++) {
             if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
 
-            String[] split = customVariables2.get(i).split(" ");
-            if (split.length == 2) {
-                logicEditor.a(split[1], "v", split[0], "getVar").setTag(customVariables2.get(i));
-            } else if (split.length > 2) {
-                logicEditor.a(split[2], "v", split[1], "getVar").setTag(customVariables2.get(i));
+            String variable = customVariables2.get(i);
+            String temp = variable.replaceAll("\\b(?:public|private|protected|static|final)\\s\\b", "");
+            String[] split = temp.split(" ");
+            logicEditor.a(String.valueOf(split.length), 0xff008dcd);
+            if (split.length == 2 || split.length == 4) {
+                logicEditor.a(split[1], "v", split[0], "getVar").setTag(variable);
             } else {
-                SketchwareUtil.toastError("Found invalid data of Custom Variable #" + (i + 1) + ": \"" + customVariables2.get(i) + "\"");
+                SketchwareUtil.toastError("Found invalid data of Custom Variable #" + (i + 1) + ": \"" + variable + "\"");
             }
         }
         BlocksHandler.primaryBlocksA(

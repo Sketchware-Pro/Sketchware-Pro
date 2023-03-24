@@ -23,11 +23,11 @@ public class LicenseActivity extends BaseAppCompatActivity {
         setContentView(R.layout.oss);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
-        d().d(true);
-        d().e(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.program_information_title_open_source_license));
+        getSupportActionBar().setTitle(Helper.getResString(R.string.program_information_title_open_source_license));
         toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });

@@ -167,11 +167,11 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         setContentView(R.layout.manage_collection_show_block);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         moreBlockName = getIntent().getStringExtra("block_name");
@@ -197,9 +197,14 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         super.onPostCreate(savedInstanceState);
 
         MoreBlockCollectionBean moreBlock = Pp.h().a(moreBlockName);
-        addHeaderBlock(moreBlock.spec);
-        addBlocks(moreBlock.blocks);
-        resizeBottomViews();
+        if (moreBlock != null) {
+            addHeaderBlock(moreBlock.spec);
+            addBlocks(moreBlock.blocks);
+            resizeBottomViews();
+        } else {
+            SketchwareUtil.toastError("Can't open corrupt More Block");
+            finish();
+        }
     }
 
     private Rs getBlock(BlockBean blockBean) {

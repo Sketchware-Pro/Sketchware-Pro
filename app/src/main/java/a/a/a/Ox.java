@@ -873,8 +873,8 @@ public class Ox {
 
                 eventType = parser.next();
             }
-        } catch (XmlPullParserException | IOException e) {
-            LogUtil.e("a.a.a.Ox", "Failed to parse inject property of View " + viewBean, e);
+        } catch (XmlPullParserException | IOException | RuntimeException e) {
+            LogUtil.e("a.a.a.Ox", "Failed to parse inject property of View " + viewBean.id, e);
         }
 
         return toReplace;

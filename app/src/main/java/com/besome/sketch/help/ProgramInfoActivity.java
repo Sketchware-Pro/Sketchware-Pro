@@ -183,11 +183,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_info);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
-        d().d(true);
-        d().e(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.main_drawer_title_program_information));
+        getSupportActionBar().setTitle(Helper.getResString(R.string.main_drawer_title_program_information));
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         content = findViewById(R.id.content);
 

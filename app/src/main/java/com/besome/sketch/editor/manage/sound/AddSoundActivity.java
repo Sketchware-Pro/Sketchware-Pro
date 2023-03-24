@@ -28,7 +28,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Timer;
@@ -351,7 +351,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    private void setAlbumCover() throws FileNotFoundException {
+    private void setAlbumCover() throws IOException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             if (editingSound) {

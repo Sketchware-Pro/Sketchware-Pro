@@ -265,7 +265,7 @@ public class BlocksManager extends AppCompatActivity {
             startActivity(intent);
         });
         card2.setOnLongClickListener(v -> {
-            new AlertDialog.Builder(BlocksManager.this)
+            new AlertDialog.Builder(this)
                     .setTitle("Recycle bin")
                     .setMessage("Are you sure you want to empty the recycle bin? " +
                             "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!")
@@ -366,8 +366,8 @@ public class BlocksManager extends AppCompatActivity {
         return v -> {
             LayoutInflater inf = getLayoutInflater();
             final View a = inf.inflate(R.layout.color_picker, null);
-            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-            zx.a(new PCP(BlocksManager.this, storePickedResultIn, dialog));
+            final Zx zx = new Zx(a, this, 0, true, false);
+            zx.a(new PCP(this, storePickedResultIn, dialog));
             zx.setAnimationStyle(R.anim.abc_fade_in);
             zx.showAtLocation(a, Gravity.CENTER, 0, 0);
             dialog.hide();
@@ -507,7 +507,7 @@ public class BlocksManager extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater _inflater = getLayoutInflater();
             if (convertView == null) {
-                convertView = _inflater.inflate(R.layout.pallet_customview, null);
+                convertView = _inflater.inflate(R.layout.pallet_customview, parent, false);
             }
 
             final LinearLayout background = convertView.findViewById(R.id.background);

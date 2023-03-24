@@ -2,9 +2,6 @@ package mod.hey.studios.code;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -168,21 +165,6 @@ public class SrcCodeEditor extends AppCompatActivity {
         }
     }
 
-    public static String paste(Activity act) {
-        ClipboardManager clipboard = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
-
-        if (clipboard.hasPrimaryClip()) {
-            ClipDescription desc = clipboard.getPrimaryClipDescription();
-            ClipData data = clipboard.getPrimaryClip();
-
-            if (data != null && desc != null && desc.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                return String.valueOf(data.getItemAt(0).getText());
-            }
-        }
-
-        return "";
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -340,7 +322,7 @@ public class SrcCodeEditor extends AppCompatActivity {
 
             case "Switch theme":
                 String[] themes = {"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
-                new AlertDialog.Builder(SrcCodeEditor.this)
+                new AlertDialog.Builder(this)
                         .setTitle("Switch theme")
                         .setSingleChoiceItems(themes, -1,
                                 (dialog, which) -> {

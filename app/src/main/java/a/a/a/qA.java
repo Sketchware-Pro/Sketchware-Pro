@@ -27,9 +27,9 @@ public class qA extends Fragment {
         }
     }
 
-    public void a(MA var1) {
+    public void addTask(MA var1) {
         if (getActivity() instanceof BaseAppCompatActivity) {
-            ((BaseAppCompatActivity) getActivity()).a(var1);
+            ((BaseAppCompatActivity) getActivity()).addTask(var1);
         }
     }
 

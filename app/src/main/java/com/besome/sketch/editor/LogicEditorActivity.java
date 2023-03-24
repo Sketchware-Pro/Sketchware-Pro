@@ -543,7 +543,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.a(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
+                    fromFile = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
                 } else {
                     fromFile = Uri.fromFile(new File(jC.d(B).f(str)));
                 }
@@ -798,7 +798,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 text = "";
             }
 
-            a(ss, (Object) text);
+            a(ss, text);
             aBVar.dismiss();
         });
         aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
@@ -1265,9 +1265,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Zx zx = new Zx(a2, this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false);
         zx.a(i -> {
             if (i == 0) {
-                a(ss, (Object) "Color.TRANSPARENT");
+                a(ss, "Color.TRANSPARENT");
             } else {
-                a(ss, (Object) String.format("0x%08X", i & (Color.WHITE)));
+                a(ss, String.format("0x%08X", i & (Color.WHITE)));
             }
         });
         zx.setAnimationStyle(R.anim.abc_fade_in);
@@ -1384,7 +1384,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
-            a(ss, (Object) editText.getText().toString());
+            a(ss, editText.getText().toString());
             aBVar.dismiss();
         });
         aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
@@ -1629,7 +1629,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
-            a(ss, (Object) editText.getText().toString());
+            a(ss, editText.getText().toString());
             aBVar.dismiss();
         });
         aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
@@ -1922,7 +1922,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.a(customView);
         dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             RadioButton checkedRadioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-            a(ss, (Object) checkedRadioButton.getText().toString());
+            a(ss, checkedRadioButton.getText().toString());
             dialog.dismiss();
         });
         dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -1980,7 +1980,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
-                    a(ss, (Object) radioButton.getText().toString());
+                    a(ss, radioButton.getText().toString());
                     break;
                 }
                 i++;
@@ -2231,33 +2231,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
-        Parcelable parcelable;
-        ActionBar d;
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.logic_editor);
         if (!super.j()) {
             finish();
         }
-        if (bundle == null) {
+        Parcelable parcelable;
+        if (savedInstanceState == null) {
             B = getIntent().getStringExtra("sc_id");
             C = getIntent().getStringExtra("id");
             D = getIntent().getStringExtra("event");
             parcelable = getIntent().getParcelableExtra("project_file");
         } else {
-            B = bundle.getString("sc_id");
-            C = bundle.getString("id");
-            D = bundle.getString("event");
-            parcelable = bundle.getParcelable("project_file");
+            B = savedInstanceState.getString("sc_id");
+            C = savedInstanceState.getString("id");
+            D = savedInstanceState.getString("event");
+            parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
         H = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
         k = findViewById(R.id.toolbar);
-        a(k);
+        setSupportActionBar(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().d(true);
-        d().e(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         k.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
@@ -2268,16 +2267,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         A = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         String stringExtra = getIntent().getStringExtra("event_text");
+        ActionBar d;
         if (C.equals("onCreate")) {
-            d = d();
+            d = getSupportActionBar();
         } else if (C.equals("_fab")) {
-            d = d();
+            d = getSupportActionBar();
             stringExtra = "fab : " + stringExtra;
         } else {
-            d = d();
+            d = getSupportActionBar();
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
-        d.a(stringExtra);
+        d.setTitle(stringExtra);
         l = findViewById(R.id.palette_selector);
         l.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
@@ -2867,7 +2867,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         public ProjectSaver(LogicEditorActivity logicEditorActivity) {
             super(logicEditorActivity);
             activity = new WeakReference<>(logicEditorActivity);
-            logicEditorActivity.a(this);
+            logicEditorActivity.addTask(this);
         }
 
         @Override

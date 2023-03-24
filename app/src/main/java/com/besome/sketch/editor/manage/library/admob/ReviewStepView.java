@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +66,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
         ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
 
         RecyclerView testDevices = findViewById(R.id.list_test_device);
-        testDevices.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        testDevices.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new TestDevicesAdapter();
         testDevices.setAdapter(adapter);
         adMobToggle = findViewById(R.id.lib_switch);
@@ -138,28 +139,28 @@ public class ReviewStepView extends LinearLayout implements Uu {
         setInterstitialDetails(projectLibraryBean.reserved2);
         setRewardedAdDetails(projectLibraryBean.reserved3);
         testDevices = projectLibraryBean.testDevices;
-        adapter.c();
+        adapter.notifyDataSetChanged();
     }
 
-    public class TestDevicesAdapter extends RecyclerView.a<TestDevicesAdapter.ViewHolder> {
+    public class TestDevicesAdapter extends RecyclerView.Adapter<TestDevicesAdapter.ViewHolder> {
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return testDevices.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             viewHolder.deviceId.setText(testDevices.get(position).deviceId);
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).
-                    inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             public final TextView deviceId;
             public final ImageView delete;

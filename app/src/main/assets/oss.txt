@@ -96,7 +96,7 @@ Libraries added with Sketchware Pro
 
 	https://github.com/Rosemoe/sora-editor
 	GNU Lesser General Public License v2.1
-	No changes made to v0.17.2
+	No changes made to v0.21.0
 
 * Angads25/android-filepicker
 
@@ -145,7 +145,7 @@ Libraries added with Sketchware Pro
 
     https://github.com/topjohnwu/libsu
     Apache-2.0 License
-    No changes made to v5.0.2
+    No changes made to v5.0.4
 
 
 Full license texts

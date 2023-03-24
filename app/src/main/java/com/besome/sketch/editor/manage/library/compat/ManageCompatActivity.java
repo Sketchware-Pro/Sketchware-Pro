@@ -82,11 +82,11 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         setContentView(R.layout.manage_library_manage_compat);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(R.string.design_library_title_appcompat_and_design));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_title_appcompat_and_design));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         compatLibraryBean = getIntent().getParcelableExtra("compat");

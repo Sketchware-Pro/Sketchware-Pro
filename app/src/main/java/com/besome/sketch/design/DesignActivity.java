@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,11 +27,15 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -61,15 +64,13 @@ import a.a.a.DB;
 import a.a.a.Dp;
 import a.a.a.GB;
 import a.a.a.MA;
-import a.a.a.Xf;
+import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.bC;
 import a.a.a.br;
 import a.a.a.cC;
-import a.a.a.gg;
 import a.a.a.jC;
-import a.a.a.jr;
 import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -135,7 +136,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
-    private jr viewTabAdapter = null;
+    private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
     private br componentTabAdapter = null;
 
@@ -179,10 +180,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(q.sc_id).writeLogsToFile(error);
-        Snackbar snackbar = Snackbar.a(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(Helper.getResString(R.string.common_word_show), v -> {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(Helper.getResString(R.string.common_word_show), v -> {
             if (!mB.a()) {
-                snackbar.c();
+                snackbar.dismiss();
                 Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
                 intent.putExtra("error", error);
                 intent.putExtra("sc_id", sc_id);
@@ -191,8 +192,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         });
         /* Set the text color to yellow */
-        snackbar.f(Color.YELLOW);
-        snackbar.n();
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
     }
 
     @Override
@@ -256,7 +257,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void requestPackageInstallerInstall() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (Build.VERSION.SDK_INT >= 24) {
-            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
+            Uri apkUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -342,8 +343,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onBackPressed() {
-        if (drawer.f(Gravity.END)) {
-            drawer.a(Gravity.END);
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
         } else if (viewTabAdapter.g()) {
             viewTabAdapter.a(false);
         } else {
@@ -368,7 +369,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
 
-                // TODO: Add nice title item(s) which are smaller, can't be selected, etc.
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
@@ -380,7 +380,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case 1:
-                            new BuildSettingsDialog(DesignActivity.this, sc_id).show();
+                            new BuildSettingsDialog(this, sc_id).show();
                             break;
 
                         case 2:
@@ -392,7 +392,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 3:
-                            new CompileErrorSaver(sc_id).showLastErrors(DesignActivity.this);
+                            new CompileErrorSaver(sc_id).showLastErrors(this);
                             break;
 
                         case 4:
@@ -438,16 +438,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
-        a(toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().d(true);
-        d().e(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
-        // Replaced empty anonymous class with null
-        getSupportFragmentManager().a((Xf.c) null);
         drawer = findViewById(R.id.drawer_layout);
-        drawer.setDrawerLockMode(1 /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
         runProject = findViewById(R.id.btn_execute);
         runProject.setText(Helper.getResString(R.string.common_word_run));
@@ -487,18 +485,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), this));
         viewPager.setOffscreenPageLimit(3);
-        viewPager.a(new ViewPager.e() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void a(int i) {
+            public void onPageScrollStateChanged(int state) {
             }
 
             @Override
-            public void a(int i, float v, int i1) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
-            public void b(int i) {
+            public void onPageSelected(int position) {
                 if (currentTabNumber == 1) {
                     if (eventTabAdapter != null) {
                         eventTabAdapter.c();
@@ -506,14 +504,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 } else if (currentTabNumber == 2 && componentTabAdapter != null) {
                     componentTabAdapter.c();
                 }
-                if (i == 0) {
+                if (position == 0) {
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(true);
                         xmlLayoutOrientation.setVisibility(View.VISIBLE);
                         projectFileSelector.setFileType(0);
                         projectFileSelector.syncState();
                     }
-                } else if (i == 1) {
+                } else if (position == 1) {
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         viewTabAdapter.c(false);
@@ -534,10 +532,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         }
                     }
                 }
-                currentTabNumber = i;
+                currentTabNumber = position;
             }
         });
-        viewPager.getAdapter().b();
+        viewPager.getAdapter().notifyDataSetChanged();
         ((TabLayout) findViewById(R.id.tab_layout)).setupWithViewPager(viewPager);
     }
 
@@ -551,8 +549,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
-            if (!drawer.f(Gravity.END)) {
-                drawer.h(Gravity.END);
+            if (!drawer.isDrawerOpen(GravityCompat.END)) {
+                drawer.openDrawer(GravityCompat.END);
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             k();
@@ -568,7 +566,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         k();
 
         HashMap<String, Object> projectInfo = lC.b(sc_id);
-        d().a(yB.c(projectInfo, "my_ws_name"));
+        getSupportActionBar().setTitle(yB.c(projectInfo, "my_ws_name"));
         q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
         try {
@@ -714,7 +712,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     private void showCurrentActivitySrcCode() {
-        ProgressDialog progress = new ProgressDialog(DesignActivity.this);
+        ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage("Generating source...");
         progress.setCancelable(false);
         progress.show();
@@ -723,7 +721,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             String filename = projectFileSelector.getFileName();
             final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                     .setTitle(filename)
                     .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
@@ -732,7 +730,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 if (isFinishing()) return;
                 progress.dismiss();
 
-                CodeEditor editor = new CodeEditor(DesignActivity.this);
+                CodeEditor editor = new CodeEditor(this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
                 editor.setEditable(false);
                 editor.setTextSize(14);
@@ -932,7 +930,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public BuildAsyncTask(Context context) {
             super(context);
-            DesignActivity.this.a((MA) this);
+            addTask(this);
             dialog = new BuildingDialog(DesignActivity.this);
             maybeShow();
             dialog.setIsCancelableOnBackPressed(false);
@@ -1197,7 +1195,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public ProjectLoader(Context context, Bundle savedInstanceState) {
             super(context);
-            DesignActivity.this.a(this);
+            addTask(this);
             this.savedInstanceState = savedInstanceState;
         }
 
@@ -1239,7 +1237,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public DiscardChangesProjectCloser(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            addTask(this);
         }
 
         @Override
@@ -1271,7 +1269,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public ProjectSaver(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            addTask(this);
         }
 
         @Override
@@ -1309,7 +1307,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public SaveChangesProjectCloser(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            addTask(this);
         }
 
         @Override
@@ -1346,7 +1344,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public UnsavedChangesSaver(Context context) {
             super(context);
-            DesignActivity.this.a(this);
+            addTask(this);
         }
 
         @Override
@@ -1373,11 +1371,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class ViewPagerAdapter extends gg {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] labels;
 
-        public ViewPagerAdapter(Xf xf, Context context) {
+        public ViewPagerAdapter(FragmentManager xf, Context context) {
             super(xf);
             labels = new String[]{
                     Helper.getResString(R.string.design_tab_title_view),
@@ -1386,23 +1384,21 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         @Override
-        // PagerAdapter#getCount()
-        public int a() {
+        public int getCount() {
             return 3;
         }
 
         @Override
-        // PagerAdapter#getPageTitle(int)
-        public CharSequence a(int position) {
+        public CharSequence getPageTitle(int position) {
             return labels[position];
         }
 
         @Override
-        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
-        public Object a(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.a(container, position);
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
-                viewTabAdapter = (jr) fragment;
+                viewTabAdapter = (ViewEditorFragment) fragment;
             } else if (position == 1) {
                 eventTabAdapter = (rs) fragment;
             } else {
@@ -1413,10 +1409,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         @Override
-        // FragmentPagerAdapter#getItem(int)
-        public Fragment c(int position) {
+        public Fragment getItem(int position) {
             if (position == 0) {
-                return new jr();
+                return new ViewEditorFragment();
             } else {
                 return position == 1 ? new rs() : new br();
             }

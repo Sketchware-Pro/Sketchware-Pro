@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -34,6 +35,7 @@ import a.a.a.wB;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
+import mod.hey.studios.util.Helper;
 
 public class ProjectsFragment extends DA implements View.OnClickListener {
 
@@ -52,14 +54,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
 
     private void initialize(ViewGroup parent) {
-        preference = new DB(getContext(), "project");
+        preference = new DB(requireContext(), "project");
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
 
-        getActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
+        requireActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
 
         swipeRefresh.setOnRefreshListener(() -> {
-            if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
-            if (!c()) ((MainActivity) getActivity()).s(); //Check & Ask for storage permission
+            if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+            if (!c()) ((MainActivity) requireActivity()).s(); //Check & Ask for storage permission
             refreshProjectsList();
         });
 
@@ -104,7 +106,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     @Override
     public void c(int requestCode) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + getContext().getPackageName()));
+        intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
         startActivityForResult(intent, requestCode);
     }
 
@@ -173,12 +175,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menu.clear();
         menuInflater.inflate(R.menu.projects_fragment_menu, menu);
         projectsSearchView = (SearchView) menu.findItem(R.id.searchProjects).getActionView();
-        projectsSearchView.setOnQueryTextListener(new SearchView.c() {
+        projectsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String s) {
                 projectsAdapter.filterData(s);
@@ -187,7 +189,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
-                myProjects.getAdapter().c();
                 return false;
             }
         });
@@ -211,15 +212,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     private void showProjectSortingDialog() {
-        SketchDialog dialog = new SketchDialog(getActivity());
-        dialog.setTitle("Sort Projects");
-        View root = wB.a(getActivity(), R.layout.sort_project_dialog);
+        SketchDialog dialog = new SketchDialog(requireActivity());
+        dialog.setTitle("Sort options");
+        View root = wB.a(requireActivity(), R.layout.sort_project_dialog);
         RadioButton sortByName = root.findViewById(R.id.sortByName);
         RadioButton sortByID = root.findViewById(R.id.sortByID);
         RadioButton sortOrderAsc = root.findViewById(R.id.sortOrderAsc);
         RadioButton sortOrderDesc = root.findViewById(R.id.sortOrderDesc);
 
-        //FIXME:@Jbk0 this doesn't work
         int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
         if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
             sortByName.setChecked(true);
@@ -234,8 +234,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             sortOrderDesc.setChecked(true);
         }
         dialog.setView(root);
-        dialog.setPositiveButton("Save", view -> {
-            int sortValue = ProjectComparator.DEFAULT;
+        dialog.setPositiveButton("Save", v -> {
+            int sortValue = 0;
             if (sortByName.isChecked()) {
                 sortValue |= ProjectComparator.SORT_BY_NAME;
             }
@@ -249,11 +249,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
             }
             preference.a("sortBy", sortValue, true);
-            refreshProjectsList();
             dialog.dismiss();
+            refreshProjectsList();
         });
-        dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
+        dialog.setNegativeButton("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
+
 
 }

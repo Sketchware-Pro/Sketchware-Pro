@@ -4,6 +4,7 @@ import static com.besome.sketch.ProjectsFragment.REQUEST_CODE_PROJECT_SETTINGS_A
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +40,7 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
-public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewHolder> {
+public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
 
     private final Activity activity;
     private ArrayList<HashMap<String, Object>> data = new ArrayList<>();
@@ -50,11 +52,12 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
         filterData("");
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filterData(String query) {
         if (query.isEmpty()) {
             this.data.clear();
             this.data.addAll(projectsList);
-            c();
+            notifyDataSetChanged();
             return;
         }
 
@@ -63,11 +66,11 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
             if (matchesQuery(project, query)) filteredProjectsList.add(project);
 
         this.data = filteredProjectsList;
-        c();
+        notifyDataSetChanged();
     }
 
     @Override
-    public int a() {
+    public int getItemCount() {
         return data.size();
     }
 
@@ -88,7 +91,7 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
     }
 
     @Override
-    public void b(ProjectViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ProjectViewHolder viewHolder, int position) {
         HashMap<String, Object> projectMap = data.get(position);
         String scId = yB.c(projectMap, "sc_id");
 
@@ -126,7 +129,7 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
             String iconFolder = wq.e() + File.separator + scId;
             if (Build.VERSION.SDK_INT >= 24) {
                 String providerPath = activity.getPackageName() + ".provider";
-                uri = FileProvider.a(activity, providerPath, new File(iconFolder, "icon.png"));
+                uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
             } else {
                 uri = Uri.fromFile(new File(iconFolder, "icon.png"));
             }
@@ -141,7 +144,7 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
         viewHolder.projectVersion.setText(version);
         viewHolder.tvPublished.setVisibility(View.VISIBLE);
         viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
-        viewHolder.b.setTag("custom");
+        viewHolder.itemView.setTag("custom");
 
 
         viewHolder.projectButtonLayout.setButtonOnClickListener(v -> {
@@ -178,7 +181,7 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
                 deleteProject(projectMap);
             } else if (v.getId() == R.id.confirm_no) {
                 projectMap.put("confirmation", false);
-                ProjectsAdapter.this.c(position);
+                notifyItemRemoved(position);
             }
 
         });
@@ -214,12 +217,13 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
         });
     }
 
+    @NonNull
     @Override
-    public ProjectViewHolder b(ViewGroup parent, int viewType) {
+    public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ProjectViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
     }
 
-    public class ProjectViewHolder extends RecyclerView.v {
+    public class ProjectViewHolder extends RecyclerView.ViewHolder {
         public final TextView tvPublished;
         public final ImageView expand;
         public final MyProjectButtonLayout projectButtonLayout;
@@ -278,7 +282,7 @@ public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ProjectViewH
             lC.a(activity, yB.c(project, "sc_id"));
             activity.runOnUiThread(() -> {
                 c.dismiss();
-                e(data.indexOf(project)); //notifyItemRemoved
+                notifyItemRemoved(data.indexOf(project));
                 data.remove(project);
                 projectsList.remove(project);
             });

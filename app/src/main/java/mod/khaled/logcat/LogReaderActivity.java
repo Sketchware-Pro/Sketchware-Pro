@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,7 +78,7 @@ public class LogReaderActivity extends AppCompatActivity {
         optionsMenu.setVisibility(View.VISIBLE);
         optionsMenu.setImageResource(R.drawable.ic_more_vert_white_24dp);
 
-        filterEdittext = new EditText(LogReaderActivity.this);
+        filterEdittext = new EditText(this);
         {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1f);
             params.leftMargin = dpToPx(8);
@@ -109,7 +110,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setTitle("Filter by package name")
                             .setMessage("For multiple package names, separate them with a comma (,).");
-                    final EditText _e = new EditText(LogReaderActivity.this);
+                    final EditText _e = new EditText(this);
                     _e.setText(pkgFilter);
                     builder.setView(_e);
                     builder.setPositiveButton("Apply", (dialog, which) -> {
@@ -125,7 +126,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     menuItem.setChecked(!menuItem.isChecked());
                     autoScroll = menuItem.isChecked();
                     if (autoScroll) {
-                        ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(recyclerview.getAdapter().a() - 1);
+                        recyclerview.getLayoutManager().scrollToPosition(recyclerview.getAdapter().getItemCount() - 1);
                     }
                     break;
                 }
@@ -133,7 +134,7 @@ public class LogReaderActivity extends AppCompatActivity {
             return true;
         });
 
-        recyclerview = new RecyclerView(LogReaderActivity.this);
+        recyclerview = new RecyclerView(this);
         recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         recyclerview.setPadding(dpToPx(4), 0, dpToPx(4), 0);
         root.addView(recyclerview);
@@ -237,13 +238,13 @@ public class LogReaderActivity extends AppCompatActivity {
         unregisterReceiver(logger);
     }
 
-    private class Adapter extends RecyclerView.a<Adapter.ViewHolder> {
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         private final ArrayList<HashMap<String, Object>> data;
 
         public void updateList(final HashMap<String, Object> _map) {
             data.add(_map);
-            recyclerview.getAdapter().d(data.size() + 1);
+            recyclerview.getAdapter().notifyItemInserted(data.size() + 1);
 
             if (autoScroll) {
                 ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(data.size() - 1);
@@ -252,7 +253,7 @@ public class LogReaderActivity extends AppCompatActivity {
 
         public void deleteAll() {
             data.clear();
-            recyclerview.getAdapter().c();
+            recyclerview.getAdapter().notifyDataSetChanged();
         }
 
         public Adapter(ArrayList<HashMap<String, Object>> data) {
@@ -260,7 +261,8 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder b(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final LinearLayout _v = new LinearLayout(LogReaderActivity.this);
             _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             _v.setOrientation(LinearLayout.VERTICAL);
@@ -335,7 +337,7 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public void b(ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
             if (data.get(position).containsKey("pkgName")) {
                 holder.packageName.setText(data.get(position).get("pkgName").toString());
                 holder.packageName.setVisibility(View.VISIBLE);
@@ -418,11 +420,11 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return data.size();
         }
 
-        private class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.ViewHolder {
 
             public final LinearLayout root;
             public final LinearLayout divider;

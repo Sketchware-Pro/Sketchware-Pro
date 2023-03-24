@@ -601,7 +601,7 @@ public class LibraryDownloader {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Dp.maybeExtractAndroidJar(this);
+                BuiltInLibraries.maybeExtractAndroidJar(this);
                 publishProgress((use_d8 ? "D8" : "Dx") + " is running...");
                 _jar2dex(params[0]);
                 success = true;

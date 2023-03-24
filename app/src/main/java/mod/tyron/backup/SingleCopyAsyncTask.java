@@ -75,6 +75,10 @@ public class SingleCopyAsyncTask extends AsyncTask<Uri, Integer, String> {
                     returnCursor.close();
             }
 
+            if (size == 0) {
+                throw new IOException("Empty file (size = 0)");
+            }
+
             pathPlusName = folder + "/" + getFileName(mUri, mContext.get());
             file = new File(folder + "/" + getFileName(mUri, mContext.get()));
 
