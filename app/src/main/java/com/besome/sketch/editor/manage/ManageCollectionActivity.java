@@ -539,7 +539,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (collectionAdapter.currentViewType == 0) {
             ((GridLayoutManager) collection.getLayoutManager()).setSpanCount(getGridLayoutColumnCount());

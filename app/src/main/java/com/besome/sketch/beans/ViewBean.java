@@ -3,6 +3,8 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.sketchware.remod.R;
 
@@ -478,6 +480,7 @@ public class ViewBean extends nA implements Parcelable {
     }
 
     @Override
+    @NonNull
     public ViewBean clone() {
         ViewBean viewBean = new ViewBean();
         viewBean.copy(this);

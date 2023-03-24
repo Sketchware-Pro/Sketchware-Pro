@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.HistoryViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
@@ -489,7 +491,7 @@ public class ViewEditorFragment extends qA {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfiguration) {
+    public void onConfigurationChanged(@NonNull Configuration newConfiguration) {
         super.onConfigurationChanged(newConfiguration);
         viewEditor.setScreenType(newConfiguration.orientation);
         viewEditor.P = true;
@@ -501,7 +503,7 @@ public class ViewEditorFragment extends qA {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.design_view_menu, menu);
         menu.findItem(R.id.menu_view_redo).setEnabled(false);
