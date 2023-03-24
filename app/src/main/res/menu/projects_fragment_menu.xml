@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/searchProjects"
+        android:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/search_icon_white"
+        android:showAsAction="always|collapseActionView"
+        android:title="@string/search_menu_title" />
+
+    <item
+        android:id="@+id/sortProject"
+        android:icon="@drawable/sorting_options_48"
+        android:showAsAction="ifRoom"
+        android:title="@string/sort_projects" />
+
+</menu>

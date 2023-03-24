@@ -6,8 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +29,8 @@ import java.util.HashMap;
 import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.lC;
+import a.a.a.wB;
+import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
@@ -182,9 +188,73 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+        menu.clear();
+        menuInflater.inflate(R.menu.projects_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sortProject)
+            showProjectSortingDialog();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
+        setHasOptionsMenu(true);
         initialize(viewGroup);
         return viewGroup;
     }
+
+    private void showProjectSortingDialog() {
+        SketchDialog dialog = new SketchDialog(getActivity());
+        dialog.setTitle("Sort Projects");
+        View root = wB.a(getActivity(), R.layout.sort_project_dialog);
+        RadioButton sortByName = root.findViewById(R.id.sortByName);
+        RadioButton sortByID = root.findViewById(R.id.sortByID);
+        RadioButton sortOrderAsc = root.findViewById(R.id.sortOrderAsc);
+        RadioButton sortOrderDesc = root.findViewById(R.id.sortOrderDesc);
+
+        //FIXME:@Jbk0 this doesn't work
+        int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
+        if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
+            sortByName.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_BY_ID) == ProjectComparator.SORT_BY_ID) {
+            sortByID.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_ORDER_ASCENDING) == ProjectComparator.SORT_ORDER_ASCENDING) {
+            sortOrderAsc.setChecked(true);
+        }
+        if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
+            sortOrderDesc.setChecked(true);
+        }
+        dialog.setView(root);
+        dialog.setPositiveButton("Save", view -> {
+            int sortValue = ProjectComparator.DEFAULT;
+            if (sortByName.isChecked()) {
+                sortValue |= ProjectComparator.SORT_BY_NAME;
+            }
+            if (sortByID.isChecked()) {
+                sortValue |= ProjectComparator.SORT_BY_ID;
+            }
+            if (sortOrderAsc.isChecked()) {
+                sortValue |= ProjectComparator.SORT_ORDER_ASCENDING;
+            }
+            if (sortOrderDesc.isChecked()) {
+                sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
+            }
+            preference.a("sortBy", sortValue, true);
+            refreshProjectsList();
+            dialog.dismiss();
+        });
+        dialog.setNegativeButton("Cancel", view -> dialog.dismiss());
+        dialog.show();
+    }
+
 }
