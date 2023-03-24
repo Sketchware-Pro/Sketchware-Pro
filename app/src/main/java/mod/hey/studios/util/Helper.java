@@ -88,14 +88,31 @@ public class Helper {
 
     public static void applyRippleToToolbarView(View view) {
         GradientDrawable content = new GradientDrawable();
-        content.setColor(this.getResources().getColor(android.R.attr.colorPrimary));
+        content.setColor(Color.parseColor("#008dcd"));
         content.setCornerRadius(90);
 
         view.setBackground(
                 new RippleDrawable(
                         new ColorStateList(
                                 new int[][]{new int[]{0}},
-                                new int[]{this.getResources().getColor(android.R.attr.colorPrimaryContainer)}
+                                new int[]{Color.parseColor("#64b5f6")}
+                        ),
+                        content,
+                        null
+                )
+        );
+    }
+    /* Ripple color: Material Color */
+    public static void applyRippleToToolbarView(View view,Context context) {
+        GradientDrawable content = new GradientDrawable();
+        content.setColor(context.getResources().getColor(android.R.attr.colorPrimary));
+        content.setCornerRadius(90);
+
+        view.setBackground(
+                new RippleDrawable(
+                        new ColorStateList(
+                                new int[][]{new int[]{0}},
+                                new int[]{context.getResources().getColor(android.R.attr.colorPrimaryContainer)}
                         ),
                         content,
                         null
