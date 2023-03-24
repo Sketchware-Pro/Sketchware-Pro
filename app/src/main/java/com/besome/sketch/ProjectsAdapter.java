@@ -4,7 +4,6 @@ import static com.besome.sketch.ProjectsFragment.REQUEST_CODE_PROJECT_SETTINGS_A
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
@@ -30,6 +30,8 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import a.a.a.ZA;
 import a.a.a.gB;
@@ -41,9 +43,8 @@ import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
-
     private final Activity activity;
-    private ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+    private List<HashMap<String, Object>> data = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> projectsList;
 
     public ProjectsAdapter(Activity context, ArrayList<HashMap<String, Object>> projectsList) {
@@ -52,21 +53,41 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         filterData("");
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void filterData(String query) {
+        List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
-            this.data.clear();
-            this.data.addAll(projectsList);
-            notifyDataSetChanged();
-            return;
+            newProjects = projectsList;
+        } else {
+            newProjects = projectsList.stream()
+                    .filter(project -> matchesQuery(project, query))
+                    .collect(Collectors.toList());
         }
 
-        ArrayList<HashMap<String, Object>> filteredProjectsList = new ArrayList<>();
-        for (HashMap<String, Object> project : projectsList)
-            if (matchesQuery(project, query)) filteredProjectsList.add(project);
+        var result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return data.size();
+            }
 
-        this.data = filteredProjectsList;
-        notifyDataSetChanged();
+            @Override
+            public int getNewListSize() {
+                return newProjects.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                var oldScId = yB.c(data.get(oldItemPosition), "sc_id");
+                var newScId = yB.c(newProjects.get(newItemPosition), "sc_id");
+                return oldScId.equalsIgnoreCase(newScId);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return true;
+            }
+        }, false);
+        data = newProjects;
+        result.dispatchUpdatesTo(this);
     }
 
     @Override
@@ -146,7 +167,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
         viewHolder.itemView.setTag("custom");
 
-
         viewHolder.projectButtonLayout.setButtonOnClickListener(v -> {
             if (mB.a()) return;
             if (v instanceof MyProjectButton) {
@@ -183,7 +203,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
                 projectMap.put("confirmation", false);
                 notifyItemChanged(position);
             }
-
         });
 
         viewHolder.projectView.setOnClickListener(v -> {
@@ -252,7 +271,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             projectOption = itemView.findViewById(R.id.project_option);
             projectButtonLayout = new MyProjectButtonLayout(activity);
             projectOption.addView(projectButtonLayout);
-
         }
 
         public void collapse(HashMap<String, Object> project) {
@@ -299,9 +317,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         activity.startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
     }
 
-
     private void showProjectSettingDialog(HashMap<String, Object> project) {
-        (new ProjectSettingsDialog(activity, yB.c(project, "sc_id"))).show();
+        new ProjectSettingsDialog(activity, yB.c(project, "sc_id")).show();
     }
 
     private void backupProject(HashMap<String, Object> project) {
@@ -317,4 +334,3 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         activity.startActivity(intent);
     }
 }
-
