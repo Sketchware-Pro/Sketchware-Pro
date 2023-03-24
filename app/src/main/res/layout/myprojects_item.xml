@@ -28,30 +28,26 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent">
+                    android:id="@+id/app_icon_layout"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="25dp">
 
-                    <RelativeLayout
-                        android:id="@+id/app_icon_layout"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_centerInParent="true">
+                    <View
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/circle_bg_white"
+                        android:contentDescription="@null" />
 
-                        <View
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/circle_bg_white"
-                            android:contentDescription="@null" />
-
-                        <com.besome.sketch.lib.ui.CircleImageView
-                            android:id="@+id/img_icon"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:layout_centerInParent="true"
-                            android:contentDescription="@null"
-                            android:src="@drawable/android_icon" />
-                    </RelativeLayout>
+                    <com.besome.sketch.lib.ui.CircleImageView
+                        android:id="@+id/img_icon"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_centerInParent="true"
+                        android:contentDescription="@null"
+                        android:src="@drawable/android_icon" />
                 </RelativeLayout>
 
                 <RelativeLayout
