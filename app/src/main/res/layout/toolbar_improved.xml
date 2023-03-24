@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ff008dcd"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingStart="10dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="4dp"
-    android:paddingBottom="8dp">
+<LinearLayout
+	 xmlns:android="http://schemas.android.com/apk/res/android"
+	 android:layout_height="wrap_content"
+	 android:layout_width="match_parent"
+	 android:paddingEnd="4dp"
+	 android:background="@style/colorPrimary"
+	 android:gravity="center_vertical"
+	 android:orientation="horizontal"
+	 android:paddingBottom="8dp"
+	 android:paddingStart="10dp"
+	 android:paddingTop="8dp">
 
-    <ImageView
-        android:id="@+id/ig_toolbar_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="8dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrow_back_white_48dp" />
+	<ImageView
+		 android:layout_height="40dp"
+		 android:layout_width="40dp"
+		 android:scaleType="centerInside"
+		 android:src="@drawable/arrow_back_white_48dp"
+		 android:padding="8dp"
+		 android:id="@+id/ig_toolbar_back" />
 
-    <TextView
-        android:id="@+id/tx_toolbar_title"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:gravity="center|start"
-        android:paddingStart="10dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="6dp"
-        android:text="Title"
-        android:textColor="@color/tool_bar_text_color"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+	<TextView
+		 android:layout_height="match_parent"
+		 android:layout_width="0dp"
+		 android:textSize="15sp"
+		 android:textColor="@style/colorOnPrimary"
+		 android:paddingStart="10dp"
+		 android:layout_marginStart="8dp"
+		 android:paddingEnd="8dp"
+		 android:gravity="center|start"
+		 android:paddingBottom="6dp"
+		 android:layout_weight="1"
+		 android:id="@+id/tx_toolbar_title"
+		 android:paddingTop="4dp"
+		 android:text="Title"
+		 android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/ig_toolbar_load_file"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="9dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/add_file_48"
-        android:visibility="gone" />
+	<ImageView
+		 android:layout_height="40dp"
+		 android:layout_width="40dp"
+		 android:visibility="gone"
+		 android:scaleType="centerInside"
+		 android:src="@drawable/add_file_48"
+		 android:padding="9dp"
+		 android:tint="@style/colorOnPrimary"
+		 android:id="@+id/ig_toolbar_load_file" />
+
 </LinearLayout>
