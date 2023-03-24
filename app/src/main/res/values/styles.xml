@@ -41,8 +41,8 @@
     </style>
     
     <style name="MaterialTheme.Button" parent="@style/Base.Widget.AppCompat.Button">
-    	<item name="colorButtonNormal">@style/colorPrimary</item>
-        <item name="colorControlHighlight">@style/colorPrimaryContainer</item>
+    	<item name="colorButtonNormal">?attr/colorPrimary</item>
+        <item name="colorControlHighlight">?attr/colorPrimaryContainer</item>
     </style>
 
     <style name="AppTheme.Button.Amber" parent="@style/Base.Widget.AppCompat.Button">
@@ -141,13 +141,13 @@
     </style>
 
     <style name="DesignTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@style/colorPrimary</item>
+        <item name="android:background">?attr/colorPrimary</item>
         <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@style/colorOnPrimary</item>
+        <item name="tabIndicatorColor">?attr/colorOnPrimary</item>
         <item name="tabIndicatorHeight">3.0dip</item>
         <item name="tabMaxWidth">0.0dip</item>
         <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@style/colorOnPrimary</item>
+        <item name="tabSelectedTextColor">?attr/colorOnPrimary</item>
         <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
     </style>
 
@@ -327,6 +327,7 @@
 
     <style name="cursorColor" parent="@style/Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+        
     </style>
 
     <style name="progress">

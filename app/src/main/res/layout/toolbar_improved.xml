@@ -4,7 +4,7 @@
 	 android:layout_height="wrap_content"
 	 android:layout_width="match_parent"
 	 android:paddingEnd="4dp"
-	 android:background="@style/colorPrimary"
+	 android:background="?attr/colorPrimary"
 	 android:gravity="center_vertical"
 	 android:orientation="horizontal"
 	 android:paddingBottom="8dp"
@@ -23,7 +23,7 @@
 		 android:layout_height="match_parent"
 		 android:layout_width="0dp"
 		 android:textSize="15sp"
-		 android:textColor="@style/colorOnPrimary"
+		 android:textColor="?attr/colorOnPrimary"
 		 android:paddingStart="10dp"
 		 android:layout_marginStart="8dp"
 		 android:paddingEnd="8dp"
@@ -42,7 +42,7 @@
 		 android:scaleType="centerInside"
 		 android:src="@drawable/add_file_48"
 		 android:padding="9dp"
-		 android:tint="@style/colorOnPrimary"
+		 android:tint="?attr/colorOnPrimary"
 		 android:id="@+id/ig_toolbar_load_file" />
 
 </LinearLayout>
