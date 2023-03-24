@@ -10,7 +10,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+		android:background="@style/colorPrimaryContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:textColor="@color/color_primary"
+                android:textColor="@style/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -48,7 +49,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:textColor="#ff7d7d7d"
+            android:textColor="@style/colorOnPrimaryContainer"
             android:textSize="14sp" />
 
         <FrameLayout
@@ -64,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/scolor_blue_01"
+        android:background="@style/colorPrimary"
         android:gravity="center|end"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
@@ -77,7 +78,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="@color/primary_text_default_material_dark"
+            android:textColor="@style/colorOnPrimary"
             android:textSize="14sp" />
 
         <android.widget.Space
@@ -94,7 +95,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="@color/primary_text_default_material_dark"
+            android:textColor="@style/colorOnPrimary"
             android:textSize="14sp" />
 
         <TextView
@@ -104,7 +105,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="@color/primary_text_default_material_dark"
+            android:textColor="@style/colorOnPrimary"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
