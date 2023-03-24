@@ -93,10 +93,10 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
     private void initToolbar() {
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Resource Manager");
         ImageView back = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
         load_file = findViewById(R.id.ig_toolbar_load_file);
-        Helper.applyRippleToToolbarView(load_file);
+        Helper.applyRippleToToolbarView(load_file,this);
         load_file.setOnClickListener(view -> dialog.show());
     }
 
