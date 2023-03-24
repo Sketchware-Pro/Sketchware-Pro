@@ -46,10 +46,10 @@ public class bB {
             TextView textView = inflate.findViewById(R.id.tv_stoast);
             if (toastType != TOAST_WARNING) {
                 linearLayout.setBackgroundResource(R.drawable.bg_toast_normal);
-                textView.setTextColor(context.getResources().getColor(R.color.scolor_black_01));
+                textView.setTextColor(context.getResources().getColor(R.attr.colorPrimary));
             } else {
                 linearLayout.setBackgroundResource(R.drawable.bg_toast_warning);
-                textView.setTextColor(context.getResources().getColor(R.color.scolor_red_02));
+                textView.setTextColor(context.getResources().getColor(R.attr.colorError));
             }
             textView.setText(charSequence.toString());
             Toast toast = new Toast(context);

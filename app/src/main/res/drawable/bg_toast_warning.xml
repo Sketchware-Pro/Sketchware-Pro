@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:width="1.0dip" android:color="@color/color_btn_ltpink_normal" />
+    <stroke android:width="1.0dip" android:color="?attr/colorError" />
     <corners android:radius="32.0dip" />
-    <gradient android:startColor="#ffffffff" android:endColor="#ffffffff" />
+    <gradient android:startColor="?attr/colorErrorContainer" android:endColor="?attr/colorErrorContainer" />
 </shape>
