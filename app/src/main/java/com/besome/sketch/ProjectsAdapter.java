@@ -42,26 +42,26 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
-public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
+public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Activity activity;
-    private List<HashMap<String, Object>> data = new ArrayList<>();
-    private List<HashMap<String, Object>> projectsList;
+    private List<HashMap<String, Object>> shownProjects = new ArrayList<>();
+    private List<HashMap<String, Object>> allProjects;
 
-    public ProjectsAdapter(Activity context, ArrayList<HashMap<String, Object>> projectsList) {
-        this.projectsList = projectsList;
+    public ProjectsAdapter(Activity context, ArrayList<HashMap<String, Object>> allProjects) {
+        this.allProjects = allProjects;
         this.activity = context;
     }
 
-    public void setProjectsList(List<HashMap<String, Object>> projects) {
-        projectsList = projects;
+    public void setAllProjects(List<HashMap<String, Object>> projects) {
+        allProjects = projects;
     }
 
     public void filterData(String query) {
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
-            newProjects = projectsList;
+            newProjects = allProjects;
         } else {
-            newProjects = projectsList.stream()
+            newProjects = allProjects.stream()
                     .filter(project -> matchesQuery(project, query))
                     .collect(Collectors.toList());
         }
@@ -69,7 +69,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         var result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
-                return data.size();
+                return shownProjects.size();
             }
 
             @Override
@@ -79,7 +79,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                var oldScId = yB.c(data.get(oldItemPosition), "sc_id");
+                var oldScId = yB.c(shownProjects.get(oldItemPosition), "sc_id");
                 var newScId = yB.c(newProjects.get(newItemPosition), "sc_id");
                 return oldScId.equalsIgnoreCase(newScId);
             }
@@ -89,13 +89,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
                 return true;
             }
         }, false);
-        data = newProjects;
+        shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return shownProjects.size();
     }
 
     private boolean matchesQuery(HashMap<String, Object> projectMap, String searchQuery) {
@@ -115,137 +115,140 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProjectViewHolder viewHolder, int position) {
-        HashMap<String, Object> projectMap = data.get(position);
-        String scId = yB.c(projectMap, "sc_id");
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        if (viewHolder instanceof ProjectViewHolder holder) {
+            HashMap<String, Object> projectMap = shownProjects.get(position);
+            String scId = yB.c(projectMap, "sc_id");
 
-        float rotation;
-        int visibility;
-        if (yB.a(projectMap, "expand")) {
-            visibility = View.VISIBLE;
-            rotation = -180.0F;
-        } else {
-            visibility = View.GONE;
-            rotation = 0.0F;
-        }
-        viewHolder.projectOptionLayout.setVisibility(visibility);
-        viewHolder.expand.setRotation(rotation);
-        if (yB.a(projectMap, "confirmation")) {
-            viewHolder.projectButtonLayout.b();
-        } else {
-            viewHolder.projectButtonLayout.a();
-        }
-
-        viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
-        if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
-            projectMap.put("sc_ver_code", "1");
-            projectMap.put("sc_ver_name", "1.0");
-            lC.b(scId, projectMap);
-        }
-
-        if (yB.b(projectMap, "sketchware_ver") <= 0) {
-            projectMap.put("sketchware_ver", 61);
-            lC.b(scId, projectMap);
-        }
-
-        if (yB.a(projectMap, "custom_icon")) {
-            Uri uri;
-            String iconFolder = wq.e() + File.separator + scId;
-            if (Build.VERSION.SDK_INT >= 24) {
-                String providerPath = activity.getPackageName() + ".provider";
-                uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
-            } else {
-                uri = Uri.fromFile(new File(iconFolder, "icon.png"));
-            }
-
-            viewHolder.imgIcon.setImageURI(uri);
-        }
-
-        viewHolder.appName.setText(yB.c(projectMap, "my_ws_name"));
-        viewHolder.projectName.setText(yB.c(projectMap, "my_app_name"));
-        viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
-        String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
-        viewHolder.projectVersion.setText(version);
-        viewHolder.tvPublished.setVisibility(View.VISIBLE);
-        viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
-        viewHolder.itemView.setTag("custom");
-
-        viewHolder.projectButtonLayout.setButtonOnClickListener(v -> {
-            if (mB.a()) return;
-            if (v instanceof MyProjectButton) {
-                switch (((MyProjectButton) v).b) {
-                    case 0:
-                        toProjectSettingOrRequestPermission(projectMap, position);
-                        break;
-
-                    case 1:
-                        backupProject(projectMap);
-                        break;
-
-                    case 2:
-                        toExportProjectActivity(projectMap);
-                        break;
-
-                    case 3:
-                        projectMap.put("confirmation", true);
-                        viewHolder.projectButtonLayout.b();
-                        break;
-
-                    case 4:
-                        showProjectSettingDialog(projectMap);
-                        break;
-                }
-                return;
-            }
-
-            if (v.getId() == R.id.confirm_yes) {
-                projectMap.put("confirmation", false);
-                projectMap.put("expand", false);
-                deleteProject(projectMap);
-            } else if (v.getId() == R.id.confirm_no) {
-                projectMap.put("confirmation", false);
-                notifyItemChanged(position);
-            }
-        });
-
-        viewHolder.projectView.setOnClickListener(v -> {
-            if (!mB.a()) {
-                ProjectsFragment.toDesignActivity(activity, yB.c(projectMap, "sc_id"));
-            }
-        });
-        viewHolder.projectView.setOnLongClickListener(v -> {
+            float rotation;
+            int visibility;
             if (yB.a(projectMap, "expand")) {
-                viewHolder.collapse(projectMap);
+                visibility = View.VISIBLE;
+                rotation = -180.0F;
             } else {
-                viewHolder.expand(projectMap);
+                visibility = View.GONE;
+                rotation = 0.0F;
+            }
+            holder.projectOptionLayout.setVisibility(visibility);
+            holder.expand.setRotation(rotation);
+            if (yB.a(projectMap, "confirmation")) {
+                holder.projectButtonLayout.b();
+            } else {
+                holder.projectButtonLayout.a();
             }
 
-            return true;
-        });
+            holder.imgIcon.setImageResource(R.drawable.default_icon);
+            if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
+                projectMap.put("sc_ver_code", "1");
+                projectMap.put("sc_ver_name", "1.0");
+                lC.b(scId, projectMap);
+            }
 
-        viewHolder.appIconLayout.setOnClickListener(v -> {
-            mB.a(v);
-            toProjectSettingOrRequestPermission(projectMap, position);
-        });
+            if (yB.b(projectMap, "sketchware_ver") <= 0) {
+                projectMap.put("sketchware_ver", 61);
+                lC.b(scId, projectMap);
+            }
 
-        viewHolder.expand.setOnClickListener(v -> {
-            if (!mB.a()) {
-                if (yB.a(projectMap, "expand")) {
-                    viewHolder.collapse(projectMap);
+            if (yB.a(projectMap, "custom_icon")) {
+                Uri uri;
+                String iconFolder = wq.e() + File.separator + scId;
+                if (Build.VERSION.SDK_INT >= 24) {
+                    String providerPath = activity.getPackageName() + ".provider";
+                    uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
                 } else {
-                    viewHolder.expand(projectMap);
+                    uri = Uri.fromFile(new File(iconFolder, "icon.png"));
                 }
+
+                holder.imgIcon.setImageURI(uri);
             }
-        });
+
+            holder.appName.setText(yB.c(projectMap, "my_ws_name"));
+            holder.projectName.setText(yB.c(projectMap, "my_app_name"));
+            holder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
+            holder.projectVersion.setText(version);
+            holder.tvPublished.setVisibility(View.VISIBLE);
+            holder.tvPublished.setText(yB.c(projectMap, "sc_id"));
+            holder.itemView.setTag("custom");
+
+            holder.projectButtonLayout.setButtonOnClickListener(v -> {
+                if (mB.a()) return;
+                if (v instanceof MyProjectButton) {
+                    switch (((MyProjectButton) v).b) {
+                        case 0:
+                            toProjectSettingOrRequestPermission(projectMap, position);
+                            break;
+
+                        case 1:
+                            backupProject(projectMap);
+                            break;
+
+                        case 2:
+                            toExportProjectActivity(projectMap);
+                            break;
+
+                        case 3:
+                            projectMap.put("confirmation", true);
+                            holder.projectButtonLayout.b();
+                            break;
+
+                        case 4:
+                            showProjectSettingDialog(projectMap);
+                            break;
+                    }
+                    return;
+                }
+
+                if (v.getId() == R.id.confirm_yes) {
+                    projectMap.put("confirmation", false);
+                    projectMap.put("expand", false);
+                    deleteProject(projectMap);
+                } else if (v.getId() == R.id.confirm_no) {
+                    projectMap.put("confirmation", false);
+                    notifyItemChanged(position);
+                }
+            });
+
+            holder.projectView.setOnClickListener(v -> {
+                if (!mB.a()) {
+                    ProjectsFragment.toDesignActivity(activity, yB.c(projectMap, "sc_id"));
+                }
+            });
+            holder.projectView.setOnLongClickListener(v -> {
+                if (yB.a(projectMap, "expand")) {
+                    holder.collapse(projectMap);
+                } else {
+                    holder.expand(projectMap);
+                }
+
+                return true;
+            });
+
+            holder.appIconLayout.setOnClickListener(v -> {
+                mB.a(v);
+                toProjectSettingOrRequestPermission(projectMap, position);
+            });
+
+            holder.expand.setOnClickListener(v -> {
+                if (!mB.a()) {
+                    if (yB.a(projectMap, "expand")) {
+                        holder.collapse(projectMap);
+                    } else {
+                        holder.expand(projectMap);
+                    }
+                }
+            });
+        }
     }
 
     @NonNull
     @Override
-    public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProjectViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        var inflater = LayoutInflater.from(parent.getContext());
+        return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
     }
 
-    public class ProjectViewHolder extends RecyclerView.ViewHolder {
+    private class ProjectViewHolder extends RecyclerView.ViewHolder {
         public final TextView tvPublished;
         public final ImageView expand;
         public final MyProjectButtonLayout projectButtonLayout;
@@ -303,9 +306,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             lC.a(activity, yB.c(project, "sc_id"));
             activity.runOnUiThread(() -> {
                 c.dismiss();
-                notifyItemRemoved(data.indexOf(project));
-                data.remove(project);
-                projectsList.remove(project);
+                notifyItemRemoved(shownProjects.indexOf(project));
+                shownProjects.remove(project);
+                allProjects.remove(project);
             });
         }).start();
     }

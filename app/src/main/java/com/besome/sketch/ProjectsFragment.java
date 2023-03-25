@@ -85,7 +85,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
             requireActivity().runOnUiThread(() -> {
                 if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
-                projectsAdapter.setProjectsList(new ArrayList<>(projectsList));
+                projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
             });
