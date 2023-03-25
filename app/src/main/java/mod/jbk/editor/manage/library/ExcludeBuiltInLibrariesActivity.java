@@ -79,12 +79,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         title.setText("Exclude built-in libraries");
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
         ImageView reset = findViewById(R.id.ig_toolbar_load_file);
         reset.setImageResource(R.drawable.ic_restore_white);
         reset.setVisibility(View.VISIBLE);
         reset.setOnClickListener(this);
-        Helper.applyRippleToToolbarView(reset);
+        Helper.applyRippleToToolbarView(reset,this);
 
         TextView enable = findViewById(R.id.tv_enable);
         enable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
