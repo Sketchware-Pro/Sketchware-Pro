@@ -149,14 +149,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 1.0F, 0.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 1.0F, 0.5F),
-                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 1.0F, 0.5F),
+                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 1.0F, 0.5F));
 
 		
         expandAnimatorSet.playTogether(expandValueAnimator,
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, -100.0F, 0.0F),
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 0.0F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 0.5F, 1.0F),
-                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F),
+                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F));
 
 		
 
