@@ -175,13 +175,13 @@
     </style>
 
     <style name="ManageImageTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/design_tab_background</item>
+        <item name="android:background">?attr/colorPrimary</item>
         <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/design_tab_indicator_color</item>
+        <item name="tabIndicatorColor">?attr/colorOnPrimary</item>
         <item name="tabIndicatorHeight">3.0dip</item>
         <item name="tabMaxWidth">0.0dip</item>
         <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/design_tab_selected_text_color</item>
+        <item name="tabSelectedTextColor">?attr/colorOnPrimary</item>
         <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
     </style>
 
