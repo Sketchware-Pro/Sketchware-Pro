@@ -63,23 +63,26 @@
     </RadioGroup>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="40dp"
         android:paddingTop="20dp"
         android:paddingRight="40dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:gravity="center">
 
         <EditText
             android:id="@+id/dialog_edittext_name"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:hint="Filename"
             android:inputType="text"
             android:textColorHint="#008dcd"
             android:textColor="?attr/colorPrimary"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginLeft="16.0dip"
+            android:layout_marginRight="16.0dip"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
