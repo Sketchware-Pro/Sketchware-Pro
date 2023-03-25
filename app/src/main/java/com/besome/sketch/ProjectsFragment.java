@@ -56,6 +56,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         swipeRefresh.setOnRefreshListener(() -> {
             // Check storage access
             if (!c()) {
+                swipeRefresh.setRefreshing(false);
                 // Ask for it
                 ((MainActivity) requireActivity()).s();
             } else {
