@@ -43,13 +43,15 @@ import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final ProjectsFragment projectsFragment;
     private final Activity activity;
     private List<HashMap<String, Object>> shownProjects = new ArrayList<>();
     private List<HashMap<String, Object>> allProjects;
 
-    public ProjectsAdapter(Activity context, ArrayList<HashMap<String, Object>> allProjects) {
+    public ProjectsAdapter(ProjectsFragment projectsFragment, List<HashMap<String, Object>> allProjects) {
+        this.projectsFragment = projectsFragment;
         this.allProjects = allProjects;
-        this.activity = context;
+        this.activity = projectsFragment.requireActivity();
     }
 
     public void setAllProjects(List<HashMap<String, Object>> projects) {

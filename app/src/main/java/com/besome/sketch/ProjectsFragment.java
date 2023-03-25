@@ -67,7 +67,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         RecyclerView myProjects = view.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
 
-        projectsAdapter = new ProjectsAdapter(getActivity(), new ArrayList<>(projectsList));
+        projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
         myProjects.setAdapter(projectsAdapter);
         refreshProjectsList();
     }
