@@ -7287,16 +7287,6 @@
     <public name="design_drawer_menu_nativelibs_subtitle" id="0x7f0e0a1b" type="string" />
     <public name="design_drawer_menu_customblocks" id="0x7f0e0a1c" type="string" />
     <public name="design_drawer_menu_customblocks_subtitle" id="0x7f0e0a1d" type="string" />
-    <public name="last" id="0x7f0e0a1e" type="string" />
-    <public name="copy" id="0x7f0e0a1f" type="string" />
-    <public name="cut" id="0x7f0e0a20" type="string" />
-    <public name="next" id="0x7f0e0a21" type="string" />
-    <public name="paste" id="0x7f0e0a22" type="string" />
-    <public name="replace" id="0x7f0e0a23" type="string" />
-    <public name="replaceAll" id="0x7f0e0a24" type="string" />
-    <public name="replacement" id="0x7f0e0a25" type="string" />
-    <public name="selectAll" id="0x7f0e0a26" type="string" />
-    <public name="text_to_search" id="0x7f0e0a27" type="string" />
     <public name="AlertDialog.AppCompat" id="0x7f0f0000" type="style" />
     <public name="AlertDialog.AppCompat.Light" id="0x7f0f0001" type="style" />
     <public name="Animation.AppCompat.Dialog" id="0x7f0f0002" type="style" />
