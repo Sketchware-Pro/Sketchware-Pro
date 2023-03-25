@@ -28,7 +28,7 @@
                 android:id="@+id/common_dialog_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffffffff"
+                android:background="?attr/colorPrimaryContainer"
                 android:gravity="center|left"
                 android:orientation="horizontal"
                 android:padding="16dp">
@@ -43,7 +43,7 @@
                     android:id="@+id/common_dialog_tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -59,7 +59,7 @@
                 android:id="@+id/common_dialog_button_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/scolor_blue_01"
+                android:background="?attr/colorPrimary"
                 android:orientation="horizontal"
                 android:padding="8dp">
 
@@ -70,7 +70,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="8dp"
                     android:padding="4dp"
-                    android:textColor="#ffffffff" />
+                    android:textColor="?attr/colorOnPrimary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                         android:focusable="true"
                         android:gravity="center"
                         android:padding="4dp"
-                        android:textColor="#ffffffff" />
+                        android:textColor="?attr/colorOnPrimary" />
 
                     <TextView
                         android:id="@+id/common_dialog_ok_button"
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:padding="4dp"
-                        android:textColor="#ffffffff" />
+                        android:textColor="?attr/colorOnPrimary" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
