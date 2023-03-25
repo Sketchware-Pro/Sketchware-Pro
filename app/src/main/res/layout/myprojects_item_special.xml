@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
@@ -14,8 +15,8 @@
         android:id="@+id/project_one"
         android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:gravity="center"
         android:background="?selectableItemBackground"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
@@ -25,14 +26,14 @@
             android:background="@color/transparent"
             android:clickable="false"
             android:scaleType="centerInside"
-            android:src="@drawable/plus_96" />
+            tools:src="@drawable/plus_96" />
 
         <TextView
             android:id="@+id/tv_create_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
-            android:text="@string/myprojects_list_menu_title_create_a_new_project"
-            android:textColor="@color/scolor_blue_01" />
+            android:textColor="@color/scolor_blue_01"
+            tools:text="@string/myprojects_list_menu_title_create_a_new_project" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
