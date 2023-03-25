@@ -407,7 +407,7 @@ public class GithubConfigActivity extends AppCompatActivity {
         final LinearLayout ScType = view.findViewById(R.id.redio_sc_type);
         
         final EditText Fileformat = view.findViewById(R.id.dialog_custom_file);
-        final EditText filename = view.findViewById(R.id.dialog_edittext_name);
+        final EditText comitMessage = view.findViewById(R.id.dialog_edittext_name);
         final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
         final TextView save = view.findViewById(R.id.dialog_text_save);
 
@@ -416,23 +416,22 @@ public class GithubConfigActivity extends AppCompatActivity {
         
 
         calender = Calendar.getInstance();
-        filename.setHint("setMessage");
-        filename.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));       
+        comitMessage.setHint("setMessage");
+        comitMessage.setText(new SimpleDateFormat("dd MMM yyyy hh:mm").format(calender.getTime()));       
                
         save.setOnClickListener(v -> {
-            if (filename.getText().toString().isEmpty()) {
-                SketchwareUtil.toastError("Pleass write commit message! ");
-                return;
-            }
-            
-            
+          if (comitMessage.getText().toString().isEmpty()) {
+           SketchwareUtil.toastError("Pleass write commit message! ");
+           return;
+          }
            
-           progressbar1.setVisibility(View.VISIBLE);
-		   push_btn_title.setVisibility(View.GONE);
-           dialog.dismiss();
+          progressbar1.setVisibility(View.VISIBLE);
+		  push_btn_title.setVisibility(View.GONE);
+          
+          dialog.dismiss();
           if(_force){
             new Thread(() -> {                 
-               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id,true).pushREPO(filename.getText().toString());
+               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id,true).pushREPO(comitMessage.getText().toString(),Fileformat.getText().toString());
                runOnUiThread(() ->{
                  progressbar1.setVisibility(View.GONE);
   	     	  push_btn_title.setVisibility(View.VISIBLE);
@@ -440,7 +439,7 @@ public class GithubConfigActivity extends AppCompatActivity {
             }).start();  
           }else{
 	        new Thread(() -> {                 
-               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id,false).pushREPO(filename.getText().toString());
+               isSucces = new PushToGitHub(GithubConfigActivity.this,sc_id,false).pushREPO(comitMessage.getText().toString(),Fileformat.getText().toString());
                runOnUiThread(() ->{
                  progressbar1.setVisibility(View.GONE);
   	     	  push_btn_title.setVisibility(View.VISIBLE);
