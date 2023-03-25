@@ -52,7 +52,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
         TextView title = findViewById(R.id.tx_toolbar_title);
         ImageView back = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {

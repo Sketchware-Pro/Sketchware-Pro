@@ -85,7 +85,7 @@ public class CompileLogActivity extends Activity {
             delete.setImageResource(R.drawable.ic_delete_white_24dp);
             delete.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             ((ViewGroup) menu.getParent()).addView(delete, ((ViewGroup) menu.getParent()).indexOfChild(menu));
-            Helper.applyRippleToToolbarView(delete.this);
+            Helper.applyRippleToToolbarView(delete,this);
             delete.setOnClickListener(v -> {
                 if (compileErrorSaver.logFileExists()) {
                     compileErrorSaver.deleteSavedLogs();
