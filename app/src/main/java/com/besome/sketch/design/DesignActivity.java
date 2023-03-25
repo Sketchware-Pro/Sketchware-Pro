@@ -1448,11 +1448,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         final View view = getLayoutInflater().inflate(R.layout.commit_message_dialog, null);
         final TextView title = view.findViewById(R.id.dialog_create_new_file_layoutTitle);
         
+        final EditText Fileformat = view.findViewById(R.id.dialog_custom_file);
         final EditText filename = view.findViewById(R.id.dialog_edittext_name);
         final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
         final TextView save = view.findViewById(R.id.dialog_text_save);
 
-        title.setText("Commit changes");
+        title.setText("Commit changes with");
         save.setText("Push");
         
         calender = Calendar.getInstance();
@@ -1470,7 +1471,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             dialog.dismiss();
           
             new Thread(() -> {                 
-               boolean isSucces = new PushToGitHub(DesignActivity.this,sc_id,false).pushREPO(filename.getText().toString());
+               boolean isSucces = new PushToGitHub(DesignActivity.this,sc_id,false).pushREPO(filename.getText().toString(),Fileformat.getText().toString());
               //runOnUiThread(() ->);
                
             }).start();
