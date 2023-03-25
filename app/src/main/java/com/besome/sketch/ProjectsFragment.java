@@ -73,14 +73,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private RecyclerView myProjects;
     private CardView cvCreateNew;
     private CardView cvRestoreProjects;
-    private CardView cvGitCloneProjects;
+    
     private Boolean isCollapsed;
     private AnimatorSet collapseAnimatorSet;
     private AnimatorSet expandAnimatorSet;
     private ProjectsAdapter projectsAdapter;
     private FloatingActionButton floatingActionButton;
     private DB preference;
-    private AlertDialog prog;
+    
 
     private void toProjectSettingOrRequestPermission(int position) {
         if (super.c()) {
@@ -128,12 +128,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         ImageView ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
         TextView tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
 
-	cvGitCloneProjects = parent.findViewById(R.id.cv_gitClone_projects);
-        cvGitCloneProjects.setOnClickListener(this);
-        ImageView ivGitCloneProjects = parent.findViewById(R.id.iv_gitClone_projects);
-        TextView tvGitCloneProjects = parent.findViewById(R.id.tv_gitClone_projects);
-
-
+	
         collapseAnimatorSet = new AnimatorSet();
         expandAnimatorSet = new AnimatorSet();
         ValueAnimator collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
@@ -141,16 +136,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
-	    cvGitCloneProjects.getLayoutParams().height = (int) value;
-            cvGitCloneProjects.requestLayout();
+	    
         });
         ValueAnimator expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
         expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
-	    cvGitCloneProjects.getLayoutParams().height = (int) value;
-            cvGitCloneProjects.requestLayout();
+	    
         });
         collapseAnimatorSet.playTogether(collapseValueAnimator,
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
@@ -158,21 +151,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 1.0F, 0.5F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 1.0F, 0.5F),
 
-		ObjectAnimator.ofFloat(tvGitCloneProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
-                ObjectAnimator.ofFloat(tvGitCloneProjects, View.ALPHA, 1.0F, 0.0F),
-                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_X, 1.0F, 0.5F),
-                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_Y, 1.0F, 0.5F));
-
+		
         expandAnimatorSet.playTogether(expandValueAnimator,
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, -100.0F, 0.0F),
                 ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 0.0F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 0.5F, 1.0F),
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F),
 
-		ObjectAnimator.ofFloat(tvGitCloneProjects, View.TRANSLATION_Y, -100.0F, 0.0F),
-                ObjectAnimator.ofFloat(tvGitCloneProjects, View.ALPHA, 0.0F, 1.0F),
-                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_X, 0.5F, 1.0F),
-                ObjectAnimator.ofFloat(ivGitCloneProjects, View.SCALE_Y, 0.5F, 1.0F));
+		
 
         collapseAnimatorSet.setDuration(300L);
         expandAnimatorSet.setDuration(300L);
@@ -305,9 +291,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             toProjectSettingsActivity();
         } else if (viewId == R.id.cv_restore_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
             restoreProject();
-        } else if (viewId == R.id.cv_gitClone_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
-            _showCloneRepo();
-        }
+        } 
     }
 
     @Override
@@ -572,54 +556,4 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    	public void _showCloneRepo() {
-		  prog = new AlertDialog.Builder(getActivity()).create();
-				prog.setCancelable(false);
-				prog.setCanceledOnTouchOutside(false);
-				View inflate = getLayoutInflater().inflate(R.layout.add_repo, null);
-				prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-				prog.setView(inflate);
-				
-		        final LinearLayout all_item_layout = (LinearLayout) inflate.findViewById(R.id.all_item_layout);
-		        final LinearLayout progress_layout = (LinearLayout) inflate.findViewById(R.id.progress_layout);
-		        final LinearLayout credential_layout = (LinearLayout) inflate.findViewById(R.id.credential_layout);
-		        
-		        final ProgressBar progressbar1 = (ProgressBar) inflate.findViewById(R.id.progressbar1);				final EditText username = (EditText) inflate.findViewById(R.id.username);
-			final EditText pass = (EditText) inflate.findViewById(R.id.pass);
-			final EditText url = (EditText) inflate.findViewById(R.id.url);				
-			final TextView no = (TextView) inflate.findViewById(R.id.no);
-			final TextView yes = (TextView) inflate.findViewById(R.id.yes);		        		        
-		
-			username.setFocusableInTouchMode(true);
-			pass.setFocusableInTouchMode(true);
-			url.setFocusableInTouchMode(true);
-			progressbar1.setIndeterminate(true);
-		        progressbar1.setMax((int)100);
-		        progressbar1.setProgress((int)98);
-
-		       yes.setOnClickListener(new View.OnClickListener() {
-			  public void onClick(View v) {
-								
-				if (url.getText().toString().equals("")) {				
-		  		}else{
-			 	no.setEnabled(false);
-				no.setTextColor(0xFFBDBDBD);
-					                    
-		 		all_item_layout.setVisibility(View.GONE);
-		                yes.setVisibility(View.GONE);
-			        progress_layout.setVisibility(View.VISIBLE);
-					                     
-				  //_CloneRepository(url.getText().toString(),nam.getText().toString(),username.getText().toString(),pass.getText().toString());
-				 }
-				                
-				}
-				});
-		        
-				no.setOnClickListener(new View.OnClickListener() {
-				 public void onClick(View v) {
-					prog.hide();
-				 }
-				});
-				prog.show();
-		 }
 }
