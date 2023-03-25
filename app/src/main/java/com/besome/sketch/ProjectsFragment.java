@@ -48,9 +48,9 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private ProjectsAdapter projectsAdapter;
     private DB preference;
 
-    private void initialize(ViewGroup parent) {
+    private void initialize(View view) {
         preference = new DB(requireContext(), "project");
-        swipeRefresh = parent.findViewById(R.id.swipe_refresh);
+        swipeRefresh = view.findViewById(R.id.swipe_refresh);
 
         requireActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
 
@@ -64,7 +64,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         });
 
-        RecyclerView myProjects = parent.findViewById(R.id.myprojects);
+        RecyclerView myProjects = view.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
 
         projectsAdapter = new ProjectsAdapter(getActivity(), new ArrayList<>(projectsList));
@@ -214,7 +214,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
+        View viewGroup = inflater.inflate(R.layout.myprojects, parent, false);
         setHasOptionsMenu(true);
         initialize(viewGroup);
         return viewGroup;
