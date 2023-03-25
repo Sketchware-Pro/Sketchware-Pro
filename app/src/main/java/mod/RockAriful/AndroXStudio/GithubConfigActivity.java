@@ -239,7 +239,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 		radio_group = findViewById(R.id.radio_group);
 
 
-		final RadioButton[ ] rb = new RadioButton[2];
+		/*
+ 		final RadioButton[ ] rb = new RadioButton[2];
 		RadioGroup rg = new RadioGroup(this);
 		rg.setOrientation(RadioGroup.HORIZONTAL);
 		
@@ -274,7 +275,7 @@ public class GithubConfigActivity extends AppCompatActivity {
 			}
     		    });
 
-
+		*/
 		push_data.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
