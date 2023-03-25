@@ -109,14 +109,14 @@ public class Helper {
         context.getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
         
         GradientDrawable content = new GradientDrawable();
-        content.setColor(typedValue.resourceId);
+        content.setColor(Color.parseColor("#FFA13F28"));
         content.setCornerRadius(90);
 
         view.setBackground(
                 new RippleDrawable(
                         new ColorStateList(
                                 new int[][]{new int[]{0}},
-                                new int[]{Color.parseColor("#FFDAD2")}
+                                new int[]{Color.parseColor("#FFFFDAD2")}
                         ),
                         content,
                         null

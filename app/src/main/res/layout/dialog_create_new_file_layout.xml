@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/colorPrimaryContainer">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,8 +12,7 @@
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
-        android:paddingBottom="5dp"
-        android:background="?attr/colorPrimaryContainer">
+        android:paddingBottom="5dp">
 
         <ImageView
             android:layout_width="30dp"
@@ -44,19 +44,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Folder" />
+            android:text="Folder"
+            android:textColor="?attr/colorOnPrimaryContainer"/>
 
         <RadioButton
             android:id="@+id/dialog_radio_filetype_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Class" />
+            android:text="Class"
+            android:textColor="?attr/colorOnPrimaryContainer"/>
 
         <RadioButton
             android:id="@+id/dialog_radio_filetype_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Activity" />
+            android:text="Activity"
+            android:textColor="?attr/colorOnPrimaryContainer"/>
     </RadioGroup>
 
     <com.google.android.material.textfield.TextInputLayout
