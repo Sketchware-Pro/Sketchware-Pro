@@ -55,7 +55,7 @@ public class CompileLogActivity extends Activity {
         err_vScroll = rootLayout.findViewWithTag("err_vScroll");
 
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
             title.setText("Last compile log");
@@ -85,7 +85,7 @@ public class CompileLogActivity extends Activity {
             delete.setImageResource(R.drawable.ic_delete_white_24dp);
             delete.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             ((ViewGroup) menu.getParent()).addView(delete, ((ViewGroup) menu.getParent()).indexOfChild(menu));
-            Helper.applyRippleToToolbarView(delete);
+            Helper.applyRippleToToolbarView(delete.this);
             delete.setOnClickListener(v -> {
                 if (compileErrorSaver.logFileExists()) {
                     compileErrorSaver.deleteSavedLogs();
@@ -101,7 +101,7 @@ public class CompileLogActivity extends Activity {
 
         menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
         menu.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(menu);
+        Helper.applyRippleToToolbarView(menu,this);
 
         final String wrapTextLabel = "Wrap text";
         final String monospacedFontLabel = "Monospaced font";
