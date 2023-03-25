@@ -47,6 +47,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Activity activity;
     private List<HashMap<String, Object>> shownProjects = new ArrayList<>();
     private List<HashMap<String, Object>> allProjects;
+    private boolean isActionHidden = false;
 
     public ProjectsAdapter(ProjectsFragment projectsFragment, List<HashMap<String, Object>> allProjects) {
         this.projectsFragment = projectsFragment;
@@ -71,7 +72,15 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
             newProjects = allProjects;
+            if (isActionHidden) {
+                isActionHidden = false;
+                notifyItemInserted(0);
+            }
         } else {
+            if (!isActionHidden) {
+                isActionHidden = true;
+                notifyItemRemoved(0);
+            }
             newProjects = allProjects.stream()
                     .filter(project -> matchesQuery(project, query))
                     .collect(Collectors.toList());
@@ -106,7 +115,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return 1 + shownProjects.size();
+        int shownSpecialActions = isActionHidden ? 0 : 1;
+        return shownSpecialActions + shownProjects.size();
     }
 
     private boolean matchesQuery(HashMap<String, Object> projectMap, String searchQuery) {
@@ -128,7 +138,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int truePosition) {
         if (viewHolder instanceof ProjectViewHolder holder) {
-            int position = truePosition - 1;
+            int position = isActionHidden ? truePosition : truePosition - 1;
             HashMap<String, Object> projectMap = shownProjects.get(position);
             String scId = yB.c(projectMap, "sc_id");
 
@@ -258,7 +268,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? 1 : 0;
+        return !isActionHidden && position == 0 ? 1 : 0;
     }
 
     @NonNull
