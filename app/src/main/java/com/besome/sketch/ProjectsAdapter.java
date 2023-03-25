@@ -47,7 +47,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Activity activity;
     private List<HashMap<String, Object>> shownProjects = new ArrayList<>();
     private List<HashMap<String, Object>> allProjects;
-    private boolean isActionHidden = false;
+    private int shownSpecialActions = 1;
 
     public ProjectsAdapter(ProjectsFragment projectsFragment, List<HashMap<String, Object>> allProjects) {
         this.projectsFragment = projectsFragment;
@@ -62,23 +62,34 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void filterData(String query) {
         // prevent scrolling to the very bottom on start
         int projectCount;
-        if (shownProjects.size() == 0 && (projectCount = allProjects.size()) > 0) {
-            shownProjects = allProjects;
-            notifyItemChanged(0);
-            notifyItemRangeInserted(1, projectCount);
-            return;
-        }
+        if (shownProjects.size() == 0)
+            if ((projectCount = allProjects.size()) > 0) {
+                if (shownSpecialActions == 2) {
+                    shownSpecialActions = 1;
+                    notifyItemRemoved(0);
+                }
+                shownProjects = allProjects;
+                notifyItemChanged(0);
+                notifyItemRangeInserted(1, projectCount);
+                return;
+            } else {
+                if (shownSpecialActions == 1) {
+                    notifyItemInserted(1);
+                    shownSpecialActions = 2;
+                }
+                return;
+            }
 
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
             newProjects = allProjects;
-            if (isActionHidden) {
-                isActionHidden = false;
+            if (shownSpecialActions == 0) {
+                shownSpecialActions = 1;
                 notifyItemInserted(0);
             }
         } else {
-            if (!isActionHidden) {
-                isActionHidden = true;
+            if (shownSpecialActions > 0) {
+                shownSpecialActions = 0;
                 notifyItemRemoved(0);
             }
             newProjects = allProjects.stream()
@@ -115,7 +126,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        int shownSpecialActions = isActionHidden ? 0 : 1;
         return shownSpecialActions + shownProjects.size();
     }
 
@@ -138,7 +148,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int truePosition) {
         if (viewHolder instanceof ProjectViewHolder holder) {
-            int position = isActionHidden ? truePosition : truePosition - 1;
+            int position = truePosition - shownSpecialActions;
             HashMap<String, Object> projectMap = shownProjects.get(position);
             String scId = yB.c(projectMap, "sc_id");
 
@@ -261,14 +271,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
         } else if (viewHolder instanceof SpecialActionViewHolder holder) {
-            boolean isRestoreView = !allProjects.isEmpty();
-            holder.setIsNewProjectAction(!isRestoreView);
+            boolean isNewProjectView = allProjects.isEmpty() && truePosition == 0;
+            holder.setIsNewProjectAction(isNewProjectView);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return !isActionHidden && position == 0 ? 1 : 0;
+        return position - shownSpecialActions < 0 ? 1 : 0;
     }
 
     @NonNull
@@ -336,6 +346,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final TextView title;
 
         private boolean isNewProjectAction = true;
+
         public SpecialActionViewHolder(@NonNull View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.iv_create_new);
