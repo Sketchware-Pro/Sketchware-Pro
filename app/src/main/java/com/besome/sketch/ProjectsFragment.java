@@ -1,7 +1,6 @@
 package com.besome.sketch;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -169,14 +168,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         int viewId = v.getId();
 
         if ((viewId == R.id.create_new_project) && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
-            final String[] actions = {"Create New Project", "Restore Project (.swb)"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Choose an action");
-            builder.setItems(actions, (dialog, which) -> {
-                if (which == 0) toProjectSettingsActivity();
-                else restoreProject();
-            });
-            builder.show();
+            toProjectSettingsActivity();
         }
     }
 
