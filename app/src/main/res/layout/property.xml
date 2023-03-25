@@ -2,10 +2,10 @@
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <include layout="@layout/toolbar" />
-    <RelativeLayout android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <RelativeLayout android:background="?attr/colorPrimaryContainer" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/layout_ads">
-            <androidx.recyclerview.widget.RecyclerView android:id="@id/property_group_list" android:background="#ffffffff" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="fill_parent" android:splitMotionEvents="false" />
-            <View android:background="#ff008dcd" android:layout_width="1.0dip" android:layout_height="fill_parent" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/property_group_list" android:background="?attr/colorPrimaryContainer" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="fill_parent" android:splitMotionEvents="false" />
+            <View android:background="?attr/colorPrimary" android:layout_width="1.0dip" android:layout_height="fill_parent" />
             <com.besome.sketch.lib.ui.CustomScrollView android:id="@id/scroll_view" android:layout_width="fill_parent" android:layout_height="fill_parent">
                 <LinearLayout android:orientation="vertical" android:id="@id/content" android:layout_width="fill_parent" android:layout_height="wrap_content" />
             </com.besome.sketch.lib.ui.CustomScrollView>
