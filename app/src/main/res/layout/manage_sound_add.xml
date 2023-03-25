@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
+    android:background="?attr/colorPrimaryContainer"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Add Sound"
-                android:textColor="#ff7d7d7d"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -123,7 +123,8 @@
             android:id="@+id/tv_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="?attr/colorPrimary"/>
 
         <CheckBox
             android:id="@+id/chk_collection"
