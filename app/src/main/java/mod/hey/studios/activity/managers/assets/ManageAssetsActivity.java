@@ -75,13 +75,13 @@ public class ManageAssetsActivity extends Activity {
 
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Asset Manager");
         ImageView imageView = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(imageView);
+        Helper.applyRippleToToolbarView(imageView,this);
         imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         ImageView ig_load_file = findViewById(R.id.ig_toolbar_load_file);
         ig_load_file.setVisibility(View.VISIBLE);
 
-        Helper.applyRippleToToolbarView(ig_load_file);
+        Helper.applyRippleToToolbarView(ig_load_file,this);
 
         ig_load_file.setOnClickListener(v -> showLoadDialog());
     }
