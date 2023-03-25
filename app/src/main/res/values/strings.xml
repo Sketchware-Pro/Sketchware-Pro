@@ -2584,6 +2584,5 @@ Please check the URL again."</string>
     <string name="selectAll">Select All</string>
     <string name="text_to_search">Text to search</string>
     <string name="myprojects_list_menu_title_restore_projects">Restore Projects</string>
-    <string name="search_projects">Filter by name, package, project id</string>
     <string name="sort_projects">Sort projects</string>
 </resources>
