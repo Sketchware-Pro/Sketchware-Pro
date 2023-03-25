@@ -47,6 +47,6 @@ public class ManageStringfogActivity extends Activity implements CompoundButton.
         ImageView ig_toolbar_back = findViewById(R.id.ig_toolbar_back);
         ig_toolbar_back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        Helper.applyRippleToToolbarView(ig_toolbar_back);
+        Helper.applyRippleToToolbarView(ig_toolbar_back,this);
     }
 }

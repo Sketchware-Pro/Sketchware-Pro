@@ -123,6 +123,6 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
 
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(this);
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
     }
 }

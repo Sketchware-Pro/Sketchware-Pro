@@ -42,13 +42,13 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private void initToolbar() {
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Local library Manager");
         ImageView back_icon = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(back_icon);
+        Helper.applyRippleToToolbarView(back_icon,this);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         ImageView import_library_icon = findViewById(R.id.ig_toolbar_load_file);
         import_library_icon.setPadding((int) getDip(2), (int) getDip(2), (int) getDip(2), (int) getDip(2));
         import_library_icon.setImageResource(R.drawable.download_80px);
         import_library_icon.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(import_library_icon);
+        Helper.applyRippleToToolbarView(import_library_icon,this);
         import_library_icon.setOnClickListener(this);
     }
 

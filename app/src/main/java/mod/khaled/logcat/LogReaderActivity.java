@@ -140,7 +140,7 @@ public class LogReaderActivity extends AppCompatActivity {
         root.addView(recyclerview);
 
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
 
         filterEdittext.addTextChangedListener(new BaseTextWatcher() {
             @Override
@@ -167,7 +167,7 @@ public class LogReaderActivity extends AppCompatActivity {
         });
 
         optionsMenu.setOnClickListener(v -> options.show());
-        Helper.applyRippleToToolbarView(optionsMenu);
+        Helper.applyRippleToToolbarView(optionsMenu,this);
     }
 
     private void initializeLogic() {

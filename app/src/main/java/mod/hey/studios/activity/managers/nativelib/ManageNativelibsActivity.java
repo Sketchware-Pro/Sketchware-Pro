@@ -91,11 +91,11 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
     private void initToolbar() {
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Native library Manager");
 
         loadFile = findViewById(R.id.ig_toolbar_load_file);
-        Helper.applyRippleToToolbarView(loadFile);
+        Helper.applyRippleToToolbarView(loadFile,this);
         loadFile.setOnClickListener(v -> filePicker.show());
     }
 
