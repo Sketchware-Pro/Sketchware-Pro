@@ -223,7 +223,7 @@ public class AndroidManifestInjection extends Activity {
         addnew.setBackgroundColor(0xff008dcd);
         addnew.setTextSize(15);
         addnew.setBackground(new DialogButtonGradientDrawable()
-                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                .getIns((int) getDip(4), 0, 0xffA13F28, 0xffA13F28));
         addnew.setElevation((int) getDip(1));
         base.addView(addnew);
         addnew.setOnClickListener(v -> showAddActivityDialog());
@@ -477,7 +477,7 @@ public class AndroidManifestInjection extends Activity {
         View toolbar = getLayoutInflater().inflate(R.layout.toolbar_improved, null);
 
         ImageView _back = toolbar.findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(_back);
+        Helper.applyRippleToToolbarView(_back,this);
         ImageView _quickSource = toolbar.findViewById(R.id.ig_toolbar_load_file);
 
         TextView _title = toolbar.findViewById(R.id.tx_toolbar_title);
@@ -486,7 +486,7 @@ public class AndroidManifestInjection extends Activity {
 
         _quickSource.setImageResource(R.drawable.code_white_48);
         _quickSource.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(_quickSource);
+        Helper.applyRippleToToolbarView(_quickSource,this);
         _quickSource.setOnClickListener((v1 -> showQuickManifestSourceDialog()));
 
         v.setPadding(0, 0, 0, 0);
