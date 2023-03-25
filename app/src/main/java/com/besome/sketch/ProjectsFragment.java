@@ -136,13 +136,13 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    private void toProjectSettingsActivity() {
+    public void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
     }
 
-    private void restoreProject() {
+    public void restoreProject() {
         (new BackupRestoreManager(getActivity(), this)).restore();
     }
 

@@ -59,6 +59,15 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void filterData(String query) {
+        // prevent scrolling to the very bottom on start
+        int projectCount;
+        if (shownProjects.size() == 0 && (projectCount = allProjects.size()) > 0) {
+            shownProjects = allProjects;
+            notifyItemChanged(0);
+            notifyItemRangeInserted(1, projectCount);
+            return;
+        }
+
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
             newProjects = allProjects;
@@ -97,7 +106,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return shownProjects.size();
+        return 1 + shownProjects.size();
     }
 
     private boolean matchesQuery(HashMap<String, Object> projectMap, String searchQuery) {
@@ -117,8 +126,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int truePosition) {
         if (viewHolder instanceof ProjectViewHolder holder) {
+            int position = truePosition - 1;
             HashMap<String, Object> projectMap = shownProjects.get(position);
             String scId = yB.c(projectMap, "sc_id");
 
@@ -240,13 +250,24 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 }
             });
+        } else if (viewHolder instanceof SpecialActionViewHolder holder) {
+            boolean isRestoreView = !allProjects.isEmpty();
+            holder.setIsNewProjectAction(!isRestoreView);
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? 1 : 0;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         var inflater = LayoutInflater.from(parent.getContext());
+        if (viewType == 1) {
+            return new SpecialActionViewHolder(inflater.inflate(R.layout.myprojects_item_special, parent, false));
+        }
         return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
     }
 
@@ -297,6 +318,35 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             project.put("expand", true);
             gB.a(expand, -180.0F, null);
             gB.b(projectOptionLayout, 300, null);
+        }
+    }
+
+    private class SpecialActionViewHolder extends RecyclerView.ViewHolder {
+        public final ImageView icon;
+        public final TextView title;
+
+        private boolean isNewProjectAction = true;
+        public SpecialActionViewHolder(@NonNull View itemView) {
+            super(itemView);
+            icon = itemView.findViewById(R.id.iv_create_new);
+            title = itemView.findViewById(R.id.tv_create_new);
+            itemView.findViewById(R.id.project_one).setOnClickListener(v -> {
+                if (isNewProjectAction()) {
+                    projectsFragment.toProjectSettingsActivity();
+                } else {
+                    projectsFragment.restoreProject();
+                }
+            });
+        }
+
+        public void setIsNewProjectAction(boolean b) {
+            isNewProjectAction = b;
+            icon.setImageResource(isNewProjectAction ? R.drawable.plus_96 : R.drawable.data_backup_96);
+            title.setText(activity.getString(isNewProjectAction ? R.string.myprojects_list_menu_title_create_a_new_project : R.string.myprojects_list_menu_title_restore_projects));
+        }
+
+        public boolean isNewProjectAction() {
+            return isNewProjectAction;
         }
     }
 

@@ -14,5 +14,4 @@
         android:paddingBottom="80dp"
         android:splitMotionEvents="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
