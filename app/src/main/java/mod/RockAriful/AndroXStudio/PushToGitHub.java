@@ -111,7 +111,7 @@ public class PushToGitHub {
 		}catch(Exception e){}
     }
     
-    public static boolean pushREPO(final String _setMessage) {
+    public static boolean pushREPO(final String _setMessage, final String _Fileformat) {
        
          if(!FileUtil.isExistFile(_FilePATH)){
     	   SketchwareUtil.toastError(_FilePATH+" Not Exist!");
@@ -133,8 +133,17 @@ public class PushToGitHub {
 		    @Override
 		   public void run() {
 		     try(Git git = Git.open(new File(_FilePATH))) {
-		         
-	 	        git.add().addFilepattern(".").call();
+                 
+		         if (_Fileformat.isEmpty()) {
+                   git.add().addFilepattern(".").call();  
+                 }else{
+                     
+                   String [] GetPattern = _Fileformat.split(":");
+                   for (String pattern : GetPattern) {
+                     git.add().addFilepattern(pattern).call();  
+                   }
+                 }
+	 	        
 	 	        git.commit().setMessage(_setMessage).call();
 	 	        
 	 	        PushCommand push = git.push();
