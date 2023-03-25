@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
+    android:background="?attr/colorPrimaryContainer"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -13,20 +13,20 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:textColor="#ff7d7d7d"
+        android:textColor="?attr/colorOnPrimaryContainer"
         android:textSize="12sp"
         android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <com.besome.sketch.lib.ui.EasyDeleteEditText
             android:id="@+id/ed_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/select_file"
@@ -49,7 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textColor="?attr/colorPrimaryContainer" />
 
         <CheckBox
             android:id="@+id/chk_collection"
