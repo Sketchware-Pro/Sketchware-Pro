@@ -122,7 +122,7 @@ public class Tools extends Activity {
         ImageView back = toolbar.findViewById(R.id.ig_toolbar_back);
 
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
 
         parent.setPadding(0, 0, 0, 0);
         ((ViewGroup) parent).addView(toolbar, 0);
