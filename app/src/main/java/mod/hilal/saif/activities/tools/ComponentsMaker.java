@@ -150,7 +150,7 @@ public class ComponentsMaker extends Activity {
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Component manager");
         final ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
+        Helper.applyRippleToToolbarView(back_icon,this);
         final ImageView more_icon = findViewById(R.id.ig_toolbar_load_file);
         more_icon.setVisibility(View.VISIBLE);
         more_icon.setImageResource(R.drawable.ic_more_vert_white_24dp);
@@ -179,7 +179,7 @@ public class ComponentsMaker extends Activity {
             });
             popupMenu.show();
         });
-        Helper.applyRippleToToolbarView(more_icon);
+        Helper.applyRippleToToolbarView(more_icon,this);
     }
 
     private class ListAdapter extends BaseAdapter {
