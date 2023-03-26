@@ -61,29 +61,29 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void filterData(String query) {
-        // prevent scrolling to the very bottom on start
-        int projectCount;
-        if (shownProjects.size() == 0)
-            if ((projectCount = allProjects.size()) > 0) {
-                if (shownSpecialActions == 2) {
-                    shownSpecialActions = 1;
-                    notifyItemRemoved(0);
-                }
-                shownProjects = allProjects;
-                notifyItemChanged(0);
-                notifyItemRangeInserted(1, projectCount);
-                return;
-            } else {
-                if (shownSpecialActions == 1) {
-                    notifyItemChanged(0);
-                    notifyItemInserted(1);
-                    shownSpecialActions = 2;
-                }
-                return;
-            }
-
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
+            // prevent scrolling to the very bottom on start
+            int projectCount;
+            if (shownProjects.size() == 0)
+                if ((projectCount = allProjects.size()) > 0) {
+                    if (shownSpecialActions == 2) {
+                        shownSpecialActions = 1;
+                        notifyItemRemoved(0);
+                    }
+                    shownProjects = allProjects;
+                    notifyItemChanged(0);
+                    notifyItemRangeInserted(1, projectCount);
+                    return;
+                } else {
+                    if (shownSpecialActions == 1) {
+                        notifyItemChanged(0);
+                        notifyItemInserted(1);
+                        shownSpecialActions = 2;
+                    }
+                    return;
+                }
+
             newProjects = allProjects;
             if (shownSpecialActions == 0) {
                 shownSpecialActions = 1;
@@ -132,19 +132,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private boolean matchesQuery(HashMap<String, Object> projectMap, String searchQuery) {
-        if (searchQuery.isEmpty()) return true;
+        searchQuery = searchQuery.toLowerCase();
 
         String scId = yB.c(projectMap, "sc_id").toLowerCase();
-        if (searchQuery.contains(scId) || scId.contains(searchQuery)) return true;
+        if (scId.contains(searchQuery)) return true;
 
         String appName = yB.c(projectMap, "my_ws_name").toLowerCase();
-        if (searchQuery.contains(appName) || appName.contains(searchQuery)) return true;
+        if (appName.contains(searchQuery)) return true;
 
         String projectName = yB.c(projectMap, "my_app_name").toLowerCase();
-        if (searchQuery.contains(projectName) || projectName.contains(searchQuery)) return true;
+        if (projectName.contains(searchQuery)) return true;
 
         String packageName = yB.c(projectMap, "my_sc_pkg_name").toLowerCase();
-        return searchQuery.contains(packageName) || packageName.contains(searchQuery);
+        return packageName.contains(searchQuery);
     }
 
     @Override
