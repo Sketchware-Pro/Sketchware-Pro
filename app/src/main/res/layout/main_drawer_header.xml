@@ -28,4 +28,5 @@
         	android:paddingRight="16dp"
         	android:paddingBottom="8dp"
         	android:tint="?attr/colorPrimary"/>
+    </LinearLayout>
 </LinearLayout>
