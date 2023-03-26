@@ -117,7 +117,7 @@ public class EventsMakerDetails extends Activity {
         }
         ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
+        Helper.applyRippleToToolbarView(back_icon,this);
     }
 
     private class ListAdapter extends BaseAdapter {
