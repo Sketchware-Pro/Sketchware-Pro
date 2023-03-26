@@ -354,8 +354,8 @@
     </style>
 
     <style name="selectableMainItemBackground">
-        <item name="android:background">?selectableItemBackground</item>
-        <item name="android:colorControlHighlight">@color/color_control_normal</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:colorControlHighlight">?attr/colorPrimaryContainer</item>
     </style>
 
     <style name="AppTheme.Et" parent="@style/MaterialTheme">
