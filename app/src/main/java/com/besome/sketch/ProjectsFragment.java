@@ -18,6 +18,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
@@ -46,10 +47,13 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private ProjectsAdapter projectsAdapter;
     private DB preference;
+    private LottieAnimationView loading;
+    private RecyclerView myProjects;
 
     private void initialize(View view) {
         preference = new DB(requireContext(), "project");
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
+        loading = view.findViewById(R.id.loading_3balls);
 
         requireActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
 
@@ -64,7 +68,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         });
 
-        RecyclerView myProjects = view.findViewById(R.id.myprojects);
+        myProjects = view.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
 
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
@@ -85,6 +89,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
             requireActivity().runOnUiThread(() -> {
                 if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                if (loading != null) {
+                    ((ViewGroup) loading.getParent()).removeView(loading);
+                    myProjects.setVisibility(View.VISIBLE);
+                    loading = null;
+                }
                 projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
