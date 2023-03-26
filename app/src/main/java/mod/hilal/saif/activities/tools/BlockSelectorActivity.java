@@ -288,7 +288,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     private void applyRippleToView(View... views) {
         for (View view : views) {
-            Helper.applyRippleToToolbarView(view);
+            Helper.applyRippleToToolbarView(view,this);
         }
     }
 
