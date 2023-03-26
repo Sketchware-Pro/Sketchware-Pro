@@ -278,7 +278,7 @@ public class ConfigActivity extends Activity {
         TextView toolbar_title = toolbar.findViewById(R.id.tx_toolbar_title);
         toolbar_back.setClickable(true);
         toolbar_back.setFocusable(true);
-        Helper.applyRippleToToolbarView(toolbar_back);
+        Helper.applyRippleToToolbarView(toolbar_back,this);
         toolbar_back.setOnClickListener(Helper.getBackPressedClickListener(this));
         toolbar_title.setText("Mod settings");
 
