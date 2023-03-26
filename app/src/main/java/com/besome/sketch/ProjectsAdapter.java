@@ -121,7 +121,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                 return true;
             }
-        }, false);
+        }, true /* sort behavior can be changed */);
         shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
     }
