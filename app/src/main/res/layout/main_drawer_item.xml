@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:theme="@style/selectableMainItemBackground" android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="48.0dip"
+<LinearLayout android:theme="@style/selectableMainItemBackground" android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="48.0dip" id="@+id/linear"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView android:layout_gravity="center_vertical" android:id="@id/img_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:contentDescription="@null" android:tint="?attr/colorPrimary" />
     <TextView android:textSize="14.0sp" android:textColor="?attr/colorPrimary" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tv_menu_name" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="16.0dip" android:singleLine="true" android:layout_marginEnd="16.0dip" />
