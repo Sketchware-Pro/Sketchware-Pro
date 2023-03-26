@@ -354,7 +354,7 @@
     </style>
 
     <style name="selectableMainItemBackground">
-        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:background">?selectableItemBackground</item>
         <item name="android:colorControlHighlight">?attr/colorPrimaryContainer</item>
     </style>
 
