@@ -110,12 +110,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    public static void toDesignActivity(Activity activity, String sc_id) {
-        Intent intent = new Intent(activity, DesignActivity.class);
+    public void toDesignActivity(String sc_id) {
+        Intent intent = new Intent(requireContext(), DesignActivity.class);
         ProjectTracker.setScId(sc_id);
         intent.putExtra("sc_id", sc_id);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        activity.startActivityForResult(intent, REQUEST_CODE_DESIGN_ACTIVITY);
+        requireActivity().startActivityForResult(intent, REQUEST_CODE_DESIGN_ACTIVITY);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             if (resultCode == Activity.RESULT_OK) {
                 refreshProjectsList();
                 if (data.getBooleanExtra("is_new", false)) {
-                    toDesignActivity(getActivity(), data.getStringExtra("sc_id"));
+                    toDesignActivity(data.getStringExtra("sc_id"));
                 }
             }
         } else if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
