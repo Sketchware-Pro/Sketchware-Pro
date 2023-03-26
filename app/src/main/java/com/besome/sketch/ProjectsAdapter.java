@@ -85,20 +85,15 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
             newProjects = allProjects;
-            if (shownSpecialActions == 0) {
-                shownSpecialActions = 1;
-                notifyItemInserted(0);
-            }
         } else {
-            if (shownSpecialActions > 0) {
-                shownSpecialActions = 0;
-                notifyItemRemoved(0);
-            }
             newProjects = allProjects.stream()
                     .filter(project -> matchesQuery(project, query))
                     .collect(Collectors.toList());
         }
 
+        if (shownSpecialActions > 0) {
+            notifyItemRangeRemoved(0, shownSpecialActions);
+        }
         var result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
@@ -124,6 +119,21 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }, true /* sort behavior can be changed */);
         shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
+        if (shownSpecialActions > 0) {
+            notifyItemRangeInserted(0, shownSpecialActions);
+        }
+
+        if (query.isEmpty()) {
+            if (shownSpecialActions == 0) {
+                shownSpecialActions = 1;
+                notifyItemInserted(0);
+            }
+        } else {
+            if (shownSpecialActions > 0) {
+                shownSpecialActions = 0;
+                notifyItemRemoved(0);
+            }
+        }
     }
 
     @Override
