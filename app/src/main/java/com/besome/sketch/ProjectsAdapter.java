@@ -75,6 +75,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return;
             } else {
                 if (shownSpecialActions == 1) {
+                    notifyItemChanged(0);
                     notifyItemInserted(1);
                     shownSpecialActions = 2;
                 }
@@ -383,6 +384,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 shownProjects.removeIf(remover);
                 allProjects.removeIf(remover);
                 notifyItemRemoved(truePosition);
+
+                if (shownProjects.size() == 0) {
+                    filterData("");
+                }
             });
         }).start();
     }
