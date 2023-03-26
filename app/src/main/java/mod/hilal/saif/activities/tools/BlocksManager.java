@@ -84,11 +84,11 @@ public class BlocksManager extends AppCompatActivity {
         card2_sub = findViewById(R.id.recycle_sub);
 
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
         title.setText("Block manager");
         settings.setVisibility(View.VISIBLE);
         settings.setImageResource(R.drawable.settings_96_white);
-        Helper.applyRippleToToolbarView(settings);
+        Helper.applyRippleToToolbarView(settings,this);
         settings.setOnClickListener(v -> {
             aB dialog = new aB(this);
             dialog.a(R.drawable.ic_folder_48dp);
