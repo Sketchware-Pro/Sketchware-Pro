@@ -97,6 +97,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .collect(Collectors.toList());
         }
 
+        // remove them so DiffUtil isn't confused
         if (shownSpecialActions > 0) {
             notifyItemRangeRemoved(0, shownSpecialActions);
         }
@@ -125,10 +126,12 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }, true /* sort behavior can be changed */);
         shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
+        // add them again after DiffUtil's done
         if (shownSpecialActions > 0) {
             notifyItemRangeInserted(0, shownSpecialActions);
         }
 
+        // hide Restore Projects when searching
         if (query.isEmpty()) {
             if (shownSpecialActions == 0) {
                 shownSpecialActions = 1;
