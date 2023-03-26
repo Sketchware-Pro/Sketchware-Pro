@@ -264,7 +264,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // ActionBarDrawerToggle#onOptionsItemSelected(MenuItem)
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
@@ -315,7 +314,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 dialog.configureDefaultButton("Don't show anymore", v -> {
                     try {
                         if (!optOutFile.createNewFile())
-                            throw new IOException("Unknown error.");
+                            throw new IOException("Failed to create file " + optOutFile);
                     } catch (IOException e) {
                         Log.e("MainActivity", "Error while trying to create " +
                                 "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
