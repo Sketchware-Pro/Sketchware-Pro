@@ -60,30 +60,36 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         allProjects = projects;
     }
 
+    private void maybeAdjustSpecialActions() {
+        if (shownProjects.size() == 0) {
+            if (allProjects.size() > 0) {
+                if (shownSpecialActions == 2) {
+                    shownSpecialActions = 1;
+                    notifyItemRemoved(0);
+                }
+            } else {
+                if (shownSpecialActions == 1) {
+                    notifyItemChanged(0);
+                    notifyItemInserted(1);
+                    shownSpecialActions = 2;
+                }
+            }
+        }
+    }
+
     public void filterData(String query) {
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
             // prevent scrolling to the very bottom on start
-            int projectCount;
-            if (shownProjects.size() == 0)
+            if (shownProjects.size() == 0) {
+                int projectCount;
                 if ((projectCount = allProjects.size()) > 0) {
-                    if (shownSpecialActions == 2) {
-                        shownSpecialActions = 1;
-                        notifyItemRemoved(0);
-                    }
                     shownProjects = allProjects;
                     notifyItemChanged(0);
                     notifyItemRangeInserted(1, projectCount);
-                    return;
-                } else {
-                    if (shownSpecialActions == 1) {
-                        notifyItemChanged(0);
-                        notifyItemInserted(1);
-                        shownSpecialActions = 2;
-                    }
-                    return;
                 }
-
+            }
+            maybeAdjustSpecialActions();
             newProjects = allProjects;
         } else {
             newProjects = allProjects.stream()
@@ -395,9 +401,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 allProjects.removeIf(remover);
                 notifyItemRemoved(truePosition);
 
-                if (shownProjects.size() == 0) {
-                    filterData("");
-                }
+                maybeAdjustSpecialActions();
             });
         }).start();
     }
