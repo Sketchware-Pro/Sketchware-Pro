@@ -79,7 +79,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         import_export = findViewById(R.id.import_export);
         swap = findViewById(R.id.swap);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
+        Helper.applyRippleToToolbarView(back_icon,this);
         import_export.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, import_export);
             final Menu menu = popupMenu.getMenu();
@@ -109,7 +109,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             });
             popupMenu.show();
         });
-        Helper.applyRippleToToolbarView(import_export);
+        Helper.applyRippleToToolbarView(import_export,this);
         swap.setOnClickListener(v -> {
             if (mode.equals("normal")) {
                 swap.setImageResource(R.drawable.icon_checkbox_white_96);
@@ -127,7 +127,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
             listview1.onRestoreInstanceState(savedInstanceState);
         });
-        Helper.applyRippleToToolbarView(swap);
+        Helper.applyRippleToToolbarView(swap,this);
         _fab.setOnClickListener(v -> {
             Object paletteColor = pallet_list.get(palette - 9).get("color");
             if (paletteColor instanceof String) {
