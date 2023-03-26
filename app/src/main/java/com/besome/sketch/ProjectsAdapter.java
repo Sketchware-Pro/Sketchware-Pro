@@ -31,6 +31,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import a.a.a.ZA;
@@ -232,12 +233,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
                 if (v.getId() == R.id.confirm_yes) {
-                    projectMap.put("confirmation", false);
-                    projectMap.put("expand", false);
-                    deleteProject(projectMap);
+                    deleteProject(holder.getBindingAdapterPosition());
                 } else if (v.getId() == R.id.confirm_no) {
                     projectMap.put("confirmation", false);
-                    notifyItemChanged(position);
+                    notifyItemChanged(holder.getBindingAdapterPosition());
                 }
             });
 
@@ -371,17 +370,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void deleteProject(HashMap<String, Object> project) {
+    private void deleteProject(int truePosition) {
         final ZA c = new ZA(activity); //Now loading
         c.show();
 
+        var sc_id = yB.c(shownProjects.get(truePosition - shownSpecialActions), "sc_id");
         new Thread(() -> {
-            lC.a(activity, yB.c(project, "sc_id"));
+            lC.a(activity, sc_id);
             activity.runOnUiThread(() -> {
                 c.dismiss();
-                notifyItemRemoved(shownProjects.indexOf(project));
-                shownProjects.remove(project);
-                allProjects.remove(project);
+                Predicate<HashMap<String, Object>> remover = (project -> yB.c(project, "sc_id").equals(sc_id));
+                shownProjects.removeIf(remover);
+                allProjects.removeIf(remover);
+                notifyItemRemoved(truePosition);
             });
         }).start();
     }
