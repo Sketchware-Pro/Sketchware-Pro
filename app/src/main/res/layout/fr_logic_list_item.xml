@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="#ffffffff">
+        android:background="?attr/colorPrimaryContainer">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_marginStart="24dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:textColor="#ffffffff"
+                android:textColor="?attr/colorPrimaryContainer"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -52,7 +52,7 @@
                     android:id="@+id/tv_target_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ff404040"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="11sp" />
 
                 <TextView
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="#ff202020"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:textColor="#ff9a9a9a"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -113,7 +113,7 @@
         android:id="@+id/event_option_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#ffffffff"
+        android:background="?attr/colorPrimaryContainer"
         android:orientation="vertical"
         android:visibility="gone">
 
