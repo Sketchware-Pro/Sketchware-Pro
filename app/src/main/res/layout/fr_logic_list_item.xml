@@ -10,12 +10,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="?attr/colorPrimaryContainer">
+        android:background="?attr/colorPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?selectableItemBackground">
+            android:background="?attr/colorPrimary">
 
             <TextView
                 android:id="@+id/tv_event_type"
@@ -26,7 +26,7 @@
                 android:layout_marginStart="24dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:textColor="?attr/colorPrimaryContainer"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -46,13 +46,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="40dp"
                 android:layout_toRightOf="@+id/img_icon"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/colorPrimary">
 
                 <TextView
                     android:id="@+id/tv_target_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="11sp" />
 
                 <TextView
@@ -61,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -69,7 +70,8 @@
                     android:id="@+id/tv_event_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:textColor="?attr/colorOnPrimary"/>
 
                 <LinearLayout
                     android:id="@+id/ll_preview"
@@ -90,7 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -105,7 +107,8 @@
                 android:clickable="true"
                 android:contentDescription="@null"
                 android:padding="16dp"
-                android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
+                android:src="@drawable/ic_arrow_drop_down_grey600_24dp"
+                android:tint="?attr/colorOnPrimary"/>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -113,7 +116,7 @@
         android:id="@+id/event_option_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="?attr/colorPrimaryContainer"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -122,7 +125,7 @@
             android:layout_height="1dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="@color/color_secondary" />
+            android:background="?attr/colorOnPrimary" />
 
         <LinearLayout
             android:id="@+id/event_option"
