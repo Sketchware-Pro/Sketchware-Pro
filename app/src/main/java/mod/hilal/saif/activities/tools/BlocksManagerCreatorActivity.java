@@ -105,7 +105,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
 
         name.addTextChangedListener(new BaseTextWatcher() {
             @Override
