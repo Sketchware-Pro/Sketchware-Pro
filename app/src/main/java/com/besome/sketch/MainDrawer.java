@@ -264,6 +264,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                 icon = view.findViewById(R.id.tv_menu_name);
                 name = view.findViewById(R.id.img_icon);
                 linear.setOnClickListener(this);
+                
             }
 
             @Override

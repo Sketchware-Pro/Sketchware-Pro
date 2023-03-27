@@ -26,7 +26,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="?attr/colorPrimaryContainer">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:background="?attr/colorPrimary"
                 android:gravity="center"
-                android:textColor="@color/grey"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
@@ -78,5 +79,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_white_36dp"
         app:borderWidth="0dp"
-        app:tint="?attr/colorOnPrimary"/>
+        app:tint="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"/>
 </RelativeLayout>
