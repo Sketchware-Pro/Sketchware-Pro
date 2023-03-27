@@ -25,7 +25,7 @@
                 android:padding="12dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/arrow_back_white_48dp"
-                app:tint="?attr/colorPrimary" />
+                app:tint="?attr/colorOnPrimary" />
 
             <TextView
                 android:id="@+id/tv_title"

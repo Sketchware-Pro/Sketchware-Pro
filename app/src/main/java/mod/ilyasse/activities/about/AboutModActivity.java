@@ -55,6 +55,7 @@ import mod.RequestNetworkController;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 import mod.tsd.ui.MaterialColors;
+import mod.tsd.ui.AppColors;
 
 public class AboutModActivity extends AppCompatActivity {
 
@@ -103,7 +104,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
-        rippleRound(back, MaterialColors.colorPrimary, "#1F000000", 90);
+        rippleRound(back, MaterialColors.colorPrimary, AppColors.AboutModActivity_RippleColor, 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
@@ -206,7 +207,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData.startRequestNetwork(RequestNetworkController.GET,
                 "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
                 requestDataListener);
-        rippleRound(fab, "#5865F2", "#FFFFFF", 90);
+        rippleRound(fab, AppColors.AboutModActivity_DiscordColor, AppColors.AboutModActivity_DiscordRippleColor, 90);
 
         String toSelect = getIntent().getStringExtra("select");
         if ("changelog".equals(toSelect)) {
@@ -584,8 +585,8 @@ public class AboutModActivity extends AppCompatActivity {
             holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
 
-            rippleRound(holder.logBackground, MaterialColors.colorPrimaryContainer, "#1F000000", 0);
-            rippleRound(holder.arrow, MaterialColors.colorPrimaryContainer, "#1F000000", 90);
+            rippleRound(holder.logBackground, MaterialColors.colorPrimaryContainer, AppColors.AboutModActivity_RippleColor, 0);
+            rippleRound(holder.arrow, MaterialColors.colorPrimaryContainer, AppColors.AboutModActivity_RippleColor, 90);
             holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
             holder.logBackground.setOnClickListener(v -> {
