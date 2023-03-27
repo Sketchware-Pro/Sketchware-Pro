@@ -2,6 +2,6 @@
 <com.google.android.flexbox.FlexboxLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="16.0dip" app:flexDirection="row"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView android:id="@id/img_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" />
-    <TextView android:gravity="center_vertical" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" app:layout_flexGrow="1.0" />
+    <TextView android:textColor="?attr/colorPrimary" android:gravity="center_vertical" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" app:layout_flexGrow="1.0" />
     <CheckBox android:id="@id/checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 </com.google.android.flexbox.FlexboxLayout>
