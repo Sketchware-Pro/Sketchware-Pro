@@ -50,7 +50,7 @@
                     android:id="@+id/layout_btn_group"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:background="#ffffffff"
+                    android:background="?attr/colorPrimaryContainer"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingLeft="8dp"
@@ -68,7 +68,8 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center_vertical"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_screen_portrait_grey600_24dp" />
+                            android:src="@drawable/ic_screen_portrait_grey600_24dp"
+                            android:tint="?attr/colorOnPrimaryContainer"/>
 
                         <com.besome.sketch.editor.view.ProjectFileSelector
                             android:id="@+id/file_selector"
