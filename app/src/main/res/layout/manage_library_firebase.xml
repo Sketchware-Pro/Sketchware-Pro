@@ -18,9 +18,9 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-    <View android:background="@color/color_secondary" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.1999817dip" android:layout_marginLeft="64.0dip" android:layout_marginRight="64.0dip" />
+    <View android:background="?attr/colorPrimary" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.1999817dip" android:layout_marginLeft="64.0dip" android:layout_marginRight="64.0dip" />
     <ScrollView android:layout_width="fill_parent" android:layout_height="0.0dip" android:fillViewport="true" android:layout_weight="1.0">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="?attr/colorPrimaryContainer">
             <LinearLayout android:orientation="vertical" android:id="@id/layout_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
         </LinearLayout>
     </ScrollView>
