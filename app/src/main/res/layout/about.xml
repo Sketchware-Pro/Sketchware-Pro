@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="?attr/colorPrimaryContainer"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,7 +25,7 @@
                 android:padding="12dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/arrow_back_white_48dp"
-                app:tint="#424242" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="About Sketchware Pro"
-                android:textColor="#424242"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -43,14 +43,15 @@
             style="@style/AboutPageTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="?attr/colorPrimaryContainer"
             app:tabGravity="fill"
+            app:tabIndicatorColor="?attr/colorPrimary"
             app:tabIndicatorFullWidth="false"
             app:tabInlineLabel="true"
             app:tabMode="scrollable"
             app:tabContentStart="56dp"
-            app:tabSelectedTextColor="@color/color_primary"
-            app:tabTextColor="#424242"
+            app:tabSelectedTextColor="?attr/colorPrimary"
+            app:tabTextColor="?attr/colorOnPrimaryContainer"
             app:tabUnboundedRipple="true" />
 
         <View
@@ -86,7 +87,7 @@
                 android:id="@+id/layout1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"
+                android:background="?attr/colorPrimaryContainer"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -99,7 +100,7 @@
                 android:id="@+id/layout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"
+                android:background="?attr/colorPrimaryContainer"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -114,7 +115,7 @@
         android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="?attr/colorPrimaryContainer"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
@@ -134,7 +135,7 @@
             android:paddingRight="8dp"
             android:paddingBottom="3dp"
             android:text="Getting data"
-            android:textColor="#212121"
+            android:textColor="?attr/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -147,7 +148,7 @@
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:text="Don't worry, it won't take more than a second..."
-            android:textColor="#424242"
+            android:textColor="?attr/colorPrimary"
             android:textSize="12sp" />
     </LinearLayout>
 

@@ -15,7 +15,7 @@
         android:focusable="false"
         android:padding="8dp"
         android:text="Main Modders"
-        android:textColor="#424242"
+        android:textColor="?attr/colorOnPrimaryContainer"
         android:textSize="14sp"
         android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:background="#008DCD"
+            android:background="?attr/colorPrimary"
             android:orientation="horizontal" />
 
         <androidx.cardview.widget.CardView
@@ -69,7 +69,7 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="2dp"
                 android:singleLine="true"
-                android:textColor="#424242"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="A Modder" />
@@ -83,7 +83,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:textColor="#212121"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:textSize="12sp"
                 tools:text="Their description" />
         </LinearLayout>
