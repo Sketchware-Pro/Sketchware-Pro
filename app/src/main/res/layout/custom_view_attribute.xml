@@ -33,6 +33,7 @@
             android:focusable="false"
             android:padding="7dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/color_more_96" />
+            android:src="@drawable/color_more_96"
+            android:tint="?attr/colorPrimary"/>
     </LinearLayout>
 </LinearLayout>
