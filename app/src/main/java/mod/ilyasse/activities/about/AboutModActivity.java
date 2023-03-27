@@ -54,6 +54,7 @@ import mod.RequestNetwork;
 import mod.RequestNetworkController;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColors;
 
 public class AboutModActivity extends AppCompatActivity {
 
@@ -102,7 +103,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
-        rippleRound(back, "#ffffff", "#1F000000", 90);
+        rippleRound(back, MaterialColors.colorPrimary, "#1F000000", 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
@@ -451,9 +452,9 @@ public class AboutModActivity extends AppCompatActivity {
             }
 
             if (isMainModderBool) {
-                advancedCorners(holder.sidebar, "#008DCD");
+                advancedCorners(holder.sidebar, MaterialColors.colorPrimary);
             } else {
-                advancedCorners(holder.sidebar, "#00CDAB");
+                advancedCorners(holder.sidebar, MaterialColors.colorOnPrimaryContainer);
             }
         }
 
@@ -583,8 +584,8 @@ public class AboutModActivity extends AppCompatActivity {
             holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
 
-            rippleRound(holder.logBackground, "#ffffff", "#1F000000", 0);
-            rippleRound(holder.arrow, "#ffffff", "#1F000000", 90);
+            rippleRound(holder.logBackground, MaterialColors.colorPrimaryContainer, "#1F000000", 0);
+            rippleRound(holder.arrow, MaterialColors.colorPrimaryContainer, "#1F000000", 90);
             holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
             holder.logBackground.setOnClickListener(v -> {
@@ -602,7 +603,7 @@ public class AboutModActivity extends AppCompatActivity {
                 notifyItemChanged(position);
             });
             if (0 == position) {
-                advancedCorners(holder.leftLine, "#008dcd");
+                advancedCorners(holder.leftLine, MaterialColors.colorPrimary);
             } else {
                 holder.leftLine.setBackground(null);
             }
