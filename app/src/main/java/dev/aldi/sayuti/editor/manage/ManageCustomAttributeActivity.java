@@ -39,7 +39,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("AppCompat Injection Manager");
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        Helper.applyRippleToToolbarView(back,this);
 
         ListView listView = findViewById(R.id.manage_attr_listview);
 
