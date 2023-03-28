@@ -1,147 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_marginLeft="4dp"
 	android:layout_marginTop="4dp"
 	android:layout_marginRight="4dp"
 	android:orientation="vertical">
-	<androidx.cardview.widget.CardView
-		android:id="@+id/cardview1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:padding="0dp"
-		android:orientation="vertical"
-		app:cardElevation="10dp"
-		app:cardCornerRadius="20dp">
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="64dp"
+		android:background="?attr/colorSurface">
 
 		<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="64dp"
-			android:background="?attr/colorOnPrimaryContainer">
+			android:layout_height="match_parent"
+			android:background="?attr/colorSurface">
 
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:background="?attr/colorOnPrimaryContainer">
+			<TextView
+				android:id="@+id/tv_event_type"
+				android:layout_width="120dp"
+				android:layout_height="wrap_content"
+				android:layout_alignParentStart="true"
+				android:layout_alignParentTop="true"
+				android:layout_marginStart="24dp"
+				android:paddingLeft="4dp"
+				android:paddingRight="4dp"
+				android:textColor="?attr/colorOnSurface"
+				android:textSize="12sp"
+				android:textStyle="bold"
+				android:visibility="gone" />
 
-				<TextView
-					android:id="@+id/tv_event_type"
-					android:layout_width="120dp"
-					android:layout_height="wrap_content"
-					android:layout_alignParentStart="true"
-					android:layout_alignParentTop="true"
-					android:layout_marginStart="24dp"
-					android:paddingLeft="4dp"
-					android:paddingRight="4dp"
-					android:textColor="?attr/colorOnPrimary"
-					android:textSize="12sp"
-					android:textStyle="bold"
-					android:visibility="gone" />
-
-				<ImageView
-					android:id="@+id/img_icon"
-					android:layout_width="24dp"
-					android:layout_height="24dp"
-					android:layout_centerVertical="true"
-					android:layout_marginStart="16dp"
-					android:contentDescription="@null" />
-
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_centerVertical="true"
-					android:layout_marginStart="16dp"
-					android:layout_marginEnd="40dp"
-					android:layout_toRightOf="@+id/img_icon"
-					android:orientation="vertical"
-					android:background="?attr/colorOnPrimaryContainer">
-
-					<TextView
-						android:id="@+id/tv_target_type"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textColor="?attr/colorOnPrimary"
-						android:textSize="11sp" />
-
-					<TextView
-						android:id="@+id/tv_target_id"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:ellipsize="end"
-						android:maxLines="1"
-						android:textColor="?attr/colorOnPrimary"
-						android:textSize="13sp"
-						android:textStyle="bold" />
-
-					<TextView
-						android:id="@+id/tv_event_name"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:visibility="gone"
-						android:textColor="?attr/colorOnPrimary" />
-
-					<LinearLayout
-						android:id="@+id/ll_preview"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginTop="2dp"
-						android:gravity="center_vertical"
-						android:orientation="horizontal">
-
-						<ImageView
-							android:id="@+id/img_preview"
-							android:layout_width="12dp"
-							android:layout_height="12dp"
-							android:layout_marginRight="4dp" />
-
-						<TextView
-							android:id="@+id/tv_event_text"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:gravity="center_vertical"
-							android:textColor="?attr/colorOnPrimary"
-							android:textSize="12sp" />
-					</LinearLayout>
-				</LinearLayout>
-
-				<ImageView
-					android:id="@+id/img_menu"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignParentEnd="true"
-					android:layout_alignParentRight="true"
-					android:layout_centerVertical="true"
-					android:clickable="true"
-					android:contentDescription="@null"
-					android:padding="16dp"
-					android:src="@drawable/ic_arrow_drop_down_grey600_24dp"
-					android:tint="?attr/colorOnPrimary" />
-			</RelativeLayout>
-		</RelativeLayout>
-
-		<LinearLayout
-			android:id="@+id/event_option_layout"
-			android:layout_width="match_parent"
-			android:layout_height="48dp"
-			android:background="?attr/colorOnPrimaryContainer"
-			android:orientation="vertical"
-			android:visibility="gone">
-
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:layout_marginLeft="16dp"
-				android:layout_marginRight="16dp"
-				android:background="?attr/colorOnPrimary" />
+			<ImageView
+				android:id="@+id/img_icon"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_centerVertical="true"
+				android:layout_marginStart="16dp"
+				android:contentDescription="@null" />
 
 			<LinearLayout
-				android:id="@+id/event_option"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:orientation="horizontal" />
-		</LinearLayout>
-	</androidx.cardview.widget.CardView>
+				android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="40dp"
+				android:layout_toRightOf="@+id/img_icon"
+				android:orientation="vertical"
+				android:background="?attr/colorSurface">
+
+				<TextView
+					android:id="@+id/tv_target_type"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="?attr/colorOnSurface"
+					android:textSize="11sp" />
+
+				<TextView
+					android:id="@+id/tv_target_id"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:ellipsize="end"
+					android:maxLines="1"
+					android:textColor="?attr/colorOnSurface"
+					android:textSize="13sp"
+					android:textStyle="bold" />
+
+				<TextView
+					android:id="@+id/tv_event_name"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:visibility="gone"
+					android:textColor="?attr/colorOnSurface" />
+
+				<LinearLayout
+					android:id="@+id/ll_preview"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="2dp"
+					android:gravity="center_vertical"
+					android:orientation="horizontal">
+
+					<ImageView
+						android:id="@+id/img_preview"
+						android:layout_width="12dp"
+						android:layout_height="12dp"
+						android:layout_marginRight="4dp" />
+
+					<TextView
+						android:id="@+id/tv_event_text"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:textColor="?attr/colorOnSurface"
+						android:textSize="12sp" />
+				</LinearLayout>
+			</LinearLayout>
+
+			<ImageView
+				android:id="@+id/img_menu"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentEnd="true"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				android:clickable="true"
+				android:contentDescription="@null"
+				android:padding="16dp"
+				android:src="@drawable/ic_arrow_drop_down_grey600_24dp"
+				android:tint="?attr/colorOnSurface" />
+		</RelativeLayout>
+	</RelativeLayout>
+
+	<LinearLayout
+		android:id="@+id/event_option_layout"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:background="?attr/colorSurface"
+		android:orientation="vertical"
+		android:visibility="gone">
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:background="?attr/colorOnSurface" />
+
+		<LinearLayout
+			android:id="@+id/event_option"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal" />
+	</LinearLayout>
 </LinearLayout>
