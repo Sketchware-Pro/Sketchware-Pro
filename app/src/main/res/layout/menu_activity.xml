@@ -253,7 +253,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/plus_96" />
+                            android:src="@drawable/plus_96"
+                            android:tint="?attr/colorOnPrimary"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
