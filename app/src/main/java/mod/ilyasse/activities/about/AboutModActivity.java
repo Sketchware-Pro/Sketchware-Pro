@@ -104,7 +104,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
-        rippleRound(back, MaterialColors.colorPrimary, AppColors.AboutModActivity_RippleColor, 90);
+        rippleRound(back, MaterialColors.colorPrimaryContainer, AppColors.AboutModActivity_RippleColor, 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
