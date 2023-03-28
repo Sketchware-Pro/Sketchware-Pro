@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/colorPrimaryContainer">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,16 +20,17 @@
             android:layout_height="30dp"
             android:layout_marginRight="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/services_48" />
+            android:src="@drawable/services_48"
+            android:tint="?attr/colorPrimary"/>
 
         <TextView
             android:id="@id/project_config_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Project Configuration"
-            android:textColor="@color/color_primary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <ScrollView
@@ -51,7 +53,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/scolor_blue_01"
+        android:background="?attr/colorPrimary"
         android:gravity="right"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -64,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:text="@string/common_word_cancel"
-            android:textColor="#ffffffff"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -74,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="@string/common_word_save"
-            android:textColor="#ffffffff"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>

@@ -4,6 +4,7 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.sketchware.remod.R;
 
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColors;
 
 public class BuildSettingsDialog {
 
@@ -75,7 +77,7 @@ public class BuildSettingsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText(title);
         textView.setTextSize(14f);
-        textView.setTextColor(0xff008DCD);
+        textView.setTextColor(Color.parseColor(MaterialColors.primaryColor));
         textView.setTypeface(null, Typeface.BOLD);
         textView.setPadding(
                 0,
@@ -143,7 +145,7 @@ public class BuildSettingsDialog {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setText(label);
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTextColor(0xff000000);
+        checkBox.setTextColor(Color.parseColor(MaterialColors.primaryColor));
         checkBox.setPadding(
                 (int) getDip(4),
                 (int) getDip(8),
