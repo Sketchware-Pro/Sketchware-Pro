@@ -77,7 +77,7 @@ public class BuildSettingsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText(title);
         textView.setTextSize(14f);
-        textView.setTextColor(Color.parseColor(MaterialColors.primaryColor));
+        textView.setTextColor(Color.parseColor(MaterialColors.colorPrimary));
         textView.setTypeface(null, Typeface.BOLD);
         textView.setPadding(
                 0,
@@ -145,7 +145,7 @@ public class BuildSettingsDialog {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setText(label);
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTextColor(Color.parseColor(MaterialColors.primaryColor));
+        checkBox.setTextColor(Color.parseColor(MaterialColors.colorPrimary));
         checkBox.setPadding(
                 (int) getDip(4),
                 (int) getDip(8),
