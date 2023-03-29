@@ -41,6 +41,7 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
+import mod.tsd.ui.MaterialColors;
 
 public class Tools extends Activity {
 
@@ -110,7 +111,7 @@ public class Tools extends Activity {
         );
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setColor(Color.WHITE);
-        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#64B5F6")}), gradientDrawable, null));
+        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColors.colorOnSurface)}), gradientDrawable, null));
         linearLayout.setClickable(true);
         linearLayout.setFocusable(true);
         return linearLayout;
