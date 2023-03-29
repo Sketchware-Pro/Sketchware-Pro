@@ -8,4 +8,6 @@ public class MaterialColors {
 	public static String colorOnPrimary = "#FFFFFF";
 	public static String colorPrimaryContainer = "#FFDAD2";
 	public static String colorOnPrimaryContainer = "#3D0600";
+	public static String colorSurface = "#40000E";
+	public static String colorOnSurface = "#FFDADB";
 }

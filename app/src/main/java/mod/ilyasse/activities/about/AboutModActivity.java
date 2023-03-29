@@ -104,7 +104,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
-        rippleRound(back, MaterialColors.colorPrimaryContainer, AppColors.AboutModActivity_RippleColor, 90);
+        rippleRound(back, MaterialColors.colorSurface, AppColors.AboutModActivity_RippleColor, 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
@@ -585,8 +585,8 @@ public class AboutModActivity extends AppCompatActivity {
             holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
 
-            rippleRound(holder.logBackground, MaterialColors.colorPrimaryContainer, AppColors.AboutModActivity_RippleColor, 0);
-            rippleRound(holder.arrow, MaterialColors.colorPrimaryContainer, AppColors.AboutModActivity_RippleColor, 90);
+            rippleRound(holder.logBackground, MaterialColors.colorSurface, AppColors.AboutModActivity_RippleColor, 0);
+            rippleRound(holder.arrow, MaterialColors.colorSurface, AppColors.AboutModActivity_RippleColor, 90);
             holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
             holder.logBackground.setOnClickListener(v -> {
@@ -604,7 +604,7 @@ public class AboutModActivity extends AppCompatActivity {
                 notifyItemChanged(position);
             });
             if (0 == position) {
-                advancedCorners(holder.leftLine, MaterialColors.colorPrimary);
+                advancedCorners(holder.leftLine, MaterialColors.colorOnSurface);
             } else {
                 holder.leftLine.setBackground(null);
             }
