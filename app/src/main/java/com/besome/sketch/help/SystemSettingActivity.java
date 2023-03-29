@@ -3,16 +3,19 @@ package com.besome.sketch.help;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.editor.property.PropertySwitchItem;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
+import mod.SketchwareUtil;
 
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
@@ -20,7 +23,11 @@ import mod.hey.studios.util.Helper;
 public class SystemSettingActivity extends BaseAppCompatActivity {
 
     private LinearLayout contentLayout;
+    private LinearLayout themeLayout;
     private SharedPreferences.Editor preferenceEditor;
+    private SharedPreferences themesSaver;
+    private SharedPreferences MaterialThemeEnable;
+    private View MaterialThemeInflator;
 
     private void addPreference(int key, int resName, int resDescription, boolean value) {
         PropertySwitchItem switchItem = new PropertySwitchItem(this);
@@ -55,6 +62,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         });
 
         contentLayout = findViewById(R.id.content);
+        themeLayout = findViewById(R.id.themes);
         SharedPreferences preferences = getSharedPreferences("P12", Context.MODE_PRIVATE);
         preferenceEditor = preferences.edit();
 
@@ -65,6 +73,28 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         addPreference(1, R.string.system_settings_title_automatically_save,
                 R.string.system_settings_description_automatically_save,
                 preferences.getBoolean("P12I2", false));
+        
+        MaterialThemeInflator = getLayoutInflater().inflate(R.layout.app_material_themes, null);
+        themesSaver = getSharedPreferences("MaterialTheme", Context.MODE_PRIVATE);
+        MaterialThemeEnable = getSharedPreferences("MaterialThemeEnable",Context.MODE_PRIVATE);
+        
+        ((CardView)MaterialThemeInflator.findViewById(R.id.theme1)).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				themesSaver.edit().putString("MaterialTheme","Red").commit();
+				MaterialThemeEnable.edit().putBoolean("MaterialThemeEnable",false).commit();
+				SketchwareUtil.showMessage(SystemSettingActivity.this,"App theme will be applied after a restart : ".concat(themesSaver.getString("MaterialTheme","Test")));
+			}
+		});
+        ((CardView)MaterialThemeInflator.findViewById(R.id.theme2)).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				themesSaver.edit().putString("MaterialTheme","Red Dark").commit();
+				MaterialThemeEnable.edit().putBoolean("MaterialThemeEnable",false).commit();
+				SketchwareUtil.showMessage(SystemSettingActivity.this,"App theme will be applied after a restart : ".concat(themesSaver.getString("MaterialTheme","Test")));
+			}
+		});
+		contentLayout.addView(MaterialThemeInflator);
     }
 
     private boolean saveSettings() {
