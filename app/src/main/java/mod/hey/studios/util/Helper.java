@@ -30,7 +30,7 @@ import java.util.HashMap;
 import a.a.a.xB;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hasrat.lib.BaseTextWatcher;
-import mod.tsd.ui.MaterialColors;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class Helper {
 
@@ -107,14 +107,14 @@ public class Helper {
     /* Ripple color: Material Color */
     public static void applyRippleToToolbarView(View view,Activity context) {
         GradientDrawable content = new GradientDrawable();
-        content.setColor(Color.parseColor(MaterialColors.colorPrimary));
+        content.setColor(Color.parseColor(MaterialColorsHelper.colorPrimary));
         content.setCornerRadius(90);
 
         view.setBackground(
                 new RippleDrawable(
                         new ColorStateList(
                                 new int[][]{new int[]{0}},
-                                new int[]{Color.parseColor(MaterialColors.colorPrimaryContainer)}
+                                new int[]{Color.parseColor(MaterialColorsHelper.colorPrimaryContainer)}
                         ),
                         content,
                         null

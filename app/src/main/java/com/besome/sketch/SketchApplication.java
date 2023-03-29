@@ -12,6 +12,8 @@ import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
 
+import com.google.android.material.color.DynamicColors;
+
 public class SketchApplication extends Application {
 
     private static Context mApplicationContext;
@@ -27,6 +29,7 @@ public class SketchApplication extends Application {
     @Override
     public void onCreate() {
         mApplicationContext = getApplicationContext();
+        DynamicColors.applyToActivitiesIfAvailable(this);
         Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             Log.e("SketchApplication", "Uncaught exception on thread " + thread.getName(), throwable);
