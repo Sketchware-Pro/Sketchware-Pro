@@ -158,7 +158,7 @@
     </style>
 
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/main_tab_background</item>
+        <item name="android:background">?attr/colorPrimary</item>
         <item name="tabGravity">fill</item>
         <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
         <item name="tabIndicatorHeight">3.0dip</item>
@@ -197,7 +197,7 @@
     </style>
 
     <style name="MyPageTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/main_tab_background</item>
+        <item name="android:background">?attr/colorPrimary</item>
         <item name="tabGravity">fill</item>
         <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
         <item name="tabIndicatorHeight">3.0dip</item>
