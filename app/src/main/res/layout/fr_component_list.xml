@@ -3,9 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
-            <TextView android:textSize="12.0sp" android:gravity="center" android:id="@id/empty_message" android:background="#fff5f5f5" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-            <androidx.recyclerview.widget.RecyclerView android:id="@id/component_list" android:background="#fff5f5f5" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" android:splitMotionEvents="false" />
+            <TextView android:textSize="12.0sp" android:gravity="center" android:id="@id/empty_message" android:background="?attr/colorOnSurface" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/component_list" android:background="?attr/colorSurface" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" android:splitMotionEvents="false" />
         </LinearLayout>
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@id/fab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="16.0dip" android:src="@drawable/ic_add_white_36dp" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" android:backgroundTint="@color/color_btn_ltpink_normal" app:borderWidth="0.0dip" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@id/fab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="16.0dip" android:src="@drawable/ic_add_white_36dp" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" android:backgroundTint="?attr/colorPrimaryContainer" app:borderWidth="0.0dip" />
 </RelativeLayout>
