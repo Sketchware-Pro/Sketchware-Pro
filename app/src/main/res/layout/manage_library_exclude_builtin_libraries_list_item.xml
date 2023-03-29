@@ -14,7 +14,7 @@
         android:id="@+id/view_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorPrimaryContainer"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center|left"
@@ -40,14 +40,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_activity_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>

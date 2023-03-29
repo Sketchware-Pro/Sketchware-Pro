@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/colorSurface">
 
     <include layout="@layout/toolbar_improved" />
 
@@ -18,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="?selectableItemBackground"
+            android:foreground="?selectableItemBackground"
+            android:background="?attr/colorSurface"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
@@ -32,7 +34,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textColor="@color/scolor_red_02"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 tools:text="@string/design_library_settings_title_enabled" />
 
@@ -76,7 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:textColor="#ff757575"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="14sp"
                         tools:text="This might break your project if you don't know what you're doing!" />
                 </LinearLayout>
@@ -92,14 +94,15 @@
                         android:layout_height="18dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_title" />
+                        android:src="@drawable/ic_title"
+                        android:tint="?attr/colorOnSurface"/>
 
                     <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#ff4d4d4d"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         tools:text="Excluded built-in libraries" />
@@ -114,7 +117,7 @@
                         android:id="@+id/item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
+                        android:background="?attr/colorSurface"
                         android:orientation="horizontal"
                         android:padding="8dp">
 
@@ -125,7 +128,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:padding="8dp"
-                            android:textColor="#ff4d4d4d"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="12sp"
                             tools:text="firebase-common-19.3.1, firebase-database-19.3.1" />
                     </LinearLayout>
