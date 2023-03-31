@@ -9,7 +9,7 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffeeeeee"
+        android:background="?attr/colorSurface"
         android:orientation="vertical">
 
         <include layout="@layout/toolbar_improved" />
@@ -20,7 +20,8 @@
             android:layout_margin="5dp"
             android:orientation="vertical"
             app:cardCornerRadius="3dp"
-            app:cardElevation="3dp">
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:id="@+id/recycle_bin"
@@ -58,14 +59,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Recycle bin"
-                        android:textColor="#ff757575"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/recycle_sub"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#ffbdbdbd"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="12sp"
                         tools:text="Blocks: 23" />
                 </LinearLayout>
@@ -80,7 +81,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:text="Palettes"
-            android:textColor="#ff9e9e9e"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp" />
 
         <ListView

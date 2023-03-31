@@ -17,7 +17,8 @@
 		 android:scaleType="centerInside"
 		 android:src="@drawable/arrow_back_white_48dp"
 		 android:padding="8dp"
-		 android:id="@+id/ig_toolbar_back" />
+		 android:id="@+id/ig_toolbar_back"
+		 android:tint="?attr/colorOnPrimary"/>
 
 	<TextView
 		 android:layout_height="match_parent"
@@ -43,6 +44,6 @@
 		 android:src="@drawable/add_file_48"
 		 android:padding="9dp"
 		 android:tint="?attr/colorOnPrimary"
-		 android:id="@+id/ig_toolbar_load_file" />
+		 android:id="@+id/ig_toolbar_load_file"/>
 
 </LinearLayout>

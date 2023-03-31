@@ -95,7 +95,7 @@ public class Tools extends Activity {
                 (int) SketchwareUtil.getDip(2),
                 (int) SketchwareUtil.getDip(2)
         );
-        cardView.setCardBackgroundColor(Color.WHITE);
+        cardView.setCardBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(Tools.this,R.attr.colorSurface)));
         cardView.setRadius(SketchwareUtil.getDip(4));
         return cardView;
     }
@@ -110,8 +110,8 @@ public class Tools extends Activity {
                 (int) SketchwareUtil.getDip(1)
         );
         GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setColor(Color.WHITE);
-        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.colorOnSurface)}), gradientDrawable, null));
+        gradientDrawable.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(Tools.this,R.attr.colorSurface)));
+        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.getMaterialColor(Tools.this,R.attr.colorOnSurface))}), gradientDrawable, null));
         linearLayout.setClickable(true);
         linearLayout.setFocusable(true);
         return linearLayout;

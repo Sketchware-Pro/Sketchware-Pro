@@ -107,14 +107,14 @@ public class Helper {
     /* Ripple color: Material Color */
     public static void applyRippleToToolbarView(View view,Activity context) {
         GradientDrawable content = new GradientDrawable();
-        content.setColor(Color.parseColor(MaterialColorsHelper.colorPrimary));
+        content.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(context,R.attr.colorPrimary)));
         content.setCornerRadius(90);
 
         view.setBackground(
                 new RippleDrawable(
                         new ColorStateList(
                                 new int[][]{new int[]{0}},
-                                new int[]{Color.parseColor(MaterialColorsHelper.colorPrimaryContainer)}
+                                new int[]{Color.parseColor(mod.tsd.ui.AppColors.AboutModActivity_RippleColor)}
                         ),
                         content,
                         null

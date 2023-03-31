@@ -13,7 +13,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginRight="6dp"
         android:layout_marginBottom="3dp"
-        android:background="#ffffffff"
+        android:background="?attr/colorSurface"
         android:orientation="vertical"
         app:cardCornerRadius="3dp"
         app:cardElevation="2dp">
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:textColor="#ff757575"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     tools:text="Operator 2" />
 
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:textColor="#ffbdbdbd"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="11sp"
                     tools:text="Blocks: 22" />
             </LinearLayout>
