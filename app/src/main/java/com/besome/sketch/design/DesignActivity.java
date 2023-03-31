@@ -1409,6 +1409,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             if (position == 0) {
                 return new ViewEditorFragment();

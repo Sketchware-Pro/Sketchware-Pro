@@ -3,6 +3,8 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 
 public class AdUnitBean implements Parcelable {
@@ -61,6 +63,7 @@ public class AdUnitBean implements Parcelable {
     }
 
     @Override
+    @NonNull
     public AdUnitBean clone() {
         AdUnitBean adUnitBean = new AdUnitBean();
         adUnitBean.copy(this);

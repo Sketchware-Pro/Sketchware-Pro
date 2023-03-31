@@ -3,6 +3,8 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 
 public class ProjectResourceBean extends SelectableBean implements Parcelable {
@@ -115,6 +117,7 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     }
 
     @Override
+    @NonNull
     public ProjectResourceBean clone() {
         ProjectResourceBean projectResourceBean = new ProjectResourceBean(resType, resName, resFullName);
         projectResourceBean.copy(this);

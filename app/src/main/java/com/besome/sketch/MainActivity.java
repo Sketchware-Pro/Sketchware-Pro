@@ -416,8 +416,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             return fragment;
         }
 
-        @NonNull
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return new ProjectsFragment();
         }

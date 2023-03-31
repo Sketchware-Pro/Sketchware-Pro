@@ -457,13 +457,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         noItemsNote = findViewById(R.id.tv_no_collections);
         noItemsNote.setText(Helper.getResString(R.string.event_message_no_events));
         RecyclerView categories = findViewById(R.id.category_list);
-        categories.setHasFixedSize(true);
         categories.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         ((SimpleItemAnimator) categories.getItemAnimator()).setSupportsChangeAnimations(false);
         categoryAdapter = new CategoryAdapter();
         categories.setAdapter(categoryAdapter);
         collection = findViewById(R.id.collection_list);
-        collection.setHasFixedSize(true);
         collectionAdapter = new CollectionAdapter(collection);
         collection.setAdapter(collectionAdapter);
         fab = findViewById(R.id.fab);
@@ -539,7 +537,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (collectionAdapter.currentViewType == 0) {
             ((GridLayoutManager) collection.getLayoutManager()).setSpanCount(getGridLayoutColumnCount());

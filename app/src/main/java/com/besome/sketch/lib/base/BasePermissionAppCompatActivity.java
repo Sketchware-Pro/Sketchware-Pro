@@ -2,6 +2,7 @@ package com.besome.sketch.lib.base;
 
 import android.Manifest;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -67,14 +68,14 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public abstract void m();
 
     @Override
-    public void onRequestPermissionsResult(int i, String[] strArr, int[] iArr) {
-        super.onRequestPermissionsResult(i, strArr, iArr);
-        for (String str : strArr) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (String str : permissions) {
             if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(str)) {
-                if (iArr.length > 0 && iArr[0] == 0 && iArr[1] == 0) {
-                    g(i);
+                if (grantResults.length > 0 && grantResults[0] == 0 && grantResults[1] == 0) {
+                    g(requestCode);
                 } else {
-                    j(i);
+                    j(requestCode);
                     return;
                 }
             }
