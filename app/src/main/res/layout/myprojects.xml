@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff6f6f6"
+        android:background="?attr/colorSurface"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
@@ -34,6 +34,7 @@
                     android:background="@color/transparent"
                     android:clickable="false"
                     android:src="@drawable/plus_96"
+                    android:tint="?attr/colorOnSurface"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -42,7 +43,7 @@
                     android:layout_gravity="center"
                     android:clickable="false"
                     android:text="@string/myprojects_list_menu_title_create_a_new_project"
-                    android:textColor="@color/scolor_blue_01" />
+                    android:textColor="?attr/colorOnSurface" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -72,6 +73,7 @@
                     android:layout_gravity="center"
                     android:clickable="false"
                     android:src="@drawable/data_backup_96"
+                    android:tint="?attr/colorOnSurface"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -81,7 +83,7 @@
                     android:layout_gravity="center"
                     android:clickable="false"
                     android:text="Restore projects"
-                    android:textColor="@color/scolor_blue_01" />
+                    android:textColor="?attr/colorOnSurface" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
