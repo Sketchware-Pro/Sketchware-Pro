@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:background="#ffffffff" />
+                android:background="?attr/colorSurface" />
         </LinearLayout>
 
         <com.besome.sketch.editor.LogicEditorDrawer

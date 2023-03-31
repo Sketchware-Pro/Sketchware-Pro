@@ -2,5 +2,5 @@
 <RelativeLayout android:paddingTop="2.0dip" android:paddingBottom="2.0dip" android:layout_width="fill_parent" android:layout_height="24.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <View android:id="@id/bg" android:layout_width="4.0dip" android:layout_height="fill_parent" />
-    <TextView android:textSize="13.0sp" android:textColor="#ff000000" android:id="@id/tv_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_centerVertical="true" />
+    <TextView android:textSize="13.0sp" android:textColor="?attr/colorOnSurface" android:id="@id/tv_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_centerVertical="true" />
 </RelativeLayout>

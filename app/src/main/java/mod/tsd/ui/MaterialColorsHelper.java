@@ -22,4 +22,7 @@ public class MaterialColorsHelper {
 	public static String getMaterialColor(Context context,int res){
 		return String.format("#%08X", (0xFFFFFFFF & MaterialColors.getColor(context,res,"Passed color in parameter doesn't exists.")));
 	}
+	public static int getMaterialColorInt(Context context,int res){
+		return MaterialColors.getColor(context,res,"Passed color in parameter doesn't exists.");
+	}
 }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#fff5f5f5"
+    android:background="?attr/colorSurface"
     android:orientation="horizontal">
 
     <com.besome.sketch.lib.ui.CustomScrollView
@@ -29,7 +29,7 @@
         android:id="@+id/divider"
         android:layout_width="1.0dip"
         android:layout_height="fill_parent"
-        android:background="#12000000" />
+        android:background="?attr/colorSurface" />
 
     <ScrollView
         android:layout_width="120.0dip"

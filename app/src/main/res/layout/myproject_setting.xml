@@ -7,10 +7,10 @@
                 <View android:background="@drawable/circle_bg_grey" android:layout_width="56.0dip" android:layout_height="56.0dip" android:layout_centerInParent="true" android:contentDescription="@null" />
                 <com.besome.sketch.lib.ui.CircleImageView android:id="@id/app_icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:src="@drawable/default_icon" android:layout_centerInParent="true" android:contentDescription="@null" />
             </RelativeLayout>
-            <TextView android:textSize="10.0sp" android:textColor="#ff606060" android:id="@id/tv_change_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_below="@id/app_icon" android:layout_centerHorizontal="true" />
+            <TextView android:textSize="10.0sp" android:textColor="?attr/colorPrimary" android:id="@id/tv_change_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_below="@id/app_icon" android:layout_centerHorizontal="true" />
         </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout android:gravity="center" android:id="@id/ti_app_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip">
-            <EditText android:textSize="14.0sp" android:textColor="#ff535353" android:textColorHint="#ff8e8e8e" android:id="@id/et_app_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:inputType="text" />
+            <EditText android:textSize="14.0sp" android:textColor="?attr/colorPrimary" android:textColorHint="#ff8e8e8e" android:id="@id/et_app_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:id="@id/basic" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content">
@@ -27,7 +27,7 @@
                         </HorizontalScrollView>
                         <ImageView android:id="@id/img_theme_color_help" android:padding="4.0dip" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/help_96_blue" />
                     </LinearLayout>
-                    <ImageView android:id="@id/img_color_guide" android:background="#ff000000" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/color_guide" />
+                    <ImageView android:id="@id/img_color_guide" android:background="?attr/colorPrimaryContainer" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/color_guide" />
                     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="4.0dip" android:paddingTop="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip">
                         <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/package_96" android:scaleType="fitCenter" android:contentDescription="@null" android:tint="?attr/colorPrimary" />
                         <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_package_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
@@ -44,7 +44,7 @@
                         <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/code_96" android:scaleType="fitCenter" android:contentDescription="@null" android:tint="?attr/colorPrimary"/>
                         <LinearLayout android:orientation="horizontal" android:backgroundTint="?attr/colorPrimary" android:background="@drawable/bg_outline" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="1.0">
                             <TextView android:textSize="14.0sp" android:textColor="?attr/colorPrimary" android:gravity="center" android:id="@id/ver_code" android:background="?android:selectableItemBackground" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="1" android:layout_weight="1.0" />
-                            <View android:background="#ffc6c6c6" android:layout_width="1.0dip" android:layout_height="fill_parent" />
+                            <View android:background="?attr/colorPrimary" android:layout_width="1.0dip" android:layout_height="fill_parent" />
                             <TextView android:textSize="14.0sp" android:textColor="?attr/colorPrimary" android:gravity="center" android:id="@id/ver_name" android:background="?android:selectableItemBackground" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="1.0" android:layout_weight="1.0" />
                         </LinearLayout>
                     </LinearLayout>
