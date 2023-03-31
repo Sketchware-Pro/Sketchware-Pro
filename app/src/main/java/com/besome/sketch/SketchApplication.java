@@ -20,7 +20,7 @@ public class SketchApplication extends Application {
 
     private static Context mApplicationContext;
     private SharedPreferences MaterialThemeEnable;
-    private SharedPreferences MaterialThemeSaver;
+    private SharedPreferences MaterialTheme;
 
     public static Context getContext() {
         return mApplicationContext;
@@ -31,12 +31,8 @@ public class SketchApplication extends Application {
     }
     
     public void setUpTheme(){
-    	if (MaterialThemeEnable.getBoolean("MaterialThemeEnable",false)){
-        	MaterialThemeEnable.edit().putBoolean("applyMaterialThemeEnable",true).commit();
-        } else {
-        	MaterialThemeEnable.edit().putBoolean("applyMaterialThemeEnable",false).commit();
-        }
-        MaterialThemeSaver.edit().putString("applyMaterialTheme",MaterialThemeSaver.getString("MaterialTheme","Red Dark")).commit();
+        MaterialThemeEnable.edit().putBoolean("applyMaterialThemeEnable",MaterialThemeEnable.getBoolean("MaterialThemeEnable",false)).commit();
+        MaterialTheme.edit().putString("applyMaterialTheme",MaterialTheme.getString("MaterialTheme","Red")).commit();
     }
 	public void applyDynamicThemeIfNeeded(){
 		if (MaterialThemeEnable.getBoolean("applyMaterialThemeEnable",false)){
@@ -48,7 +44,7 @@ public class SketchApplication extends Application {
     public void onCreate() {
         mApplicationContext = getApplicationContext();
         
-        MaterialThemeSaver = getSharedPreferences("MaterialTheme", Context.MODE_PRIVATE);
+        MaterialTheme = getSharedPreferences("MaterialTheme", Context.MODE_PRIVATE);
         MaterialThemeEnable = getSharedPreferences("MaterialThemeEnable",Context.MODE_PRIVATE);
         
         setUpTheme();

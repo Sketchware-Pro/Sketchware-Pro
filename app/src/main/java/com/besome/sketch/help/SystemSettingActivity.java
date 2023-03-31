@@ -25,7 +25,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
     private LinearLayout contentLayout;
     private LinearLayout themeLayout;
     private SharedPreferences.Editor preferenceEditor;
-    private SharedPreferences themesSaver;
+    private SharedPreferences MaterialTheme;
     private SharedPreferences MaterialThemeEnable;
     private View MaterialThemeInflator;
 
@@ -75,23 +75,23 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
                 preferences.getBoolean("P12I2", false));
         
         MaterialThemeInflator = getLayoutInflater().inflate(R.layout.app_material_themes, null);
-        themesSaver = getSharedPreferences("MaterialTheme", Context.MODE_PRIVATE);
+        MaterialTheme = getSharedPreferences("MaterialTheme", Context.MODE_PRIVATE);
         MaterialThemeEnable = getSharedPreferences("MaterialThemeEnable",Context.MODE_PRIVATE);
         
         ((CardView)MaterialThemeInflator.findViewById(R.id.theme1)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				themesSaver.edit().putString("MaterialTheme","Red").commit();
+				MaterialTheme.edit().putString("MaterialTheme","Red").commit();
 				MaterialThemeEnable.edit().putBoolean("MaterialThemeEnable",false).commit();
-				SketchwareUtil.showMessage(SystemSettingActivity.this,"App theme will be applied after a restart : ".concat(themesSaver.getString("MaterialTheme","Test")));
+				SketchwareUtil.showMessage(SystemSettingActivity.this,"App theme will be applied after a restart : ".concat(MaterialTheme.getString("MaterialTheme","Test")));
 			}
 		});
         ((CardView)MaterialThemeInflator.findViewById(R.id.theme2)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				themesSaver.edit().putString("MaterialTheme","Red Dark").commit();
+				MaterialTheme.edit().putString("MaterialTheme","Red Dark").commit();
 				MaterialThemeEnable.edit().putBoolean("MaterialThemeEnable",false).commit();
-				SketchwareUtil.showMessage(SystemSettingActivity.this,"App theme will be applied after a restart : ".concat(themesSaver.getString("MaterialTheme","Test")));
+				SketchwareUtil.showMessage(SystemSettingActivity.this,"App theme will be applied after a restart : ".concat(MaterialTheme.getString("MaterialTheme","Test")));
 			}
 		});
 		contentLayout.addView(MaterialThemeInflator);
