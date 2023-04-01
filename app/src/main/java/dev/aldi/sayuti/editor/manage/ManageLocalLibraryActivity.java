@@ -73,6 +73,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_permission);
 

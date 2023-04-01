@@ -72,6 +72,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_font);
 

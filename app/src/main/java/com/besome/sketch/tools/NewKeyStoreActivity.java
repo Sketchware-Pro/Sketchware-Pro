@@ -135,6 +135,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         if (!super.j()) {
             finish();

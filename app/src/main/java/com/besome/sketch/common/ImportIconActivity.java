@@ -101,6 +101,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.import_icon);
 

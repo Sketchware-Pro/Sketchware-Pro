@@ -67,6 +67,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_screen_custom_view_add);
         e(Helper.getResString(R.string.design_manager_view_title_add_custom_view));

@@ -130,6 +130,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
         setContentView(R.layout.manage_sound_add);

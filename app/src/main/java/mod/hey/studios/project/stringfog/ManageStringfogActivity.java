@@ -23,6 +23,7 @@ public class ManageStringfogActivity extends Activity implements CompoundButton.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_stringfog);
         initialize();

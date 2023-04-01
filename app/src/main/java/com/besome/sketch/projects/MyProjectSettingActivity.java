@@ -150,6 +150,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myproject_setting);
         if (!j()) {

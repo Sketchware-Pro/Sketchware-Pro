@@ -61,6 +61,7 @@ public class BlocksManager extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.blocks_manager);
         initialize();

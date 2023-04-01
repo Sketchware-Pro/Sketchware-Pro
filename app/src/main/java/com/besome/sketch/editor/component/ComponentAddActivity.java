@@ -181,6 +181,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logic_popup_add_component_temp);
         l();

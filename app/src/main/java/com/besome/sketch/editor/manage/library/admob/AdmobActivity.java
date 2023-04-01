@@ -222,6 +222,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
         setContentView(R.layout.manage_library_admob);

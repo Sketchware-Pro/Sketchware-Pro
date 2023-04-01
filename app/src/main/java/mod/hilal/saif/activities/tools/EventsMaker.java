@@ -57,6 +57,7 @@ public class EventsMaker extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_custom_attribute);
         setToolbar();

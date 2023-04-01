@@ -96,6 +96,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_screen_activity_add_view_preset_setting);
         e(Helper.getResString(R.string.preset_setting_title));

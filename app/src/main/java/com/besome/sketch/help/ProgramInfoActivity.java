@@ -180,6 +180,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_info);
         Toolbar toolbar = findViewById(R.id.toolbar);

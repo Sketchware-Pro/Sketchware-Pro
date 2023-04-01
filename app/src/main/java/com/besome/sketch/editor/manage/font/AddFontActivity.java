@@ -137,6 +137,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         e(Helper.getResString(R.string.design_manager_font_title_add_font));
         d(Helper.getResString(R.string.common_word_save));

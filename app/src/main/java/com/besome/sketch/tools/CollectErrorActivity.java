@@ -30,6 +30,7 @@ public class CollectErrorActivity extends Activity {
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
 
         RequestNetwork requestNetwork = new RequestNetwork(this);

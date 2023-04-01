@@ -45,6 +45,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.components_creator);
         if (getIntent().hasExtra("pos")) {

@@ -89,6 +89,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_proguard);
 

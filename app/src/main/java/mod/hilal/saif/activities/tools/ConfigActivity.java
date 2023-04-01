@@ -240,6 +240,7 @@ public class ConfigActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             setting_map = readSettings();

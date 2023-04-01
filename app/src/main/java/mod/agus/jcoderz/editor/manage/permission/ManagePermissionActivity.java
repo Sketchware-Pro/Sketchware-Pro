@@ -98,6 +98,7 @@ public class ManagePermissionActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_permission);
         if (getIntent().hasExtra("sc_id")) {

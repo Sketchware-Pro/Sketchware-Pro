@@ -173,6 +173,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_manage_googlemap);
         Toolbar toolbar = findViewById(R.id.toolbar);

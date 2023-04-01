@@ -34,6 +34,7 @@ public class SrcCodeEditorLegacy extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         sp = getSharedPreferences("code_editor_pref", 0);
 

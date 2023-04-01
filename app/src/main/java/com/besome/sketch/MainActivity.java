@@ -169,6 +169,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();

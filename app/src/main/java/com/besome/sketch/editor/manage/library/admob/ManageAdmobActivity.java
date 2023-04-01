@@ -181,6 +181,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_manage_admob);
 

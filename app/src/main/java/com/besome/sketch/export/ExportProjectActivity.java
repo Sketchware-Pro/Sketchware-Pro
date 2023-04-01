@@ -102,6 +102,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.export_project);
         Toolbar toolbar = findViewById(R.id.toolbar);

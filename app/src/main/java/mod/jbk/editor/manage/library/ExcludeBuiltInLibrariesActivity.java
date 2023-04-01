@@ -62,6 +62,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         if (!j()) {
             finish();

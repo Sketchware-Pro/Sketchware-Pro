@@ -69,6 +69,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	mod.tsd.ui.AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
         initialize();
