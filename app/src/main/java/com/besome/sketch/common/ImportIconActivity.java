@@ -93,7 +93,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ((GridLayoutManager) iconsList.getLayoutManager()).setSpanCount(getGridLayoutColumnCount());
         iconsList.requestLayout();

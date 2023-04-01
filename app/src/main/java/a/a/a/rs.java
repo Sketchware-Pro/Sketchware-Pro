@@ -129,7 +129,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -282,9 +282,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         fab = parent.findViewById(R.id.fab);
         noEvents.setVisibility(View.GONE);
         noEvents.setText(xB.b().a(getContext(), R.string.event_message_no_events));
-        eventList.setHasFixedSize(true);
         eventList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        categoryList.setHasFixedSize(true);
         categoryList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         ((SimpleItemAnimator) categoryList.getItemAnimator()).setSupportsChangeAnimations(false);
         categoryAdapter = new CategoryAdapter();
