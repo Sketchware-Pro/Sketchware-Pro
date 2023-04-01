@@ -32,7 +32,7 @@ public class SketchApplication extends Application {
     
     public void setUpTheme(){
         MaterialThemeEnable.edit().putBoolean("applyMaterialThemeEnable",MaterialThemeEnable.getBoolean("MaterialThemeEnable",false)).commit();
-        MaterialTheme.edit().putString("applyMaterialTheme",MaterialTheme.getString("MaterialTheme","Red")).commit();
+        MaterialTheme.edit().putString("applyMaterialTheme",MaterialTheme.getString("MaterialTheme","Red Dark")).commit();
     }
 	public void applyDynamicThemeIfNeeded(){
 		if (MaterialThemeEnable.getBoolean("applyMaterialThemeEnable",false)){
