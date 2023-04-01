@@ -16,12 +16,12 @@ public class AppThemeApply {
         	// DynamicColors will be automatically applied using SketchApplication Application class
         } else {
         	if (MaterialTheme.getString("MaterialTheme","Red") == "Red"){
-        		context.setTheme(R.style.MaterialThemeDark);
+        		context.setTheme(R.style.MaterialTheme);
         	}
         	else if (MaterialTheme.getString("MaterialTheme","Red") == "Red Dark") {
         		context.setTheme(R.style.MaterialThemeDark);
         	} else {
-        		context.setTheme(R.style.MaterialThemeDark);
+        		context.setTheme(R.style.MaterialTheme);
         	}
         }
     }
