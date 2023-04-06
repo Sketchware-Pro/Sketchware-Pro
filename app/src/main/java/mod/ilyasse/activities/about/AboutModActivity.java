@@ -201,8 +201,8 @@ public class AboutModActivity extends AppCompatActivity {
         moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
         fab.setVisibility(View.GONE);
-        getWindow().setStatusBarColor(Color.WHITE);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        // getWindow().setStatusBarColor(Color.WHITE);
+        // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initViewPager();
 
         requestData.startRequestNetwork(RequestNetworkController.GET,
@@ -237,7 +237,7 @@ public class AboutModActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0);
         root.addView(viewPager);
 
-        tablayout.setSelectedTabIndicatorColor(0xff008dcd);
+        // tablayout.setSelectedTabIndicatorColor(0xff008dcd);
         tablayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
