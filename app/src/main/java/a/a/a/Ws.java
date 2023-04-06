@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.sketchware.remod.R;
 
+import mod.tsd.ui.MaterialColorsHelper;
+
 @SuppressLint("ViewConstructor")
 public class Ws extends RelativeLayout {
 
@@ -59,7 +61,7 @@ public class Ws extends RelativeLayout {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             background.setLayoutParams(params);
         } else {
-            tv_category.setTextColor(0xff505050);
+            tv_category.setTextColor(MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnSuface));
             ViewGroup.LayoutParams params = background.getLayoutParams();
             params.width = unselectedBackgroundWidth;
             background.setLayoutParams(params);

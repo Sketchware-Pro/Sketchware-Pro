@@ -3,10 +3,10 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="vertical" android:id="@id/layout_quiz" android:background="?attr/colorSurface" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     <View android:background="?attr/colorSurface" android:layout_width="fill_parent" android:layout_height="0.5dip" />
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="?attr/colorSurface" android:layout_width="fill_parent" android:layout_height="wrap_content">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="?attr/colorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <RelativeLayout android:background="@drawable/circle_bg_white" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_margin="8.0dip">
             <com.airbnb.lottie.LottieAnimationView android:id="@id/animation_view" android:layout_width="48.0dip" android:layout_height="48.0dip" android:scaleType="centerCrop" android:layout_centerInParent="true" app:lottie_autoPlay="true" app:lottie_fileName="anim/guide_create.json" app:lottie_imageAssetsFolder="lottie" app:lottie_loop="true" />
         </RelativeLayout>
-        <TextView android:textSize="12.0sp" android:textColor="?attr/colorOnSurface" android:gravity="start|center" android:id="@id/tv_progress" android:paddingLeft="16.0dip" android:paddingRight="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/common_message_loading" android:paddingHorizontal="16.0dip" />
+        <TextView android:textSize="12.0sp" android:textColor="?attr/colorOnPrimary" android:gravity="start|center" android:id="@id/tv_progress" android:paddingLeft="16.0dip" android:paddingRight="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/common_message_loading" android:paddingHorizontal="16.0dip" />
     </LinearLayout>
 </LinearLayout>
