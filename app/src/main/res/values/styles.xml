@@ -181,7 +181,7 @@
 
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">12.0sp</item>
-        <item name="android:textColor">@color/design_tab_text_color</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="textAllCaps">true</item>
     </style>
 
