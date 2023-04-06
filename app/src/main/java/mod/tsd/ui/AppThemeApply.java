@@ -21,7 +21,7 @@ public class AppThemeApply {
         	else if (MaterialTheme.getString("MaterialTheme","Red") == "Red Dark") {
         		context.setTheme(R.style.MaterialThemeDark);
         	} else {
-        		context.setTheme(R.style.MaterialTheme);
+        		context.setTheme(R.style.MaterialThemeDark);
         	}
         }
     }
