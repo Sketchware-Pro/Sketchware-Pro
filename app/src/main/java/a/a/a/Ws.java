@@ -37,7 +37,7 @@ public class Ws extends RelativeLayout {
         unselectedBackgroundWidth = (int) wB.a(context, 4f);
         tv_category.setText(name);
         background.setBackgroundColor(color);
-        setSelected(false);
+        setSelected(false,context);
     }
 
     public int getColor() {
@@ -61,7 +61,21 @@ public class Ws extends RelativeLayout {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             background.setLayoutParams(params);
         } else {
-            tv_category.setTextColor(MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnSuface));
+            tv_category.setTextColor(Color.parseColor("#5d5d5d"));
+            ViewGroup.LayoutParams params = background.getLayoutParams();
+            params.width = unselectedBackgroundWidth;
+            background.setLayoutParams(params);
+        }
+    }
+    
+    public void setSelected(boolean selected,Context ctx) {
+    	if (selected) {
+            tv_category.setTextColor(Color.WHITE);
+            ViewGroup.LayoutParams params = background.getLayoutParams();
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            background.setLayoutParams(params);
+        } else {
+            tv_category.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ctx,R.attr.colorOnSurface)));
             ViewGroup.LayoutParams params = background.getLayoutParams();
             params.width = unselectedBackgroundWidth;
             background.setLayoutParams(params);

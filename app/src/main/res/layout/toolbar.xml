@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/top_title_logo" />
+            android:src="@drawable/top_title_logo"
+            android:tint="?attr/colorOnPrimary"/>
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

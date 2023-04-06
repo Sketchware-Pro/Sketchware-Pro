@@ -48,7 +48,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         for (int i = 0; i < getChildCount(); i++) {
             Ws childAt = (Ws) getChildAt(i);
             if (childAt != null) {
-                childAt.setSelected(false);
+                childAt.setSelected(false,context);
             }
         }
     }
@@ -58,7 +58,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         if (v instanceof Ws) {
             unselectAllPalettes();
             Ws paletteView = (Ws) v;
-            paletteView.setSelected(true);
+            paletteView.setSelected(true,context);
             onBlockCategorySelectListener.a(paletteView.getId(), paletteView.getColor());
         }
     }
@@ -102,7 +102,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         paletteView.setOnClickListener(this);
         addView(paletteView);
         if (id == 0) {
-            paletteView.setSelected(true);
+            paletteView.setSelected(true,context);
         }
     }
 }
