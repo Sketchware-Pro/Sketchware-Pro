@@ -333,14 +333,14 @@
     </style>
 
     <style name="ThemeOverlay.ToolbarMenu" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">@color/design_menu_bg</item>
-        <item name="android:textColor">@color/design_menu_text_color</item>
+        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="ToolbarTextAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">15.0sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/tool_bar_text_color</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textAllCaps">false</item>
     </style>
 

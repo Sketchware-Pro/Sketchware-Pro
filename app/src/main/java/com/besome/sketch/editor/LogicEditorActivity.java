@@ -2335,15 +2335,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     		menu.setIconTintList(
     			new ColorStateList(
                     new int[][]{new int[]{0}},
-                    new int[]{Color.parseColor("#4444447d"),Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary))}
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary))}
                 )
             );
     	} else {
-    		menu.setIconTintList(null);
+            menu.setIconTintList(null);
     		menu.setIconTintList(
     			new ColorStateList(
                     new int[][]{new int[]{0}},
-                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary))}
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary),"59"))}
                 )
             );
     	}

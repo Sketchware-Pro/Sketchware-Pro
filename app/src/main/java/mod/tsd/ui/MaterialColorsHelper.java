@@ -25,4 +25,8 @@ public class MaterialColorsHelper {
 	public static int getMaterialColorInt(Context context,int res){
 		return MaterialColors.getColor(context,res,"Passed color in parameter doesn't exists.");
 	}
+	
+	public static String setColorTransparency(String hex,String transparency){
+		return "#".concat(transparency).concat(hex.substring((int)(1), (int)(hex.length())));
+	}
 }
