@@ -1,6 +1,7 @@
 package mod.tsd.ui;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.lang.String;
 
@@ -26,7 +27,7 @@ public class MaterialColorsHelper {
 		return MaterialColors.getColor(context,res,"Passed color in parameter doesn't exists.");
 	}
 	
-	public static String setColorTransparency(String hex,String transparency){
-		return "#".concat(transparency).concat(hex.substring((int)(1), (int)(hex.length())));
+	public static String setColorTransparency(String hex,String transparency,Context context){
+		return "#".concat(transparency).concat(hex.substring((int)(3), (int)(hex.length())));
 	}
 }

@@ -7,5 +7,5 @@
         android:icon="@drawable/sorting_options_48"
         android:title="Sort"
         app:showAsAction="always"
-        app:iconTint="?attr/colorPrimary"/>
+        app:iconTint="?attr/colorOnPrimary"/>
 </menu>

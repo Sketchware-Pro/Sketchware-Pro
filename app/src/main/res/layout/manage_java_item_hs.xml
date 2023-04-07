@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:focusable="false"
         android:padding="8dp"
-        android:textColor="#ff212121"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="16sp"
         tools:text="MainActivity.java" />
 
@@ -37,5 +37,6 @@
         android:focusable="false"
         android:padding="8dp"
         android:scaleType="fitCenter"
+        android:tint="?attr/colorOnSurface"
         android:src="@drawable/ic_more_vert_grey600_24dp" />
 </LinearLayout>

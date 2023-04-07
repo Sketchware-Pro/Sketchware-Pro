@@ -48,7 +48,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         item.setName(name);
         item.setDesc(description);
         content.addView(item);
-        item.setBackgroundColor(0xfff6f6f6);
+        // item.setBackgroundColor(0xfff6f6f6);
         item.setOnClickListener(this);
         if (key != ITEM_UPDATE_LOG) {
             if (key == ITEM_FACEBOOK || key == ITEM_MEDIUM) {
@@ -60,7 +60,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
             }
         }
 
-        item.setBackgroundColor(Color.WHITE);
+        // item.setBackgroundColor(Color.WHITE);
     }
 
     private void addSingleLineItem(int key, int name) {

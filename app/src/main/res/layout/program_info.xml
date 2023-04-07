@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffffff"
+    android:background="?attr/colorSurface"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -60,7 +60,7 @@
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
                     android:text="Copyright ⓒ Sketchware. All Rights Reserved."
-                    android:textColor="#ff757575"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="13sp" />
 
                 <View
@@ -68,7 +68,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="#ffc7c7c7" />
+                    android:background="?attr/colorOnSurface" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,10 +81,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="8dp"
-                        android:textColor="#ffffffff"
-                        android:textSize="@dimen/text_size_button_material"
-                        android:theme="@style/AppTheme.Button.Blue" />
+                        android:padding="8dp" />
 
                     <Button
                         android:id="@+id/btn_app_upgrade"
@@ -93,17 +90,14 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1"
-                        android:padding="8dp"
-                        android:textColor="#ffffffff"
-                        android:textSize="@dimen/text_size_button_material"
-                        android:theme="@style/AppTheme.Button.LightBlue" />
+                        android:padding="8dp" />
                 </LinearLayout>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#ffc7c7c7" />
+                android:background="?attr/colorOnSurface" />
 
             <LinearLayout
                 android:id="@+id/content"

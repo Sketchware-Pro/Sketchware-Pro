@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:src="@drawable/facebook_white"
+                    android:tint="?attr/colorOnPrimary"
                     android:theme="@style/selectableMainItemBackground" />
 
                 <ImageView
@@ -44,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:src="@drawable/medium_white"
+                    android:tint="?attr/colorOnPrimary"
                     android:theme="@style/selectableMainItemBackground" />
 
                 <ImageView
@@ -52,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:src="@drawable/slack_white"
+                    android:tint="?attr/colorOnPrimary"
                     android:theme="@style/selectableMainItemBackground" />
             </LinearLayout>
         </LinearLayout>

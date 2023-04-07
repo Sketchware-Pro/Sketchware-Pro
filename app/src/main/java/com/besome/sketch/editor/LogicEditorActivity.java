@@ -2343,7 +2343,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     		menu.setIconTintList(
     			new ColorStateList(
                     new int[][]{new int[]{0}},
-                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary),"59"))}
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary),"59",this))}
                 )
             );
     	}
