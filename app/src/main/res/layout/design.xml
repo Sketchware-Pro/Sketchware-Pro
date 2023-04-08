@@ -85,6 +85,7 @@
                         android:elevation="4dp"
                         android:padding="4dp"
                         android:src="@drawable/sorting_options_48"
+                        android:tint="?attr/colorPrimary"
                         android:theme="@style/MaterialTheme.Button" />
 
                     <Button
@@ -92,10 +93,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:textColor="#ffffffff"
                         android:textSize="@dimen/text_size_button_material"
-                        android:textStyle="bold"
-                        android:theme="@style/MaterialTheme.Button" />
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 

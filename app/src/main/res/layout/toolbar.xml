@@ -9,7 +9,8 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:layout_collapseMode="parallax"
     app:titleTextAppearance="@style/ToolbarTextAppearance"
-    android:textColorSecondary="?attr/colorOnPrimary">
+    android:textColorSecondary="?attr/colorOnPrimary"
+    android:subtitleTextColor="?attr/colorOnPrimary">
 
     <RelativeLayout
         android:id="@+id/layout_main_logo"
