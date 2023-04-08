@@ -504,25 +504,42 @@ public class ViewEditorFragment extends qA {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.design_view_menu, menu);
-        menu.findItem(R.id.menu_view_redo).setEnabled(false);
-        menu.findItem(R.id.menu_view_undo).setEnabled(false);
+        menuEnable(menu.findItem(R.id.menu_view_redo),true);
+        menuEnable(menu.findItem(R.id.menu_view_undo),true);
         if (projectFileBean != null) {
             if (cC.c(sc_id).f(projectFileBean.getXmlName())) {
-                menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_white_48dp);
-                menu.findItem(R.id.menu_view_redo).setEnabled(true);
+                menuEnable(menu.findItem(R.id.menu_view_redo),true);
             } else {
-                menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_grey_48dp);
-                menu.findItem(R.id.menu_view_redo).setEnabled(false);
+                menuEnable(menu.findItem(R.id.menu_view_redo),false);
             }
 
             if (cC.c(sc_id).g(projectFileBean.getXmlName())) {
-                menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_white_48dp);
-                menu.findItem(R.id.menu_view_undo).setEnabled(true);
+                menuEnable(menu.findItem(R.id.menu_view_undo),true);
             } else {
-                menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_grey_48dp);
-                menu.findItem(R.id.menu_view_undo).setEnabled(false);
+                menuEnable(menu.findItem(R.id.menu_view_undo),false);
             }
         }
+    }
+    
+    public void menuEnable(MenuItem menu,boolean enable){
+    	menu.setEnabled(enable);
+    	if (enable) {
+    		menu.setIconTintList(null);
+    		menu.setIconTintList(
+    			new ColorStateList(
+                    new int[][]{new int[]{0}},
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary))}
+                )
+            );
+    	} else {
+            menu.setIconTintList(null);
+    		menu.setIconTintList(
+    			new ColorStateList(
+                    new int[][]{new int[]{0}},
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary),"59",this))}
+                )
+            );
+    	}
     }
 
     @Override
