@@ -1400,6 +1400,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
                 viewTabAdapter = (ViewEditorFragment) fragment;
+                
             } else if (position == 1) {
                 eventTabAdapter = (rs) fragment;
             } else {

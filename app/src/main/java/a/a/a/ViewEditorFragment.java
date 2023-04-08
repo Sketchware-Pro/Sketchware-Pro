@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -529,7 +530,7 @@ public class ViewEditorFragment extends qA {
     		menu.setIconTintList(
     			new ColorStateList(
                     new int[][]{new int[]{0}},
-                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary))}
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(getContext(),R.attr.colorOnPrimary))}
                 )
             );
     	} else {
@@ -537,7 +538,7 @@ public class ViewEditorFragment extends qA {
     		menu.setIconTintList(
     			new ColorStateList(
                     new int[][]{new int[]{0}},
-                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorOnPrimary),"59",this))}
+                    new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(getContext(),R.attr.colorOnPrimary),"59",getContext()))}
                 )
             );
     	}
