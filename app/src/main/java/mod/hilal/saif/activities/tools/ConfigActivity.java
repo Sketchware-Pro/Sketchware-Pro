@@ -55,7 +55,7 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
 
-    private final int DEFAULT_BACKGROUND_COLOR = Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface));
+    // private final int Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)) = Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface));
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
 
@@ -257,7 +257,7 @@ public class ConfigActivity extends Activity {
     @SuppressLint("SetTextI18n")
     private void initialize() {
         root = new LinearLayout(this);
-        root.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        root.setBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
         root.setOrientation(LinearLayout.VERTICAL);
 
         ScrollView _scroll = new ScrollView(this);
@@ -266,7 +266,7 @@ public class ConfigActivity extends Activity {
         _scroll.setLayoutParams(_lp);
 
         LinearLayout _base = new LinearLayout(this);
-        _base.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        _base.setBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
         _base.setOrientation(LinearLayout.VERTICAL);
         _base.setLayoutParams(_lp);
 
@@ -411,7 +411,7 @@ public class ConfigActivity extends Activity {
     }
 
     private void applyDesign(View view) {
-        Helper.applyRippleEffect(view, Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorOnSurface)), DEFAULT_BACKGROUND_COLOR);
+        Helper.applyRippleEffect(view, Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorOnSurface)), Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
         view.setClickable(true);
         view.setFocusable(true);
     }
@@ -427,7 +427,7 @@ public class ConfigActivity extends Activity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
         ));
-        preferenceRoot.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        preferenceRoot.setBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(
                 dpToPx(4),
@@ -552,7 +552,7 @@ public class ConfigActivity extends Activity {
         );
         preferenceRootParams.bottomMargin = dpToPx(4);
         preferenceRoot.setLayoutParams(preferenceRootParams);
-        preferenceRoot.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        preferenceRoot.setBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(
                 dpToPx(4),

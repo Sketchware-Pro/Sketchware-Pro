@@ -1,11 +1,14 @@
 package mod.tsd.ui;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import java.lang.String;
 
 import com.google.android.material.color.MaterialColors;
+
+import com.sketchware.remod.R;
 
 public class MaterialColorsHelper {
 	/* MaterialColorsHelper */
@@ -29,5 +32,9 @@ public class MaterialColorsHelper {
 	
 	public static String setColorTransparency(String hex,String transparency,Context context){
 		return "#".concat(transparency).concat(hex.substring((int)(3), (int)(hex.length())));
+	}
+	
+	public static void setUpToolbarNavigationIconColor(Context context,Drawable icon){
+		icon.setTint(MaterialColorsHelper.getMaterialColorInt(context,R.attr.colorOnPrimary));
 	}
 }
