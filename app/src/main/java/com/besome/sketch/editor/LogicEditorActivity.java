@@ -2300,29 +2300,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logic_menu, menu);
-        // menu.findItem(R.id.menu_logic_redo).setEnabled(false);
-        // menu.findItem(R.id.menu_logic_undo).setEnabled(false);
-        menuEnable(menu.findItem(R.id.menu_logic_redo),false);
         menuEnable(menu.findItem(R.id.menu_logic_undo),false);
         if (M == null) {
             return true;
         }
         if (bC.d(B).g(s())) {
-            // menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_white_48dp);
-            // menu.findItem(R.id.menu_logic_redo).setEnabled(true);
             menuEnable(menu.findItem(R.id.menu_logic_redo),true);
         } else {
-            // menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_grey_48dp);
-            // menu.findItem(R.id.menu_logic_redo).setEnabled(false);
             menuEnable(menu.findItem(R.id.menu_logic_redo),false);
         }
         if (bC.d(B).h(s())) {
-            // menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_white_48dp);
-            // menu.findItem(R.id.menu_logic_undo).setEnabled(true);
             menuEnable(menu.findItem(R.id.menu_logic_undo),true);
         } else {
-            // menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_grey_48dp);
-            // menu.findItem(R.id.menu_logic_undo).setEnabled(false);
             menuEnable(menu.findItem(R.id.menu_logic_undo),false);
         }
         return true;
