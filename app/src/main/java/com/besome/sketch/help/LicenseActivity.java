@@ -14,6 +14,7 @@ import com.sketchware.remod.R;
 import a.a.a.mB;
 import a.a.a.oB;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class LicenseActivity extends BaseAppCompatActivity {
 
@@ -27,6 +28,8 @@ public class LicenseActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.program_information_title_open_source_license));
         toolbar.setNavigationOnClickListener(view -> {

@@ -59,6 +59,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.ilyasse.activities.about.AboutModActivity;
 import mod.jbk.util.LogUtil;
+import mod.tsd.ui.MaterialColorsHelper;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
@@ -189,6 +190,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         ImageView logo = findViewById(R.id.img_title_logo);
         logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(R.id.left_drawer);

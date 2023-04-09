@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -41,6 +42,7 @@ import java.util.regex.Pattern;
 import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class LogReaderActivity extends AppCompatActivity {
 
@@ -91,8 +93,8 @@ public class LogReaderActivity extends AppCompatActivity {
         }
         filterEdittext.setTextSize(15f);
         filterEdittext.setHint("Search log");
-        filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
-        filterEdittext.setTextColor(0xffffffff);
+        filterEdittext.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorOnPrimary))));
+        filterEdittext.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorOnPrimary)));
         filterEdittext.setSingleLine(true);
         toolbar.addView(filterEdittext, toolbar.indexOfChild(optionsMenu));
 
@@ -272,12 +274,12 @@ public class LogReaderActivity extends AppCompatActivity {
             clickListener.setTag("clickListener");
             clickListener.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             clickListener.setOrientation(LinearLayout.HORIZONTAL);
-            clickListener.setBackgroundColor(0xffffffff);
+            clickListener.setBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorSurface)));
 
             LinearLayout divider = new LinearLayout(LogReaderActivity.this);
             divider.setTag("divider");
             divider.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, dpToPx(1)));
-            divider.setBackgroundColor(0xffe0e0e0);
+            divider.setBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorOnSurface)));
 
             TextView type = new TextView(LogReaderActivity.this);
             type.setTag("type");
@@ -307,7 +309,7 @@ public class LogReaderActivity extends AppCompatActivity {
             date_header.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             date_header.setTypeface(null, Typeface.BOLD);
             date_header.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            date_header.setTextColor(0xff757575);
+            date_header.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorOnSurface)));
 
             TextView log = new TextView(LogReaderActivity.this);
             log.setTag("log");
@@ -315,7 +317,7 @@ public class LogReaderActivity extends AppCompatActivity {
             log.setClickable(false);
             log.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             log.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            log.setTextColor(0xff000000);
+            log.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorOnSurface)));
 
             TextView pkgName = new TextView(LogReaderActivity.this);
             pkgName.setTag("pkgName");
@@ -324,7 +326,7 @@ public class LogReaderActivity extends AppCompatActivity {
             pkgName.setVisibility(View.GONE);
             pkgName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             pkgName.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            pkgName.setTextColor(0xff757575);
+            pkgName.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(LogReaderActivity.this,R.attr.colorOnSurface)));
 
             detailHolder.addView(date_header, 0);
             detailHolder.addView(log, 1);

@@ -11,6 +11,8 @@ import com.sketchware.remod.R;
 
 import a.a.a.mB;
 import a.a.a.wB;
+import mod.tsd.ui.MaterialColorsHelper;
+import mod.tsd.ui.AppThemeApply;
 
 public class BaseDialogActivity extends BaseAppCompatActivity {
 
@@ -73,6 +75,7 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	// AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.common_dialog_layout);
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);

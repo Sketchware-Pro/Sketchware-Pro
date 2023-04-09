@@ -48,6 +48,7 @@ import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
@@ -282,7 +283,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                 (int) SketchwareUtil.getDip(8),
                 0
         );
-        textView.setTextColor(0xff006064);
+        textView.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(BlocksManagerCreatorActivity.this,R.attr.colorOnSurfaceVariant)));
         textView.setText(name);
         textView.setTextSize(14.0f);
         textView.setTypeface(Typeface.DEFAULT_BOLD);

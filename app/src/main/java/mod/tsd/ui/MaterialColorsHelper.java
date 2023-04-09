@@ -34,6 +34,10 @@ public class MaterialColorsHelper {
 		return "#".concat(transparency).concat(hex.substring((int)(3), (int)(hex.length())));
 	}
 	
+	public static String setColorTransparency(String hex,String transparency){
+		return "#".concat(transparency).concat(hex.substring((int)(3), (int)(hex.length())));
+	}
+	
 	public static void setUpToolbarNavigationIconColor(Context context,Drawable icon){
 		icon.setTint(MaterialColorsHelper.getMaterialColorInt(context,R.attr.colorOnPrimary));
 	}

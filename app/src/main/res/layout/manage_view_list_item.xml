@@ -7,7 +7,7 @@
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
-    android:background="@color/transparent"
+    android:background="?attr/colorSurface"
     android:elevation="4dp">
 
     <LinearLayout
@@ -30,7 +30,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="12dp"
             android:alpha="0.8"
-            android:background="@drawable/circle_bg_dark_grey_alpha"
             android:gravity="center"
             android:visibility="gone">
 
@@ -39,6 +38,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_gravity="center"
+                android:tint="?attr/colorOnSurface"
                 android:src="@drawable/ic_trashcan_white_48dp" />
         </LinearLayout>
 
@@ -46,7 +46,7 @@
             android:id="@+id/view_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
+            android:background="?attr/colorSurface"
             android:gravity="center|left"
             android:orientation="horizontal">
 
@@ -57,7 +57,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="#fff6f6f6"
+                android:background="?attr/colorSurface"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp" />
 
@@ -74,14 +74,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:textColor="#ff404040"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_activity_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#ff9a9a9a"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -91,6 +91,7 @@
                 android:layout_height="24dp"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_detail_setting_48dp"
+                android:tint="?attr/colorOnSurface"
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>

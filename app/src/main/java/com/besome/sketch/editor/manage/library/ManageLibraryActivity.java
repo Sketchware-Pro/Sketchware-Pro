@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.manage.library;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -29,6 +30,7 @@ import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -66,6 +68,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
         if (libraryItemView instanceof ExcludeBuiltInLibrariesLibraryItemView) {
             TextView title = findViewById(R.id.title);
+            title.setTextColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ManageLibraryActivity.this,R.attr.colorOnSurface)));
             title.setText("Advanced");
             ((ViewGroup) title.getParent()).removeView(title);
             libraryItemLayout.addView(title);
@@ -266,6 +269,8 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_library));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         libraryItemLayout = findViewById(R.id.contents);
     }

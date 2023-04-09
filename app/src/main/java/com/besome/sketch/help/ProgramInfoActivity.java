@@ -25,6 +25,7 @@ import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
 
@@ -187,6 +188,8 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.main_drawer_title_program_information));
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));

@@ -174,7 +174,7 @@ public class BlocksManager extends AppCompatActivity {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setColor(Color.parseColor(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(this,R.attr.colorSurface)));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
+        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(mod.tsd.ui.MaterialColorsHelper.setColorTransparency(mod.tsd.ui.MaterialColorsHelper.getMaterialColor(BlocksManager.this,R.attr.colorOnSurface),"20"))}), gradientDrawable, null);
         if (Build.VERSION.SDK_INT >= 21) {
             _view.setBackground(rippleDrawable);
             _view.setClickable(true);

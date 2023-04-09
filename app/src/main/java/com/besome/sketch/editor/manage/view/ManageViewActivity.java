@@ -2,6 +2,7 @@ package com.besome.sketch.editor.manage.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -40,6 +41,8 @@ import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.xw;
+
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
     private static final int TAB_COUNT = 2;
@@ -268,6 +271,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_view));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,m.getNavigationIcon());
         m.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });

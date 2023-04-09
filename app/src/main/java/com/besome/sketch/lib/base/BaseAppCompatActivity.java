@@ -20,6 +20,8 @@ import a.a.a.Zo;
 import a.a.a._A;
 import a.a.a.lC;
 
+import mod.tsd.ui.AppThemeApply;
+
 public class BaseAppCompatActivity extends AppCompatActivity {
 
     public FirebaseAnalytics mAnalytics;
@@ -97,6 +99,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	// AppThemeApply.setUpTheme(this);
         super.onCreate(savedInstanceState);
         e = getApplicationContext();
         j = new Zo(getApplicationContext());

@@ -19,6 +19,7 @@ import com.sketchware.remod.R;
 import a.a.a.GB;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class SystemInfoActivity extends BaseAppCompatActivity {
 
@@ -34,6 +35,8 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.program_information_title_system_information));
         toolbar.setNavigationOnClickListener(v -> {

@@ -43,6 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class BlocksManagerDetailsActivity extends AppCompatActivity {
 
@@ -294,8 +295,8 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
     private void _a(View view) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
+        gradientDrawable.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(BlocksManagerDetailsActivity.this,R.attr.colorSurface)));
+        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.setColorTransparency(MaterialColorsHelper.getMaterialColor(BlocksManagerDetailsActivity.this,R.attr.colorOnSurface),"20"))}), gradientDrawable, null);
         view.setBackground(rippleDrawable);
         view.setClickable(true);
         view.setFocusable(true);

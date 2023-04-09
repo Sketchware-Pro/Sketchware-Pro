@@ -19,6 +19,7 @@ import mod.SketchwareUtil;
 
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
 
@@ -56,6 +57,8 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Set Navigation Icon tint
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.main_drawer_title_system_settings));
         toolbar.setNavigationOnClickListener(view -> {
