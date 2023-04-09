@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/button_round" android:layout_width="fill_parent" android:layout_height="fill_parent">
         <ImageView android:id="@id/img_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" />
-        <TextView android:textSize="10.0sp" android:textColor="#ff7d7d7d" android:gravity="center" android:id="@id/tv_title" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxLines="2" />
-        <TextView android:textSize="10.0sp" android:textColor="@color/scolor_black_02" android:ellipsize="end" android:id="@id/tv_sub_title" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+        <TextView android:textSize="10.0sp" android:textColor="?attr/colorOnSurface" android:gravity="center" android:id="@id/tv_title" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxLines="2" />
+        <TextView android:textSize="10.0sp" android:textColor="?attr/colorOnSurface" android:ellipsize="end" android:id="@id/tv_sub_title" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
