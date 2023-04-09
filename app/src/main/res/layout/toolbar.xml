@@ -10,7 +10,7 @@
     app:layout_collapseMode="parallax"
     app:titleTextAppearance="@style/ToolbarTextAppearance"
     android:textColorSecondary="?attr/colorOnPrimary"
-    android:subtitleTextColor="?attr/colorOnPrimary">
+    android:subtitleTextStyle="@style/ToolbarTextAppearance">
 
     <RelativeLayout
         android:id="@+id/layout_main_logo"

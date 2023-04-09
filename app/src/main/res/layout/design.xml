@@ -85,7 +85,7 @@
                         android:elevation="4dp"
                         android:padding="4dp"
                         android:src="@drawable/sorting_options_48"
-                        android:tint="?attr/colorPrimary"
+                        android:tint="?attr/colorOnPrimary"
                         android:theme="@style/MaterialTheme.Button" />
 
                     <Button

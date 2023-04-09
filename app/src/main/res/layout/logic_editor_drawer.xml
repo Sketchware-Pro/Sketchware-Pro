@@ -5,7 +5,7 @@
     android:layout_width="150dp"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/action_bar_height"
-    android:background="#fff5f5f5"
+    android:background="?attr/colorSurface"
     android:orientation="vertical">
 
     <TextView
@@ -15,7 +15,7 @@
         android:gravity="center"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:textColor="@color/scolor_red_02"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="12sp" />
 
     <View
@@ -23,7 +23,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:background="@color/scolor_light_grey" />
+        android:background="?attr/colorOnSurface" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/new_button"
@@ -46,13 +46,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="4dp"
-                android:src="@drawable/side_menu_block_icon_over" />
+                android:src="@drawable/side_menu_block_icon_over"
+                android:tint="?attr/colorOnSurface"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Developer Tools"
-                android:textColor="@color/color_primary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
