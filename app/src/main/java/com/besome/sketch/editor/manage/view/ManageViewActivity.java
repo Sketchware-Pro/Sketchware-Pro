@@ -404,6 +404,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return position != 0 ? new xw() : new Fw();
         }

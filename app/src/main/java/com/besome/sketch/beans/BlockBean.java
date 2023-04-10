@@ -3,6 +3,8 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
@@ -179,6 +181,7 @@ public class BlockBean extends SelectableBean implements Parcelable {
     }
 
     @Override
+    @NonNull
     public BlockBean clone() {
         BlockBean blockBean = new BlockBean();
         blockBean.copy(this);

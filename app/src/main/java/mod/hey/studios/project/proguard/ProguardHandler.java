@@ -13,9 +13,6 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 
 public class ProguardHandler {
-
-    public static final Type hashMapStringStringType = Helper.TYPE_STRING_MAP;
-    public static final Type arrayListStringType = Helper.TYPE_STRING;
     public static String ANDROID_PROGUARD_RULES_PATH = createAndroidRules();
     public static String DEFAULT_PROGUARD_RULES_PATH = "";
     private final String config_path;
@@ -134,7 +131,7 @@ public class ProguardHandler {
         boolean debugFiles = true;
         if (FileUtil.isExistFile(config_path)) {
             try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
+                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
 
                 if (!config.containsKey("debug")) return false;
 
@@ -155,7 +152,7 @@ public class ProguardHandler {
         boolean proguardEnabled = true;
         if (FileUtil.isExistFile(config_path)) {
             try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
+                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
 
                 String enabled = config.get("enabled");
                 if (enabled == null) {
@@ -173,7 +170,7 @@ public class ProguardHandler {
     }
 
     public void setProguardEnabled(boolean proguardEnabled) {
-        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
+        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
         config.put("enabled", String.valueOf(proguardEnabled));
 
         FileUtil.writeFile(config_path, new Gson().toJson(config));
@@ -189,7 +186,7 @@ public class ProguardHandler {
             }
 
             try {
-                ArrayList<String> config = new Gson().fromJson(configContent, arrayListStringType);
+                ArrayList<String> config = new Gson().fromJson(configContent, Helper.TYPE_STRING);
                 enabled = config.contains(library);
                 return enabled;
             } catch (Exception ignored) {
@@ -200,7 +197,7 @@ public class ProguardHandler {
     }
 
     public void setDebugEnabled(boolean debugEnabled) {
-        HashMap<String, Object> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
+        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
         config.put("debug", String.valueOf(debugEnabled));
 
         FileUtil.writeFile(config_path, new Gson().toJson(config));

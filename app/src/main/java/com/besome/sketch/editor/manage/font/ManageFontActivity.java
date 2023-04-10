@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -135,7 +136,8 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
                 myCollectionFontsFragment = (Zt) fragment;
@@ -146,6 +148,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             if (position == 0) {
                 return new Zt();

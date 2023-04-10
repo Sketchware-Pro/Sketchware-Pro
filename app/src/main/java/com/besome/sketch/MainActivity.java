@@ -163,7 +163,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
@@ -493,6 +493,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return new ProjectsFragment();
         }

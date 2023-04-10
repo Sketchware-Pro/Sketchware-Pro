@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
@@ -2228,7 +2229,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public void onConfigurationChanged(Configuration configuration) {
+    public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
         g(configuration.orientation);
     }

@@ -565,6 +565,7 @@ public class BuiltInLibraries {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "BuiltInLibrary{" +
                     "name='" + name + '\'' +
