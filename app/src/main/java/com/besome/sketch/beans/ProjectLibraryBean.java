@@ -3,6 +3,8 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.sketchware.remod.R;
 
@@ -162,6 +164,7 @@ public class ProjectLibraryBean implements Parcelable {
     }
 
     @Override
+    @NonNull
     public ProjectLibraryBean clone() {
         ProjectLibraryBean projectLibraryBean = new ProjectLibraryBean(libType);
         projectLibraryBean.copy(this);

@@ -1,5 +1,7 @@
 package com.besome.sketch.beans;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 import a.a.a.nA;
@@ -180,6 +182,7 @@ public class HistoryBlockBean extends nA {
     }
 
     @Override
+    @NonNull
     public HistoryBlockBean clone() {
         HistoryBlockBean historyBlockBean = new HistoryBlockBean();
         historyBlockBean.copy(this);

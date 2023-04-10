@@ -360,6 +360,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         }
 
         @Override
+        @NonNull
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_exclude_builtin_libraries_list_item, parent, false));
         }
