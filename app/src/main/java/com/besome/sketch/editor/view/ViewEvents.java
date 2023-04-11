@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -17,10 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.design.DesignActivity;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import a.a.a.aB;
+import a.a.a.eC;
 import a.a.a.Qs;
 import a.a.a.bB;
 import a.a.a.jC;
@@ -28,6 +32,8 @@ import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.wB;
 import a.a.a.xB;
+
+import mod.hey.studios.util.Helper;
 
 public class ViewEvents extends LinearLayout {
     private String sc_id;
@@ -113,7 +119,7 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                itemView.setOnClickListener(v -> createEvent(getLayoutPosition()));
+                // itemView.setOnClickListener(v -> createEvent(getLayoutPosition()));
             }
         }
 
@@ -123,9 +129,28 @@ public class ViewEvents extends LinearLayout {
             if (eventBean.isSelected) {
                 holder.addAvailableIcon.setVisibility(View.GONE);
                 mB.a(holder.icon, 1);
+                holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View _view) {
+						// Delete event 
+						aB dialog = new aB((Activity) getContext());
+            			dialog.b("Confirm Delete");
+            			dialog.a("Click on Confirm to delete selected event.");
+						
+            			dialog.b("Delete", v -> {
+                			dialog.dismiss();
+                			deleteEvent(eventBean);
+                			eventsList.getAdapter().notifyDataSetChanged();
+            			});
+            			dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
+            			dialog.show();
+						return true;
+					}
+				});
             } else {
                 holder.addAvailableIcon.setVisibility(View.VISIBLE);
                 mB.a(holder.icon, 0);
+                holder.container.setOnClickListener(v -> createEvent(position));
             }
             holder.icon.setImageResource(oq.a(eventBean.eventName));
             holder.name.setText(eventBean.eventName);
@@ -141,5 +166,12 @@ public class ViewEvents extends LinearLayout {
         public int getItemCount() {
             return events.size();
         }
+    }
+    
+    public void deleteEvent(EventBean event) {
+    	jC.a(sc_id).d(projectFileBean.getJavaName(), event.targetId, event.eventName);
+        eC a2 = jC.a(sc_id);
+        String javaName = projectFileBean.getJavaName();
+        a2.k(javaName, event.targetId + "_" + event.eventName);
     }
 }
