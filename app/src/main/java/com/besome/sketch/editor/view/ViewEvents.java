@@ -41,6 +41,7 @@ public class ViewEvents extends LinearLayout {
     private ArrayList<EventBean> events;
     private RecyclerView eventsList;
     private Qs eventClickListener;
+    private EventAdapter eventAdapter;
 
     public ViewEvents(Context context) {
         super(context);
@@ -60,7 +61,8 @@ public class ViewEvents extends LinearLayout {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         eventsList.setLayoutManager(linearLayoutManager);
-        eventsList.setAdapter(new EventAdapter());
+        eventAdapter = new EventAdapter();
+        eventsList.setAdapter(eventAdapter);
         eventsList.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -119,7 +121,6 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                // itemView.setOnClickListener(v -> createEvent(getLayoutPosition()));
             }
         }
 
@@ -132,21 +133,25 @@ public class ViewEvents extends LinearLayout {
                 holder.container.setOnLongClickListener(new View.OnLongClickListener() {
 					@Override
 					public boolean onLongClick(View _view) {
-						// Delete event 
+						// Delete event dialog
 						aB dialog = new aB((Activity) getContext());
+						dialog.a(R.drawable.delete_96);
             			dialog.b("Confirm Delete");
             			dialog.a("Click on Confirm to delete selected event.");
 						
             			dialog.b("Delete", v -> {
                 			dialog.dismiss();
                 			deleteEvent(eventBean);
-                			eventsList.getAdapter().notifyDataSetChanged();
+                			bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+                			eventBean.isSelected = false;
+                			eventsList.getAdapter().notifyItemChanged(position);
             			});
             			dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
             			dialog.show();
 						return true;
 					}
 				});
+				holder.container.setOnClickListener(v -> createEvent(position));
             } else {
                 holder.addAvailableIcon.setVisibility(View.VISIBLE);
                 mB.a(holder.icon, 0);
