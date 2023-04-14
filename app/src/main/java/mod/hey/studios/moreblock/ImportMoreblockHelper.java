@@ -8,9 +8,12 @@ import android.widget.TextView;
 
 import com.sketchware.remod.R;
 
+import mod.tsd.ui.AppThemeApply;
+
 public class ImportMoreblockHelper {
 
     public static TextView optimizedBlockView(Context context, String str) {
+    	AppThemeApply.setUpTheme(context);
         TextView textView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.block_customview, null).findViewById(R.id.spec);
 
