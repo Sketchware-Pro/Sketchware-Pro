@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import a.a.a.Dp;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.project.proguard.ProguardHandler;
+import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 
 public class StringfogHandler {
@@ -33,7 +33,7 @@ public class StringfogHandler {
             HashMap<String, String> config = null;
 
             try {
-                config = new Gson().fromJson(FileUtil.readFile(config_path), ProguardHandler.hashMapStringStringType);
+                config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
             } finally {
                 Object enabledValue;
 
@@ -49,7 +49,7 @@ public class StringfogHandler {
     }
 
     public void setStringfogEnabled(boolean enabled) {
-        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), ProguardHandler.hashMapStringStringType);
+        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
         config.put("enabled", Boolean.valueOf(enabled).toString());
 
         FileUtil.writeFile(config_path, new Gson().toJson(config));

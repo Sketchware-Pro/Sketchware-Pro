@@ -1,5 +1,7 @@
 package mod;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -187,12 +189,12 @@ public class RequestNetworkController {
             if (async) {
                 call.enqueue(new Callback() {
                     @Override
-                    public void onFailure(Call call, final IOException e) {
+                    public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                         onFailureHandler.accept(e);
                     }
 
                     @Override
-                    public void onResponse(Call call, final Response response) {
+                    public void onResponse(@NonNull Call call, @NonNull final Response response) {
                         onResponseHandler.accept(response);
                     }
                 });
