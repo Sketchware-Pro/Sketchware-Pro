@@ -29,7 +29,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:src="@drawable/plus_96"
-        app:backgroundTint="#ffffffff"
         app:elevation="6dp"
         app:fabSize="normal" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

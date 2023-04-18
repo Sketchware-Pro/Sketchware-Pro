@@ -43,6 +43,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.events.EventsHandler;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class EventsMaker extends Activity {
 
@@ -161,8 +162,8 @@ public class EventsMaker extends Activity {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadii(new float[]{(float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f, (float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
+        gradientDrawable.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(EventsMaker.this,R.attr.colorSurface)));
+        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.setColorTransparency(MaterialColorsHelper.getMaterialColor(EventsMaker.this,R.attr.colorOnSurface),"20"))}), gradientDrawable, null);
         view.setElevation((float) i2);
         view.setBackground(rippleDrawable);
         view.setClickable(true);
@@ -393,7 +394,7 @@ public class EventsMaker extends Activity {
                 (int) SketchwareUtil.getDip(2),
                 (int) SketchwareUtil.getDip(2)
         );
-        cardView.setCardBackgroundColor(Color.WHITE);
+        cardView.setCardBackgroundColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(EventsMaker.this,R.attr.colorSurface)));
         cardView.setRadius(SketchwareUtil.getDip(4));
         return cardView;
     }
@@ -408,8 +409,8 @@ public class EventsMaker extends Activity {
                 (int) SketchwareUtil.getDip(4)
         );
         GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setColor(Color.WHITE);
-        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#64B5F6")}), gradientDrawable, null));
+        gradientDrawable.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(EventsMaker.this,R.attr.colorSurface)));
+        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.getMaterialColor(EventsMaker.this,R.attr.colorOnSurface))}), gradientDrawable, null));
         linearLayout.setClickable(true);
         linearLayout.setFocusable(true);
         return linearLayout;

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:background="#ffffffff"
+    android:background="?attr/colorSurface"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingTop="4dp"
@@ -26,7 +26,7 @@
             android:focusable="false"
             android:singleLine="true"
             android:text="Write lib dependency"
-            android:textColor="#ff296cf7"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -85,7 +85,7 @@
             android:paddingTop="2dp"
             android:paddingBottom="10dp"
             android:text="You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately."
-            android:textColor="#ff757575"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -102,7 +102,7 @@
             android:layout_height="35dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:background="#ff296cf7"
+            android:background="?attr/colorPrimary"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -112,7 +112,7 @@
                 android:focusable="false"
                 android:singleLine="true"
                 android:text="    Start    "
-                android:textColor="#ffffffff"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -123,7 +123,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:background="#ff296cf7"
+            android:background="?attr/colorPrimary"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -133,7 +133,7 @@
                 android:focusable="false"
                 android:singleLine="true"
                 android:text="  Pause  "
-                android:textColor="#ffffffff"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -144,7 +144,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:background="#ff296cf7"
+            android:background="?attr/colorPrimary"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -154,7 +154,7 @@
                 android:focusable="false"
                 android:singleLine="true"
                 android:text="Resume"
-                android:textColor="#ffffffff"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -164,7 +164,7 @@
             android:layout_height="35dp"
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
-            android:background="#ff296cf7"
+            android:background="?attr/colorPrimary"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -174,7 +174,7 @@
                 android:focusable="false"
                 android:singleLine="true"
                 android:text="  Cancel  "
-                android:textColor="#ffffffff"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>

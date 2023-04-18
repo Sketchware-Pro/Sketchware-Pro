@@ -411,7 +411,7 @@ public class ConfigActivity extends Activity {
     }
 
     private void applyDesign(View view) {
-        Helper.applyRippleEffect(view, Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorOnSurface)), Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
+        Helper.applyRippleEffect(view, Color.parseColor(MaterialColorsHelper.setColorTransparency(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorOnSurface),"59")), Color.parseColor(MaterialColorsHelper.getMaterialColor(ConfigActivity.this,R.attr.colorSurface)));
         view.setClickable(true);
         view.setFocusable(true);
     }

@@ -28,7 +28,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffffffff"
+                    android:background="?attr/colorSurface"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp"
                         android:text="Component properties"
-                        android:textColor="#ff616161"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -56,8 +56,8 @@
                             android:hint="component name"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,8 +78,8 @@
                             android:inputType="number"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,8 +99,8 @@
                             android:hint="type name"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,8 +128,8 @@
                                 android:inputType="number"
                                 android:padding="8dp"
                                 android:singleLine="true"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurface"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,8 +163,8 @@
                             android:layout_height="wrap_content"
                             android:hint="description"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,8 +184,8 @@
                             android:hint="variable name"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,8 +205,8 @@
                             android:hint="type class"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,8 +226,8 @@
                             android:hint="build class"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -247,8 +247,8 @@
                             android:hint="documentation url (optional)"
                             android:padding="8dp"
                             android:singleLine="true"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -267,8 +267,8 @@
                             android:layout_height="wrap_content"
                             android:hint="additional variables (### => variable name) (optional)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -285,10 +285,10 @@
                             android:id="@+id/components_creator_deadditional"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="define additional variables (### => variable name) (optional)"
+                            android:hint="define additional variables (## => variable name) (optional)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -307,8 +307,8 @@
                             android:layout_height="wrap_content"
                             android:hint="custom import (optional)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -321,32 +321,24 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/components_creator_cancel"
-                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:background="#ff008dcd"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="cancel"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="#ffffffff"
+                    android:text="CANCEL"
                     android:textSize="14sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/components_creator_save"
-                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:background="#ff008dcd"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Save"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="#ffffffff"
+                    android:text="SAVE"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class EventsMakerDetails extends Activity {
 
@@ -70,8 +71,8 @@ public class EventsMakerDetails extends Activity {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadii(new float[]{i, i, i / 2f, i / 2f, i, i, i / 2f, i / 2f});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
+        gradientDrawable.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(EventsMakerDetails.this,R.attr.colorSurface)));
+        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.setColorTransparency(MaterialColorsHelper.getMaterialColor(EventsMakerDetails.this,R.attr.colorOnSurface),"20"))}), gradientDrawable, null);
         view.setElevation((float) i2);
         view.setBackground(rippleDrawable);
         view.setClickable(true);

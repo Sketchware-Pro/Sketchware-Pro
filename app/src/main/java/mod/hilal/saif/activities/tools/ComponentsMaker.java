@@ -34,6 +34,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class ComponentsMaker extends Activity {
 
@@ -79,8 +80,8 @@ public class ComponentsMaker extends Activity {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadii(new float[]{(float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f, (float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
+        gradientDrawable.setColor(Color.parseColor(MaterialColorsHelper.getMaterialColor(ComponentsMaker.this,R.attr.colorSurface)));
+        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor(MaterialColorsHelper.setColorTransparency(MaterialColorsHelper.getMaterialColor(ComponentsMaker.this,R.attr.colorOnSurface),"20"))}), gradientDrawable, null);
         view.setElevation((float) i2);
         view.setBackground(rippleDrawable);
         view.setClickable(true);

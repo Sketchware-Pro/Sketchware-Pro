@@ -23,6 +23,7 @@ import a.a.a.iI;
 import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
+import mod.tsd.ui.MaterialColorsHelper;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
     private RB organizationValidator;
@@ -148,6 +149,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        MaterialColorsHelper.setUpToolbarNavigationIconColor(this,toolbar.getNavigationIcon());
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
         ((TextView) findViewById(R.id.tv_new_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
