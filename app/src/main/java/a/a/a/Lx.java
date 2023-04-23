@@ -2887,7 +2887,7 @@ public class Lx {
                 "        GradientDrawable _gradientDrawable = new GradientDrawable();\r\n" +
                 "        _gradientDrawable.setColor(_bgColor);\r\n" +
                 "        _gradientDrawable.setCornerRadius(_radius);\r\n" +
-                "        _view.setBackgroundDrawable(_gradientDrawable);\r\n" +
+                "        _view.setBackground(_gradientDrawable);\r\n" +
                 "        _view.setPadding(15, 10, 15, 10);\r\n" +
                 "        _view.setElevation(10);\r\n" +
                 "\r\n" +
@@ -2920,7 +2920,7 @@ public class Lx {
                 "        GradientDrawable _gradientDrawable = new GradientDrawable();\r\n" +
                 "        _gradientDrawable.setColor(_bgColor);\r\n" +
                 "        _gradientDrawable.setCornerRadius(_radius);\r\n" +
-                "        _view.setBackgroundDrawable(_gradientDrawable);\r\n" +
+                "        _view.setBackground(_gradientDrawable);\r\n" +
                 "        _view.setPadding(10, 10, 10, 10);\r\n" +
                 "        _view.setElevation(10);\r\n" +
                 "\r\n" +
