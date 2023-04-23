@@ -43,6 +43,7 @@ captures/
 .idea/deploymentTargetDropDown.xml
 .idea/discord.xml
 .idea/gradle.xml
+.idea/kotlinc.xml
 .idea/misc.xml
 .idea/modules.xml
 .idea/runConfigurations.xml
