@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="@dimen/card_view_margin"
+    android:elevation="8dp"
+    app:cardBackgroundColor="#ffffffff">
+
+    <LinearLayout
+        android:id="@+id/project_one"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_create_new"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@color/transparent"
+            android:clickable="false"
+            android:scaleType="centerInside"
+            tools:src="@drawable/plus_96" />
+
+        <TextView
+            android:id="@+id/tv_create_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:textColor="@color/scolor_blue_01"
+            tools:text="@string/myprojects_list_menu_title_create_a_new_project" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
