@@ -17,6 +17,14 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.*;
+import java.util.List;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -138,10 +146,29 @@ public class PushToGitHub {
                    git.add().addFilepattern(".").call();  
                  }else{
                      
+                   List<String> fileNames = Arrays.asList(_Fileformat.split(";\\s*"));
+  			      for (String fileName : fileNames) {
+ 			        try{
+    			      Files.walk(Paths.get(_FilePATH))
+     		         .filter(p -> p.getFileName().toString().equals(fileName))
+         		     .forEach(p -> {
+          	          try {
+                         git.add().addFilepattern(p.toString()).call();
+             	       } catch (Exception e) {
+                          SketchwareUtil.toastError(e.toString());
+                          e.printStackTrace();
+            	        }
+          	        });
+    			     } catch (IOException e) {
+    		           SketchwareUtil.toastError(e.toString());
+     		  	  }     
+ 				   }
+                  /* 
                    String [] GetPattern = _Fileformat.split(":");
                    for (String pattern : GetPattern) {
                      git.add().addFilepattern(pattern).call();  
                    }
+                   */
                  }
 	 	        
 	 	        git.commit().setMessage(_setMessage).call();
