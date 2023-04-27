@@ -146,6 +146,11 @@ public class PushToGitHub {
                    git.add().addFilepattern(".").call();  
                  }else{
                      
+                  if (_FilePATH.isEmpty()) {
+                   Result = "FilePath not exist!";
+                   isSucces = false;
+                   return;   
+                  }
                    List<String> fileNames = Arrays.asList(_Fileformat.split(";\\s*"));
                    if(!fileNames.isEmpty()){
   			      for (String fileName : fileNames) {
@@ -158,25 +163,25 @@ public class PushToGitHub {
 					 	SketchwareUtil.toastError(p.toString());	  
              	       } catch (Exception e) {
                           SketchwareUtil.toastError(e.toString());
-                          e.printStackTrace();
+                          Result = e.toString();
+                          isSucces = false;
+                          return;
             	        }
           	        });
     			     } catch (IOException e) {
     		           SketchwareUtil.toastError(e.toString());
+                       Result = e.toString();
+                       isSucces = false;
+                       return;
      		  	  }     
  				   }
                    }else{
                     SketchwareUtil.toastError("Invalid files reference, No files found!");
-		    Result = "Invalid files reference, No files found!";
+		     	   Result = "Invalid files reference, No files found!";
                     isSucces = false;
                     return;
                    }
-                  /* 
-                   String [] GetPattern = _Fileformat.split(":");
-                   for (String pattern : GetPattern) {
-                     git.add().addFilepattern(pattern).call();  
-                   }
-                   */
+                  
                  }
 	 	      
                     
