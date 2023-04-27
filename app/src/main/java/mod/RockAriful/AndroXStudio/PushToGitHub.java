@@ -154,6 +154,7 @@ public class PushToGitHub {
          		     .forEach(p -> {
           	          try {
                          git.add().addFilepattern(p.toString()).call();
+			SketchwareUtil.toastError(p.toString());	  
              	       } catch (Exception e) {
                           SketchwareUtil.toastError(e.toString());
                           e.printStackTrace();
