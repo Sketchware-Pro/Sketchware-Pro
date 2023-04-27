@@ -167,7 +167,8 @@ public class PushToGitHub {
  				   }
                    }else{
                     SketchwareUtil.toastError("Invalid files reference, No files found!");
-                    return false;
+                    isSucces = false;
+                    return isSucces;
                    }
                   /* 
                    String [] GetPattern = _Fileformat.split(":");
