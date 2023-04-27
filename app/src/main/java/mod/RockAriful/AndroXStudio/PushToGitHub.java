@@ -141,12 +141,13 @@ public class PushToGitHub {
 		    @Override
 		   public void run() {
 		     try(Git git = Git.open(new File(_FilePATH))) {
-                 
+
 		         if (_Fileformat.isEmpty()) {
                    git.add().addFilepattern(".").call();  
                  }else{
                      
                    List<String> fileNames = Arrays.asList(_Fileformat.split(";\\s*"));
+                   if(!fileNames.isEmpty()){
   			      for (String fileName : fileNames) {
  			        try{
     			      Files.walk(Paths.get(_FilePATH))
@@ -154,7 +155,7 @@ public class PushToGitHub {
          		     .forEach(p -> {
           	          try {
                          git.add().addFilepattern(p.toString()).call();
-			SketchwareUtil.toastError(p.toString());	  
+					 	SketchwareUtil.toastError(p.toString());	  
              	       } catch (Exception e) {
                           SketchwareUtil.toastError(e.toString());
                           e.printStackTrace();
@@ -164,6 +165,10 @@ public class PushToGitHub {
     		           SketchwareUtil.toastError(e.toString());
      		  	  }     
  				   }
+                   }else{
+                    SketchwareUtil.toastError("Invalid files reference, No files found!");
+                    return false;
+                   }
                   /* 
                    String [] GetPattern = _Fileformat.split(":");
                    for (String pattern : GetPattern) {
@@ -171,7 +176,8 @@ public class PushToGitHub {
                    }
                    */
                  }
-	 	        
+	 	      
+                    
 	 	        git.commit().setMessage(_setMessage).call();
 	 	        
 	 	        PushCommand push = git.push();
