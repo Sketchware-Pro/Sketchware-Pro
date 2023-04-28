@@ -140,7 +140,7 @@ public class PushToGitHub {
 		 executor.execute(new Runnable() {
 		    @Override
 		   public void run() {
-               SketchwareUtil.toastError("Start");
+               
 		     try(Git git = Git.open(new File(_FilePATH))) {
 
 		         if (_Fileformat.isEmpty()) {
@@ -165,12 +165,12 @@ public class PushToGitHub {
                       .isPresent();
                         
                       if (fileFound) {  
+                       SketchwareUtil.toastError("Found");
     			       Files.walk(Paths.get(_FilePATH))
      		          .filter(p -> p.getFileName().toString().equals(fileName))
          	 	     .forEach(p -> {
           	          try {
                          git.add().addFilepattern(p.toString()).call();
-					 	SketchwareUtil.toastError(p.toString());	  
              	       } catch (Exception e) {
                           SketchwareUtil.toastError(e.toString());
                           Result = e.toString();
