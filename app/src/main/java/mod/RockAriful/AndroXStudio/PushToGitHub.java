@@ -142,18 +142,16 @@ public class PushToGitHub {
 		   public void run() {
                
 		     try(Git git = Git.open(new File(_FilePATH))) {
-
+			   isSucces = true;
 		         if (_Fileformat.isEmpty()) {
                    git.add().addFilepattern(".").call();
-                   SketchwareUtil.toastError("Format file empty");
                  }else{
                      
                   if (_FilePATH.isEmpty()) {
                    Result = "FilePath not exist!";
                    isSucces = false;
-                   return;   
+                   return;
                   }
-                  SketchwareUtil.toastError("Start2");
                   
                    List<String> fileNames = Arrays.asList(_Fileformat.split(";\\s*"));
                    if(!fileNames.isEmpty()){
@@ -165,39 +163,37 @@ public class PushToGitHub {
                       .isPresent();
                         
                       if (fileFound) {  
-                       SketchwareUtil.toastError("Found");
+                       
     			       Files.walk(Paths.get(_FilePATH))
      		          .filter(p -> p.getFileName().toString().equals(fileName))
          	 	     .forEach(p -> {
           	          try {
                          git.add().addFilepattern(p.toString()).call();
+                         isSucces = false;
+                         Result = p.toString();
              	       } catch (Exception e) {
-                          SketchwareUtil.toastError(e.toString());
                           Result = e.toString();
                           isSucces = false;
-                          return;
             	        }
           	         });
+                       
                       }else{
-                       SketchwareUtil.toastError("Invalid files reference, No files found!");
+                       isSucces = false;
+                       Result = "Invalid files reference, No files found!";
                       }
     			     } catch (IOException e) {
-    		           SketchwareUtil.toastError(e.toString());
                        Result = e.toString();
                        isSucces = false;
-                       return;
      		  	  }     
  				   }
                    }else{
-                    SketchwareUtil.toastError("Invalid files reference, No files found!");
 		     	   Result = "Invalid files reference, No files found!";
                     isSucces = false;
-                    return;
                    }
                   
                  }
 	 	      
-                    
+               if(isSucces){    
 	 	        git.commit().setMessage(_setMessage).call();
 	 	        
 	 	        PushCommand push = git.push();
@@ -207,9 +203,9 @@ public class PushToGitHub {
  		        push.setForce(true);
  			
 					          
-		  	 Iterable<PushResult> results = push.call();
-	   		for (PushResult r : results) {
-   			  for(RemoteRefUpdate update : r.getRemoteUpdates()) {
+		    	 Iterable<PushResult> results = push.call();
+	   		  for (PushResult r : results) {
+   			   for(RemoteRefUpdate update : r.getRemoteUpdates()) {
 	     	 	  //System.out.println("Having result: " + update);
     		 	  if(update.getStatus() != RemoteRefUpdate.Status.OK && update.getStatus() != RemoteRefUpdate.Status.UP_TO_DATE) {
 		  	        Result = "Push failed: "+ update.getStatus();
@@ -219,8 +215,9 @@ public class PushToGitHub {
     			      Result = "Successfully Pushed! Status : " + update.getStatus().toString()+" with :- "+update.getNewObjectId().getName();
 	    		      isSucces = true;
 		    		}
-	   	 	 }
-	   		}
+	   	 	  }
+	   	  	}
+               }
 					             
 	    	 }catch(IOException | GitAPIException | JGitInternalException e) {
 			    Result = e.getMessage();
