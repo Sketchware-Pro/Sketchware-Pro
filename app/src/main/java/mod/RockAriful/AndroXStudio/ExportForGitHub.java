@@ -1,207 +1,265 @@
 package mod.RockAriful.AndroXStudio;
 
-import android.content.*;
-import androidx.core.content.FileProvider;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
-import mod.SketchwareUtil;
-import org.spongycastle.jce.provider.BouncyCastleProvider;
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.security.Security;
-import java.util.ArrayList;
-import java.util.HashMap;
-import a.a.a.Dp;
-import a.a.a.KB;
-import a.a.a.MA;
-import a.a.a.aB;
-import a.a.a.eC;
-import a.a.a.hC;
-import a.a.a.iC;
-import a.a.a.kC;
-import a.a.a.lC;
-import a.a.a.oB;
-import a.a.a.wq;
-import a.a.a.xq;
-import a.a.a.yB;
-import a.a.a.yq;
-import kellinwood.security.zipsigner.ZipSigner;
-import kellinwood.security.zipsigner.optional.CustomKeySigner;
-import kellinwood.security.zipsigner.optional.LoadKeystoreException;
-import mod.SketchwareUtil;
+import mod.SketchwareUtil; 
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
-import mod.hey.studios.project.proguard.ProguardHandler;
-import mod.hey.studios.project.stringfog.StringfogHandler;
-import mod.hey.studios.util.Helper;
-import mod.jbk.build.BuildProgressReceiver;
-import mod.jbk.build.compiler.bundle.AppBundleCompiler;
-import mod.jbk.export.GetKeyStoreCredentialsDialog;
-import mod.jbk.util.TestkeySignBridge;
+
+import android.content.*;
+import android.app.*;
+import android.app.Activity;
+import android.graphics.*;
+import android.graphics.drawable.*;
+
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.*;
+import java.util.List;
 
 
-public class ExportForGitHub {
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.concurrent.*;
+import android.os.*;
+
+import android.widget.*;
+import android.view.*;
+import android.view.View;
+
+import a.a.a.yB;
+import a.a.a.lC;
+
+import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.errors.*;
+import java.io.BufferedWriter; 
+import java.io.File; 
+import java.io.FileOutputStream; 
+import java.io.OutputStreamWriter; 
+import java.text.MessageFormat; 
+import java.util.Date; 
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean; 
+ 
+import org.eclipse.jgit.api.CloneCommand; 
+import org.eclipse.jgit.api.Git; 
+import org.eclipse.jgit.api.ResetCommand.ResetType; 
+import org.eclipse.jgit.api.ListBranchCommand.ListMode;
+import org.eclipse.jgit.api.errors.GitAPIException; 
+import org.eclipse.jgit.lib.Constants; 
+import org.eclipse.jgit.revwalk.RevCommit; 
+import org.eclipse.jgit.transport.CredentialsProvider; 
+import org.eclipse.jgit.transport.PushResult; 
+import org.eclipse.jgit.transport.RefSpec; 
+import org.eclipse.jgit.transport.*;
+import org.eclipse.jgit.transport.RemoteRefUpdate; 
+import org.eclipse.jgit.transport.RemoteRefUpdate.Status; 
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider; 
+import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.util.FileUtils; 
+
+
+public class PushToGitHub {
     
-    private static String export_src_postfix;
-    private static final oB file_utility = new oB();
-    private static Context mContext;
-    private static String export_src_full_path;
-    private static String export_src_filename;
+    private ArrayList<HashMap<String, Object>> JsonMAP = new ArrayList<>();
+    private static String Result ="";
     private static String sc_id ="";
-    private static String exportedSourcesZipPath = "";
-    private static HashMap<String, Object> sc_metadata = null;
-    private static yq project_metadata = null;
+    private static boolean isSucces = false;
+    private static Activity mContext;
+    private static AlertDialog prog;
+    private static String _FilePATH ="";
+    private static String _RepositoryURL ="";
+    private static String _setRefSpecs ="";
+    private static String _UserName ="";
+    private static String _AccessToken ="";
+    private static String _CommitMessage ="";
     
     
-    public ExportForGitHub(Context  context, final String _sc_id){
+    public PushToGitHub(Activity context,  final String _sc_id, final boolean _Force){
         mContext = context;
         sc_id = _sc_id;
-        sc_metadata = lC.b(sc_id);
-        project_metadata = new yq(mContext, wq.d(sc_id), sc_metadata);
-        initializeOutputDirectories();
-       
-    }
-    
-    
-    
-    public static String exportSrc() {
-        try {
-            FileUtil.deleteFile(project_metadata.projectMyscPath);
-
-            hC hCVar = new hC(sc_id);
-            kC kCVar = new kC(sc_id);
-            eC eCVar = new eC(sc_id);
-            iC iCVar = new iC(sc_id);
-            hCVar.i();
-            kCVar.s();
-            eCVar.g();
-            eCVar.e();
-            iCVar.i();
-
-            /* Extract project type template */
-            project_metadata.a(mContext, wq.e(xq.a(sc_id) ? "600" : sc_id));
-
-            /* Start generating project files */
-            project_metadata.b(hCVar, eCVar, iCVar, true);
-            if (yB.a(lC.b(sc_id), "custom_icon")) {
-                project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
-            }
-            project_metadata.a();
-            kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
-            kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
-            kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
-            project_metadata.f();
-
-            /* It makes no sense that those methods aren't static */
-            FilePathUtil util = new FilePathUtil();
-            File pathJava = new File(util.getPathJava(sc_id));
-            File pathResources = new File(util.getPathResource(sc_id));
-            File pathAssets = new File(util.getPathAssets(sc_id));
-            File pathNativeLibraries = new File(util.getPathNativelibs(sc_id));
-
-            if (pathJava.exists()) {
-                FileUtil.copyDirectory(pathJava, new File(project_metadata.javaFilesPath + File.separator + project_metadata.packageNameAsFolders));
-            }
-            if (pathResources.exists()) {
-                FileUtil.copyDirectory(pathResources, new File(project_metadata.resDirectoryPath));
-            }
-            if (pathAssets.exists()) {
-                FileUtil.copyDirectory(pathAssets, new File(project_metadata.assetsPath));
-            }
-            if (pathNativeLibraries.exists()) {
-                FileUtil.copyDirectory(pathNativeLibraries, new File(project_metadata.generatedFilesPath, "jniLibs"));
-            }
-
-            ArrayList<String> toCompress = new ArrayList<>();
-            toCompress.add(project_metadata.projectMyscPath);
-            String exportedFilename = yB.c(sc_metadata, "my_ws_name") + ".zip";
-
-            String exportedSourcesZipPath = wq.s() + File.separator + ".github_src" + File.separator + exportedFilename;
-            if (file_utility.e(exportedSourcesZipPath)) {
-                file_utility.c(exportedSourcesZipPath);
-            }
-
-            ArrayList<String> toExclude = new ArrayList<>();
-            if (!new File(new FilePathUtil().getPathJava(sc_id) + File.separator + "SketchApplication.java").exists()) {
-                toExclude.add("SketchApplication.java");
-            }
-            toExclude.add("DebugActivity.java");
-
-            new KB().a(exportedSourcesZipPath, toCompress, toExclude);
-            project_metadata.e();
-            
-            String filePath = export_src_full_path + File.separator + export_src_filename;
-            _UnZip(exportedSourcesZipPath,exportedSourcesZipPath.replace(".zip",""));
-            SketchwareUtil.toast(filePath + ": export to : " +exportedSourcesZipPath);
-            FileUtil.deleteFile(exportedSourcesZipPath);
-            return exportedSourcesZipPath.replace(".zip","");
-        } catch (Exception e) {
-            
-        }
-      return "Failed to Export";
-    }
-    
-    private void initializeOutputDirectories() {
         
-        export_src_postfix = File.separator + "sketchware" + File.separator + ".github_src";
-        /* /sdcard/sketchware/signed_apk */
-        export_src_full_path = wq.s() + File.separator + ".github_src";
-        /* Check if they exist, if not, create them */
-        file_utility.f(export_src_full_path);
+       if(_Force){
+         new Thread(() -> {
+	 	  _Uber_progress(true);
+           HashMap<String, Object> projectInfo = lC.b(sc_id);
+           _FilePATH = FileUtil.getExternalStorageDir()+"/sketchware/.github_src/"+yB.c(projectInfo, "my_ws_name");
+           mContext.runOnUiThread(() ->
+              FatchString()
+            );
+         }).start();
+            
+       }else{
+        new Thread(() -> {
+	 	  _Uber_progress(true);
+           _FilePATH = new ExportForGitHub(mContext,sc_id).exportSrc();
+           mContext.runOnUiThread(() ->
+              FatchString()
+            );
+         }).start();
+       }
     }
     
-    public static void _UnZip(final String _fileZip, final String _destDir) {
-		try
-		{
-			java.io.File outdir = new java.io.File(_destDir);
-			java.util.zip.ZipInputStream zin = new java.util.zip.ZipInputStream(new java.io.FileInputStream(_fileZip));
-			java.util.zip.ZipEntry entry;
-			String name, dir;
-			while ((entry = zin.getNextEntry()) != null)
-			{
-				name = entry.getName();
-				if(entry.isDirectory())
-				{
-					mkdirs(outdir, name);
-					continue;
-				}
-				
-				dir = dirpart(name);
-				if(dir != null)
-				mkdirs(outdir, dir);
-				
-				extractFile(zin, outdir, name);
-			}
-			zin.close();
-		}
-		catch (java.io.IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	private static void extractFile(java.util.zip.ZipInputStream in, java.io.File outdir, String name) throws java.io.IOException
-	{
-		byte[] buffer = new byte[4096];
-		java.io.BufferedOutputStream out = new java.io.BufferedOutputStream(new java.io.FileOutputStream(new java.io.File(outdir, name)));
-		int count = -1;
-		while ((count = in.read(buffer)) != -1)
-		out.write(buffer, 0, count);
-		out.close();
-	}
-	
-	private static void mkdirs(java.io.File outdir, String path)
-	{
-		java.io.File d = new java.io.File(outdir, path);
-		if(!d.exists())
-		d.mkdirs();
-	}
-	
-	private static String dirpart(String name)
-	{
-		int s = name.lastIndexOf(java.io.File.separatorChar);
-		return s == -1 ? null : name.substring(0, s);
+    public void  FatchString(){
+        try{
+			JsonMAP = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config"), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
+	    	_RepositoryURL = JsonMAP.get((int)0).get("repository").toString();
+	    	_setRefSpecs = JsonMAP.get((int)0).get("RefSpecs").toString();
+			_UserName = JsonMAP.get((int)0).get("username").toString();
+	    	_AccessToken = JsonMAP.get((int)0).get("token").toString();
+		}catch(Exception e){}
+    }
+    
+    public static boolean pushREPO(final String _setMessage, final String _Fileformat) {
+       
+         if(!FileUtil.isExistFile(_FilePATH)){
+    	   SketchwareUtil.toastError(_FilePATH+" Not Exist!");
+           _Uber_progress(false);
+  	     return false;
+    	 }
+         try(Git git = Git.init().setDirectory(new File(_FilePATH)).call()){
+             
+         }catch(GitAPIException e){
+			 SketchwareUtil.toastError(e.toString());
+             _Uber_progress(false);
+             return false;
+         }
+         
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		final Handler handler = new Handler(Looper.getMainLooper());
+        
+		 executor.execute(new Runnable() {
+		    @Override
+		   public void run() {
+               
+		     try(Git git = Git.open(new File(_FilePATH))) {
+			   isSucces = true;
+		         if (_Fileformat.isEmpty()) {
+                   git.add().addFilepattern(".").call();
+                 }else{
+                     
+                  if (_FilePATH.isEmpty()) {
+                   Result = "FilePath not exist!";
+                   isSucces = false;
+                   return;
+                  }
+                  
+                   List<String> fileNames = Arrays.asList(_Fileformat.split(";\\s*"));
+                   if(!fileNames.isEmpty()){
+  			      for (String fileName : fileNames) {
+ 			        try{
+                      boolean fileFound = Files.walk(Paths.get(_FilePATH))
+                      .filter(p -> p.getFileName().toString().equals(fileName))
+                      .findFirst()
+                      .isPresent();
+                        
+                      if (fileFound) {  
+                       
+    			       Files.walk(Paths.get(_FilePATH))
+     		          .filter(p -> p.getFileName().toString().equals(fileName))
+         	 	     .forEach(p -> {
+          	          try {
+                         git.add().addFilepattern(p.toString().replace(_FilePATH+"/", "")).call();
+                         isSucces = false;
+                         Result = p.toString().replace(_FilePATH+"/", "");
+             	       } catch (Exception e) {
+                          Result = e.toString();
+                          isSucces = false;
+            	        }
+          	         });
+                       
+                      }else{
+                       isSucces = false;
+                       Result = "Invalid files reference, No files found!";
+                      }
+    			     } catch (IOException e) {
+                       Result = e.toString();
+                       isSucces = false;
+     		  	  }     
+ 				   }
+                   }else{
+		     	   Result = "Invalid files reference, No files found!";
+                    isSucces = false;
+                   }
+                  
+                 }
+	 	      
+               if(isSucces){    
+	 	        git.commit().setMessage(_setMessage).call();
+	 	        
+	 	        PushCommand push = git.push();
+                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(_UserName, _AccessToken));
+  		       push.setRemote(_RepositoryURL);
+ 	 	       push.setRefSpecs(new RefSpec(_setRefSpecs));
+ 		        push.setForce(true);
+ 			
+					          
+		    	 Iterable<PushResult> results = push.call();
+	   		  for (PushResult r : results) {
+   			   for(RemoteRefUpdate update : r.getRemoteUpdates()) {
+	     	 	  //System.out.println("Having result: " + update);
+    		 	  if(update.getStatus() != RemoteRefUpdate.Status.OK && update.getStatus() != RemoteRefUpdate.Status.UP_TO_DATE) {
+		  	        Result = "Push failed: "+ update.getStatus();
+	 	             isSucces = false;
+	    		     throw new RuntimeException(Result);
+   	 		    }else{
+    			      Result = "Successfully Pushed! Status : " + update.getStatus().toString()+" with :- "+update.getNewObjectId().getName();
+	    		      isSucces = true;
+		    		}
+	   	 	  }
+	   	  	}
+               }
+					             
+	    	 }catch(IOException | GitAPIException | JGitInternalException e) {
+			    Result = e.getMessage();
+			    isSucces = false;
+			    e.printStackTrace();
+			 }
+				        
+		  	handler.post(new Runnable() {
+				 @Override
+				  public void run() {
+                      _Uber_progress(false);
+					  if(isSucces){
+					     SketchwareUtil.toast(Result);
+					  }else{
+					     SketchwareUtil.toastError(Result);
+					  }
+				  }
+			   });
+		   }
+		});
+        return isSucces;
 	}
     
+    public static void _Uber_progress(final boolean _ifShow) {
+		if (_ifShow) {
+            mContext.runOnUiThread(new Runnable() {
+              public void run() {
+                prog = new AlertDialog.Builder(mContext).create();
+				prog.setCancelable(false);
+				prog.setCanceledOnTouchOutside(false);
+				prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+				prog.getWindow().setDimAmount(0.4f);
+				View inflate = mContext.getLayoutInflater().inflate(R.layout.rockariful_github_loading, null);
+				prog.setView(inflate);
+				prog.show();
+ 	  	   }
+			});
+		}
+		else {
+			if (prog != null){
+				prog.dismiss();
+			}
+		}
+	}
 }
