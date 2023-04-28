@@ -170,7 +170,7 @@ public class PushToGitHub {
           	          try {
                          git.add().addFilepattern(p.toString().replace(_FilePATH+"/", "")).call();
                          isSucces = false;
-                         Result = p.toString();
+                         Result = p.toString().replace(_FilePATH+"/", "");
              	       } catch (Exception e) {
                           Result = e.toString();
                           isSucces = false;
