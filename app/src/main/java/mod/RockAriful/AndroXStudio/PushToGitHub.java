@@ -168,7 +168,7 @@ public class PushToGitHub {
      		          .filter(p -> p.getFileName().toString().equals(fileName))
          	 	     .forEach(p -> {
           	          try {
-                         git.add().addFilepattern(p.toString()).call();
+                         git.add().addFilepattern(p.toString().replace(_FilePATH+"/", "")).call();
                          isSucces = false;
                          Result = p.toString();
              	       } catch (Exception e) {
