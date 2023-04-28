@@ -140,6 +140,7 @@ public class PushToGitHub {
 		 executor.execute(new Runnable() {
 		    @Override
 		   public void run() {
+               SketchwareUtil.toastError("Start");
 		     try(Git git = Git.open(new File(_FilePATH))) {
 
 		         if (_Fileformat.isEmpty()) {
@@ -152,6 +153,8 @@ public class PushToGitHub {
                    isSucces = false;
                    return;   
                   }
+                  SketchwareUtil.toastError("Start2");
+                  
                    List<String> fileNames = Arrays.asList(_Fileformat.split(";\\s*"));
                    if(!fileNames.isEmpty()){
   			      for (String fileName : fileNames) {
