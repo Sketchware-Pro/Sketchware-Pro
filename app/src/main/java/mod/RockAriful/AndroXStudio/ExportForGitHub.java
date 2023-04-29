@@ -145,13 +145,13 @@ public class ExportForGitHub {
     		  bm.setBackupCustomBlocks(true);
     		  bm.backup(export_src_filename);
       		
-              mContext.runOnUiThread(() ->
+              mContext.runOnUiThread(() ->{
               
-              if (bm.getOutFile() != null) {
-                RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
+               if (bm.getOutFile() != null) {
+                 RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
                 _UnZip(bm.getOutFile().getAbsolutePath()+".zip",exportedSourcesZipPath.replace(".zip",""));
-              }
-              );
+               }
+              });
             }).start();
          
          
