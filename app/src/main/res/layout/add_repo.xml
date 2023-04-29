@@ -59,10 +59,10 @@
      			        android:layout_width="match_parent"
         			android:layout_height="0dp"
      			        android:layout_weight="1"
-  			        android:paddingLeft="20dp"
-  			        android:paddingTop="10dp"
-    			        android:paddingRight="20dp"
-   			        android:paddingBottom="10dp">
+  			        android:paddingLeft="8dp"
+  			        android:paddingTop="7dp"
+    			        android:paddingRight="8dp"
+   			        android:paddingBottom="7dp">
 
  		        <EditText
     			        android:id="@+id/url"
@@ -79,10 +79,10 @@
      			        android:layout_width="match_parent"
         			android:layout_height="0dp"
      			        android:layout_weight="1"
-  			        android:paddingLeft="20dp"
-  			        android:paddingTop="10dp"
-    			        android:paddingRight="20dp"
-   			        android:paddingBottom="10dp">
+  			        android:paddingLeft="8dp"
+  			        android:paddingTop="7dp"
+    			        android:paddingRight="8dp"
+   			        android:paddingBottom="7dp">
 
  		        <EditText
     			        android:id="@+id/username"
@@ -100,10 +100,10 @@
      			        android:layout_width="match_parent"
         			android:layout_height="0dp"
      			        android:layout_weight="1"
-  			        android:paddingLeft="20dp"
-  			        android:paddingTop="10dp"
-    			        android:paddingRight="20dp"
-   			        android:paddingBottom="10dp">
+  			        android:paddingLeft="8dp"
+  			        android:paddingTop="7dp"
+    			        android:paddingRight="8dp"
+   			        android:paddingBottom="7dp">
 
  		        <EditText
     			        android:id="@+id/token"
