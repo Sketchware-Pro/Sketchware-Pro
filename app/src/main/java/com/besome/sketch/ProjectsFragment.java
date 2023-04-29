@@ -583,7 +583,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 		        final LinearLayout all_item_layout = (LinearLayout) inflate.findViewById(R.id.all_item_layout);
 		        final LinearLayout progress_layout = (LinearLayout) inflate.findViewById(R.id.progress_layout);
 		        
-		        final ProgressBar progressbar1 = (ProgressBar) inflate.findViewById(R.id.progressbar1);				final EditText username = (EditText) inflate.findViewById(R.id.username);
+		        final ProgressBar progressbar1 = (ProgressBar) inflate.findViewById(R.id.progressbar1);	
 			final EditText token = (EditText) inflate.findViewById(R.id.token);
 			final EditText username = (EditText) inflate.findViewById(R.id.username);
 			final EditText url = (EditText) inflate.findViewById(R.id.url);				
