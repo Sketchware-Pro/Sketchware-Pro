@@ -53,102 +53,69 @@
 				android:layout_height="wrap_content"
 				android:padding="1dp"
 				android:orientation="vertical">
-				<LinearLayout
-					android:id="@+id/is_url"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingTop="8dp"
-					android:orientation="vertical">
-					<TextView
-						android:id="@+id/textview7"
-						android:focusable="false"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:padding="4dp"
-						android:text="Clone Repository"
-						android:textSize="12sp"
-						android:textColor="#757575" />
-					<LinearLayout
-						android:id="@+id/linear10"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:padding="8dp"
-						android:orientation="horizontal">
-						<EditText
-							android:id="@+id/url"
-							android:focusable="false"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:padding="8dp"
-							android:background="#ECF0F7"
-							android:textSize="14sp"
-							android:textColor="#000000"
-							android:hint="https://github.com/DK/vall.git"
-							android:textColorHint="#607D8B"
-							android:inputType="textNoSuggestions" />
-					</LinearLayout>
-				</LinearLayout>
-				<LinearLayout
-					android:id="@+id/credential_layout"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="8dp"
-					android:orientation="vertical">
-					<TextView
-						android:id="@+id/textview5"
-						android:focusable="false"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:padding="4dp"
-						android:text="Username/E-mail (If Private Repository )"
-						android:textSize="12sp"
-						android:textColor="#757575" />
-					<LinearLayout
-						android:id="@+id/linear5"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:padding="8dp"
-						android:orientation="horizontal">
-						<EditText
-							android:id="@+id/username"
-							android:focusable="false"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:padding="8dp"
-							android:background="#ECF0F7"
-							android:textSize="14sp"
-							android:textColor="#000000"
-							android:textColorHint="#607D8B"
-							android:inputType="textNoSuggestions" />
-					</LinearLayout>
-					<TextView
-						android:id="@+id/textview6"
-						android:focusable="false"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:padding="4dp"
-						android:text="Password/Token (If Private Repository )"
-						android:textSize="12sp"
-						android:textColor="#757575" />
-					<LinearLayout
-						android:id="@+id/linear7"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:padding="8dp"
-						android:orientation="horizontal">
-						<EditText
-							android:id="@+id/pass"
-							android:focusable="false"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:padding="8dp"
-							android:background="#ECF0F7"
-							android:textSize="14sp"
-							android:textColor="#000000"
-							android:textColorHint="#607D8B"
-							android:inputType="textPassword" />
-					</LinearLayout>
-				</LinearLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/dialog_custom_edittext_input"
+     			        android:layout_width="match_parent"
+        			android:layout_height="0dp"
+     			        android:layout_weight="1"
+  			        android:paddingLeft="20dp"
+  			        android:paddingTop="10dp"
+    			        android:paddingRight="20dp"
+   			        android:paddingBottom="10dp">
+
+ 		        <EditText
+    			        android:id="@+id/dialog_custom_file"
+     			        android:layout_width="match_parent"
+         		        android:layout_height="match_parent"
+       			        android:autofillHints=""
+        		        android:hint="Files Name|Format (separate-by ';')"
+    			        android:inputType="text"
+   			        android:textColorHint="#008dcd"
+     			        android:textSize="16sp" />
+  			  </com.google.android.material.textfield.TextInputLayout>	
+			  <com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/dialog_custom_edittext_input"
+     			        android:layout_width="match_parent"
+        			android:layout_height="0dp"
+     			        android:layout_weight="1"
+  			        android:paddingLeft="20dp"
+  			        android:paddingTop="10dp"
+    			        android:paddingRight="20dp"
+   			        android:paddingBottom="10dp">
+
+ 		        <EditText
+    			        android:id="@+id/dialog_custom_file"
+     			        android:layout_width="match_parent"
+         		        android:layout_height="match_parent"
+       			        android:autofillHints=""
+        		        android:hint="Files Name|Format (separate-by ';')"
+    			        android:inputType="text"
+   			        android:textColorHint="#008dcd"
+     			        android:textSize="16sp" />
+  			  </com.google.android.material.textfield.TextInputLayout>
+
+			  <com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/dialog_custom_edittext_input"
+     			        android:layout_width="match_parent"
+        			android:layout_height="0dp"
+     			        android:layout_weight="1"
+  			        android:paddingLeft="20dp"
+  			        android:paddingTop="10dp"
+    			        android:paddingRight="20dp"
+   			        android:paddingBottom="10dp">
+
+ 		        <EditText
+    			        android:id="@+id/dialog_custom_file"
+     			        android:layout_width="match_parent"
+         		        android:layout_height="match_parent"
+       			        android:autofillHints=""
+        		        android:hint="Files Name|Format (separate-by ';')"
+    			        android:inputType="text"
+   			        android:textColorHint="#008dcd"
+     			        android:textSize="16sp" />
+  			  </com.google.android.material.textfield.TextInputLayout>
+	
 			</LinearLayout>
 			<LinearLayout
 				android:id="@+id/progress_layout"
