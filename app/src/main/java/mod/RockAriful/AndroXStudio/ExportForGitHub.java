@@ -148,8 +148,8 @@ public class ExportForGitHub {
               mContext.runOnUiThread(() ->
               
               if (bm.getOutFile() != null) {
-                RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"))
-                _UnZip(bm.getOutFile().getAbsolutePath()+".zip",exportedSourcesZipPath.replace(".zip",""))
+                RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
+                _UnZip(bm.getOutFile().getAbsolutePath()+".zip",exportedSourcesZipPath.replace(".zip",""));
               }
               );
             }).start();
