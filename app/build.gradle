@@ -70,10 +70,13 @@ android {
         resources.pickFirsts += "api_database/*"
     }
 
+    buildFeatures {
+        coreLibraryDesugaring true
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
-        coreLibraryDesugaringLifecycles 'com.android.tools:desugar_jdk_libs:1.1.5'
-
+        
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
