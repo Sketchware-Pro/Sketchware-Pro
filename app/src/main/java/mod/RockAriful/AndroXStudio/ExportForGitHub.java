@@ -143,22 +143,15 @@ public class ExportForGitHub {
             SketchwareUtil.toast(filePath + ": export to : " +exportedSourcesZipPath);
             FileUtil.deleteFile(exportedSourcesZipPath);
             
-            new Thread(() -> {
-	 	     bm = new BackupFactory(sc_id);
-    		  bm.setBackupLocalLibs(true);
-    		  bm.setBackupCustomBlocks(true);
-    		  bm.backup(exportedFilename.replace(".zip",""));
-      		
-              new Handler(Looper.getMainLooper()).post(() -> {
-              
-               if (bm.getOutFile() != null) {
-                 RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
-                _UnZip(bm.getOutFile().getAbsolutePath()+".zip",exportedSourcesZipPath.replace(".zip",""));
-               }
-              });
-            }).start();
-         
-         
+            bm = new BackupFactory(sc_id);
+    	    bm.setBackupLocalLibs(true);
+    		bm.setBackupCustomBlocks(true);
+    		bm.backup(exportedFilename.replace(".zip",""));
+            if (bm.getOutFile() != null) {
+             RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
+             _UnZip(bm.getOutFile().getAbsolutePath()+".zip",exportedSourcesZipPath.replace(".zip",""));
+            }
+               
             return exportedSourcesZipPath.replace(".zip","");
         } catch (Exception e) {
             
