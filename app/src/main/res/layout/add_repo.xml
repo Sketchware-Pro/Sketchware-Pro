@@ -65,17 +65,17 @@
    			        android:paddingBottom="10dp">
 
  		        <EditText
-    			        android:id="@+id/dialog_custom_file"
+    			        android:id="@+id/url"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
        			        android:autofillHints=""
-        		        android:hint="Files Name|Format (separate-by ';')"
+        		        android:hint="Set Git|Repo URL"
     			        android:inputType="text"
    			        android:textColorHint="#008dcd"
      			        android:textSize="16sp" />
   			  </com.google.android.material.textfield.TextInputLayout>	
 			  <com.google.android.material.textfield.TextInputLayout
-				android:id="@+id/dialog_custom_edittext_input"
+				android:id="@+id/dialog_custom_edittext_input1"
      			        android:layout_width="match_parent"
         			android:layout_height="0dp"
      			        android:layout_weight="1"
@@ -85,18 +85,18 @@
    			        android:paddingBottom="10dp">
 
  		        <EditText
-    			        android:id="@+id/dialog_custom_file"
+    			        android:id="@+id/username"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
        			        android:autofillHints=""
-        		        android:hint="Files Name|Format (separate-by ';')"
+        		        android:hint="Username|E-mail (If Private Repository )"
     			        android:inputType="text"
    			        android:textColorHint="#008dcd"
      			        android:textSize="16sp" />
   			  </com.google.android.material.textfield.TextInputLayout>
 
 			  <com.google.android.material.textfield.TextInputLayout
-				android:id="@+id/dialog_custom_edittext_input"
+				android:id="@+id/dialog_custom_edittext_input2"
      			        android:layout_width="match_parent"
         			android:layout_height="0dp"
      			        android:layout_weight="1"
@@ -106,11 +106,11 @@
    			        android:paddingBottom="10dp">
 
  		        <EditText
-    			        android:id="@+id/dialog_custom_file"
+    			        android:id="@+id/token"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
        			        android:autofillHints=""
-        		        android:hint="Files Name|Format (separate-by ';')"
+        		        android:hint="Password|Token (If Private Repository )"
     			        android:inputType="text"
    			        android:textColorHint="#008dcd"
      			        android:textSize="16sp" />
