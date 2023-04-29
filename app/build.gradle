@@ -72,7 +72,7 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        coreLibraryDesugaringProvider 'com.google.android.gms:core-legacy-v2:17.0.0'
+        coreLibraryDesugaringProvider 'com.android.tools:desugar_jdk_libs_nio:2.0.2'
 
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
