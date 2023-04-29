@@ -199,11 +199,7 @@ public class ExportForGitHub {
 	}
     
     private static void RenameFiles(final String _Path, final String _RRenamePath){
-       new Thread(() -> {
     	new java.io.File(_Path).renameTo(new java.io.File(_RRenamePath));
-        new Handler(Looper.getMainLooper()).post(() -> {}
-        );
-       }).start();
     }
     
 	private static void extractFile(java.util.zip.ZipInputStream in, java.io.File outdir, String name) throws java.io.IOException
