@@ -204,7 +204,7 @@ public class ExportForGitHub {
     private void RenameFiles(final String _Path, final String _RRenamePath){
        new Thread(() -> {
     	new java.io.File(_Path).renameTo(new java.io.File(_RRenamePath));
-        mContext.runOnUiThread(() ->
+        mContext.runOnUiThread(() ->{}
               
         );
        }).start();
