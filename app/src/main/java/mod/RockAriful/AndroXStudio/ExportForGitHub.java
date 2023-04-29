@@ -1,6 +1,10 @@
 package mod.RockAriful.AndroXStudio;
 
 import android.content.*;
+
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.core.content.FileProvider;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.BuildConfig;
@@ -54,7 +58,7 @@ public class ExportForGitHub {
     private static String exportedSourcesZipPath = "";
     private static HashMap<String, Object> sc_metadata = null;
     private static yq project_metadata = null;
-    private BackupFactory bm;
+    private static BackupFactory bm;
     
     
     public ExportForGitHub(Context  context, final String _sc_id){
@@ -145,7 +149,7 @@ public class ExportForGitHub {
     		  bm.setBackupCustomBlocks(true);
     		  bm.backup(export_src_filename);
       		
-              mContext.runOnUiThread(() ->{
+              new Handler(Looper.getMainLooper()).post(() -> {
               
                if (bm.getOutFile() != null) {
                  RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
@@ -201,11 +205,10 @@ public class ExportForGitHub {
 		}
 	}
     
-    private void RenameFiles(final String _Path, final String _RRenamePath){
+    private static void RenameFiles(final String _Path, final String _RRenamePath){
        new Thread(() -> {
     	new java.io.File(_Path).renameTo(new java.io.File(_RRenamePath));
-        mContext.runOnUiThread(() ->{}
-              
+        new Handler(Looper.getMainLooper()).post(() -> {}
         );
        }).start();
     }
