@@ -147,7 +147,7 @@ public class ExportForGitHub {
 	 	     bm = new BackupFactory(sc_id);
     		  bm.setBackupLocalLibs(true);
     		  bm.setBackupCustomBlocks(true);
-    		  bm.backup(export_src_filename);
+    		  bm.backup(exportedFilename.replace(".zip",""));
       		
               new Handler(Looper.getMainLooper()).post(() -> {
               
