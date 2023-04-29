@@ -44,6 +44,10 @@ import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
+import mod.RockAriful.AndroXStudio.*;
+import mod.SketchwareUtil;
+
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,7 +132,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         ImageView ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
         TextView tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
 
-	cvGitCloneProjects = parent.findViewById(R.id.cv_gitClone_projects);
+    	cvGitCloneProjects = parent.findViewById(R.id.cv_gitClone_projects);
         cvGitCloneProjects.setOnClickListener(this);
         ImageView ivGitCloneProjects = parent.findViewById(R.id.iv_gitClone_projects);
         TextView tvGitCloneProjects = parent.findViewById(R.id.tv_gitClone_projects);
@@ -572,52 +576,73 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    	public void _showCloneRepo() {
-		        prog = new AlertDialog.Builder(getActivity()).create();
-			prog.setCancelable(false);
-			prog.setCanceledOnTouchOutside(false);
-			View inflate = getLayoutInflater().inflate(R.layout.add_repo, null);
-			prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-			prog.setView(inflate);
+	public void _showCloneRepo() {
+	    prog = new AlertDialog.Builder(getActivity()).create();
+		prog.setCancelable(false);
+		prog.setCanceledOnTouchOutside(false);
+    	View inflate = getLayoutInflater().inflate(R.layout.add_repo, null);
+		prog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+		prog.setView(inflate);
 				
-		        final LinearLayout all_item_layout = (LinearLayout) inflate.findViewById(R.id.all_item_layout);
-		        final LinearLayout progress_layout = (LinearLayout) inflate.findViewById(R.id.progress_layout);
+        final LinearLayout all_item_layout = (LinearLayout) inflate.findViewById(R.id.all_item_layout);
+        final LinearLayout progress_layout = (LinearLayout) inflate.findViewById(R.id.progress_layout);
 		        
-		        final ProgressBar progressbar1 = (ProgressBar) inflate.findViewById(R.id.progressbar1);	
-			final EditText token = (EditText) inflate.findViewById(R.id.token);
-			final EditText username = (EditText) inflate.findViewById(R.id.username);
-			final EditText url = (EditText) inflate.findViewById(R.id.url);				
-			final TextView no = (TextView) inflate.findViewById(R.id.no);
-			final TextView yes = (TextView) inflate.findViewById(R.id.yes);		        		        
+	    final ProgressBar progressbar1 = (ProgressBar) inflate.findViewById(R.id.progressbar1);	
+    	final EditText token = (EditText) inflate.findViewById(R.id.token);
+		final EditText username = (EditText) inflate.findViewById(R.id.username);
+		final EditText url = (EditText) inflate.findViewById(R.id.url);				
+		final TextView no = (TextView) inflate.findViewById(R.id.no);
+		final TextView yes = (TextView) inflate.findViewById(R.id.yes);		        		        
 		
-			username.setFocusableInTouchMode(true);
-			token.setFocusableInTouchMode(true);
-			url.setFocusableInTouchMode(true);
-			progressbar1.setIndeterminate(true);
-		        progressbar1.setMax((int)100);
-		        progressbar1.setProgress((int)98);
+		username.setFocusableInTouchMode(true);
+		token.setFocusableInTouchMode(true);
+		url.setFocusableInTouchMode(true);
+		progressbar1.setIndeterminate(true);
+	    progressbar1.setMax((int)100);
+	    progressbar1.setProgress((int)98);
 
-		       yes.setOnClickListener(new View.OnClickListener() {
-			  public void onClick(View v) {
+	    yes.setOnClickListener(new View.OnClickListener() {
+		  public void onClick(View v) {
 								
-			   if (url.getText().toString().equals("")) {				
-		  	   }else{
-			     no.setEnabled(false);
-			     no.setTextColor(0xFFBDBDBD);                    
-		 	     all_item_layout.setVisibility(View.GONE);
-		             yes.setVisibility(View.GONE);
-			     progress_layout.setVisibility(View.VISIBLE);
-					                     
-			   }
-				                
-			 }
-			});
+		   if (url.getText().toString().contains("https://github.com/")) {				
+		   
+		    no.setEnabled(false);
+		    no.setTextColor(0xFFBDBDBD);                    
+	 	   all_item_layout.setVisibility(View.GONE);
+	        yes.setVisibility(View.GONE);
+		    progress_layout.setVisibility(View.VISIBLE);
+            
+            try{
+             String owner = url.getText().toString().replace("https://github.com/", "").replace("/".concat(Uri.parse(url.getText().toString()).getLastPathSegment()), "");
+             String repo = Uri.parse(url.getText().toString()).getLastPathSegment().replace(".git","");
+             if (new GitHubRepoChecker(token.getText().toString()).execute(owner, repo, "DataSource").get()) {
+                 
+              GitHubRepoCloner cloner = new GitHubRepoCloner(url.getText().toString(), repo, username.getText().toString(), token.getText().toString());
+	  		cloner.cloneRepository(new GitHubRepoCloner.CloneCallback() {
+			    @Override
+	 		   public void onComplete(boolean success) {
+		         if (success) {
+           		prog.dismiss();
+                   SketchwareUtil.toastError("Successful");
+		         } else {
+        	       prog.dismiss();
+                   SketchwareUtil.toastError("Unfortunately An Error Occurred when cloning repository.Try Again!");
+ 		        }
+ 			   }
+		  	});
+
+             }else{SketchwareUtil.toastError("Sorry! This repository is not usable in the Sketchware app.Try again.");}   
+            } catch (Exception e) {SketchwareUtil.toastError(e.toString());}
+            
+           }
+	 	 }
+		});
 		        
-			no.setOnClickListener(new View.OnClickListener() {
-			   public void onClick(View v) {
-					prog.hide();
-			   }
-			});
-			prog.show();
-		 }
+		no.setOnClickListener(new View.OnClickListener() {
+	      public void onClick(View v) {
+	    	prog.hide();
+		  }
+		});
+		prog.show();
+	}
 }
