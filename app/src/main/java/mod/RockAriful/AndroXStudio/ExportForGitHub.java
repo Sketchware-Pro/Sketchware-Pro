@@ -150,6 +150,7 @@ public class ExportForGitHub {
             if (bm.getOutFile() != null) {
              RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
              _UnZip(bm.getOutFile().getAbsolutePath().replace(".swb",".zip"),exportedSourcesZipPath.replace(".zip","")+"/DataSource");
+             FileUtil.deleteFile(bm.getOutFile().getAbsolutePath().replace(".swb",".zip"));
             }
                
             return exportedSourcesZipPath.replace(".zip","");
