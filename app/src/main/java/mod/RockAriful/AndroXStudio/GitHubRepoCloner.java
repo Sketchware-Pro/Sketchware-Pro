@@ -1,4 +1,4 @@
-package mod.RockAriful.AndroXStudo;
+package mod.RockAriful.AndroXStudio;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -49,7 +49,7 @@ public class GitHubRepoCloner {
                     clone.call();
                     callback.onComplete(true);
                 } catch (GitAPIException | JGitInternalException e) {
-                    FileUtil.deleteFile(Const.ProjectPATH().concat(name));
+                    FileUtil.deleteFile(FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/".concat(name));
                     e.printStackTrace();
                     callback.onComplete(false);
                 }
