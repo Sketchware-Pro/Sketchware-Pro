@@ -72,6 +72,8 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
+  	coreLibraryDesugaringLifecycles 'com.android.tools:desugar_jdk_libs_nio:2.0.2'
+    
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
