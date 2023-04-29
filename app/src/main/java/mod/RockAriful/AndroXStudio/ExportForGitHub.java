@@ -40,6 +40,7 @@ import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
+import mod.hey.studios.project.backup.BackupFactory;
 
 
 public class ExportForGitHub {
@@ -53,6 +54,7 @@ public class ExportForGitHub {
     private static String exportedSourcesZipPath = "";
     private static HashMap<String, Object> sc_metadata = null;
     private static yq project_metadata = null;
+    private BackupFactory bm;
     
     
     public ExportForGitHub(Context  context, final String _sc_id){
@@ -136,6 +138,23 @@ public class ExportForGitHub {
             _UnZip(exportedSourcesZipPath,exportedSourcesZipPath.replace(".zip",""));
             SketchwareUtil.toast(filePath + ": export to : " +exportedSourcesZipPath);
             FileUtil.deleteFile(exportedSourcesZipPath);
+            
+            new Thread(() -> {
+	 	     bm = new BackupFactory(sc_id);
+    		  bm.setBackupLocalLibs(true);
+    		  bm.setBackupCustomBlocks(true);
+    		  bm.backup(export_src_filename);
+      		
+              mContext.runOnUiThread(() ->
+              
+              if (bm.getOutFile() != null) {
+                RenameFiles(bm.getOutFile().getAbsolutePath(),bm.getOutFile().getAbsolutePath().replace(".swb",".zip"))
+                _UnZip(bm.getOutFile().getAbsolutePath()+".zip",exportedSourcesZipPath.replace(".zip",""))
+              }
+              );
+            }).start();
+         
+         
             return exportedSourcesZipPath.replace(".zip","");
         } catch (Exception e) {
             
@@ -181,6 +200,16 @@ public class ExportForGitHub {
 			e.printStackTrace();
 		}
 	}
+    
+    private void RenameFiles(final String _Path, final String _RRenamePath){
+       new Thread(() -> {
+    	new java.io.File(_Path).renameTo(new java.io.File(_RRenamePath));
+        mContext.runOnUiThread(() ->
+              
+        );
+       }).start();
+    }
+    
 	private static void extractFile(java.util.zip.ZipInputStream in, java.io.File outdir, String name) throws java.io.IOException
 	{
 		byte[] buffer = new byte[4096];
@@ -203,5 +232,8 @@ public class ExportForGitHub {
 		int s = name.lastIndexOf(java.io.File.separatorChar);
 		return s == -1 ? null : name.substring(0, s);
 	}
+    
+    
+      
     
 }
