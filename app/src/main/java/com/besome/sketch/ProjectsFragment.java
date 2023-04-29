@@ -621,13 +621,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
               GitHubRepoCloner cloner = new GitHubRepoCloner(url.getText().toString(), repo, username.getText().toString(), token.getText().toString());
 	  		cloner.cloneRepository(new GitHubRepoCloner.CloneCallback() {
 			    @Override
-	 		   public void onComplete(boolean success) {
+	 		   public void onComplete(boolean success, String mesg) {
 		         if (success) {
-           		prog.dismiss();
-                   SketchwareUtil.toastError("Successful");
+                   SketchwareUtil.toastError(mesg);
+                   prog.dismiss();
+                   (new BackupRestoreManager(getActivity(), this)).doRestore(mesg,true);
 		         } else {
-        	       prog.dismiss();
                    SketchwareUtil.toastError("Unfortunately An Error Occurred when cloning repository.Try Again!");
+                   prog.dismiss();
  		        }
  			   }
 		  	});
