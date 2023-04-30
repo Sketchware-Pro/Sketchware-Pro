@@ -1,3 +1,4 @@
+
 package mod.RockAriful.AndroXStudio;
 
 import android.os.Handler;
@@ -21,12 +22,14 @@ public class GitHubRepoCloner {
 
     private String url;
     private String name;
+    private String filePath;
     private String username;
     private String password;
 
     public GitHubRepoCloner(String url, String name, String username, String password) {
         this.url = url;
         this.name = name;
+        this.filePath = FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/";
         this.username = username;
         this.password = password;
     }
@@ -43,16 +46,18 @@ public class GitHubRepoCloner {
             @Override
             public void run() {
                 try {
+                    String 
                     CloneCommand clone = Git.cloneRepository();
                     clone.setURI(url);
-                    clone.setDirectory(new File(FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/", name));
+                    clone.setDirectory(new File(filePath, name));
                     clone.setBare(false);
                     clone.setCloneAllBranches(true);
                     clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
                     clone.call();
-					
+					_zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
+                    callback.onComplete(true,filePath+name+"/DataSource.swb");
                 } catch (GitAPIException | JGitInternalException e) {
-                    FileUtil.deleteFile(FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/".concat(name));
+                    FileUtil.deleteFile(filePath+name);
                     e.printStackTrace();
                     callback.onComplete(false,e.toString());
                 }
