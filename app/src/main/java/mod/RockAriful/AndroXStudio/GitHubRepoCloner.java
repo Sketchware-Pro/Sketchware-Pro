@@ -45,8 +45,7 @@ public class GitHubRepoCloner {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    String 
+                try { 
                     CloneCommand clone = Git.cloneRepository();
                     clone.setURI(url);
                     clone.setDirectory(new File(filePath, name));
