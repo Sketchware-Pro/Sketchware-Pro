@@ -625,7 +625,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 		         if (success) {
                    SketchwareUtil.toastError(mesg);
                    prog.dismiss();
-                   (new BackupRestoreManager(getActivity(), this)).doRestore(mesg,true);
+                   final ProjectsFragment fragment = ProjectsFragment.this;
+            (new BackupRestoreManager(getActivity(), fragment)).doRestore(mesg, true);
 		         } else {
                    SketchwareUtil.toastError("Unfortunately An Error Occurred when cloning repository.Try Again!");
                    prog.dismiss();
