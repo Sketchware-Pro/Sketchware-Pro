@@ -9,9 +9,12 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.ProgressMonitor.CloneProgressMonitor;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import mod.SketchwareUtil;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
