@@ -231,12 +231,14 @@ public class BackupRestoreManager {
         }
 
         @Override
-        protected void onPreExecute() {
-            dlg = new ProgressDialog(activityWeakReference.get());
-            dlg.setMessage("Restoring...");
-            dlg.setCancelable(false);
-            dlg.show();
-        }
+	protected void onPreExecute() {
+   	 activityWeakReference.get().runOnUiThread(() -> {
+         dlg = new ProgressDialog(activityWeakReference.get());
+         dlg.setMessage("Restoring...");
+         dlg.setCancelable(false);
+         dlg.show();
+        });
+       }
 
         @Override
         protected String doInBackground(String... params) {
