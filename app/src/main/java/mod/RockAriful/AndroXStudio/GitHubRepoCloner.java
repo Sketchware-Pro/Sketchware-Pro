@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -46,13 +47,10 @@ public class GitHubRepoCloner {
                     clone.setBare(false);
                     clone.setCloneAllBranches(true);
                     clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-                    try (Git git = clone.call()) {
-                      callback.onComplete(true,FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/"+name);
-                    }catch (Exception e){
-                      callback.onComplete(false,e.toString());
-                    }
-                }catch (GitAPIException | JGitInternalException e) {
-                    FileUtil.deleteFile(Const.ProjectPATH().concat(name));
+                    clone.call();
+                    callback.onComplete(true,FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/"+name);
+                } catch (GitAPIException | JGitInternalException e) {
+                    FileUtil.deleteFile(FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/".concat(name));
                     e.printStackTrace();
                     callback.onComplete(false,e.toString());
                 }
