@@ -93,7 +93,7 @@ public class GitHubRepoCloner {
                 ProgressMonitor progressMonitor = new TextProgressMonitor(context,callback);
 
                 // Set the ProgressMonitor on the CloneCommand
-                clone.setProgressMonitor(progressMonitor)
+                clone.setProgressMonitor(progressMonitor);
                 clone.call();
                 _zip(filePath + name + "/DataSource", filePath + name + "/DataSource.swb");
                 callback.onComplete(true, filePath + name + "/DataSource.swb");
