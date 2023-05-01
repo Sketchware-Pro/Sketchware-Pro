@@ -633,6 +633,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                    prog.dismiss();
  		        }
  			   }
+                
+                @Override
+   			 public void onProgress(int progress) {
+                  SketchwareUtil.toast("Cloning "+progress+"Bytes");
+ 			   }
+    
 		  	});
 
              }else{SketchwareUtil.toastError("Sorry! This repository is not usable in the Sketchware app.Try again.");prog.dismiss();}   
