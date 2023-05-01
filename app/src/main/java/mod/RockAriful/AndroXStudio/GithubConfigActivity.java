@@ -4,7 +4,7 @@ import android.Manifest;
 import android.animation.*;
 import android.app.*;
 import android.content.*;
-import android.content;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.*;
 import android.graphics.*;
