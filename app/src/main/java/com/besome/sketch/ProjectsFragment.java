@@ -649,7 +649,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 		        
 		no.setOnClickListener(new View.OnClickListener() {
 	      public void onClick(View v) {
-	    	prog.hide();
+	    	prog.dismiss();
 		  }
 		});
 		prog.show();
