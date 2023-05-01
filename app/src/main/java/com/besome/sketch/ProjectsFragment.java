@@ -626,7 +626,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                    SketchwareUtil.toastError(mesg);
                    prog.dismiss();
                    final ProjectsFragment fragment = ProjectsFragment.this;
-            (new BackupRestoreManager(getActivity(), fragment)).doRestore(mesg, true);
+           		 (new BackupRestoreManager(getActivity(), fragment)).doRestore(mesg, true);
 		         } else {
                    SketchwareUtil.toastError("Unfortunately An Error Occurred when cloning repository.Try Again!");
                    prog.dismiss();
@@ -634,8 +634,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
  			   }
 		  	});
 
-             }else{SketchwareUtil.toastError("Sorry! This repository is not usable in the Sketchware app.Try again.");}   
-            } catch (Exception e) {SketchwareUtil.toastError(e.toString());}
+             }else{SketchwareUtil.toastError("Sorry! This repository is not usable in the Sketchware app.Try again.");prog.dismiss();}   
+            } catch (Exception e) {SketchwareUtil.toastError(e.toString());prog.dismiss();}
             
            }
 	 	 }
