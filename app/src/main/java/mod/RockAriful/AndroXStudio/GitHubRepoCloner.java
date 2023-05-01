@@ -90,7 +90,7 @@ public class GitHubRepoCloner {
                 clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
 
                 // Create a new ProgressMonitor instance
-                ProgressMonitor progressMonitor = new TextProgressMonitor(contextcontext,callback);
+                ProgressMonitor progressMonitor = new TextProgressMonitor(context,callback);
 
                 // Set the ProgressMonitor on the CloneCommand
                 clone.setProgressMonitor(progressMon
