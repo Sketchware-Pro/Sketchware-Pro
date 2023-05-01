@@ -73,8 +73,11 @@ public class GitHubRepoCloner {
             }
         });
     }
+    
     */
-   public void cloneRepository(final CloneCallback callback, final Context context) {
+    
+
+public void cloneRepository(final CloneCallback callback) {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -88,74 +91,39 @@ public class GitHubRepoCloner {
                 clone.setBare(false);
                 clone.setCloneAllBranches(true);
                 clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+                Git git = clone.call();
+                
+                // Calculate the total number of objects to be transferred
+                int totalObjects = git.getRepository().getObjectDatabase().getObjectCount();
 
-                // Create a new ProgressMonitor instance
-                ProgressMonitor progressMonitor = new TextProgressMonitor(context,callback);
+                // Wait for the transfer to complete while updating progress
+                while (!git.getRepository().getObjectDatabase().hasReceivedAll()) {
+                    int receivedObjects = git.getRepository().getObjectDatabase().getObjectCount();
+                    int progress = receivedObjects * 100 / totalObjects;
+                    callback.onProgress(progress);
+                    Thread.sleep(1000); // wait for a second
+                }
 
-                // Set the ProgressMonitor on the CloneCommand
-                clone.setProgressMonitor(progressMonitor);
-                clone.call();
-                _zip(filePath + name + "/DataSource", filePath + name + "/DataSource.swb");
-                callback.onComplete(true, filePath + name + "/DataSource.swb");
-            } catch (GitAPIException | JGitInternalException e) {
-                FileUtil.deleteFile(filePath + name);
+                _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
+                callback.onComplete(true,filePath+name+"/DataSource.swb");
+            } catch (GitAPIException | JGitInternalException | InterruptedException e) {
+                FileUtil.deleteFile(filePath+name);
                 e.printStackTrace();
-                callback.onComplete(false, e.toString());
+                callback.onComplete(false,e.toString());
             }
 
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-
+                    
                 }
             });
         }
     });
-   }
-
-   private static class TextProgressMonitor implements ProgressMonitor {
-    private int completed;
-    private Context context;
-    private CloneCallback callback;
-
-    public TextProgressMonitor(Context context, CloneCallback callback) {
-        this.context = context;
-        this.callback = callback;
-    }
-
-    @Override
-    public void start(int totalTasks) {
-        
-    }
-
-    @Override
-    public void beginTask(String title, int totalWork) {
-        
-    }
-
-    @Override
-    public void update(int completed) {
-        this.completed += completed;
-        callback.onProgress(this.completed);
-    }
-
-    @Override
-    public void endTask() {
-        
-    }
-    @Override
-    public void showDuration(boolean show) {
-
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return false;
-    }
-   }
+}
 
 
-    
+
     public void _zip(final String _source, final String _destination) {
 		
       try {
