@@ -266,7 +266,7 @@ public class BackupRestoreManager {
                 projectsFragment.refreshProjectsList();
                 SketchwareUtil.toast("Restored successfully");
 		if(file.contains("._temp")){
-		 FileUtil.deleteFile(file.replace("/"+Uri.parse(file).getLastPathSegment(),""));
+		 FileUtil.deleteFile(FileUtil.getExternalStorageDir()+"/.sketchware/._temp");
 		}
             } else {
                 SketchwareUtil.toast("Restored successfully. Refresh to see the project", Toast.LENGTH_LONG);
