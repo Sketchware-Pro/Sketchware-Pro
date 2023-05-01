@@ -13,6 +13,7 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import org.eclipse.jgit.internal.storage.file.ObjectDirectory;
 import org.eclipse.jgit.lib.ObjectDatabase;
+import org.eclipse.jgit.storage.file.ObjectDirectory;
 import org.eclipse.jgit.lib.Repository;
 
 import java.io.File;
@@ -81,7 +82,7 @@ public class GitHubRepoCloner {
     */
     
 
-public void cloneRepository(final String url, final String filePath, final String name, final String username, final String password, final CloneCallback callback) {
+    public void cloneRepository(final CloneCallback callback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
         executor.execute(new Runnable() {
@@ -97,15 +98,16 @@ public void cloneRepository(final String url, final String filePath, final Strin
                     Git git = clone.call();
 
                     // Get the object directory and repository
-                    ObjectDirectory objectDirectory = git.getRepository().getObjectDatabase().getObjectDirectory();
+                    ObjectDirectory objectDirectory = (ObjectDirectory) git.getRepository().getObjectDatabase();
+                    
                     Repository repository = git.getRepository();
 
                     // Calculate the total number of objects to be transferred
-                    int totalObjects = objectDirectory.getPackFile().getObjectCount();
+                    int totalObjects = objectDirectory.getPackFileDescription().getObjectCount();
 
                     // Wait for the transfer to complete while updating progress
-                    while (!repository.getObjectDatabase().hasReceivedAllPacks()) {
-                        int receivedObjects = objectDirectory.getPackFile().getObjectCount();
+                    while (!objectDirectory.hasReceivedAllPackIndexes()) {
+                        int receivedObjects = objectDirectory.getPackFileDescription().getObjectCount();
                         int progress = receivedObjects * 100 / totalObjects;
                         callback.onProgress(progress);
                         Thread.sleep(1000); // wait for a second
