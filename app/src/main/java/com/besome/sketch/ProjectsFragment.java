@@ -639,7 +639,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                   no.setText("Cloning "+progress+"Bytes");
  			   }
     
-		  	},getActivity());
+		  	});
 
              }else{SketchwareUtil.toastError("Sorry! This repository is not usable in the Sketchware app.Try again.");prog.dismiss();}   
             } catch (Exception e) {SketchwareUtil.toastError(e.toString());prog.dismiss();}
