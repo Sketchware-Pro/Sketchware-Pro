@@ -149,7 +149,7 @@ public class GitHubRepoCloner {
     public boolean isCancelled() {
         return false;
     }
-.  }
+   }
 
 
     
