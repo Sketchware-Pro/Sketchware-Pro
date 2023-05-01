@@ -340,6 +340,8 @@ public class GithubConfigActivity extends AppCompatActivity {
 									map.put("token", pass.getText().toString());
 									JsonMAP.add(map);
 									FileUtil.writeFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config", new Gson().toJson(JsonMAP));
+                                    map.clear();
+									JsonMAP.clear();
 								}
 							}
 						}
@@ -354,6 +356,10 @@ public class GithubConfigActivity extends AppCompatActivity {
 			   	 setRefSpecs.setEnabled(true);
 					username.setEnabled(true);
 					pass.setEnabled(true);
+                    try{
+                     map.clear();
+					 JsonMAP.clear();
+                    } catch(Exception e){}
 				}
 			}
 		});
