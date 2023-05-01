@@ -94,12 +94,8 @@ public class GitHubRepoCloner {
                 clone.call();
 
                 _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onComplete(true,filePath+name+"/DataSource.swb");
-                    }
-                });
+                callback.onComplete(true,filePath+name+"/DataSource.swb");
+                
             } catch (GitAPIException | JGitInternalException e) {
                 FileUtil.deleteFile(filePath+name);
                 e.printStackTrace();
