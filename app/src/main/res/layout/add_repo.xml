@@ -9,7 +9,7 @@
 		android:id="@+id/linear8"
 		android:layout_width="300dp"
 		android:layout_height="wrap_content"
-		android:background="#1E88E5"
+		android:background="#09A8EC"
 		android:orientation="vertical"
 		android:layout_gravity="center_horizontal|center_vertical"
 		android:layout_weight="1">
@@ -45,7 +45,7 @@
 					android:text="Clone Repository"
 					android:textSize="16sp"
 					android:textStyle="bold"
-					android:textColor="#1E88E5" />
+					android:textColor="#09A8EC" />
 			</LinearLayout>
 			<LinearLayout
 				android:id="@+id/all_item_layout"
@@ -60,16 +60,16 @@
         			android:layout_height="0dp"
      			        android:layout_weight="1"
   			        android:paddingLeft="8dp"
-  			        android:paddingTop="7dp"
+  			        android:paddingTop="5dp"
     			        android:paddingRight="8dp"
-   			        android:paddingBottom="7dp">
+   			        android:paddingBottom="5dp">
 
  		        <EditText
     			        android:id="@+id/url"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
        			        android:autofillHints=""
-        		        android:hint="Set Git|Repo URL"
+        		        android:hint="REPOSITORY URL"
     			        android:inputType="text"
    			        android:textColorHint="#008dcd"
      			        android:textSize="16sp" />
@@ -80,16 +80,16 @@
         			android:layout_height="0dp"
      			        android:layout_weight="1"
   			        android:paddingLeft="8dp"
-  			        android:paddingTop="7dp"
+  			        android:paddingTop="5dp"
     			        android:paddingRight="8dp"
-   			        android:paddingBottom="7dp">
+   			        android:paddingBottom="5dp">
 
  		        <EditText
     			        android:id="@+id/username"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
        			        android:autofillHints=""
-        		        android:hint="Username|E-mail (If Private Repository )"
+        		        android:hint="USERNAME|Email (IF PRIVATE)"
     			        android:inputType="text"
 				android:importantForAutofill="no"
    			        android:textColorHint="#008dcd"
@@ -102,16 +102,16 @@
         			android:layout_height="0dp"
      			        android:layout_weight="1"
   			        android:paddingLeft="8dp"
-  			        android:paddingTop="7dp"
+  			        android:paddingTop="5dp"
     			        android:paddingRight="8dp"
-   			        android:paddingBottom="7dp">
+   			        android:paddingBottom="5dp">
 
  		        <EditText
     			        android:id="@+id/token"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
 				android:importantForAutofill="no"
-        		        android:hint="Password|Token (If Private Repository )"
+        		        android:hint="PASSWORD|TOKEN (IF PRIVATE)"
     			        android:inputType="text"
    			        android:textColorHint="#008dcd"
      			        android:textSize="16sp" />
