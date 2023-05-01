@@ -3,7 +3,7 @@ package mod.RockAriful.AndroXStudio;
 
 import android.os.Handler;
 import android.os.Looper;
-
+import android.content.Context;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
