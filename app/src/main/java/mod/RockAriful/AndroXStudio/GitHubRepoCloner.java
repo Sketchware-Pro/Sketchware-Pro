@@ -90,11 +90,10 @@ public class GitHubRepoCloner {
                 clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
 
                 // Create a new ProgressMonitor instance
-                ProgressMonitor progressMonitor = new TextProgressMonitor(context);
+                ProgressMonitor progressMonitor = new TextProgressMonitor(contextcontext,callback);
 
                 // Set the ProgressMonitor on the CloneCommand
-                clone.setProgressMonitor(progressMonitor);
-
+                clone.setProgressMonitor(progressMon
                 clone.call();
                 _zip(filePath + name + "/DataSource", filePath + name + "/DataSource.swb");
                 callback.onComplete(true, filePath + name + "/DataSource.swb");
@@ -143,10 +142,6 @@ public class GitHubRepoCloner {
     @Override
     public void endTask() {
         
-    }
-    @Override
-    public void showDuration(boolean show) {
-
     }
 
     @Override
