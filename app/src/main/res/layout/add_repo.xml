@@ -156,9 +156,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="8dp"
-				android:text="Cancel"
+				android:text="CANCEL"
 				android:textSize="14sp"
-				android:textStyle="bold"
 				android:textColor="#FFFFFF" />
 			<TextView
 				android:id="@+id/yes"
@@ -167,9 +166,8 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="20dp"
 				android:padding="8dp"
-				android:text="Next"
+				android:text="CLONE GIT"
 				android:textSize="14sp"
-				android:textStyle="bold"
 				android:textColor="#FFFFFF" />
 		</LinearLayout>
 	</LinearLayout>
