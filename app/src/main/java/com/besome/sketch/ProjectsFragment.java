@@ -636,6 +636,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 @Override
    			 public void onProgress(int progress) {
                   SketchwareUtil.toast("Cloning "+progress+"Bytes");
+                  no.setText("Cloning "+progress+"Bytes");
  			   }
     
 		  	},getActivity());
