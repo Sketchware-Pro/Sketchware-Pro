@@ -31,7 +31,7 @@ public class GitHubRepoCloner {
     public GitHubRepoCloner(String url, String name, String username, String password) {
         this.url = url;
         this.name = name;
-        this.filePath = FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/";
+        this.filePath = FileUtil.getExternalStorageDir()+"/.sketchware/._temp/";
         this.username = username;
         this.password = password;
     }
