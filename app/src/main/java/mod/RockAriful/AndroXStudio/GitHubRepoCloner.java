@@ -193,6 +193,7 @@ public class GitHubRepoCloner {
 		
 		java.io.File[] fileArr = file.listFiles();
 		 for (java.io.File subFile : fileArr) {
-		   zip(os, subFile.getAbsolutePath(), prefix)
-
+		   zip(os, subFile.getAbsolutePath(), prefix);
+         }
+    }
 }
