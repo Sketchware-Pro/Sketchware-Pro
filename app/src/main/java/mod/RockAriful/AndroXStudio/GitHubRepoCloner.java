@@ -15,6 +15,7 @@ import org.eclipse.jgit.internal.storage.file.ObjectDirectory;
 import org.eclipse.jgit.lib.ObjectDatabase;
 import org.eclipse.jgit.storage.file.ObjectDirectory;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.ObjectWalk;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,47 +82,92 @@ public class GitHubRepoCloner {
     
     */
     
-
     public void cloneRepository(final CloneCallback callback) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    final Handler handler = new Handler(Looper.getMainLooper());
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    CloneCommand clone = Git.cloneRepository();
-                    clone.setURI(url);
-                    clone.setDirectory(new File(filePath, name));
-                    clone.setBare(false);
-                    clone.setCloneAllBranches(true);
-                    clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-                    Git git = clone.call();
+    executor.execute(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                CloneCommand clone = Git.cloneRepository();
+                clone.setURI(url);
+                clone.setDirectory(new File(filePath, name));
+                clone.setBare(false);
+                clone.setCloneAllBranches(true);
+                clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
 
-                    // Get the object directory and repository
-                    ObjectDirectory objectDirectory = (ObjectDirectory) git.getRepository().getObjectDatabase();
-                    
-                    Repository repository = git.getRepository();
-
-                    // Calculate the total number of objects to be transferred
-                    int totalObjects = objectDirectory.getPackFileDescription().getObjectCount();
-
-                    // Wait for the transfer to complete while updating progress
-                    while (!objectDirectory.hasReceivedAllPackIndexes()) {
-                        int receivedObjects = objectDirectory.getPackFileDescription().getObjectCount();
-                        int progress = receivedObjects * 100 / totalObjects;
-                        callback.onProgress(progress);
-                        Thread.sleep(1000); // wait for a second
-                    }
-
-                    callback.onComplete(true, filePath + name + "/DataSource.swb");
-                } catch (GitAPIException | InterruptedException e) {
-                    FileUtil.deleteFile(filePath + name);
-                    e.printStackTrace();
-                    callback.onComplete(false, e.toString());
+                // Count the total number of objects that need to be cloned
+                ObjectWalk walker = new ObjectWalk(clone.getRepository());
+                walker.markStart(walker.parseCommit(clone.getRepository().resolve("HEAD")));
+                long totalObjects = 0;
+                while (walker.next() != null) {
+                    totalObjects += walker.getObjectCount();
                 }
+
+                // Clone the repository
+                clone.call();
+
+                // Zip the cloned repository
+                _zip(filePath + name + "/DataSource", filePath + name + "/DataSource.swb");
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Call onComplete with the path to the zipped repository
+                        callback.onComplete(true, filePath + name + "/DataSource.swb");
+                    }
+                });
+            } catch (GitAPIException | JGitInternalException | IOException e) {
+                FileUtil.deleteFile(filePath + name);
+                e.printStackTrace();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Call onComplete with the error message
+                        callback.onComplete(false, e.toString());
+                    }
+                });
             }
-        });
+        }
+    });
+
+    // Count the number of objects cloned so far and update progress accordingly
+    final File objectsDir = new File(filePath, name + "/.git/objects");
+    final long totalObjects = countObjects(objectsDir);
+    final int pollInterval = 1000; // 1 second
+
+    handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            if (!objectsDir.exists()) {
+                // The clone operation has completed
+                return;
+            }
+
+            long currentObjects = countObjects(objectsDir);
+            int progress = (int) ((double) currentObjects / totalObjects * 100);
+
+            // Call onProgress with the current progress
+            callback.onProgress(progress);
+
+            // Schedule the next check
+            handler.postDelayed(this, pollInterval);
+        }
+    }, pollInterval);
+   }
+
+   private long countObjects(File dir) {
+    long count = 0;
+    for (File file : dir.listFiles()) {
+        if (file.isDirectory()) {
+            count += countObjects(file);
+        } else {
+            count++;
+        }
     }
+    return count;
+   }
 
 
     public void _zip(final String _source, final String _destination) {
