@@ -90,7 +90,7 @@ public class GitHubRepoCloner {
                 clone.setBare(false);
                 clone.setCloneAllBranches(true);
                 clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-                clone.setProgressMonitor(new TextProgressMonitor(new PrintWriter(System.out)));
+                //clone.setProgressMonitor(new TextProgressMonitor(new PrintWriter(System.out)));
                 clone.call();
 
                 _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
