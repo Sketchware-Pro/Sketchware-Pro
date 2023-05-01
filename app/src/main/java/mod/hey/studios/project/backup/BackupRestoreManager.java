@@ -17,6 +17,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import android.net.Uri;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
@@ -264,6 +265,9 @@ public class BackupRestoreManager {
             } else if (projectsFragment != null) {
                 projectsFragment.refreshProjectsList();
                 SketchwareUtil.toast("Restored successfully");
+		if(file.contains("._temp")){
+		 FileUtil.deleteFile(file.replace("/"+Uri.parse(file).getLastPathSegment(),""));
+		}
             } else {
                 SketchwareUtil.toast("Restored successfully. Refresh to see the project", Toast.LENGTH_LONG);
             }
