@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.eclipse.jgit.lib.ProgressMonitor;
+
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class GitHubRepoCloner {
@@ -36,8 +38,9 @@ public class GitHubRepoCloner {
 
     public interface CloneCallback {
         void onComplete(boolean success, String mesg);
+        void onProgress(int progress);
     }
-
+/*
     public void cloneRepository(final CloneCallback callback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         final Handler handler = new Handler(Looper.getMainLooper());
@@ -45,7 +48,7 @@ public class GitHubRepoCloner {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                try { 
+                try {
                     CloneCommand clone = Git.cloneRepository();
                     clone.setURI(url);
                     clone.setDirectory(new File(filePath, name));
@@ -70,6 +73,85 @@ public class GitHubRepoCloner {
             }
         });
     }
+    */
+   public void cloneRepository(final CloneCallback callback, final Context context) {
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    final Handler handler = new Handler(Looper.getMainLooper());
+
+    executor.execute(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                CloneCommand clone = Git.cloneRepository();
+                clone.setURI(url);
+                clone.setDirectory(new File(filePath, name));
+                clone.setBare(false);
+                clone.setCloneAllBranches(true);
+                clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+
+                // Create a new ProgressMonitor instance
+                ProgressMonitor progressMonitor = new TextProgressMonitor(context);
+
+                // Set the ProgressMonitor on the CloneCommand
+                clone.setProgressMonitor(progressMonitor);
+
+                clone.call();
+                _zip(filePath + name + "/DataSource", filePath + name + "/DataSource.swb");
+                callback.onComplete(true, filePath + name + "/DataSource.swb");
+            } catch (GitAPIException | JGitInternalException e) {
+                FileUtil.deleteFile(filePath + name);
+                e.printStackTrace();
+                callback.onComplete(false, e.toString());
+            }
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+        }
+    });
+   }
+
+   private static class TextProgressMonitor implements ProgressMonitor {
+    private int completed;
+    private Context context;
+    private CloneCallback callback;
+
+    public TextProgressMonitor(Context context, CloneCallback callback) {
+        this.context = context;
+        this.callback = callback;
+    }
+
+    @Override
+    public void start(int totalTasks) {
+        
+    }
+
+    @Override
+    public void beginTask(String title, int totalWork) {
+        
+    }
+
+    @Override
+    public void update(int completed) {
+        this.completed += completed;
+        callback.onProgress(this.completed);
+    }
+
+    @Override
+    public void endTask() {
+        
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return false;
+    }
+.  }
+
+
     
     public void _zip(final String _source, final String _destination) {
 		
