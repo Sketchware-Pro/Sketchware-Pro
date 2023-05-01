@@ -144,6 +144,10 @@ public class GitHubRepoCloner {
     public void endTask() {
         
     }
+    @Override
+    public void showDuration(boolean show) {
+
+    }
 
     @Override
     public boolean isCancelled() {
