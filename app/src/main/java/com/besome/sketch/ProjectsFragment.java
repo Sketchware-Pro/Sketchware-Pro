@@ -66,6 +66,7 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
+import mod.agus.jcoderz.lib.FileUtil;
 
 public class ProjectsFragment extends DA implements View.OnClickListener {
 
@@ -625,7 +626,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 		         if (success) {
                    prog.dismiss();
                    final ProjectsFragment fragment = ProjectsFragment.this;
-           		 (new BackupRestoreManager(getActivity(), fragment)).doRestore(SWBFath, true);
+           		(new BackupRestoreManager(getActivity(), fragment)).doRestore(SWBFath, true);
+                   FileUtil.deleteFile(FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/"+repo);
 		         } else {
                    SketchwareUtil.toastError("Unfortunately An Error Occurred when cloning repository.Try Again!");
                    prog.dismiss();
