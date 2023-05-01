@@ -627,7 +627,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                    prog.dismiss();
                    final ProjectsFragment fragment = ProjectsFragment.this;
            		(new BackupRestoreManager(getActivity(), fragment)).doRestore(SWBFath, true);
-                   FileUtil.deleteFile(FileUtil.getExternalStorageDir()+"/.sketchware/.github_temp/"+repo);
 		         } else {
                    SketchwareUtil.toastError("Unfortunately An Error Occurred when cloning repository.Try Again!");
                    prog.dismiss();
