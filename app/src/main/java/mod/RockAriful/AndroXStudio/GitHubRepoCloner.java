@@ -40,7 +40,7 @@ public class GitHubRepoCloner {
         void onComplete(boolean success, String mesg);
         void onProgress(int progress);
     }
-/*
+
     public void cloneRepository(final CloneCallback callback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         final Handler handler = new Handler(Looper.getMainLooper());
@@ -56,7 +56,7 @@ public class GitHubRepoCloner {
                     clone.setCloneAllBranches(true);
                     clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
                     clone.call();
-					_zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
+		    _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
                     callback.onComplete(true,filePath+name+"/DataSource.swb");
                 } catch (GitAPIException | JGitInternalException e) {
                     FileUtil.deleteFile(filePath+name);
@@ -74,79 +74,7 @@ public class GitHubRepoCloner {
         });
     }
     
-    */
     
-  public void cloneRepository(final CloneCallback callback) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    final Handler handler = new Handler(Looper.getMainLooper());
-
-    executor.execute(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                CloneCommand clone = Git.cloneRepository();
-                clone.setURI(url);
-                clone.setDirectory(new File(filePath, name));
-                clone.setBare(false);
-                clone.setCloneAllBranches(true);
-                clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-                //clone.setProgressMonitor(new TextProgressMonitor(new PrintWriter(System.out)));
-                clone.call();
-
-                _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
-                callback.onComplete(true,filePath+name+"/DataSource.swb");
-                
-            } catch (GitAPIException | JGitInternalException e) {
-                FileUtil.deleteFile(filePath+name);
-                e.printStackTrace();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onComplete(false,e.toString());
-                    }
-                });
-            }
-        }
-    });
-
-    // Count the number of objects cloned so far and update progress accordingly
-    final File objectsDir = new File(filePath, name + "/.git/objects");
-    final long totalObjects = countObjects(objectsDir);
-    final int pollInterval = 1000; // 1 second
-
-    handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            if (!objectsDir.exists()) {
-                // The clone operation has completed
-                return;
-            }
-
-            long currentObjects = countObjects(objectsDir);
-            int progress = (int) ((double) currentObjects / totalObjects * 100);
-
-            // Call onProgress with the current progress
-            callback.onProgress(progress);
-
-            // Schedule the next check
-            handler.postDelayed(this, pollInterval);
-        }
-    }, pollInterval);
-  }
-
-   private long countObjects(File dir) {
-    long count = 0;
-    for (File file : dir.listFiles()) {
-        if (file.isDirectory()) {
-            count += countObjects(file);
-        } else {
-            count++;
-        }
-    }
-    return count;
-   }
-
-
     public void _zip(final String _source, final String _destination) {
 		
       try {
