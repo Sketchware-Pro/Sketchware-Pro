@@ -11,6 +11,10 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import org.eclipse.jgit.internal.storage.file.ObjectDirectory;
+import org.eclipse.jgit.lib.ObjectDatabase;
+import org.eclipse.jgit.lib.Repository;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -77,51 +81,45 @@ public class GitHubRepoCloner {
     */
     
 
-public void cloneRepository(final CloneCallback callback) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    final Handler handler = new Handler(Looper.getMainLooper());
+public void cloneRepository(final String url, final String filePath, final String name, final String username, final String password, final CloneCallback callback) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    executor.execute(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                CloneCommand clone = Git.cloneRepository();
-                clone.setURI(url);
-                clone.setDirectory(new File(filePath, name));
-                clone.setBare(false);
-                clone.setCloneAllBranches(true);
-                clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-                Git git = clone.call();
-                
-                // Calculate the total number of objects to be transferred
-                int totalObjects = git.getRepository().getObjectDatabase().getObjectCount();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    CloneCommand clone = Git.cloneRepository();
+                    clone.setURI(url);
+                    clone.setDirectory(new File(filePath, name));
+                    clone.setBare(false);
+                    clone.setCloneAllBranches(true);
+                    clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+                    Git git = clone.call();
 
-                // Wait for the transfer to complete while updating progress
-                while (!git.getRepository().getObjectDatabase().hasReceivedAll()) {
-                    int receivedObjects = git.getRepository().getObjectDatabase().getObjectCount();
-                    int progress = receivedObjects * 100 / totalObjects;
-                    callback.onProgress(progress);
-                    Thread.sleep(1000); // wait for a second
+                    // Get the object directory and repository
+                    ObjectDirectory objectDirectory = git.getRepository().getObjectDatabase().getObjectDirectory();
+                    Repository repository = git.getRepository();
+
+                    // Calculate the total number of objects to be transferred
+                    int totalObjects = objectDirectory.getPackFile().getObjectCount();
+
+                    // Wait for the transfer to complete while updating progress
+                    while (!repository.getObjectDatabase().hasReceivedAllPacks()) {
+                        int receivedObjects = objectDirectory.getPackFile().getObjectCount();
+                        int progress = receivedObjects * 100 / totalObjects;
+                        callback.onProgress(progress);
+                        Thread.sleep(1000); // wait for a second
+                    }
+
+                    callback.onComplete(true, filePath + name + "/DataSource.swb");
+                } catch (GitAPIException | InterruptedException e) {
+                    FileUtil.deleteFile(filePath + name);
+                    e.printStackTrace();
+                    callback.onComplete(false, e.toString());
                 }
-
-                _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
-                callback.onComplete(true,filePath+name+"/DataSource.swb");
-            } catch (GitAPIException | JGitInternalException | InterruptedException e) {
-                FileUtil.deleteFile(filePath+name);
-                e.printStackTrace();
-                callback.onComplete(false,e.toString());
             }
-
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    
-                }
-            });
-        }
-    });
-}
-
+        });
+    }
 
 
     public void _zip(final String _source, final String _destination) {
@@ -165,3 +163,4 @@ public void cloneRepository(final CloneCallback callback) {
          }
     }
 }
+
