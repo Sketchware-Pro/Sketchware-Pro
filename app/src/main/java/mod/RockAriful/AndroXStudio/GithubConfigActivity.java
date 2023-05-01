@@ -4,7 +4,7 @@ import android.Manifest;
 import android.animation.*;
 import android.app.*;
 import android.content.*;
-import android.content.Intent;
+import android.content;
 import android.content.pm.PackageManager;
 import android.content.res.*;
 import android.graphics.*;
@@ -299,6 +299,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2) {
 				final boolean _isChecked = _param2;
+                
+                if (!_param1.isPressed()) {
+          	   // switch state changed by code, not user
+          	   return;
+        		}
+        
 				if (_isChecked) {
 					if (url.getText().toString().trim().equals("")) {
 						SketchwareUtil.toastError("Please enter repository URL");
@@ -320,12 +326,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 									enable.setChecked(false);
 								}
 								else {
-                           	        			 push_data.setVisibility(View.VISIBLE);
-		 	     			  	 create_token.setVisibility(View.GONE);
-							 url.setEnabled(false);
-							 setRefSpecs.setEnabled(false);
-							 username.setEnabled(false);
-							 pass.setEnabled(false);
+                           	    push_data.setVisibility(View.VISIBLE);
+		 	     			     create_token.setVisibility(View.GONE);
+							       url.setEnabled(false);
+						      	 setRefSpecs.setEnabled(false);
+						      	 username.setEnabled(false);
+							       pass.setEnabled(false);
                     
 									map = new HashMap<>();
 									map.put("repository", url.getText().toString());
@@ -342,12 +348,12 @@ public class GithubConfigActivity extends AppCompatActivity {
 				}
 				else {
 					FileUtil.writeFile(FileUtil.getExternalStorageDir()+"/.sketchware/data/"+sc_id+"/github_config", "[]");
-                 		        push_data.setVisibility(View.GONE);
-			    		create_token.setVisibility(View.VISIBLE);
+                    push_data.setVisibility(View.GONE);
+			    	create_token.setVisibility(View.VISIBLE);
 					url.setEnabled(true);
-					 setRefSpecs.setEnabled(true);
-					 username.setEnabled(true);
-					 pass.setEnabled(true);
+			   	 setRefSpecs.setEnabled(true);
+					username.setEnabled(true);
+					pass.setEnabled(true);
 				}
 			}
 		});
