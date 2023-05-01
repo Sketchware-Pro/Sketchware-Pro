@@ -11,10 +11,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import org.eclipse.jgit.internal.storage.file.ObjectDirectory;
-import org.eclipse.jgit.lib.ObjectDatabase;
-import org.eclipse.jgit.storage.file.ObjectDirectory;
-import org.eclipse.jgit.lib.Repository;
+
 import org.eclipse.jgit.lib.ObjectWalk;
 
 import java.io.File;
