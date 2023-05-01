@@ -11,9 +11,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-
-import org.eclipse.jgit.lib.ObjectWalk;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -79,7 +76,7 @@ public class GitHubRepoCloner {
     
     */
     
-    public void cloneRepository(final CloneCallback callback) {
+  public void cloneRepository(final CloneCallback callback) {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -93,36 +90,23 @@ public class GitHubRepoCloner {
                 clone.setBare(false);
                 clone.setCloneAllBranches(true);
                 clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-
-                // Count the total number of objects that need to be cloned
-                ObjectWalk walker = new ObjectWalk(clone.getRepository());
-                walker.markStart(walker.parseCommit(clone.getRepository().resolve("HEAD")));
-                long totalObjects = 0;
-                while (walker.next() != null) {
-                    totalObjects += walker.getObjectCount();
-                }
-
-                // Clone the repository
+                clone.setProgressMonitor(new TextProgressMonitor(new PrintWriter(System.out)));
                 clone.call();
 
-                // Zip the cloned repository
-                _zip(filePath + name + "/DataSource", filePath + name + "/DataSource.swb");
-
+                _zip(filePath+name+"/DataSource",filePath+name+"/DataSource.swb");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        // Call onComplete with the path to the zipped repository
-                        callback.onComplete(true, filePath + name + "/DataSource.swb");
+                        callback.onComplete(true,filePath+name+"/DataSource.swb");
                     }
                 });
-            } catch (GitAPIException | JGitInternalException | IOException e) {
-                FileUtil.deleteFile(filePath + name);
+            } catch (GitAPIException | JGitInternalException e) {
+                FileUtil.deleteFile(filePath+name);
                 e.printStackTrace();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        // Call onComplete with the error message
-                        callback.onComplete(false, e.toString());
+                        callback.onComplete(false,e.toString());
                     }
                 });
             }
@@ -152,7 +136,7 @@ public class GitHubRepoCloner {
             handler.postDelayed(this, pollInterval);
         }
     }, pollInterval);
-   }
+  }
 
    private long countObjects(File dir) {
     long count = 0;
