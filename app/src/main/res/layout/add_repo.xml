@@ -91,6 +91,7 @@
        			        android:autofillHints=""
         		        android:hint="Username|E-mail (If Private Repository )"
     			        android:inputType="text"
+				android:importantForAutofill="no"
    			        android:textColorHint="#008dcd"
      			        android:textSize="16sp" />
   			  </com.google.android.material.textfield.TextInputLayout>
@@ -109,7 +110,7 @@
     			        android:id="@+id/token"
      			        android:layout_width="match_parent"
          		        android:layout_height="match_parent"
-       			        android:autofillHints=""
+				android:importantForAutofill="no"
         		        android:hint="Password|Token (If Private Repository )"
     			        android:inputType="text"
    			        android:textColorHint="#008dcd"
