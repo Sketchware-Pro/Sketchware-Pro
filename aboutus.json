@@ -136,6 +136,14 @@
       "isTitled": false,
       "isMainModder": false,
       "title": null
+    },
+    {
+      "modder_username": "HAKANKOKCU",
+      "modder_description": "Fixed image issue for old Android versions in the \"About Sketchware Pro\" screen. Also please visit: https://tbudgie.netlify.app",
+      "modder_img": "https://avatars.githubusercontent.com/u/103432992",
+      "isTitled": false,
+      "isMainModder": false,
+      "title": null
     }
   ],
   "changelog": [
