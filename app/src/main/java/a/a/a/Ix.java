@@ -44,6 +44,7 @@ public class Ix {
         buildSettings = new BuildSettings(jq.sc_id);
         frc = new FileResConfig(c.sc_id);
         a.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
+        a.addAttribute("xmlns", "tools", "http://schemas.android.com/tools");
     }
 
     /**
