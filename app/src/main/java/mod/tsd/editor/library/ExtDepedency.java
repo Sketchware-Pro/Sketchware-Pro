@@ -9,7 +9,10 @@ public class ExtDepedency {
 	public static ConstVarComponent constVarComponent;
 	public static String addExtDepedency(jq metadata,String content) {
 		constVarComponent = metadata.x;
-		
+		dependency = content;
+		if (constVarComponent.isCircleImageViewUsed) {
+			dependency += "implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n";
+		}
 		return dependency;
 	}
 }
