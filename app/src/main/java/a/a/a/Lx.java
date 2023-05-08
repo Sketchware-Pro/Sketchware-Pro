@@ -12,6 +12,7 @@ import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.components.ComponentsHandler;
+import mod.tsd.editor.library.ExtDepedency;
 
 public class Lx {
 
@@ -98,6 +99,8 @@ public class Lx {
         if(metadata.isDynamicLinkUsed) {
             content += "implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'\r\n";
         }
+        
+        content += ExtDepedency.addExtDepedency(metadata,content);
 
         return j(content + "}\r\n", false);
     }
