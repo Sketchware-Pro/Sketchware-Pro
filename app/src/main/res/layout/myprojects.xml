@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,87 +8,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff6f6f6"
-        android:orientation="vertical">
+        android:gravity="center">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_create_new"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_margin="8dp"
-            android:background="@color/transparent"
-            android:elevation="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?selectableItemBackground"
-                android:clickable="false"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@color/transparent"
-                    android:clickable="false"
-                    android:src="@drawable/plus_96"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:clickable="false"
-                    android:text="@string/myprojects_list_menu_title_create_a_new_project"
-                    android:textColor="@color/scolor_blue_01" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_restore_projects"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="@dimen/card_view_margin8"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="@dimen/card_view_margin8"
-            android:background="@color/transparent"
-            android:elevation="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?selectableItemBackground"
-                android:clickable="false"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/iv_restore_projects"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:clickable="false"
-                    android:src="@drawable/data_backup_96"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/tv_restore_projects"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:clickable="false"
-                    android:text="Restore projects"
-                    android:textColor="@color/scolor_blue_01" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_3balls"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:lottie_fileName="anim/loading_3balls.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myprojects"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:splitMotionEvents="false" />
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="80dp"
+            android:splitMotionEvents="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

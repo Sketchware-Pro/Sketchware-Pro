@@ -72,8 +72,8 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -111,7 +111,7 @@ dependencies {
     implementation "com.google.guava:guava:31.1-jre"
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
-    implementation platform("$editorGroupId:bom:0.21.0")
+    implementation platform("$editorGroupId:bom:0.21.1")
     implementation "$editorGroupId:editor"
     implementation "$editorGroupId:language-java"
     implementation "$editorGroupId:language-textmate"
@@ -119,7 +119,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
-    minApi26Implementation "com.android.tools.build:bundletool:1.13.2"
+    minApi26Implementation "com.android.tools.build:bundletool:1.14.1"
     //noinspection GradleDependency copied from above dependency for not just runtime access
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
