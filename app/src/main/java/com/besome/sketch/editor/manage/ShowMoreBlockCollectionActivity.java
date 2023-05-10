@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.BlockBean;
@@ -156,7 +157,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         resizeBottomViews();
     }

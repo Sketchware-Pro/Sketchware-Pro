@@ -11,17 +11,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,29 +25,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import a.a.a.DB;
 import a.a.a.GB;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.sB;
-import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -64,13 +55,11 @@ import mod.tyron.backup.SingleCopyAsyncTask;
 
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.OnPageChangeListener {
 
-    private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private MainDrawer drawer;
     private ViewPager viewPager;
     private DB u;
-    private DB preference;
     private CoordinatorLayout coordinator;
     private Snackbar storageAccessDenied;
     private ProjectsFragment projectsFragment = null;
@@ -118,14 +107,13 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     public void n() {
         if (projectsFragment != null) {
-            projectsFragment.a(false);
+            projectsFragment.refreshProjectsList();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        invalidateOptionsMenu();
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 105:
@@ -162,7 +150,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
@@ -173,8 +161,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
+        setSupportActionBar(findViewById(R.id.toolbar));
 
-        preference = new DB(getApplicationContext(), "project");
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
         long u1I1 = u.e("U1I1");
@@ -185,22 +173,18 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(u1I0 + 1));
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ImageView logo = findViewById(R.id.img_title_logo);
-        logo.setOnClickListener(v -> invalidateOptionsMenu());
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(null);
+
         drawer = findViewById(R.id.left_drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
-        getSupportActionBar().setTitle("");
 
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(this);
 
-        fab = findViewById(R.id.fab);
         coordinator = findViewById(R.id.layout_coordinator);
 
         boolean hasStorageAccess = j();
@@ -277,62 +261,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         xB.b().a();
     }
 
-    private void showProjectSortingDialog() {
-        SketchDialog dialog = new SketchDialog(this);
-        dialog.setTitle("Sort options");
-        View root = wB.a(this, R.layout.sort_project_dialog);
-        RadioButton sortByName = root.findViewById(R.id.sortByName);
-        RadioButton sortByID = root.findViewById(R.id.sortByID);
-        RadioButton sortOrderAsc = root.findViewById(R.id.sortOrderAsc);
-        RadioButton sortOrderDesc = root.findViewById(R.id.sortOrderDesc);
-
-        int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
-        if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
-            sortByName.setChecked(true);
-        }
-        if ((storedValue & ProjectComparator.SORT_BY_ID) == ProjectComparator.SORT_BY_ID) {
-            sortByID.setChecked(true);
-        }
-        if ((storedValue & ProjectComparator.SORT_ORDER_ASCENDING) == ProjectComparator.SORT_ORDER_ASCENDING) {
-            sortOrderAsc.setChecked(true);
-        }
-        if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
-            sortOrderDesc.setChecked(true);
-        }
-        dialog.setView(root);
-        dialog.setPositiveButton("Save", v -> {
-            int sortValue = 0;
-            if (sortByName.isChecked()) {
-                sortValue |= ProjectComparator.SORT_BY_NAME;
-            }
-            if (sortByID.isChecked()) {
-                sortValue |= ProjectComparator.SORT_BY_ID;
-            }
-            if (sortOrderAsc.isChecked()) {
-                sortValue |= ProjectComparator.SORT_ORDER_ASCENDING;
-            }
-            if (sortOrderDesc.isChecked()) {
-                sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
-            }
-            preference.a("sortBy", sortValue, true);
-            dialog.dismiss();
-            n();
-        });
-        dialog.setNegativeButton("Cancel", Helper.getDialogDismissListener(dialog));
-        dialog.show();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sortProject) {
-            if (!mB.a()) showProjectSortingDialog();
-        }
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
@@ -382,7 +313,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 dialog.a("Skip", Helper.getDialogDismissListener(dialog));
                 dialog.configureDefaultButton("Don't show anymore", v -> {
                     try {
-                        optOutFile.createNewFile();
+                        if (!optOutFile.createNewFile())
+                            throw new IOException("Failed to create file " + optOutFile);
                     } catch (IOException e) {
                         Log.e("MainActivity", "Error while trying to create " +
                                 "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
@@ -436,16 +368,12 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     public void onPageSelected(int position) {
-        if (position == 0) {
-            if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0) {
+        if (position == 0)
+            if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0)
                 projectsFragment.refreshProjectsList();
-            }
-            projectsFragment.showCreateNewProjectLayout();
-        } else if (position == 1) {
-            fab.show();
-        }
     }
 
+    //This is annoying Please remove/togglize it
     private void tryLoadingCustomizedAppStrings() {
         // Refresh extracted provided strings file if necessary
         oB oB = new oB();
@@ -489,6 +417,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return new ProjectsFragment();
         }

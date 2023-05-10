@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -131,6 +133,7 @@ public class PRDownloader {
     }
 
     public interface HttpClient extends Cloneable {
+        @NonNull
         HttpClient clone();
 
         void connect(DownloadRequest request) throws IOException;
@@ -247,6 +250,7 @@ public class PRDownloader {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "Progress{" +
                     "currentBytes=" + currentBytes +
@@ -423,6 +427,7 @@ public class PRDownloader {
         }
 
         @Override
+        @NonNull
         public HttpClient clone() {
             return new DefaultHttpClient();
         }
