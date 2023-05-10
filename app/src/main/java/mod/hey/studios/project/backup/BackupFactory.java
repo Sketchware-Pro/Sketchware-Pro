@@ -84,9 +84,11 @@ public class BackupFactory {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             byte[] key = "sketchwaresecure".getBytes();
             cipher.init(2, new SecretKeySpec(key, "AES"), new IvParameterSpec(key));
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
-            byte[] encrypted = new byte[(int) raf.length()];
-            raf.readFully(encrypted);
+            byte[] encrypted;
+            try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+                encrypted = new byte[(int) raf.length()];
+                raf.readFully(encrypted);
+            }
             byte[] decrypted = cipher.doFinal(encrypted);
             String decryptedString = new String(decrypted);
 
@@ -104,9 +106,10 @@ public class BackupFactory {
             byte[] key = "sketchwaresecure".getBytes();
             cipher.init(1, new SecretKeySpec(key, "AES"), new IvParameterSpec(key));
             byte[] encrypted = cipher.doFinal((string.trim()).getBytes());
-            RandomAccessFile raf = new RandomAccessFile(path, "rw");
-            raf.setLength(0);
-            raf.write(encrypted);
+            try (RandomAccessFile raf = new RandomAccessFile(path, "rw")) {
+                raf.setLength(0);
+                raf.write(encrypted);
+            }
 
             return true;
         } catch (Exception e) {
@@ -232,31 +235,15 @@ public class BackupFactory {
             //skip .nomedia files
             if (source.getName().equals(".nomedia")) return;
 
-            InputStream in = null;
-            OutputStream out = null;
-
-            try {
-                in = new FileInputStream(source);
-                out = new FileOutputStream(destination);
-
+            try (InputStream in = new FileInputStream(source);
+                 OutputStream out = new FileOutputStream(destination)) {
                 byte[] buffer = new byte[1024];
-
                 int length;
                 while ((length = in.read(buffer)) > 0) {
                     out.write(buffer, 0, length);
                 }
-            } catch (Exception e) {
-                try {
-                    if (in != null) in.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-
-                try {
-                    if (out != null) out.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -264,7 +251,7 @@ public class BackupFactory {
     public static boolean zipContainsFile(String zipPath, String fileName) {
 
         try {
-            ZipInputStream zp = new ZipInputStream(new FileInputStream(new File(zipPath)));
+            ZipInputStream zp = new ZipInputStream(new FileInputStream(zipPath));
 
             ZipEntry en;
 
@@ -294,7 +281,7 @@ public class BackupFactory {
         String versionCode = yB.c(lC.b(sc_id), "sc_ver_code");
         String pkgName = yB.c(lC.b(sc_id), "my_sc_pkg_name");
         String projectNameOnly = project_name.replace("_d", "").replace(File.separator, "");
-        String finalFileName = "";
+        String finalFileName;
 
         try {
             finalFileName = customFileName
@@ -386,7 +373,8 @@ public class BackupFactory {
 
                     }
 
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         }
 

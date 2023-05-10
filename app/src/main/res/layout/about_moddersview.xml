@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            app:cardCornerRadius="100dp">
+            app:cardCornerRadius="22.2dp">
 
             <ImageView
                 android:id="@+id/img_user_icon"
