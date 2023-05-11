@@ -82,7 +82,7 @@ public class Dp {
     public yq yq;
     public FilePathUtil fpu;
     public ManageLocalLibrary mll;
-    public Kp builtInLibraryManager;
+    public BuiltInLibraryManager builtInLibraryManager;
     public String androidJarPath;
     public ProguardHandler proguard;
     public ProjectSettings settings;
@@ -123,7 +123,7 @@ public class Dp {
         yq = yqVar;
         fpu = new FilePathUtil();
         mll = new ManageLocalLibrary(yqVar.sc_id);
-        builtInLibraryManager = new Kp(yqVar.sc_id);
+        builtInLibraryManager = new BuiltInLibraryManager(yqVar.sc_id);
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
         proguard = new ProguardHandler(yqVar.sc_id);
@@ -271,7 +271,7 @@ public class Dp {
         }
 
         /* Add used built-in libraries to the classpath */
-        for (Jp library : builtInLibraryManager.a()) {
+        for (Jp library : builtInLibraryManager.getLibraries()) {
             classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(library.a()));
         }
 
@@ -468,7 +468,7 @@ public class Dp {
      */
     public String getLibraryPackageNames() {
         StringBuilder extraPackages = new StringBuilder();
-        for (Jp library : builtInLibraryManager.a()) {
+        for (Jp library : builtInLibraryManager.getLibraries()) {
             if (library.c()) {
                 extraPackages.append(library.b()).append(":");
             }
@@ -572,7 +572,7 @@ public class Dp {
         try {
             ApkBuilder apkBuilder = new ApkBuilder(new File(yq.unsignedUnalignedApkPath), new File(yq.resourcesApkPath), new File(firstDexPath), null, null, System.out);
 
-            for (Jp library : builtInLibraryManager.a()) {
+            for (Jp library : builtInLibraryManager.getLibraries()) {
                 apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
             }
 
@@ -649,7 +649,7 @@ public class Dp {
         }
 
         /* Add used built-in libraries' DEX files */
-        for (Jp builtInLibrary : builtInLibraryManager.a()) {
+        for (Jp builtInLibrary : builtInLibraryManager.getLibraries()) {
             dexes.add(BuiltInLibraries.getLibraryDexFile(builtInLibrary.a()));
         }
 
@@ -735,39 +735,39 @@ public class Dp {
     public void getBuiltInLibrariesReady() {
         BuiltInLibraries.extractCompileAssets(progressReceiver);
         if (yq.N.g) {
-            builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
-            builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
-            builtInLibraryManager.a(BuiltInLibraries.MATERIAL);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_APPCOMPAT);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.MATERIAL);
         }
         if (yq.N.isFirebaseEnabled) {
-            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_COMMON);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_COMMON);
         }
         if (yq.N.isFirebaseAuthUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_AUTH);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_AUTH);
         }
         if (yq.N.isFirebaseDatabaseUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DATABASE);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_DATABASE);
         }
         if (yq.N.isFirebaseStorageUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_STORAGE);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_STORAGE);
         }
         if (yq.N.isMapUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.PLAY_SERVICES_MAPS);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.PLAY_SERVICES_MAPS);
         }
         if (yq.N.isAdMobEnabled) {
-            builtInLibraryManager.a(BuiltInLibraries.PLAY_SERVICES_ADS);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.PLAY_SERVICES_ADS);
         }
         if (yq.N.isGsonUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.GSON);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.GSON);
         }
         if (yq.N.isGlideUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.GLIDE);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.GLIDE);
         }
         if (yq.N.isHttp3Used) {
-            builtInLibraryManager.a(BuiltInLibraries.OKHTTP);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.OKHTTP);
         }
         if (yq.N.isDynamicLinkUsed) {
-            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
         }
 
         KotlinCompilerBridge.maybeAddKotlinBuiltInLibraryDependenciesIfPossible(this, builtInLibraryManager);
@@ -795,7 +795,7 @@ public class Dp {
      * @param args List of arguments to add built-in libraries' ProGuard roles to.
      */
     private void proguardAddLibConfigs(List<String> args) {
-        for (Jp library : builtInLibraryManager.a()) {
+        for (Jp library : builtInLibraryManager.getLibraries()) {
             File config = BuiltInLibraries.getLibraryProGuardConfiguration(library.a());
             if (config.exists()) {
                 args.add("-include");
@@ -811,7 +811,7 @@ public class Dp {
      */
     private void proguardAddRjavaRules(List<String> args) {
         StringBuilder sb = new StringBuilder("# R.java rules");
-        for (Jp jp : builtInLibraryManager.a()) {
+        for (Jp jp : builtInLibraryManager.getLibraries()) {
             if (jp.c() && !jp.b().isEmpty()) {
                 sb.append("\n");
                 sb.append("-keep class ");

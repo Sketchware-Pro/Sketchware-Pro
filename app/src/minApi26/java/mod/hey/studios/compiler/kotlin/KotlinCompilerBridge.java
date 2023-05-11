@@ -2,8 +2,8 @@ package mod.hey.studios.compiler.kotlin;
 
 import java.io.File;
 
+import a.a.a.BuiltInLibraryManager;
 import a.a.a.Dp;
-import a.a.a.Kp;
 import a.a.a.yq;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.build.BuildProgressReceiver;
@@ -18,9 +18,9 @@ public class KotlinCompilerBridge {
         }
     }
 
-    public static void maybeAddKotlinBuiltInLibraryDependenciesIfPossible(Dp dp, Kp builtInLibraryManager) {
+    public static void maybeAddKotlinBuiltInLibraryDependenciesIfPossible(Dp dp, BuiltInLibraryManager builtInLibraryManager) {
         if (KotlinCompilerUtil.areAnyKtFilesPresent(dp)) {
-            builtInLibraryManager.a(BuiltInLibraries.KOTLIN_STDLIB);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.KOTLIN_STDLIB);
         }
     }
 
