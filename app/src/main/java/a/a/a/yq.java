@@ -642,8 +642,8 @@ public class yq {
         }
         if (N.isFirebaseEnabled || N.isAdMobEnabled || N.isMapUsed) {
             ProjectLibraryBean firebaseLibrary = projectLibraryManager.d();
-            Mx mx = new Mx();
-            mx.a("google_play_services_version", 12451000);
+            XmlBuilderHelper mx = new XmlBuilderHelper();
+            mx.addInteger("google_play_services_version", 12451000);
             if (N.isFirebaseEnabled) {
                 String databaseUrl;
                 String projectId;
@@ -655,19 +655,19 @@ public class yq {
                     databaseUrl = "https://" + libraryData + ".firebaseio.com";
                     projectId = libraryData;
                 }
-                mx.a("firebase_database_url", databaseUrl, false);
-                mx.a("project_id", projectId, false);
-                mx.a("google_app_id", firebaseLibrary.reserved1, false);
+                mx.addString("firebase_database_url", databaseUrl, false);
+                mx.addString("project_id", projectId, false);
+                mx.addString("google_app_id", firebaseLibrary.reserved1, false);
                 if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
-                    mx.a("google_api_key", firebaseLibrary.reserved2, false);
+                    mx.addString("google_api_key", firebaseLibrary.reserved2, false);
                 }
                 if (firebaseLibrary.reserved3 != null && firebaseLibrary.reserved3.length() > 0) {
-                    mx.a("google_storage_bucket", firebaseLibrary.reserved3, false);
+                    mx.addString("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }
             if (N.isMapUsed) {
                 // if p3 is false, then "translatable="false" will be added
-                mx.a("google_maps_key", projectLibraryManager.e().data, false);
+                mx.addString("google_maps_key", projectLibraryManager.e().data, false);
             }
             String filePath = "values/secrets.xml";
             fileUtil.b(resDirectoryPath + File.separator + filePath,
@@ -783,66 +783,66 @@ public class yq {
             boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
-            Mx colorsFileBuilder = new Mx();
-            colorsFileBuilder.a("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
-            colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
-            colorsFileBuilder.a("colorAccent", String.format("#%06X", colorAccent & 0xffffff));
-            colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", colorControlHighlight & 0xffffff));
-            colorsFileBuilder.a("colorControlNormal", String.format("#%06X", colorControlNormal & 0xffffff));
+            XmlBuilderHelper colorsFileBuilder = new XmlBuilderHelper();
+            colorsFileBuilder.addColor("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
+            colorsFileBuilder.addColor("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
+            colorsFileBuilder.addColor("colorAccent", String.format("#%06X", colorAccent & 0xffffff));
+            colorsFileBuilder.addColor("colorControlHighlight", String.format("#%06X", colorControlHighlight & 0xffffff));
+            colorsFileBuilder.addColor("colorControlNormal", String.format("#%06X", colorControlNormal & 0xffffff));
             srcCodeBeans.add(new SrcCodeBean("colors.xml",
                     CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode())));
 
-            Mx stylesFileBuilder = new Mx();
-            stylesFileBuilder.c("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
-            stylesFileBuilder.a("AppTheme", "colorPrimary", "@color/colorPrimary");
-            stylesFileBuilder.a("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
-            stylesFileBuilder.a("AppTheme", "colorAccent", "@color/colorAccent");
-            stylesFileBuilder.a("AppTheme", "colorControlHighlight", "@color/colorControlHighlight");
-            stylesFileBuilder.a("AppTheme", "colorControlNormal", "@color/colorControlNormal");
-            stylesFileBuilder.c("AppTheme.FullScreen", "AppTheme");
-            stylesFileBuilder.a("AppTheme.FullScreen", "android:windowFullscreen", "true");
-            stylesFileBuilder.a("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
-            stylesFileBuilder.c("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
-            stylesFileBuilder.c("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
+            XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
+            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
+            stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
+            stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
+            stylesFileBuilder.addItemToStyle("AppTheme", "colorAccent", "@color/colorAccent");
+            stylesFileBuilder.addItemToStyle("AppTheme", "colorControlHighlight", "@color/colorControlHighlight");
+            stylesFileBuilder.addItemToStyle("AppTheme", "colorControlNormal", "@color/colorControlNormal");
+            stylesFileBuilder.addStyle("AppTheme.FullScreen", "AppTheme");
+            stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowFullscreen", "true");
+            stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
+            stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
+            stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
             srcCodeBeans.add(new SrcCodeBean("styles.xml",
                     CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode())));
         } else {
-            Mx stylesFileBuilder = new Mx();
-            stylesFileBuilder.c("AppTheme", "@android:style/Theme.Material.Light.DarkActionBar");
-            stylesFileBuilder.a("AppTheme", "android:colorPrimary", "@color/colorPrimary");
-            stylesFileBuilder.a("AppTheme", "android:colorPrimaryDark", "@color/colorPrimaryDark");
-            stylesFileBuilder.a("AppTheme", "android:colorAccent", "@color/colorAccent");
-            stylesFileBuilder.a("AppTheme", "android:colorControlHighlight", "@color/colorControlHighlight");
-            stylesFileBuilder.a("AppTheme", "android:colorControlNormal", "@color/colorControlNormal");
-            stylesFileBuilder.c("FullScreen", "@android:style/Theme.Material.Light.NoActionBar.Fullscreen");
-            stylesFileBuilder.a("FullScreen", "android:colorPrimary", "@color/colorPrimary");
-            stylesFileBuilder.a("FullScreen", "android:colorPrimaryDark", "@color/colorPrimaryDark");
-            stylesFileBuilder.a("FullScreen", "android:colorAccent", "@color/colorAccent");
-            stylesFileBuilder.a("FullScreen", "android:colorControlHighlight", "@color/colorControlHighlight");
-            stylesFileBuilder.a("FullScreen", "android:colorControlNormal", "@color/colorControlNormal");
-            stylesFileBuilder.c("NoActionBar", "@android:style/Theme.Material.Light.NoActionBar");
-            stylesFileBuilder.a("NoActionBar", "android:colorPrimary", "@color/colorPrimary");
-            stylesFileBuilder.a("NoActionBar", "android:colorPrimaryDark", "@color/colorPrimaryDark");
-            stylesFileBuilder.a("NoActionBar", "android:colorAccent", "@color/colorAccent");
-            stylesFileBuilder.a("NoActionBar", "android:colorControlHighlight", "@color/colorControlHighlight");
-            stylesFileBuilder.a("NoActionBar", "android:colorControlNormal", "@color/colorControlNormal");
-            stylesFileBuilder.c("NoStatusBar", "AppTheme");
-            stylesFileBuilder.a("NoStatusBar", "android:windowFullscreen", "true");
+            XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
+            stylesFileBuilder.addStyle("AppTheme", "@android:style/Theme.Material.Light.DarkActionBar");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:colorPrimary", "@color/colorPrimary");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:colorPrimaryDark", "@color/colorPrimaryDark");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:colorAccent", "@color/colorAccent");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:colorControlHighlight", "@color/colorControlHighlight");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:colorControlNormal", "@color/colorControlNormal");
+            stylesFileBuilder.addStyle("FullScreen", "@android:style/Theme.Material.Light.NoActionBar.Fullscreen");
+            stylesFileBuilder.addItemToStyle("FullScreen", "android:colorPrimary", "@color/colorPrimary");
+            stylesFileBuilder.addItemToStyle("FullScreen", "android:colorPrimaryDark", "@color/colorPrimaryDark");
+            stylesFileBuilder.addItemToStyle("FullScreen", "android:colorAccent", "@color/colorAccent");
+            stylesFileBuilder.addItemToStyle("FullScreen", "android:colorControlHighlight", "@color/colorControlHighlight");
+            stylesFileBuilder.addItemToStyle("FullScreen", "android:colorControlNormal", "@color/colorControlNormal");
+            stylesFileBuilder.addStyle("NoActionBar", "@android:style/Theme.Material.Light.NoActionBar");
+            stylesFileBuilder.addItemToStyle("NoActionBar", "android:colorPrimary", "@color/colorPrimary");
+            stylesFileBuilder.addItemToStyle("NoActionBar", "android:colorPrimaryDark", "@color/colorPrimaryDark");
+            stylesFileBuilder.addItemToStyle("NoActionBar", "android:colorAccent", "@color/colorAccent");
+            stylesFileBuilder.addItemToStyle("NoActionBar", "android:colorControlHighlight", "@color/colorControlHighlight");
+            stylesFileBuilder.addItemToStyle("NoActionBar", "android:colorControlNormal", "@color/colorControlNormal");
+            stylesFileBuilder.addStyle("NoStatusBar", "AppTheme");
+            stylesFileBuilder.addItemToStyle("NoStatusBar", "android:windowFullscreen", "true");
             srcCodeBeans.add(new SrcCodeBean("styles.xml",
                     CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode())));
 
-            Mx colorsFileBuilder = new Mx();
-            colorsFileBuilder.a("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
-            colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
-            colorsFileBuilder.a("colorAccent", String.format("#%06X", colorAccent & 0xffffff));
-            colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", colorControlHighlight & 0xffffff));
-            colorsFileBuilder.a("colorControlNormal", String.format("#%06X", colorControlNormal & 0xffffff));
+            XmlBuilderHelper colorsFileBuilder = new XmlBuilderHelper();
+            colorsFileBuilder.addColor("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
+            colorsFileBuilder.addColor("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
+            colorsFileBuilder.addColor("colorAccent", String.format("#%06X", colorAccent & 0xffffff));
+            colorsFileBuilder.addColor("colorControlHighlight", String.format("#%06X", colorControlHighlight & 0xffffff));
+            colorsFileBuilder.addColor("colorControlNormal", String.format("#%06X", colorControlNormal & 0xffffff));
             srcCodeBeans.add(new SrcCodeBean("colors.xml",
                     CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode())));
         }
 
-        Mx stringsFileBuilder = new Mx();
-        stringsFileBuilder.b("app_name", applicationName);
+        XmlBuilderHelper stringsFileBuilder = new XmlBuilderHelper();
+        stringsFileBuilder.addNonTranslatableString("app_name", applicationName);
         srcCodeBeans.add(new SrcCodeBean("strings.xml",
                 CommandBlock.applyCommands("strings.xml", stringsFileBuilder.toCode())));
         CommandBlock.x();
@@ -865,7 +865,7 @@ public class yq {
 
         if (isXmlFile) {
             /*
-              Generating every java file is necessary to make command blocks for xml work
+             Generating every java file is necessary to make command blocks for xml work
              */
             for (ProjectFileBean file : files) {
                 CommandBlock.CBForXml(new Jx(N, file, projectDataManager).generateCode());

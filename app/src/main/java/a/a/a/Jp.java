@@ -26,10 +26,10 @@ public class Jp {
 
     public Jp(String libraryName) {
         a = libraryName;
-        c = qq.c(libraryName);
+        c = BuiltInLibraryUtils.hasResources(libraryName);
         d = libraryName.equals(BuiltInLibraries.CODE_VIEW);
         if (c || d) {
-            b = qq.b(libraryName);
+            b = BuiltInLibraryUtils.getPackageName(libraryName);
         }
     }
 

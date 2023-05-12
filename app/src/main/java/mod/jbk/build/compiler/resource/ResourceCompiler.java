@@ -192,7 +192,7 @@ public class ResourceCompiler {
             }
 
             /* Add built-in libraries' assets */
-            for (Jp library : buildHelper.builtInLibraryManager.a()) {
+            for (Jp library : buildHelper.builtInLibraryManager.getLibraries()) {
                 if (library.d()) {
                     String assetsPath = BuiltInLibraries.getLibraryAssetsPath(library.a());
 
@@ -210,7 +210,7 @@ public class ResourceCompiler {
             }
 
             /* Include compiled built-in library resources */
-            for (Jp library : buildHelper.builtInLibraryManager.a()) {
+            for (Jp library : buildHelper.builtInLibraryManager.getLibraries()) {
                 if (library.c()) {
                     args.add("-R");
                     args.add(new File(compiledBuiltInLibraryResourcesDirectory, library.a() + ".zip").getAbsolutePath());
@@ -334,7 +334,7 @@ public class ResourceCompiler {
 
         private void compileBuiltInLibraryResources() throws zy, MissingFileException {
             compiledBuiltInLibraryResourcesDirectory.mkdirs();
-            for (Jp builtInLibrary : buildHelper.builtInLibraryManager.a()) {
+            for (Jp builtInLibrary : buildHelper.builtInLibraryManager.getLibraries()) {
                 if (builtInLibrary.c()) {
                     File cachedCompiledResources = new File(compiledBuiltInLibraryResourcesDirectory, builtInLibrary.a() + ".zip");
                     String libraryResources = BuiltInLibraries.getLibraryResourcesPath(builtInLibrary.a());
