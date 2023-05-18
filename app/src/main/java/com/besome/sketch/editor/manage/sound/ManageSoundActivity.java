@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.sound;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -16,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
+
+import java.lang.ref.WeakReference;
 
 import a.a.a.By;
 import a.a.a.MA;
@@ -62,7 +63,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         try {
             projectSounds.f();
             collectionSounds.d();
-            new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
+            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
             h();
@@ -165,17 +166,21 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
-    private class SaveAsyncTask extends MA {
-        public SaveAsyncTask(Context context) {
-            super(context);
-            addTask(this);
+    private static class SaveAsyncTask extends MA {
+        private final WeakReference<ManageSoundActivity> activityWeakReference;
+
+        public SaveAsyncTask(ManageSoundActivity activity) {
+            super(activity);
+            activityWeakReference = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
-            h();
-            setResult(RESULT_OK);
-            finish();
+            var activity = activityWeakReference.get();
+            activity.h();
+            activity.setResult(RESULT_OK);
+            activity.finish();
             Qp.g().d();
         }
 
@@ -183,7 +188,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public void b() {
             try {
                 publishProgress("Now processing..");
-                projectSounds.h();
+                activityWeakReference.get().projectSounds.h();
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException(new By(xB.b().a(a, R.string.common_error_unknown)));
@@ -192,7 +197,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void a(String str) {
-            h();
+            activityWeakReference.get().h();
         }
 
         @Override
