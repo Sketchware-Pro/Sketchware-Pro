@@ -82,8 +82,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (!super.j()) {
             finish();
         }
@@ -99,10 +99,10 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
                 onBackPressed();
             }
         });
-        if (bundle == null) {
+        if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
         } else {
-            sc_id = bundle.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         }
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -120,8 +120,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onPostCreate(Bundle bundle) {
-        super.onPostCreate(bundle);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override
@@ -135,9 +135,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", sc_id);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -157,8 +157,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     private class PagerAdapter extends FragmentPagerAdapter {
         private final String[] titles;
 
-        public PagerAdapter(FragmentManager xf) {
-            super(xf);
+        public PagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
             titles = new String[TAB_COUNT];
             titles[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
             titles[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
