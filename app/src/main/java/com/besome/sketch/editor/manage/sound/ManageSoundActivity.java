@@ -1,15 +1,5 @@
 package com.besome.sketch.editor.manage.sound;
 
-import a.a.a.By;
-import a.a.a.MA;
-import a.a.a.Pv;
-import a.a.a.Qp;
-import a.a.a.Qv;
-import a.a.a.Yv;
-import a.a.a.ow;
-import a.a.a.to;
-import a.a.a.xB;
-import a.a.a.xo;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,9 +11,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
+
+import a.a.a.By;
+import a.a.a.MA;
+import a.a.a.Qp;
+import a.a.a.Yv;
+import a.a.a.mB;
+import a.a.a.ow;
+import a.a.a.to;
+import a.a.a.xB;
+import a.a.a.xo;
 
 public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
     public final int k = 2;
@@ -71,7 +72,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
             this.p.f();
             this.q.d();
             if (this.j.h()) {
-                new Handler().postDelayed(new Qv(this), 500L);
+                new Handler().postDelayed(() -> new a(getApplicationContext()).execute(), 500L);
             } else {
                 xo.a(getApplicationContext());
             }
@@ -94,7 +95,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625137));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        this.m.setNavigationOnClickListener(new Pv(this));
+        this.m.setNavigationOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        });
         if (bundle == null) {
             this.l = getIntent().getStringExtra("sc_id");
         } else {
@@ -213,7 +218,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
                 ManageSoundActivity.this.p.h();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new By(xB.b().a(this.a, 2131624916));
+                throw new RuntimeException(new By(xB.b().a(this.a, 2131624916)));
             }
         }
 
