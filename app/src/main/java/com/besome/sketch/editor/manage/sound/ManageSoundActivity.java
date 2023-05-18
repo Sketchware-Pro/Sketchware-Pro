@@ -5,9 +5,7 @@ import a.a.a.MA;
 import a.a.a.Pv;
 import a.a.a.Qp;
 import a.a.a.Qv;
-import a.a.a.Xf;
 import a.a.a.Yv;
-import a.a.a.gg;
 import a.a.a.ow;
 import a.a.a.to;
 import a.a.a.xB;
@@ -16,14 +14,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
 
-public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.e, to {
+public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
     public final int k = 2;
     public String l;
     public Toolbar m;
@@ -33,11 +35,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     public Yv q;
 
     @Override
-    public void a(int i) {
+    public void onPageScrollStateChanged(int state) {
     }
 
     @Override
-    public void a(int i, float f, int i2) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
@@ -87,11 +89,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
         setContentView(2131427564);
         this.m = (Toolbar) findViewById(2131231847);
-        a(this.m);
+        setSupportActionBar(this.m);
         findViewById(2131231370).setVisibility(8);
-        d().a(xB.b().a(getApplicationContext(), 2131625137));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625137));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         this.m.setNavigationOnClickListener(new Pv(this));
         if (bundle == null) {
             this.l = getIntent().getStringExtra("sc_id");
@@ -102,7 +104,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         this.n = (ViewPager) findViewById(2131232325);
         this.n.setAdapter(new b(getSupportFragmentManager()));
         this.n.setOffscreenPageLimit(2);
-        this.n.a(this);
+        this.n.addOnPageChangeListener(this);
         this.o.setupWithViewPager(this.n);
         xo.a((to) this);
     }
@@ -140,18 +142,18 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void b(int i) {
-        if (i == 0) {
+    public void onPageSelected(int position) {
+        if (position == 0) {
             this.q.d();
         } else {
             this.p.f();
         }
     }
 
-    class b extends gg {
+    class b extends FragmentPagerAdapter {
         public String[] f;
 
-        public b(Xf xf) {
+        public b(FragmentManager xf) {
             super(xf);
             this.f = new String[2];
             this.f[0] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), 2131625288).toUpperCase();
@@ -159,14 +161,15 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
 
         @Override
-        public int a() {
+        public int getCount() {
             return 2;
         }
 
         @Override
-        public Object a(ViewGroup viewGroup, int i) {
-            Fragment fragment = (Fragment) super.a(viewGroup, i);
-            if (i != 0) {
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup viewGroup, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(viewGroup, position);
+            if (position != 0) {
                 ManageSoundActivity.this.q = (Yv) fragment;
             } else {
                 ManageSoundActivity.this.p = (ow) fragment;
@@ -175,16 +178,17 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
 
         @Override
-        public Fragment c(int i) {
-            if (i != 0) {
+        @NonNull
+        public Fragment getItem(int position) {
+            if (position != 0) {
                 return new Yv();
             }
             return new ow();
         }
 
         @Override
-        public CharSequence a(int i) {
-            return this.f[i];
+        public CharSequence getPageTitle(int position) {
+            return this.f[position];
         }
     }
 
@@ -216,6 +220,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         public void a(String str) {
             ManageSoundActivity.this.h();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return a(voids);
         }
     }
 }
