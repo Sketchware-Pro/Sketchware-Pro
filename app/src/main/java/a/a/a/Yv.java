@@ -1,7 +1,6 @@
 package a.a.a;
 
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -311,7 +310,7 @@ public class Yv extends qA implements View.OnClickListener {
             q = position;
             adapter.notifyItemChanged(r);
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setAudioAttributes(ManageSoundActivity.AudioMetadata.MEDIA_PLAYER_AUDIO_ATTRIBUTES);
             mediaPlayer.setOnPreparedListener(mp -> {
                 mediaPlayer.start();
                 b(position);

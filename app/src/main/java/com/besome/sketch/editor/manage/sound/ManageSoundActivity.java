@@ -2,6 +2,7 @@ package com.besome.sketch.editor.manage.sound;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
@@ -207,6 +208,10 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     public static class AudioMetadata {
+        public static final AudioAttributes MEDIA_PLAYER_AUDIO_ATTRIBUTES = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
         private final int durationInMs;
         private final byte[] embeddedPicture;
 
