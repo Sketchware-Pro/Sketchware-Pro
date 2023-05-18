@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundImportActivity;
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import mod.SketchwareUtil;
 
 public class Yv extends qA implements View.OnClickListener {
     public RecyclerView f;
@@ -45,7 +51,7 @@ public class Yv extends qA implements View.OnClickListener {
 
     public void h() {
         d();
-        ArrayList<? extends Parcelable> arrayList = new ArrayList<>();
+        ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
         Iterator<ProjectResourceBean> it = this.j.iterator();
         while (it.hasNext()) {
             ProjectResourceBean next = it.next();
@@ -140,10 +146,10 @@ public class Yv extends qA implements View.OnClickListener {
         bundle.putString("dir_path", this.h);
     }
 
-    class a extends RecyclerView.Adapter<a.a> {
+    class a extends RecyclerView.Adapter<a.ViewHolder> {
         public int c = -1;
 
-        class a extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             public CheckBox t;
             public ImageView u;
             public TextView v;
@@ -152,7 +158,7 @@ public class Yv extends qA implements View.OnClickListener {
             public ProgressBar y;
             public TextView z;
 
-            public a(@NonNull View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 this.t = (CheckBox) itemView.findViewById(2131230893);
                 this.u = (ImageView) itemView.findViewById(2131231106);
@@ -161,8 +167,17 @@ public class Yv extends qA implements View.OnClickListener {
                 this.x = (TextView) itemView.findViewById(2131231931);
                 this.y = (ProgressBar) itemView.findViewById(2131231607);
                 this.z = (TextView) itemView.findViewById(2131231967);
-                this.w.setOnClickListener(new Wv(this, a.this));
-                this.t.setOnClickListener(new Xv(this, a.this));
+                this.w.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        Yv.this.a(getLayoutPosition());
+                    }
+                });
+                this.t.setOnClickListener(v -> {
+                    c = getLayoutPosition();
+                    j.get(c).isSelected = t.isChecked();
+                    i();
+                    notifyItemChanged(c);
+                });
             }
         }
 
@@ -170,7 +185,7 @@ public class Yv extends qA implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull a holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String str = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) Yv.this.j.get(position)).resFullName;
             holder.t.setVisibility(0);
             a(str, holder.u);
@@ -198,8 +213,8 @@ public class Yv extends qA implements View.OnClickListener {
 
         @Override
         @NonNull
-        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427568, parent, false));
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427568, parent, false));
         }
 
         @Override
@@ -212,7 +227,12 @@ public class Yv extends qA implements View.OnClickListener {
             try {
                 mediaMetadataRetriever.setDataSource(str);
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    Glide.with(Yv.this.getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into((DrawableRequestBuilder<byte[]>) new Vv(this, imageView));
+                    Glide.with(Yv.this.getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            imageView.setImageDrawable(glideDrawable);
+                        }
+                    });
                 } else {
                     imageView.setImageResource(2131165520);
                     imageView.setBackgroundResource(2131165346);
@@ -221,7 +241,11 @@ public class Yv extends qA implements View.OnClickListener {
                 imageView.setImageResource(2131165520);
                 imageView.setBackgroundResource(2131165346);
             }
-            mediaMetadataRetriever.release();
+            try {
+                mediaMetadataRetriever.release();
+            } catch (IOException e) {
+                SketchwareUtil.toastError("Failed to release file " + str + ": " + e);
+            }
         }
     }
 
@@ -266,7 +290,21 @@ public class Yv extends qA implements View.OnClickListener {
 
     public final void b(int i) {
         this.n = new Timer();
-        this.o = new Uv(this, i);
+        this.o = new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(() -> {
+                    if (p == null) {
+                        n.cancel();
+                    } else {
+                        a.ViewHolder viewHolder = (a.ViewHolder) f.findViewHolderForLayoutPosition(i);
+                        int seconds = p.getCurrentPosition() / 1000;
+                        viewHolder.x.setText(String.format("%d:%02d", seconds / 60, seconds % 60));
+                        viewHolder.y.setProgress(p.getCurrentPosition() / 100);
+                    }
+                });
+            }
+        };
         this.n.schedule(this.o, 100L, 100L);
     }
 
@@ -322,8 +360,17 @@ public class Yv extends qA implements View.OnClickListener {
         this.k.notifyItemChanged(this.r);
         this.p = new MediaPlayer();
         this.p.setAudioStreamType(3);
-        this.p.setOnPreparedListener(new Rv(this, i));
-        this.p.setOnCompletionListener(new Sv(this));
+        this.p.setOnPreparedListener(mp -> {
+            p.start();
+            b(i);
+            k.notifyItemChanged(r);
+        });
+        this.p.setOnCompletionListener(v -> {
+            n.cancel();
+            j.get(r).curSoundPosition = 0;
+            k.notifyItemChanged(r);
+            r = -1;
+        });
         try {
             this.p.setDataSource(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + this.j.get(this.r).resFullName);
             this.p.prepare();
