@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
@@ -24,11 +23,9 @@ import a.a.a.Qp;
 import a.a.a.Yv;
 import a.a.a.mB;
 import a.a.a.ow;
-import a.a.a.to;
 import a.a.a.xB;
-import a.a.a.xo;
 
-public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
+public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private final int TAB_COUNT = 2;
     private String sc_id;
     private ViewPager viewPager;
@@ -41,11 +38,6 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void d(int i) {
-        new SaveAsyncTask(getApplicationContext()).execute();
     }
 
     public void f(int i) {
@@ -70,11 +62,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         try {
             projectSounds.f();
             collectionSounds.d();
-            if (j.h()) {
-                new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
-            } else {
-                xo.a(getApplicationContext());
-            }
+            new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
             h();
@@ -110,12 +98,10 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         viewPager.setOffscreenPageLimit(TAB_COUNT);
         viewPager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
-        xo.a((to) this);
     }
 
     @Override
     public void onDestroy() {
-        xo.i();
         super.onDestroy();
     }
 
@@ -130,8 +116,6 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        d.setScreenName(ManageSoundActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
