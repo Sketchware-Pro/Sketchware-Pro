@@ -18,7 +18,6 @@ import com.sketchware.remod.R;
 
 import java.lang.ref.WeakReference;
 
-import a.a.a.By;
 import a.a.a.MA;
 import a.a.a.Qp;
 import a.a.a.Yv;
@@ -186,13 +185,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void b() {
-            try {
-                publishProgress("Now processing..");
-                activityWeakReference.get().projectSounds.h();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(new By(xB.b().a(a, R.string.common_error_unknown)));
-            }
+            activityWeakReference.get().projectSounds.h();
         }
 
         @Override
