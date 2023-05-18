@@ -85,38 +85,38 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         i = new oB();
         i.f(h);
-        if (bundle == null) {
+        if (savedInstanceState == null) {
             c();
         } else {
-            g = bundle.getString("sc_id");
-            h = bundle.getString("dir_path");
+            g = savedInstanceState.getString("sc_id");
+            h = savedInstanceState.getString("dir_path");
         }
         e();
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 232 && i2 == -1 && intent != null) {
-            a(intent.getParcelableArrayListExtra("results"));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 232 && resultCode == -1 && data != null) {
+            a(data.getParcelableArrayListExtra("results"));
         }
     }
 
     @Override
-    public void onClick(View view) {
-        if (!mB.a() && view.getId() == R.id.btn_import) {
+    public void onClick(View v) {
+        if (!mB.a() && v.getId() == R.id.btn_import) {
             m.setVisibility(View.GONE);
             h();
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_sound_list, viewGroup, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         f = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
         f.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         k = new a();
@@ -138,10 +138,10 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        bundle.putString("sc_id", g);
-        bundle.putString("dir_path", h);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("sc_id", g);
+        outState.putString("dir_path", h);
     }
 
     class a extends RecyclerView.Adapter<a.ViewHolder> {
