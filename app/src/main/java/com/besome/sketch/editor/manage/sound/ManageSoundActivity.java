@@ -45,7 +45,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void d(int i) {
-        new a(getApplicationContext()).execute();
+        new SaveAsyncTask(getApplicationContext()).execute();
     }
 
     public void f(int i) {
@@ -71,7 +71,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
             projectSounds.f();
             collectionSounds.d();
             if (j.h()) {
-                new Handler().postDelayed(() -> new a(getApplicationContext()).execute(), 500L);
+                new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
             } else {
                 xo.a(getApplicationContext());
             }
@@ -106,7 +106,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new b(getSupportFragmentManager()));
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(TAB_COUNT);
         viewPager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
@@ -154,10 +154,10 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
-    class b extends FragmentPagerAdapter {
+    private class PagerAdapter extends FragmentPagerAdapter {
         private final String[] titles;
 
-        public b(FragmentManager xf) {
+        public PagerAdapter(FragmentManager xf) {
             super(xf);
             titles = new String[TAB_COUNT];
             titles[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
@@ -196,8 +196,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
-    class a extends MA {
-        public a(Context context) {
+    private class SaveAsyncTask extends MA {
+        public SaveAsyncTask(Context context) {
             super(context);
             addTask(this);
         }
