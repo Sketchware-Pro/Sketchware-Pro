@@ -296,7 +296,7 @@ public class Yv extends qA implements View.OnClickListener {
                 } else {
                     mediaPlayer.start();
                     b(position);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemChanged(position);
                 }
             }
         } else {
