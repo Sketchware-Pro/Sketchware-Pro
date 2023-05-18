@@ -1,6 +1,7 @@
 package a.a.a;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,11 +81,11 @@ public class Yv extends qA implements View.OnClickListener {
             }
         }
         if (i > 0) {
-            this.m.setText(xB.b().a(getContext(), 2131625003, Integer.valueOf(i)).toUpperCase());
-            this.m.setVisibility(0);
+            this.m.setText(xB.b().a(getContext(), R.string.common_word_import_count, Integer.valueOf(i)).toUpperCase());
+            this.m.setVisibility(View.VISIBLE);
             return;
         }
-        this.m.setVisibility(8);
+        this.m.setVisibility(View.GONE);
     }
 
     @Override
@@ -110,26 +112,26 @@ public class Yv extends qA implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (!mB.a() && view.getId() == 2131230832) {
-            this.m.setVisibility(8);
+        if (!mB.a() && view.getId() == R.id.btn_import) {
+            this.m.setVisibility(View.GONE);
             h();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(2131427441, viewGroup, false);
-        this.f = (RecyclerView) viewGroup2.findViewById(2131231746);
-        this.f.setLayoutManager(new LinearLayoutManager(getActivity(), 1, false));
+        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_sound_list, viewGroup, false);
+        this.f = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
+        this.f.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         this.k = new a();
         this.f.setAdapter(this.k);
-        this.l = (TextView) viewGroup2.findViewById(2131231997);
-        this.l.setText(xB.b().a(getActivity(), 2131625281));
-        this.m = (Button) viewGroup2.findViewById(2131230832);
-        this.m.setText(xB.b().a(getContext(), 2131625002).toUpperCase());
+        this.l = (TextView) viewGroup2.findViewById(R.id.tv_guide);
+        this.l.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        this.m = (Button) viewGroup2.findViewById(R.id.btn_import);
+        this.m.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
         this.m.setOnClickListener(this);
-        this.m.setVisibility(8);
-        viewGroup2.findViewById(2131231054).setVisibility(8);
+        this.m.setVisibility(View.GONE);
+        viewGroup2.findViewById(R.id.fab).setVisibility(View.GONE);
         return viewGroup2;
     }
 
@@ -160,13 +162,13 @@ public class Yv extends qA implements View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                this.t = (CheckBox) itemView.findViewById(2131230893);
-                this.u = (ImageView) itemView.findViewById(2131231106);
-                this.v = (TextView) itemView.findViewById(2131232169);
-                this.w = (ImageView) itemView.findViewById(2131231165);
-                this.x = (TextView) itemView.findViewById(2131231931);
-                this.y = (ProgressBar) itemView.findViewById(2131231607);
-                this.z = (TextView) itemView.findViewById(2131231967);
+                this.t = (CheckBox) itemView.findViewById(R.id.chk_select);
+                this.u = (ImageView) itemView.findViewById(R.id.img_album);
+                this.v = (TextView) itemView.findViewById(R.id.tv_sound_name);
+                this.w = (ImageView) itemView.findViewById(R.id.img_play);
+                this.x = (TextView) itemView.findViewById(R.id.tv_currenttime);
+                this.y = (ProgressBar) itemView.findViewById(R.id.prog_playtime);
+                this.z = (TextView) itemView.findViewById(R.id.tv_endtime);
                 this.w.setOnClickListener(v -> {
                     if (!mB.a()) {
                         Yv.this.a(getLayoutPosition());
@@ -187,7 +189,7 @@ public class Yv extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String str = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) Yv.this.j.get(position)).resFullName;
-            holder.t.setVisibility(0);
+            holder.t.setVisibility(View.VISIBLE);
             a(str, holder.u);
             int i2 = ((ProjectResourceBean) Yv.this.j.get(position)).curSoundPosition / 1000;
             if (((ProjectResourceBean) Yv.this.j.get(position)).totalSoundDuration == 0) {
@@ -200,12 +202,12 @@ public class Yv extends qA implements View.OnClickListener {
             holder.v.setText(((ProjectResourceBean) Yv.this.j.get(position)).resName);
             if (Yv.this.r == position) {
                 if (Yv.this.p != null && Yv.this.p.isPlaying()) {
-                    holder.w.setImageResource(2131165804);
+                    holder.w.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
-                    holder.w.setImageResource(2131165434);
+                    holder.w.setImageResource(R.drawable.circled_play_96_blue);
                 }
             } else {
-                holder.w.setImageResource(2131165434);
+                holder.w.setImageResource(R.drawable.circled_play_96_blue);
             }
             holder.y.setMax(((ProjectResourceBean) Yv.this.j.get(position)).totalSoundDuration / 100);
             holder.y.setProgress(((ProjectResourceBean) Yv.this.j.get(position)).curSoundPosition / 100);
@@ -214,7 +216,7 @@ public class Yv extends qA implements View.OnClickListener {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427568, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
         }
 
         @Override
@@ -234,12 +236,12 @@ public class Yv extends qA implements View.OnClickListener {
                         }
                     });
                 } else {
-                    imageView.setImageResource(2131165520);
-                    imageView.setBackgroundResource(2131165346);
+                    imageView.setImageResource(R.drawable.default_album_art_200dp);
+                    imageView.setBackgroundResource(R.drawable.bg_outline_album);
                 }
             } catch (IllegalArgumentException unused) {
-                imageView.setImageResource(2131165520);
-                imageView.setBackgroundResource(2131165346);
+                imageView.setImageResource(R.drawable.default_album_art_200dp);
+                imageView.setBackgroundResource(R.drawable.bg_outline_album);
             }
             try {
                 mediaMetadataRetriever.release();
@@ -280,12 +282,12 @@ public class Yv extends qA implements View.OnClickListener {
 
     public void g() {
         if (this.j.size() == 0) {
-            this.l.setVisibility(0);
-            this.f.setVisibility(8);
+            this.l.setVisibility(View.VISIBLE);
+            this.f.setVisibility(View.GONE);
             return;
         }
-        this.f.setVisibility(0);
-        this.l.setVisibility(8);
+        this.f.setVisibility(View.VISIBLE);
+        this.l.setVisibility(View.GONE);
     }
 
     public final void b(int i) {
@@ -359,7 +361,7 @@ public class Yv extends qA implements View.OnClickListener {
         this.q = i;
         this.k.notifyItemChanged(this.r);
         this.p = new MediaPlayer();
-        this.p.setAudioStreamType(3);
+        this.p.setAudioStreamType(AudioManager.STREAM_MUSIC);
         this.p.setOnPreparedListener(mp -> {
             p.start();
             b(i);
@@ -384,6 +386,6 @@ public class Yv extends qA implements View.OnClickListener {
     public final int a(String str) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(str);
-        return (int) Long.parseLong(mediaMetadataRetriever.extractMetadata(9));
+        return (int) Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
     }
 }
