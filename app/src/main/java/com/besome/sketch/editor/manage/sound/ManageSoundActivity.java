@@ -101,16 +101,6 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (!super.j()) {
@@ -122,11 +112,6 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override
