@@ -2,7 +2,6 @@ package a.a.a;
 
 import android.content.Intent;
 import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,19 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundImportActivity;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import mod.SketchwareUtil;
 
 public class Yv extends qA implements View.OnClickListener {
     private RecyclerView soundsList;
@@ -144,6 +138,8 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
+        private final Map<ProjectResourceBean, ManageSoundActivity.AudioMetadata> cachedMetadata = new HashMap<>();
+
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final CheckBox select;
             public final ImageView album;
@@ -179,14 +175,23 @@ public class Yv extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
-            String str = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
+            String path = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
             holder.select.setVisibility(View.VISIBLE);
-            a(str, holder.album);
-            int i2 = bean.curSoundPosition / 1000;
-            if (bean.totalSoundDuration == 0) {
-                bean.totalSoundDuration = Yv.this.a(str);
+
+            var audioMetadata = cachedMetadata.get(bean);
+            if (audioMetadata != null) {
+                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
+            } else {
+                audioMetadata = ManageSoundActivity.AudioMetadata.getFromPath(path);
+                cachedMetadata.put(bean, audioMetadata);
+                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
+                if (bean.totalSoundDuration == 0) {
+                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                }
             }
-            String text = String.format("%d:%02d", i2 / 60, i2 % 60);
+
+            int positionInS = bean.curSoundPosition / 1000;
+            String text = String.format("%d:%02d", positionInS / 60, positionInS % 60);
             holder.currentTime.setText(text);
             holder.endTime.setText(text);
             holder.select.setChecked(bean.isSelected);
@@ -213,32 +218,6 @@ public class Yv extends qA implements View.OnClickListener {
         @Override
         public int getItemCount() {
             return sounds.size();
-        }
-
-        public final void a(String str, ImageView imageView) {
-            MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-            try {
-                mediaMetadataRetriever.setDataSource(str);
-                if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    Glide.with(requireActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            imageView.setImageDrawable(glideDrawable);
-                        }
-                    });
-                } else {
-                    imageView.setImageResource(R.drawable.default_album_art_200dp);
-                    imageView.setBackgroundResource(R.drawable.bg_outline_album);
-                }
-            } catch (IllegalArgumentException unused) {
-                imageView.setImageResource(R.drawable.default_album_art_200dp);
-                imageView.setBackgroundResource(R.drawable.bg_outline_album);
-            }
-            try {
-                mediaMetadataRetriever.release();
-            } catch (IOException e) {
-                SketchwareUtil.toastError("Failed to release file " + str + ": " + e);
-            }
         }
     }
 
@@ -362,11 +341,5 @@ public class Yv extends qA implements View.OnClickListener {
             adapter.notifyItemChanged(r);
             e.printStackTrace();
         }
-    }
-
-    private int a(String str) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(str);
-        return (int) Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
     }
 }

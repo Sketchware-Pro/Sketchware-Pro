@@ -1,9 +1,13 @@
 package com.besome.sketch.editor.manage.sound;
 
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -13,9 +17,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
@@ -24,6 +30,7 @@ import a.a.a.Yv;
 import a.a.a.mB;
 import a.a.a.ow;
 import a.a.a.xB;
+import mod.SketchwareUtil;
 
 public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private final int TAB_COUNT = 2;
@@ -196,6 +203,56 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         protected String doInBackground(Void... voids) {
             return a(voids);
+        }
+    }
+
+    public static class AudioMetadata {
+        private final int durationInMs;
+        private final byte[] embeddedPicture;
+
+        public AudioMetadata(int durationInMs, byte[] embeddedPicture) {
+            this.durationInMs = durationInMs;
+            this.embeddedPicture = embeddedPicture;
+        }
+
+        public int getDurationInMs() {
+            return durationInMs;
+        }
+
+        public boolean hasEmbeddedPicture() {
+            return embeddedPicture != null;
+        }
+
+        public byte[] getEmbeddedPicture() {
+            return embeddedPicture;
+        }
+
+        public void setEmbeddedPictureAsAlbumCover(Activity activity, ImageView imageView) {
+            if (hasEmbeddedPicture()) {
+                Glide.with(activity)
+                        .load(getEmbeddedPicture())
+                        .into(imageView);
+            } else {
+                imageView.setImageResource(R.drawable.default_album_art_200dp);
+                imageView.setBackgroundResource(R.drawable.bg_outline_album);
+            }
+        }
+
+        public static AudioMetadata getFromPath(String path) {
+            MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+            try {
+                mediaMetadataRetriever.setDataSource(path);
+                int durationInMs = (int) Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+                return new ManageSoundActivity.AudioMetadata(durationInMs, mediaMetadataRetriever.getEmbeddedPicture());
+            } catch (IllegalArgumentException unused) {
+                return new ManageSoundActivity.AudioMetadata(-1, null);
+            } finally {
+                try {
+                    mediaMetadataRetriever.release();
+                } catch (IOException e) {
+                    SketchwareUtil.toastError("Failed to release file " + path + ": " + e);
+                }
+            }
         }
     }
 }
