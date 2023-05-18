@@ -395,7 +395,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (mediaPlayer == null) {
                         soundPlaybackTimeCounter.cancel();
                     } else {
-                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.findViewHolderForAdapterPosition(position);
+                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.findViewHolderForLayoutPosition(position);
                         int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
                         viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
                         viewHolder.playbackProgress.setProgress(mediaPlayer.getCurrentPosition() / 1000);
