@@ -3,6 +3,7 @@ package com.besome.sketch.editor.manage.sound;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
+import com.sketchware.remod.R;
 
 import a.a.a.By;
 import a.a.a.MA;
@@ -88,11 +90,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        setContentView(2131427564);
-        this.m = (Toolbar) findViewById(2131231847);
+        setContentView(R.layout.manage_sound);
+        this.m = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(this.m);
-        findViewById(2131231370).setVisibility(8);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625137));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_sound));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         this.m.setNavigationOnClickListener(v -> {
@@ -105,8 +107,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         } else {
             this.l = bundle.getString("sc_id");
         }
-        this.o = (TabLayout) findViewById(2131231781);
-        this.n = (ViewPager) findViewById(2131232325);
+        this.o = (TabLayout) findViewById(R.id.tab_layout);
+        this.n = (ViewPager) findViewById(R.id.view_pager);
         this.n.setAdapter(new b(getSupportFragmentManager()));
         this.n.setOffscreenPageLimit(2);
         this.n.addOnPageChangeListener(this);
@@ -161,8 +163,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public b(FragmentManager xf) {
             super(xf);
             this.f = new String[2];
-            this.f[0] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), 2131625288).toUpperCase();
-            this.f[1] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), 2131625287).toUpperCase();
+            this.f[0] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            this.f[1] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -206,7 +208,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         public void a() {
             ManageSoundActivity.this.h();
-            ManageSoundActivity.this.setResult(-1);
+            ManageSoundActivity.this.setResult(RESULT_OK);
             ManageSoundActivity.this.finish();
             Qp.g().d();
         }
@@ -218,7 +220,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
                 ManageSoundActivity.this.p.h();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException(new By(xB.b().a(this.a, 2131624916)));
+                throw new RuntimeException(new By(xB.b().a(this.a, R.string.common_error_unknown)));
             }
         }
 
