@@ -43,7 +43,6 @@ import com.besome.sketch.beans.WidgetCollectionBean;
 import com.besome.sketch.editor.manage.font.AddFontCollectionActivity;
 import com.besome.sketch.editor.manage.image.AddImageCollectionActivity;
 import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
-import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -72,6 +71,7 @@ import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.AudioMetadata;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -844,7 +844,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
-        private Map<? extends SelectableBean, ManageSoundActivity.AudioMetadata> cachedAudioMetadata = new HashMap<>();
+        private Map<? extends SelectableBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
         public CollectionAdapter(RecyclerView target) {
             lastSelectedItemPosition = -1;
@@ -912,9 +912,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                ManageSoundActivity.AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
+                AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
                 if (audioMetadata == null) {
-                    audioMetadata = ManageSoundActivity.AudioMetadata.getFromPath(soundFilePath);
+                    audioMetadata = AudioMetadata.fromPath(soundFilePath);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
                 }
                 audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);

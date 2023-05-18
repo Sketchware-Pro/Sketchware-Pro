@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mod.jbk.util.AudioMetadata;
+
 public class Yv extends qA implements View.OnClickListener {
     private RecyclerView soundsList;
     private String sc_id;
@@ -137,7 +139,7 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
-        private final Map<ProjectResourceBean, ManageSoundActivity.AudioMetadata> cachedMetadata = new HashMap<>();
+        private final Map<ProjectResourceBean, AudioMetadata> cachedMetadata = new HashMap<>();
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final CheckBox select;
@@ -181,7 +183,7 @@ public class Yv extends qA implements View.OnClickListener {
             if (audioMetadata != null) {
                 audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
             } else {
-                audioMetadata = ManageSoundActivity.AudioMetadata.getFromPath(path);
+                audioMetadata = AudioMetadata.fromPath(path);
                 cachedMetadata.put(bean, audioMetadata);
                 audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
                 if (bean.totalSoundDuration == 0) {
@@ -313,7 +315,7 @@ public class Yv extends qA implements View.OnClickListener {
             q = position;
             adapter.notifyItemChanged(r);
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioAttributes(ManageSoundActivity.AudioMetadata.MEDIA_PLAYER_AUDIO_ATTRIBUTES);
+            mediaPlayer.setAudioAttributes(AudioMetadata.MEDIA_PLAYER_AUDIO_ATTRIBUTES);
             mediaPlayer.setOnPreparedListener(mp -> {
                 mediaPlayer.start();
                 b(position);
