@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +45,8 @@ public class Yv extends qA implements View.OnClickListener {
     private int q = -1;
     private int r = -1;
 
+    private ActivityResultLauncher<Intent> importSoundsHandler;
+
     private void updateImportSoundsText() {
         int selectedSounds = 0;
         for (ProjectResourceBean projectResourceBean : sounds) {
@@ -70,14 +75,12 @@ public class Yv extends qA implements View.OnClickListener {
             h = savedInstanceState.getString("dir_path");
         }
         e();
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 232 && resultCode == -1 && data != null) {
-            a(data.getParcelableArrayListExtra("results"));
-        }
+        importSoundsHandler = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                a(result.getData().getParcelableArrayListExtra("results"));
+            }
+        });
     }
 
     @Override
@@ -96,7 +99,7 @@ public class Yv extends qA implements View.OnClickListener {
                 Intent intent = new Intent(requireActivity(), ManageSoundImportActivity.class);
                 intent.putParcelableArrayListExtra("project_sounds", d);
                 intent.putParcelableArrayListExtra("selected_collections", arrayList);
-                startActivityForResult(intent, 232);
+                importSoundsHandler.launch(intent);
             }
             unselectAll();
             adapter.notifyDataSetChanged();
