@@ -47,33 +47,32 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void d(int i) {
-        new a(getApplicationContext()).execute(new Void[0]);
+        new a(getApplicationContext()).execute();
     }
 
     public void f(int i) {
-        this.n.setCurrentItem(i);
+        n.setCurrentItem(i);
     }
 
     public Yv l() {
-        return this.q;
+        return q;
     }
 
     public ow m() {
-        return this.p;
+        return p;
     }
 
     @Override
     public void onBackPressed() {
-        ow owVar = this.p;
-        if (owVar.k) {
-            owVar.a(false);
+        if (p.k) {
+            p.a(false);
             return;
         }
         k();
         try {
-            this.p.f();
-            this.q.d();
-            if (this.j.h()) {
+            p.f();
+            q.d();
+            if (j.h()) {
                 new Handler().postDelayed(() -> new a(getApplicationContext()).execute(), 500L);
             } else {
                 xo.a(getApplicationContext());
@@ -91,28 +90,28 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
             finish();
         }
         setContentView(R.layout.manage_sound);
-        this.m = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(this.m);
+        m = findViewById(R.id.toolbar);
+        setSupportActionBar(m);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_sound));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        this.m.setNavigationOnClickListener(v -> {
+        m.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
         if (bundle == null) {
-            this.l = getIntent().getStringExtra("sc_id");
+            l = getIntent().getStringExtra("sc_id");
         } else {
-            this.l = bundle.getString("sc_id");
+            l = bundle.getString("sc_id");
         }
-        this.o = (TabLayout) findViewById(R.id.tab_layout);
-        this.n = (ViewPager) findViewById(R.id.view_pager);
-        this.n.setAdapter(new b(getSupportFragmentManager()));
-        this.n.setOffscreenPageLimit(2);
-        this.n.addOnPageChangeListener(this);
-        this.o.setupWithViewPager(this.n);
+        o = findViewById(R.id.tab_layout);
+        n = findViewById(R.id.view_pager);
+        n.setAdapter(new b(getSupportFragmentManager()));
+        n.setOffscreenPageLimit(2);
+        n.addOnPageChangeListener(this);
+        o.setupWithViewPager(n);
         xo.a((to) this);
     }
 
@@ -133,13 +132,13 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(ManageSoundActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
+        d.setScreenName(ManageSoundActivity.class.getSimpleName());
+        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", this.l);
+        bundle.putString("sc_id", l);
         super.onSaveInstanceState(bundle);
     }
 
@@ -151,9 +150,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onPageSelected(int position) {
         if (position == 0) {
-            this.q.d();
+            q.d();
         } else {
-            this.p.f();
+            p.f();
         }
     }
 
@@ -162,9 +161,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
         public b(FragmentManager xf) {
             super(xf);
-            this.f = new String[2];
-            this.f[0] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            this.f[1] = xB.b().a(ManageSoundActivity.this.getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            f = new String[2];
+            f[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            f[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -177,9 +176,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public Object instantiateItem(@NonNull ViewGroup viewGroup, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(viewGroup, position);
             if (position != 0) {
-                ManageSoundActivity.this.q = (Yv) fragment;
+                q = (Yv) fragment;
             } else {
-                ManageSoundActivity.this.p = (ow) fragment;
+                p = (ow) fragment;
             }
             return fragment;
         }
@@ -195,21 +194,21 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return this.f[position];
+            return f[position];
         }
     }
 
     class a extends MA {
         public a(Context context) {
             super(context);
-            ManageSoundActivity.this.a(this);
+            addTask(this);
         }
 
         @Override
         public void a() {
-            ManageSoundActivity.this.h();
-            ManageSoundActivity.this.setResult(RESULT_OK);
-            ManageSoundActivity.this.finish();
+            h();
+            setResult(RESULT_OK);
+            finish();
             Qp.g().d();
         }
 
@@ -217,16 +216,16 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public void b() {
             try {
                 publishProgress("Now processing..");
-                ManageSoundActivity.this.p.h();
+                p.h();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException(new By(xB.b().a(this.a, R.string.common_error_unknown)));
+                throw new RuntimeException(new By(xB.b().a(a, R.string.common_error_unknown)));
             }
         }
 
         @Override
         public void a(String str) {
-            ManageSoundActivity.this.h();
+            h();
         }
 
         @Override
