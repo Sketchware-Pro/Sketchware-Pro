@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -59,7 +61,7 @@ public class Yv extends qA implements View.OnClickListener {
             startActivityForResult(intent, 232);
         }
         f();
-        this.k.c();
+        this.k.notifyDataSetChanged();
     }
 
     public final void i() {
@@ -138,10 +140,10 @@ public class Yv extends qA implements View.OnClickListener {
         bundle.putString("dir_path", this.h);
     }
 
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.Adapter<a.a> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class a extends RecyclerView.ViewHolder {
             public CheckBox t;
             public ImageView u;
             public TextView v;
@@ -150,15 +152,15 @@ public class Yv extends qA implements View.OnClickListener {
             public ProgressBar y;
             public TextView z;
 
-            public a(View view) {
-                super(view);
-                this.t = (CheckBox) view.findViewById(2131230893);
-                this.u = (ImageView) view.findViewById(2131231106);
-                this.v = (TextView) view.findViewById(2131232169);
-                this.w = (ImageView) view.findViewById(2131231165);
-                this.x = (TextView) view.findViewById(2131231931);
-                this.y = (ProgressBar) view.findViewById(2131231607);
-                this.z = (TextView) view.findViewById(2131231967);
+            public a(@NonNull View itemView) {
+                super(itemView);
+                this.t = (CheckBox) itemView.findViewById(2131230893);
+                this.u = (ImageView) itemView.findViewById(2131231106);
+                this.v = (TextView) itemView.findViewById(2131232169);
+                this.w = (ImageView) itemView.findViewById(2131231165);
+                this.x = (TextView) itemView.findViewById(2131231931);
+                this.y = (ProgressBar) itemView.findViewById(2131231607);
+                this.z = (TextView) itemView.findViewById(2131231967);
                 this.w.setOnClickListener(new Wv(this, a.this));
                 this.t.setOnClickListener(new Xv(this, a.this));
             }
@@ -168,39 +170,40 @@ public class Yv extends qA implements View.OnClickListener {
         }
 
         @Override
-        public void b(a aVar, int i) {
-            String str = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) Yv.this.j.get(i)).resFullName;
-            aVar.t.setVisibility(0);
-            a(str, aVar.u);
-            int i2 = ((ProjectResourceBean) Yv.this.j.get(i)).curSoundPosition / 1000;
-            if (((ProjectResourceBean) Yv.this.j.get(i)).totalSoundDuration == 0) {
-                ((ProjectResourceBean) Yv.this.j.get(i)).totalSoundDuration = Yv.this.a(str);
+        public void onBindViewHolder(@NonNull a holder, int position) {
+            String str = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) Yv.this.j.get(position)).resFullName;
+            holder.t.setVisibility(0);
+            a(str, holder.u);
+            int i2 = ((ProjectResourceBean) Yv.this.j.get(position)).curSoundPosition / 1000;
+            if (((ProjectResourceBean) Yv.this.j.get(position)).totalSoundDuration == 0) {
+                ((ProjectResourceBean) Yv.this.j.get(position)).totalSoundDuration = Yv.this.a(str);
             }
-            int i3 = ((ProjectResourceBean) Yv.this.j.get(i)).totalSoundDuration / 1000;
-            aVar.x.setText(String.format("%d:%02d", Integer.valueOf(i2 / 60), Integer.valueOf(i2 % 60)));
-            aVar.z.setText(String.format("%d:%02d", Integer.valueOf(i3 / 60), Integer.valueOf(i3 % 60)));
-            aVar.t.setChecked(((ProjectResourceBean) Yv.this.j.get(i)).isSelected);
-            aVar.v.setText(((ProjectResourceBean) Yv.this.j.get(i)).resName);
-            if (Yv.this.r == i) {
+            int i3 = ((ProjectResourceBean) Yv.this.j.get(position)).totalSoundDuration / 1000;
+            holder.x.setText(String.format("%d:%02d", Integer.valueOf(i2 / 60), Integer.valueOf(i2 % 60)));
+            holder.z.setText(String.format("%d:%02d", Integer.valueOf(i3 / 60), Integer.valueOf(i3 % 60)));
+            holder.t.setChecked(((ProjectResourceBean) Yv.this.j.get(position)).isSelected);
+            holder.v.setText(((ProjectResourceBean) Yv.this.j.get(position)).resName);
+            if (Yv.this.r == position) {
                 if (Yv.this.p != null && Yv.this.p.isPlaying()) {
-                    aVar.w.setImageResource(2131165804);
+                    holder.w.setImageResource(2131165804);
                 } else {
-                    aVar.w.setImageResource(2131165434);
+                    holder.w.setImageResource(2131165434);
                 }
             } else {
-                aVar.w.setImageResource(2131165434);
+                holder.w.setImageResource(2131165434);
             }
-            aVar.y.setMax(((ProjectResourceBean) Yv.this.j.get(i)).totalSoundDuration / 100);
-            aVar.y.setProgress(((ProjectResourceBean) Yv.this.j.get(i)).curSoundPosition / 100);
+            holder.y.setMax(((ProjectResourceBean) Yv.this.j.get(position)).totalSoundDuration / 100);
+            holder.y.setProgress(((ProjectResourceBean) Yv.this.j.get(position)).curSoundPosition / 100);
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427568, viewGroup, false));
+        @NonNull
+        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427568, parent, false));
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return Yv.this.j.size();
         }
 
@@ -229,7 +232,7 @@ public class Yv extends qA implements View.OnClickListener {
             this.j.get(i).curSoundPosition = 0;
             this.r = -1;
             this.q = -1;
-            this.k.c();
+            this.k.notifyDataSetChanged();
         }
         MediaPlayer mediaPlayer = this.p;
         if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
@@ -240,7 +243,7 @@ public class Yv extends qA implements View.OnClickListener {
 
     public void e() {
         this.j = Qp.g().f();
-        this.k.c();
+        this.k.notifyDataSetChanged();
         g();
     }
 
@@ -293,12 +296,12 @@ public class Yv extends qA implements View.OnClickListener {
                     this.n.cancel();
                     this.p.pause();
                     this.j.get(this.r).curSoundPosition = this.p.getCurrentPosition();
-                    this.k.c(this.r);
+                    this.k.notifyItemChanged(this.r);
                     return;
                 }
                 this.p.start();
                 b(i);
-                this.k.c();
+                this.k.notifyDataSetChanged();
                 return;
             }
             return;
@@ -312,11 +315,11 @@ public class Yv extends qA implements View.OnClickListener {
         int i2 = this.q;
         if (i2 != -1) {
             this.j.get(i2).curSoundPosition = 0;
-            this.k.c(this.q);
+            this.k.notifyItemChanged(this.q);
         }
         this.r = i;
         this.q = i;
-        this.k.c(this.r);
+        this.k.notifyItemChanged(this.r);
         this.p = new MediaPlayer();
         this.p.setAudioStreamType(3);
         this.p.setOnPreparedListener(new Rv(this, i));
@@ -326,7 +329,7 @@ public class Yv extends qA implements View.OnClickListener {
             this.p.prepare();
         } catch (Exception e) {
             this.r = -1;
-            this.k.c(this.r);
+            this.k.notifyItemChanged(this.r);
             e.printStackTrace();
         }
     }
