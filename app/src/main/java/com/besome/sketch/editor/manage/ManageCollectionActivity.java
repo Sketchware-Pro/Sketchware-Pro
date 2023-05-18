@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -45,19 +43,18 @@ import com.besome.sketch.beans.WidgetCollectionBean;
 import com.besome.sketch.editor.manage.font.AddFontCollectionActivity;
 import com.besome.sketch.editor.manage.image.AddImageCollectionActivity;
 import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
+import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -74,9 +71,7 @@ import a.a.a.bB;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
-import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
-import mod.jbk.util.LogUtil;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -201,31 +196,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void setMusicCoverOnImageView(String filePath, ImageView target) {
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        metadataRetriever.setDataSource(filePath);
-        byte[] embeddedPicture = metadataRetriever.getEmbeddedPicture();
-        if (embeddedPicture != null) {
-            Glide.with(getApplicationContext()).load(embeddedPicture).centerCrop().into(new SimpleTarget<GlideDrawable>() {
-                @Override
-                public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    target.setImageDrawable(glideDrawable);
-                }
-            });
-        } else {
-            target.setImageResource(R.drawable.default_album_art_200dp);
-            target.setBackgroundResource(R.drawable.bg_outline_album);
-        }
-
-        try {
-            metadataRetriever.release();
-        } catch (IOException e) {
-            String message = "Couldn't close file " + filePath;
-            LogUtil.e("ManageCollectionActivity", message, e);
-            SketchwareUtil.toastError(message, Toast.LENGTH_LONG);
-        }
-    }
-
     private void stopMusicPlayback(ArrayList<ProjectResourceBean> sounds) {
         soundPlaybackTimeCounter.cancel();
         if (E != -1) {
@@ -255,12 +225,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         collectionAdapter.notifyDataSetChanged();
-    }
-
-    private int getLengthOfSong(String filePath) {
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        metadataRetriever.setDataSource(filePath);
-        return (int) Long.parseLong(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
     }
 
     private void handleFabOnClick(int categoryId) {
@@ -877,10 +841,10 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
+        private Map<? extends SelectableBean, ManageSoundActivity.AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
         public CollectionAdapter(RecyclerView target) {
             lastSelectedItemPosition = -1;
@@ -948,7 +912,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                setMusicCoverOnImageView(soundFilePath, holder.album);
+                ManageSoundActivity.AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
+                if (audioMetadata == null) {
+                    audioMetadata = ManageSoundActivity.AudioMetadata.getFromPath(soundFilePath);
+                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                }
+                audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);
                 holder.album.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             }
@@ -960,9 +929,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
 
             int soundPositionInS = bean.curSoundPosition / 1000;
-            if (bean.totalSoundDuration == 0) {
-                bean.totalSoundDuration = getLengthOfSong(soundFilePath);
-            }
 
             int totalSoundDurationInS = bean.totalSoundDuration / 1000;
             holder.currentPosition.setText(String.format("%d:%02d", soundPositionInS / 60, soundPositionInS % 60));
