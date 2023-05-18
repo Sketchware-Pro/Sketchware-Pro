@@ -145,31 +145,31 @@ public class Yv extends qA implements View.OnClickListener {
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public CheckBox t;
-            public ImageView u;
-            public TextView v;
-            public ImageView w;
-            public TextView x;
-            public ProgressBar y;
-            public TextView z;
+            public final CheckBox select;
+            public final ImageView album;
+            public final TextView name;
+            public final ImageView play;
+            public final TextView currentTime;
+            public final ProgressBar progress;
+            public final TextView endTime;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.chk_select);
-                u = itemView.findViewById(R.id.img_album);
-                v = itemView.findViewById(R.id.tv_sound_name);
-                w = itemView.findViewById(R.id.img_play);
-                x = itemView.findViewById(R.id.tv_currenttime);
-                y = itemView.findViewById(R.id.prog_playtime);
-                z = itemView.findViewById(R.id.tv_endtime);
-                w.setOnClickListener(v -> {
+                select = itemView.findViewById(R.id.chk_select);
+                album = itemView.findViewById(R.id.img_album);
+                name = itemView.findViewById(R.id.tv_sound_name);
+                play = itemView.findViewById(R.id.img_play);
+                currentTime = itemView.findViewById(R.id.tv_currenttime);
+                progress = itemView.findViewById(R.id.prog_playtime);
+                endTime = itemView.findViewById(R.id.tv_endtime);
+                play.setOnClickListener(v -> {
                     if (!mB.a()) {
                         Yv.this.a(getLayoutPosition());
                     }
                 });
-                t.setOnClickListener(v -> {
+                select.setOnClickListener(v -> {
                     int position = getLayoutPosition();
-                    sounds.get(position).isSelected = t.isChecked();
+                    sounds.get(position).isSelected = select.isChecked();
                     i();
                     notifyItemChanged(position);
                 });
@@ -180,28 +180,28 @@ public class Yv extends qA implements View.OnClickListener {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
             String str = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
-            holder.t.setVisibility(View.VISIBLE);
-            a(str, holder.u);
+            holder.select.setVisibility(View.VISIBLE);
+            a(str, holder.album);
             int i2 = bean.curSoundPosition / 1000;
             if (bean.totalSoundDuration == 0) {
                 bean.totalSoundDuration = Yv.this.a(str);
             }
             String text = String.format("%d:%02d", i2 / 60, i2 % 60);
-            holder.x.setText(text);
-            holder.z.setText(text);
-            holder.t.setChecked(bean.isSelected);
-            holder.v.setText(bean.resName);
+            holder.currentTime.setText(text);
+            holder.endTime.setText(text);
+            holder.select.setChecked(bean.isSelected);
+            holder.name.setText(bean.resName);
             if (r == position) {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    holder.w.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
+                    holder.play.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
-                    holder.w.setImageResource(R.drawable.circled_play_96_blue);
+                    holder.play.setImageResource(R.drawable.circled_play_96_blue);
                 }
             } else {
-                holder.w.setImageResource(R.drawable.circled_play_96_blue);
+                holder.play.setImageResource(R.drawable.circled_play_96_blue);
             }
-            holder.y.setMax(bean.totalSoundDuration / 100);
-            holder.y.setProgress(bean.curSoundPosition / 100);
+            holder.progress.setMax(bean.totalSoundDuration / 100);
+            holder.progress.setProgress(bean.curSoundPosition / 100);
         }
 
         @Override
@@ -288,8 +288,8 @@ public class Yv extends qA implements View.OnClickListener {
                     } else {
                         SoundAdapter.ViewHolder viewHolder = (SoundAdapter.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
                         int seconds = mediaPlayer.getCurrentPosition() / 1000;
-                        viewHolder.x.setText(String.format("%d:%02d", seconds / 60, seconds % 60));
-                        viewHolder.y.setProgress(mediaPlayer.getCurrentPosition() / 100);
+                        viewHolder.currentTime.setText(String.format("%d:%02d", seconds / 60, seconds % 60));
+                        viewHolder.progress.setProgress(mediaPlayer.getCurrentPosition() / 100);
                     }
                 });
             }
