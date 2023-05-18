@@ -43,7 +43,7 @@ public class Yv extends qA implements View.OnClickListener {
     private Button importSounds;
     private MediaPlayer mediaPlayer;
     private String h = "";
-    private a adapter = null;
+    private SoundAdapter adapter = null;
     private Timer timer = new Timer();
     private int q = -1;
     private int r = -1;
@@ -118,7 +118,7 @@ public class Yv extends qA implements View.OnClickListener {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         soundsList = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
-        adapter = new a();
+        adapter = new SoundAdapter();
         soundsList.setAdapter(adapter);
         noSoundsText = (TextView) viewGroup2.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
@@ -143,10 +143,8 @@ public class Yv extends qA implements View.OnClickListener {
         outState.putString("dir_path", h);
     }
 
-    class a extends RecyclerView.Adapter<a.ViewHolder> {
-        public int c = -1;
-
-        class ViewHolder extends RecyclerView.ViewHolder {
+    private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public CheckBox t;
             public ImageView u;
             public TextView v;
@@ -170,15 +168,12 @@ public class Yv extends qA implements View.OnClickListener {
                     }
                 });
                 t.setOnClickListener(v -> {
-                    c = getLayoutPosition();
-                    sounds.get(c).isSelected = t.isChecked();
+                    int position = getLayoutPosition();
+                    sounds.get(position).isSelected = t.isChecked();
                     i();
-                    notifyItemChanged(c);
+                    notifyItemChanged(position);
                 });
             }
-        }
-
-        public a() {
         }
 
         @Override
@@ -291,7 +286,7 @@ public class Yv extends qA implements View.OnClickListener {
                     if (mediaPlayer == null) {
                         timer.cancel();
                     } else {
-                        Yv.a.ViewHolder viewHolder = (Yv.a.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
+                        SoundAdapter.ViewHolder viewHolder = (SoundAdapter.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
                         int seconds = mediaPlayer.getCurrentPosition() / 1000;
                         viewHolder.x.setText(String.format("%d:%02d", seconds / 60, seconds % 60));
                         viewHolder.y.setProgress(mediaPlayer.getCurrentPosition() / 100);
