@@ -29,13 +29,11 @@ import a.a.a.xB;
 import a.a.a.xo;
 
 public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
-    public final int k = 2;
-    public String l;
-    public Toolbar m;
-    public ViewPager n;
-    public TabLayout o;
-    public ow p;
-    public Yv q;
+    private final int TAB_COUNT = 2;
+    private String sc_id;
+    private ViewPager viewPager;
+    private ow projectSounds;
+    private Yv collectionSounds;
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -51,27 +49,27 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     public void f(int i) {
-        n.setCurrentItem(i);
+        viewPager.setCurrentItem(i);
     }
 
     public Yv l() {
-        return q;
+        return collectionSounds;
     }
 
     public ow m() {
-        return p;
+        return projectSounds;
     }
 
     @Override
     public void onBackPressed() {
-        if (p.k) {
-            p.a(false);
+        if (projectSounds.k) {
+            projectSounds.a(false);
             return;
         }
         k();
         try {
-            p.f();
-            q.d();
+            projectSounds.f();
+            collectionSounds.d();
             if (j.h()) {
                 new Handler().postDelayed(() -> new a(getApplicationContext()).execute(), 500L);
             } else {
@@ -90,28 +88,28 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
             finish();
         }
         setContentView(R.layout.manage_sound);
-        m = findViewById(R.id.toolbar);
-        setSupportActionBar(m);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_sound));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        m.setNavigationOnClickListener(v -> {
+        toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
         if (bundle == null) {
-            l = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         } else {
-            l = bundle.getString("sc_id");
+            sc_id = bundle.getString("sc_id");
         }
-        o = findViewById(R.id.tab_layout);
-        n = findViewById(R.id.view_pager);
-        n.setAdapter(new b(getSupportFragmentManager()));
-        n.setOffscreenPageLimit(2);
-        n.addOnPageChangeListener(this);
-        o.setupWithViewPager(n);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new b(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(TAB_COUNT);
+        viewPager.addOnPageChangeListener(this);
+        tabLayout.setupWithViewPager(viewPager);
         xo.a((to) this);
     }
 
@@ -138,7 +136,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", l);
+        bundle.putString("sc_id", sc_id);
         super.onSaveInstanceState(bundle);
     }
 
@@ -150,25 +148,25 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onPageSelected(int position) {
         if (position == 0) {
-            q.d();
+            collectionSounds.d();
         } else {
-            p.f();
+            projectSounds.f();
         }
     }
 
     class b extends FragmentPagerAdapter {
-        public String[] f;
+        private final String[] titles;
 
         public b(FragmentManager xf) {
             super(xf);
-            f = new String[2];
-            f[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            f[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            titles = new String[TAB_COUNT];
+            titles[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            titles[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return TAB_COUNT;
         }
 
         @Override
@@ -176,9 +174,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public Object instantiateItem(@NonNull ViewGroup viewGroup, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(viewGroup, position);
             if (position != 0) {
-                q = (Yv) fragment;
+                collectionSounds = (Yv) fragment;
             } else {
-                p = (ow) fragment;
+                projectSounds = (ow) fragment;
             }
             return fragment;
         }
@@ -194,7 +192,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return f[position];
+            return titles[position];
         }
     }
 
@@ -216,7 +214,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public void b() {
             try {
                 publishProgress("Now processing..");
-                p.h();
+                projectSounds.h();
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException(new By(xB.b().a(a, R.string.common_error_unknown)));
