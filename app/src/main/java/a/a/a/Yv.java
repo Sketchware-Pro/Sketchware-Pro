@@ -57,8 +57,8 @@ public class Yv extends qA implements View.OnClickListener {
             }
         }
         if (arrayList.size() > 0) {
-            ArrayList<ProjectResourceBean> d = ((ManageSoundActivity) getActivity()).m().d();
-            Intent intent = new Intent(getActivity(), ManageSoundImportActivity.class);
+            ArrayList<ProjectResourceBean> d = ((ManageSoundActivity) requireActivity()).m().d();
+            Intent intent = new Intent(requireActivity(), ManageSoundImportActivity.class);
             intent.putParcelableArrayListExtra("project_sounds", d);
             intent.putParcelableArrayListExtra("selected_collections", arrayList);
             startActivityForResult(intent, 232);
@@ -117,11 +117,11 @@ public class Yv extends qA implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         soundsList = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
-        soundsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        soundsList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new a();
         soundsList.setAdapter(adapter);
         noSoundsText = (TextView) viewGroup2.findViewById(R.id.tv_guide);
-        noSoundsText.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
         importSounds = (Button) viewGroup2.findViewById(R.id.btn_import);
         importSounds.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
         importSounds.setOnClickListener(this);
@@ -225,7 +225,7 @@ public class Yv extends qA implements View.OnClickListener {
             try {
                 mediaMetadataRetriever.setDataSource(str);
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    Glide.with(getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                    Glide.with(requireActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
                         @Override
                         public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
                             imageView.setImageDrawable(glideDrawable);
@@ -287,7 +287,7 @@ public class Yv extends qA implements View.OnClickListener {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                getActivity().runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     if (mediaPlayer == null) {
                         timer.cancel();
                     } else {
@@ -302,8 +302,8 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     private void c() {
-        sc_id = getActivity().getIntent().getStringExtra("sc_id");
-        h = getActivity().getIntent().getStringExtra("dir_path");
+        sc_id = requireActivity().getIntent().getStringExtra("sc_id");
+        h = requireActivity().getIntent().getStringExtra("dir_path");
     }
 
     private void a(ArrayList<ProjectResourceBean> arrayList) {
@@ -312,8 +312,8 @@ public class Yv extends qA implements View.OnClickListener {
             arrayList2.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, next.resFullName));
         }
         if (arrayList2.size() > 0) {
-            ((ManageSoundActivity) getActivity()).m().a(arrayList2);
-            ((ManageSoundActivity) getActivity()).f(0);
+            ((ManageSoundActivity) requireActivity()).m().a(arrayList2);
+            ((ManageSoundActivity) requireActivity()).f(0);
         }
     }
 
