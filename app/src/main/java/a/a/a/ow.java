@@ -30,14 +30,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.util.AudioMetadata;
 
 public class ow extends qA implements View.OnClickListener {
@@ -386,24 +385,14 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public void saveSounds() {
-        if (sounds != null && sounds.size() > 0) {
-            for (ProjectResourceBean next : sounds) {
-                if (next.isNew) {
-                    fileUtil.c(a(next.resFullName));
-                }
-            }
-        }
-        for (ProjectResourceBean next2 : sounds) {
-            if (next2.isNew) {
-                try {
-                    String a2 = a(next2);
-                    if (fileUtil.e(a2)) {
-                        fileUtil.c(a2);
-                    }
-                    a(next2.resFullName, a2);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        for (ProjectResourceBean sound : sounds) {
+            if (sound.isNew) {
+                String temporarySoundPath = a(sound.resFullName);
+                FileUtil.deleteFile(temporarySoundPath);
+
+                String soundPath = a(sound);
+                FileUtil.deleteFile(soundPath);
+                FileUtil.copyFile(sound.resFullName, soundPath);
             }
         }
         for (int i = 0; i < sounds.size(); i++) {
@@ -568,25 +557,5 @@ public class ow extends qA implements View.OnClickListener {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
         return A + File.separator + projectResourceBean.resName + substring;
-    }
-
-    private void a(String str, String str2) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(str);
-            FileOutputStream fileOutputStream = new FileOutputStream(str2);
-            byte[] bArr = new byte[1024];
-            while (true) {
-                int read = fileInputStream.read(bArr);
-                if (read != -1) {
-                    fileOutputStream.write(bArr, 0, read);
-                } else {
-                    fileInputStream.close();
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                    return;
-                }
-            }
-        } catch (Exception unused) {
-        }
     }
 }
