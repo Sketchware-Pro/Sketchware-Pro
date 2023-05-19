@@ -192,9 +192,9 @@ public class Yv extends qA implements View.OnClickListener {
             }
 
             int positionInS = bean.curSoundPosition / 1000;
-            String text = String.format("%d:%02d", positionInS / 60, positionInS % 60);
-            holder.currentTime.setText(text);
-            holder.endTime.setText(text);
+            holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+            int durationInS = bean.totalSoundDuration / 1000;
+            holder.endTime.setText(String.format("%d:%02d", durationInS / 60, durationInS % 60));
             holder.select.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
             if (r == position) {
