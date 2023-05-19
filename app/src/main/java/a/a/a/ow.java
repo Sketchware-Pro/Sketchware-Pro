@@ -50,7 +50,7 @@ public class ow extends qA implements View.OnClickListener {
     private MediaPlayer mediaPlayer;
     private TextView noSoundsText;
     public boolean k = false;
-    private a adapter = null;
+    private SoundAdapter adapter = null;
     private Timer timer = new Timer();
     private String A = "";
     private int D = -1;
@@ -66,7 +66,7 @@ public class ow extends qA implements View.OnClickListener {
         }
     }
 
-    private void j() {
+    private void addSound() {
         f();
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
         intent.putExtra("sc_id", sc_id);
@@ -75,7 +75,7 @@ public class ow extends qA implements View.OnClickListener {
         startActivityForResult(intent, 269);
     }
 
-    private void k() {
+    private void editSound() {
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", A);
@@ -186,20 +186,20 @@ public class ow extends qA implements View.OnClickListener {
         cancel.setOnClickListener(this);
         soundsList = item.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new a(soundsList);
+        adapter = new SoundAdapter(soundsList);
         soundsList.setAdapter(adapter);
         noSoundsText = item.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
         noSoundsText.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
-                j();
+                addSound();
             }
         });
         add.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
-                j();
+                addSound();
             }
         });
         return item;
@@ -210,7 +210,7 @@ public class ow extends qA implements View.OnClickListener {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_sound_add) {
             a(false);
-            j();
+            addSound();
         } else if (itemId == R.id.menu_sound_delete) {
             a(!k);
         }
@@ -231,7 +231,7 @@ public class ow extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    private class a extends RecyclerView.Adapter<a.ViewHolder> {
+    private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
         private int lastSelectedSound = -1;
         private final Map<ProjectResourceBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
@@ -278,7 +278,7 @@ public class ow extends qA implements View.OnClickListener {
                         notifyItemChanged(lastSelectedSound);
                     } else {
                         f();
-                        k();
+                        editSound();
                     }
                 });
                 root.setOnLongClickListener(v -> {
@@ -291,7 +291,7 @@ public class ow extends qA implements View.OnClickListener {
             }
         }
 
-        public a(RecyclerView recyclerView) {
+        public SoundAdapter(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
@@ -385,7 +385,7 @@ public class ow extends qA implements View.OnClickListener {
         }
     }
 
-    public void h() {
+    public void saveSounds() {
         if (sounds != null && sounds.size() > 0) {
             for (ProjectResourceBean next : sounds) {
                 if (next.isNew) {
@@ -455,7 +455,7 @@ public class ow extends qA implements View.OnClickListener {
                     if (mediaPlayer == null) {
                         timer.cancel();
                     } else {
-                        ow.a.ViewHolder holder = (ow.a.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
+                        SoundAdapter.ViewHolder holder = (SoundAdapter.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
                         int positionInS = mediaPlayer.getCurrentPosition() / 1000;
                         holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
                         holder.progress.setProgress(mediaPlayer.getCurrentPosition() / 100);

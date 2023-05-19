@@ -185,7 +185,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void b() {
-            activityWeakReference.get().projectSounds.h();
+            activityWeakReference.get().projectSounds.saveSounds();
         }
 
         @Override
