@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,11 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,37 +43,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ow extends qA implements View.OnClickListener {
-    public oB B;
-    public ArrayList<ProjectResourceBean> C;
-    public FloatingActionButton H;
-    public String f;
-    public RecyclerView g;
-    public LinearLayout h;
-    public Button i;
-    public Button j;
-    public MediaPlayer m;
-    public TimerTask v;
-    public MediaPlayer w;
-    public TextView z;
+    private oB B;
+    private ArrayList<ProjectResourceBean> C;
+    private FloatingActionButton H;
+    private String f;
+    private RecyclerView g;
+    private LinearLayout h;
+    private MediaPlayer m;
+    private MediaPlayer w;
+    private TextView z;
     public boolean k = false;
-    public a l = null;
-    public ImageView n = null;
-    public ImageView o = null;
-    public SeekBar p = null;
-    public TextView q = null;
-    public TextView r = null;
-    public TextView s = null;
-    public EditText t = null;
-    public Timer u = new Timer();
-    public boolean x = false;
-    public Uri y = null;
-    public String A = "";
-    public int D = -1;
-    public int E = -1;
-    public TextView F = null;
-    public ProgressBar G = null;
+    private a l = null;
+    private ImageView o = null;
+    private Timer u = new Timer();
+    private String A = "";
+    private int D = -1;
+    private int E = -1;
 
-    public final void i() {
+    private void i() {
         if (C.size() == 0) {
             z.setVisibility(View.VISIBLE);
             g.setVisibility(View.GONE);
@@ -86,7 +70,7 @@ public class ow extends qA implements View.OnClickListener {
         }
     }
 
-    public final void j() {
+    private void j() {
         f();
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
         intent.putExtra("sc_id", f);
@@ -95,7 +79,7 @@ public class ow extends qA implements View.OnClickListener {
         startActivityForResult(intent, 269);
     }
 
-    public final void k() {
+    private void k() {
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
         intent.putExtra("sc_id", f);
         intent.putExtra("dir_path", A);
@@ -193,13 +177,13 @@ public class ow extends qA implements View.OnClickListener {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
         h = viewGroup2.findViewById(R.id.layout_btn_group);
-        i = viewGroup2.findViewById(R.id.btn_delete);
-        j = viewGroup2.findViewById(R.id.btn_cancel);
+        Button delete = viewGroup2.findViewById(R.id.btn_delete);
+        Button cancel = viewGroup2.findViewById(R.id.btn_cancel);
         H = viewGroup2.findViewById(R.id.fab);
-        i.setText(xB.b().a(getActivity(), R.string.common_word_delete));
-        j.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
-        i.setOnClickListener(this);
-        j.setOnClickListener(this);
+        delete.setText(xB.b().a(getActivity(), R.string.common_word_delete));
+        cancel.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
+        delete.setOnClickListener(this);
+        cancel.setOnClickListener(this);
         g = viewGroup2.findViewById(R.id.sound_list);
         g.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         l = new a(g);
@@ -249,10 +233,10 @@ public class ow extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    class a extends RecyclerView.Adapter<a.ViewHolder> {
+    private class a extends RecyclerView.Adapter<a.ViewHolder> {
         public int c = -1;
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public ProgressBar A;
             public TextView B;
             public LinearLayout C;
@@ -379,7 +363,7 @@ public class ow extends qA implements View.OnClickListener {
             return C.size();
         }
 
-        public final void a(ProjectResourceBean projectResourceBean, ImageView imageView) {
+        private void a(ProjectResourceBean projectResourceBean, ImageView imageView) {
             String a2;
             if (!projectResourceBean.isNew) {
                 a2 = ow.this.a(projectResourceBean);
@@ -419,7 +403,7 @@ public class ow extends qA implements View.OnClickListener {
         return C;
     }
 
-    public final void e() {
+    private void e() {
         f = getActivity().getIntent().getStringExtra("sc_id");
         A = jC.d(f).o();
         ArrayList<ProjectResourceBean> arrayList = jC.d(f).c;
@@ -447,7 +431,7 @@ public class ow extends qA implements View.OnClickListener {
         }
     }
 
-    public final void g() {
+    private void g() {
         for (ProjectResourceBean projectResourceBean : C) {
             projectResourceBean.isSelected = false;
         }
@@ -488,11 +472,11 @@ public class ow extends qA implements View.OnClickListener {
         jC.a(f).k();
     }
 
-    public void b(ArrayList<ProjectResourceBean> arrayList) {
+    private void b(ArrayList<ProjectResourceBean> arrayList) {
         C.addAll(arrayList);
     }
 
-    public boolean c(String str) {
+    private boolean c(String str) {
         for (ProjectResourceBean projectResourceBean : C) {
             if (projectResourceBean.resName.equals(str)) {
                 return true;
@@ -514,27 +498,26 @@ public class ow extends qA implements View.OnClickListener {
         l.notifyDataSetChanged();
     }
 
-    public final void b(int i) {
+    private void b(int i) {
         u = new Timer();
-        v = new TimerTask() {
+        u.schedule(new TimerTask() {
             @Override
             public void run() {
                 getActivity().runOnUiThread(() -> {
                     if (w == null) {
                         u.cancel();
                     } else {
-                        a.ViewHolder holder = (a.ViewHolder) g.findViewHolderForLayoutPosition(i);
+                        ow.a.ViewHolder holder = (ow.a.ViewHolder) g.findViewHolderForLayoutPosition(i);
                         int positionInS = w.getCurrentPosition() / 1000;
                         holder.z.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
                         holder.A.setProgress(w.getCurrentPosition() / 100);
                     }
                 });
             }
-        };
-        u.schedule(v, 100L, 100L);
+        }, 100L, 100L);
     }
 
-    public final ArrayList<String> c() {
+    private ArrayList<String> c() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
         for (ProjectResourceBean projectResourceBean : C) {
@@ -543,7 +526,7 @@ public class ow extends qA implements View.OnClickListener {
         return arrayList;
     }
 
-    public final int b(String str) {
+    private int b(String str) {
         long j;
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
@@ -555,7 +538,7 @@ public class ow extends qA implements View.OnClickListener {
         return (int) j;
     }
 
-    public final void a(int i) {
+    private void a(int i) {
         if (E == i) {
             if (w != null) {
                 if (w.isPlaying()) {
@@ -642,17 +625,17 @@ public class ow extends qA implements View.OnClickListener {
         i();
     }
 
-    public final String a(String str) {
+    private String a(String str) {
         return A + File.separator + str;
     }
 
-    public final String a(ProjectResourceBean projectResourceBean) {
+    private String a(ProjectResourceBean projectResourceBean) {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
         return A + File.separator + projectResourceBean.resName + substring;
     }
 
-    public final void a(String str, String str2) {
+    private void a(String str, String str2) {
         try {
             FileInputStream fileInputStream = new FileInputStream(str);
             FileOutputStream fileOutputStream = new FileOutputStream(str2);
