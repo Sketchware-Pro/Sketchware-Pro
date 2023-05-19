@@ -92,7 +92,7 @@ public class ow extends qA implements View.OnClickListener {
         fileUtil.f(A);
         sounds = new ArrayList<>();
         if (savedInstanceState == null) {
-            sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
             A = jC.d(sc_id).o();
             ArrayList<ProjectResourceBean> arrayList = jC.d(sc_id).c;
             if (arrayList != null) {
@@ -115,17 +115,17 @@ public class ow extends qA implements View.OnClickListener {
         if (requestCode == 269) {
             if (resultCode == Activity.RESULT_OK) {
                 sounds.add((ProjectResourceBean) data.getParcelableExtra("project_resource"));
-                bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), 1).show();
+                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), 1).show();
                 adapter.notifyDataSetChanged();
                 i();
-                ((ManageSoundActivity) getActivity()).l().e();
+                ((ManageSoundActivity) requireActivity()).l().e();
             }
         } else if (requestCode == 270 && resultCode == Activity.RESULT_OK) {
             sounds.set(adapter.lastSelectedSound, (ProjectResourceBean) data.getParcelableExtra("project_resource"));
-            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), 1).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), 1).show();
             adapter.notifyDataSetChanged();
             i();
-            ((ManageSoundActivity) getActivity()).l().e();
+            ((ManageSoundActivity) requireActivity()).l().e();
         }
     }
 
@@ -145,7 +145,7 @@ public class ow extends qA implements View.OnClickListener {
                         D = -1;
                         a(false);
                         i();
-                        bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
+                        bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), 1).show();
                         add.show();
                         break;
                     } else {
@@ -180,16 +180,16 @@ public class ow extends qA implements View.OnClickListener {
         Button delete = item.findViewById(R.id.btn_delete);
         Button cancel = item.findViewById(R.id.btn_cancel);
         add = item.findViewById(R.id.fab);
-        delete.setText(xB.b().a(getActivity(), R.string.common_word_delete));
-        cancel.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
+        delete.setText(xB.b().a(requireActivity(), R.string.common_word_delete));
+        cancel.setText(xB.b().a(requireActivity(), R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
         soundsList = item.findViewById(R.id.sound_list);
-        soundsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        soundsList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new a(soundsList);
         soundsList.setAdapter(adapter);
         noSoundsText = item.findViewById(R.id.tv_guide);
-        noSoundsText.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
         noSoundsText.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
@@ -435,7 +435,7 @@ public class ow extends qA implements View.OnClickListener {
 
     public void a(boolean z) {
         k = z;
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
         unselectAll();
         if (k) {
             f();
@@ -451,7 +451,7 @@ public class ow extends qA implements View.OnClickListener {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                getActivity().runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     if (mediaPlayer == null) {
                         timer.cancel();
                     } else {
@@ -544,7 +544,6 @@ public class ow extends qA implements View.OnClickListener {
             }
         }
         if (arrayList3.size() > 0) {
-            String a2 = xB.b().a(getActivity(), R.string.common_message_name_unavailable);
             String str2 = "";
             for (String str3 : arrayList3) {
                 if (str2.length() > 0) {
@@ -552,9 +551,9 @@ public class ow extends qA implements View.OnClickListener {
                 }
                 str2 = str2 + str3;
             }
-            bB.a(getActivity(), a2 + "\n[" + str2 + "]", 1).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", 1).show();
         } else {
-            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), 1).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), 1).show();
             b(arrayList2);
             adapter.notifyDataSetChanged();
         }
