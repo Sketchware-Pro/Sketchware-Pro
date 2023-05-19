@@ -207,14 +207,12 @@ public class ow extends qA implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_sound_add:
-                a(false);
-                j();
-                break;
-            case R.id.menu_sound_delete:
-                a(!k);
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_sound_add) {
+            a(false);
+            j();
+        } else if (itemId == R.id.menu_sound_delete) {
+            a(!k);
         }
         return super.onOptionsItemSelected(item);
     }
