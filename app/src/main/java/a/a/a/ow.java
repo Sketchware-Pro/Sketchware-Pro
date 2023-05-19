@@ -26,18 +26,21 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
@@ -209,8 +212,18 @@ public class ow extends qA implements View.OnClickListener {
         this.g.setAdapter(this.l);
         this.z = (TextView) viewGroup2.findViewById(R.id.tv_guide);
         this.z.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        this.z.setOnClickListener(new dw(this));
-        this.H.setOnClickListener(new ew(this));
+        this.z.setOnClickListener(v -> {
+            if (!mB.a()) {
+                a(false);
+                j();
+            }
+        });
+        this.H.setOnClickListener(v -> {
+            if (!mB.a()) {
+                a(false);
+                j();
+            }
+        });
         return viewGroup2;
     }
 
@@ -242,10 +255,10 @@ public class ow extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.Adapter<a.a> {
+    class a extends RecyclerView.Adapter<a.ViewHolder> {
         public int c = -1;
 
-        class a extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             public ProgressBar A;
             public TextView B;
             public LinearLayout C;
@@ -257,7 +270,7 @@ public class ow extends qA implements View.OnClickListener {
             public ImageView y;
             public TextView z;
 
-            public a(View view) {
+            public ViewHolder(View view) {
                 super(view);
                 this.t = (CardView) view.findViewById(R.id.layout_item);
                 this.u = (CheckBox) view.findViewById(R.id.chk_select);
@@ -269,21 +282,60 @@ public class ow extends qA implements View.OnClickListener {
                 this.A = (ProgressBar) view.findViewById(R.id.prog_playtime);
                 this.B = (TextView) view.findViewById(R.id.tv_endtime);
                 this.C = (LinearLayout) view.findViewById(R.id.delete_img_container);
-                this.x.setOnClickListener(new lw(this, a.this));
+                this.x.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        c = getLayoutPosition();
+                        if (!k) {
+                            ow.this.a(c);
+                        }
+                    }
+                });
                 this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(new mw(this, a.this));
-                this.t.setOnLongClickListener(new nw(this, a.this));
+                this.t.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        c = getLayoutPosition();
+                    }
+                    if (k) {
+                        u.setChecked(!u.isChecked());
+                        ow.this.C.get(c).isSelected = u.isChecked();
+                        notifyItemChanged(c);
+                    } else {
+                        f();
+                        k();
+                    }
+                });
+                this.t.setOnLongClickListener(v -> {
+                    ow.this.a(true);
+                    c = getLayoutPosition();
+                    u.setChecked(!u.isChecked());
+                    ow.this.C.get(c).isSelected = u.isChecked();
+                    return true;
+                });
             }
         }
 
         public a(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new jw(this, ow.this));
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
+                            if (H.isEnabled()) {
+                                H.hide();
+                            }
+                        } else if (dy < -2) {
+                            if (H.isEnabled()) {
+                                H.show();
+                            }
+                        }
+                    }
+                });
             }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ow.a.a holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String a2;
             ow owVar = ow.this;
             if (!owVar.k) {
@@ -329,8 +381,8 @@ public class ow extends qA implements View.OnClickListener {
 
         @Override
         @NonNull
-        public ow.a.a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
         }
 
         @Override
@@ -349,7 +401,12 @@ public class ow extends qA implements View.OnClickListener {
             try {
                 mediaMetadataRetriever.setDataSource(a2);
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    Glide.with(ow.this.getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into((DrawableRequestBuilder<byte[]>) new kw(this, imageView));
+                    Glide.with(ow.this.getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            imageView.setImageDrawable(glideDrawable);
+                        }
+                    });
                 } else {
                     imageView.setImageResource(R.drawable.default_album_art_200dp);
                     imageView.setBackgroundResource(R.drawable.bg_outline_album);
@@ -361,7 +418,11 @@ public class ow extends qA implements View.OnClickListener {
                 imageView.setImageResource(R.drawable.default_album_art_200dp);
                 imageView.setBackgroundResource(R.drawable.bg_outline_album);
             }
-            mediaMetadataRetriever.release();
+            try {
+                mediaMetadataRetriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -482,7 +543,21 @@ public class ow extends qA implements View.OnClickListener {
 
     public final void b(int i) {
         this.u = new Timer();
-        this.v = new iw(this, i);
+        this.v = new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(() -> {
+                    if (w == null) {
+                        u.cancel();
+                    } else {
+                        a.ViewHolder holder = (a.ViewHolder) g.findViewHolderForLayoutPosition(i);
+                        int positionInS = w.getCurrentPosition() / 1000;
+                        holder.z.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+                        holder.A.setProgress(w.getCurrentPosition() / 100);
+                    }
+                });
+            }
+        };
         this.u.schedule(this.v, 100L, 100L);
     }
 
@@ -543,8 +618,17 @@ public class ow extends qA implements View.OnClickListener {
         this.l.notifyItemChanged(this.E);
         this.w = new MediaPlayer();
         this.w.setAudioStreamType(3);
-        this.w.setOnPreparedListener(new fw(this, i));
-        this.w.setOnCompletionListener(new gw(this));
+        this.w.setOnPreparedListener(mp -> {
+            w.start();
+            b(i);
+            l.notifyItemChanged(E);
+        });
+        this.w.setOnCompletionListener(mp -> {
+            u.cancel();
+            C.get(E).curSoundPosition = 0;
+            l.notifyItemChanged(E);
+            E = -1;
+        });
         try {
             if (this.C.get(this.E).isNew) {
                 a2 = this.C.get(this.E).resFullName;
@@ -621,7 +705,7 @@ public class ow extends qA implements View.OnClickListener {
                     return;
                 }
             }
-        } catch (FileNotFoundException | Exception unused) {
+        } catch (Exception unused) {
         }
     }
 }
