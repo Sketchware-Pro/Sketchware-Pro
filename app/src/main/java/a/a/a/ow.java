@@ -131,32 +131,29 @@ public class ow extends qA implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (mB.a()) {
-            return;
-        }
-        int id = v.getId();
-        if (id == R.id.btn_cancel) {
-            if (k) {
+        if (!mB.a() && k) {
+            int id = v.getId();
+            if (id == R.id.btn_cancel) {
                 a(false);
-            }
-        } else if (id == R.id.btn_delete && k) {
-            int size = sounds.size();
-            while (true) {
-                size--;
-                if (size < 0) {
-                    adapter.notifyDataSetChanged();
-                    E = -1;
-                    D = -1;
-                    a(false);
-                    i();
-                    bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
-                    add.show();
-                    return;
-                } else {
-                    ProjectResourceBean projectResourceBean = sounds.get(size);
-                    projectResourceBean.curSoundPosition = 0;
-                    if (projectResourceBean.isSelected) {
-                        sounds.remove(size);
+            } else if (id == R.id.btn_delete) {
+                int size = sounds.size();
+                while (true) {
+                    size--;
+                    if (size < 0) {
+                        adapter.notifyDataSetChanged();
+                        E = -1;
+                        D = -1;
+                        a(false);
+                        i();
+                        bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
+                        add.show();
+                        break;
+                    } else {
+                        ProjectResourceBean projectResourceBean = sounds.get(size);
+                        projectResourceBean.curSoundPosition = 0;
+                        if (projectResourceBean.isSelected) {
+                            sounds.remove(size);
+                        }
                     }
                 }
             }
