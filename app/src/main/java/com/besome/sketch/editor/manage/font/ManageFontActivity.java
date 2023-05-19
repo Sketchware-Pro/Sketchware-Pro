@@ -183,13 +183,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         @Override
         public void b() {
-            try {
-                activityWeakReference.get().myCollectionFontsFragment.g();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // removed as not compilable (thanks, checked exceptions)
-                // throw new By(xB.b().a(getApplicationContext(), 0x7f0e03d4));
-            }
+            activityWeakReference.get().myCollectionFontsFragment.g();
         }
 
         @Override
