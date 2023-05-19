@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -111,7 +113,7 @@ public class ow extends qA implements View.OnClickListener {
             this.A = bundle.getString("dir_path");
             this.C = bundle.getParcelableArrayList("sounds");
         }
-        this.l.c();
+        this.l.notifyDataSetChanged();
         i();
     }
 
@@ -122,14 +124,14 @@ public class ow extends qA implements View.OnClickListener {
             if (i2 == -1) {
                 this.C.add((ProjectResourceBean) intent.getParcelableExtra("project_resource"));
                 bB.a(getActivity(), xB.b().a(getActivity(), 2131625276), 1).show();
-                this.l.c();
+                this.l.notifyDataSetChanged();
                 i();
                 ((ManageSoundActivity) getActivity()).l().e();
             }
         } else if (i == 270 && i2 == -1) {
             this.C.set(this.l.c, (ProjectResourceBean) intent.getParcelableExtra("project_resource"));
             bB.a(getActivity(), xB.b().a(getActivity(), 2131625279), 1).show();
-            this.l.c();
+            this.l.notifyDataSetChanged();
             i();
             ((ManageSoundActivity) getActivity()).l().e();
         }
@@ -155,13 +157,13 @@ public class ow extends qA implements View.OnClickListener {
                         this.C.remove(size);
                     }
                 } else {
-                    this.l.c();
+                    this.l.notifyDataSetChanged();
                     this.E = -1;
                     this.D = -1;
                     a(false);
                     i();
                     bB.a(getActivity(), xB.b().a(getActivity(), 2131624935), 1).show();
-                    this.H.f();
+                    this.H.show();
                     return;
                 }
             }
@@ -237,10 +239,10 @@ public class ow extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.Adapter<a.a> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class a extends RecyclerView.ViewHolder {
             public ProgressBar A;
             public TextView B;
             public LinearLayout C;
@@ -273,62 +275,63 @@ public class ow extends qA implements View.OnClickListener {
 
         public a(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new jw(this, ow.this));
+                recyclerView.addOnScrollListener(new jw(this, ow.this));
             }
         }
 
         @Override
-        public void b(a aVar, int i) {
+        public void onBindViewHolder(@NonNull ow.a.a holder, int position) {
             String a2;
             ow owVar = ow.this;
             if (!owVar.k) {
-                a((ProjectResourceBean) owVar.C.get(i), aVar.v);
-                aVar.v.setVisibility(0);
-                aVar.C.setVisibility(8);
+                a((ProjectResourceBean) owVar.C.get(position), holder.v);
+                holder.v.setVisibility(0);
+                holder.C.setVisibility(8);
             } else {
-                aVar.v.setVisibility(8);
-                aVar.C.setVisibility(0);
+                holder.v.setVisibility(8);
+                holder.C.setVisibility(0);
             }
-            if (((ProjectResourceBean) ow.this.C.get(i)).isSelected) {
-                aVar.y.setImageResource(2131165707);
+            if (((ProjectResourceBean) ow.this.C.get(position)).isSelected) {
+                holder.y.setImageResource(2131165707);
             } else {
-                aVar.y.setImageResource(2131165875);
+                holder.y.setImageResource(2131165875);
             }
-            int i2 = ((ProjectResourceBean) ow.this.C.get(i)).curSoundPosition / 1000;
-            if (((ProjectResourceBean) ow.this.C.get(i)).totalSoundDuration == 0) {
-                if (((ProjectResourceBean) ow.this.C.get(i)).isNew) {
-                    a2 = ((ProjectResourceBean) ow.this.C.get(i)).resFullName;
+            int i2 = ((ProjectResourceBean) ow.this.C.get(position)).curSoundPosition / 1000;
+            if (((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration == 0) {
+                if (((ProjectResourceBean) ow.this.C.get(position)).isNew) {
+                    a2 = ((ProjectResourceBean) ow.this.C.get(position)).resFullName;
                 } else {
                     ow owVar2 = ow.this;
-                    a2 = owVar2.a((ProjectResourceBean) owVar2.C.get(i));
+                    a2 = owVar2.a((ProjectResourceBean) owVar2.C.get(position));
                 }
-                ((ProjectResourceBean) ow.this.C.get(i)).totalSoundDuration = ow.this.b(a2);
+                ((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration = ow.this.b(a2);
             }
-            int i3 = ((ProjectResourceBean) ow.this.C.get(i)).totalSoundDuration / 1000;
-            aVar.z.setText(String.format("%d:%02d", Integer.valueOf(i2 / 60), Integer.valueOf(i2 % 60)));
-            aVar.B.setText(String.format("%d:%02d", Integer.valueOf(i3 / 60), Integer.valueOf(i3 % 60)));
-            aVar.u.setChecked(((ProjectResourceBean) ow.this.C.get(i)).isSelected);
-            aVar.w.setText(((ProjectResourceBean) ow.this.C.get(i)).resName);
-            if (ow.this.E == i) {
+            int i3 = ((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration / 1000;
+            holder.z.setText(String.format("%d:%02d", Integer.valueOf(i2 / 60), Integer.valueOf(i2 % 60)));
+            holder.B.setText(String.format("%d:%02d", Integer.valueOf(i3 / 60), Integer.valueOf(i3 % 60)));
+            holder.u.setChecked(((ProjectResourceBean) ow.this.C.get(position)).isSelected);
+            holder.w.setText(((ProjectResourceBean) ow.this.C.get(position)).resName);
+            if (ow.this.E == position) {
                 if (ow.this.w != null && ow.this.w.isPlaying()) {
-                    aVar.x.setImageResource(2131165804);
+                    holder.x.setImageResource(2131165804);
                 } else {
-                    aVar.x.setImageResource(2131165434);
+                    holder.x.setImageResource(2131165434);
                 }
             } else {
-                aVar.x.setImageResource(2131165434);
+                holder.x.setImageResource(2131165434);
             }
-            aVar.A.setMax(((ProjectResourceBean) ow.this.C.get(i)).totalSoundDuration / 100);
-            aVar.A.setProgress(((ProjectResourceBean) ow.this.C.get(i)).curSoundPosition / 100);
+            holder.A.setMax(((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration / 100);
+            holder.A.setProgress(((ProjectResourceBean) ow.this.C.get(position)).curSoundPosition / 100);
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427568, viewGroup, false));
+        @NonNull
+        public ow.a.a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427568, parent, false));
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return ow.this.C.size();
         }
 
@@ -388,7 +391,7 @@ public class ow extends qA implements View.OnClickListener {
             this.C.get(i).curSoundPosition = 0;
             this.E = -1;
             this.D = -1;
-            this.l.c();
+            this.l.notifyDataSetChanged();
         }
         MediaPlayer mediaPlayer2 = this.w;
         if (mediaPlayer2 == null || !mediaPlayer2.isPlaying()) {
@@ -471,7 +474,7 @@ public class ow extends qA implements View.OnClickListener {
         } else {
             this.h.setVisibility(8);
         }
-        this.l.c();
+        this.l.notifyDataSetChanged();
     }
 
     public final void b(int i) {
@@ -511,12 +514,12 @@ public class ow extends qA implements View.OnClickListener {
                     this.u.cancel();
                     this.w.pause();
                     this.C.get(this.E).curSoundPosition = this.w.getCurrentPosition();
-                    this.l.c(this.E);
+                    this.l.notifyItemChanged(this.E);
                     return;
                 }
                 this.w.start();
                 b(i);
-                this.l.c();
+                this.l.notifyDataSetChanged();
                 return;
             }
             return;
@@ -530,11 +533,11 @@ public class ow extends qA implements View.OnClickListener {
         int i2 = this.D;
         if (i2 != -1) {
             this.C.get(i2).curSoundPosition = 0;
-            this.l.c(this.D);
+            this.l.notifyItemChanged(this.D);
         }
         this.E = i;
         this.D = i;
-        this.l.c(this.E);
+        this.l.notifyItemChanged(this.E);
         this.w = new MediaPlayer();
         this.w.setAudioStreamType(3);
         this.w.setOnPreparedListener(new fw(this, i));
@@ -549,7 +552,7 @@ public class ow extends qA implements View.OnClickListener {
             this.w.prepare();
         } catch (Exception e) {
             this.E = -1;
-            this.l.c(this.E);
+            this.l.notifyItemChanged(this.E);
             e.printStackTrace();
         }
     }
@@ -584,7 +587,7 @@ public class ow extends qA implements View.OnClickListener {
         } else {
             bB.a(getActivity(), xB.b().a(getActivity(), 2131625280), 1).show();
             b(arrayList2);
-            this.l.c();
+            this.l.notifyDataSetChanged();
         }
         i();
     }
