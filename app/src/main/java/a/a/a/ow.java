@@ -43,35 +43,35 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ow extends qA implements View.OnClickListener {
-    private oB B;
-    private ArrayList<ProjectResourceBean> C;
-    private FloatingActionButton H;
-    private String f;
-    private RecyclerView g;
-    private LinearLayout h;
-    private MediaPlayer w;
-    private TextView z;
+    private oB fileUtil;
+    private ArrayList<ProjectResourceBean> sounds;
+    private FloatingActionButton add;
+    private String sc_id;
+    private RecyclerView soundsList;
+    private LinearLayout actionContainer;
+    private MediaPlayer mediaPlayer;
+    private TextView noSoundsText;
     public boolean k = false;
-    private a l = null;
-    private Timer u = new Timer();
+    private a adapter = null;
+    private Timer timer = new Timer();
     private String A = "";
     private int D = -1;
     private int E = -1;
 
     private void i() {
-        if (C.size() == 0) {
-            z.setVisibility(View.VISIBLE);
-            g.setVisibility(View.GONE);
+        if (sounds.size() == 0) {
+            noSoundsText.setVisibility(View.VISIBLE);
+            soundsList.setVisibility(View.GONE);
         } else {
-            g.setVisibility(View.VISIBLE);
-            z.setVisibility(View.GONE);
+            soundsList.setVisibility(View.VISIBLE);
+            noSoundsText.setVisibility(View.GONE);
         }
     }
 
     private void j() {
         f();
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
-        intent.putExtra("sc_id", f);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", A);
         intent.putExtra("sound_names", c());
         startActivityForResult(intent, 269);
@@ -79,28 +79,35 @@ public class ow extends qA implements View.OnClickListener {
 
     private void k() {
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
-        intent.putExtra("sc_id", f);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", A);
         intent.putExtra("sound_names", c());
         intent.putExtra("request_code", 270);
-        intent.putExtra("project_resource", C.get(l.c));
+        intent.putExtra("project_resource", sounds.get(adapter.lastSelectedSound));
         startActivityForResult(intent, 270);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        B = new oB();
-        B.f(A);
-        C = new ArrayList<>();
+        fileUtil = new oB();
+        fileUtil.f(A);
+        sounds = new ArrayList<>();
         if (savedInstanceState == null) {
-            e();
+            sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            A = jC.d(sc_id).o();
+            ArrayList<ProjectResourceBean> arrayList = jC.d(sc_id).c;
+            if (arrayList != null) {
+                for (ProjectResourceBean projectResourceBean : arrayList) {
+                    sounds.add(projectResourceBean.clone());
+                }
+            }
         } else {
-            f = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
             A = savedInstanceState.getString("dir_path");
-            C = savedInstanceState.getParcelableArrayList("sounds");
+            sounds = savedInstanceState.getParcelableArrayList("sounds");
         }
-        l.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         i();
     }
 
@@ -109,16 +116,16 @@ public class ow extends qA implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 269) {
             if (resultCode == Activity.RESULT_OK) {
-                C.add((ProjectResourceBean) data.getParcelableExtra("project_resource"));
+                sounds.add((ProjectResourceBean) data.getParcelableExtra("project_resource"));
                 bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), 1).show();
-                l.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 i();
                 ((ManageSoundActivity) getActivity()).l().e();
             }
         } else if (requestCode == 270 && resultCode == Activity.RESULT_OK) {
-            C.set(l.c, (ProjectResourceBean) data.getParcelableExtra("project_resource"));
+            sounds.set(adapter.lastSelectedSound, (ProjectResourceBean) data.getParcelableExtra("project_resource"));
             bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), 1).show();
-            l.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             i();
             ((ManageSoundActivity) getActivity()).l().e();
         }
@@ -135,23 +142,23 @@ public class ow extends qA implements View.OnClickListener {
                 a(false);
             }
         } else if (id == R.id.btn_delete && k) {
-            int size = C.size();
+            int size = sounds.size();
             while (true) {
                 size--;
                 if (size < 0) {
-                    l.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                     E = -1;
                     D = -1;
                     a(false);
                     i();
                     bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
-                    H.show();
+                    add.show();
                     return;
                 } else {
-                    ProjectResourceBean projectResourceBean = C.get(size);
+                    ProjectResourceBean projectResourceBean = sounds.get(size);
                     projectResourceBean.curSoundPosition = 0;
                     if (projectResourceBean.isSelected) {
-                        C.remove(size);
+                        sounds.remove(size);
                     }
                 }
             }
@@ -174,27 +181,27 @@ public class ow extends qA implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
-        h = viewGroup2.findViewById(R.id.layout_btn_group);
+        actionContainer = viewGroup2.findViewById(R.id.layout_btn_group);
         Button delete = viewGroup2.findViewById(R.id.btn_delete);
         Button cancel = viewGroup2.findViewById(R.id.btn_cancel);
-        H = viewGroup2.findViewById(R.id.fab);
+        add = viewGroup2.findViewById(R.id.fab);
         delete.setText(xB.b().a(getActivity(), R.string.common_word_delete));
         cancel.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        g = viewGroup2.findViewById(R.id.sound_list);
-        g.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        l = new a(g);
-        g.setAdapter(l);
-        z = viewGroup2.findViewById(R.id.tv_guide);
-        z.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        z.setOnClickListener(v -> {
+        soundsList = viewGroup2.findViewById(R.id.sound_list);
+        soundsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        adapter = new a(soundsList);
+        soundsList.setAdapter(adapter);
+        noSoundsText = viewGroup2.findViewById(R.id.tv_guide);
+        noSoundsText.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        noSoundsText.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
                 j();
             }
         });
-        H.setOnClickListener(v -> {
+        add.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
                 j();
@@ -225,66 +232,66 @@ public class ow extends qA implements View.OnClickListener {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", f);
+        outState.putString("sc_id", sc_id);
         outState.putString("dir_path", A);
-        outState.putParcelableArrayList("sounds", C);
+        outState.putParcelableArrayList("sounds", sounds);
         super.onSaveInstanceState(outState);
     }
 
     private class a extends RecyclerView.Adapter<a.ViewHolder> {
-        public int c = -1;
+        private int lastSelectedSound = -1;
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public ProgressBar A;
-            public TextView B;
-            public LinearLayout C;
-            public CardView t;
-            public CheckBox u;
-            public ImageView v;
-            public TextView w;
-            public ImageView x;
-            public ImageView y;
-            public TextView z;
+            public final ProgressBar progress;
+            public final TextView endTime;
+            public final LinearLayout deleteContainer;
+            public final CardView root;
+            public final CheckBox selected;
+            public final ImageView album;
+            public final TextView name;
+            public final ImageView play;
+            public final ImageView delete;
+            public final TextView currentTime;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.layout_item);
-                u = itemView.findViewById(R.id.chk_select);
-                v = itemView.findViewById(R.id.img_album);
-                y = itemView.findViewById(R.id.img_delete);
-                w = itemView.findViewById(R.id.tv_sound_name);
-                x = itemView.findViewById(R.id.img_play);
-                z = itemView.findViewById(R.id.tv_currenttime);
-                A = itemView.findViewById(R.id.prog_playtime);
-                B = itemView.findViewById(R.id.tv_endtime);
-                C = itemView.findViewById(R.id.delete_img_container);
-                x.setOnClickListener(v -> {
+                root = itemView.findViewById(R.id.layout_item);
+                selected = itemView.findViewById(R.id.chk_select);
+                album = itemView.findViewById(R.id.img_album);
+                delete = itemView.findViewById(R.id.img_delete);
+                name = itemView.findViewById(R.id.tv_sound_name);
+                play = itemView.findViewById(R.id.img_play);
+                currentTime = itemView.findViewById(R.id.tv_currenttime);
+                progress = itemView.findViewById(R.id.prog_playtime);
+                endTime = itemView.findViewById(R.id.tv_endtime);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                play.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        c = getLayoutPosition();
+                        lastSelectedSound = getLayoutPosition();
                         if (!k) {
-                            ow.this.a(c);
+                            ow.this.a(lastSelectedSound);
                         }
                     }
                 });
-                u.setVisibility(View.GONE);
-                t.setOnClickListener(v -> {
+                selected.setVisibility(View.GONE);
+                root.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        c = getLayoutPosition();
+                        lastSelectedSound = getLayoutPosition();
                     }
                     if (k) {
-                        u.setChecked(!u.isChecked());
-                        ow.this.C.get(c).isSelected = u.isChecked();
-                        notifyItemChanged(c);
+                        selected.setChecked(!selected.isChecked());
+                        sounds.get(lastSelectedSound).isSelected = selected.isChecked();
+                        notifyItemChanged(lastSelectedSound);
                     } else {
                         f();
                         k();
                     }
                 });
-                t.setOnLongClickListener(v -> {
+                root.setOnLongClickListener(v -> {
                     ow.this.a(true);
-                    c = getLayoutPosition();
-                    u.setChecked(!u.isChecked());
-                    ow.this.C.get(c).isSelected = u.isChecked();
+                    lastSelectedSound = getLayoutPosition();
+                    selected.setChecked(!selected.isChecked());
+                    sounds.get(lastSelectedSound).isSelected = selected.isChecked();
                     return true;
                 });
             }
@@ -297,12 +304,12 @@ public class ow extends qA implements View.OnClickListener {
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
                         if (dy > 2) {
-                            if (H.isEnabled()) {
-                                H.hide();
+                            if (add.isEnabled()) {
+                                add.hide();
                             }
                         } else if (dy < -2) {
-                            if (H.isEnabled()) {
-                                H.show();
+                            if (add.isEnabled()) {
+                                add.show();
                             }
                         }
                     }
@@ -312,16 +319,16 @@ public class ow extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean bean = C.get(position);
+            ProjectResourceBean bean = sounds.get(position);
             if (!k) {
-                a(bean, holder.v);
-                holder.v.setVisibility(View.VISIBLE);
-                holder.C.setVisibility(View.GONE);
+                a(bean, holder.album);
+                holder.album.setVisibility(View.VISIBLE);
+                holder.deleteContainer.setVisibility(View.GONE);
             } else {
-                holder.v.setVisibility(View.GONE);
-                holder.C.setVisibility(View.VISIBLE);
+                holder.album.setVisibility(View.GONE);
+                holder.deleteContainer.setVisibility(View.VISIBLE);
             }
-            holder.y.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             int i2 = bean.curSoundPosition / 1000;
             if (bean.totalSoundDuration == 0) {
                 String a2;
@@ -333,21 +340,21 @@ public class ow extends qA implements View.OnClickListener {
                 bean.totalSoundDuration = b(a2);
             }
             int i3 = bean.totalSoundDuration / 1000;
-            holder.z.setText(String.format("%d:%02d", i2 / 60, i2 % 60));
-            holder.B.setText(String.format("%d:%02d", i3 / 60, i3 % 60));
-            holder.u.setChecked(bean.isSelected);
-            holder.w.setText(bean.resName);
+            holder.currentTime.setText(String.format("%d:%02d", i2 / 60, i2 % 60));
+            holder.endTime.setText(String.format("%d:%02d", i3 / 60, i3 % 60));
+            holder.selected.setChecked(bean.isSelected);
+            holder.name.setText(bean.resName);
             if (E == position) {
-                if (w != null && w.isPlaying()) {
-                    holder.x.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    holder.play.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
-                    holder.x.setImageResource(R.drawable.circled_play_96_blue);
+                    holder.play.setImageResource(R.drawable.circled_play_96_blue);
                 }
             } else {
-                holder.x.setImageResource(R.drawable.circled_play_96_blue);
+                holder.play.setImageResource(R.drawable.circled_play_96_blue);
             }
-            holder.A.setMax(bean.totalSoundDuration / 100);
-            holder.A.setProgress(bean.curSoundPosition / 100);
+            holder.progress.setMax(bean.totalSoundDuration / 100);
+            holder.progress.setProgress(bean.curSoundPosition / 100);
         }
 
         @Override
@@ -358,7 +365,7 @@ public class ow extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            return C.size();
+            return sounds.size();
         }
 
         private void a(ProjectResourceBean projectResourceBean, ImageView imageView) {
@@ -398,53 +405,42 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public ArrayList<ProjectResourceBean> d() {
-        return C;
-    }
-
-    private void e() {
-        f = getActivity().getIntent().getStringExtra("sc_id");
-        A = jC.d(f).o();
-        ArrayList<ProjectResourceBean> arrayList = jC.d(f).c;
-        if (arrayList != null) {
-            for (ProjectResourceBean projectResourceBean : arrayList) {
-                C.add(projectResourceBean.clone());
-            }
-        }
+        return sounds;
     }
 
     public void f() {
-        u.cancel();
+        timer.cancel();
         if (E != -1) {
-            C.get(E).curSoundPosition = 0;
+            sounds.get(E).curSoundPosition = 0;
             E = -1;
             D = -1;
-            l.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
-        if (w != null && w.isPlaying()) {
-            w.pause();
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
         }
     }
 
-    private void g() {
-        for (ProjectResourceBean projectResourceBean : C) {
+    private void unselectAll() {
+        for (ProjectResourceBean projectResourceBean : sounds) {
             projectResourceBean.isSelected = false;
         }
     }
 
     public void h() {
-        if (C != null && C.size() > 0) {
-            for (ProjectResourceBean next : C) {
+        if (sounds != null && sounds.size() > 0) {
+            for (ProjectResourceBean next : sounds) {
                 if (next.isNew) {
-                    B.c(a(next.resFullName));
+                    fileUtil.c(a(next.resFullName));
                 }
             }
         }
-        for (ProjectResourceBean next2 : C) {
+        for (ProjectResourceBean next2 : sounds) {
             if (next2.isNew) {
                 try {
                     String a2 = a(next2);
-                    if (B.e(a2)) {
-                        B.c(a2);
+                    if (fileUtil.e(a2)) {
+                        fileUtil.c(a2);
                     }
                     a(next2.resFullName, a2);
                 } catch (Exception e) {
@@ -452,26 +448,26 @@ public class ow extends qA implements View.OnClickListener {
                 }
             }
         }
-        for (int i = 0; i < C.size(); i++) {
-            ProjectResourceBean projectResourceBean = C.get(i);
+        for (int i = 0; i < sounds.size(); i++) {
+            ProjectResourceBean projectResourceBean = sounds.get(i);
             if (projectResourceBean.isNew) {
                 String str = projectResourceBean.resFullName;
                 String substring = str.substring(str.lastIndexOf("."));
-                C.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, projectResourceBean.resName, projectResourceBean.resName + substring));
+                sounds.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, projectResourceBean.resName, projectResourceBean.resName + substring));
             }
         }
-        jC.d(f).c(C);
-        jC.d(f).y();
-        jC.a(f).c(jC.d(f));
-        jC.a(f).k();
+        jC.d(sc_id).c(sounds);
+        jC.d(sc_id).y();
+        jC.a(sc_id).c(jC.d(sc_id));
+        jC.a(sc_id).k();
     }
 
     private void b(ArrayList<ProjectResourceBean> arrayList) {
-        C.addAll(arrayList);
+        sounds.addAll(arrayList);
     }
 
     private boolean c(String str) {
-        for (ProjectResourceBean projectResourceBean : C) {
+        for (ProjectResourceBean projectResourceBean : sounds) {
             if (projectResourceBean.resName.equals(str)) {
                 return true;
             }
@@ -482,29 +478,29 @@ public class ow extends qA implements View.OnClickListener {
     public void a(boolean z) {
         k = z;
         getActivity().invalidateOptionsMenu();
-        g();
+        unselectAll();
         if (k) {
             f();
-            h.setVisibility(View.VISIBLE);
+            actionContainer.setVisibility(View.VISIBLE);
         } else {
-            h.setVisibility(View.GONE);
+            actionContainer.setVisibility(View.GONE);
         }
-        l.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     private void b(int i) {
-        u = new Timer();
-        u.schedule(new TimerTask() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 getActivity().runOnUiThread(() -> {
-                    if (w == null) {
-                        u.cancel();
+                    if (mediaPlayer == null) {
+                        timer.cancel();
                     } else {
-                        ow.a.ViewHolder holder = (ow.a.ViewHolder) g.findViewHolderForLayoutPosition(i);
-                        int positionInS = w.getCurrentPosition() / 1000;
-                        holder.z.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
-                        holder.A.setProgress(w.getCurrentPosition() / 100);
+                        ow.a.ViewHolder holder = (ow.a.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
+                        int positionInS = mediaPlayer.getCurrentPosition() / 1000;
+                        holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+                        holder.progress.setProgress(mediaPlayer.getCurrentPosition() / 100);
                     }
                 });
             }
@@ -514,7 +510,7 @@ public class ow extends qA implements View.OnClickListener {
     private ArrayList<String> c() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        for (ProjectResourceBean projectResourceBean : C) {
+        for (ProjectResourceBean projectResourceBean : sounds) {
             arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
@@ -534,56 +530,56 @@ public class ow extends qA implements View.OnClickListener {
 
     private void a(int i) {
         if (E == i) {
-            if (w != null) {
-                if (w.isPlaying()) {
-                    u.cancel();
-                    w.pause();
-                    C.get(E).curSoundPosition = w.getCurrentPosition();
-                    l.notifyItemChanged(E);
+            if (mediaPlayer != null) {
+                if (mediaPlayer.isPlaying()) {
+                    timer.cancel();
+                    mediaPlayer.pause();
+                    sounds.get(E).curSoundPosition = mediaPlayer.getCurrentPosition();
+                    adapter.notifyItemChanged(E);
                 } else {
-                    w.start();
+                    mediaPlayer.start();
                     b(i);
-                    l.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 }
             }
         } else {
-            if (w != null && w.isPlaying()) {
-                u.cancel();
-                w.pause();
-                w.release();
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                timer.cancel();
+                mediaPlayer.pause();
+                mediaPlayer.release();
             }
             if (D != -1) {
-                C.get(D).curSoundPosition = 0;
-                l.notifyItemChanged(D);
+                sounds.get(D).curSoundPosition = 0;
+                adapter.notifyItemChanged(D);
             }
             E = i;
             D = i;
-            l.notifyItemChanged(E);
-            w = new MediaPlayer();
-            w.setAudioStreamType(3);
-            w.setOnPreparedListener(mp -> {
-                w.start();
+            adapter.notifyItemChanged(E);
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(3);
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mediaPlayer.start();
                 b(i);
-                l.notifyItemChanged(E);
+                adapter.notifyItemChanged(E);
             });
-            w.setOnCompletionListener(mp -> {
-                u.cancel();
-                C.get(E).curSoundPosition = 0;
-                l.notifyItemChanged(E);
+            mediaPlayer.setOnCompletionListener(mp -> {
+                timer.cancel();
+                sounds.get(E).curSoundPosition = 0;
+                adapter.notifyItemChanged(E);
                 E = -1;
             });
             try {
                 String src;
-                if (C.get(E).isNew) {
-                    src = C.get(E).resFullName;
+                if (sounds.get(E).isNew) {
+                    src = sounds.get(E).resFullName;
                 } else {
-                    src = a(C.get(E));
+                    src = a(sounds.get(E));
                 }
-                w.setDataSource(src);
-                w.prepare();
+                mediaPlayer.setDataSource(src);
+                mediaPlayer.prepare();
             } catch (Exception e) {
                 E = -1;
-                l.notifyItemChanged(E);
+                adapter.notifyItemChanged(E);
                 e.printStackTrace();
             }
         }
@@ -614,7 +610,7 @@ public class ow extends qA implements View.OnClickListener {
         } else {
             bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), 1).show();
             b(arrayList2);
-            l.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
         i();
     }
