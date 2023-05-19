@@ -107,35 +107,35 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         B = new oB();
         B.f(A);
         C = new ArrayList<>();
-        if (bundle == null) {
+        if (savedInstanceState == null) {
             e();
         } else {
-            f = bundle.getString("sc_id");
-            A = bundle.getString("dir_path");
-            C = bundle.getParcelableArrayList("sounds");
+            f = savedInstanceState.getString("sc_id");
+            A = savedInstanceState.getString("dir_path");
+            C = savedInstanceState.getParcelableArrayList("sounds");
         }
         l.notifyDataSetChanged();
         i();
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 269) {
-            if (i2 == Activity.RESULT_OK) {
-                C.add((ProjectResourceBean) intent.getParcelableExtra("project_resource"));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 269) {
+            if (resultCode == Activity.RESULT_OK) {
+                C.add((ProjectResourceBean) data.getParcelableExtra("project_resource"));
                 bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), 1).show();
                 l.notifyDataSetChanged();
                 i();
                 ((ManageSoundActivity) getActivity()).l().e();
             }
-        } else if (i == 270 && i2 == Activity.RESULT_OK) {
-            C.set(l.c, (ProjectResourceBean) intent.getParcelableExtra("project_resource"));
+        } else if (requestCode == 270 && resultCode == Activity.RESULT_OK) {
+            C.set(l.c, (ProjectResourceBean) data.getParcelableExtra("project_resource"));
             bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), 1).show();
             l.notifyDataSetChanged();
             i();
@@ -144,11 +144,11 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (mB.a()) {
             return;
         }
-        int id = view.getId();
+        int id = v.getId();
         if (id != R.id.btn_cancel) {
             if (id != R.id.btn_delete || !k) {
                 return;
@@ -179,20 +179,20 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.manage_sound_menu, menu);
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.manage_sound_menu, menu);
         menu.findItem(R.id.menu_sound_delete).setVisible(!k);
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_sound_list, viewGroup, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
         h = viewGroup2.findViewById(R.id.layout_btn_group);
         i = viewGroup2.findViewById(R.id.btn_delete);
@@ -224,8 +224,8 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_sound_add:
                 a(false);
                 j();
@@ -234,7 +234,7 @@ public class ow extends qA implements View.OnClickListener {
                 a(!k);
                 break;
         }
-        return super.onOptionsItemSelected(menuItem);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -244,11 +244,11 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", f);
-        bundle.putString("dir_path", A);
-        bundle.putParcelableArrayList("sounds", C);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", f);
+        outState.putString("dir_path", A);
+        outState.putParcelableArrayList("sounds", C);
+        super.onSaveInstanceState(outState);
     }
 
     class a extends RecyclerView.Adapter<a.ViewHolder> {
@@ -266,18 +266,18 @@ public class ow extends qA implements View.OnClickListener {
             public ImageView y;
             public TextView z;
 
-            public ViewHolder(View view) {
-                super(view);
-                t = view.findViewById(R.id.layout_item);
-                u = view.findViewById(R.id.chk_select);
-                v = view.findViewById(R.id.img_album);
-                y = view.findViewById(R.id.img_delete);
-                w = view.findViewById(R.id.tv_sound_name);
-                x = view.findViewById(R.id.img_play);
-                z = view.findViewById(R.id.tv_currenttime);
-                A = view.findViewById(R.id.prog_playtime);
-                B = view.findViewById(R.id.tv_endtime);
-                C = view.findViewById(R.id.delete_img_container);
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                t = itemView.findViewById(R.id.layout_item);
+                u = itemView.findViewById(R.id.chk_select);
+                v = itemView.findViewById(R.id.img_album);
+                y = itemView.findViewById(R.id.img_delete);
+                w = itemView.findViewById(R.id.tv_sound_name);
+                x = itemView.findViewById(R.id.img_play);
+                z = itemView.findViewById(R.id.tv_currenttime);
+                A = itemView.findViewById(R.id.prog_playtime);
+                B = itemView.findViewById(R.id.tv_endtime);
+                C = itemView.findViewById(R.id.delete_img_container);
                 x.setOnClickListener(v -> {
                     if (!mB.a()) {
                         c = getLayoutPosition();
