@@ -49,12 +49,10 @@ public class ow extends qA implements View.OnClickListener {
     private String f;
     private RecyclerView g;
     private LinearLayout h;
-    private MediaPlayer m;
     private MediaPlayer w;
     private TextView z;
     public boolean k = false;
     private a l = null;
-    private ImageView o = null;
     private Timer u = new Timer();
     private String A = "";
     private int D = -1;
@@ -416,10 +414,6 @@ public class ow extends qA implements View.OnClickListener {
 
     public void f() {
         u.cancel();
-        if (m != null && m.isPlaying()) {
-            m.pause();
-            o.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
-        }
         if (E != -1) {
             C.get(E).curSoundPosition = 0;
             E = -1;
