@@ -3,7 +3,6 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,20 +26,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import mod.jbk.util.AudioMetadata;
 
 public class ow extends qA implements View.OnClickListener {
     private oB fileUtil;
@@ -240,6 +238,7 @@ public class ow extends qA implements View.OnClickListener {
 
     private class a extends RecyclerView.Adapter<a.ViewHolder> {
         private int lastSelectedSound = -1;
+        private final Map<ProjectResourceBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final ProgressBar progress;
@@ -321,7 +320,13 @@ public class ow extends qA implements View.OnClickListener {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
             if (!k) {
-                a(bean, holder.album);
+                AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
+                if (audioMetadata == null) {
+                    audioMetadata = AudioMetadata.fromPath(bean.isNew ? bean.resFullName : a(bean));
+                    cachedAudioMetadata.put(bean, audioMetadata);
+                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                }
+                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
                 holder.album.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             } else {
@@ -330,15 +335,6 @@ public class ow extends qA implements View.OnClickListener {
             }
             holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             int i2 = bean.curSoundPosition / 1000;
-            if (bean.totalSoundDuration == 0) {
-                String a2;
-                if (bean.isNew) {
-                    a2 = bean.resFullName;
-                } else {
-                    a2 = ow.this.a(bean);
-                }
-                bean.totalSoundDuration = b(a2);
-            }
             int i3 = bean.totalSoundDuration / 1000;
             holder.currentTime.setText(String.format("%d:%02d", i2 / 60, i2 % 60));
             holder.endTime.setText(String.format("%d:%02d", i3 / 60, i3 % 60));
@@ -366,41 +362,6 @@ public class ow extends qA implements View.OnClickListener {
         @Override
         public int getItemCount() {
             return sounds.size();
-        }
-
-        private void a(ProjectResourceBean projectResourceBean, ImageView imageView) {
-            String a2;
-            if (!projectResourceBean.isNew) {
-                a2 = ow.this.a(projectResourceBean);
-            } else {
-                a2 = projectResourceBean.resFullName;
-            }
-            MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-            try {
-                mediaMetadataRetriever.setDataSource(a2);
-                if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    Glide.with(getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            imageView.setImageDrawable(glideDrawable);
-                        }
-                    });
-                } else {
-                    imageView.setImageResource(R.drawable.default_album_art_200dp);
-                    imageView.setBackgroundResource(R.drawable.bg_outline_album);
-                }
-            } catch (IllegalArgumentException unused) {
-                imageView.setImageResource(R.drawable.default_album_art_200dp);
-                imageView.setBackgroundResource(R.drawable.bg_outline_album);
-            } catch (RuntimeException unused2) {
-                imageView.setImageResource(R.drawable.default_album_art_200dp);
-                imageView.setBackgroundResource(R.drawable.bg_outline_album);
-            }
-            try {
-                mediaMetadataRetriever.release();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
@@ -514,18 +475,6 @@ public class ow extends qA implements View.OnClickListener {
             arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
-    }
-
-    private int b(String str) {
-        long j;
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        try {
-            mediaMetadataRetriever.setDataSource(str);
-            j = Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-        } catch (IllegalArgumentException unused) {
-            j = 0;
-        }
-        return (int) j;
     }
 
     private void a(int i) {
