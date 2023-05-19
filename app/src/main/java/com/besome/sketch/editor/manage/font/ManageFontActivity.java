@@ -60,16 +60,16 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     public void onBackPressed() {
         if (myCollectionFontsFragment.l) {
             myCollectionFontsFragment.a(false);
-            return;
+        } else {
+            k();
+            try {
+                new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
+            } catch (Exception e) {
+                e.printStackTrace();
+                h();
+            }
         }
 
-        k();
-        try {
-            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
-        } catch (Exception e) {
-            e.printStackTrace();
-            h();
-        }
     }
 
     @Override
@@ -121,11 +121,10 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     }
 
     private class TabLayoutAdapter extends FragmentPagerAdapter {
-
         private final String[] labels = new String[2];
 
-        public TabLayoutAdapter(FragmentManager xf) {
-            super(xf);
+        public TabLayoutAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
             labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project).toUpperCase();
             labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
