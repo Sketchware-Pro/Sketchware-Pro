@@ -25,24 +25,12 @@ import a.a.a.Zt;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 
-public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
+public class ManageFontActivity extends BaseAppCompatActivity {
 
     private String sc_id;
     private ViewPager pager;
     private Zt myCollectionFontsFragment;
     private St thisProjectFontsFragment;
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-    }
 
     public void f(int i) {
         pager.setCurrentItem(i);
@@ -102,7 +90,6 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         pager = findViewById(R.id.view_pager);
         pager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
         pager.setOffscreenPageLimit(2);
-        pager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(pager);
     }
 
