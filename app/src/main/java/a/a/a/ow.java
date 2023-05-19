@@ -78,48 +78,48 @@ public class ow extends qA implements View.OnClickListener {
     public ProgressBar G = null;
 
     public final void i() {
-        if (this.C.size() == 0) {
-            this.z.setVisibility(View.VISIBLE);
-            this.g.setVisibility(View.GONE);
-            return;
+        if (C.size() == 0) {
+            z.setVisibility(View.VISIBLE);
+            g.setVisibility(View.GONE);
+        } else {
+            g.setVisibility(View.VISIBLE);
+            z.setVisibility(View.GONE);
         }
-        this.g.setVisibility(View.VISIBLE);
-        this.z.setVisibility(View.GONE);
     }
 
     public final void j() {
         f();
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
-        intent.putExtra("sc_id", this.f);
-        intent.putExtra("dir_path", this.A);
+        intent.putExtra("sc_id", f);
+        intent.putExtra("dir_path", A);
         intent.putExtra("sound_names", c());
         startActivityForResult(intent, 269);
     }
 
     public final void k() {
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
-        intent.putExtra("sc_id", this.f);
-        intent.putExtra("dir_path", this.A);
+        intent.putExtra("sc_id", f);
+        intent.putExtra("dir_path", A);
         intent.putExtra("sound_names", c());
         intent.putExtra("request_code", 270);
-        intent.putExtra("project_resource", this.C.get(this.l.c));
+        intent.putExtra("project_resource", C.get(l.c));
         startActivityForResult(intent, 270);
     }
 
     @Override
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
-        this.B = new oB();
-        this.B.f(this.A);
-        this.C = new ArrayList<>();
+        B = new oB();
+        B.f(A);
+        C = new ArrayList<>();
         if (bundle == null) {
             e();
         } else {
-            this.f = bundle.getString("sc_id");
-            this.A = bundle.getString("dir_path");
-            this.C = bundle.getParcelableArrayList("sounds");
+            f = bundle.getString("sc_id");
+            A = bundle.getString("dir_path");
+            C = bundle.getParcelableArrayList("sounds");
         }
-        this.l.notifyDataSetChanged();
+        l.notifyDataSetChanged();
         i();
     }
 
@@ -128,16 +128,16 @@ public class ow extends qA implements View.OnClickListener {
         super.onActivityResult(i, i2, intent);
         if (i == 269) {
             if (i2 == Activity.RESULT_OK) {
-                this.C.add((ProjectResourceBean) intent.getParcelableExtra("project_resource"));
+                C.add((ProjectResourceBean) intent.getParcelableExtra("project_resource"));
                 bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), 1).show();
-                this.l.notifyDataSetChanged();
+                l.notifyDataSetChanged();
                 i();
                 ((ManageSoundActivity) getActivity()).l().e();
             }
         } else if (i == 270 && i2 == Activity.RESULT_OK) {
-            this.C.set(this.l.c, (ProjectResourceBean) intent.getParcelableExtra("project_resource"));
+            C.set(l.c, (ProjectResourceBean) intent.getParcelableExtra("project_resource"));
             bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), 1).show();
-            this.l.notifyDataSetChanged();
+            l.notifyDataSetChanged();
             i();
             ((ManageSoundActivity) getActivity()).l().e();
         }
@@ -150,30 +150,30 @@ public class ow extends qA implements View.OnClickListener {
         }
         int id = view.getId();
         if (id != R.id.btn_cancel) {
-            if (id != R.id.btn_delete || !this.k) {
+            if (id != R.id.btn_delete || !k) {
                 return;
             }
-            int size = this.C.size();
+            int size = C.size();
             while (true) {
                 size--;
                 if (size >= 0) {
-                    ProjectResourceBean projectResourceBean = this.C.get(size);
+                    ProjectResourceBean projectResourceBean = C.get(size);
                     projectResourceBean.curSoundPosition = 0;
                     if (projectResourceBean.isSelected) {
-                        this.C.remove(size);
+                        C.remove(size);
                     }
                 } else {
-                    this.l.notifyDataSetChanged();
-                    this.E = -1;
-                    this.D = -1;
+                    l.notifyDataSetChanged();
+                    E = -1;
+                    D = -1;
                     a(false);
                     i();
                     bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
-                    this.H.show();
+                    H.show();
                     return;
                 }
             }
-        } else if (this.k) {
+        } else if (k) {
             a(false);
         }
     }
@@ -187,38 +187,34 @@ public class ow extends qA implements View.OnClickListener {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.manage_sound_menu, menu);
-        if (this.k) {
-            menu.findItem(R.id.menu_sound_delete).setVisible(false);
-        } else {
-            menu.findItem(R.id.menu_sound_delete).setVisible(true);
-        }
+        menu.findItem(R.id.menu_sound_delete).setVisible(!k);
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_sound_list, viewGroup, false);
         setHasOptionsMenu(true);
-        this.h = (LinearLayout) viewGroup2.findViewById(R.id.layout_btn_group);
-        this.i = (Button) viewGroup2.findViewById(R.id.btn_delete);
-        this.j = (Button) viewGroup2.findViewById(R.id.btn_cancel);
-        this.H = (FloatingActionButton) viewGroup2.findViewById(R.id.fab);
-        this.i.setText(xB.b().a(getActivity(), R.string.common_word_delete));
-        this.j.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
-        this.i.setOnClickListener(this);
-        this.j.setOnClickListener(this);
-        this.g = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
-        this.g.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        this.l = new a(this.g);
-        this.g.setAdapter(this.l);
-        this.z = (TextView) viewGroup2.findViewById(R.id.tv_guide);
-        this.z.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        this.z.setOnClickListener(v -> {
+        h = viewGroup2.findViewById(R.id.layout_btn_group);
+        i = viewGroup2.findViewById(R.id.btn_delete);
+        j = viewGroup2.findViewById(R.id.btn_cancel);
+        H = viewGroup2.findViewById(R.id.fab);
+        i.setText(xB.b().a(getActivity(), R.string.common_word_delete));
+        j.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
+        i.setOnClickListener(this);
+        j.setOnClickListener(this);
+        g = viewGroup2.findViewById(R.id.sound_list);
+        g.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        l = new a(g);
+        g.setAdapter(l);
+        z = viewGroup2.findViewById(R.id.tv_guide);
+        z.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        z.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
                 j();
             }
         });
-        this.H.setOnClickListener(v -> {
+        H.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
                 j();
@@ -235,7 +231,7 @@ public class ow extends qA implements View.OnClickListener {
                 j();
                 break;
             case R.id.menu_sound_delete:
-                a(!this.k);
+                a(!k);
                 break;
         }
         return super.onOptionsItemSelected(menuItem);
@@ -249,9 +245,9 @@ public class ow extends qA implements View.OnClickListener {
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", this.f);
-        bundle.putString("dir_path", this.A);
-        bundle.putParcelableArrayList("sounds", this.C);
+        bundle.putString("sc_id", f);
+        bundle.putString("dir_path", A);
+        bundle.putParcelableArrayList("sounds", C);
         super.onSaveInstanceState(bundle);
     }
 
@@ -272,17 +268,17 @@ public class ow extends qA implements View.OnClickListener {
 
             public ViewHolder(View view) {
                 super(view);
-                this.t = (CardView) view.findViewById(R.id.layout_item);
-                this.u = (CheckBox) view.findViewById(R.id.chk_select);
-                this.v = (ImageView) view.findViewById(R.id.img_album);
-                this.y = (ImageView) view.findViewById(R.id.img_delete);
-                this.w = (TextView) view.findViewById(R.id.tv_sound_name);
-                this.x = (ImageView) view.findViewById(R.id.img_play);
-                this.z = (TextView) view.findViewById(R.id.tv_currenttime);
-                this.A = (ProgressBar) view.findViewById(R.id.prog_playtime);
-                this.B = (TextView) view.findViewById(R.id.tv_endtime);
-                this.C = (LinearLayout) view.findViewById(R.id.delete_img_container);
-                this.x.setOnClickListener(v -> {
+                t = view.findViewById(R.id.layout_item);
+                u = view.findViewById(R.id.chk_select);
+                v = view.findViewById(R.id.img_album);
+                y = view.findViewById(R.id.img_delete);
+                w = view.findViewById(R.id.tv_sound_name);
+                x = view.findViewById(R.id.img_play);
+                z = view.findViewById(R.id.tv_currenttime);
+                A = view.findViewById(R.id.prog_playtime);
+                B = view.findViewById(R.id.tv_endtime);
+                C = view.findViewById(R.id.delete_img_container);
+                x.setOnClickListener(v -> {
                     if (!mB.a()) {
                         c = getLayoutPosition();
                         if (!k) {
@@ -290,8 +286,8 @@ public class ow extends qA implements View.OnClickListener {
                         }
                     }
                 });
-                this.u.setVisibility(View.GONE);
-                this.t.setOnClickListener(v -> {
+                u.setVisibility(View.GONE);
+                t.setOnClickListener(v -> {
                     if (!mB.a()) {
                         c = getLayoutPosition();
                     }
@@ -304,7 +300,7 @@ public class ow extends qA implements View.OnClickListener {
                         k();
                     }
                 });
-                this.t.setOnLongClickListener(v -> {
+                t.setOnLongClickListener(v -> {
                     ow.this.a(true);
                     c = getLayoutPosition();
                     u.setChecked(!u.isChecked());
@@ -401,7 +397,7 @@ public class ow extends qA implements View.OnClickListener {
             try {
                 mediaMetadataRetriever.setDataSource(a2);
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    Glide.with(ow.this.getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                    Glide.with(getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
                         @Override
                         public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
                             imageView.setImageDrawable(glideDrawable);
@@ -427,69 +423,68 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public ArrayList<ProjectResourceBean> d() {
-        return this.C;
+        return C;
     }
 
     public final void e() {
-        this.f = getActivity().getIntent().getStringExtra("sc_id");
-        this.A = jC.d(this.f).o();
-        ArrayList<ProjectResourceBean> arrayList = jC.d(this.f).c;
+        f = getActivity().getIntent().getStringExtra("sc_id");
+        A = jC.d(f).o();
+        ArrayList<ProjectResourceBean> arrayList = jC.d(f).c;
         if (arrayList == null) {
             return;
         }
         Iterator<ProjectResourceBean> it = arrayList.iterator();
         while (it.hasNext()) {
-            this.C.add(it.next().clone());
+            C.add(it.next().clone());
         }
     }
 
     public void f() {
-        this.u.cancel();
-        MediaPlayer mediaPlayer = this.m;
+        u.cancel();
+        MediaPlayer mediaPlayer = m;
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            this.m.pause();
-            this.o.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+            m.pause();
+            o.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
-        int i = this.E;
+        int i = E;
         if (i != -1) {
-            this.C.get(i).curSoundPosition = 0;
-            this.E = -1;
-            this.D = -1;
-            this.l.notifyDataSetChanged();
+            C.get(i).curSoundPosition = 0;
+            E = -1;
+            D = -1;
+            l.notifyDataSetChanged();
         }
-        MediaPlayer mediaPlayer2 = this.w;
-        if (mediaPlayer2 == null || !mediaPlayer2.isPlaying()) {
-            return;
+        MediaPlayer mediaPlayer2 = w;
+        if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
+            w.pause();
         }
-        this.w.pause();
     }
 
     public final void g() {
-        Iterator<ProjectResourceBean> it = this.C.iterator();
+        Iterator<ProjectResourceBean> it = C.iterator();
         while (it.hasNext()) {
             it.next().isSelected = false;
         }
     }
 
     public void h() {
-        ArrayList<ProjectResourceBean> arrayList = this.C;
+        ArrayList<ProjectResourceBean> arrayList = C;
         if (arrayList != null && arrayList.size() > 0) {
-            Iterator<ProjectResourceBean> it = this.C.iterator();
+            Iterator<ProjectResourceBean> it = C.iterator();
             while (it.hasNext()) {
                 ProjectResourceBean next = it.next();
                 if (next.isNew) {
-                    this.B.c(a(next.resFullName));
+                    B.c(a(next.resFullName));
                 }
             }
         }
-        Iterator<ProjectResourceBean> it2 = this.C.iterator();
+        Iterator<ProjectResourceBean> it2 = C.iterator();
         while (it2.hasNext()) {
             ProjectResourceBean next2 = it2.next();
             if (next2.isNew) {
                 try {
                     String a2 = a(next2);
-                    if (this.B.e(a2)) {
-                        this.B.c(a2);
+                    if (B.e(a2)) {
+                        B.c(a2);
                     }
                     a(next2.resFullName, a2);
                 } catch (Exception e) {
@@ -497,29 +492,29 @@ public class ow extends qA implements View.OnClickListener {
                 }
             }
         }
-        for (int i = 0; i < this.C.size(); i++) {
-            ProjectResourceBean projectResourceBean = this.C.get(i);
+        for (int i = 0; i < C.size(); i++) {
+            ProjectResourceBean projectResourceBean = C.get(i);
             if (projectResourceBean.isNew) {
                 String str = projectResourceBean.resFullName;
                 String substring = str.substring(str.lastIndexOf("."));
-                this.C.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, projectResourceBean.resName, projectResourceBean.resName + substring));
+                C.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, projectResourceBean.resName, projectResourceBean.resName + substring));
             }
         }
-        jC.d(this.f).c(this.C);
-        jC.d(this.f).y();
-        jC.a(this.f).c(jC.d(this.f));
-        jC.a(this.f).k();
+        jC.d(f).c(C);
+        jC.d(f).y();
+        jC.a(f).c(jC.d(f));
+        jC.a(f).k();
     }
 
     public void b(ArrayList<ProjectResourceBean> arrayList) {
         Iterator<ProjectResourceBean> it = arrayList.iterator();
         while (it.hasNext()) {
-            this.C.add(it.next());
+            C.add(it.next());
         }
     }
 
     public boolean c(String str) {
-        Iterator<ProjectResourceBean> it = this.C.iterator();
+        Iterator<ProjectResourceBean> it = C.iterator();
         while (it.hasNext()) {
             if (it.next().resName.equals(str)) {
                 return true;
@@ -529,21 +524,21 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public void a(boolean z) {
-        this.k = z;
+        k = z;
         getActivity().invalidateOptionsMenu();
         g();
-        if (this.k) {
+        if (k) {
             f();
-            this.h.setVisibility(View.VISIBLE);
+            h.setVisibility(View.VISIBLE);
         } else {
-            this.h.setVisibility(View.GONE);
+            h.setVisibility(View.GONE);
         }
-        this.l.notifyDataSetChanged();
+        l.notifyDataSetChanged();
     }
 
     public final void b(int i) {
-        this.u = new Timer();
-        this.v = new TimerTask() {
+        u = new Timer();
+        v = new TimerTask() {
             @Override
             public void run() {
                 getActivity().runOnUiThread(() -> {
@@ -558,13 +553,13 @@ public class ow extends qA implements View.OnClickListener {
                 });
             }
         };
-        this.u.schedule(this.v, 100L, 100L);
+        u.schedule(v, 100L, 100L);
     }
 
     public final ArrayList<String> c() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.C.iterator();
+        Iterator<ProjectResourceBean> it = C.iterator();
         while (it.hasNext()) {
             arrayList.add(it.next().resName);
         }
@@ -585,61 +580,61 @@ public class ow extends qA implements View.OnClickListener {
 
     public final void a(int i) {
         String a2;
-        if (this.E == i) {
-            MediaPlayer mediaPlayer = this.w;
+        if (E == i) {
+            MediaPlayer mediaPlayer = w;
             if (mediaPlayer != null) {
                 if (mediaPlayer.isPlaying()) {
-                    this.u.cancel();
-                    this.w.pause();
-                    this.C.get(this.E).curSoundPosition = this.w.getCurrentPosition();
-                    this.l.notifyItemChanged(this.E);
+                    u.cancel();
+                    w.pause();
+                    C.get(E).curSoundPosition = w.getCurrentPosition();
+                    l.notifyItemChanged(E);
                     return;
                 }
-                this.w.start();
+                w.start();
                 b(i);
-                this.l.notifyDataSetChanged();
+                l.notifyDataSetChanged();
                 return;
             }
             return;
         }
-        MediaPlayer mediaPlayer2 = this.w;
+        MediaPlayer mediaPlayer2 = w;
         if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
-            this.u.cancel();
-            this.w.pause();
-            this.w.release();
+            u.cancel();
+            w.pause();
+            w.release();
         }
-        int i2 = this.D;
+        int i2 = D;
         if (i2 != -1) {
-            this.C.get(i2).curSoundPosition = 0;
-            this.l.notifyItemChanged(this.D);
+            C.get(i2).curSoundPosition = 0;
+            l.notifyItemChanged(D);
         }
-        this.E = i;
-        this.D = i;
-        this.l.notifyItemChanged(this.E);
-        this.w = new MediaPlayer();
-        this.w.setAudioStreamType(3);
-        this.w.setOnPreparedListener(mp -> {
+        E = i;
+        D = i;
+        l.notifyItemChanged(E);
+        w = new MediaPlayer();
+        w.setAudioStreamType(3);
+        w.setOnPreparedListener(mp -> {
             w.start();
             b(i);
             l.notifyItemChanged(E);
         });
-        this.w.setOnCompletionListener(mp -> {
+        w.setOnCompletionListener(mp -> {
             u.cancel();
             C.get(E).curSoundPosition = 0;
             l.notifyItemChanged(E);
             E = -1;
         });
         try {
-            if (this.C.get(this.E).isNew) {
-                a2 = this.C.get(this.E).resFullName;
+            if (C.get(E).isNew) {
+                a2 = C.get(E).resFullName;
             } else {
-                a2 = a(this.C.get(this.E));
+                a2 = a(C.get(E));
             }
-            this.w.setDataSource(a2);
-            this.w.prepare();
+            w.setDataSource(a2);
+            w.prepare();
         } catch (Exception e) {
-            this.E = -1;
-            this.l.notifyItemChanged(this.E);
+            E = -1;
+            l.notifyItemChanged(E);
             e.printStackTrace();
         }
     }
@@ -674,19 +669,19 @@ public class ow extends qA implements View.OnClickListener {
         } else {
             bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), 1).show();
             b(arrayList2);
-            this.l.notifyDataSetChanged();
+            l.notifyDataSetChanged();
         }
         i();
     }
 
     public final String a(String str) {
-        return this.A + File.separator + str;
+        return A + File.separator + str;
     }
 
     public final String a(ProjectResourceBean projectResourceBean) {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
-        return this.A + File.separator + projectResourceBean.resName + substring;
+        return A + File.separator + projectResourceBean.resName + substring;
     }
 
     public final void a(String str, String str2) {
