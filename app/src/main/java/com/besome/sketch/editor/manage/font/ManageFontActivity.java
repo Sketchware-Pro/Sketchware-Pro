@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.font;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -16,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
+
+import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.Np;
@@ -162,25 +163,28 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
     }
 
-    private class SaveAsyncTask extends MA {
+    private static class SaveAsyncTask extends MA {
+        private final WeakReference<ManageFontActivity> activityWeakReference;
 
-        public SaveAsyncTask(Context context) {
-            super(context);
-            addTask(this);
+        public SaveAsyncTask(ManageFontActivity activity) {
+            super(activity);
+            activityWeakReference = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
-            h();
-            setResult(RESULT_OK);
-            finish();
+            var activity = activityWeakReference.get();
+            activity.h();
+            activity.setResult(RESULT_OK);
+            activity.finish();
             Np.g().d();
         }
 
         @Override
         public void b() {
             try {
-                myCollectionFontsFragment.g();
+                activityWeakReference.get().myCollectionFontsFragment.g();
             } catch (Exception e) {
                 e.printStackTrace();
                 // removed as not compilable (thanks, checked exceptions)
@@ -190,7 +194,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         @Override
         public void a(String str) {
-            h();
+            activityWeakReference.get().h();
         }
 
         @Override
