@@ -177,21 +177,21 @@ public class ow extends qA implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
+        ViewGroup item = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
-        actionContainer = viewGroup2.findViewById(R.id.layout_btn_group);
-        Button delete = viewGroup2.findViewById(R.id.btn_delete);
-        Button cancel = viewGroup2.findViewById(R.id.btn_cancel);
-        add = viewGroup2.findViewById(R.id.fab);
+        actionContainer = item.findViewById(R.id.layout_btn_group);
+        Button delete = item.findViewById(R.id.btn_delete);
+        Button cancel = item.findViewById(R.id.btn_cancel);
+        add = item.findViewById(R.id.fab);
         delete.setText(xB.b().a(getActivity(), R.string.common_word_delete));
         cancel.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        soundsList = viewGroup2.findViewById(R.id.sound_list);
+        soundsList = item.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new a(soundsList);
         soundsList.setAdapter(adapter);
-        noSoundsText = viewGroup2.findViewById(R.id.tv_guide);
+        noSoundsText = item.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
         noSoundsText.setOnClickListener(v -> {
             if (!mB.a()) {
@@ -205,7 +205,7 @@ public class ow extends qA implements View.OnClickListener {
                 j();
             }
         });
-        return viewGroup2;
+        return item;
     }
 
     @Override
@@ -334,10 +334,12 @@ public class ow extends qA implements View.OnClickListener {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             }
             holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
-            int i2 = bean.curSoundPosition / 1000;
-            int i3 = bean.totalSoundDuration / 1000;
-            holder.currentTime.setText(String.format("%d:%02d", i2 / 60, i2 % 60));
-            holder.endTime.setText(String.format("%d:%02d", i3 / 60, i3 % 60));
+
+            int positionInS = bean.curSoundPosition / 1000;
+            int totalDurationInS = bean.totalSoundDuration / 1000;
+            holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+            holder.endTime.setText(String.format("%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
+
             holder.selected.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
             if (E == position) {
