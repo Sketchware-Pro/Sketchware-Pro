@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.MediaMetadataRetriever;
@@ -31,6 +32,8 @@ import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,12 +76,12 @@ public class ow extends qA implements View.OnClickListener {
 
     public final void i() {
         if (this.C.size() == 0) {
-            this.z.setVisibility(0);
-            this.g.setVisibility(8);
+            this.z.setVisibility(View.VISIBLE);
+            this.g.setVisibility(View.GONE);
             return;
         }
-        this.g.setVisibility(0);
-        this.z.setVisibility(8);
+        this.g.setVisibility(View.VISIBLE);
+        this.z.setVisibility(View.GONE);
     }
 
     public final void j() {
@@ -121,16 +124,16 @@ public class ow extends qA implements View.OnClickListener {
     public void onActivityResult(int i, int i2, Intent intent) {
         super.onActivityResult(i, i2, intent);
         if (i == 269) {
-            if (i2 == -1) {
+            if (i2 == Activity.RESULT_OK) {
                 this.C.add((ProjectResourceBean) intent.getParcelableExtra("project_resource"));
-                bB.a(getActivity(), xB.b().a(getActivity(), 2131625276), 1).show();
+                bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), 1).show();
                 this.l.notifyDataSetChanged();
                 i();
                 ((ManageSoundActivity) getActivity()).l().e();
             }
-        } else if (i == 270 && i2 == -1) {
+        } else if (i == 270 && i2 == Activity.RESULT_OK) {
             this.C.set(this.l.c, (ProjectResourceBean) intent.getParcelableExtra("project_resource"));
-            bB.a(getActivity(), xB.b().a(getActivity(), 2131625279), 1).show();
+            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), 1).show();
             this.l.notifyDataSetChanged();
             i();
             ((ManageSoundActivity) getActivity()).l().e();
@@ -143,8 +146,8 @@ public class ow extends qA implements View.OnClickListener {
             return;
         }
         int id = view.getId();
-        if (id != 2131230810) {
-            if (id != 2131230817 || !this.k) {
+        if (id != R.id.btn_cancel) {
+            if (id != R.id.btn_delete || !this.k) {
                 return;
             }
             int size = this.C.size();
@@ -162,7 +165,7 @@ public class ow extends qA implements View.OnClickListener {
                     this.D = -1;
                     a(false);
                     i();
-                    bB.a(getActivity(), xB.b().a(getActivity(), 2131624935), 1).show();
+                    bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
                     this.H.show();
                     return;
                 }
@@ -180,32 +183,32 @@ public class ow extends qA implements View.OnClickListener {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(2131492882, menu);
+        menuInflater.inflate(R.menu.manage_sound_menu, menu);
         if (this.k) {
-            menu.findItem(2131231537).setVisible(false);
+            menu.findItem(R.id.menu_sound_delete).setVisible(false);
         } else {
-            menu.findItem(2131231537).setVisible(true);
+            menu.findItem(R.id.menu_sound_delete).setVisible(true);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(2131427441, viewGroup, false);
+        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_sound_list, viewGroup, false);
         setHasOptionsMenu(true);
-        this.h = (LinearLayout) viewGroup2.findViewById(2131231319);
-        this.i = (Button) viewGroup2.findViewById(2131230817);
-        this.j = (Button) viewGroup2.findViewById(2131230810);
-        this.H = (FloatingActionButton) viewGroup2.findViewById(2131231054);
-        this.i.setText(xB.b().a(getActivity(), 2131624986));
-        this.j.setText(xB.b().a(getActivity(), 2131624974));
+        this.h = (LinearLayout) viewGroup2.findViewById(R.id.layout_btn_group);
+        this.i = (Button) viewGroup2.findViewById(R.id.btn_delete);
+        this.j = (Button) viewGroup2.findViewById(R.id.btn_cancel);
+        this.H = (FloatingActionButton) viewGroup2.findViewById(R.id.fab);
+        this.i.setText(xB.b().a(getActivity(), R.string.common_word_delete));
+        this.j.setText(xB.b().a(getActivity(), R.string.common_word_cancel));
         this.i.setOnClickListener(this);
         this.j.setOnClickListener(this);
-        this.g = (RecyclerView) viewGroup2.findViewById(2131231746);
-        this.g.setLayoutManager(new LinearLayoutManager(getActivity(), 1, false));
+        this.g = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
+        this.g.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         this.l = new a(this.g);
         this.g.setAdapter(this.l);
-        this.z = (TextView) viewGroup2.findViewById(2131231997);
-        this.z.setText(xB.b().a(getActivity(), 2131625281));
+        this.z = (TextView) viewGroup2.findViewById(R.id.tv_guide);
+        this.z.setText(xB.b().a(getActivity(), R.string.design_manager_sound_description_guide_add_sound));
         this.z.setOnClickListener(new dw(this));
         this.H.setOnClickListener(new ew(this));
         return viewGroup2;
@@ -214,11 +217,11 @@ public class ow extends qA implements View.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case 2131231536:
+            case R.id.menu_sound_add:
                 a(false);
                 j();
                 break;
-            case 2131231537:
+            case R.id.menu_sound_delete:
                 a(!this.k);
                 break;
         }
@@ -256,18 +259,18 @@ public class ow extends qA implements View.OnClickListener {
 
             public a(View view) {
                 super(view);
-                this.t = (CardView) view.findViewById(2131231359);
-                this.u = (CheckBox) view.findViewById(2131230893);
-                this.v = (ImageView) view.findViewById(2131231106);
-                this.y = (ImageView) view.findViewById(2131231132);
-                this.w = (TextView) view.findViewById(2131232169);
-                this.x = (ImageView) view.findViewById(2131231165);
-                this.z = (TextView) view.findViewById(2131231931);
-                this.A = (ProgressBar) view.findViewById(2131231607);
-                this.B = (TextView) view.findViewById(2131231967);
-                this.C = (LinearLayout) view.findViewById(2131230959);
+                this.t = (CardView) view.findViewById(R.id.layout_item);
+                this.u = (CheckBox) view.findViewById(R.id.chk_select);
+                this.v = (ImageView) view.findViewById(R.id.img_album);
+                this.y = (ImageView) view.findViewById(R.id.img_delete);
+                this.w = (TextView) view.findViewById(R.id.tv_sound_name);
+                this.x = (ImageView) view.findViewById(R.id.img_play);
+                this.z = (TextView) view.findViewById(R.id.tv_currenttime);
+                this.A = (ProgressBar) view.findViewById(R.id.prog_playtime);
+                this.B = (TextView) view.findViewById(R.id.tv_endtime);
+                this.C = (LinearLayout) view.findViewById(R.id.delete_img_container);
                 this.x.setOnClickListener(new lw(this, a.this));
-                this.u.setVisibility(8);
+                this.u.setVisibility(View.GONE);
                 this.t.setOnClickListener(new mw(this, a.this));
                 this.t.setOnLongClickListener(new nw(this, a.this));
             }
@@ -285,16 +288,16 @@ public class ow extends qA implements View.OnClickListener {
             ow owVar = ow.this;
             if (!owVar.k) {
                 a((ProjectResourceBean) owVar.C.get(position), holder.v);
-                holder.v.setVisibility(0);
-                holder.C.setVisibility(8);
+                holder.v.setVisibility(View.VISIBLE);
+                holder.C.setVisibility(View.GONE);
             } else {
-                holder.v.setVisibility(8);
-                holder.C.setVisibility(0);
+                holder.v.setVisibility(View.GONE);
+                holder.C.setVisibility(View.VISIBLE);
             }
             if (((ProjectResourceBean) ow.this.C.get(position)).isSelected) {
-                holder.y.setImageResource(2131165707);
+                holder.y.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.y.setImageResource(2131165875);
+                holder.y.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
             int i2 = ((ProjectResourceBean) ow.this.C.get(position)).curSoundPosition / 1000;
             if (((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration == 0) {
@@ -313,12 +316,12 @@ public class ow extends qA implements View.OnClickListener {
             holder.w.setText(((ProjectResourceBean) ow.this.C.get(position)).resName);
             if (ow.this.E == position) {
                 if (ow.this.w != null && ow.this.w.isPlaying()) {
-                    holder.x.setImageResource(2131165804);
+                    holder.x.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
-                    holder.x.setImageResource(2131165434);
+                    holder.x.setImageResource(R.drawable.circled_play_96_blue);
                 }
             } else {
-                holder.x.setImageResource(2131165434);
+                holder.x.setImageResource(R.drawable.circled_play_96_blue);
             }
             holder.A.setMax(((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration / 100);
             holder.A.setProgress(((ProjectResourceBean) ow.this.C.get(position)).curSoundPosition / 100);
@@ -327,7 +330,7 @@ public class ow extends qA implements View.OnClickListener {
         @Override
         @NonNull
         public ow.a.a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427568, parent, false));
+            return new a(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
         }
 
         @Override
@@ -348,15 +351,15 @@ public class ow extends qA implements View.OnClickListener {
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                     Glide.with(ow.this.getActivity()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into((DrawableRequestBuilder<byte[]>) new kw(this, imageView));
                 } else {
-                    imageView.setImageResource(2131165520);
-                    imageView.setBackgroundResource(2131165346);
+                    imageView.setImageResource(R.drawable.default_album_art_200dp);
+                    imageView.setBackgroundResource(R.drawable.bg_outline_album);
                 }
             } catch (IllegalArgumentException unused) {
-                imageView.setImageResource(2131165520);
-                imageView.setBackgroundResource(2131165346);
+                imageView.setImageResource(R.drawable.default_album_art_200dp);
+                imageView.setBackgroundResource(R.drawable.bg_outline_album);
             } catch (RuntimeException unused2) {
-                imageView.setImageResource(2131165520);
-                imageView.setBackgroundResource(2131165346);
+                imageView.setImageResource(R.drawable.default_album_art_200dp);
+                imageView.setBackgroundResource(R.drawable.bg_outline_album);
             }
             mediaMetadataRetriever.release();
         }
@@ -384,7 +387,7 @@ public class ow extends qA implements View.OnClickListener {
         MediaPlayer mediaPlayer = this.m;
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             this.m.pause();
-            this.o.setImageResource(2131165812);
+            this.o.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
         int i = this.E;
         if (i != -1) {
@@ -470,9 +473,9 @@ public class ow extends qA implements View.OnClickListener {
         g();
         if (this.k) {
             f();
-            this.h.setVisibility(0);
+            this.h.setVisibility(View.VISIBLE);
         } else {
-            this.h.setVisibility(8);
+            this.h.setVisibility(View.GONE);
         }
         this.l.notifyDataSetChanged();
     }
@@ -498,7 +501,7 @@ public class ow extends qA implements View.OnClickListener {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(str);
-            j = Long.parseLong(mediaMetadataRetriever.extractMetadata(9));
+            j = Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
         } catch (IllegalArgumentException unused) {
             j = 0;
         }
@@ -573,7 +576,7 @@ public class ow extends qA implements View.OnClickListener {
             }
         }
         if (arrayList3.size() > 0) {
-            String a2 = xB.b().a(getActivity(), 2131624950);
+            String a2 = xB.b().a(getActivity(), R.string.common_message_name_unavailable);
             Iterator it2 = arrayList3.iterator();
             String str2 = "";
             while (it2.hasNext()) {
@@ -585,7 +588,7 @@ public class ow extends qA implements View.OnClickListener {
             }
             bB.a(getActivity(), a2 + "\n[" + str2 + "]", 1).show();
         } else {
-            bB.a(getActivity(), xB.b().a(getActivity(), 2131625280), 1).show();
+            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), 1).show();
             b(arrayList2);
             this.l.notifyDataSetChanged();
         }
