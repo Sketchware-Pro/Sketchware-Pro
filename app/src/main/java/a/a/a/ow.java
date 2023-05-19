@@ -42,7 +42,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -149,20 +148,15 @@ public class ow extends qA implements View.OnClickListener {
             return;
         }
         int id = v.getId();
-        if (id != R.id.btn_cancel) {
-            if (id != R.id.btn_delete || !k) {
-                return;
+        if (id == R.id.btn_cancel) {
+            if (k) {
+                a(false);
             }
+        } else if (id == R.id.btn_delete && k) {
             int size = C.size();
             while (true) {
                 size--;
-                if (size >= 0) {
-                    ProjectResourceBean projectResourceBean = C.get(size);
-                    projectResourceBean.curSoundPosition = 0;
-                    if (projectResourceBean.isSelected) {
-                        C.remove(size);
-                    }
-                } else {
+                if (size < 0) {
                     l.notifyDataSetChanged();
                     E = -1;
                     D = -1;
@@ -171,10 +165,14 @@ public class ow extends qA implements View.OnClickListener {
                     bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), 1).show();
                     H.show();
                     return;
+                } else {
+                    ProjectResourceBean projectResourceBean = C.get(size);
+                    projectResourceBean.curSoundPosition = 0;
+                    if (projectResourceBean.isSelected) {
+                        C.remove(size);
+                    }
                 }
             }
-        } else if (k) {
-            a(false);
         }
     }
 
@@ -332,38 +330,33 @@ public class ow extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String a2;
-            ow owVar = ow.this;
-            if (!owVar.k) {
-                a((ProjectResourceBean) owVar.C.get(position), holder.v);
+            ProjectResourceBean bean = C.get(position);
+            if (!k) {
+                a(bean, holder.v);
                 holder.v.setVisibility(View.VISIBLE);
                 holder.C.setVisibility(View.GONE);
             } else {
                 holder.v.setVisibility(View.GONE);
                 holder.C.setVisibility(View.VISIBLE);
             }
-            if (((ProjectResourceBean) ow.this.C.get(position)).isSelected) {
-                holder.y.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.y.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-            int i2 = ((ProjectResourceBean) ow.this.C.get(position)).curSoundPosition / 1000;
-            if (((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration == 0) {
-                if (((ProjectResourceBean) ow.this.C.get(position)).isNew) {
-                    a2 = ((ProjectResourceBean) ow.this.C.get(position)).resFullName;
+            holder.y.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
+            int i2 = bean.curSoundPosition / 1000;
+            if (bean.totalSoundDuration == 0) {
+                String a2;
+                if (bean.isNew) {
+                    a2 = bean.resFullName;
                 } else {
-                    ow owVar2 = ow.this;
-                    a2 = owVar2.a((ProjectResourceBean) owVar2.C.get(position));
+                    a2 = ow.this.a(bean);
                 }
-                ((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration = ow.this.b(a2);
+                bean.totalSoundDuration = b(a2);
             }
-            int i3 = ((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration / 1000;
-            holder.z.setText(String.format("%d:%02d", Integer.valueOf(i2 / 60), Integer.valueOf(i2 % 60)));
-            holder.B.setText(String.format("%d:%02d", Integer.valueOf(i3 / 60), Integer.valueOf(i3 % 60)));
-            holder.u.setChecked(((ProjectResourceBean) ow.this.C.get(position)).isSelected);
-            holder.w.setText(((ProjectResourceBean) ow.this.C.get(position)).resName);
-            if (ow.this.E == position) {
-                if (ow.this.w != null && ow.this.w.isPlaying()) {
+            int i3 = bean.totalSoundDuration / 1000;
+            holder.z.setText(String.format("%d:%02d", i2 / 60, i2 % 60));
+            holder.B.setText(String.format("%d:%02d", i3 / 60, i3 % 60));
+            holder.u.setChecked(bean.isSelected);
+            holder.w.setText(bean.resName);
+            if (E == position) {
+                if (w != null && w.isPlaying()) {
                     holder.x.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
                     holder.x.setImageResource(R.drawable.circled_play_96_blue);
@@ -371,8 +364,8 @@ public class ow extends qA implements View.OnClickListener {
             } else {
                 holder.x.setImageResource(R.drawable.circled_play_96_blue);
             }
-            holder.A.setMax(((ProjectResourceBean) ow.this.C.get(position)).totalSoundDuration / 100);
-            holder.A.setProgress(((ProjectResourceBean) ow.this.C.get(position)).curSoundPosition / 100);
+            holder.A.setMax(bean.totalSoundDuration / 100);
+            holder.A.setProgress(bean.curSoundPosition / 100);
         }
 
         @Override
@@ -383,7 +376,7 @@ public class ow extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            return ow.this.C.size();
+            return C.size();
         }
 
         public final void a(ProjectResourceBean projectResourceBean, ImageView imageView) {
@@ -430,56 +423,45 @@ public class ow extends qA implements View.OnClickListener {
         f = getActivity().getIntent().getStringExtra("sc_id");
         A = jC.d(f).o();
         ArrayList<ProjectResourceBean> arrayList = jC.d(f).c;
-        if (arrayList == null) {
-            return;
-        }
-        Iterator<ProjectResourceBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            C.add(it.next().clone());
+        if (arrayList != null) {
+            for (ProjectResourceBean projectResourceBean : arrayList) {
+                C.add(projectResourceBean.clone());
+            }
         }
     }
 
     public void f() {
         u.cancel();
-        MediaPlayer mediaPlayer = m;
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+        if (m != null && m.isPlaying()) {
             m.pause();
             o.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
-        int i = E;
-        if (i != -1) {
-            C.get(i).curSoundPosition = 0;
+        if (E != -1) {
+            C.get(E).curSoundPosition = 0;
             E = -1;
             D = -1;
             l.notifyDataSetChanged();
         }
-        MediaPlayer mediaPlayer2 = w;
-        if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
+        if (w != null && w.isPlaying()) {
             w.pause();
         }
     }
 
     public final void g() {
-        Iterator<ProjectResourceBean> it = C.iterator();
-        while (it.hasNext()) {
-            it.next().isSelected = false;
+        for (ProjectResourceBean projectResourceBean : C) {
+            projectResourceBean.isSelected = false;
         }
     }
 
     public void h() {
-        ArrayList<ProjectResourceBean> arrayList = C;
-        if (arrayList != null && arrayList.size() > 0) {
-            Iterator<ProjectResourceBean> it = C.iterator();
-            while (it.hasNext()) {
-                ProjectResourceBean next = it.next();
+        if (C != null && C.size() > 0) {
+            for (ProjectResourceBean next : C) {
                 if (next.isNew) {
                     B.c(a(next.resFullName));
                 }
             }
         }
-        Iterator<ProjectResourceBean> it2 = C.iterator();
-        while (it2.hasNext()) {
-            ProjectResourceBean next2 = it2.next();
+        for (ProjectResourceBean next2 : C) {
             if (next2.isNew) {
                 try {
                     String a2 = a(next2);
@@ -507,16 +489,12 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public void b(ArrayList<ProjectResourceBean> arrayList) {
-        Iterator<ProjectResourceBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            C.add(it.next());
-        }
+        C.addAll(arrayList);
     }
 
     public boolean c(String str) {
-        Iterator<ProjectResourceBean> it = C.iterator();
-        while (it.hasNext()) {
-            if (it.next().resName.equals(str)) {
+        for (ProjectResourceBean projectResourceBean : C) {
+            if (projectResourceBean.resName.equals(str)) {
                 return true;
             }
         }
@@ -559,9 +537,8 @@ public class ow extends qA implements View.OnClickListener {
     public final ArrayList<String> c() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        Iterator<ProjectResourceBean> it = C.iterator();
-        while (it.hasNext()) {
-            arrayList.add(it.next().resName);
+        for (ProjectResourceBean projectResourceBean : C) {
+            arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
     }
@@ -579,87 +556,78 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public final void a(int i) {
-        String a2;
         if (E == i) {
-            MediaPlayer mediaPlayer = w;
-            if (mediaPlayer != null) {
-                if (mediaPlayer.isPlaying()) {
+            if (w != null) {
+                if (w.isPlaying()) {
                     u.cancel();
                     w.pause();
                     C.get(E).curSoundPosition = w.getCurrentPosition();
                     l.notifyItemChanged(E);
-                    return;
+                } else {
+                    w.start();
+                    b(i);
+                    l.notifyDataSetChanged();
                 }
+            }
+        } else {
+            if (w != null && w.isPlaying()) {
+                u.cancel();
+                w.pause();
+                w.release();
+            }
+            if (D != -1) {
+                C.get(D).curSoundPosition = 0;
+                l.notifyItemChanged(D);
+            }
+            E = i;
+            D = i;
+            l.notifyItemChanged(E);
+            w = new MediaPlayer();
+            w.setAudioStreamType(3);
+            w.setOnPreparedListener(mp -> {
                 w.start();
                 b(i);
-                l.notifyDataSetChanged();
-                return;
+                l.notifyItemChanged(E);
+            });
+            w.setOnCompletionListener(mp -> {
+                u.cancel();
+                C.get(E).curSoundPosition = 0;
+                l.notifyItemChanged(E);
+                E = -1;
+            });
+            try {
+                String src;
+                if (C.get(E).isNew) {
+                    src = C.get(E).resFullName;
+                } else {
+                    src = a(C.get(E));
+                }
+                w.setDataSource(src);
+                w.prepare();
+            } catch (Exception e) {
+                E = -1;
+                l.notifyItemChanged(E);
+                e.printStackTrace();
             }
-            return;
-        }
-        MediaPlayer mediaPlayer2 = w;
-        if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
-            u.cancel();
-            w.pause();
-            w.release();
-        }
-        int i2 = D;
-        if (i2 != -1) {
-            C.get(i2).curSoundPosition = 0;
-            l.notifyItemChanged(D);
-        }
-        E = i;
-        D = i;
-        l.notifyItemChanged(E);
-        w = new MediaPlayer();
-        w.setAudioStreamType(3);
-        w.setOnPreparedListener(mp -> {
-            w.start();
-            b(i);
-            l.notifyItemChanged(E);
-        });
-        w.setOnCompletionListener(mp -> {
-            u.cancel();
-            C.get(E).curSoundPosition = 0;
-            l.notifyItemChanged(E);
-            E = -1;
-        });
-        try {
-            if (C.get(E).isNew) {
-                a2 = C.get(E).resFullName;
-            } else {
-                a2 = a(C.get(E));
-            }
-            w.setDataSource(a2);
-            w.prepare();
-        } catch (Exception e) {
-            E = -1;
-            l.notifyItemChanged(E);
-            e.printStackTrace();
         }
     }
 
     public void a(ArrayList<ProjectResourceBean> arrayList) {
         ArrayList<ProjectResourceBean> arrayList2 = new ArrayList<>();
-        ArrayList arrayList3 = new ArrayList();
-        Iterator<ProjectResourceBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean next = it.next();
-            String str = next.resName;
-            if (c(str)) {
-                arrayList3.add(str);
+        ArrayList<String> arrayList3 = new ArrayList<>();
+        for (ProjectResourceBean next : arrayList) {
+            if (c(next.resName)) {
+                arrayList3.add(next.resName);
             } else {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, str, next.resFullName);
+                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, next.resFullName);
                 projectResourceBean.isNew = true;
                 arrayList2.add(projectResourceBean);
             }
         }
         if (arrayList3.size() > 0) {
             String a2 = xB.b().a(getActivity(), R.string.common_message_name_unavailable);
-            Iterator it2 = arrayList3.iterator();
             String str2 = "";
-            while (it2.hasNext()) {
-                String str3 = (String) it2.next();
+            for (String str3 : arrayList3) {
                 if (str2.length() > 0) {
                     str2 = str2 + ", ";
                 }
