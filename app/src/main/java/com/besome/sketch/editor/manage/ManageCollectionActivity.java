@@ -859,14 +859,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         private void onBindViewHolder(SoundCollectionViewHolder holder, int position) {
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
-            String soundFilePath = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
             if (selectingToBeDeletedItems) {
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
                 AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
                 if (audioMetadata == null) {
-                    audioMetadata = AudioMetadata.fromPath(soundFilePath);
+                    audioMetadata = AudioMetadata.fromPath(getAudio(position));
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
                     cachedAudioMetadata.put(bean, audioMetadata);
                 }

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.sketchware.remod.R;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import mod.SketchwareUtil;
 
@@ -18,10 +19,12 @@ public class AudioMetadata {
             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
             .build();
 
+    private final Path source;
     private final int durationInMs;
     private final byte[] embeddedPicture;
 
-    public AudioMetadata(int durationInMs, byte[] embeddedPicture) {
+    public AudioMetadata(Path source, int durationInMs, byte[] embeddedPicture) {
+        this.source = source;
         this.durationInMs = durationInMs;
         this.embeddedPicture = embeddedPicture;
     }
@@ -38,6 +41,10 @@ public class AudioMetadata {
         return embeddedPicture;
     }
 
+    public Path getSource() {
+        return source;
+    }
+
     public void setEmbeddedPictureAsAlbumCover(Activity activity, ImageView imageView) {
         if (hasEmbeddedPicture()) {
             Glide.with(activity)
@@ -49,19 +56,19 @@ public class AudioMetadata {
         }
     }
 
-    public static AudioMetadata fromPath(String path) {
+    public static AudioMetadata fromPath(Path audio) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
-            mediaMetadataRetriever.setDataSource(path);
+            mediaMetadataRetriever.setDataSource(audio.toString());
             int durationInMs = (int) Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-            return new AudioMetadata(durationInMs, mediaMetadataRetriever.getEmbeddedPicture());
+            return new AudioMetadata(audio, durationInMs, mediaMetadataRetriever.getEmbeddedPicture());
         } catch (IllegalArgumentException unused) {
-            return new AudioMetadata(-1, null);
+            return new AudioMetadata(audio, -1, null);
         } finally {
             try {
                 mediaMetadataRetriever.release();
             } catch (IOException e) {
-                SketchwareUtil.toastError("Failed to release file " + path + ": " + e);
+                SketchwareUtil.toastError("Failed to release file " + audio + ": " + e);
             }
         }
     }

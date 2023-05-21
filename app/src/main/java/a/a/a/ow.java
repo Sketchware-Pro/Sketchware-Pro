@@ -332,7 +332,7 @@ public class ow extends qA implements View.OnClickListener {
             if (!k) {
                 AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
                 if (audioMetadata == null) {
-                    audioMetadata = AudioMetadata.fromPath(bean.isNew ? bean.resFullName : a(bean));
+                    audioMetadata = AudioMetadata.fromPath(getAudio(position));
                     cachedAudioMetadata.put(bean, audioMetadata);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
                 }

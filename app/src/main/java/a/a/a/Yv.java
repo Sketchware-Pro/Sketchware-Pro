@@ -192,14 +192,13 @@ public class Yv extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
-            String path = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
             holder.select.setVisibility(View.VISIBLE);
 
             var audioMetadata = cachedMetadata.get(bean);
             if (audioMetadata != null) {
                 audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
             } else {
-                audioMetadata = AudioMetadata.fromPath(path);
+                audioMetadata = AudioMetadata.fromPath(getAudio(position));
                 cachedMetadata.put(bean, audioMetadata);
                 audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
                 if (bean.totalSoundDuration == 0) {
