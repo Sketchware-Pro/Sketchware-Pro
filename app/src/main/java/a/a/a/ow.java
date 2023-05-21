@@ -3,7 +3,6 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,14 +29,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.util.AudioMetadata;
+import mod.jbk.util.AudioPlayer;
 
 public class ow extends qA implements View.OnClickListener {
     private oB fileUtil;
@@ -46,14 +46,11 @@ public class ow extends qA implements View.OnClickListener {
     private String sc_id;
     private RecyclerView soundsList;
     private LinearLayout actionContainer;
-    private MediaPlayer mediaPlayer;
     private TextView noSoundsText;
     public boolean k = false;
     private SoundAdapter adapter = null;
-    private Timer timer = new Timer();
     private String A = "";
-    private int D = -1;
-    private int E = -1;
+    private AudioPlayer audioPlayer;
 
     private void i() {
         if (sounds.size() == 0) {
@@ -105,6 +102,7 @@ public class ow extends qA implements View.OnClickListener {
             sounds = savedInstanceState.getParcelableArrayList("sounds");
         }
         adapter.notifyDataSetChanged();
+        audioPlayer = new AudioPlayer(requireActivity(), adapter, adapter);
         i();
     }
 
@@ -140,8 +138,7 @@ public class ow extends qA implements View.OnClickListener {
                     size--;
                     if (size < 0) {
                         adapter.notifyDataSetChanged();
-                        E = -1;
-                        D = -1;
+                        audioPlayer.stopPlayback();
                         a(false);
                         i();
                         bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), 1).show();
@@ -217,12 +214,6 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        f();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         outState.putString("dir_path", A);
@@ -230,9 +221,34 @@ public class ow extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
+    private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
         private int lastSelectedSound = -1;
         private final Map<ProjectResourceBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
+
+        @Override
+        public ProjectResourceBean getData(int position) {
+            return sounds.get(position);
+        }
+
+        @Override
+        public Path getAudio(int position) {
+            var bean = sounds.get(position);
+            return Paths.get(bean.isNew ? bean.resFullName : a(bean));
+        }
+
+        private ViewHolder getViewHolder(int position) {
+            return (ViewHolder) soundsList.findViewHolderForLayoutPosition(position);
+        }
+
+        @Override
+        public TextView getCurrentPosition(int position) {
+            return getViewHolder(position).currentTime;
+        }
+
+        @Override
+        public ProgressBar getPlaybackProgress(int position) {
+            return getViewHolder(position).progress;
+        }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final ProgressBar progress;
@@ -262,7 +278,7 @@ public class ow extends qA implements View.OnClickListener {
                     if (!mB.a()) {
                         lastSelectedSound = getLayoutPosition();
                         if (!k) {
-                            ow.this.a(lastSelectedSound);
+                            audioPlayer.onPlayPressed(lastSelectedSound);
                         }
                     }
                 });
@@ -336,15 +352,8 @@ public class ow extends qA implements View.OnClickListener {
 
             holder.selected.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
-            if (E == position) {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    holder.play.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
-                } else {
-                    holder.play.setImageResource(R.drawable.circled_play_96_blue);
-                }
-            } else {
-                holder.play.setImageResource(R.drawable.circled_play_96_blue);
-            }
+            boolean playing = position == audioPlayer.getNowPlayingPosition() && audioPlayer.isPlaying();
+            holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
             holder.progress.setMax(bean.totalSoundDuration / 100);
             holder.progress.setProgress(bean.curSoundPosition / 100);
         }
@@ -366,16 +375,7 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public void f() {
-        timer.cancel();
-        if (E != -1) {
-            sounds.get(E).curSoundPosition = 0;
-            E = -1;
-            D = -1;
-            adapter.notifyDataSetChanged();
-        }
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+        audioPlayer.stopPlayback();
     }
 
     private void unselectAll() {
@@ -435,25 +435,6 @@ public class ow extends qA implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
-    private void b(int i) {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                requireActivity().runOnUiThread(() -> {
-                    if (mediaPlayer == null) {
-                        timer.cancel();
-                    } else {
-                        SoundAdapter.ViewHolder holder = (SoundAdapter.ViewHolder) soundsList.findViewHolderForLayoutPosition(i);
-                        int positionInS = mediaPlayer.getCurrentPosition() / 1000;
-                        holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
-                        holder.progress.setProgress(mediaPlayer.getCurrentPosition() / 100);
-                    }
-                });
-            }
-        }, 100L, 100L);
-    }
-
     private ArrayList<String> c() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
@@ -461,63 +442,6 @@ public class ow extends qA implements View.OnClickListener {
             arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
-    }
-
-    private void a(int i) {
-        if (E == i) {
-            if (mediaPlayer != null) {
-                if (mediaPlayer.isPlaying()) {
-                    timer.cancel();
-                    mediaPlayer.pause();
-                    sounds.get(E).curSoundPosition = mediaPlayer.getCurrentPosition();
-                    adapter.notifyItemChanged(E);
-                } else {
-                    mediaPlayer.start();
-                    b(i);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        } else {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                timer.cancel();
-                mediaPlayer.pause();
-                mediaPlayer.release();
-            }
-            if (D != -1) {
-                sounds.get(D).curSoundPosition = 0;
-                adapter.notifyItemChanged(D);
-            }
-            E = i;
-            D = i;
-            adapter.notifyItemChanged(E);
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(3);
-            mediaPlayer.setOnPreparedListener(mp -> {
-                mediaPlayer.start();
-                b(i);
-                adapter.notifyItemChanged(E);
-            });
-            mediaPlayer.setOnCompletionListener(mp -> {
-                timer.cancel();
-                sounds.get(E).curSoundPosition = 0;
-                adapter.notifyItemChanged(E);
-                E = -1;
-            });
-            try {
-                String src;
-                if (sounds.get(E).isNew) {
-                    src = sounds.get(E).resFullName;
-                } else {
-                    src = a(sounds.get(E));
-                }
-                mediaPlayer.setDataSource(src);
-                mediaPlayer.prepare();
-            } catch (Exception e) {
-                E = -1;
-                adapter.notifyItemChanged(E);
-                e.printStackTrace();
-            }
-        }
     }
 
     public void a(ArrayList<ProjectResourceBean> arrayList) {
