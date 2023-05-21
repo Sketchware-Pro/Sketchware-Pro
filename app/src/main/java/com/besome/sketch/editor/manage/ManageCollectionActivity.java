@@ -796,7 +796,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
-        private Map<? extends SelectableBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
+        private final Map<ProjectResourceBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
         public CollectionAdapter(RecyclerView target) {
             lastSelectedItemPosition = -1;
@@ -868,6 +868,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 if (audioMetadata == null) {
                     audioMetadata = AudioMetadata.fromPath(soundFilePath);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                    cachedAudioMetadata.put(bean, audioMetadata);
                 }
                 audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);
                 holder.album.setVisibility(View.VISIBLE);
