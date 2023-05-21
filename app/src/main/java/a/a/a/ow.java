@@ -32,8 +32,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.util.AudioMetadata;
@@ -223,7 +221,6 @@ public class ow extends qA implements View.OnClickListener {
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
         private int lastSelectedSound = -1;
-        private final Map<ProjectResourceBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
         @Override
         public ProjectResourceBean getData(int position) {
@@ -261,6 +258,8 @@ public class ow extends qA implements View.OnClickListener {
             public final ImageView play;
             public final ImageView delete;
             public final TextView currentTime;
+
+            private AudioMetadata audioMetadata;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -330,10 +329,10 @@ public class ow extends qA implements View.OnClickListener {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
             if (!k) {
-                AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
-                if (audioMetadata == null) {
-                    audioMetadata = AudioMetadata.fromPath(getAudio(position));
-                    cachedAudioMetadata.put(bean, audioMetadata);
+                var audioMetadata = holder.audioMetadata;
+                var audio = getAudio(position);
+                if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
+                    audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
                 }
                 audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);

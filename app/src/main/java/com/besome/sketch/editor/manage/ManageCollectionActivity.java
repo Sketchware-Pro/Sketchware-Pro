@@ -52,9 +52,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import a.a.a.FB;
 import a.a.a.Mp;
@@ -796,7 +794,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
-        private final Map<ProjectResourceBean, AudioMetadata> cachedAudioMetadata = new HashMap<>();
 
         public CollectionAdapter(RecyclerView target) {
             lastSelectedItemPosition = -1;
@@ -863,11 +860,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                AudioMetadata audioMetadata = cachedAudioMetadata.get(bean);
-                if (audioMetadata == null) {
-                    audioMetadata = AudioMetadata.fromPath(getAudio(position));
+                var audioMetadata = holder.audioMetadata;
+                var audio = getAudio(position);
+                if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
+                    audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
-                    cachedAudioMetadata.put(bean, audioMetadata);
                 }
                 audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);
                 holder.album.setVisibility(View.VISIBLE);
@@ -1301,6 +1298,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final TextView name;
             public final ImageView play;
             public final TextView currentPosition;
+
+            private AudioMetadata audioMetadata;
 
             public SoundCollectionViewHolder(View itemView) {
                 super(itemView);

@@ -28,8 +28,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.AudioPlayer;
@@ -131,8 +129,6 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
-        private final Map<ProjectResourceBean, AudioMetadata> cachedMetadata = new HashMap<>();
-
         @Override
         public ProjectResourceBean getData(int position) {
             return sounds.get(position);
@@ -166,6 +162,8 @@ public class Yv extends qA implements View.OnClickListener {
             public final ProgressBar progress;
             public final TextView endTime;
 
+            private AudioMetadata audioMetadata;
+
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 select = itemView.findViewById(R.id.chk_select);
@@ -194,17 +192,13 @@ public class Yv extends qA implements View.OnClickListener {
             ProjectResourceBean bean = sounds.get(position);
             holder.select.setVisibility(View.VISIBLE);
 
-            var audioMetadata = cachedMetadata.get(bean);
-            if (audioMetadata != null) {
-                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
-            } else {
-                audioMetadata = AudioMetadata.fromPath(getAudio(position));
-                cachedMetadata.put(bean, audioMetadata);
-                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
-                if (bean.totalSoundDuration == 0) {
-                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
-                }
+            var audioMetadata = holder.audioMetadata;
+            var audio = getAudio(position);
+            if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
+                audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
+                bean.totalSoundDuration = audioMetadata.getDurationInMs();
             }
+            audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
 
             int positionInS = bean.curSoundPosition / 1000;
             holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
