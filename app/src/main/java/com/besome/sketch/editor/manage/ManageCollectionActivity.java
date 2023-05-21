@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,12 +49,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import a.a.a.FB;
 import a.a.a.Mp;
@@ -72,6 +71,7 @@ import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
+import mod.jbk.util.AudioPlayer;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -85,10 +85,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private static final int REQUEST_CODE_SHOW_BLOCK_DETAILS = 274;
     private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
 
-    private Timer soundPlaybackTimeCounter = new Timer();
-    private MediaPlayer mediaPlayer;
-    private int D = -1;
-    private int E = -1;
+    private AudioPlayer audioPlayer;
     private LinearLayout actionButtonGroup;
     private boolean hasDeletedWidget = false;
     private boolean selectingToBeDeletedItems = false;
@@ -197,17 +194,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void stopMusicPlayback(ArrayList<ProjectResourceBean> sounds) {
-        soundPlaybackTimeCounter.cancel();
-        if (E != -1) {
-            sounds.get(E).curSoundPosition = 0;
-            E = -1;
-            D = -1;
-            collectionAdapter.notifyDataSetChanged();
-        }
-
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+        audioPlayer.stopPlayback();
     }
 
     private void changeDeletingItemsState(boolean deletingItems) {
@@ -386,25 +373,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         return var2;
     }
 
-    private void scheduleSoundPlaybackTimeCounter(int position) {
-        soundPlaybackTimeCounter = new Timer();
-        soundPlaybackTimeCounter.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> {
-                    if (mediaPlayer == null) {
-                        soundPlaybackTimeCounter.cancel();
-                    } else {
-                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.findViewHolderForLayoutPosition(position);
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
-                        viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
-                        viewHolder.playbackProgress.setProgress(mediaPlayer.getCurrentPosition() / 1000);
-                    }
-                });
-            }
-        }, 100L, 100L);
-    }
-
     private void initialize() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -431,6 +399,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
         actionButtonGroup = findViewById(R.id.layout_btn_group);
+        audioPlayer = new AudioPlayer(this, collectionAdapter, collectionAdapter);
 
         Button delete = findViewById(R.id.btn_delete);
         Button cancel = findViewById(R.id.btn_cancel);
@@ -529,29 +498,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public void onDestroy() {
-        stopMusicPlayback(sounds);
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_collection_delete) {
             changeDeletingItemsState(!selectingToBeDeletedItems);
         }
 
         return super.onOptionsItemSelected(menuItem);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            soundPlaybackTimeCounter.cancel();
-            mediaPlayer.pause();
-            sounds.get(E).curSoundPosition = mediaPlayer.getCurrentPosition();
-        }
     }
 
     @Override
@@ -840,7 +792,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
@@ -935,16 +887,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             holder.totalDuration.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
             holder.checkBox.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
-            if (E == position) {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    holder.play.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
-                } else {
-                    holder.play.setImageResource(R.drawable.circled_play_96_blue);
-                }
-            } else {
-                holder.play.setImageResource(R.drawable.circled_play_96_blue);
-            }
-
+            boolean playing = position == audioPlayer.getNowPlayingPosition() && audioPlayer.isPlaying();
+            holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
             holder.playbackProgress.setMax(bean.totalSoundDuration / 100);
             holder.playbackProgress.setProgress(bean.curSoundPosition / 100);
         }
@@ -1165,6 +1109,30 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
+        @Override
+        public ProjectResourceBean getData(int position) {
+            return (ProjectResourceBean) currentCollectionTypeItems.get(position);
+        }
+
+        @Override
+        public Path getAudio(int position) {
+            return Paths.get(wq.a(), "sound", "data", getData(position).resFullName);
+        }
+
+        private SoundCollectionViewHolder getViewHolder(int position) {
+            return (SoundCollectionViewHolder) collection.findViewHolderForLayoutPosition(position);
+        }
+
+        @Override
+        public TextView getCurrentPosition(int position) {
+            return getViewHolder(position).currentPosition;
+        }
+
+        @Override
+        public ProgressBar getPlaybackProgress(int position) {
+            return getViewHolder(position).playbackProgress;
+        }
+
         private class BlockCollectionViewHolder extends RecyclerView.ViewHolder {
 
             public final CardView cardView;
@@ -1349,60 +1317,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 play.setOnClickListener(v -> {
                     if (selectingToBeDeletedItems) {
-                        int position = getLayoutPosition();
-
-                        if (E == position) {
-                            if (mediaPlayer != null) {
-                                if (mediaPlayer.isPlaying()) {
-                                    soundPlaybackTimeCounter.cancel();
-                                    mediaPlayer.pause();
-                                    ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = mediaPlayer.getCurrentPosition();
-                                    collectionAdapter.notifyItemChanged(E);
-                                } else {
-                                    mediaPlayer.start();
-                                    scheduleSoundPlaybackTimeCounter(position);
-                                    collectionAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        } else {
-                            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                                soundPlaybackTimeCounter.cancel();
-                                mediaPlayer.pause();
-                                mediaPlayer.release();
-                            }
-
-                            if (D != -1) {
-                                ((ProjectResourceBean) currentCollectionTypeItems.get(D)).curSoundPosition = 0;
-                                collectionAdapter.notifyItemChanged(D);
-                            }
-
-                            E = position;
-                            D = position;
-                            collectionAdapter.notifyItemChanged(E);
-                            mediaPlayer = new MediaPlayer();
-                            mediaPlayer.setAudioStreamType(3);
-                            mediaPlayer.setOnPreparedListener(mp -> {
-                                mediaPlayer.start();
-                                scheduleSoundPlaybackTimeCounter(position);
-                                collectionAdapter.notifyItemChanged(E);
-                            });
-                            mediaPlayer.setOnCompletionListener(mp -> {
-                                soundPlaybackTimeCounter.cancel();
-                                ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = 0;
-                                collectionAdapter.notifyItemChanged(E);
-                                E = -1;
-                                D = -1;
-                            });
-
-                            try {
-                                mediaPlayer.setDataSource(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) currentCollectionTypeItems.get(E)).resFullName);
-                                mediaPlayer.prepare();
-                            } catch (Exception e) {
-                                E = -1;
-                                collectionAdapter.notifyItemChanged(E);
-                                e.printStackTrace();
-                            }
-                        }
+                        audioPlayer.onPlayPressed(getLayoutPosition());
                     }
                 });
                 cardView.setOnClickListener(v -> {
