@@ -197,8 +197,8 @@ public class Yv extends qA implements View.OnClickListener {
             if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
                 audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                 bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
             }
-            audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
 
             int positionInS = bean.curSoundPosition / 1000;
             holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));

@@ -334,8 +334,8 @@ public class ow extends qA implements View.OnClickListener {
                 if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
                     audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                    audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
                 }
-                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
                 holder.album.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             } else {

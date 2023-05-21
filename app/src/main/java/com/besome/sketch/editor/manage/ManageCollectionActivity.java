@@ -865,8 +865,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
                     audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                    audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);
                 }
-                audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);
                 holder.album.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             }
