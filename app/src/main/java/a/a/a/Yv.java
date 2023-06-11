@@ -163,7 +163,7 @@ public class Yv extends qA implements View.OnClickListener {
                 endTime = itemView.findViewById(R.id.tv_endtime);
                 play.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        audioPlayer.onPlayPressed(getLayoutPosition());
+                        soundPlayer.onPlayPressed(getLayoutPosition());
                     }
                 });
                 select.setOnClickListener(v -> {
@@ -204,7 +204,7 @@ public class Yv extends qA implements View.OnClickListener {
             holder.endTime.setText(String.format("%d:%02d", durationInS / 60, durationInS % 60));
             holder.select.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
-            boolean playing = position == audioPlayer.getNowPlayingPosition() && audioPlayer.isPlaying();
+            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
             holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
             holder.progress.setMax(bean.totalSoundDuration / 100);
             holder.progress.setProgress(bean.curSoundPosition / 100);

@@ -261,7 +261,7 @@ public class ow extends qA implements View.OnClickListener {
                     if (!mB.a()) {
                         lastSelectedSound = getLayoutPosition();
                         if (!k) {
-                            audioPlayer.onPlayPressed(lastSelectedSound);
+                            soundPlayer.onPlayPressed(lastSelectedSound);
                         }
                     }
                 });
@@ -346,7 +346,7 @@ public class ow extends qA implements View.OnClickListener {
 
             holder.selected.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
-            boolean playing = position == audioPlayer.getNowPlayingPosition() && audioPlayer.isPlaying();
+            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
             holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
             holder.progress.setMax(bean.totalSoundDuration / 100);
             holder.progress.setProgress(bean.curSoundPosition / 100);

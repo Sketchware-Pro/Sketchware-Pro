@@ -883,7 +883,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             holder.totalDuration.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
             holder.checkBox.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
-            boolean playing = position == audioPlayer.getNowPlayingPosition() && audioPlayer.isPlaying();
+            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
             holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
             holder.playbackProgress.setMax(bean.totalSoundDuration / 100);
             holder.playbackProgress.setProgress(bean.curSoundPosition / 100);
@@ -1296,7 +1296,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 play.setOnClickListener(v -> {
                     if (selectingToBeDeletedItems) {
-                        audioPlayer.onPlayPressed(getLayoutPosition());
+                        soundPlayer.onPlayPressed(getLayoutPosition());
                     }
                 });
                 cardView.setOnClickListener(v -> {
