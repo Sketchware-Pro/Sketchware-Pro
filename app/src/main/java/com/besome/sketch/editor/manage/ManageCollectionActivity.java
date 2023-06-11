@@ -72,7 +72,6 @@ import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
     private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
     private static final int REQUEST_CODE_SHOW_IMAGE_DETAILS = 268;
     private static final int REQUEST_CODE_ADD_SOUND_DIALOG = 269;
@@ -151,7 +150,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void showAddSoundDialog() {
-        stopMusicPlayback(sounds);
+        collectionAdapter.stopPlayback();
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
@@ -190,16 +189,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void stopMusicPlayback(ArrayList<ProjectResourceBean> sounds) {
-        collectionAdapter.stopPlayback();
-    }
-
     private void changeDeletingItemsState(boolean deletingItems) {
         selectingToBeDeletedItems = deletingItems;
         invalidateOptionsMenu();
         unselectToBeDeletedItems();
         if (selectingToBeDeletedItems) {
-            stopMusicPlayback(sounds);
+            collectionAdapter.stopPlayback();
             actionButtonGroup.setVisibility(View.VISIBLE);
         } else {
             actionButtonGroup.setVisibility(View.GONE);
@@ -232,7 +227,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     private void openSoundDetails(int position) {
         ProjectResourceBean editTarget = sounds.get(position);
-        stopMusicPlayback(sounds);
+        collectionAdapter.stopPlayback();
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
@@ -650,7 +645,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-
         private int currentItemId;
 
         public CategoryAdapter() {
@@ -715,7 +709,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
             public final ImageView icon;
             public final TextView name;
             public final View pointerLeft;
@@ -734,7 +727,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     int layoutPosition = getLayoutPosition();
                     if (layoutPosition != -1 && layoutPosition != currentItemId) {
                         if (currentItemId == 1) {
-                            stopMusicPlayback(sounds);
+                            collectionAdapter.stopPlayback();
                         }
 
                         notifyItemChanged(currentItemId);
