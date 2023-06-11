@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.util.AudioMetadata;
-import mod.jbk.util.AudioPlayer;
+import mod.jbk.util.SoundPlayingAdapter;
 
 public class ow extends qA implements View.OnClickListener {
     private oB fileUtil;
@@ -46,9 +46,8 @@ public class ow extends qA implements View.OnClickListener {
     private LinearLayout actionContainer;
     private TextView noSoundsText;
     public boolean k = false;
-    private SoundAdapter adapter = null;
+    private Adapter adapter = null;
     private String A = "";
-    private AudioPlayer audioPlayer;
 
     private void i() {
         if (sounds.size() == 0) {
@@ -100,7 +99,6 @@ public class ow extends qA implements View.OnClickListener {
             sounds = savedInstanceState.getParcelableArrayList("sounds");
         }
         adapter.notifyDataSetChanged();
-        audioPlayer = new AudioPlayer(requireActivity(), adapter, adapter);
         i();
     }
 
@@ -136,7 +134,7 @@ public class ow extends qA implements View.OnClickListener {
                     size--;
                     if (size < 0) {
                         adapter.notifyDataSetChanged();
-                        audioPlayer.stopPlayback();
+                        adapter.stopPlayback();
                         a(false);
                         i();
                         bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), 1).show();
@@ -180,7 +178,7 @@ public class ow extends qA implements View.OnClickListener {
         cancel.setOnClickListener(this);
         soundsList = item.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new SoundAdapter(soundsList);
+        adapter = new Adapter(soundsList);
         soundsList.setAdapter(adapter);
         noSoundsText = item.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
@@ -219,7 +217,7 @@ public class ow extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
+    private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
         private int lastSelectedSound = -1;
 
         @Override
@@ -233,21 +231,7 @@ public class ow extends qA implements View.OnClickListener {
             return Paths.get(bean.isNew ? bean.resFullName : a(bean));
         }
 
-        private ViewHolder getViewHolder(int position) {
-            return (ViewHolder) soundsList.findViewHolderForLayoutPosition(position);
-        }
-
-        @Override
-        public TextView getCurrentPosition(int position) {
-            return getViewHolder(position).currentTime;
-        }
-
-        @Override
-        public ProgressBar getPlaybackProgress(int position) {
-            return getViewHolder(position).progress;
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
             public final ProgressBar progress;
             public final TextView endTime;
             public final LinearLayout deleteContainer;
@@ -303,9 +287,20 @@ public class ow extends qA implements View.OnClickListener {
                     return true;
                 });
             }
+
+            @Override
+            protected TextView getCurrentPosition() {
+                return currentTime;
+            }
+
+            @Override
+            protected ProgressBar getPlaybackProgress() {
+                return progress;
+            }
         }
 
-        public SoundAdapter(RecyclerView recyclerView) {
+        public Adapter(RecyclerView recyclerView) {
+            super(requireActivity());
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
@@ -374,7 +369,7 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     public void f() {
-        audioPlayer.stopPlayback();
+        adapter.stopPlayback();
     }
 
     private void unselectAll() {

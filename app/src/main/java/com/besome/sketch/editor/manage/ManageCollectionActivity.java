@@ -69,7 +69,7 @@ import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
-import mod.jbk.util.AudioPlayer;
+import mod.jbk.util.SoundPlayingAdapter;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -83,7 +83,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private static final int REQUEST_CODE_SHOW_BLOCK_DETAILS = 274;
     private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
 
-    private AudioPlayer audioPlayer;
     private LinearLayout actionButtonGroup;
     private boolean hasDeletedWidget = false;
     private boolean selectingToBeDeletedItems = false;
@@ -192,7 +191,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void stopMusicPlayback(ArrayList<ProjectResourceBean> sounds) {
-        audioPlayer.stopPlayback();
+        collectionAdapter.stopPlayback();
     }
 
     private void changeDeletingItemsState(boolean deletingItems) {
@@ -397,7 +396,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
         actionButtonGroup = findViewById(R.id.layout_btn_group);
-        audioPlayer = new AudioPlayer(this, collectionAdapter, collectionAdapter);
 
         Button delete = findViewById(R.id.btn_delete);
         Button cancel = findViewById(R.id.btn_cancel);
@@ -790,12 +788,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
+    private class CollectionAdapter extends SoundPlayingAdapter<SoundPlayingAdapter.ViewHolder> {
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
 
         public CollectionAdapter(RecyclerView target) {
+            super(ManageCollectionActivity.this);
             lastSelectedItemPosition = -1;
             currentViewType = -1;
             target.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -1053,7 +1052,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         @Override
         @NonNull
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public SoundPlayingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             switch (viewType) {
                 case 0:
                     return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
@@ -1076,7 +1075,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull SoundPlayingAdapter.ViewHolder holder, int position) {
             int viewType = holder.getItemViewType();
 
             switch (viewType) {
@@ -1116,22 +1115,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             return Paths.get(wq.a(), "sound", "data", getData(position).resFullName);
         }
 
-        private SoundCollectionViewHolder getViewHolder(int position) {
-            return (SoundCollectionViewHolder) collection.findViewHolderForLayoutPosition(position);
-        }
-
-        @Override
-        public TextView getCurrentPosition(int position) {
-            return getViewHolder(position).currentPosition;
-        }
-
-        @Override
-        public ProgressBar getPlaybackProgress(int position) {
-            return getViewHolder(position).playbackProgress;
-        }
-
-        private class BlockCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class BlockCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView blockIcon;
@@ -1168,8 +1152,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class FontCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class FontCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView fontIcon;
@@ -1210,8 +1193,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class ImageCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class ImageCollectionViewHolder extends SoundlessViewHolder {
             public final CheckBox checkBox;
             public final TextView name;
             public final ImageView image;
@@ -1248,8 +1230,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class MoreBlockCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class MoreBlockCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView delete;
@@ -1286,8 +1267,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class SoundCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class SoundCollectionViewHolder extends SoundPlayingAdapter.ViewHolder {
             public final ProgressBar playbackProgress;
             public final TextView totalDuration;
             public final LinearLayout deleteContainer;
@@ -1337,10 +1317,19 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     return true;
                 });
             }
+
+            @Override
+            protected TextView getCurrentPosition() {
+                return currentPosition;
+            }
+
+            @Override
+            protected ProgressBar getPlaybackProgress() {
+                return playbackProgress;
+            }
         }
 
-        private class WidgetCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class WidgetCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView widgetIcon;

@@ -30,7 +30,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import mod.jbk.util.AudioMetadata;
-import mod.jbk.util.AudioPlayer;
+import mod.jbk.util.SoundPlayingAdapter;
 
 public class Yv extends qA implements View.OnClickListener {
     private RecyclerView soundsList;
@@ -39,8 +39,7 @@ public class Yv extends qA implements View.OnClickListener {
     private TextView noSoundsText;
     private Button importSounds;
     private String h = "";
-    private SoundAdapter adapter = null;
-    private AudioPlayer audioPlayer;
+    private Adapter adapter = null;
 
     private ActivityResultLauncher<Intent> importSoundsHandler;
 
@@ -73,7 +72,6 @@ public class Yv extends qA implements View.OnClickListener {
         }
         e();
 
-        audioPlayer = new AudioPlayer(requireActivity(), adapter, adapter);
         importSoundsHandler = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                 a(result.getData().getParcelableArrayListExtra("results"));
@@ -109,7 +107,7 @@ public class Yv extends qA implements View.OnClickListener {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         soundsList = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
-        adapter = new SoundAdapter();
+        adapter = new Adapter();
         soundsList.setAdapter(adapter);
         noSoundsText = (TextView) viewGroup2.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
@@ -128,7 +126,11 @@ public class Yv extends qA implements View.OnClickListener {
         outState.putString("dir_path", h);
     }
 
-    private class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> implements AudioPlayer.SoundAdapter<ProjectResourceBean> {
+    private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
+        public Adapter() {
+            super(requireActivity());
+        }
+
         @Override
         public ProjectResourceBean getData(int position) {
             return sounds.get(position);
@@ -139,21 +141,7 @@ public class Yv extends qA implements View.OnClickListener {
             return Paths.get(wq.a(), "sound", "data", sounds.get(position).resFullName);
         }
 
-        private ViewHolder getViewHolder(int position) {
-            return (ViewHolder) soundsList.findViewHolderForLayoutPosition(position);
-        }
-
-        @Override
-        public TextView getCurrentPosition(int position) {
-            return getViewHolder(position).currentTime;
-        }
-
-        @Override
-        public ProgressBar getPlaybackProgress(int position) {
-            return getViewHolder(position).progress;
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
             public final CheckBox select;
             public final ImageView album;
             public final TextView name;
@@ -184,6 +172,16 @@ public class Yv extends qA implements View.OnClickListener {
                     updateImportSoundsText();
                     notifyItemChanged(position);
                 });
+            }
+
+            @Override
+            protected TextView getCurrentPosition() {
+                return currentTime;
+            }
+
+            @Override
+            protected ProgressBar getPlaybackProgress() {
+                return progress;
             }
         }
 
@@ -225,7 +223,7 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     public void d() {
-        audioPlayer.stopPlayback();
+        adapter.stopPlayback();
     }
 
     public void e() {

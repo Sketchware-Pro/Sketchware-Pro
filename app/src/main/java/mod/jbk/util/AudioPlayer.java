@@ -1,19 +1,14 @@
 package mod.jbk.util;
 
 import android.media.MediaPlayer;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.besome.sketch.beans.ProjectResourceBean;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,16 +16,14 @@ import mod.SketchwareUtil;
 
 public class AudioPlayer {
     private final FragmentActivity context;
-    private final RecyclerView.Adapter<?> adapter;
-    private final SoundAdapter<ProjectResourceBean> soundAdapter;
+    private final SoundPlayingAdapter<?> adapter;
     private MediaPlayer mediaPlayer;
     private Timer timer = new Timer();
     private int nowPlayingPosition = -1;
 
-    public AudioPlayer(FragmentActivity context, RecyclerView.Adapter<?> adapter, SoundAdapter<ProjectResourceBean> soundAdapter) {
+    public AudioPlayer(FragmentActivity context, SoundPlayingAdapter<?> adapter) {
         this.context = context;
         this.adapter = adapter;
-        this.soundAdapter = soundAdapter;
 
         this.context.getLifecycle().addObserver(new DefaultLifecycleObserver() {
             @Override
@@ -50,7 +43,7 @@ public class AudioPlayer {
                 if (mediaPlayer.isPlaying()) {
                     timer.cancel();
                     mediaPlayer.pause();
-                    soundAdapter.getData(position).curSoundPosition = mediaPlayer.getCurrentPosition();
+                    adapter.getData(position).curSoundPosition = mediaPlayer.getCurrentPosition();
                 } else {
                     mediaPlayer.start();
                     reschedule(position);
@@ -75,12 +68,12 @@ public class AudioPlayer {
             });
             mediaPlayer.setOnCompletionListener(mp -> {
                 timer.cancel();
-                soundAdapter.getData(position).curSoundPosition = 0;
+                adapter.getData(position).curSoundPosition = 0;
                 adapter.notifyItemChanged(position);
                 nowPlayingPosition = -1;
             });
 
-            var audio = soundAdapter.getAudio(position);
+            var audio = adapter.getAudio(position);
             try {
                 mediaPlayer.setDataSource(audio.toString());
                 mediaPlayer.prepare();
@@ -97,7 +90,7 @@ public class AudioPlayer {
     public void stopPlayback() {
         timer.cancel();
         if (nowPlayingPosition != -1) {
-            soundAdapter.getData(nowPlayingPosition).curSoundPosition = 0;
+            adapter.getData(nowPlayingPosition).curSoundPosition = 0;
             adapter.notifyItemChanged(nowPlayingPosition);
             nowPlayingPosition = -1;
         }
@@ -117,25 +110,12 @@ public class AudioPlayer {
             @Override
             public void run() {
                 context.runOnUiThread(() -> {
-                    if (mediaPlayer == null) {
-                        timer.cancel();
-                    } else {
-                        int positionInS = mediaPlayer.getCurrentPosition() / 1000;
-                        soundAdapter.getCurrentPosition(position).setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
-                        soundAdapter.getPlaybackProgress(position).setProgress(mediaPlayer.getCurrentPosition() / 100);
-                    }
+                    var holder = adapter.getViewHolder(position);
+                    int positionInS = mediaPlayer.getCurrentPosition() / 1000;
+                    holder.getCurrentPosition().setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+                    holder.getPlaybackProgress().setProgress(mediaPlayer.getCurrentPosition() / 100);
                 });
             }
         }, 100, 100);
-    }
-
-    public interface SoundAdapter<T> {
-        T getData(int position);
-
-        Path getAudio(int position);
-
-        TextView getCurrentPosition(int position);
-
-        ProgressBar getPlaybackProgress(int position);
     }
 }
