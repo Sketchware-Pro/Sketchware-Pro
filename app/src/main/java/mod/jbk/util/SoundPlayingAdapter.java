@@ -54,6 +54,14 @@ public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHol
         }
     }
 
+    @Override
+    public void onViewAttachedToWindow(@NonNull VH holder) {
+        if (soundPlayer.isNowPlayingItemOffscreen) {
+            soundPlayer.isNowPlayingItemOffscreen = false;
+            soundPlayer.reschedule(holder.getLayoutPosition());
+        }
+    }
+
     public static abstract class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +94,7 @@ public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHol
         private MediaPlayer mediaPlayer;
         private Timer timer = new Timer();
         private int nowPlayingPosition = -1;
+        private boolean isNowPlayingItemOffscreen;
 
         public SoundPlayer(FragmentActivity context, SoundPlayingAdapter<?> adapter) {
             this.context = context;
@@ -177,9 +186,14 @@ public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHol
                 public void run() {
                     context.runOnUiThread(() -> {
                         var holder = adapter.getViewHolder(position);
-                        int positionInS = mediaPlayer.getCurrentPosition() / 1000;
-                        holder.getCurrentPosition().setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
-                        holder.getPlaybackProgress().setProgress(mediaPlayer.getCurrentPosition() / 100);
+                        if (holder != null) {
+                            int positionInS = mediaPlayer.getCurrentPosition() / 1000;
+                            holder.getCurrentPosition().setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+                            holder.getPlaybackProgress().setProgress(mediaPlayer.getCurrentPosition() / 100);
+                        } else {
+                            timer.cancel();
+                            isNowPlayingItemOffscreen = true;
+                        }
                     });
                 }
             }, 100, 100);
