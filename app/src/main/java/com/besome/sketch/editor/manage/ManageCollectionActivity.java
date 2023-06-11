@@ -99,47 +99,25 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private String sc_id;
 
     private static String getCategoryLabel(Context context, int position) {
-        switch (position) {
-            case 0:
-                return Helper.getResString(R.string.common_word_image);
-
-            case 1:
-                return Helper.getResString(R.string.common_word_sound);
-
-            case 2:
-                return Helper.getResString(R.string.common_word_font);
-
-            case 3:
-                return Helper.getResString(R.string.common_word_widget);
-
-            case 4:
-                return Helper.getResString(R.string.common_word_block);
-
-            default:
-                return Helper.getResString(R.string.common_word_moreblock);
-        }
+        return Helper.getResString(switch (position) {
+            case 0 -> R.string.common_word_image;
+            case 1 -> R.string.common_word_sound;
+            case 2 -> R.string.common_word_font;
+            case 3 -> R.string.common_word_widget;
+            case 4 -> R.string.common_word_block;
+            default -> R.string.common_word_moreblock;
+        });
     }
 
     private static int getCategoryIcon(int position) {
-        switch (position) {
-            case 0:
-                return R.drawable.ic_picture_48dp;
-
-            case 1:
-                return R.drawable.ic_sound_wave_48dp;
-
-            case 2:
-                return R.drawable.ic_font_48dp;
-
-            case 3:
-                return R.drawable.collage_96;
-
-            case 4:
-                return R.drawable.block_96_blue;
-
-            default:
-                return R.drawable.more_block_96dp;
-        }
+        return switch (position) {
+            case 0 -> R.drawable.ic_picture_48dp;
+            case 1 -> R.drawable.ic_sound_wave_48dp;
+            case 2 -> R.drawable.ic_font_48dp;
+            case 3 -> R.drawable.collage_96;
+            case 4 -> R.drawable.block_96_blue;
+            default -> R.drawable.more_block_96dp;
+        };
     }
 
     private void showAddImageDialog() {
@@ -165,28 +143,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private int getBlockIcon(BlockBean block) {
-        switch (block.type) {
-            case "c":
-                return R.drawable.fav_block_c_96dp;
-
-            case "b":
-                return R.drawable.fav_block_boolean_96dp;
-
-            case "f":
-                return R.drawable.fav_block_final_96dp;
-
-            case "e":
-                return R.drawable.fav_block_e_96dp;
-
-            case "d":
-                return R.drawable.fav_block_number_96dp;
-
-            case "s":
-                return R.drawable.fav_block_string_96dp;
-
-            default:
-                return R.drawable.fav_block_command_96dp;
-        }
+        return switch (block.type) {
+            case "c" -> R.drawable.fav_block_c_96dp;
+            case "b" -> R.drawable.fav_block_boolean_96dp;
+            case "f" -> R.drawable.fav_block_final_96dp;
+            case "e" -> R.drawable.fav_block_e_96dp;
+            case "d" -> R.drawable.fav_block_number_96dp;
+            case "s" -> R.drawable.fav_block_string_96dp;
+            default -> R.drawable.fav_block_command_96dp;
+        };
     }
 
     private void changeDeletingItemsState(boolean deletingItems) {
@@ -268,40 +233,34 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private void deleteSelectedToBeDeletedItems() {
         for (int i = 0; i < categoryAdapter.getItemCount(); i++) {
             switch (i) {
-                case 0:
+                case 0 -> {
                     for (ProjectResourceBean bean : images) {
                         if (bean.isSelected) {
                             Op.g().a(bean.resName, false);
                         }
                     }
-
                     Op.g().e();
                     loadImages();
-                    break;
-
-                case 1:
+                }
+                case 1 -> {
                     for (ProjectResourceBean bean : sounds) {
                         if (bean.isSelected) {
                             Qp.g().a(bean.resName, false);
                         }
                     }
-
                     Qp.g().e();
                     loadSounds();
-                    break;
-
-                case 2:
+                }
+                case 2 -> {
                     for (ProjectResourceBean bean : fonts) {
                         if (bean.isSelected) {
                             Np.g().a(bean.resName, false);
                         }
                     }
-
                     Np.g().e();
                     loadFonts();
-                    break;
-
-                case 3:
+                }
+                case 3 -> {
                     for (WidgetCollectionBean bean : widgets) {
                         if (bean.isSelected) {
                             if (!hasDeletedWidget) {
@@ -311,32 +270,27 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             Rp.h().a(bean.name, false);
                         }
                     }
-
                     Rp.h().e();
                     loadWidgets();
-                    break;
-
-                case 4:
+                }
+                case 4 -> {
                     for (BlockCollectionBean bean : blocks) {
                         if (bean.isSelected) {
                             Mp.h().a(bean.name, false);
                         }
                     }
-
                     Mp.h().e();
                     loadBlocks();
-                    break;
-
-                default:
+                }
+                default -> {
                     for (MoreBlockCollectionBean bean : moreBlocks) {
                         if (bean.isSelected) {
                             Pp.h().a(bean.name, false);
                         }
                     }
-
                     Pp.h().e();
                     loadMoreBlocks();
-                    break;
+                }
             }
         }
 
@@ -403,34 +357,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_ADD_IMAGE_DIALOG:
-            case REQUEST_CODE_SHOW_IMAGE_DETAILS:
-                loadImages();
-                break;
-
-            case REQUEST_CODE_ADD_SOUND_DIALOG:
-            case REQUEST_CODE_SHOW_SOUND_DETAILS:
-                loadSounds();
-                break;
-
-            case REQUEST_CODE_ADD_FONT_DIALOG:
-            case REQUEST_CODE_SHOW_FONT_DETAILS:
-                loadFonts();
-                break;
-
-            case REQUEST_CODE_SHOW_WIDGET_DETAILS:
-                loadWidgets();
-                break;
-
-            case REQUEST_CODE_SHOW_BLOCK_DETAILS:
-                loadBlocks();
-                break;
-
-            case REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS:
-                loadMoreBlocks();
-                break;
-
-            default:
+            case REQUEST_CODE_ADD_IMAGE_DIALOG, REQUEST_CODE_SHOW_IMAGE_DETAILS -> loadImages();
+            case REQUEST_CODE_ADD_SOUND_DIALOG, REQUEST_CODE_SHOW_SOUND_DETAILS -> loadSounds();
+            case REQUEST_CODE_ADD_FONT_DIALOG, REQUEST_CODE_SHOW_FONT_DETAILS -> loadFonts();
+            case REQUEST_CODE_SHOW_WIDGET_DETAILS -> loadWidgets();
+            case REQUEST_CODE_SHOW_BLOCK_DETAILS -> loadBlocks();
+            case REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS -> loadMoreBlocks();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -735,35 +667,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         notifyItemChanged(currentItemId);
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
-                        switch (currentItemId) {
-                            case 0:
-                                collectionAdapter.setData(images);
-                                break;
-
-                            case 1:
-                                collectionAdapter.setData(sounds);
-                                break;
-
-                            case 2:
-                                collectionAdapter.setData(fonts);
-                                break;
-
-                            case 3:
-                                collectionAdapter.setData(widgets);
-                                break;
-
-                            case 4:
-                                collectionAdapter.setData(blocks);
-                                break;
-
-                            default:
-                                collectionAdapter.setData(moreBlocks);
-                                break;
-                        }
+                        collectionAdapter.setData(switch (currentItemId) {
+                            case 0 -> images;
+                            case 1 -> sounds;
+                            case 2 -> fonts;
+                            case 3 -> widgets;
+                            case 4 -> blocks;
+                            default -> moreBlocks;
+                        });
 
                         if (collectionAdapter.currentViewType == 0) {
                             collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
-                            // FloatingActionButton#show()
                             fab.show();
                         } else {
                             collection.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
@@ -1046,25 +960,20 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         @Override
         @NonNull
         public SoundPlayingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            switch (viewType) {
-                case 0:
-                    return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
-
-                case 1:
-                    return new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
-
-                case 2:
-                    return new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
-
-                case 3:
-                    return new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
-
-                case 4:
-                    return new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
-
-                default:
-                    return new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
-            }
+            return switch (viewType) {
+                case 0 ->
+                        new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+                case 1 ->
+                        new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+                case 2 ->
+                        new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
+                case 3 ->
+                        new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
+                case 4 ->
+                        new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
+                default ->
+                        new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
+            };
         }
 
         @Override
@@ -1072,29 +981,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             int viewType = holder.getItemViewType();
 
             switch (viewType) {
-                case 0:
-                    onBindViewHolder((ImageCollectionViewHolder) holder, position);
-                    break;
-
-                case 1:
-                    onBindViewHolder((SoundCollectionViewHolder) holder, position);
-                    break;
-
-                case 2:
-                    onBindViewHolder((FontCollectionViewHolder) holder, position);
-                    break;
-
-                case 3:
-                    onBindViewHolder((WidgetCollectionViewHolder) holder, position);
-                    break;
-
-                case 4:
-                    onBindViewHolder((BlockCollectionViewHolder) holder, position);
-                    break;
-
-                case 5:
-                    onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
-                    break;
+                case 0 -> onBindViewHolder((ImageCollectionViewHolder) holder, position);
+                case 1 -> onBindViewHolder((SoundCollectionViewHolder) holder, position);
+                case 2 -> onBindViewHolder((FontCollectionViewHolder) holder, position);
+                case 3 -> onBindViewHolder((WidgetCollectionViewHolder) holder, position);
+                case 4 -> onBindViewHolder((BlockCollectionViewHolder) holder, position);
+                case 5 -> onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
             }
         }
 
