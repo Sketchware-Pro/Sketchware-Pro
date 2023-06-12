@@ -12,15 +12,8 @@ import android.widget.LinearLayout;
 import com.sketchware.remod.R;
 
 import java.util.HashMap;
-
-
-
-import a.a.a.Vs;
-
 import a.a.a.Ws;
-
 import com.besome.sketch.lib.utils.LayoutUtil;
-
 import a.a.a.xB;
 
 import mod.hey.studios.util.Helper;
@@ -31,7 +24,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     private Context context;
 
-    private Vs onBlockCategorySelectListener;
+    private OnBlockCategorySelectListener onBlockCategorySelectListener;
 
     public PaletteSelector(Context context) {
 
@@ -106,13 +99,13 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
             paletteView.setSelected(true);
 
-            onBlockCategorySelectListener.a(paletteView.getId(), paletteView.getColor());
+            onBlockCategorySelectListener.onBlockCategorySelect(paletteView.getId(), paletteView.getColor());
 
         }
 
     }
     
-    public void setOnBlockCategorySelectListener(Vs listener) {
+    public void setOnBlockCategorySelectListener(OnBlockCategorySelectListener listener) {
 
         onBlockCategorySelectListener = listener;
 
