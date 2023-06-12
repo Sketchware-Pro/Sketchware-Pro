@@ -1,8 +1,8 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
+import com.besome.sketch.lib.base.BaseBean;
 
-public class QuizBean extends nA {
+public class QuizBean extends BaseBean {
     public static final int QUIZ_TYPE_ANSWER = 2;
     public static final int QUIZ_TYPE_INFO = 0;
     public static final int QUIZ_TYPE_OX = 1;
