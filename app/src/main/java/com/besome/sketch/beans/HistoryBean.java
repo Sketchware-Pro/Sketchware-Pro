@@ -1,8 +1,8 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
+import com.besome.sketch.lib.base.BaseBean;
 
-public class HistoryBean extends nA {
+public class HistoryBean extends BaseBean {
     public static final int ACTION_TYPE_ADD = 0;
     public static final int ACTION_TYPE_REMOVE = 2;
     public static final int ACTION_TYPE_UPDATE = 1;
