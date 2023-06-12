@@ -9,10 +9,10 @@ import com.google.gson.annotations.Expose;
 import com.sketchware.remod.R;
 
 import a.a.a.Gx;
-import a.a.a.nA;
+import com.besome.sketch.lib.base.BaseBean;
 import mod.agus.jcoderz.beans.ViewBeans;
 
-public class ViewBean extends nA implements Parcelable {
+public class ViewBean extends BaseBean implements Parcelable {
     public static final Parcelable.Creator<ViewBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public ViewBean createFromParcel(Parcel source) {
