@@ -5,9 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 
-import a.a.a.nA;
+import com.besome.sketch.lib.base.BaseBean;
 
-public class LayoutBean extends nA implements Parcelable {
+public class LayoutBean extends BaseBean implements Parcelable {
     public static final Parcelable.Creator<LayoutBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public LayoutBean createFromParcel(Parcel source) {
