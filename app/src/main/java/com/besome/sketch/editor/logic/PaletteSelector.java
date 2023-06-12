@@ -13,11 +13,11 @@ import com.sketchware.remod.R;
 
 import java.util.HashMap;
 
-import a.a.a.Vs;
+import com.besome.sketch.editor.logic.OnBlockCategorySelectListener;
 
 import a.a.a.Ws;
 
-import a.a.a.wB;
+import com.besome.sketch.lib.utils.LayoutUtil;
 
 import a.a.a.xB;
 
@@ -29,7 +29,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     private Context context;
 
-    private Vs onBlockCategorySelectListener;
+    private OnBlockCategorySelectListener onBlockCategorySelectListener;
 
     public PaletteSelector(Context context) {
 
@@ -61,13 +61,13 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         setPadding(
 
-                (int) wB.a(context, 8f),
+                (int) LayoutUtil.getDip(context, 8f),
 
-                (int) wB.a(context, 4f),
+                (int) LayoutUtil.getDip(context, 4f),
 
-                (int) wB.a(context, 8f),
+                (int) LayoutUtil.getDip(context, 8f),
 
-                (int) wB.a(context, 4f)
+                (int) LayoutUtil.getDip(context, 4f)
 
         );
 
@@ -104,13 +104,13 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
             paletteView.setSelected(true);
 
-            onBlockCategorySelectListener.a(paletteView.getId(), paletteView.getColor());
+            onBlockCategorySelectListener.onBlockCategorySelect(paletteView.getId(), paletteView.getColor());
 
         }
 
     }
     
-    public void setOnBlockCategorySelectListener(Vs listener) {
+    public void setOnBlockCategorySelectListener(OnBlockCategorySelectListener listener) {
 
         onBlockCategorySelectListener = listener;
 
