@@ -13,25 +13,24 @@ import com.sketchware.remod.R;
 
 import java.util.HashMap;
 
-import com.besome.sketch.lib.utils.LayoutUtil;
+import a.a.a.Vs;
+
+import a.a.a.Ws;
+
+import a.a.a.wB;
+
+import a.a.a.xB;
 
 import mod.hey.studios.util.Helper;
 
-import com.besome.sketch.editor.logic.PaletteSelectorItem;
-
-import com.besome.sketch.editor.logic.OnBlockCategorySelectListener;
-
-import a.a.a.xB;
 
 
 public class PaletteSelector extends LinearLayout implements View.OnClickListener {
 
-    
     private Context context;
 
-    private OnBlockCategorySelectListener onBlockCategorySelectListener;
+    private Vs onBlockCategorySelectListener;
 
-    
     public PaletteSelector(Context context) {
 
         super(context);
@@ -39,7 +38,6 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         initialize(context);
 
     }
-    
 
     public PaletteSelector(Context context, AttributeSet attributeSet) {
 
@@ -49,7 +47,6 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     }
 
-    
     private void initialize(Context context) {
 
         this.context = context;
@@ -64,13 +61,13 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         setPadding(
 
-                (int) LayoutUtil.getDip(context, 8f),
+                (int) wB.a(context, 8f),
 
-                (int) LayoutUtil.getDip(context, 4f),
+                (int) wB.a(context, 4f),
 
-                (int) LayoutUtil.getDip(context, 8f),
+                (int) wB.a(context, 8f),
 
-                (int) LayoutUtil.getDip(context, 4f)
+                (int) wB.a(context, 4f)
 
         );
 
@@ -78,12 +75,12 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     }
     
-
+    
     private void unselectAllPalettes() {
 
         for (int i = 0; i < getChildCount(); i++) {
 
-            PaletteSelectorItem childAt = (PaletteSelectorItem) getChildAt(i);
+            Ws childAt = (Ws) getChildAt(i);
 
             if (childAt != null) {
 
@@ -94,33 +91,30 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         }
 
     }
-    
 
     @Override
 
     public void onClick(View v) {
 
-        if (v instanceof PaletteSelectorItem) {
+        if (v instanceof Ws) {
 
             unselectAllPalettes();
 
-            PaletteSelectorItem paletteView = (PaletteSelectorItem) v;
+            Ws paletteView = (Ws) v;
 
             paletteView.setSelected(true);
 
-            onBlockCategorySelectListener.onBlockCategorySelect(paletteView.getId(), paletteView.getColor());
+            onBlockCategorySelectListener.a(paletteView.getId(), paletteView.getColor());
 
         }
 
     }
     
-
-    public void setOnBlockCategorySelectListener(OnBlockCategorySelectListener listener) {
+    public void setOnBlockCategorySelectListener(Vs listener) {
 
         onBlockCategorySelectListener = listener;
 
     }
-    
 
     private void initializePalettes() {
 
@@ -176,10 +170,10 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     }
     
-
+    
     private void addPalette(int id, String title, int color) {
 
-        PaletteSelectorItem paletteView = new PaletteSelectorItem(context, id, title, color);
+        Ws paletteView = new Ws(context, id, title, color);
 
         paletteView.setTag(String.valueOf(id));
 
@@ -193,7 +187,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         }
 
+    }
     
-      }
-
 }
+    
