@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 import android.widget.TextView;
 
-import com.besome.sketch.lib.utils.LayoutUyil;
+import com.besome.sketch.lib.utils.LayoutUtil;
 
 
 import com.sketchware.remod.R;
