@@ -13,7 +13,9 @@ import com.sketchware.remod.R;
 
 import java.util.HashMap;
 
-import com.besome.sketch.editor.logic.OnBlockCategorySelectListener;
+
+
+import a.a.a.Vs;
 
 import a.a.a.Ws;
 
@@ -29,7 +31,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     private Context context;
 
-    private OnBlockCategorySelectListener onBlockCategorySelectListener;
+    private Vs onBlockCategorySelectListener;
 
     public PaletteSelector(Context context) {
 
@@ -104,13 +106,13 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
             paletteView.setSelected(true);
 
-            onBlockCategorySelectListener.onBlockCategorySelect(paletteView.getId(), paletteView.getColor());
+            onBlockCategorySelectListener.a(paletteView.getId(), paletteView.getColor());
 
         }
 
     }
     
-    public void setOnBlockCategorySelectListener(OnBlockCategorySelectListener listener) {
+    public void setOnBlockCategorySelectListener(Vs listener) {
 
         onBlockCategorySelectListener = listener;
 
