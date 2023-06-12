@@ -102,7 +102,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
             paletteView.setSelected(true);
 
-            onBlockCategorySelectListener.a(paletteView.getId(), paletteView.getColor());
+            onBlockCategorySelectListener.onBlockCategorySelect(paletteView.getId(), paletteView.getColor());
 
         }
 
