@@ -58,13 +58,13 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         setPadding(
 
-                (int) LayoutUtil.a(context, 8f),
+                (int) LayoutUtil.getDip(context, 8f),
 
-                (int) LayoutUtil.a(context, 4f),
+                (int) LayoutUtil.getDip(context, 4f),
 
-                (int) LayoutUtil.a(context, 8f),
+                (int) LayoutUtil.getDip(context, 8f),
 
-                (int) LayoutUtil.a(context, 4f)
+                (int) LayoutUtil.getDip(context, 4f)
 
         );
 
