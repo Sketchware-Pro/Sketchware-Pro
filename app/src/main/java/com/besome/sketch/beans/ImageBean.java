@@ -6,9 +6,9 @@ import android.widget.ImageView;
 
 import com.google.gson.annotations.Expose;
 
-import a.a.a.nA;
+import com.besome.sketch.lib.base.BaseBean;
 
-public class ImageBean extends nA implements Parcelable {
+public class ImageBean extends BaseBean implements Parcelable {
     public static final Parcelable.Creator<ImageBean> CREATOR = new Parcelable.Creator<>() {
         @Override
         public ImageBean createFromParcel(Parcel source) {
