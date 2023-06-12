@@ -58,6 +58,7 @@ import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.editor.logic.LogicTopMenu;
 import com.besome.sketch.editor.logic.PaletteBlock;
 import com.besome.sketch.editor.logic.PaletteSelector;
+import com.besome.sketch.editor.logic.OnBlockCategorySelectListener;
 import com.besome.sketch.editor.makeblock.MakeBlockActivity;
 import com.besome.sketch.editor.manage.ShowBlockCollectionActivity;
 import com.besome.sketch.editor.view.ViewDummy;
@@ -123,7 +124,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
-public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
+public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, OnBlockCategorySelectListener, View.OnTouchListener, MoreblockImporterDialog.CallBack {
     public final Handler Z = new Handler();
     public Vibrator F;
     public boolean G;
@@ -639,8 +640,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public void a(int i, int i2) {
-        extraPaletteBlock.setBlock(i, i2);
+    public void onBlockCategorySelect(int id, int color) {
+        extraPaletteBlock.setBlock(id, color);
     }
 
     public void a(int i, String str) {
