@@ -12,10 +12,7 @@ import android.widget.LinearLayout;
 import com.sketchware.remod.R;
 
 import java.util.HashMap;
-import a.a.a.Ws;
 import com.besome.sketch.lib.utils.LayoutUtil;
-import a.a.a.xB;
-
 import mod.hey.studios.util.Helper;
 
 
@@ -75,7 +72,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         for (int i = 0; i < getChildCount(); i++) {
 
-            Ws childAt = (Ws) getChildAt(i);
+            PaletteSelectorItem childAt = (PaletteSelectorItem) getChildAt(i);
 
             if (childAt != null) {
 
@@ -91,11 +88,11 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     public void onClick(View v) {
 
-        if (v instanceof Ws) {
+        if (v instanceof PaletteSelectorItem) {
 
             unselectAllPalettes();
 
-            Ws paletteView = (Ws) v;
+            PaletteSelectorItem paletteView = (PaletteSelectorItem) v;
 
             paletteView.setSelected(true);
 
@@ -168,7 +165,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
     
     private void addPalette(int id, String title, int color) {
 
-        Ws paletteView = new Ws(context, id, title, color);
+        PaletteSelectorItem paletteView = new PaletteSelectorItem(context, id, title, color);
 
         paletteView.setTag(String.valueOf(id));
 
