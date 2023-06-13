@@ -62,101 +62,87 @@ public class Lx {
                 "dependencies {\r\n" +
                 "implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n";
 
-        if (metadata.g) {
+        List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
+        if (isLibraryNotExcluded(BuiltInLibraries.ANDROIDX_APPCOMPAT, excludedLibraries) && metadata.g) {
             content += "implementation 'androidx.appcompat:appcompat:1.4.0'\r\n" +
                     "implementation 'com.google.android.material:material:1.6.1'\r\n";
         }
 
-        if (metadata.isFirebaseAuthUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_AUTH, excludedLibraries) && metadata.isFirebaseAuthUsed) {
             content += "implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n";
         }
 
-        if (metadata.isFirebaseDatabaseUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DATABASE, excludedLibraries) && metadata.isFirebaseDatabaseUsed) {
             content += "implementation 'com.google.firebase:firebase-database:19.0.0'\r\n";
         }
 
-        if (metadata.isFirebaseStorageUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_STORAGE, excludedLibraries) && metadata.isFirebaseStorageUsed) {
             content += "implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n";
         }
 
-        if (metadata.isAdMobEnabled) {
+        if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_ADS, excludedLibraries) && metadata.isAdMobEnabled) {
             content += "implementation 'com.google.android.gms:play-services-ads:20.1.0'\r\n";
         }
 
-        if (metadata.isMapUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_MAPS, excludedLibraries) && metadata.isMapUsed) {
             content += "implementation 'com.google.android.gms:play-services-maps:17.0.1'\r\n";
         }
 
-        if (metadata.isGlideUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.GLIDE, excludedLibraries) && metadata.isGlideUsed) {
             content += "implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n";
         }
 
-        if (metadata.isGsonUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.GSON, excludedLibraries) && metadata.isGsonUsed) {
             content += "implementation 'com.google.code.gson:gson:2.8.7'\r\n";
         }
 
-        if (metadata.isHttp3Used) {
+        if (isLibraryNotExcluded(BuiltInLibraries.OKHTTP, excludedLibraries) && metadata.isHttp3Used) {
             content += "implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n";
         }
 
-        if (metadata.isDynamicLinkUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS, excludedLibraries) && metadata.isDynamicLinkUsed) {
             content += "implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'\r\n";
         }
 
-        ConstVarComponent constVarComponent = metadata.x;
-        List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
-        if (isLibraryNotExcluded(BuiltInLibraries.CIRCLE_IMAGEVIEW, excludedLibraries)) {
-            if (constVarComponent.isCircleImageViewUsed) {
-                content += "implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n";
-            }
+        ConstVarComponent extraMetadata = metadata.x;
+        if (isLibraryNotExcluded(BuiltInLibraries.CIRCLE_IMAGEVIEW, excludedLibraries) && extraMetadata.isCircleImageViewUsed) {
+            content += "implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n";
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.YOUTUBE_PLAYER, excludedLibraries)) {
-            if (constVarComponent.isYoutubePlayerUsed) {
-                content += "implementation 'com.pierfrancescosoffritti:androidyoutubeplayer:10.0.5'\r\n";
-            }
+        if (isLibraryNotExcluded(BuiltInLibraries.YOUTUBE_PLAYER, excludedLibraries) && extraMetadata.isYoutubePlayerUsed) {
+            content += "implementation 'com.pierfrancescosoffritti:androidyoutubeplayer:10.0.5'\r\n";
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.CODE_VIEW, excludedLibraries)) {
-            if (constVarComponent.isCodeViewUsed) {
-                content += "implementation 'br.tiagohm:codeview:0.4.0'\r\n";
-            }
+        if (isLibraryNotExcluded(BuiltInLibraries.CODE_VIEW, excludedLibraries) && extraMetadata.isCodeViewUsed) {
+            content += "implementation 'br.tiagohm:codeview:0.4.0'\r\n";
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.LOTTIE, excludedLibraries)) {
-            if (constVarComponent.isLottieUsed) {
-                content += "implementation 'com.airbnb:lottie:3.4.0'\r\n";
-            }
+        if (isLibraryNotExcluded(BuiltInLibraries.LOTTIE, excludedLibraries) && extraMetadata.isLottieUsed) {
+            content += "implementation 'com.airbnb:lottie:3.4.0'\r\n";
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.OTPVIEW, excludedLibraries)) {
-            if (constVarComponent.isOTPViewUsed) {
-                content += "implementation 'affan.ahmad:otp:0.1.0'\r\n";
-            }
+        if (isLibraryNotExcluded(BuiltInLibraries.OTPVIEW, excludedLibraries) && extraMetadata.isOTPViewUsed) {
+            content += "implementation 'affan.ahmad:otp:0.1.0'\r\n";
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.ONESIGNAL, excludedLibraries)) {
-            if (constVarComponent.isOneSignalUsed) {
-                content += "implementation 'com.onesignal:OneSignal:3.14.0'\r\n";
-            }
+        if (isLibraryNotExcluded(BuiltInLibraries.ONESIGNAL, excludedLibraries) && extraMetadata.isOneSignalUsed) {
+            content += "implementation 'com.onesignal:OneSignal:3.14.0'\r\n";
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries)) {
-            if (constVarComponent.isPatternLockViewUsed) {
-                content += "implementation 'com.andrognito:patternlockview:1.0.0'\r\n";
-            }
+        if (isLibraryNotExcluded(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries) && extraMetadata.isPatternLockViewUsed) {
+            content += "implementation 'com.andrognito:patternlockview:1.0.0'\r\n";
         }
 
-        if (constVarComponent.isWaveSideBarUsed) {
+        if (extraMetadata.isWaveSideBarUsed) {
             //dependency += "implementation 'com.sayuti:lib:3.4.0'\r\n"; not sure which version is used...
         }
-        if (constVarComponent.isFBAdsUsed) {
+        if (extraMetadata.isFBAdsUsed) {
             //dependency += "implementation '\r\n"; i couldnt find its depends
         }
-        if (constVarComponent.isFBGoogleUsed) {
+        if (extraMetadata.isFBGoogleUsed) {
             //dependency += "implementation '\r\n"; i couldnt find its depends
         }
-        if (constVarComponent.isFCMUsed) {
+        if (extraMetadata.isFCMUsed) {
             //dependency += "implementation '\r\n"; i couldnt find its depends
         }
         return j(content + "}\r\n", false);
