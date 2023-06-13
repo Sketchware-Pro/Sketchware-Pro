@@ -18,13 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.design.DesignActivity;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
 import a.a.a.aB;
-import a.a.a.eC;
 import a.a.a.Qs;
 import a.a.a.bB;
 import a.a.a.jC;
@@ -130,28 +128,24 @@ public class ViewEvents extends LinearLayout {
             if (eventBean.isSelected) {
                 holder.addAvailableIcon.setVisibility(View.GONE);
                 mB.a(holder.icon, 1);
-                holder.container.setOnLongClickListener(new View.OnLongClickListener() {
-					@Override
-					public boolean onLongClick(View _view) {
-						// Delete event dialog
-						aB dialog = new aB((Activity) getContext());
-						dialog.a(R.drawable.delete_96);
-            			dialog.b("Confirm Delete");
-            			dialog.a("Click on Confirm to delete selected event.");
-						
-            			dialog.b("Delete", v -> {
-                			dialog.dismiss();
-                			deleteEvent(eventBean);
-                			bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-                			eventBean.isSelected = false;
-                			eventsList.getAdapter().notifyItemChanged(position);
-            			});
-            			dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
-            			dialog.show();
-						return true;
-					}
-				});
-				holder.container.setOnClickListener(v -> createEvent(position));
+                holder.container.setOnLongClickListener(v -> {
+                    aB dialog = new aB((Activity) getContext());
+                    dialog.a(R.drawable.delete_96);
+                    dialog.b("Confirm Delete");
+                    dialog.a("Click on Confirm to delete selected event.");
+                    
+                    dialog.b("Delete", del -> {
+                        dialog.dismiss();
+                        EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
+                        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+                        eventBean.isSelected = false;
+                        eventsList.getAdapter().notifyItemChanged(position);
+                    });
+                    dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
+                    dialog.show();
+                    return true;
+                });
+                holder.container.setOnClickListener(v -> createEvent(position));
             } else {
                 holder.addAvailableIcon.setVisibility(View.VISIBLE);
                 mB.a(holder.icon, 0);
@@ -171,12 +165,5 @@ public class ViewEvents extends LinearLayout {
         public int getItemCount() {
             return events.size();
         }
-    }
-    
-    public void deleteEvent(EventBean event) {
-    	jC.a(sc_id).d(projectFileBean.getJavaName(), event.targetId, event.eventName);
-        eC a2 = jC.a(sc_id);
-        String javaName = projectFileBean.getJavaName();
-        a2.k(javaName, event.targetId + "_" + event.eventName);
     }
 }

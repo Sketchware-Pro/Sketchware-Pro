@@ -3,8 +3,12 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.annotations.Expose;
 import com.sketchware.remod.R;
+
+import a.a.a.eC;
+import a.a.a.jC;
 
 public class EventBean extends CollapsibleBean implements Parcelable {
     public static final Parcelable.Creator<EventBean> CREATOR = new Parcelable.Creator<>() {
@@ -69,6 +73,13 @@ public class EventBean extends CollapsibleBean implements Parcelable {
             default:
                 return R.drawable.widget_module;
         }
+    }
+    
+    public static void deleteEvent(String sc_id, EventBean event, ProjectFileBean projectFileBean) {
+        jC.a(sc_id).d(projectFileBean.getJavaName(), event.targetId, event.eventName);
+        eC a2 = jC.a(sc_id);
+        String javaName = projectFileBean.getJavaName();
+        a2.k(javaName, event.targetId + "_" + event.eventName);
     }
 
     public static int getEventTypeBgRes(int eventType) {
