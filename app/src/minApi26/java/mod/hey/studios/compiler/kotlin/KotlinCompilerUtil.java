@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import a.a.a.Dp;
+import a.a.a.ProjectCompiler;
 import a.a.a.yq;
 import mod.agus.jcoderz.lib.FilePathUtil;
 
@@ -21,7 +21,7 @@ public class KotlinCompilerUtil {
      *
      * or not.
      */
-    public static boolean areAnyKtFilesPresent(Dp dp) {
+    public static boolean areAnyKtFilesPresent(ProjectCompiler dp) {
         return areAnyKtFilesPresent(dp.yq);
     }
 

@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import a.a.a.Dp;
 import a.a.a.Jp;
+import a.a.a.ProjectCompiler;
 import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.BinaryExecutor;
@@ -39,18 +39,18 @@ public class ResourceCompiler {
     private final boolean willBuildAppBundle;
     private final File aaptFile;
     private final BuildProgressReceiver progressReceiver;
-    private final Dp dp;
+    private final ProjectCompiler projectCompiler;
 
-    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, BuildProgressReceiver receiver) {
+    public ResourceCompiler(ProjectCompiler projectCompiler, File aapt, boolean willBuildAppBundle, BuildProgressReceiver receiver) {
         this.willBuildAppBundle = willBuildAppBundle;
         aaptFile = aapt;
         progressReceiver = receiver;
-        this.dp = dp;
+        this.projectCompiler = projectCompiler;
     }
 
     public void compile() throws IOException, zy, MissingFileException {
         Compiler resourceCompiler;
-        resourceCompiler = new Aapt2Compiler(dp, aaptFile, willBuildAppBundle);
+        resourceCompiler = new Aapt2Compiler(projectCompiler, aaptFile, willBuildAppBundle);
 
         resourceCompiler.setProgressListener(new Compiler.ProgressListener() {
             @Override
@@ -99,11 +99,11 @@ public class ResourceCompiler {
         private final boolean buildAppBundle;
 
         private final File aapt2;
-        private final Dp buildHelper;
+        private final ProjectCompiler buildHelper;
         private final File compiledBuiltInLibraryResourcesDirectory;
         private ProgressListener progressListener;
 
-        public Aapt2Compiler(Dp buildHelper, File aapt2, boolean buildAppBundle) {
+        public Aapt2Compiler(ProjectCompiler buildHelper, File aapt2, boolean buildAppBundle) {
             this.buildHelper = buildHelper;
             this.aapt2 = aapt2;
             this.buildAppBundle = buildAppBundle;

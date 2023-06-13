@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import a.a.a.Dp;
 import a.a.a.Jp;
 import a.a.a.KB;
 import a.a.a.oB;
+import a.a.a.ProjectCompiler;
 
 public class BuiltInLibraries {
 
@@ -438,7 +438,7 @@ public class BuiltInLibraries {
 
         maybeExtractAndroidJar(progressReceivers);
 
-        if (Dp.hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
+        if (ProjectCompiler.hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
                 receiver.onProgress("Extracting built-in libraries' DEX files...");
             }
@@ -449,7 +449,7 @@ public class BuiltInLibraries {
             /* Extract dexs.zip to dexs/ */
             new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
-        if (Dp.hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
+        if (ProjectCompiler.hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
                 receiver.onProgress("Extracting built-in libraries' resources...");
             }
@@ -460,8 +460,8 @@ public class BuiltInLibraries {
             /* Extract libs.zip to libs/ */
             new KB().a(libsArchivePath, libsDirectoryPath);
         }
-        Dp.hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
-        if (Dp.hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
+        ProjectCompiler.hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
+        if (ProjectCompiler.hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
                 receiver.onProgress("Extracting built-in signing keys...");
             }
@@ -477,7 +477,7 @@ public class BuiltInLibraries {
     public static void maybeExtractAndroidJar(@NonNull BuildProgressReceiver... receivers) {
         String androidJarArchiveName = "android.jar.zip";
         String androidJarPath = new File(EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
-        if (Dp.hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
+        if (ProjectCompiler.hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
             for (BuildProgressReceiver receiver : receivers) {
                 receiver.onProgress("Extracting built-in android.jar...");
             }

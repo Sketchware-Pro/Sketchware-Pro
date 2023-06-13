@@ -72,7 +72,7 @@ I made this part specifically for my fellow modders who want to contribute to Sk
        Ox -> Responsible for generating the XML source of layouts.
 
    classes6.dex -> This one is all about the compilation. Contains ProGuard, StringFog handler classes/activities, and:
-       Dp -> Responsible for the whole compilation process of projects. Was modified to fix MultiDex bug and to add library support.
+       ProjectCompiler -> Responsible for the whole compilation process of projects. Was modified to fix MultiDex bug and to add library support.
        yq -> Organizes Sketchware projects' file paths.
        
    classes7.dex -> Contains both ProGuard and d8/r8

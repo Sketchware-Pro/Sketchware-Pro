@@ -18,8 +18,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import a.a.a.Dp;
 import a.a.a.Jp;
+import a.a.a.ProjectCompiler;
 import a.a.a.yq;
 import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -38,16 +38,16 @@ public class AppBundleCompiler {
     private static final String MODULE_MANIFEST = "manifest";
 
     private static final String TAG = AppBundleCompiler.class.getSimpleName();
-    private final Dp mDp;
+    private final ProjectCompiler projectCompiler;
     private final File mainModuleArchive;
     private final File appBundle;
 
     private final List<String> uncompressedModuleMainPaths = new LinkedList<>();
 
-    public AppBundleCompiler(Dp dp) {
-        mDp = dp;
-        mainModuleArchive = new File(dp.yq.binDirectoryPath, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.yq.binDirectoryPath, getBundleFilename(dp.yq.projectName));
+    public AppBundleCompiler(ProjectCompiler projectCompiler) {
+        this.projectCompiler = projectCompiler;
+        mainModuleArchive = new File(projectCompiler.yq.binDirectoryPath, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(projectCompiler.yq.binDirectoryPath, getBundleFilename(projectCompiler.yq.projectName));
     }
 
     public static String getBundleFilename(String sc_id) {
@@ -76,8 +76,8 @@ public class AppBundleCompiler {
                                 .addAllUncompressedGlob(uncompressedModuleMainPaths).build()
                         ).build()
                 );
-        if (mDp.proguard.isProguardEnabled() && mDp.proguard.isDebugFilesEnabled()) {
-            Path mapping = Paths.get(mDp.yq.proGuardMappingPath);
+        if (projectCompiler.proguard.isProguardEnabled() && projectCompiler.proguard.isDebugFilesEnabled()) {
+            Path mapping = Paths.get(projectCompiler.yq.proGuardMappingPath);
             LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
             builder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);
         }
@@ -105,12 +105,12 @@ public class AppBundleCompiler {
                 /* Finally, use it as ZipOutputStream */
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
                     /* Get an automatically closed FileInputStream of <project name>.apk.res */
-                    try (FileInputStream apkResStream = new FileInputStream(mDp.yq.resourcesApkPath)) {
+                    try (FileInputStream apkResStream = new FileInputStream(projectCompiler.yq.resourcesApkPath)) {
                         /* Create an automatically closed ZipInputStream of <project name>.apk.res */
                         try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
 
                             /* First, compress DEX files into module-main.zip */
-                            File[] binDirectoryContent = new File(mDp.yq.binDirectoryPath).listFiles();
+                            File[] binDirectoryContent = new File(projectCompiler.yq.binDirectoryPath).listFiles();
                             if (binDirectoryContent != null) {
                                 for (File file : binDirectoryContent) {
                                     if (file.isFile() && file.getName().endsWith(".dex")) {
@@ -175,7 +175,7 @@ public class AppBundleCompiler {
                         }
                     }
 
-                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.yq.sc_id));
+                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(projectCompiler.yq.sc_id));
                     File[] architectures = nativeLibrariesDirectory.listFiles();
 
                     if (architectures != null) {
@@ -203,10 +203,10 @@ public class AppBundleCompiler {
                     }
 
                     /* Start with enabled Local libraries' JARs */
-                    ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.sc_id).getLocalLibraryJars();
+                    ArrayList<File> jars = new ManageLocalLibrary(projectCompiler.yq.sc_id).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
-                    for (Jp library : mDp.builtInLibraryManager.getLibraries()) {
+                    for (Jp library : projectCompiler.builtInLibraryManager.getLibraries()) {
                         jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
                     }
 

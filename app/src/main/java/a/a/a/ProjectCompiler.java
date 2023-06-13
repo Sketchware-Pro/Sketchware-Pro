@@ -72,7 +72,7 @@ import proguard.ConfigurationParser;
 import proguard.ParseException;
 import proguard.ProGuard;
 
-public class Dp {
+public class ProjectCompiler {
 
     public static final String TAG = "AppBuilder";
     private final File aapt2Binary;
@@ -94,7 +94,7 @@ public class Dp {
      */
     private long timestampResourceCompilationStarted;
 
-    public Dp(Context context, yq yqVar) {
+    public ProjectCompiler(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectAll()
@@ -130,7 +130,7 @@ public class Dp {
         settings = new ProjectSettings(yqVar.sc_id);
     }
 
-    public Dp(BuildProgressReceiver buildAsyncTask, Context context, yq yqVar) {
+    public ProjectCompiler(BuildProgressReceiver buildAsyncTask, Context context, yq yqVar) {
         this(context, yqVar);
         progressReceiver = buildAsyncTask;
     }
@@ -292,7 +292,7 @@ public class Dp {
     }
 
     /**
-     * @return Similar to {@link Dp#getClasspath()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
+     * @return Similar to {@link ProjectCompiler#getClasspath()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
      */
     public String getProGuardClasspath() {
         Collection<String> localLibraryJarsWithFullModeOn = new LinkedList<>();

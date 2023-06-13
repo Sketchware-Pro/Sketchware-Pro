@@ -21,7 +21,7 @@ To select the appropriate build variant in Android Studio, use the Build Variant
 
 | Class           | Role                                        |
 | --------------- | ------------------------------------------- |
-| `a.a.a.Dp`      | Helper for compiling an entire project       |
+| `a.a.a.ProjectCompiler`      | Helper for compiling an entire project       |
 | `a.a.a.Ix`      | Responsible for generating AndroidManifest.xml |
 | `a.a.a.Jx`      | Generates source code of activities          |
 | `a.a.a.Lx`      | Generates source code of components, such as listeners, etc. |

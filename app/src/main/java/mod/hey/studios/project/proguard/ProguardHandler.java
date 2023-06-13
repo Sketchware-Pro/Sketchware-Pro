@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.Dp;
+import a.a.a.ProjectCompiler;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
@@ -207,7 +207,7 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
-    public void start(BuildProgressReceiver progressReceiver, Dp dp) throws IOException {
+    public void start(BuildProgressReceiver progressReceiver, ProjectCompiler dp) throws IOException {
         if (isProguardEnabled()) {
             progressReceiver.onProgress("ProGuarding classes...");
             dp.runProguard();

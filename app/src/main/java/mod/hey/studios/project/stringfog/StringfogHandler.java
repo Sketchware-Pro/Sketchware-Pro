@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
-import a.a.a.Dp;
+import a.a.a.ProjectCompiler;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
@@ -58,7 +58,7 @@ public class StringfogHandler {
     /**
      * Check if StringFog is enabled for the project, and run it if it is.
      */
-    public void start(BuildProgressReceiver progressReceiver, Dp dp) {
+    public void start(BuildProgressReceiver progressReceiver, ProjectCompiler dp) {
         if (isStringfogEnabled()) {
             progressReceiver.onProgress("Running StringFog...");
             dp.runStringfog();

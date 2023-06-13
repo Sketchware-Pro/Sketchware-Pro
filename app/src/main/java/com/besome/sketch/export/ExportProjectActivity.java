@@ -43,7 +43,7 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.Dp;
+import a.a.a.ProjectCompiler;
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.aB;
@@ -612,7 +612,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private final yq project_metadata;
         private final WeakReference<LottieAnimationView> loading_sign_apk;
 
-        private Dp dp;
+        private ProjectCompiler dp;
         private boolean canceled = false;
         private boolean buildingAppBundle = false;
         private String signingKeystorePath = null;
@@ -699,7 +699,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     cancel(true);
                     return;
                 }
-                dp = new Dp(this, a, project_metadata);
+                dp = new ProjectCompiler(this, a, project_metadata);
                 dp.setBuildAppBundle(buildingAppBundle);
 
                 /* Check AAPT/AAPT2 */

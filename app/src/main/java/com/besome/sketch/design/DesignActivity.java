@@ -61,7 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import a.a.a.DB;
-import a.a.a.Dp;
+import a.a.a.ProjectCompiler;
 import a.a.a.GB;
 import a.a.a.MA;
 import a.a.a.ViewEditorFragment;
@@ -1002,36 +1002,36 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.f();
                     q.e();
 
-                    Dp mDp = new Dp(this, a, q);
+                    ProjectCompiler projectCompiler = new ProjectCompiler(this, a, q);
 
-                    mDp.maybeExtractAapt2();
+                    projectCompiler.maybeExtractAapt2();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Extracting built-in libraries...");
-                    mDp.getBuiltInLibrariesReady();
+                    projectCompiler.getBuiltInLibrariesReady();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("AAPT2 is running...");
-                    mDp.compileResources();
+                    projectCompiler.compileResources();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, mDp);
+                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, projectCompiler);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Java is compiling...");
-                    mDp.compileJavaCode();
+                    projectCompiler.compileJavaCode();
                     if (canceled) {
                         cancel(true);
                         return;
@@ -1039,7 +1039,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     /* Encrypt Strings in classes if enabled */
                     StringfogHandler stringfogHandler = new StringfogHandler(q.sc_id);
-                    stringfogHandler.start(this, mDp);
+                    stringfogHandler.start(this, projectCompiler);
                     if (canceled) {
                         cancel(true);
                         return;
@@ -1047,35 +1047,35 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     /* Obfuscate classes if enabled */
                     ProguardHandler proguardHandler = new ProguardHandler(q.sc_id);
-                    proguardHandler.start(this, mDp);
+                    proguardHandler.start(this, projectCompiler);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    publishProgress(mDp.getDxRunningText());
-                    mDp.createDexFilesFromClasses();
+                    publishProgress(projectCompiler.getDxRunningText());
+                    projectCompiler.createDexFilesFromClasses();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Merging DEX files...");
-                    mDp.getDexFilesReady();
+                    projectCompiler.getDexFilesReady();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Building APK...");
-                    mDp.buildApk();
+                    projectCompiler.buildApk();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Signing APK...");
-                    mDp.signDebugApk();
+                    projectCompiler.signDebugApk();
                     if (canceled) {
                         cancel(true);
                         return;
