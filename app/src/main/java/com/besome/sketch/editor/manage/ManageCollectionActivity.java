@@ -6,8 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
-import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -47,19 +44,15 @@ import com.besome.sketch.editor.manage.image.AddImageCollectionActivity;
 import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import a.a.a.FB;
 import a.a.a.Mp;
@@ -74,12 +67,11 @@ import a.a.a.bB;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
-import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
-import mod.jbk.util.LogUtil;
+import mod.jbk.util.AudioMetadata;
+import mod.jbk.util.SoundPlayingAdapter;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
     private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
     private static final int REQUEST_CODE_SHOW_IMAGE_DETAILS = 268;
     private static final int REQUEST_CODE_ADD_SOUND_DIALOG = 269;
@@ -90,10 +82,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private static final int REQUEST_CODE_SHOW_BLOCK_DETAILS = 274;
     private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
 
-    private Timer soundPlaybackTimeCounter = new Timer();
-    private MediaPlayer mediaPlayer;
-    private int D = -1;
-    private int E = -1;
     private LinearLayout actionButtonGroup;
     private boolean hasDeletedWidget = false;
     private boolean selectingToBeDeletedItems = false;
@@ -111,47 +99,25 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private String sc_id;
 
     private static String getCategoryLabel(Context context, int position) {
-        switch (position) {
-            case 0:
-                return Helper.getResString(R.string.common_word_image);
-
-            case 1:
-                return Helper.getResString(R.string.common_word_sound);
-
-            case 2:
-                return Helper.getResString(R.string.common_word_font);
-
-            case 3:
-                return Helper.getResString(R.string.common_word_widget);
-
-            case 4:
-                return Helper.getResString(R.string.common_word_block);
-
-            default:
-                return Helper.getResString(R.string.common_word_moreblock);
-        }
+        return Helper.getResString(switch (position) {
+            case 0 -> R.string.common_word_image;
+            case 1 -> R.string.common_word_sound;
+            case 2 -> R.string.common_word_font;
+            case 3 -> R.string.common_word_widget;
+            case 4 -> R.string.common_word_block;
+            default -> R.string.common_word_moreblock;
+        });
     }
 
     private static int getCategoryIcon(int position) {
-        switch (position) {
-            case 0:
-                return R.drawable.ic_picture_48dp;
-
-            case 1:
-                return R.drawable.ic_sound_wave_48dp;
-
-            case 2:
-                return R.drawable.ic_font_48dp;
-
-            case 3:
-                return R.drawable.collage_96;
-
-            case 4:
-                return R.drawable.block_96_blue;
-
-            default:
-                return R.drawable.more_block_96dp;
-        }
+        return switch (position) {
+            case 0 -> R.drawable.ic_picture_48dp;
+            case 1 -> R.drawable.ic_sound_wave_48dp;
+            case 2 -> R.drawable.ic_font_48dp;
+            case 3 -> R.drawable.collage_96;
+            case 4 -> R.drawable.block_96_blue;
+            default -> R.drawable.more_block_96dp;
+        };
     }
 
     private void showAddImageDialog() {
@@ -162,7 +128,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void showAddSoundDialog() {
-        stopMusicPlayback(sounds);
+        collectionAdapter.stopPlayback();
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
@@ -177,67 +143,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private int getBlockIcon(BlockBean block) {
-        switch (block.type) {
-            case "c":
-                return R.drawable.fav_block_c_96dp;
-
-            case "b":
-                return R.drawable.fav_block_boolean_96dp;
-
-            case "f":
-                return R.drawable.fav_block_final_96dp;
-
-            case "e":
-                return R.drawable.fav_block_e_96dp;
-
-            case "d":
-                return R.drawable.fav_block_number_96dp;
-
-            case "s":
-                return R.drawable.fav_block_string_96dp;
-
-            default:
-                return R.drawable.fav_block_command_96dp;
-        }
-    }
-
-    private void setMusicCoverOnImageView(String filePath, ImageView target) {
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        metadataRetriever.setDataSource(filePath);
-        byte[] embeddedPicture = metadataRetriever.getEmbeddedPicture();
-        if (embeddedPicture != null) {
-            Glide.with(getApplicationContext()).load(embeddedPicture).centerCrop().into(new SimpleTarget<GlideDrawable>() {
-                @Override
-                public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    target.setImageDrawable(glideDrawable);
-                }
-            });
-        } else {
-            target.setImageResource(R.drawable.default_album_art_200dp);
-            target.setBackgroundResource(R.drawable.bg_outline_album);
-        }
-
-        try {
-            metadataRetriever.release();
-        } catch (IOException e) {
-            String message = "Couldn't close file " + filePath;
-            LogUtil.e("ManageCollectionActivity", message, e);
-            SketchwareUtil.toastError(message, Toast.LENGTH_LONG);
-        }
-    }
-
-    private void stopMusicPlayback(ArrayList<ProjectResourceBean> sounds) {
-        soundPlaybackTimeCounter.cancel();
-        if (E != -1) {
-            sounds.get(E).curSoundPosition = 0;
-            E = -1;
-            D = -1;
-            collectionAdapter.notifyDataSetChanged();
-        }
-
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+        return switch (block.type) {
+            case "c" -> R.drawable.fav_block_c_96dp;
+            case "b" -> R.drawable.fav_block_boolean_96dp;
+            case "f" -> R.drawable.fav_block_final_96dp;
+            case "e" -> R.drawable.fav_block_e_96dp;
+            case "d" -> R.drawable.fav_block_number_96dp;
+            case "s" -> R.drawable.fav_block_string_96dp;
+            default -> R.drawable.fav_block_command_96dp;
+        };
     }
 
     private void changeDeletingItemsState(boolean deletingItems) {
@@ -245,7 +159,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         invalidateOptionsMenu();
         unselectToBeDeletedItems();
         if (selectingToBeDeletedItems) {
-            stopMusicPlayback(sounds);
+            collectionAdapter.stopPlayback();
             actionButtonGroup.setVisibility(View.VISIBLE);
         } else {
             actionButtonGroup.setVisibility(View.GONE);
@@ -255,12 +169,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         collectionAdapter.notifyDataSetChanged();
-    }
-
-    private int getLengthOfSong(String filePath) {
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        metadataRetriever.setDataSource(filePath);
-        return (int) Long.parseLong(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
     }
 
     private void handleFabOnClick(int categoryId) {
@@ -284,7 +192,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     private void openSoundDetails(int position) {
         ProjectResourceBean editTarget = sounds.get(position);
-        stopMusicPlayback(sounds);
+        collectionAdapter.stopPlayback();
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
@@ -325,40 +233,34 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private void deleteSelectedToBeDeletedItems() {
         for (int i = 0; i < categoryAdapter.getItemCount(); i++) {
             switch (i) {
-                case 0:
+                case 0 -> {
                     for (ProjectResourceBean bean : images) {
                         if (bean.isSelected) {
                             Op.g().a(bean.resName, false);
                         }
                     }
-
                     Op.g().e();
                     loadImages();
-                    break;
-
-                case 1:
+                }
+                case 1 -> {
                     for (ProjectResourceBean bean : sounds) {
                         if (bean.isSelected) {
                             Qp.g().a(bean.resName, false);
                         }
                     }
-
                     Qp.g().e();
                     loadSounds();
-                    break;
-
-                case 2:
+                }
+                case 2 -> {
                     for (ProjectResourceBean bean : fonts) {
                         if (bean.isSelected) {
                             Np.g().a(bean.resName, false);
                         }
                     }
-
                     Np.g().e();
                     loadFonts();
-                    break;
-
-                case 3:
+                }
+                case 3 -> {
                     for (WidgetCollectionBean bean : widgets) {
                         if (bean.isSelected) {
                             if (!hasDeletedWidget) {
@@ -368,32 +270,27 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             Rp.h().a(bean.name, false);
                         }
                     }
-
                     Rp.h().e();
                     loadWidgets();
-                    break;
-
-                case 4:
+                }
+                case 4 -> {
                     for (BlockCollectionBean bean : blocks) {
                         if (bean.isSelected) {
                             Mp.h().a(bean.name, false);
                         }
                     }
-
                     Mp.h().e();
                     loadBlocks();
-                    break;
-
-                default:
+                }
+                default -> {
                     for (MoreBlockCollectionBean bean : moreBlocks) {
                         if (bean.isSelected) {
                             Pp.h().a(bean.name, false);
                         }
                     }
-
                     Pp.h().e();
                     loadMoreBlocks();
-                    break;
+                }
             }
         }
 
@@ -420,25 +317,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         return var2;
-    }
-
-    private void scheduleSoundPlaybackTimeCounter(int position) {
-        soundPlaybackTimeCounter = new Timer();
-        soundPlaybackTimeCounter.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> {
-                    if (mediaPlayer == null) {
-                        soundPlaybackTimeCounter.cancel();
-                    } else {
-                        CollectionAdapter.SoundCollectionViewHolder viewHolder = (CollectionAdapter.SoundCollectionViewHolder) collection.findViewHolderForAdapterPosition(position);
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
-                        viewHolder.currentPosition.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
-                        viewHolder.playbackProgress.setProgress(mediaPlayer.getCurrentPosition() / 1000);
-                    }
-                });
-            }
-        }, 100L, 100L);
     }
 
     private void initialize() {
@@ -479,34 +357,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_ADD_IMAGE_DIALOG:
-            case REQUEST_CODE_SHOW_IMAGE_DETAILS:
-                loadImages();
-                break;
-
-            case REQUEST_CODE_ADD_SOUND_DIALOG:
-            case REQUEST_CODE_SHOW_SOUND_DETAILS:
-                loadSounds();
-                break;
-
-            case REQUEST_CODE_ADD_FONT_DIALOG:
-            case REQUEST_CODE_SHOW_FONT_DETAILS:
-                loadFonts();
-                break;
-
-            case REQUEST_CODE_SHOW_WIDGET_DETAILS:
-                loadWidgets();
-                break;
-
-            case REQUEST_CODE_SHOW_BLOCK_DETAILS:
-                loadBlocks();
-                break;
-
-            case REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS:
-                loadMoreBlocks();
-                break;
-
-            default:
+            case REQUEST_CODE_ADD_IMAGE_DIALOG, REQUEST_CODE_SHOW_IMAGE_DETAILS -> loadImages();
+            case REQUEST_CODE_ADD_SOUND_DIALOG, REQUEST_CODE_SHOW_SOUND_DETAILS -> loadSounds();
+            case REQUEST_CODE_ADD_FONT_DIALOG, REQUEST_CODE_SHOW_FONT_DETAILS -> loadFonts();
+            case REQUEST_CODE_SHOW_WIDGET_DETAILS -> loadWidgets();
+            case REQUEST_CODE_SHOW_BLOCK_DETAILS -> loadBlocks();
+            case REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS -> loadMoreBlocks();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -565,29 +421,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public void onDestroy() {
-        stopMusicPlayback(sounds);
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_collection_delete) {
             changeDeletingItemsState(!selectingToBeDeletedItems);
         }
 
         return super.onOptionsItemSelected(menuItem);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            soundPlaybackTimeCounter.cancel();
-            mediaPlayer.pause();
-            sounds.get(E).curSoundPosition = mediaPlayer.getCurrentPosition();
-        }
     }
 
     @Override
@@ -738,7 +577,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-
         private int currentItemId;
 
         public CategoryAdapter() {
@@ -803,7 +641,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
             public final ImageView icon;
             public final TextView name;
             public final View pointerLeft;
@@ -822,7 +659,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     int layoutPosition = getLayoutPosition();
                     if (layoutPosition != -1 && layoutPosition != currentItemId) {
                         if (currentItemId == 1) {
-                            stopMusicPlayback(sounds);
+                            collectionAdapter.stopPlayback();
                         }
 
                         notifyItemChanged(currentItemId);
@@ -830,35 +667,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         notifyItemChanged(currentItemId);
                         collection.removeAllViews();
                         collectionAdapter.currentViewType = currentItemId;
-                        switch (currentItemId) {
-                            case 0:
-                                collectionAdapter.setData(images);
-                                break;
-
-                            case 1:
-                                collectionAdapter.setData(sounds);
-                                break;
-
-                            case 2:
-                                collectionAdapter.setData(fonts);
-                                break;
-
-                            case 3:
-                                collectionAdapter.setData(widgets);
-                                break;
-
-                            case 4:
-                                collectionAdapter.setData(blocks);
-                                break;
-
-                            default:
-                                collectionAdapter.setData(moreBlocks);
-                                break;
-                        }
+                        collectionAdapter.setData(switch (currentItemId) {
+                            case 0 -> images;
+                            case 1 -> sounds;
+                            case 2 -> fonts;
+                            case 3 -> widgets;
+                            case 4 -> blocks;
+                            default -> moreBlocks;
+                        });
 
                         if (collectionAdapter.currentViewType == 0) {
                             collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
-                            // FloatingActionButton#show()
                             fab.show();
                         } else {
                             collection.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
@@ -876,13 +695,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    private class CollectionAdapter extends SoundPlayingAdapter<SoundPlayingAdapter.ViewHolder> {
         private int lastSelectedItemPosition;
         private int currentViewType;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
 
         public CollectionAdapter(RecyclerView target) {
+            super(ManageCollectionActivity.this);
             lastSelectedItemPosition = -1;
             currentViewType = -1;
             target.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -943,12 +762,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         private void onBindViewHolder(SoundCollectionViewHolder holder, int position) {
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
-            String soundFilePath = wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + bean.resFullName;
             if (selectingToBeDeletedItems) {
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                setMusicCoverOnImageView(soundFilePath, holder.album);
+                var audioMetadata = holder.audioMetadata;
+                var audio = getAudio(position);
+                if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
+                    audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
+                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                    audioMetadata.setEmbeddedPictureAsAlbumCover(ManageCollectionActivity.this, holder.album);
+                }
                 holder.album.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             }
@@ -960,25 +784,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
 
             int soundPositionInS = bean.curSoundPosition / 1000;
-            if (bean.totalSoundDuration == 0) {
-                bean.totalSoundDuration = getLengthOfSong(soundFilePath);
-            }
 
             int totalSoundDurationInS = bean.totalSoundDuration / 1000;
             holder.currentPosition.setText(String.format("%d:%02d", soundPositionInS / 60, soundPositionInS % 60));
             holder.totalDuration.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
             holder.checkBox.setChecked(bean.isSelected);
             holder.name.setText(bean.resName);
-            if (E == position) {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    holder.play.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
-                } else {
-                    holder.play.setImageResource(R.drawable.circled_play_96_blue);
-                }
-            } else {
-                holder.play.setImageResource(R.drawable.circled_play_96_blue);
-            }
-
+            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
+            holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
             holder.playbackProgress.setMax(bean.totalSoundDuration / 100);
             holder.playbackProgress.setProgress(bean.curSoundPosition / 100);
         }
@@ -1146,61 +959,48 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         @Override
         @NonNull
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public SoundPlayingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return switch (viewType) {
+                case 0 ->
+                        new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+                case 1 ->
+                        new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+                case 2 ->
+                        new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
+                case 3 ->
+                        new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
+                case 4 ->
+                        new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
+                default ->
+                        new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
+            };
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull SoundPlayingAdapter.ViewHolder holder, int position) {
+            int viewType = holder.getItemViewType();
+
             switch (viewType) {
-                case 0:
-                    return new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
-
-                case 1:
-                    return new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
-
-                case 2:
-                    return new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
-
-                case 3:
-                    return new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
-
-                case 4:
-                    return new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
-
-                default:
-                    return new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
+                case 0 -> onBindViewHolder((ImageCollectionViewHolder) holder, position);
+                case 1 -> onBindViewHolder((SoundCollectionViewHolder) holder, position);
+                case 2 -> onBindViewHolder((FontCollectionViewHolder) holder, position);
+                case 3 -> onBindViewHolder((WidgetCollectionViewHolder) holder, position);
+                case 4 -> onBindViewHolder((BlockCollectionViewHolder) holder, position);
+                case 5 -> onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
             }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            int viewType = holder.getItemViewType();
-
-            switch (viewType) {
-                case 0:
-                    onBindViewHolder((ImageCollectionViewHolder) holder, position);
-                    break;
-
-                case 1:
-                    onBindViewHolder((SoundCollectionViewHolder) holder, position);
-                    break;
-
-                case 2:
-                    onBindViewHolder((FontCollectionViewHolder) holder, position);
-                    break;
-
-                case 3:
-                    onBindViewHolder((WidgetCollectionViewHolder) holder, position);
-                    break;
-
-                case 4:
-                    onBindViewHolder((BlockCollectionViewHolder) holder, position);
-                    break;
-
-                case 5:
-                    onBindViewHolder((MoreBlockCollectionViewHolder) holder, position);
-                    break;
-            }
+        public ProjectResourceBean getData(int position) {
+            return (ProjectResourceBean) currentCollectionTypeItems.get(position);
         }
 
-        private class BlockCollectionViewHolder extends RecyclerView.ViewHolder {
+        @Override
+        public Path getAudio(int position) {
+            return Paths.get(wq.a(), "sound", "data", getData(position).resFullName);
+        }
 
+        private class BlockCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView blockIcon;
@@ -1237,8 +1037,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class FontCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class FontCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView fontIcon;
@@ -1279,8 +1078,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class ImageCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class ImageCollectionViewHolder extends SoundlessViewHolder {
             public final CheckBox checkBox;
             public final TextView name;
             public final ImageView image;
@@ -1317,8 +1115,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class MoreBlockCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class MoreBlockCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView delete;
@@ -1355,8 +1152,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        private class SoundCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class SoundCollectionViewHolder extends SoundPlayingAdapter.ViewHolder {
             public final ProgressBar playbackProgress;
             public final TextView totalDuration;
             public final LinearLayout deleteContainer;
@@ -1367,6 +1163,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final TextView name;
             public final ImageView play;
             public final TextView currentPosition;
+
+            private AudioMetadata audioMetadata;
 
             public SoundCollectionViewHolder(View itemView) {
                 super(itemView);
@@ -1383,60 +1181,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 play.setOnClickListener(v -> {
                     if (selectingToBeDeletedItems) {
-                        int position = getLayoutPosition();
-
-                        if (E == position) {
-                            if (mediaPlayer != null) {
-                                if (mediaPlayer.isPlaying()) {
-                                    soundPlaybackTimeCounter.cancel();
-                                    mediaPlayer.pause();
-                                    ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = mediaPlayer.getCurrentPosition();
-                                    collectionAdapter.notifyItemChanged(E);
-                                } else {
-                                    mediaPlayer.start();
-                                    scheduleSoundPlaybackTimeCounter(position);
-                                    collectionAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        } else {
-                            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                                soundPlaybackTimeCounter.cancel();
-                                mediaPlayer.pause();
-                                mediaPlayer.release();
-                            }
-
-                            if (D != -1) {
-                                ((ProjectResourceBean) currentCollectionTypeItems.get(D)).curSoundPosition = 0;
-                                collectionAdapter.notifyItemChanged(D);
-                            }
-
-                            E = position;
-                            D = position;
-                            collectionAdapter.notifyItemChanged(E);
-                            mediaPlayer = new MediaPlayer();
-                            mediaPlayer.setAudioStreamType(3);
-                            mediaPlayer.setOnPreparedListener(mp -> {
-                                mediaPlayer.start();
-                                scheduleSoundPlaybackTimeCounter(position);
-                                collectionAdapter.notifyItemChanged(E);
-                            });
-                            mediaPlayer.setOnCompletionListener(mp -> {
-                                soundPlaybackTimeCounter.cancel();
-                                ((ProjectResourceBean) currentCollectionTypeItems.get(E)).curSoundPosition = 0;
-                                collectionAdapter.notifyItemChanged(E);
-                                E = -1;
-                                D = -1;
-                            });
-
-                            try {
-                                mediaPlayer.setDataSource(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + ((ProjectResourceBean) currentCollectionTypeItems.get(E)).resFullName);
-                                mediaPlayer.prepare();
-                            } catch (Exception e) {
-                                E = -1;
-                                collectionAdapter.notifyItemChanged(E);
-                                e.printStackTrace();
-                            }
-                        }
+                        soundPlayer.onPlayPressed(getLayoutPosition());
                     }
                 });
                 cardView.setOnClickListener(v -> {
@@ -1457,10 +1202,19 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     return true;
                 });
             }
+
+            @Override
+            protected TextView getCurrentPosition() {
+                return currentPosition;
+            }
+
+            @Override
+            protected ProgressBar getPlaybackProgress() {
+                return playbackProgress;
+            }
         }
 
-        private class WidgetCollectionViewHolder extends RecyclerView.ViewHolder {
-
+        private class WidgetCollectionViewHolder extends SoundlessViewHolder {
             public final CardView cardView;
             public final CheckBox checkBox;
             public final ImageView widgetIcon;

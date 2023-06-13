@@ -206,7 +206,7 @@ public class AppBundleCompiler {
                     ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.sc_id).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
-                    for (Jp library : mDp.builtInLibraryManager.a()) {
+                    for (Jp library : mDp.builtInLibraryManager.getLibraries()) {
                         jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
                     }
 

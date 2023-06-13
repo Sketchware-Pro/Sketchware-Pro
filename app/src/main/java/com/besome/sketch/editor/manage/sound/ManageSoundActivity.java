@@ -1,4 +1,4 @@
-package com.besome.sketch.editor.manage.font;
+package com.besome.sketch.editor.manage.sound;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,60 +19,67 @@ import com.sketchware.remod.R;
 import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
-import a.a.a.Np;
-import a.a.a.St;
-import a.a.a.Zt;
+import a.a.a.Qp;
+import a.a.a.Yv;
 import a.a.a.mB;
-import mod.hey.studios.util.Helper;
+import a.a.a.ow;
+import a.a.a.xB;
 
-public class ManageFontActivity extends BaseAppCompatActivity {
-
+public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
+    private final int TAB_COUNT = 2;
     private String sc_id;
-    private ViewPager pager;
-    private Zt myCollectionFontsFragment;
-    private St thisProjectFontsFragment;
+    private ViewPager viewPager;
+    private ow projectSounds;
+    private Yv collectionSounds;
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
 
     public void f(int i) {
-        pager.setCurrentItem(i);
+        viewPager.setCurrentItem(i);
     }
 
-    public St l() {
-        return thisProjectFontsFragment;
+    public Yv l() {
+        return collectionSounds;
     }
 
-    public Zt m() {
-        return myCollectionFontsFragment;
+    public ow m() {
+        return projectSounds;
     }
 
     @Override
     public void onBackPressed() {
-        if (myCollectionFontsFragment.l) {
-            myCollectionFontsFragment.a(false);
-        } else {
-            k();
-            try {
-                new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
-            } catch (Exception e) {
-                e.printStackTrace();
-                h();
-            }
+        if (projectSounds.k) {
+            projectSounds.a(false);
+            return;
         }
-
+        k();
+        try {
+            projectSounds.f();
+            collectionSounds.d();
+            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
+        } catch (Exception e) {
+            e.printStackTrace();
+            h();
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_font);
-
         if (!super.j()) {
             finish();
         }
-
+        setContentView(R.layout.manage_sound);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_manager_font));
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_sound));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -80,17 +87,17 @@ public class ManageFontActivity extends BaseAppCompatActivity {
                 onBackPressed();
             }
         });
-
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
         } else {
             sc_id = savedInstanceState.getString("sc_id");
         }
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        pager = findViewById(R.id.view_pager);
-        pager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
-        pager.setOffscreenPageLimit(2);
-        tabLayout.setupWithViewPager(pager);
+        viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(TAB_COUNT);
+        viewPager.addOnPageChangeListener(this);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -107,28 +114,38 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private class TabLayoutAdapter extends FragmentPagerAdapter {
-        private final String[] labels = new String[2];
+    @Override
+    public void onPageSelected(int position) {
+        if (position == 0) {
+            collectionSounds.d();
+        } else {
+            projectSounds.f();
+        }
+    }
 
-        public TabLayoutAdapter(FragmentManager fragmentManager) {
+    private class PagerAdapter extends FragmentPagerAdapter {
+        private final String[] titles;
+
+        public PagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project).toUpperCase();
-            labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection).toUpperCase();
+            titles = new String[TAB_COUNT];
+            titles[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            titles[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return TAB_COUNT;
         }
 
         @Override
         @NonNull
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            if (position == 0) {
-                myCollectionFontsFragment = (Zt) fragment;
+        public Object instantiateItem(@NonNull ViewGroup viewGroup, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(viewGroup, position);
+            if (position != 0) {
+                collectionSounds = (Yv) fragment;
             } else {
-                thisProjectFontsFragment = (St) fragment;
+                projectSounds = (ow) fragment;
             }
             return fragment;
         }
@@ -136,23 +153,22 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            if (position == 0) {
-                return new Zt();
-            } else {
-                return new St();
+            if (position != 0) {
+                return new Yv();
             }
+            return new ow();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return labels[position];
+            return titles[position];
         }
     }
 
     private static class SaveAsyncTask extends MA {
-        private final WeakReference<ManageFontActivity> activityWeakReference;
+        private final WeakReference<ManageSoundActivity> activityWeakReference;
 
-        public SaveAsyncTask(ManageFontActivity activity) {
+        public SaveAsyncTask(ManageSoundActivity activity) {
             super(activity);
             activityWeakReference = new WeakReference<>(activity);
             activity.addTask(this);
@@ -164,12 +180,12 @@ public class ManageFontActivity extends BaseAppCompatActivity {
             activity.h();
             activity.setResult(RESULT_OK);
             activity.finish();
-            Np.g().d();
+            Qp.g().d();
         }
 
         @Override
         public void b() {
-            activityWeakReference.get().myCollectionFontsFragment.g();
+            activityWeakReference.get().projectSounds.saveSounds();
         }
 
         @Override

@@ -1,6 +1,6 @@
 package mod.agus.jcoderz.editor.library;
 
-import a.a.a.Kp;
+import a.a.a.BuiltInLibraryManager;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.jbk.build.BuiltInLibraries;
 
@@ -12,40 +12,40 @@ public class ExtLibSelected {
     private ExtLibSelected() {
     }
 
-    public static void addUsedDependencies(ConstVarComponent component, Kp kp) {
+    public static void addUsedDependencies(ConstVarComponent component, BuiltInLibraryManager kp) {
         if (component.isFCMUsed) {
-            kp.a(BuiltInLibraries.FIREBASE_MESSAGING);
+            kp.addLibrary(BuiltInLibraries.FIREBASE_MESSAGING);
         }
         if (component.isOneSignalUsed) {
-            kp.a(BuiltInLibraries.ONESIGNAL);
-            kp.a(BuiltInLibraries.PLAY_SERVICES_GCM);
+            kp.addLibrary(BuiltInLibraries.ONESIGNAL);
+            kp.addLibrary(BuiltInLibraries.PLAY_SERVICES_GCM);
         }
         if (component.isFBAdsUsed) {
-            kp.a(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK);
+            kp.addLibrary(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK);
         }
         if (component.isLottieUsed) {
-            kp.a(BuiltInLibraries.LOTTIE);
+            kp.addLibrary(BuiltInLibraries.LOTTIE);
         }
         if (component.isYoutubePlayerUsed) {
-            kp.a(BuiltInLibraries.YOUTUBE_PLAYER);
+            kp.addLibrary(BuiltInLibraries.YOUTUBE_PLAYER);
         }
         if (component.isCircleImageViewUsed) {
-            kp.a(BuiltInLibraries.CIRCLE_IMAGEVIEW);
+            kp.addLibrary(BuiltInLibraries.CIRCLE_IMAGEVIEW);
         }
         if (component.isFBGoogleUsed) {
-            kp.a(BuiltInLibraries.PLAY_SERVICES_AUTH);
+            kp.addLibrary(BuiltInLibraries.PLAY_SERVICES_AUTH);
         }
         if (component.isOTPViewUsed) {
-            kp.a(BuiltInLibraries.OTPVIEW);
+            kp.addLibrary(BuiltInLibraries.OTPVIEW);
         }
         if (component.isCodeViewUsed) {
-            kp.a(BuiltInLibraries.CODE_VIEW);
+            kp.addLibrary(BuiltInLibraries.CODE_VIEW);
         }
         if (component.isPatternLockViewUsed) {
-            kp.a(BuiltInLibraries.PATTERN_LOCK_VIEW);
+            kp.addLibrary(BuiltInLibraries.PATTERN_LOCK_VIEW);
         }
         if (component.isWaveSideBarUsed) {
-            kp.a(BuiltInLibraries.WAVE_SIDE_BAR);
+            kp.addLibrary(BuiltInLibraries.WAVE_SIDE_BAR);
         }
     }
 }

@@ -5,20 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
     android:background="?colorPrimary"
+    android:contentInsetStart="0dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:contentInsetStart="0dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:titleTextAppearance="@style/ToolbarTextAppearance">
 
-    <RelativeLayout
+    <ImageView
         android:id="@+id/layout_main_logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/img_title_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/top_title_logo" />
-    </RelativeLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/title_sketchware"
+        android:scaleType="fitCenter"
+        android:src="@drawable/top_title_logo" />
 </androidx.appcompat.widget.Toolbar>
