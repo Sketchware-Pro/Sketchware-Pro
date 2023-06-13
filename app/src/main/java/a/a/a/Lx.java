@@ -133,17 +133,16 @@ public class Lx {
             content += "implementation 'com.andrognito:patternlockview:1.0.0'\r\n";
         }
 
-        if (extraMetadata.isWaveSideBarUsed) {
-            //dependency += "implementation 'com.sayuti:lib:3.4.0'\r\n"; not sure which version is used...
+        if (isLibraryNotExcluded(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK, excludedLibraries) && extraMetadata.isFBAdsUsed) {
+            content += "implementation 'com.facebook.android:audience-network-sdk:5.9.0'";
         }
-        if (extraMetadata.isFBAdsUsed) {
-            //dependency += "implementation '\r\n"; i couldnt find its depends
+
+        if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_AUTH, excludedLibraries) && extraMetadata.isFBGoogleUsed) {
+            content += "implementation 'com.google.android.gms:play-services-auth:19.0.0'";
         }
-        if (extraMetadata.isFBGoogleUsed) {
-            //dependency += "implementation '\r\n"; i couldnt find its depends
-        }
-        if (extraMetadata.isFCMUsed) {
-            //dependency += "implementation '\r\n"; i couldnt find its depends
+
+        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_MESSAGING, excludedLibraries) && extraMetadata.isFCMUsed) {
+            content += "implementation 'com.google.firebase:firebase-messaging:19.0.0'";
         }
         return j(content + "}\r\n", false);
     }
