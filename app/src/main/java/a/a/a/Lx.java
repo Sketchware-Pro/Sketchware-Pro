@@ -8,16 +8,14 @@ import com.besome.sketch.beans.ViewBean;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
-import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
+import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
-import mod.hilal.saif.components.ComponentsHandler;
 
 public class Lx {
 
@@ -107,43 +105,43 @@ public class Lx {
 
         ConstVarComponent constVarComponent = metadata.x;
         List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
-        if (shouldAddLib(BuiltInLibraries.CIRCLE_IMAGEVIEW, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.CIRCLE_IMAGEVIEW, excludedLibraries)) {
             if (constVarComponent.isCircleImageViewUsed) {
                 content += "implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.YOUTUBE_PLAYER, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.YOUTUBE_PLAYER, excludedLibraries)) {
             if (constVarComponent.isYoutubePlayerUsed) {
                 content += "implementation 'com.pierfrancescosoffritti:androidyoutubeplayer:10.0.5'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.CODE_VIEW, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.CODE_VIEW, excludedLibraries)) {
             if (constVarComponent.isCodeViewUsed) {
                 content += "implementation 'br.tiagohm:codeview:0.4.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.LOTTIE, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.LOTTIE, excludedLibraries)) {
             if (constVarComponent.isLottieUsed) {
                 content += "implementation 'com.airbnb:lottie:3.4.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.OTPVIEW, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.OTPVIEW, excludedLibraries)) {
             if (constVarComponent.isOTPViewUsed) {
                 content += "implementation 'affan.ahmad:otp:0.1.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.ONESIGNAL, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.ONESIGNAL, excludedLibraries)) {
             if (constVarComponent.isOneSignalUsed) {
                 content += "implementation 'com.onesignal:OneSignal:3.14.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.PATTERN_LOCK_VIEW, metadata.sc_id, excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries)) {
             if (constVarComponent.isPatternLockViewUsed) {
                 content += "implementation 'com.andrognito:patternlockview:1.0.0'\r\n";
             }
@@ -164,17 +162,9 @@ public class Lx {
         return j(content + "}\r\n", false);
     }
 
-    public static boolean shouldAddLib(String libraryName, String sc_id, List<BuiltInLibraries.BuiltInLibrary> excludedLibraries) {
-        Optional<BuiltInLibraries.BuiltInLibrary> library = BuiltInLibraries.BuiltInLibrary.ofName(libraryName);
-        if (!excludedLibraries.contains(library.get())) {
-            return true;
-        } else {
-            if (ExcludeBuiltInLibrariesActivity.isExcludingEnabled(sc_id)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
+    private static boolean shouldAddLib(String libraryName, List<BuiltInLibraries.BuiltInLibrary> excludedLibraries) {
+        var library = BuiltInLibraries.BuiltInLibrary.ofName(libraryName);
+        return library.isPresent() && !excludedLibraries.contains(library.get());
     }
 
     /**
