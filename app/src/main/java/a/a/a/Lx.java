@@ -107,43 +107,43 @@ public class Lx {
         
         ConstVarComponent constVarComponent = metadata.x;
         List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
-        if (shouldAddLib(BuiltInLibraries.CIRCLE_IMAGEVIEW,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.CIRCLE_IMAGEVIEW, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isCircleImageViewUsed) {
                 content += "implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n";
             }
         }
         
-        if (shouldAddLib(BuiltInLibraries.YOUTUBE_PLAYER,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.YOUTUBE_PLAYER, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isYoutubePlayerUsed) {
                 content += "implementation 'com.pierfrancescosoffritti:androidyoutubeplayer:10.0.5'\r\n";
             }
         }
         
-        if (shouldAddLib(BuiltInLibraries.CODE_VIEW,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.CODE_VIEW, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isCodeViewUsed) {
                 content += "implementation 'br.tiagohm:codeview:0.4.0'\r\n";
             }
         }
         
-        if (shouldAddLib(BuiltInLibraries.LOTTIE,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.LOTTIE, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isLottieUsed) {
                 content += "implementation 'com.airbnb:lottie:3.4.0'\r\n";
             }
         }
         
-        if (shouldAddLib(BuiltInLibraries.OTPVIEW,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.OTPVIEW, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isOTPViewUsed) {
                 content += "implementation 'affan.ahmad:otp:0.1.0'\r\n";
             }
         }
         
-        if (shouldAddLib(BuiltInLibraries.ONESIGNAL,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.ONESIGNAL, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isOneSignalUsed) {
                 content += "implementation 'com.onesignal:OneSignal:3.14.0'\r\n";
             }
         }
         
-        if (shouldAddLib(BuiltInLibraries.PATTERN_LOCK_VIEW,metadata.sc_id,excludedLibraries)) {
+        if (shouldAddLib(BuiltInLibraries.PATTERN_LOCK_VIEW, metadata.sc_id,excludedLibraries)) {
             if (constVarComponent.isPatternLockViewUsed) {
                 content += "implementation 'com.andrognito:patternlockview:1.0.0'\r\n";
             }
