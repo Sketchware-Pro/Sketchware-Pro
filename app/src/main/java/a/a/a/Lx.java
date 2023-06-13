@@ -105,43 +105,43 @@ public class Lx {
 
         ConstVarComponent constVarComponent = metadata.x;
         List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
-        if (shouldAddLib(BuiltInLibraries.CIRCLE_IMAGEVIEW, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.CIRCLE_IMAGEVIEW, excludedLibraries)) {
             if (constVarComponent.isCircleImageViewUsed) {
                 content += "implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.YOUTUBE_PLAYER, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.YOUTUBE_PLAYER, excludedLibraries)) {
             if (constVarComponent.isYoutubePlayerUsed) {
                 content += "implementation 'com.pierfrancescosoffritti:androidyoutubeplayer:10.0.5'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.CODE_VIEW, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.CODE_VIEW, excludedLibraries)) {
             if (constVarComponent.isCodeViewUsed) {
                 content += "implementation 'br.tiagohm:codeview:0.4.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.LOTTIE, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.LOTTIE, excludedLibraries)) {
             if (constVarComponent.isLottieUsed) {
                 content += "implementation 'com.airbnb:lottie:3.4.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.OTPVIEW, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.OTPVIEW, excludedLibraries)) {
             if (constVarComponent.isOTPViewUsed) {
                 content += "implementation 'affan.ahmad:otp:0.1.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.ONESIGNAL, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.ONESIGNAL, excludedLibraries)) {
             if (constVarComponent.isOneSignalUsed) {
                 content += "implementation 'com.onesignal:OneSignal:3.14.0'\r\n";
             }
         }
 
-        if (shouldAddLib(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries)) {
+        if (isLibraryNotExcluded(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries)) {
             if (constVarComponent.isPatternLockViewUsed) {
                 content += "implementation 'com.andrognito:patternlockview:1.0.0'\r\n";
             }
@@ -162,7 +162,7 @@ public class Lx {
         return j(content + "}\r\n", false);
     }
 
-    private static boolean shouldAddLib(String libraryName, List<BuiltInLibraries.BuiltInLibrary> excludedLibraries) {
+    private static boolean isLibraryNotExcluded(String libraryName, List<BuiltInLibraries.BuiltInLibrary> excludedLibraries) {
         var library = BuiltInLibraries.BuiltInLibrary.ofName(libraryName);
         return library.isPresent() && !excludedLibraries.contains(library.get());
     }
