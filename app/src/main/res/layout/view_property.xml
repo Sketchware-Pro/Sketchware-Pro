@@ -1,16 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:background="@drawable/layout_rounded_border_lightblue" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="40.0dip">
-        <Spinner android:id="@id/spn_widget" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:spinnerMode="dropdown" android:layout_marginStart="8.0dip" android:backgroundTint="#ffffffff" />
-        <ImageView android:id="@id/img_save" android:layout_width="32.0dip" android:layout_height="32.0dip" android:src="@drawable/save_white_48" android:contentDescription="@null" android:layout_marginEnd="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/layout_rounded_border_lightblue"
+        android:gravity="center_vertical"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp">
+
+        <Spinner
+            android:id="@+id/spn_widget"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#ffffffff"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/img_save"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/save_white_48" />
     </LinearLayout>
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout_property_group" android:background="#fff6f6f6" android:paddingTop="2.0dip" android:layout_width="fill_parent" android:layout_height="32.0dip" android:paddingStart="4.0dip" />
-    <RelativeLayout android:orientation="horizontal" android:id="@id/property_layout" android:background="#ffeeeeee" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <com.besome.sketch.lib.ui.CustomHorizontalScrollView android:id="@id/hcv_property" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true">
-            <LinearLayout android:orientation="horizontal" android:id="@id/property_contents" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+    <LinearLayout
+        android:id="@+id/layout_property_group"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="#fff6f6f6"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="2dp" />
+
+    <RelativeLayout
+        android:id="@+id/property_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffeeeeee"
+        android:orientation="horizontal">
+
+        <com.besome.sketch.lib.ui.CustomHorizontalScrollView
+            android:id="@+id/hcv_property"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/property_contents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
         </com.besome.sketch.lib.ui.CustomHorizontalScrollView>
-        <LinearLayout android:orientation="horizontal" android:id="@id/layout_property_see_all" android:layout_width="wrap_content" android:layout_height="82.0dip" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+
+        <LinearLayout
+            android:id="@+id/layout_property_see_all"
+            android:layout_width="wrap_content"
+            android:layout_height="82dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" />
     </RelativeLayout>
-    <com.besome.sketch.editor.view.ViewEvents android:id="@id/view_event" android:layout_width="fill_parent" android:layout_height="82.0dip" />
+
+    <com.besome.sketch.editor.view.ViewEvents
+        android:id="@+id/view_event"
+        android:layout_width="match_parent"
+        android:layout_height="82dp" />
 </LinearLayout>

@@ -12,14 +12,15 @@ import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 /**
  * A class to keep track of a project's built-in libraries.
  */
-public class Kp {
+ 
+public class BuiltInLibraryManager {
 
     private final ArrayList<String> libraryNames = new ArrayList<>();
     private final ArrayList<Jp> libraries = new ArrayList<>();
     private final List<BuiltInLibraries.BuiltInLibrary> excludedLibraries;
 
-    public Kp(String sc_id) {
-        excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(sc_id);
+    public BuiltInLibraryManager(String projectId) {
+        excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(projectId);
     }
 
     /**
@@ -29,7 +30,7 @@ public class Kp {
      *
      * @param libraryName The built-in library's name, e.g. material-1.0.0
      */
-    public void a(String libraryName) {
+    public void addLibrary(String libraryName) {
         Optional<BuiltInLibraries.BuiltInLibrary> library = BuiltInLibraries.BuiltInLibrary.ofName(libraryName);
         //noinspection SimplifyOptionalCallChains because #isEmpty() isn't available on Android.
         if (!library.isPresent() || !excludedLibraries.contains(library.get())) {
@@ -47,15 +48,15 @@ public class Kp {
     }
 
     private void addDependencies(String libraryName) {
-        for (String libraryDependency : qq.a(libraryName)) {
-            a(libraryDependency);
+        for (String libraryDependency : BuiltInLibraryUtils.getKnownDependencies(libraryName)) {
+            addLibrary(libraryDependency);
         }
     }
 
     /**
-     * @return {@link Kp#libraries}
+     * @return {@link BuiltInLibraryManager#libraries}
      */
-    public ArrayList<Jp> a() {
+    public ArrayList<Jp> getLibraries() {
         return libraries;
     }
 }
