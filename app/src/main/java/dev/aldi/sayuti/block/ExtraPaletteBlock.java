@@ -65,7 +65,13 @@ public class ExtraPaletteBlock {
             }
         }
         if (eventName.equals("onBindCustomView")) {
-            String customView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
+            var eC = jC.a(sc_id);
+            var view = eC.c(xmlName, logicEditor.C);
+            if (view == null) {
+                // in case the View's in a Drawer
+                view = eC.c("_drawer_" + xmlName, logicEditor.C);
+            }
+            String customView = view.customView;
             if (customView != null && customView.length() > 0) {
                 for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
                     if (viewBean.getClassInfo().a(str)) {
