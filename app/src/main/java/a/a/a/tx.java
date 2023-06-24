@@ -12,13 +12,18 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import androidx.core.content.FileProvider;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import mod.hey.studios.util.Helper;
 
 public class tx extends RelativeLayout implements View.OnClickListener {
     public String a;
@@ -192,7 +197,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             } else {
                 a2 = a(next, true);
             }
-            a2.setOnClickListener(new px(this));
+            a2.setOnClickListener(v -> ((RadioButton) i.getChildAt(j.indexOfChild(v))).setChecked(true));
             this.j.addView(a2);
         }
         if (radioButton == null) {
@@ -200,9 +205,25 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             radioButton.setChecked(true);
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getContext(), 2131625035), new qx(this, aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new rx(this, aBVar));
-        aBVar.setOnShowListener(new sx(this, scrollView, radioButton));
+        aBVar.b(xB.b().a(getContext(), 2131625035), v -> {
+            int childCount = i.getChildCount();
+            int i = 0;
+            while (i < childCount) {
+                RadioButton child = (RadioButton) tx.this.i.getChildAt(i);
+                if (child.isChecked()) {
+                    setValue(child.getTag().toString());
+                    if (n != null) {
+                        n.a(b, c);
+                    }
+                } else {
+                    i++;
+                }
+            }
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        RadioButton finalRadioButton = radioButton;
+        aBVar.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
         aBVar.show();
     }
 
