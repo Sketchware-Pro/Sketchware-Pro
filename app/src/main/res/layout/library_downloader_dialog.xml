@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:focusable="false"
             android:singleLine="true"
-            android:text="Write lib dependency"
+            android:text="Write dependency"
             android:textColor="#ff296cf7"
             android:textSize="16sp" />
     </LinearLayout>
@@ -42,7 +42,7 @@
         <ProgressBar
             android:id="@id/progressbar1"
             style="?android:progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -81,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusable="false"
-            android:gravity="center|left|top"
             android:paddingTop="2dp"
             android:paddingBottom="10dp"
             android:text="You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately."
@@ -98,9 +97,9 @@
 
         <LinearLayout
             android:id="@id/linear8"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginHorizontal="2dp"
             android:layout_weight="1"
             android:background="#ff296cf7"
             android:gravity="center"
@@ -111,71 +110,10 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:singleLine="true"
-                android:text="    Start    "
+                android:text="Start"
                 android:textColor="#ffffffff"
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@id/linear9"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="  Pause  "
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@id/linear10"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="Resume"
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@id/linear11"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="  Cancel  "
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
