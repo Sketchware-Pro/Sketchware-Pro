@@ -2511,7 +2511,7 @@ public class BlocksHandler {
         if (showAll() || isListStrUsed) {
             logicEditorActivity.a(" ", "sortList");
         }
-        if (showAll() || isListMapUsed || eventName.equals("onBindCustomView")) {
+        if (showAll() || isListMapUsed || inOnBindCustomViewEvent) {
             logicEditorActivity.a("List Map", 0xff555555);
             logicEditorActivity.a("b", "containListMap");
             logicEditorActivity.a("s", "getAtListMap");
