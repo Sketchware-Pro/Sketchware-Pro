@@ -73,27 +73,17 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
             this.e.setText(xB.b().a(getResources(), identifier));
-            String str2 = this.b;
-            char c = 65535;
-            int hashCode = str2.hashCode();
-            if (hashCode != -1949646187) {
-                if (hashCode == -1545963919 && str2.equals("property_image")) {
-                    c = 0;
-                }
-            } else if (str2.equals("property_background_resource")) {
-                c = 1;
-            }
-            if (c == 0) {
-                this.m = R.drawable.ic_picture_48dp;
-            } else if (c == 1) {
-                this.m = R.drawable.variation_48;
+            if ("property_image".equals(b)) {
+                m = R.drawable.ic_picture_48dp;
+            } else if ("property_background_resource".equals(b)) {
+                m = R.drawable.variation_48;
             }
             if (this.l.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(this.m);
                 ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
-                return;
+            } else {
+                this.h.setImageResource(this.m);
             }
-            this.h.setImageResource(this.m);
         }
     }
 
