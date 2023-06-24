@@ -3,19 +3,25 @@ package dev.aldi.sayuti.editor.manage;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -24,13 +30,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.project.library.LibraryDownloader;
 import mod.hey.studios.util.Helper;
+import mod.pranav.dependency.resolver.DependencyResolver;
 
-public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener, LibraryDownloader.OnCompleteListener {
+public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener {
 
     private boolean notAssociatedWithProject = false;
     private ListView listview;
@@ -54,22 +61,83 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        new AlertDialog.Builder(this)
-                .setTitle("Dexer")
-                .setMessage("Would you like to use Dx or D8 to dex the library?\n" +
-                        "D8 supports Java 8, whereas Dx does not. Limitation: D8 only works on Android 8 and above.")
-                .setPositiveButton("D8", (dialog, which) -> new LibraryDownloader(this,
-                        true).showDialog(this))
-                .setNegativeButton("Dx", (dialog, which) -> new LibraryDownloader(this,
-                        false).showDialog(this))
-                .setNeutralButton("Cancel", null)
-                .show();
+        var view = getLayoutInflater().inflate(R.layout.library_downloader_dialog, null);
+
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(view)
+                .create();
+        EditText editText = view.findViewById(R.id.edittext1);
+        var linear = view.findViewById(R.id.linear8);
+        TextView text = view.findViewById(R.id.textview3);
+        linear.setOnClickListener(v1 -> {
+            String url = editText.getText().toString();
+            if (url.isEmpty()) {
+                SketchwareUtil.toastError("Please enter a URL");
+                return;
+            }
+
+            var parts = url.split(":");
+            if (parts.length != 3) {
+                SketchwareUtil.toastError("Invalid URL");
+                return;
+            }
+            var group = parts[0];
+            var artifact = parts[1];
+            var version = parts[2];
+            var resolver = new DependencyResolver(group, artifact, version);
+            Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
+                @Override
+                public void invalidPackaging(@NonNull String dep) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText("Invalid packaging for dependency " + dep));
+                }
+
+                @Override
+                public void dexing(@NonNull String dep) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText("Dexing dependency " + dep));
+                }
+
+                @Override
+                public void log(@NonNull String msg) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText(msg));
+                }
+
+                @Override
+                public void downloading(@NonNull String dep) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText("Downloading dependency " + dep));
+                }
+
+                @Override
+                public void startResolving(@NonNull String dep) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText("Resolving dependency " + dep));
+                }
+
+                @Override
+                public void onTaskCompleted() {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        dialog.dismiss();
+                        loadFiles();
+                    });
+                }
+
+                @Override
+                public void onDependencyNotFound(@NonNull String dep) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText("Dependency " + dep + " not found"));
+                }
+
+                @Override
+                public void onDependencyResolveFailed(@NonNull Exception e) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText(e.getMessage()));
+                }
+
+                @Override
+                public void onDependencyResolved(@NonNull String dep) {
+                    new Handler(Looper.getMainLooper()).post(() -> text.setText("Dependency " + dep + " resolved"));
+                }
+            }));
+        });
+        dialog.show();
     }
 
-    @Override
-    public void onComplete() {
-        loadFiles();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
