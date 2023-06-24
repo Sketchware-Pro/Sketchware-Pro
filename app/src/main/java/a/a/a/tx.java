@@ -2,9 +2,12 @@ package a.a.a;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -18,6 +21,7 @@ import androidx.core.content.FileProvider;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,13 +84,13 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                 c = 1;
             }
             if (c == 0) {
-                this.m = 2131165811;
+                this.m = R.drawable.ic_picture_48dp;
             } else if (c == 1) {
-                this.m = 2131166227;
+                this.m = R.drawable.variation_48;
             }
-            if (this.l.getVisibility() == 0) {
-                ((ImageView) findViewById(2131231151)).setImageResource(this.m);
-                ((TextView) findViewById(2131232195)).setText(xB.b().a(getContext(), identifier));
+            if (this.l.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(this.m);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             this.h.setImageResource(this.m);
@@ -99,12 +103,12 @@ public class tx extends RelativeLayout implements View.OnClickListener {
 
     public void setOrientationItem(int i) {
         if (i == 0) {
-            this.k.setVisibility(8);
-            this.l.setVisibility(0);
+            this.k.setVisibility(GONE);
+            this.l.setVisibility(VISIBLE);
             return;
         }
-        this.k.setVisibility(0);
-        this.l.setVisibility(8);
+        this.k.setVisibility(VISIBLE);
+        this.l.setVisibility(GONE);
     }
 
     public void setValue(String str) {
@@ -127,7 +131,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(2131165831).into(this.g);
+                    Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
                     return;
                 }
                 this.g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
@@ -137,17 +141,17 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         this.c = str;
         this.f.setText("NONE");
         this.g.setImageDrawable(null);
-        this.g.setBackgroundColor(16777215);
+        this.g.setBackgroundColor(Color.WHITE);
     }
 
     public final void a(Context context, boolean z, boolean z2) {
-        wB.a(context, this, 2131427647);
-        this.e = (TextView) findViewById(2131232055);
-        this.f = (TextView) findViewById(2131232270);
-        this.g = (ImageView) findViewById(2131232321);
-        this.h = (ImageView) findViewById(2131231155);
-        this.k = findViewById(2131231626);
-        this.l = findViewById(2131231628);
+        wB.a(context, this, R.layout.property_resource_item);
+        this.e = (TextView) findViewById(R.id.tv_name);
+        this.f = (TextView) findViewById(R.id.tv_value);
+        this.g = (ImageView) findViewById(R.id.view_image);
+        this.h = (ImageView) findViewById(R.id.img_left_icon);
+        this.k = findViewById(R.id.property_item);
+        this.l = findViewById(R.id.property_menu_item);
         this.d = z2;
         if (z) {
             setOnClickListener(this);
@@ -160,10 +164,10 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         aB aBVar = new aB((Activity) getContext());
         aBVar.b(this.e.getText().toString());
         aBVar.a(this.m);
-        View a3 = wB.a(getContext(), 2131427641);
-        ScrollView scrollView = (ScrollView) a3.findViewById(2131231692);
-        this.i = (RadioGroup) a3.findViewById(2131231667);
-        this.j = (LinearLayout) a3.findViewById(2131230932);
+        View a3 = wB.a(getContext(), R.layout.property_popup_selector_color);
+        ScrollView scrollView = (ScrollView) a3.findViewById(R.id.scroll_view);
+        this.i = (RadioGroup) a3.findViewById(R.id.rg);
+        this.j = (LinearLayout) a3.findViewById(R.id.content);
         ArrayList<String> m = jC.d(this.a).m();
         if (xq.a(this.a) || xq.b(this.a)) {
             if (this.d) {
@@ -205,7 +209,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             radioButton.setChecked(true);
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getContext(), 2131625035), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             int childCount = i.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -221,7 +225,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         RadioButton finalRadioButton = radioButton;
         aBVar.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
         aBVar.show();
@@ -231,8 +235,10 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText("");
         radioButton.setTag(str);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-2, (int) (wB.a(getContext(), 1.0f) * 60.0f));
-        radioButton.setGravity(19);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                (int) (wB.a(getContext(), 1.0f) * 60.0f));
+        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
     }
@@ -241,11 +247,15 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         Uri fromFile;
         float a2 = wB.a(getContext(), 1.0f);
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) (60.0f * a2)));
-        linearLayout.setGravity(19);
-        linearLayout.setOrientation(0);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) (60.0f * a2)));
+        linearLayout.setGravity(Gravity.CENTER | Gravity.LEFT);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         TextView textView = new TextView(getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, -2);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
         layoutParams.rightMargin = (int) (8.0f * a2);
         textView.setLayoutParams(layoutParams);
@@ -267,14 +277,14 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(2131165831).into(imageView);
+                    Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                 } else {
                     imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 }
             }
-            imageView.setBackgroundResource(2131165345);
+            imageView.setBackgroundResource(R.drawable.bg_outline);
         } else {
-            imageView.setBackgroundResource(2131165345);
+            imageView.setBackgroundResource(R.drawable.bg_outline);
         }
         linearLayout.addView(imageView);
         return linearLayout;
