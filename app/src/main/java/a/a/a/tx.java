@@ -200,17 +200,14 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         }
         aBVar.a(a3);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
-            int childCount = i.getChildCount();
-            int i = 0;
-            while (i < childCount) {
+            for (int i = 0; i < tx.this.i.getChildCount(); i++) {
                 RadioButton child = (RadioButton) tx.this.i.getChildAt(i);
                 if (child.isChecked()) {
                     setValue(child.getTag().toString());
                     if (n != null) {
                         n.a(b, c);
                     }
-                } else {
-                    i++;
+                    break;
                 }
             }
             aBVar.dismiss();
