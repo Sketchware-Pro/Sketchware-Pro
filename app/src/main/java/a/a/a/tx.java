@@ -118,7 +118,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                 if (file.exists()) {
                     if (Build.VERSION.SDK_INT >= 24) {
                         Context context = getContext();
-                        fromFile = FileProvider.a(context, getContext().getPackageName() + ".provider", file);
+                        fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
@@ -242,7 +242,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                 if (file.exists()) {
                     if (Build.VERSION.SDK_INT >= 24) {
                         Context context = getContext();
-                        fromFile = FileProvider.a(context, getContext().getPackageName() + ".provider", file);
+                        fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
