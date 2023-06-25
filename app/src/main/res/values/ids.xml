@@ -1542,7 +1542,6 @@
     <item type="id" name="text_cancel" />
     <item type="id" name="text_save" />
     <item type="id" name="rename" />
-    <item type="id" name="vscroll1" />
     <item type="id" name="tv_title_select_mb_type" />
     <item type="id" name="radio_mb_type" />
     <item type="id" name="radio_mb_type_void" />
@@ -1651,7 +1650,6 @@
     <item type="id" name="select_type" />
     <item type="id" name="type" />
     <item type="id" name="type_name" />
-    <item type="id" name="hscroll1" />
     <item type="id" name="spec_2lay" />
     <item type="id" name="colour_lay" />
     <item type="id" name="colour_selector" />
