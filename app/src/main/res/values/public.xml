@@ -3993,58 +3993,8 @@
     <public name="text_cancel" id="0x7f080678" type="id" />
     <public name="text_save" id="0x7f080679" type="id" />
     <public name="rename" id="0x7f08067a" type="id" />
-    <public name="header_layout" id="0x7f08067b" type="id" />
-    <public name="header_content_layout" id="0x7f08067c" type="id" />
-    <public name="slogan" id="0x7f08067d" type="id" />
-    <public name="version" id="0x7f08067e" type="id" />
     <public name="vscroll1" id="0x7f08067f" type="id" />
-    <public name="linear1" id="0x7f080680" type="id" />
-    <public name="linear4" id="0x7f080681" type="id" />
     <public name="textview3" id="0x7f080682" type="id" />
-    <public name="item_website" id="0x7f080683" type="id" />
-    <public name="imageview2" id="0x7f080684" type="id" />
-    <public name="linear5" id="0x7f080685" type="id" />
-    <public name="textview5" id="0x7f080686" type="id" />
-    <public name="textview4" id="0x7f080687" type="id" />
-    <public name="item_indosw" id="0x7f080688" type="id" />
-    <public name="imageview3" id="0x7f080689" type="id" />
-    <public name="linear7" id="0x7f08068a" type="id" />
-    <public name="textview6" id="0x7f08068b" type="id" />
-    <public name="textview7" id="0x7f08068c" type="id" />
-    <public name="item_whatsapp" id="0x7f08068d" type="id" />
-    <public name="imageview4" id="0x7f08068e" type="id" />
-    <public name="linear9" id="0x7f08068f" type="id" />
-    <public name="textview8" id="0x7f080690" type="id" />
-    <public name="textview9" id="0x7f080691" type="id" />
-    <public name="linear10" id="0x7f080692" type="id" />
-    <public name="textview10" id="0x7f080693" type="id" />
-    <public name="linear11" id="0x7f080694" type="id" />
-    <public name="imageview5" id="0x7f080695" type="id" />
-    <public name="linear12" id="0x7f080696" type="id" />
-    <public name="textview11" id="0x7f080697" type="id" />
-    <public name="textview12" id="0x7f080698" type="id" />
-    <public name="linear13" id="0x7f080699" type="id" />
-    <public name="imageview6" id="0x7f08069a" type="id" />
-    <public name="linear14" id="0x7f08069b" type="id" />
-    <public name="textview13" id="0x7f08069c" type="id" />
-    <public name="textview14" id="0x7f08069d" type="id" />
-    <public name="linear15" id="0x7f08069e" type="id" />
-    <public name="imageview7" id="0x7f08069f" type="id" />
-    <public name="linear16" id="0x7f0806a0" type="id" />
-    <public name="textview15" id="0x7f0806a1" type="id" />
-    <public name="textview16" id="0x7f0806a2" type="id" />
-    <public name="linear17" id="0x7f0806a3" type="id" />
-    <public name="imageview8" id="0x7f0806a4" type="id" />
-    <public name="linear18" id="0x7f0806a5" type="id" />
-    <public name="textview17" id="0x7f0806a6" type="id" />
-    <public name="textview18" id="0x7f0806a7" type="id" />
-    <public name="linear21" id="0x7f0806a8" type="id" />
-    <public name="imageview10" id="0x7f0806a9" type="id" />
-    <public name="linear22" id="0x7f0806aa" type="id" />
-    <public name="textview21" id="0x7f0806ab" type="id" />
-    <public name="textview22" id="0x7f0806ac" type="id" />
-    <public name="cv_create" id="0x7f0806ad" type="id" />
-    <public name="cv_load" id="0x7f0806ae" type="id" />
     <public name="tv_title_select_mb_type" id="0x7f0806af" type="id" />
     <public name="radio_mb_type" id="0x7f0806b0" type="id" />
     <public name="radio_mb_type_void" id="0x7f0806b1" type="id" />
@@ -4124,8 +4074,6 @@
     <public name="add_view_type_selector_layout" id="0x7f0806fb" type="id" />
     <public name="project_config_pref_layout" id="0x7f0806fc" type="id" />
     <public name="dialog_create_new_file_layoutTitle" id="0x7f0806fd" type="id" />
-    <public name="linear3" id="0x7f0806fe" type="id" />
-    <public name="progressbar1" id="0x7f0806ff" type="id" />
     <public name="linear8" id="0x7f080701" type="id" />
     <public name="edittext1" id="0x7f080702" type="id" />
     <public name="background" id="0x7f080703" type="id" />
