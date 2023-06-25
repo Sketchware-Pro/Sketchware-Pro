@@ -3981,8 +3981,6 @@
     <public name="viewcodeLinearLayout1" id="0x7f08066d" type="id" />
     <public name="text_title" id="0x7f08066e" type="id" />
     <public name="text_content" id="0x7f08066f" type="id" />
-    <public name="image_file" id="0x7f080670" type="id" />
-    <public name="name_file" id="0x7f080671" type="id" />
     <public name="checkbox_content" id="0x7f080672" type="id" />
     <public name="edit" id="0x7f080673" type="id" />
     <public name="delete" id="0x7f080674" type="id" />
@@ -4575,7 +4573,6 @@
     <public name="manage_file" id="0x7f0b01c9" type="layout" />
     <public name="manage_permission" id="0x7f0b01ca" type="layout" />
     <public name="view_code" id="0x7f0b01cb" type="layout" />
-    <public name="view_item_file" id="0x7f0b01cc" type="layout" />
     <public name="view_item_permission" id="0x7f0b01cd" type="layout" />
     <public name="dialog_input_layout" id="0x7f0b01ce" type="layout" />
     <public name="about" id="0x7f0b01cf" type="layout" />
