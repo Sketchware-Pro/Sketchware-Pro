@@ -1,12 +1,14 @@
 package mod.pranav.dependency.resolver
 
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import com.android.tools.r8.CompilationMode
 import com.android.tools.r8.D8
 import com.android.tools.r8.D8Command
 import com.android.tools.r8.OutputMode
 import com.google.gson.Gson
+import mod.agus.jcoderz.dx.command.dexer.Main
 import mod.agus.jcoderz.lib.FileUtil
 import mod.hey.studios.util.Helper
 import org.cosmic.ide.dependency.resolver.api.Artifact
@@ -17,18 +19,19 @@ import java.io.File
 import java.nio.file.Path
 import java.util.regex.Pattern
 import java.util.zip.ZipFile
+import kotlin.io.path.absolutePathString
 
-class DependencyResolver(val groupId: String, val artifactId: String, val version: String) {
+class DependencyResolver(private val groupId: String, private val artifactId: String, private val version: String) {
 
     // now, you might be wondering, where is the option for enabling/disabling D8/R8?
-    // well, that's because its not. D8/R8 will be enabled by default, and there is no way to disable it. Good luck with that.
+    // well, that's because its not. D8/R8 will be enabled by default, and there is no way to disable it. Good luck with that. lmao
     private val downloadPath: String = FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
 
-    val repoFile = File(
+    private val repoFile = File(
         Environment.getExternalStorageDirectory(),
         ".sketchware" + File.separator + "libs" + File.separator + "repositories.json"
     )
-    private val DEFAULT_REPOSITORIES_FILE_CONTENT =
+    private val default_repos =
         "[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]"
 
 
@@ -36,7 +39,7 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
         if (!repoFile.exists()) {
             repoFile.parentFile?.mkdirs()
             repoFile.createNewFile()
-            repoFile.writeText(DEFAULT_REPOSITORIES_FILE_CONTENT)
+            repoFile.writeText(default_repos)
         }
        Gson().fromJson(repoFile.readText(), Helper.TYPE_MAP_LIST).forEach {
            val url: String? = it["url"] as String?
@@ -63,7 +66,7 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
         fun onDependencyResolved(dep: String) {}
         fun onDependencyResolveFailed(e: Exception) {}
         fun onDependencyNotFound(dep: String) {}
-        fun onTaskCompleted() {}
+        fun onTaskCompleted(deps: List<String>) {}
         fun startResolving(dep: String) {}
         fun downloading(dep: String) {}
         fun dexing(dep: String) {}
@@ -76,17 +79,19 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
         return "$groupId:$artifactId:$version"
     }
 
-    fun resolveDependency(callback: DependencyResolverCallback) {
+    fun resolveDependency(callback: DependencyResolverCallback)  {
         System.setOut(object : java.io.PrintStream(System.out) {
             override fun println(x: String) {
                 callback.log(x)
             }
         })
+        // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
         val dependencies = mutableListOf<Artifact>()
         callback.startResolving("$groupId:$artifactId:$version")
         val dependency = getArtifact(groupId, artifactId, version)
 
         callback.onDependencyResolved(dependency.toStr())
+        callback.log("Resolving sub-dependencies for ${dependency.toStr()}...")
         dependency.resolve().forEach { artifact ->
             if (artifact.version.isEmpty() || artifact.repository == null) {
                 callback.onDependencyNotFound(artifact.toStr())
@@ -101,20 +106,35 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
 
         latestDeps.forEach { artifact ->
             callback.startResolving(artifact.toStr())
+            // set the packaging type
+            artifact.getPOM()!!.bufferedReader().use {
+                it.forEachLine { line ->
+                    if (line.contains("<packaging>")) {
+                        artifact.extension = line.substringAfter("<packaging>").substringBefore("</packaging>")
+                    }
+                }
+            }
             val ext = artifact.extension
             if (ext != "jar" && ext != "aar") {
                 callback.invalidPackaging(artifact.toStr())
                 println("Invalid packaging ${artifact.toStr()}")
                 return@forEach
             }
-            val path = File("$downloadPath/${artifact.artifactId}-${artifact.version}/classes.${artifact.extension}")
-            path.deleteRecursively()
+            val path = File("$downloadPath/${artifact.artifactId}-v${artifact.version}/classes.${artifact.extension}")
+            if (path.exists()) {
+                callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
+                return@forEach
+            }
             path.parentFile!!.mkdirs()
             callback.downloading(artifact.toStr())
-            artifact.downloadTo(path)
+            try {
+                artifact.downloadTo(path)
+            } catch (e: Exception) {
+                callback.onDependencyResolveFailed(e)
+                return@forEach
+            }
             if (ext == "aar") {
                 callback.log("Unzipping ${artifact.toStr()}")
-                println("Unzipping ${artifact.toStr()}")
                 unzip(path)
                 path.delete()
                 val packageName = findPackageName(path.parentFile!!.absolutePath, artifact.groupId)
@@ -123,9 +143,8 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
             callback.dexing(artifact.toStr())
             compileJar(path.parentFile!!.resolve("classes.jar").toPath())
             callback.onDependencyResolved(artifact.toStr())
-            println("Download ${artifact.toStr()}")
         }
-        callback.onTaskCompleted()
+        callback.onTaskCompleted(latestDeps.map { "${it.artifactId}-v${it.version}" })
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
@@ -165,8 +184,9 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
         }
     }
 
-    fun compileJar(jarFile: Path) {
-        D8.run(
+    private fun compileJar(jarFile: Path) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            D8.run(
                 D8Command.builder()
                     .setIntermediate(true)
                     .setMode(CompilationMode.RELEASE)
@@ -174,5 +194,17 @@ class DependencyResolver(val groupId: String, val artifactId: String, val versio
                     .setOutput(jarFile.parent, OutputMode.DexIndexed)
                     .build()
             )
+            return
+        }
+        Main.clearInternTables()
+
+        Main.main(
+            arrayOf(
+                "--debug",
+                "--verbose",
+                "--multi-dex",
+                "--output=${jarFile.parent}",
+                jarFile.absolutePathString()
+            ))
     }
 }
