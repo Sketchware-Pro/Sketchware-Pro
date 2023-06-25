@@ -3976,7 +3976,6 @@
     <public name="list_file" id="0x7f080667" type="id" />
     <public name="fab_plus" id="0x7f080668" type="id" />
     <public name="text_info" id="0x7f080669" type="id" />
-    <public name="managepermissionLinearLayout1" id="0x7f08066a" type="id" />
     <public name="search_perm" id="0x7f08066b" type="id" />
     <public name="main_content" id="0x7f08066c" type="id" />
     <public name="viewcodeLinearLayout1" id="0x7f08066d" type="id" />
