@@ -530,8 +530,6 @@
     <item type="id" name="language_uploadnoti_version" />
     <item type="id" name="largeLabel" />
     <item type="id" name="layout" />
-    <item type="id" name="layout1" />
-    <item type="id" name="layout2" />
     <item type="id" name="layout_adchoice" />
     <item type="id" name="layout_admin" />
     <item type="id" name="layout_ads" />
@@ -872,8 +870,6 @@
     <item type="id" name="read_more" />
     <item type="id" name="recycler_list" />
     <item type="id" name="recycler_view" />
-    <item type="id" name="recyclerview1" />
-    <item type="id" name="recyclerview2" />
     <item type="id" name="remove_area" />
     <item type="id" name="report_project" />
     <item type="id" name="rg" />
