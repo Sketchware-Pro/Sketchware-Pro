@@ -159,7 +159,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         setContentView(R.layout.manage_permission);
 
         listview = findViewById(R.id.main_content);
-        findViewById(R.id.managepermissionLinearLayout1).setVisibility(View.GONE);
+        findViewById(R.id.search_perm).setVisibility(View.GONE);
         initToolbar();
 
         if (getIntent().hasExtra("sc_id")) {
