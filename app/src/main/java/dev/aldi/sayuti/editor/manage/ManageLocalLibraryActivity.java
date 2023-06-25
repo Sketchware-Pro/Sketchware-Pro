@@ -66,9 +66,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
                 .create();
-        EditText editText = view.findViewById(R.id.edittext1);
-        var linear = view.findViewById(R.id.linear8);
-        TextView text = view.findViewById(R.id.textview3);
+        EditText editText = view.findViewById(R.id.ed_input);
+        var linear = view.findViewById(R.id.btn_download);
+        TextView text = view.findViewById(R.id.tv_progress);
         linear.setOnClickListener(v1 -> {
             linear.setVisibility(View.GONE);
             String url = editText.getText().toString();
