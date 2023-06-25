@@ -92,11 +92,10 @@ public class AboutModActivity extends AppCompatActivity {
         ImageView back = findViewById(R.id.img_back);
         root = findViewById(R.id.root);
         trash = findViewById(R.id.trash);
-        //TODO: Rename layout1, layout2, etc. resource IDs to more descriptive names
-        moddersRecyclerContainer = findViewById(R.id.layout1);
-        changelogRecyclerContainer = findViewById(R.id.layout2);
-        moddersRecycler = findViewById(R.id.recyclerview1);
-        changelogRecycler = findViewById(R.id.recyclerview2);
+        moddersRecyclerContainer = findViewById(R.id.modders_container);
+        changelogRecyclerContainer = findViewById(R.id.changelog_container);
+        moddersRecycler = findViewById(R.id.modders);
+        changelogRecycler = findViewById(R.id.changelog);
         loadingTitle = findViewById(R.id.tv_loading);
         loadingDescription = findViewById(R.id.tv_loading_desc);
         requestData = new RequestNetwork(this);

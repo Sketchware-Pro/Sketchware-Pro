@@ -4148,10 +4148,6 @@
     <public name="fab_label" id="0x7f080783" type="id" />
     <public name="loading_view" id="0x7f080784" type="id" />
     <public name="trash" id="0x7f080785" type="id" />
-    <public name="layout1" id="0x7f080786" type="id" />
-    <public name="layout2" id="0x7f080787" type="id" />
-    <public name="recyclerview1" id="0x7f080788" type="id" />
-    <public name="recyclerview2" id="0x7f080789" type="id" />
     <public name="tv_loading_desc" id="0x7f08078a" type="id" />
     <public name="abc_config_activityDefaultDur" id="0x7f090000" type="integer" />
     <public name="abc_config_activityShortDur" id="0x7f090001" type="integer" />
