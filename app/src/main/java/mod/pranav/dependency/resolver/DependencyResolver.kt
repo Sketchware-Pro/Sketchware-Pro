@@ -44,7 +44,6 @@ class DependencyResolver(
     init {
         if (Files.notExists(repositoriesJson)) {
             Files.createDirectories(repositoriesJson.parent)
-            Files.createFile(repositoriesJson)
             repositoriesJson.writeText(DEFAULT_REPOS)
         }
         Gson().fromJson(repositoriesJson.readText(), Helper.TYPE_MAP_LIST).forEach {
