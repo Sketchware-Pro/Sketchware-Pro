@@ -219,7 +219,7 @@ class DependencyResolver(
                 "--verbose",
                 "--multi-dex",
                 "--output=${jarFile.parent}",
-                jarFile.toAbsolutePath().toString()
+                jarFile.toString()
             )
         )
     }
