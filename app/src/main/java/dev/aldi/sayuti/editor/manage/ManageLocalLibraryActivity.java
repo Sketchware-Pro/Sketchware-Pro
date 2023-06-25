@@ -3,10 +3,9 @@ package dev.aldi.sayuti.editor.manage;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
@@ -25,13 +24,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -117,7 +114,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 }
 
                 @Override
-                public void onTaskCompleted(List<String> dependencies) {
+                public void onTaskCompleted(@NonNull List<String> dependencies) {
                     handler.post(() -> {
                         linear.setVisibility(View.VISIBLE);
 
@@ -133,10 +130,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
                 @Override
                 public void onDependencyNotFound(@NonNull String dep) {
-                   handler.post(() -> {
-                       linear.setVisibility(View.VISIBLE);
-                       text.setText("Dependency " + dep + " not found");
-                   });
+                    handler.post(() -> {
+                        linear.setVisibility(View.VISIBLE);
+                        text.setText("Dependency " + dep + " not found");
+                    });
                 }
 
                 @Override
