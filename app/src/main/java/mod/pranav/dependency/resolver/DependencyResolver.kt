@@ -21,46 +21,48 @@ import java.util.regex.Pattern
 import java.util.zip.ZipFile
 import kotlin.io.path.absolutePathString
 
-class DependencyResolver(private val groupId: String, private val artifactId: String, private val version: String) {
+class DependencyResolver(
+    private val groupId: String,
+    private val artifactId: String,
+    private val version: String
+) {
+    companion object {
+        private const val DEFAULT_REPOS =
+            "[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"}]"
+    }
 
-    // now, you might be wondering, where is the option for enabling/disabling D8/R8?
-    // well, that's because its not. D8/R8 will be enabled by default, and there is no way to disable it. Good luck with that. lmao
-    private val downloadPath: String = FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
+    private val downloadPath: String =
+        FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
 
     private val repoFile = File(
         Environment.getExternalStorageDirectory(),
         ".sketchware" + File.separator + "libs" + File.separator + "repositories.json"
     )
-    private val default_repos =
-        """
-            [{"url":"https://repo.hortonworks.com/content/repositories/releases","name":"HortanWorks"},{"url":"https://maven.atlassian.com/content/repositories/atlassian-public","name":"Atlassian"},{"url":"https://jcenter.bintray.com","name":"JCenter"},{"url":"https://oss.sonatype.org/content/repositories/releases","name":"Sonatype"},{"url":"https://repo.spring.io/plugins-release","name":"Spring Plugins"},{"url":"https://repo.spring.io/libs-milestone","name":"Spring Milestone"},{"url":"https://repo.maven.apache.org/maven2","name":"Apache Maven"}]
-            """.trimIndent()
-
 
     init {
         if (!repoFile.exists()) {
             repoFile.parentFile?.mkdirs()
             repoFile.createNewFile()
-            repoFile.writeText(default_repos)
+            repoFile.writeText(DEFAULT_REPOS)
         }
-       Gson().fromJson(repoFile.readText(), Helper.TYPE_MAP_LIST).forEach {
-           val url: String? = it["url"] as String?
-           if (url != null) {
-               repositories.add(object : Repository {
-                   override fun getName(): String {
-                       return it["name"] as String
-                   }
+        Gson().fromJson(repoFile.readText(), Helper.TYPE_MAP_LIST).forEach {
+            val url: String? = it["url"] as String?
+            if (url != null) {
+                repositories.add(object : Repository {
+                    override fun getName(): String {
+                        return it["name"] as String
+                    }
 
-                   override fun getURL(): String {
-                       return if (url.endsWith("/")) {
-                           url.substringBeforeLast("/")
-                       } else {
-                           url
-                       }
-                   }
-               })
-           }
-       }
+                    override fun getURL(): String {
+                        return if (url.endsWith("/")) {
+                            url.substringBeforeLast("/")
+                        } else {
+                            url
+                        }
+                    }
+                })
+            }
+        }
     }
 
     interface DependencyResolverCallback {
@@ -80,7 +82,7 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
         return "$groupId:$artifactId:$version"
     }
 
-    fun resolveDependency(callback: DependencyResolverCallback)  {
+    fun resolveDependency(callback: DependencyResolverCallback) {
         System.setOut(object : java.io.PrintStream(System.out) {
             override fun println(x: String) {
                 callback.log(x)
@@ -107,7 +109,7 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
         dependencies.add(dependency)
         // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
-                dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
+            dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
 
         latestDeps.forEach { artifact ->
             callback.startResolving(artifact.toStr())
@@ -115,7 +117,8 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
             artifact.getPOM()!!.bufferedReader().use {
                 it.forEachLine { line ->
                     if (line.contains("<packaging>")) {
-                        artifact.extension = line.substringAfter("<packaging>").substringBefore("</packaging>")
+                        artifact.extension =
+                            line.substringAfter("<packaging>").substringBefore("</packaging>")
                     }
                 }
             }
@@ -125,7 +128,8 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
                 println("Invalid packaging ${artifact.toStr()}")
                 return@forEach
             }
-            val path = File("$downloadPath/${artifact.artifactId}-v${artifact.version}/classes.${artifact.extension}")
+            val path =
+                File("$downloadPath/${artifact.artifactId}-v${artifact.version}/classes.${artifact.extension}")
             if (path.exists()) {
                 callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
                 return@forEach
@@ -210,6 +214,7 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
                 "--multi-dex",
                 "--output=${jarFile.parent}",
                 jarFile.absolutePathString()
-            ))
+            )
+        )
     }
 }
