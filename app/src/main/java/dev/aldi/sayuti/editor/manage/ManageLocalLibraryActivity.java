@@ -73,6 +73,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         var linear = view.findViewById(R.id.linear8);
         TextView text = view.findViewById(R.id.textview3);
         linear.setOnClickListener(v1 -> {
+            linear.setVisibility(View.GONE);
             String url = editText.getText().toString();
             if (url.isEmpty()) {
                 SketchwareUtil.toastError("Please enter a dependency");
@@ -118,6 +119,8 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 @Override
                 public void onTaskCompleted(List<String> dependencies) {
                     handler.post(() -> {
+                        linear.setVisibility(View.VISIBLE);
+
                         dialog.dismiss();
                         log("Enabling downloaded dependencies");
                         var fileContent = FileUtil.readFile(local_lib_file);
@@ -130,7 +133,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
                 @Override
                 public void onDependencyNotFound(@NonNull String dep) {
-                   handler.post(() -> text.setText("Dependency " + dep + " not found"));
+                   handler.post(() -> {
+                       linear.setVisibility(View.VISIBLE);
+                       text.setText("Dependency " + dep + " not found");
+                   });
                 }
 
                 @Override
