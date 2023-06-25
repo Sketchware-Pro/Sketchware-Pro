@@ -1547,58 +1547,8 @@
     <item type="id" name="text_cancel" />
     <item type="id" name="text_save" />
     <item type="id" name="rename" />
-    <item type="id" name="header_layout" />
-    <item type="id" name="header_content_layout" />
-    <item type="id" name="slogan" />
-    <item type="id" name="version" />
     <item type="id" name="vscroll1" />
-    <item type="id" name="linear1" />
-    <item type="id" name="linear4" />
     <item type="id" name="textview3" />
-    <item type="id" name="item_website" />
-    <item type="id" name="imageview2" />
-    <item type="id" name="linear5" />
-    <item type="id" name="textview5" />
-    <item type="id" name="textview4" />
-    <item type="id" name="item_indosw" />
-    <item type="id" name="imageview3" />
-    <item type="id" name="linear7" />
-    <item type="id" name="textview6" />
-    <item type="id" name="textview7" />
-    <item type="id" name="item_whatsapp" />
-    <item type="id" name="imageview4" />
-    <item type="id" name="linear9" />
-    <item type="id" name="textview8" />
-    <item type="id" name="textview9" />
-    <item type="id" name="linear10" />
-    <item type="id" name="textview10" />
-    <item type="id" name="linear11" />
-    <item type="id" name="imageview5" />
-    <item type="id" name="linear12" />
-    <item type="id" name="textview11" />
-    <item type="id" name="textview12" />
-    <item type="id" name="linear13" />
-    <item type="id" name="imageview6" />
-    <item type="id" name="linear14" />
-    <item type="id" name="textview13" />
-    <item type="id" name="textview14" />
-    <item type="id" name="linear15" />
-    <item type="id" name="imageview7" />
-    <item type="id" name="linear16" />
-    <item type="id" name="textview15" />
-    <item type="id" name="textview16" />
-    <item type="id" name="linear17" />
-    <item type="id" name="imageview8" />
-    <item type="id" name="linear18" />
-    <item type="id" name="textview17" />
-    <item type="id" name="textview18" />
-    <item type="id" name="linear21" />
-    <item type="id" name="imageview10" />
-    <item type="id" name="linear22" />
-    <item type="id" name="textview21" />
-    <item type="id" name="textview22" />
-    <item type="id" name="cv_create" />
-    <item type="id" name="cv_load" />
     <item type="id" name="tv_title_select_mb_type" />
     <item type="id" name="radio_mb_type" />
     <item type="id" name="radio_mb_type_void" />
@@ -1678,8 +1628,6 @@
     <item type="id" name="add_view_type_selector_layout" />
     <item type="id" name="project_config_pref_layout" />
     <item type="id" name="dialog_create_new_file_layoutTitle" />
-    <item type="id" name="linear3" />
-    <item type="id" name="progressbar1" />
     <item type="id" name="linear8" />
     <item type="id" name="edittext1" />
     <item type="id" name="background" />
