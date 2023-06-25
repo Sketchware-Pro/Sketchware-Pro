@@ -1543,7 +1543,6 @@
     <item type="id" name="text_save" />
     <item type="id" name="rename" />
     <item type="id" name="vscroll1" />
-    <item type="id" name="textview3" />
     <item type="id" name="tv_title_select_mb_type" />
     <item type="id" name="radio_mb_type" />
     <item type="id" name="radio_mb_type_void" />
@@ -1623,8 +1622,6 @@
     <item type="id" name="add_view_type_selector_layout" />
     <item type="id" name="project_config_pref_layout" />
     <item type="id" name="dialog_create_new_file_layoutTitle" />
-    <item type="id" name="linear8" />
-    <item type="id" name="edittext1" />
     <item type="id" name="background" />
     <item type="id" name="recycle_bin" />
     <item type="id" name="dirs" />

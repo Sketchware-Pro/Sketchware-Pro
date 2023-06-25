@@ -55,7 +55,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@id/edittext1"
+            android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Example: com.anjlab.android.iab.v3:library:1.0.44"
@@ -72,7 +72,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@id/textview3"
+            android:id="@+id/tv_progress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -93,7 +93,7 @@
         android:baselineAligned="false">
 
         <LinearLayout
-            android:id="@id/linear8"
+            android:id="@+id/btn_download"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginHorizontal="2dp"

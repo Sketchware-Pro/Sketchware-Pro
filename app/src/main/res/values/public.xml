@@ -3989,7 +3989,6 @@
     <public name="text_save" id="0x7f080679" type="id" />
     <public name="rename" id="0x7f08067a" type="id" />
     <public name="vscroll1" id="0x7f08067f" type="id" />
-    <public name="textview3" id="0x7f080682" type="id" />
     <public name="tv_title_select_mb_type" id="0x7f0806af" type="id" />
     <public name="radio_mb_type" id="0x7f0806b0" type="id" />
     <public name="radio_mb_type_void" id="0x7f0806b1" type="id" />
@@ -4069,8 +4068,6 @@
     <public name="add_view_type_selector_layout" id="0x7f0806fb" type="id" />
     <public name="project_config_pref_layout" id="0x7f0806fc" type="id" />
     <public name="dialog_create_new_file_layoutTitle" id="0x7f0806fd" type="id" />
-    <public name="linear8" id="0x7f080701" type="id" />
-    <public name="edittext1" id="0x7f080702" type="id" />
     <public name="background" id="0x7f080703" type="id" />
     <public name="recycle_bin" id="0x7f080705" type="id" />
     <public name="dirs" id="0x7f080706" type="id" />
