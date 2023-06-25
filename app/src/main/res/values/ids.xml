@@ -1532,15 +1532,11 @@
     <item type="id" name="text_info" />
     <item type="id" name="search_perm" />
     <item type="id" name="main_content" />
-    <item type="id" name="viewcodeLinearLayout1" />
     <item type="id" name="text_title" />
     <item type="id" name="text_content" />
-    <item type="id" name="image_file" />
-    <item type="id" name="name_file" />
     <item type="id" name="checkbox_content" />
     <item type="id" name="edit" />
     <item type="id" name="delete" />
-    <item type="id" name="dialoginputlayoutLinearLayout1" />
     <item type="id" name="dialoginputlayoutLinearLayout2" />
     <item type="id" name="edittext_change_name" />
     <item type="id" name="text_cancel" />
@@ -1653,8 +1649,6 @@
     <item type="id" name="down" />
     <item type="id" name="up_layout" />
     <item type="id" name="down_layout" />
-    <item type="id" name="back_ico" />
-    <item type="id" name="titlee" />
     <item type="id" name="cardv" />
     <item type="id" name="name_lay" />
     <item type="id" name="select_type" />
@@ -1664,7 +1658,6 @@
     <item type="id" name="spec_2lay" />
     <item type="id" name="colour_lay" />
     <item type="id" name="colour_selector" />
-    <item type="id" name="image_view1" />
     <item type="id" name="parameter_holder" />
     <item type="id" name="spec2" />
     <item type="id" name="code" />
@@ -1675,9 +1668,7 @@
     <item type="id" name="a2_sw" />
     <item type="id" name="customimport" />
     <item type="id" name="back" />
-    <item type="id" name="pageti" />
     <item type="id" name="card" />
-    <item type="id" name="lin13" />
     <item type="id" name="back_i" />
     <item type="id" name="label" />
     <item type="id" name="contai" />

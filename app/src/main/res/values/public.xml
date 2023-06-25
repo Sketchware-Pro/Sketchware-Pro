@@ -3978,13 +3978,11 @@
     <public name="text_info" id="0x7f080669" type="id" />
     <public name="search_perm" id="0x7f08066b" type="id" />
     <public name="main_content" id="0x7f08066c" type="id" />
-    <public name="viewcodeLinearLayout1" id="0x7f08066d" type="id" />
     <public name="text_title" id="0x7f08066e" type="id" />
     <public name="text_content" id="0x7f08066f" type="id" />
     <public name="checkbox_content" id="0x7f080672" type="id" />
     <public name="edit" id="0x7f080673" type="id" />
     <public name="delete" id="0x7f080674" type="id" />
-    <public name="dialoginputlayoutLinearLayout1" id="0x7f080675" type="id" />
     <public name="dialoginputlayoutLinearLayout2" id="0x7f080676" type="id" />
     <public name="edittext_change_name" id="0x7f080677" type="id" />
     <public name="text_cancel" id="0x7f080678" type="id" />
@@ -4097,8 +4095,6 @@
     <public name="down" id="0x7f08072b" type="id" />
     <public name="up_layout" id="0x7f08072c" type="id" />
     <public name="down_layout" id="0x7f08072d" type="id" />
-    <public name="back_ico" id="0x7f080730" type="id" />
-    <public name="titlee" id="0x7f080731" type="id" />
     <public name="cardv" id="0x7f080732" type="id" />
     <public name="name_lay" id="0x7f080733" type="id" />
     <public name="select_type" id="0x7f080735" type="id" />
@@ -4108,7 +4104,6 @@
     <public name="spec_2lay" id="0x7f08073b" type="id" />
     <public name="colour_lay" id="0x7f08073c" type="id" />
     <public name="colour_selector" id="0x7f08073d" type="id" />
-    <public name="image_view1" id="0x7f08073f" type="id" />
     <public name="parameter_holder" id="0x7f080740" type="id" />
     <public name="spec2" id="0x7f080741" type="id" />
     <public name="code" id="0x7f080742" type="id" />
@@ -4119,9 +4114,7 @@
     <public name="a2_sw" id="0x7f08074c" type="id" />
     <public name="customimport" id="0x7f08074e" type="id" />
     <public name="back" id="0x7f080752" type="id" />
-    <public name="pageti" id="0x7f080754" type="id" />
     <public name="card" id="0x7f080755" type="id" />
-    <public name="lin13" id="0x7f080756" type="id" />
     <public name="back_i" id="0x7f080758" type="id" />
     <public name="label" id="0x7f080759" type="id" />
     <public name="contai" id="0x7f08075a" type="id" />
