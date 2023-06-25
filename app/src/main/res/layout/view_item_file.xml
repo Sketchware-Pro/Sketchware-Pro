@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:gravity="center"
-    android:layout_width="fill_parent"
-    android:layout_height="100.0dip"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/image_file" android:layout_width="fill_parent" android:layout_height="100.0dip" android:src="@drawable/java_96" android:scaleType="fitCenter" />
-    <TextView android:textColor="#ffffffff" android:gravity="center" android:id="@id/name_file" android:background="#754e4e4e" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Text" android:layout_alignParentBottom="true" />
-</RelativeLayout>
