@@ -119,11 +119,13 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                         linear.setVisibility(View.VISIBLE);
 
                         dialog.dismiss();
-                        log("Enabling downloaded dependencies");
-                        var fileContent = FileUtil.readFile(local_lib_file);
-                        var enabledLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
-                        enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toList()));
-                        FileUtil.writeFile(local_lib_file, new Gson().toJson(enabledLibs));
+                        if (!notAssociatedWithProject) {
+                            log("Enabling downloaded dependencies");
+                            var fileContent = FileUtil.readFile(local_lib_file);
+                            var enabledLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
+                            enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toList()));
+                            FileUtil.writeFile(local_lib_file, new Gson().toJson(enabledLibs));
+                        }
                         loadFiles();
                     });
                 }
