@@ -32,7 +32,9 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
         ".sketchware" + File.separator + "libs" + File.separator + "repositories.json"
     )
     private val default_repos =
-        "[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]"
+        """
+            [{"url":"https://repo.hortonworks.com/content/repositories/releases","name":"HortanWorks"},{"url":"https://maven.atlassian.com/content/repositories/atlassian-public","name":"Atlassian"},{"url":"https://jcenter.bintray.com","name":"JCenter"},{"url":"https://oss.sonatype.org/content/repositories/releases","name":"Sonatype"},{"url":"https://repo.spring.io/plugins-release","name":"Spring Plugins"},{"url":"https://repo.spring.io/libs-milestone","name":"Spring Milestone"},{"url":"https://repo.maven.apache.org/maven2","name":"Apache Maven"}]
+            """.trimIndent()
 
 
     init {
@@ -56,7 +58,6 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
                            url
                        }
                    }
-
                })
            }
        }
@@ -89,6 +90,10 @@ class DependencyResolver(private val groupId: String, private val artifactId: St
         val dependencies = mutableListOf<Artifact>()
         callback.startResolving("$groupId:$artifactId:$version")
         val dependency = getArtifact(groupId, artifactId, version)
+        if (dependency == null) {
+            callback.onDependencyNotFound("$groupId:$artifactId:$version")
+            return
+        }
 
         callback.onDependencyResolved(dependency.toStr())
         callback.log("Resolving sub-dependencies for ${dependency.toStr()}...")
