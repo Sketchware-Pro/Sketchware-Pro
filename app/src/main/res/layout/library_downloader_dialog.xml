@@ -20,7 +20,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusable="false"
@@ -58,7 +58,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-    <EditText
+        <EditText
             android:id="@id/edittext1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,7 +93,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:paddingRight="4dp"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:id="@id/linear8"
@@ -114,6 +115,5 @@
                 android:textColor="#ffffffff"
                 android:textSize="14sp" />
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>
