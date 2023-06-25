@@ -15,11 +15,13 @@ import org.cosmic.ide.dependency.resolver.api.Artifact
 import org.cosmic.ide.dependency.resolver.api.Repository
 import org.cosmic.ide.dependency.resolver.getArtifact
 import org.cosmic.ide.dependency.resolver.repositories
-import java.io.File
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.regex.Pattern
 import java.util.zip.ZipFile
-import kotlin.io.path.absolutePathString
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 
 class DependencyResolver(
     private val groupId: String,
@@ -34,18 +36,18 @@ class DependencyResolver(
     private val downloadPath: String =
         FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
 
-    private val repoFile = File(
-        Environment.getExternalStorageDirectory(),
-        ".sketchware" + File.separator + "libs" + File.separator + "repositories.json"
+    private val repositoriesJson = Paths.get(
+        Environment.getExternalStorageDirectory().absolutePath,
+        ".sketchware", "libs", "repositories.json"
     )
 
     init {
-        if (!repoFile.exists()) {
-            repoFile.parentFile?.mkdirs()
-            repoFile.createNewFile()
-            repoFile.writeText(DEFAULT_REPOS)
+        if (Files.notExists(repositoriesJson)) {
+            Files.createDirectories(repositoriesJson.parent)
+            Files.createFile(repositoriesJson)
+            repositoriesJson.writeText(DEFAULT_REPOS)
         }
-        Gson().fromJson(repoFile.readText(), Helper.TYPE_MAP_LIST).forEach {
+        Gson().fromJson(repositoriesJson.readText(), Helper.TYPE_MAP_LIST).forEach {
             val url: String? = it["url"] as String?
             if (url != null) {
                 repositories.add(object : Repository {
@@ -129,15 +131,19 @@ class DependencyResolver(
                 return@forEach
             }
             val path =
-                File("$downloadPath/${artifact.artifactId}-v${artifact.version}/classes.${artifact.extension}")
-            if (path.exists()) {
+                Paths.get(
+                    downloadPath,
+                    "${artifact.artifactId}-v${artifact.version}",
+                    "classes.${artifact.extension}"
+                )
+            if (Files.exists(path)) {
                 callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
                 return@forEach
             }
-            path.parentFile!!.mkdirs()
+            Files.createDirectories(path.parent)
             callback.downloading(artifact.toStr())
             try {
-                artifact.downloadTo(path)
+                artifact.downloadTo(path.toFile())
             } catch (e: Exception) {
                 callback.onDependencyResolveFailed(e)
                 return@forEach
@@ -145,12 +151,13 @@ class DependencyResolver(
             if (ext == "aar") {
                 callback.log("Unzipping ${artifact.toStr()}")
                 unzip(path)
-                path.delete()
-                val packageName = findPackageName(path.parentFile!!.absolutePath, artifact.groupId)
-                path.parentFile!!.resolve("config").writeText(packageName)
+                Files.delete(path)
+                val packageName =
+                    findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
+                path.parent.resolve("config").writeText(packageName)
             }
             callback.dexing(artifact.toStr())
-            compileJar(path.parentFile!!.resolve("classes.jar").toPath())
+            compileJar(path.parent.resolve("classes.jar"))
             callback.onDependencyResolved(artifact.toStr())
         }
         callback.onTaskCompleted(latestDeps.map { "${it.artifactId}-v${it.version}" })
@@ -176,16 +183,16 @@ class DependencyResolver(
         return defaultValue
     }
 
-    private fun unzip(file: File) {
-        val zipFile = ZipFile(file)
+    private fun unzip(path: Path) {
+        val zipFile = ZipFile(path.toFile())
         zipFile.entries().asSequence().forEach { entry ->
-            val entryDestination = File(file.parentFile, entry.name)
+            val entryDestination = path.parent.resolve(entry.name)
             if (entry.isDirectory) {
-                entryDestination.mkdirs()
+                Files.createDirectories(entryDestination)
             } else {
-                entryDestination.parentFile?.mkdirs()
+                Files.createDirectories(entryDestination.parent)
                 zipFile.getInputStream(entry).use { input ->
-                    entryDestination.outputStream().use { output ->
+                    Files.newOutputStream(entryDestination).use { output ->
                         input.copyTo(output)
                     }
                 }
@@ -213,7 +220,7 @@ class DependencyResolver(
                 "--verbose",
                 "--multi-dex",
                 "--output=${jarFile.parent}",
-                jarFile.absolutePathString()
+                jarFile.toAbsolutePath().toString()
             )
         )
     }
