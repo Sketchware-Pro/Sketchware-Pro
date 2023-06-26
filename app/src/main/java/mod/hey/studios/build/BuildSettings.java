@@ -21,6 +21,9 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_JAVA_VERSION_1_9 = "1.9";
     public static final String SETTING_JAVA_VERSION_10 = "10";
     public static final String SETTING_JAVA_VERSION_11 = "11";
+    public static final String SETTING_SHRINKER = "shrinker";
+    public static final String SETTING_SHRINKER_PROGUARD = "Proguard";
+    public static final String SETTING_SHRINKER_R8 = "R8";
     // d8 only supports desugaring till java 11
 
     public BuildSettings(String sc_id) {

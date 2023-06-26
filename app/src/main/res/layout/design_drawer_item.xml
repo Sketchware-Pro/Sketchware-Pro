@@ -21,13 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+            android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -61,18 +55,17 @@
                     android:layout_height="24dp"
                     android:src="@drawable/selector_ic_chevron_right_grey_48" />
             </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="40dp"
-        android:paddingRight="4dp">
+        android:paddingStart="40dp"
+        android:paddingEnd="4dp">
 
         <LinearLayout
             android:id="@+id/sub_items"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
     </HorizontalScrollView>

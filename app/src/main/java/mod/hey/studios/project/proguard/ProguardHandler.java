@@ -1,6 +1,7 @@
 package mod.hey.studios.project.proguard;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -172,6 +173,33 @@ public class ProguardHandler {
     public void setProguardEnabled(boolean proguardEnabled) {
         HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
         config.put("enabled", String.valueOf(proguardEnabled));
+
+        FileUtil.writeFile(config_path, new Gson().toJson(config));
+    }
+
+    public boolean isR8Enabled() {
+        boolean r8Enabled = true;
+        if (FileUtil.isExistFile(config_path)) {
+            try {
+                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), TypeToken.get(HashMap.class).getType());
+
+                String enabled = config.get("r8");
+                if (enabled == null) {
+                    r8Enabled = false;
+                } else {
+                    r8Enabled = enabled.equals("true");
+                }
+
+            } catch (Exception e) {
+                r8Enabled = false;
+            }
+        }
+
+        return r8Enabled;
+    }
+    public void setR8Enabled(boolean r8Enabled) {
+        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), TypeToken.get(HashMap.class).getType());
+        config.put("r8", String.valueOf(r8Enabled));
 
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }

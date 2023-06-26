@@ -24,6 +24,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
     private ProguardHandler pg;
     private Switch sw_pg_enabled;
     private Switch sw_pg_debug;
+    private Switch r8_enabled;
 
     @Override
     public void onClick(View v) {
@@ -82,6 +83,8 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
         int id = buttonView.getId();
         if (id == R.id.sw_pg_enabled) {
             pg.setProguardEnabled(isChecked);
+        } else if (id == R.id.r8_enabled) {
+            pg.setR8Enabled(isChecked);
         } else if (id == R.id.sw_pg_debug) {
             pg.setDebugEnabled(isChecked);
         }
@@ -106,6 +109,8 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
 
         sw_pg_enabled.setOnCheckedChangeListener(this);
         ln_pg_rules.setOnClickListener(this);
+        r8_enabled = findViewById(R.id.r8_enabled);
+        r8_enabled.setOnCheckedChangeListener(this);
 
         sw_pg_debug.setOnCheckedChangeListener(this);
         ln_pg_fm.setOnClickListener(this);
@@ -116,6 +121,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
         pg = new ProguardHandler(getIntent().getStringExtra("sc_id"));
         sw_pg_enabled.setChecked(pg.isProguardEnabled());
         sw_pg_debug.setChecked(pg.isDebugFilesEnabled());
+        r8_enabled.setChecked(pg.isR8Enabled());
     }
 
     private void _initToolbar() {
