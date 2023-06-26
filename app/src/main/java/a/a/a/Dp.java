@@ -822,7 +822,7 @@ public class Dp {
      */
     private String getRJavaRules() {
          StringBuilder sb = new StringBuilder("# R.java rules");
-        for (Jp jp : builtInLibraryManager.get()) {
+        for (Jp jp : builtInLibraryManager.getLibraries()) {
             if (jp.c() && !jp.b().isEmpty()) {
                 sb.append("\n");
                 sb.append("-keep class ");
@@ -863,7 +863,7 @@ public class Dp {
             config.add(yq.aaptProGuardRules);
             config.add(proguard.getCustomProguardRules());
             var rules = new ArrayList<String>(Arrays.asList(getRJavaRules().split("\n")));
-            for (Jp library : builtInLibraryManager.a()) {
+            for (Jp library : builtInLibraryManager.getLibraries()) {
                  File f = BuiltInLibraries.getLibraryProGuardConfiguration(library.a());
                  if (f.exists()) {
                     config.add(f.getAbsolutePath());
