@@ -55,7 +55,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
     private EditText code;
     private EditText colour;
-    private HorizontalScrollView hscroll1;
+    private HorizontalScrollView parameterScrollView;
     /**
      * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
      */
@@ -84,7 +84,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        ScrollView vscroll1 = findViewById(R.id.vscroll1);
+        ScrollView scrollView = findViewById(R.id.scroll_view);
         pageTitle = findViewById(R.id.tx_toolbar_title);
         TextInputLayout nameLayout = findViewById(R.id.name_lay);
         name = findViewById(R.id.name);
@@ -92,7 +92,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         type = findViewById(R.id.type);
         typename = findViewById(R.id.type_name);
         spec = findViewById(R.id.spec);
-        hscroll1 = findViewById(R.id.hscroll1);
+        parameterScrollView = findViewById(R.id.scroll_parameters);
         spec2InputLayout = findViewById(R.id.spec_2lay);
         LinearLayout colorSelector = findViewById(R.id.colour_selector);
         colour = findViewById(R.id.color);
@@ -175,12 +175,12 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                 if (s.toString().equals("e")) {
                     AutoTransition transition = new AutoTransition();
                     transition.setDuration(300L);
-                    TransitionManager.beginDelayedTransition(vscroll1, transition);
+                    TransitionManager.beginDelayedTransition(scrollView, transition);
                     spec2InputLayout.setVisibility(View.VISIBLE);
                 } else {
                     AutoTransition transition = new AutoTransition();
                     transition.setDuration(300L);
-                    TransitionManager.beginDelayedTransition(vscroll1, transition);
+                    TransitionManager.beginDelayedTransition(scrollView, transition);
                     spec2InputLayout.setVisibility(View.GONE);
                 }
                 updateBlockSpec(s.toString(), colour.getText().toString());
@@ -310,8 +310,8 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         spec2.setSingleLine(true);
         code.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         code.setSingleLine(false);
-        hscroll1.setVerticalScrollBarEnabled(false);
-        hscroll1.setHorizontalScrollBarEnabled(false);
+        parameterScrollView.setVerticalScrollBarEnabled(false);
+        parameterScrollView.setHorizontalScrollBarEnabled(false);
         spec2InputLayout.setVisibility(View.GONE);
     }
 

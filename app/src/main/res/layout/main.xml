@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,18 +16,7 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/action_bar_height"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="enterAlways|scroll"
-                app:titleEnabled="false">
-
-                <include layout="@layout/toolbar" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
+            <include layout="@layout/toolbar" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
@@ -37,19 +27,14 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@id/fab"
+            android:id="@+id/create_new_project"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center|right"
-            android:layout_marginLeft="16.0dip"
-            android:layout_marginRight="16.0dip"
-            android:layout_marginBottom="32.0dip"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/color_chk_white_normal"
             android:src="@drawable/plus_96"
-            app:backgroundTint="#ffffffff"
-            app:elevation="6.0dip"
-            app:fabSize="normal"
-            app:layout_anchorGravity="center" />
-
+            tools:ignore="ContentDescription" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.besome.sketch.MainDrawer
@@ -57,5 +42,4 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start" />
-
 </androidx.drawerlayout.widget.DrawerLayout>

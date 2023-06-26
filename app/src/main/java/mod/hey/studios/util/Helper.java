@@ -21,7 +21,6 @@ import androidx.annotation.StringRes;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,15 +30,14 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 
 public class Helper {
-
-    public static Type TYPE_MAP = new TypeToken<HashMap<String, Object>>() {
-    }.getType();
-    public static Type TYPE_MAP_LIST = new TypeToken<ArrayList<HashMap<String, Object>>>() {
-    }.getType();
-    public static Type TYPE_STRING = new TypeToken<ArrayList<String>>() {
-    }.getType();
-    public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {
-    }.getType();
+    public static final TypeToken<HashMap<String, Object>> TYPE_MAP = new TypeToken<>() {
+    };
+    public static final TypeToken<ArrayList<HashMap<String, Object>>> TYPE_MAP_LIST = new TypeToken<>() {
+    };
+    public static final TypeToken<ArrayList<String>> TYPE_STRING = new TypeToken<>() {
+    };
+    public static final TypeToken<HashMap<String, String>> TYPE_STRING_MAP = new TypeToken<>() {
+    };
 
     private Helper() {
     }

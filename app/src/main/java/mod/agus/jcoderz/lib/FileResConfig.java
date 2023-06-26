@@ -29,10 +29,7 @@ public class FileResConfig {
         String permissions = FileUtil.readFile(fpu.getPathPermission(numProj));
         if (permissions.isEmpty()) return;
 
-        Object object = new Gson().fromJson(FileUtil.readFile(fpu.getPathPermission(numProj)), Helper.TYPE_STRING);
-        if (object instanceof ArrayList) {
-            listFilePermission = (ArrayList<String>) object;
-        }
+        listFilePermission = new Gson().fromJson(FileUtil.readFile(fpu.getPathPermission(numProj)), Helper.TYPE_STRING);
     }
 
     public ArrayList<String> getNativelibsFile(String str) {
@@ -75,10 +72,7 @@ public class FileResConfig {
         String readFile = FileUtil.readFile(fpu.getPathImport(numProj));
         if (readFile.isEmpty()) return listFileImport;
 
-        Object object = new Gson().fromJson(readFile, Helper.TYPE_STRING);
-        if (object instanceof ArrayList) {
-            listFileImport = (ArrayList<String>) object;
-        }
+        listFileImport = new Gson().fromJson(readFile, Helper.TYPE_STRING);
 
         return listFileImport;
     }
@@ -95,10 +89,7 @@ public class FileResConfig {
         String readFile = FileUtil.readFile(fpu.getManifestJava(numProj));
         if (readFile.isEmpty()) return listJavaManifest;
 
-        Object object = new Gson().fromJson(readFile, Helper.TYPE_STRING);
-        if (object instanceof ArrayList) {
-            listJavaManifest = (ArrayList<String>) object;
-        }
+        listJavaManifest = new Gson().fromJson(readFile, Helper.TYPE_STRING);
 
         return listJavaManifest;
     }
@@ -107,10 +98,7 @@ public class FileResConfig {
         String readFile = FileUtil.readFile(fpu.getManifestBroadcast(numProj));
         if (readFile.isEmpty()) return listBroadcastManifest;
 
-        Object object = new Gson().fromJson(readFile, Helper.TYPE_STRING);
-        if (object instanceof ArrayList) {
-            listBroadcastManifest = (ArrayList<String>) object;
-        }
+        listBroadcastManifest = new Gson().fromJson(readFile, Helper.TYPE_STRING);
 
         return listBroadcastManifest;
     }
@@ -119,10 +107,7 @@ public class FileResConfig {
         String readFile = FileUtil.readFile(fpu.getManifestService(numProj));
         if (readFile.isEmpty()) return listServiceManifest;
 
-        Object object = new Gson().fromJson(readFile, Helper.TYPE_STRING);
-        if (object instanceof ArrayList) {
-            listServiceManifest = (ArrayList<String>) object;
-        }
+        listServiceManifest = new Gson().fromJson(readFile, Helper.TYPE_STRING);
 
         return listServiceManifest;
     }

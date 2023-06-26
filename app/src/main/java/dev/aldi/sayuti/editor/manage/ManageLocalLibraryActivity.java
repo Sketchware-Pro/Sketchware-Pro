@@ -3,19 +3,24 @@ package dev.aldi.sayuti.editor.manage;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -24,18 +29,20 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.project.library.LibraryDownloader;
 import mod.hey.studios.util.Helper;
+import mod.pranav.dependency.resolver.DependencyResolver;
 
-public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener, LibraryDownloader.OnCompleteListener {
+public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener {
 
     private boolean notAssociatedWithProject = false;
     private ListView listview;
     private String local_lib_file = "";
-    private String local_libs_path = "";
+    private static String local_libs_path = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
@@ -54,22 +61,97 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        new AlertDialog.Builder(this)
-                .setTitle("Dexer")
-                .setMessage("Would you like to use Dx or D8 to dex the library?\n" +
-                        "D8 supports Java 8, whereas Dx does not. Limitation: D8 only works on Android 8 and above.")
-                .setPositiveButton("D8", (dialog, which) -> new LibraryDownloader(this,
-                        true).showDialog(this))
-                .setNegativeButton("Dx", (dialog, which) -> new LibraryDownloader(this,
-                        false).showDialog(this))
-                .setNeutralButton("Cancel", null)
-                .show();
+        var view = getLayoutInflater().inflate(R.layout.library_downloader_dialog, null);
+
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(view)
+                .create();
+        EditText editText = view.findViewById(R.id.ed_input);
+        var linear = view.findViewById(R.id.btn_download);
+        TextView text = view.findViewById(R.id.tv_progress);
+        linear.setOnClickListener(v1 -> {
+            linear.setVisibility(View.GONE);
+            String url = editText.getText().toString();
+            if (url.isEmpty()) {
+                SketchwareUtil.toastError("Please enter a dependency");
+                return;
+            }
+
+            var parts = url.split(":");
+            if (parts.length != 3) {
+                SketchwareUtil.toastError("Invalid dependency format");
+                return;
+            }
+            var group = parts[0];
+            var artifact = parts[1];
+            var version = parts[2];
+            var resolver = new DependencyResolver(group, artifact, version);
+            var handler = new Handler(Looper.getMainLooper());
+            Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
+                @Override
+                public void invalidPackaging(@NonNull String dep) {
+                    handler.post(() -> text.setText("Invalid packaging for dependency " + dep));
+                }
+
+                @Override
+                public void dexing(@NonNull String dep) {
+                    handler.post(() -> text.setText("Dexing dependency " + dep));
+                }
+
+                @Override
+                public void log(@NonNull String msg) {
+                    handler.post(() -> text.setText(msg));
+                }
+
+                @Override
+                public void downloading(@NonNull String dep) {
+                    handler.post(() -> text.setText("Downloading dependency " + dep));
+                }
+
+                @Override
+                public void startResolving(@NonNull String dep) {
+                    handler.post(() -> text.setText("Resolving dependency " + dep));
+                }
+
+                @Override
+                public void onTaskCompleted(@NonNull List<String> dependencies) {
+                    handler.post(() -> {
+                        linear.setVisibility(View.VISIBLE);
+
+                        dialog.dismiss();
+                        if (!notAssociatedWithProject) {
+                            log("Enabling downloaded dependencies");
+                            var fileContent = FileUtil.readFile(local_lib_file);
+                            var enabledLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
+                            enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toList()));
+                            FileUtil.writeFile(local_lib_file, new Gson().toJson(enabledLibs));
+                        }
+                        loadFiles();
+                    });
+                }
+
+                @Override
+                public void onDependencyNotFound(@NonNull String dep) {
+                    handler.post(() -> {
+                        linear.setVisibility(View.VISIBLE);
+                        text.setText("Dependency " + dep + " not found");
+                    });
+                }
+
+                @Override
+                public void onDependencyResolveFailed(@NonNull Exception e) {
+                    handler.post(() -> text.setText(e.getMessage()));
+                }
+
+                @Override
+                public void onDependencyResolved(@NonNull String dep) {
+                    handler.post(() -> text.setText("Dependency " + dep + " resolved"));
+                }
+            }));
+        });
+        dialog.show();
     }
 
-    @Override
-    public void onComplete() {
-        loadFiles();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +159,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         setContentView(R.layout.manage_permission);
 
         listview = findViewById(R.id.main_content);
-        findViewById(R.id.managepermissionLinearLayout1).setVisibility(View.GONE);
+        findViewById(R.id.search_perm).setVisibility(View.GONE);
         initToolbar();
 
         if (getIntent().hasExtra("sc_id")) {
@@ -102,7 +184,6 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
-        //noinspection Java8ListSort
         Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
 
         List<String> localLibraryNames = new LinkedList<>();
@@ -113,6 +194,42 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         listview.setAdapter(new LibraryAdapter(localLibraryNames));
         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+    }
+
+    public static HashMap<String, Object> createLibraryMap(String name) {
+
+        String configPath = local_libs_path + name + "/config";
+        String resPath = local_libs_path + name + "/res";
+        String jarPath = local_libs_path + name + "/classes.jar";
+        String dexPath = local_libs_path + name + "/classes.dex";
+        String manifestPath = local_libs_path + name + "/AndroidManifest.xml";
+        String pgRulesPath = local_libs_path + name + "/proguard.txt";
+        String assetsPath = local_libs_path + name + "/assets";
+
+        HashMap<String, Object> localLibrary = new HashMap<>();
+        localLibrary.put("name", name);
+        if (FileUtil.isExistFile(configPath)) {
+            localLibrary.put("packageName", FileUtil.readFile(configPath));
+        }
+        if (FileUtil.isExistFile(resPath)) {
+            localLibrary.put("resPath", resPath);
+        }
+        if (FileUtil.isExistFile(jarPath)) {
+            localLibrary.put("jarPath", jarPath);
+        }
+        if (FileUtil.isExistFile(dexPath)) {
+            localLibrary.put("dexPath", dexPath);
+        }
+        if (FileUtil.isExistFile(manifestPath)) {
+            localLibrary.put("manifestPath", manifestPath);
+        }
+        if (FileUtil.isExistFile(pgRulesPath)) {
+            localLibrary.put("pgRulesPath", pgRulesPath);
+        }
+        if (FileUtil.isExistFile(assetsPath)) {
+            localLibrary.put("assetsPath", assetsPath);
+        }
+        return localLibrary;
     }
 
     public class LibraryAdapter extends BaseAdapter {
@@ -148,38 +265,8 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             enabled.setText(localLibraries.get(position));
             enabled.setOnClickListener(v -> {
                 String name = enabled.getText().toString();
+                HashMap<String, Object> localLibrary = createLibraryMap(name);
 
-                String configPath = local_libs_path + name + "/config";
-                String resPath = local_libs_path + name + "/res";
-                String jarPath = local_libs_path + name + "/classes.jar";
-                String dexPath = local_libs_path + name + "/classes.dex";
-                String manifestPath = local_libs_path + name + "/AndroidManifest.xml";
-                String pgRulesPath = local_libs_path + name + "/proguard.txt";
-                String assetsPath = local_libs_path + name + "/assets";
-
-                HashMap<String, Object> localLibrary = new HashMap<>();
-                localLibrary.put("name", name);
-                if (FileUtil.isExistFile(configPath)) {
-                    localLibrary.put("packageName", FileUtil.readFile(configPath));
-                }
-                if (FileUtil.isExistFile(resPath)) {
-                    localLibrary.put("resPath", resPath);
-                }
-                if (FileUtil.isExistFile(jarPath)) {
-                    localLibrary.put("jarPath", jarPath);
-                }
-                if (FileUtil.isExistFile(dexPath)) {
-                    localLibrary.put("dexPath", dexPath);
-                }
-                if (FileUtil.isExistFile(manifestPath)) {
-                    localLibrary.put("manifestPath", manifestPath);
-                }
-                if (FileUtil.isExistFile(pgRulesPath)) {
-                    localLibrary.put("pgRulesPath", pgRulesPath);
-                }
-                if (FileUtil.isExistFile(assetsPath)) {
-                    localLibrary.put("assetsPath", assetsPath);
-                }
                 if (!enabled.isChecked()) {
                     int i = -1;
                     for (int j = 0; j < project_used_libs.size(); j++) {

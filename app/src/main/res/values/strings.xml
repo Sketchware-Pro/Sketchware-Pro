@@ -1699,7 +1699,7 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_export_title_email_subject">%s APK file for installation</string>
     <string name="myprojects_fail_share">Share failed. Please try again later</string>
     <string name="myprojects_import_project_actionbar_title">Import Project</string>
-    <string name="myprojects_list_menu_title_create_a_new_project">Create A New Project</string>
+    <string name="myprojects_list_menu_title_create_a_new_project">New Project</string>
     <string name="myprojects_list_menu_title_delete">Delete</string>
     <string name="myprojects_list_menu_title_export">Export</string>
     <string name="myprojects_list_menu_title_publish">Publish</string>
@@ -2576,10 +2576,7 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_customblocks_subtitle">See used custom blocks</string>
     <string name="design_drawer_menu_title_logcat_reader">Logcat Reader</string>
     <string name="design_drawer_menu_subtitle_logcat_reader">Read logs from enabled projects</string>
-    <string name="cancel">Cancel</string>
-    <string name="copy">Copy</string>
-    <string name="cut">Cut</string>
-    <string name="paste">Paste</string>
-    <string name="saveToProject" translatable="false">Project</string>
-    <string name="selectAll">Select All</string>
+    <string name="text_to_search">Text to search</string>
+    <string name="myprojects_list_menu_title_restore_projects">Restore Projects</string>
+    <string name="sort_projects">Sort projects</string>
 </resources>

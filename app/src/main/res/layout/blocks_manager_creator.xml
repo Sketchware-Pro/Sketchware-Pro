@@ -9,7 +9,7 @@
     <include layout="@layout/toolbar_improved" />
 
     <ScrollView
-        android:id="@+id/vscroll1"
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -212,7 +212,6 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/image_view1"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:scaleType="fitXY"
@@ -246,7 +245,7 @@
                         android:textSize="10sp" />
 
                     <HorizontalScrollView
-                        android:id="@+id/hscroll1"
+                        android:id="@+id/scroll_parameters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
