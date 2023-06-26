@@ -35,7 +35,7 @@ public class aB extends Dialog {
     public aB(Activity activity) {
         super(activity);
     }
-    
+
     /**
      * Set the dialog's image's resource ID
      */

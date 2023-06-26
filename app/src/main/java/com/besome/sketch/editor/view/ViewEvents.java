@@ -22,15 +22,14 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
-import a.a.a.aB;
 import a.a.a.Qs;
+import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.wB;
 import a.a.a.xB;
-
 import mod.hey.studios.util.Helper;
 
 public class ViewEvents extends LinearLayout {
@@ -133,7 +132,7 @@ public class ViewEvents extends LinearLayout {
                     dialog.a(R.drawable.delete_96);
                     dialog.b("Confirm Delete");
                     dialog.a("Click on Confirm to delete selected event.");
-                    
+
                     dialog.b("Delete", del -> {
                         dialog.dismiss();
                         EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
