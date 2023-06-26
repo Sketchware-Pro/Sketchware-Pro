@@ -36,7 +36,6 @@ public class ViewEvents extends LinearLayout {
     private String sc_id;
     private ProjectFileBean projectFileBean;
     private ArrayList<EventBean> events;
-    private RecyclerView eventsList;
     private Qs eventClickListener;
     private EventAdapter eventAdapter;
 
@@ -53,7 +52,7 @@ public class ViewEvents extends LinearLayout {
     private void initialize(Context context) {
         wB.a(context, this, R.layout.view_events);
         events = new ArrayList<>();
-        eventsList = findViewById(R.id.list_events);
+        RecyclerView eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -88,7 +87,7 @@ public class ViewEvents extends LinearLayout {
                 events.add(eventBean);
             }
         }
-        eventsList.getAdapter().notifyDataSetChanged();
+        eventAdapter.notifyDataSetChanged();
     }
 
     private void createEvent(int eventPosition) {
@@ -96,7 +95,7 @@ public class ViewEvents extends LinearLayout {
         if (!eventBean.isSelected) {
             eventBean.isSelected = true;
             jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            eventsList.getAdapter().notifyItemChanged(eventPosition);
+            eventAdapter.notifyItemChanged(eventPosition);
             bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
         if (eventClickListener != null) {
@@ -138,7 +137,7 @@ public class ViewEvents extends LinearLayout {
                         EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
                         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
                         eventBean.isSelected = false;
-                        eventsList.getAdapter().notifyItemChanged(position);
+                        eventAdapter.notifyItemChanged(position);
                     });
                     dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
                     dialog.show();
