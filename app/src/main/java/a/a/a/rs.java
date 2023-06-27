@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
@@ -55,12 +57,13 @@ import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 
 public class rs extends qA implements View.OnClickListener, MoreblockImporterDialog.CallBack {
-    private static final int REQUEST_CODE_ADD_EVENT = 223;
-
     private ProjectFileBean currentActivity;
     private CategoryAdapter categoryAdapter;
     private EventAdapter eventAdapter;
     private FloatingActionButton fab;
+    private final ActivityResultLauncher<Intent> addEventLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> refreshEvents());
+
     private HashMap<Integer, ArrayList<EventBean>> events;
     private ArrayList<EventBean> moreBlocks;
     private ArrayList<EventBean> viewEvents;
@@ -110,21 +113,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD_EVENT) {
-            refreshEvents();
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == R.id.fab) {
             Intent intent = new Intent(getActivity().getApplicationContext(), AddEventActivity.class);
             intent.putExtra("sc_id", sc_id);
             intent.putExtra("project_file", currentActivity);
             intent.putExtra("category_index", categoryAdapter.index);
-            startActivityForResult(intent, REQUEST_CODE_ADD_EVENT);
+            addEventLauncher.launch(intent);
         }
     }
 
