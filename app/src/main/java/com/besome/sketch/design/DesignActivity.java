@@ -5,7 +5,6 @@ import static mod.SketchwareUtil.getDip;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -483,7 +482,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         });
         viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), this));
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -1390,19 +1389,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         protected String doInBackground(Void... voids) {
             return a(voids);
         }
-
-        @Override
-        public void onCancelled() {
-            super.onCancelled();
-        }
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
-
         private final String[] labels;
 
-        public ViewPagerAdapter(FragmentManager xf, Context context) {
-            super(xf);
+        public ViewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
             labels = new String[]{
                     Helper.getResString(R.string.design_tab_title_view),
                     Helper.getResString(R.string.design_tab_title_event),
