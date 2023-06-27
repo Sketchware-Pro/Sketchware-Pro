@@ -178,7 +178,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
     private void indicateCompileErrorOccurred(String error) {
-        new CompileErrorSaver(q.sc_id).writeLogsToFile(error);
+        new CompileErrorSaver(sc_id).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(Helper.getResString(R.string.common_word_show), v -> {
             if (!mB.a()) {
@@ -1043,7 +1043,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     /* Encrypt Strings in classes if enabled */
-                    StringfogHandler stringfogHandler = new StringfogHandler(q.sc_id);
+                    StringfogHandler stringfogHandler = new StringfogHandler(sc_id);
                     stringfogHandler.start(this, builder);
                     if (canceled) {
                         cancel(true);
@@ -1051,7 +1051,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     /* Obfuscate classes if enabled */
-                    ProguardHandler proguardHandler = new ProguardHandler(q.sc_id);
+                    ProguardHandler proguardHandler = new ProguardHandler(sc_id);
                     proguardHandler.start(this, builder);
                     if (canceled) {
                         cancel(true);
