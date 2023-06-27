@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -111,14 +113,6 @@ import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener {
-    private static final int REQUEST_CODE_VIEW_MANAGER = 208;
-    private static final int REQUEST_CODE_IMAGE_MANAGER = 209;
-    private static final int REQUEST_CODE_SOUND_MANAGER = 217;
-    private static final int REQUEST_CODE_LIBRARY_MANAGER = 226;
-    private static final int REQUEST_CODE_FONT_MANAGER = 228;
-    private static final int REQUEST_CODE_COLLECTION_MANAGER = 233;
-    private static final int REQUEST_CODE_SOURCE_CODE_VIEWER = 240;
-
     private ImageView xmlLayoutOrientation;
     private boolean B = false;
     private int currentTabNumber;
@@ -138,6 +132,40 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
     private br componentTabAdapter = null;
+
+    private final ActivityResultLauncher<Intent> openLibraryManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (projectFileSelector != null) {
+                projectFileSelector.syncState();
+            }
+            if (viewTabAdapter != null) {
+                viewTabAdapter.n();
+            }
+        }
+    });
+    private final ActivityResultLauncher<Intent> openViewManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (viewTabAdapter != null) {
+                viewTabAdapter.i();
+            }
+        }
+    });
+    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (projectFileSelector != null) {
+                projectFileSelector.syncState();
+            }
+        }
+    });
+    private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            viewTabAdapter.j();
+        }
+    });
+    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        assert result.getData() != null;
+        projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
+    });
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -273,62 +301,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_CODE_VIEW_MANAGER:
-                if (resultCode == RESULT_OK) {
-                    if (projectFileSelector != null) {
-                        projectFileSelector.syncState();
-                    }
-                    if (viewTabAdapter != null) {
-                        viewTabAdapter.n();
-                    }
-                }
-                break;
-
-            case REQUEST_CODE_IMAGE_MANAGER:
-                if (resultCode == RESULT_OK) {
-                    if (viewTabAdapter != null) {
-                        viewTabAdapter.i();
-                    }
-                }
-                break;
-
-            case REQUEST_CODE_SOUND_MANAGER:
-            case REQUEST_CODE_FONT_MANAGER:
-                break;
-
-            case 223:
-                if (resultCode == RESULT_OK) {
-                    if (eventTabAdapter != null) {
-                        eventTabAdapter.refreshEvents();
-                    }
-                }
-                break;
-
             case 224:
                 if (resultCode == RESULT_OK) {
                     if (componentTabAdapter != null) {
                         componentTabAdapter.d();
                     }
-                }
-                break;
-
-            case REQUEST_CODE_LIBRARY_MANAGER:
-                if (resultCode == RESULT_OK) {
-                    if (projectFileSelector != null) {
-                        projectFileSelector.syncState();
-                    }
-                }
-                break;
-
-            case REQUEST_CODE_COLLECTION_MANAGER:
-                if (resultCode == RESULT_OK) {
-                    viewTabAdapter.j();
-                }
-                break;
-
-            case 263:
-                if (resultCode == RESULT_OK) {
-                    projectFileSelector.setXmlFileName(data.getParcelableExtra("project_file"));
                 }
                 break;
 
@@ -769,7 +746,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Opens {@link ManageCollectionActivity}.
      */
     void toCollectionManager() {
-        launchActivity(ManageCollectionActivity.class, REQUEST_CODE_COLLECTION_MANAGER);
+        launchActivity(ManageCollectionActivity.class, openCollectionManager);
     }
 
     /**
@@ -856,35 +833,35 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Opens {@link ManageFontActivity}.
      */
     void toFontManager() {
-        launchActivity(ManageFontActivity.class, REQUEST_CODE_FONT_MANAGER);
+        launchActivity(ManageFontActivity.class, null);
     }
 
     /**
      * Opens {@link ManageImageActivity}.
      */
     void toImageManager() {
-        launchActivity(ManageImageActivity.class, REQUEST_CODE_IMAGE_MANAGER);
+        launchActivity(ManageImageActivity.class, openImageManager);
     }
 
     /**
      * Opens {@link ManageLibraryActivity}.
      */
     void toLibraryManager() {
-        launchActivity(ManageLibraryActivity.class, REQUEST_CODE_LIBRARY_MANAGER);
+        launchActivity(ManageLibraryActivity.class, openLibraryManager);
     }
 
     /**
      * Opens {@link ManageViewActivity}.
      */
     void toViewManager() {
-        launchActivity(ManageViewActivity.class, REQUEST_CODE_VIEW_MANAGER);
+        launchActivity(ManageViewActivity.class, openViewManager);
     }
 
     /**
      * Opens {@link ManageSoundActivity}.
      */
     void toSoundManager() {
-        launchActivity(ManageSoundActivity.class, REQUEST_CODE_SOUND_MANAGER);
+        launchActivity(ManageSoundActivity.class, null);
     }
 
     /**
@@ -903,11 +880,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             } catch (Exception ignored) {
             }
         }
-        launchActivity(SrcViewerActivity.class, REQUEST_CODE_SOURCE_CODE_VIEWER, new Pair<>("current", current));
+        launchActivity(SrcViewerActivity.class, null, new Pair<>("current", current));
     }
 
     @SafeVarargs
-    private final void launchActivity(Class<? extends Activity> toLaunch, Integer optionalRequestCode, Pair<String, String>... extras) {
+    private final void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {
         Intent intent = new Intent(getApplicationContext(), toLaunch);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
@@ -915,10 +892,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             intent.putExtra(extra.first, extra.second);
         }
 
-        if (optionalRequestCode == null) {
+        if (optionalLauncher == null) {
             startActivity(intent);
         } else {
-            startActivityForResult(intent, optionalRequestCode);
+            optionalLauncher.launch(intent);
         }
     }
 
