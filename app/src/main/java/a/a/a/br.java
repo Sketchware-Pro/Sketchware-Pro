@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ComponentBean;
@@ -48,7 +50,7 @@ public class br extends qA implements View.OnClickListener {
             return;
         }
         this.g = jC.a(this.o).e(this.f.getJavaName());
-        this.h.c();
+        this.h.notifyDataSetChanged();
     }
 
     @Override
@@ -114,10 +116,10 @@ public class br extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.Adapter<a.a> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class a extends RecyclerView.ViewHolder {
             public LinearLayout A;
             public LinearLayout B;
             public ImageView t;
@@ -169,54 +171,54 @@ public class br extends qA implements View.OnClickListener {
 
         public a(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new Uq(this, br.this));
+                recyclerView.addOnScrollListener(new Uq(this, br.this));
             }
         }
 
         @Override
-        public long a(int i) {
-            return i;
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
-        public void b(a aVar, int i) {
-            ComponentBean componentBean = br.this.g.get(i);
-            aVar.u.setText(ComponentBean.getComponentName(br.this.getContext(), componentBean.type));
-            aVar.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
+        public void onBindViewHolder(a holder, int position) {
+            ComponentBean componentBean = br.this.g.get(position);
+            holder.u.setText(ComponentBean.getComponentName(br.this.getContext(), componentBean.type));
+            holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
             int i2 = componentBean.type;
             if (i2 == 2) {
-                TextView textView = aVar.v;
+                TextView textView = holder.v;
                 textView.setText(componentBean.componentId + " : " + componentBean.param1);
             } else if (i2 != 6 && i2 != 14 && i2 != 16) {
-                aVar.v.setText(componentBean.componentId);
+                holder.v.setText(componentBean.componentId);
             } else {
                 String str = componentBean.param1;
                 if (str.length() <= 0) {
                     str = "/";
                 }
-                TextView textView2 = aVar.v;
+                TextView textView2 = holder.v;
                 textView2.setText(componentBean.componentId + " : " + str);
             }
             ArrayList<EventBean> a2 = jC.a(br.this.o).a(br.this.f.getJavaName(), componentBean);
             ArrayList arrayList = new ArrayList();
             arrayList.addAll(Arrays.asList(oq.a(componentBean.getClassInfo())));
-            aVar.y.removeAllViews();
-            aVar.B.removeAllViews();
-            aVar.y.setAlpha(1.0f);
-            aVar.y.setTranslationX(0.0f);
+            holder.y.removeAllViews();
+            holder.B.removeAllViews();
+            holder.y.setAlpha(1.0f);
+            holder.y.setTranslationX(0.0f);
             if (componentBean.isCollapsed) {
-                aVar.A.setVisibility(8);
-                aVar.w.setRotation(0.0f);
+                holder.A.setVisibility(8);
+                holder.w.setRotation(0.0f);
             } else {
-                aVar.A.setVisibility(0);
-                aVar.w.setRotation(-180.0f);
+                holder.A.setVisibility(0);
+                holder.w.setRotation(-180.0f);
                 if (componentBean.isConfirmation) {
-                    aVar.x.b();
+                    holder.x.b();
                 } else {
-                    aVar.x.a();
+                    holder.x.a();
                 }
             }
-            aVar.A.getLayoutParams().height = -2;
+            holder.A.getLayoutParams().height = -2;
             Iterator<EventBean> it = a2.iterator();
             while (it.hasNext()) {
                 EventBean next = it.next();
@@ -231,8 +233,8 @@ public class br extends qA implements View.OnClickListener {
                     componentEventButton.e.setText(next.eventName);
                     componentEventButton.c.setImageResource(oq.a(next.eventName));
                     componentEventButton.setClickListener(new Vq(this, next));
-                    aVar.y.addView(linearLayout);
-                    aVar.B.addView(componentEventButton);
+                    holder.y.addView(linearLayout);
+                    holder.B.addView(componentEventButton);
                     arrayList.remove(next.eventName);
                 }
             }
@@ -248,7 +250,7 @@ public class br extends qA implements View.OnClickListener {
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(0.0f);
                 imageView.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-                aVar.y.addView(linearLayout2);
+                holder.y.addView(linearLayout2);
                 linearLayout2.setScaleX(0.8f);
                 linearLayout2.setScaleY(0.8f);
                 ComponentEventButton componentEventButton2 = new ComponentEventButton(br.this.getContext());
@@ -256,22 +258,23 @@ public class br extends qA implements View.OnClickListener {
                 componentEventButton2.e.setText(str2);
                 componentEventButton2.c.setImageResource(oq.a(str2));
                 componentEventButton2.setClickListener(new Wq(this, componentBean, str2, componentEventButton2));
-                aVar.B.addView(componentEventButton2);
+                holder.B.addView(componentEventButton2);
             }
         }
 
         @Override
-        public int b(int i) {
-            return i;
+        public int getItemViewType(int position) {
+            return position;
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427433, viewGroup, false));
+        @NonNull
+        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427433, parent, false));
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             int size = br.this.g.size();
             if (size == 0) {
                 br.this.i.setVisibility(0);
@@ -290,7 +293,7 @@ public class br extends qA implements View.OnClickListener {
         while (it.hasNext()) {
             it.next().initValue();
         }
-        this.h.c();
+        this.h.notifyDataSetChanged();
     }
 
     public final void a(ViewGroup viewGroup) {
