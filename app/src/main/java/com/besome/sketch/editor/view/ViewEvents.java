@@ -131,7 +131,7 @@ public class ViewEvents extends LinearLayout {
                     aB dialog = new aB((Activity) getContext());
                     dialog.a(R.drawable.delete_96);
                     dialog.b("Confirm Delete");
-                    dialog.a("Click on Confirm to delete selected event.");
+                    dialog.a("Click on Confirm to delete the selected Event.");
 
                     dialog.b(Helper.getResString(R.string.common_word_delete), del -> {
                         dialog.dismiss();
