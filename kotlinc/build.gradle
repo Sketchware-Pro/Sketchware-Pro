@@ -1,24 +1,19 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
 }
+
 android {
-    namespace = "org.jetbrains.kotlin"
-    compileSdk = 34
+    namespace 'org.jetbrains.kotlin'
+    compileSdk 33
 
     defaultConfig {
-        minSdk = 26
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
+        minSdk 26
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -26,9 +21,10 @@ android {
     }
 }
 
-configurations.all {
-    exclude("org.jline", "jline")
+configurations.configureEach {
+    exclude group: 'org.jline', module: 'jline'
 }
+
 dependencies {
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
 
