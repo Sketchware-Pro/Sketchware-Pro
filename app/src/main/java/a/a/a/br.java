@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -27,11 +28,15 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.component.CollapsibleComponentLayout;
 import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
+import com.besome.sketch.editor.event.CollapsibleButton;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+
+import mod.hey.studios.util.Helper;
 
 public class br extends qA implements View.OnClickListener {
     public ProjectFileBean f;
@@ -116,10 +121,10 @@ public class br extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.Adapter<a.a> {
+    class a extends RecyclerView.Adapter<br.a.ViewHolder> {
         public int c = -1;
 
-        class a extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             public LinearLayout A;
             public LinearLayout B;
             public ImageView t;
@@ -130,7 +135,7 @@ public class br extends qA implements View.OnClickListener {
             public LinearLayout y;
             public LinearLayout z;
 
-            public a(View view) {
+            public ViewHolder(View view) {
                 super(view);
                 this.t = (ImageView) view.findViewById(2131231151);
                 this.u = (TextView) view.findViewById(2131231926);
@@ -144,15 +149,81 @@ public class br extends qA implements View.OnClickListener {
                 this.x.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
                 this.x.n.e.setText(xB.b().a(br.this.getContext(), 2131625094));
                 this.z.addView(this.x);
-                this.x.setButtonOnClickListener(new Xq(this, a.this));
-                view.setOnClickListener(new Yq(this, a.this));
-                this.w.setOnClickListener(new Zq(this, a.this));
-                view.setOnLongClickListener(new _q(this, a.this));
+                this.x.setButtonOnClickListener(v -> {
+                    c = getLayoutPosition();
+                    ComponentBean bean = jC.a(o).a(f.getJavaName(), c);
+                    if (v instanceof CollapsibleButton) {
+                        bean.isConfirmation = true;
+                        notifyItemChanged(c);
+                    } else {
+                        int id = v.getId();
+                        if (id == 2131230923) {
+                            bean.isConfirmation = false;
+                            notifyItemChanged(c);
+                        } else if (id == 2131230927) {
+                            jC.a(o).b(f.getJavaName(), bean);
+                            bean.isConfirmation = false;
+                            notifyItemRemoved(c);
+                            notifyItemRangeChanged(c, getItemCount());
+                        }
+                    }
+                });
+                view.setOnClickListener(v -> {
+                    c = getLayoutPosition();
+                    ComponentBean bean = jC.a(o).a(f.getJavaName(), getLayoutPosition());
+                    if (bean.isCollapsed) {
+                        bean.isCollapsed = false;
+                        E();
+                    } else {
+                        bean.isCollapsed = true;
+                        D();
+                    }
+                });
+                this.w.setOnClickListener(v -> {
+                    c = getLayoutPosition();
+                    ComponentBean bean = g.get(c);
+                    if (bean.isCollapsed) {
+                        bean.isCollapsed = false;
+                        E();
+                    } else {
+                        bean.isCollapsed = true;
+                        D();
+                    }
+                });
+                view.setOnLongClickListener(v -> {
+                    c = getLayoutPosition();
+                    ComponentBean bean = g.get(c);
+                    if (bean.isCollapsed) {
+                        bean.isCollapsed = false;
+                        E();
+                    } else {
+                        bean.isCollapsed = true;
+                        D();
+                    }
+                    return true;
+                });
             }
 
             public void D() {
                 gB.a(this.w, 0.0f, (Animator.AnimatorListener) null);
-                gB.a((ViewGroup) this.A, 200, (Animator.AnimatorListener) new ar(this));
+                gB.a((ViewGroup) this.A, 200, new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(@NonNull Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(@NonNull Animator animation) {
+                        A.setVisibility(8);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(@NonNull Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(@NonNull Animator animation) {
+                    }
+                });
                 this.y.animate().translationX(0.0f).alpha(1.0f).setStartDelay(120L).setDuration(150L).start();
                 this.B.animate().translationX(-this.B.getWidth()).setDuration(150L).alpha(0.0f).start();
             }
@@ -171,7 +242,21 @@ public class br extends qA implements View.OnClickListener {
 
         public a(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new Uq(this, br.this));
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
+                            if (n.isEnabled()) {
+                                n.hide();
+                            }
+                        } else if (dy < -2) {
+                            if (n.isEnabled()) {
+                                n.show();
+                            }
+                        }
+                    }
+                });
             }
         }
 
@@ -181,7 +266,7 @@ public class br extends qA implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(a holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             ComponentBean componentBean = br.this.g.get(position);
             holder.u.setText(ComponentBean.getComponentName(br.this.getContext(), componentBean.type));
             holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
@@ -232,7 +317,11 @@ public class br extends qA implements View.OnClickListener {
                     ComponentEventButton componentEventButton = new ComponentEventButton(br.this.getContext());
                     componentEventButton.e.setText(next.eventName);
                     componentEventButton.c.setImageResource(oq.a(next.eventName));
-                    componentEventButton.setClickListener(new Vq(this, next));
+                    componentEventButton.setClickListener(v -> {
+                        if (!mB.a()) {
+                            a(next.targetId, next.eventName, next.eventName);
+                        }
+                    });
                     holder.y.addView(linearLayout);
                     holder.B.addView(componentEventButton);
                     arrayList.remove(next.eventName);
@@ -257,7 +346,16 @@ public class br extends qA implements View.OnClickListener {
                 componentEventButton2.a();
                 componentEventButton2.e.setText(str2);
                 componentEventButton2.c.setImageResource(oq.a(str2));
-                componentEventButton2.setClickListener(new Wq(this, componentBean, str2, componentEventButton2));
+                componentEventButton2.setClickListener(v -> {
+                    if (!mB.a()) {
+                        EventBean event = new EventBean(2, componentBean.type, componentBean.componentId, str2);
+                        jC.a(o).a(f.getJavaName(), event);
+                        bB.a(getContext(), xB.b().a(getContext(), 2131625331), 0).show();
+                        componentEventButton2.b();
+                        notifyItemChanged(c);
+                        a(event.targetId, event.eventName, event.eventName);
+                    }
+                });
                 holder.B.addView(componentEventButton2);
             }
         }
@@ -269,8 +367,8 @@ public class br extends qA implements View.OnClickListener {
 
         @Override
         @NonNull
-        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427433, parent, false));
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427433, parent, false));
         }
 
         @Override
@@ -318,8 +416,15 @@ public class br extends qA implements View.OnClickListener {
         aBVar.b(xB.b().a(getContext(), 2131625094));
         aBVar.a(2131165524);
         aBVar.a(xB.b().a(getContext(), 2131625326));
-        aBVar.b(xB.b().a(getContext(), 2131624986), new Sq(this, i, aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new Tq(this, aBVar));
+        aBVar.b(xB.b().a(getContext(), 2131624986), v -> {
+            ComponentBean component = jC.a(o).a(f.getJavaName(), i);
+            jC.a(o).b(f.getJavaName(), component);
+            a("Remove", component.type, 0);
+            d();
+            bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
