@@ -56,14 +56,15 @@ import com.sketchware.remod.R;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import a.a.a.DB;
-import a.a.a.ProjectBuilder;
 import a.a.a.GB;
 import a.a.a.MA;
+import a.a.a.ProjectBuilder;
 import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
 import a.a.a.bB;
@@ -111,7 +112,6 @@ import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener {
-
     private static final int REQUEST_CODE_VIEW_MANAGER = 208;
     private static final int REQUEST_CODE_IMAGE_MANAGER = 209;
     private static final int REQUEST_CODE_SOUND_MANAGER = 217;
@@ -353,7 +353,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 viewPager.setCurrentItem(currentTabNumber);
             } else if (t.c("P12I2")) {
                 k();
-                new SaveChangesProjectCloser(getApplicationContext()).execute();
+                new SaveChangesProjectCloser(this).execute();
             } else {
                 showSaveBeforeQuittingDialog();
             }
@@ -364,7 +364,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void onClick(View v) {
         if (!mB.a()) {
             if (v.getId() == R.id.btn_execute) {
-                new BuildAsyncTask(getApplicationContext()).execute();
+                new BuildAsyncTask(this).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
@@ -554,7 +554,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             k();
-            new ProjectSaver(getApplicationContext()).execute();
+            new ProjectSaver(this).execute();
         }
 
         return super.onOptionsItemSelected(item);
@@ -570,7 +570,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
         try {
-            new ProjectLoader(getBaseContext(), savedInstanceState).execute();
+            new ProjectLoader(this, savedInstanceState).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -603,7 +603,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         if (!B) {
-            unsavedChangesSaver = new UnsavedChangesSaver(getApplicationContext());
+            unsavedChangesSaver = new UnsavedChangesSaver(this);
             unsavedChangesSaver.execute();
         }
     }
@@ -621,7 +621,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
                 try {
                     k();
-                    new SaveChangesProjectCloser(getApplicationContext()).execute();
+                    new SaveChangesProjectCloser(this).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                     h();
@@ -633,7 +633,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
                 try {
                     k();
-                    new DiscardChangesProjectCloser(getApplicationContext()).execute();
+                    new DiscardChangesProjectCloser(this).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                     h();
@@ -923,15 +923,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
-
+    private static class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
+        private final WeakReference<DesignActivity> activity;
         private final BuildingDialog dialog;
         private boolean canceled = false;
 
-        public BuildAsyncTask(Context context) {
-            super(context);
-            addTask(this);
-            dialog = new BuildingDialog(DesignActivity.this);
+        public BuildAsyncTask(DesignActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
+            dialog = new BuildingDialog(activity);
             maybeShow();
             dialog.setIsCancelableOnBackPressed(false);
         }
@@ -946,9 +947,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             dismiss();
-            runProject.setText(Helper.getResString(R.string.common_word_run));
-            runProject.setClickable(true);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            var activity = this.activity.get();
+            activity.runProject.setText(Helper.getResString(R.string.common_word_run));
+            activity.runProject.setClickable(true);
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         /**
@@ -959,12 +961,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          */
         @Override
         public void a(String str) {
-            runOnUiThread(() -> {
+            var activity = this.activity.get();
+            activity.runOnUiThread(() -> {
                 dismiss();
                 SketchwareUtil.toastError("APK build failed");
-                runProject.setText(Helper.getResString(R.string.common_word_run));
-                runProject.setClickable(true);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                activity.runProject.setText(Helper.getResString(R.string.common_word_run));
+                activity.runProject.setClickable(true);
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
         }
 
@@ -978,7 +981,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (canceled) {
                 cancel(true);
             } else {
+                var activity = this.activity.get();
                 try {
+                    var q = activity.q;
+                    var sc_id = activity.sc_id;
                     publishProgress("Deleting temporary files...");
                     FileUtil.deleteFile(q.projectMyscPath);
 
@@ -998,7 +1004,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     kC.c(q.resDirectoryPath + File.separator + "raw");
                     kC = jC.d(sc_id);
                     kC.a(q.assetsPath + File.separator + "fonts");
-                    generateProjectDebugFiles();
+                    activity.generateProjectDebugFiles();
                     q.f();
                     q.e();
 
@@ -1081,12 +1087,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    installBuiltApk();
+                    activity.installBuiltApk();
                 } catch (MissingFileException e) {
-                    runOnUiThread(() -> {
+                    activity.runOnUiThread(() -> {
                         boolean isMissingDirectory = e.isMissingDirectory();
 
-                        aB dialog = new aB(DesignActivity.this);
+                        aB dialog = new aB(activity);
                         if (isMissingDirectory) {
                             dialog.b("Missing directory detected");
                             dialog.a("A directory important for building is missing. " +
@@ -1109,7 +1115,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     });
                 } catch (Throwable tr) {
                     LogUtil.e("DesignActivity$BuildAsyncTask", "Failed to build project", tr);
-                    indicateCompileErrorOccurred(tr instanceof zy ? tr.getMessage() : Log.getStackTraceString(tr));
+                    activity.indicateCompileErrorOccurred(tr instanceof zy ? tr.getMessage() : Log.getStackTraceString(tr));
                 }
             }
         }
@@ -1118,7 +1124,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          * Dismiss this dialog, if DesignActivity hasn't been destroyed.
          */
         private void dismiss() {
-            if (!isDestroyed()) {
+            if (!activity.get().isDestroyed()) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                 }
@@ -1131,7 +1137,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          * @param progressText The new text to display as progress
          */
         public void setProgress(String progressText) {
-            runOnUiThread(() -> {
+            activity.get().runOnUiThread(() -> {
                 if (dialog.isShowing()) {
                     dialog.setProgress(progressText);
                 }
@@ -1161,10 +1167,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void onCancelled() {
             super.onCancelled();
-            runOnUiThread(() -> {
-                runProject.setText(Helper.getResString(R.string.common_word_run));
-                runProject.setClickable(true);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            var activity = this.activity.get();
+            activity.runOnUiThread(() -> {
+                activity.runProject.setText(Helper.getResString(R.string.common_word_run));
+                activity.runProject.setClickable(true);
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
             dismiss();
         }
@@ -1177,10 +1184,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void onPreExecute() {
             super.onPreExecute();
-            runProject.setText("Building APK file...");
-            runProject.setClickable(false);
-            r.a("P1I10", true);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            var activity = this.activity.get();
+            activity.runProject.setText("Building APK file...");
+            activity.runProject.setClickable(false);
+            activity.r.a("P1I10", true);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         @Override
@@ -1189,42 +1197,44 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class ProjectLoader extends MA {
-
+    private static class ProjectLoader extends MA {
+        private final WeakReference<DesignActivity> activity;
         private final Bundle savedInstanceState;
 
-        public ProjectLoader(Context context, Bundle savedInstanceState) {
-            super(context);
-            addTask(this);
+        public ProjectLoader(DesignActivity activity, Bundle savedInstanceState) {
+            super(activity.getBaseContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
             this.savedInstanceState = savedInstanceState;
         }
 
         @Override
         public void a() {
+            var activity = this.activity.get();
             if (savedInstanceState != null) {
-                projectFileSelector.onRestoreInstanceState(savedInstanceState);
+                activity.projectFileSelector.onRestoreInstanceState(savedInstanceState);
                 if (savedInstanceState.getInt("file_selector_current_file_type") == 0) {
-                    xmlLayoutOrientation.setVisibility(View.VISIBLE);
+                    activity.xmlLayoutOrientation.setVisibility(View.VISIBLE);
                 } else {
-                    xmlLayoutOrientation.setVisibility(View.GONE);
+                    activity.xmlLayoutOrientation.setVisibility(View.GONE);
                 }
             }
 
-            projectFileSelector.syncState();
-            h();
+            activity.projectFileSelector.syncState();
+            activity.h();
             if (savedInstanceState == null) {
-                checkForUnsavedProjectData();
+                activity.checkForUnsavedProjectData();
             }
         }
 
         @Override
         public void a(String str) {
-            h();
+            activity.get().h();
         }
 
         @Override
         public void b() {
-            loadProject(savedInstanceState != null);
+            activity.get().loadProject(savedInstanceState != null);
         }
 
         @Override
@@ -1233,27 +1243,32 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class DiscardChangesProjectCloser extends MA {
+    private static class DiscardChangesProjectCloser extends MA {
+        private final WeakReference<DesignActivity> activity;
 
-        public DiscardChangesProjectCloser(Context context) {
-            super(context);
-            addTask(this);
+        public DiscardChangesProjectCloser(DesignActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
-            h();
-            finish();
+            var activity = this.activity.get();
+            activity.h();
+            activity.finish();
         }
 
         @Override
         public void a(String str) {
-            h();
-            finish();
+            var activity = this.activity.get();
+            activity.h();
+            activity.finish();
         }
 
         @Override
         public void b() {
+            var sc_id = activity.get().sc_id;
             jC.d(sc_id).v();
             jC.d(sc_id).w();
             jC.d(sc_id).u();
@@ -1265,18 +1280,22 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class ProjectSaver extends MA {
+    private static class ProjectSaver extends MA {
+        private final WeakReference<DesignActivity> activity;
 
-        public ProjectSaver(Context context) {
-            super(context);
-            addTask(this);
+        public ProjectSaver(DesignActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
             bB.a(a, Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-            saveVersionCodeInformationToProject();
-            h();
+            var activity = this.activity.get();
+            var sc_id = activity.sc_id;
+            activity.saveVersionCodeInformationToProject();
+            activity.h();
             jC.d(sc_id).f();
             jC.d(sc_id).g();
             jC.d(sc_id).e();
@@ -1285,11 +1304,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a(String str) {
             bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
-            h();
+            activity.get().h();
         }
 
         @Override
         public void b() {
+            var sc_id = activity.get().sc_id;
             jC.d(sc_id).a();
             jC.b(sc_id).m();
             jC.a(sc_id).j();
@@ -1303,29 +1323,33 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class SaveChangesProjectCloser extends MA {
+    private static class SaveChangesProjectCloser extends MA {
+        private final WeakReference<DesignActivity> activity;
 
-        public SaveChangesProjectCloser(Context context) {
-            super(context);
-            addTask(this);
+        public SaveChangesProjectCloser(DesignActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
             bB.a(a, Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-            saveVersionCodeInformationToProject();
-            h();
-            finish();
+            var activity = this.activity.get();
+            activity.saveVersionCodeInformationToProject();
+            activity.h();
+            activity.finish();
         }
 
         @Override
         public void a(String str) {
             bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
-            h();
+            activity.get().h();
         }
 
         @Override
         public void b() {
+            var sc_id = activity.get().sc_id;
             jC.d(sc_id).a();
             jC.b(sc_id).m();
             jC.a(sc_id).j();
@@ -1340,11 +1364,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private class UnsavedChangesSaver extends MA {
+    private static class UnsavedChangesSaver extends MA {
+        private final WeakReference<DesignActivity> activity;
 
-        public UnsavedChangesSaver(Context context) {
-            super(context);
-            addTask(this);
+        public UnsavedChangesSaver(DesignActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
@@ -1357,7 +1383,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void b() {
-            jC.a(sc_id).k();
+            jC.a(activity.get().sc_id).k();
         }
 
         @Override
