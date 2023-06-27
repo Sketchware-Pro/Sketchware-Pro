@@ -61,7 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import a.a.a.DB;
-import a.a.a.Dp;
+import a.a.a.ProjectBuilder;
 import a.a.a.GB;
 import a.a.a.MA;
 import a.a.a.ViewEditorFragment;
@@ -1002,36 +1002,36 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.f();
                     q.e();
 
-                    Dp mDp = new Dp(this, a, q);
+                    ProjectBuilder builder = new ProjectBuilder(this, a, q);
 
-                    mDp.maybeExtractAapt2();
+                    builder.maybeExtractAapt2();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Extracting built-in libraries...");
-                    mDp.getBuiltInLibrariesReady();
+                    builder.getBuiltInLibrariesReady();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("AAPT2 is running...");
-                    mDp.compileResources();
+                    builder.compileResources();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, mDp);
+                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, builder);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Java is compiling...");
-                    mDp.compileJavaCode();
+                    builder.compileJavaCode();
                     if (canceled) {
                         cancel(true);
                         return;
@@ -1039,7 +1039,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     /* Encrypt Strings in classes if enabled */
                     StringfogHandler stringfogHandler = new StringfogHandler(q.sc_id);
-                    stringfogHandler.start(this, mDp);
+                    stringfogHandler.start(this, builder);
                     if (canceled) {
                         cancel(true);
                         return;
@@ -1047,35 +1047,35 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     /* Obfuscate classes if enabled */
                     ProguardHandler proguardHandler = new ProguardHandler(q.sc_id);
-                    proguardHandler.start(this, mDp);
+                    proguardHandler.start(this, builder);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    publishProgress(mDp.getDxRunningText());
-                    mDp.createDexFilesFromClasses();
+                    publishProgress(builder.getDxRunningText());
+                    builder.createDexFilesFromClasses();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Merging DEX files...");
-                    mDp.getDexFilesReady();
+                    builder.getDexFilesReady();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Building APK...");
-                    mDp.buildApk();
+                    builder.buildApk();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Signing APK...");
-                    mDp.signDebugApk();
+                    builder.signDebugApk();
                     if (canceled) {
                         cancel(true);
                         return;

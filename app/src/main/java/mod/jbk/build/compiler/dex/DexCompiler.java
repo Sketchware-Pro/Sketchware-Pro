@@ -15,18 +15,17 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import a.a.a.Dp;
+import a.a.a.ProjectBuilder;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.ProjectSettings;
 
 public class DexCompiler {
-
     @TargetApi(Build.VERSION_CODES.O)
-    public static void compileDexFiles(Dp compileHelper) throws CompilationFailedException {
+    public static void compileDexFiles(ProjectBuilder builder) throws CompilationFailedException {
         int minApiLevel;
 
         try {
-            minApiLevel = Integer.parseInt(compileHelper.settings.getValue(
+            minApiLevel = Integer.parseInt(builder.settings.getValue(
                     ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
         } catch (NumberFormatException e) {
             throw new CompilationFailedException("Invalid minSdkVersion specified in Project Settings", e);
@@ -37,16 +36,16 @@ public class DexCompiler {
         }
 
         Collection<Path> programFiles = new LinkedList<>();
-        if (compileHelper.proguard.isProguardEnabled()) {
-            programFiles.add(Paths.get(compileHelper.yq.classesProGuardPath));
+        if (builder.proguard.isProguardEnabled()) {
+            programFiles.add(Paths.get(builder.yq.classesProGuardPath));
         } else {
-            for (File file : FileUtil.listFilesRecursively(new File(compileHelper.yq.compiledClassesPath), ".class")) {
+            for (File file : FileUtil.listFilesRecursively(new File(builder.yq.compiledClassesPath), ".class")) {
                 programFiles.add(file.toPath());
             }
         }
 
         Collection<Path> libraryFiles = new LinkedList<>();
-        for (String jarPath : compileHelper.getClasspath().split(":")) {
+        for (String jarPath : builder.getClasspath().split(":")) {
             libraryFiles.add(Paths.get(jarPath));
         }
 
@@ -55,7 +54,7 @@ public class DexCompiler {
                 .setIntermediate(true)
                 .setMinApiLevel(minApiLevel)
                 .addLibraryFiles(libraryFiles)
-                .setOutput(new File(compileHelper.yq.binDirectoryPath, "dex").toPath(), OutputMode.DexIndexed)
+                .setOutput(new File(builder.yq.binDirectoryPath, "dex").toPath(), OutputMode.DexIndexed)
                 .addProgramFiles(programFiles)
                 .build());
     }

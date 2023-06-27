@@ -18,8 +18,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import a.a.a.Dp;
 import a.a.a.Jp;
+import a.a.a.ProjectBuilder;
 import a.a.a.yq;
 import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -28,7 +28,6 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 
 public class AppBundleCompiler {
-
     private static final String MODULE_ARCHIVE_FILE_NAME = "module-main.zip";
     private static final String MODULE_ASSETS = "assets";
     private static final String MODULE_DEX = "dex";
@@ -38,16 +37,17 @@ public class AppBundleCompiler {
     private static final String MODULE_MANIFEST = "manifest";
 
     private static final String TAG = AppBundleCompiler.class.getSimpleName();
-    private final Dp mDp;
+
+    private final ProjectBuilder builder;
     private final File mainModuleArchive;
     private final File appBundle;
 
     private final List<String> uncompressedModuleMainPaths = new LinkedList<>();
 
-    public AppBundleCompiler(Dp dp) {
-        mDp = dp;
-        mainModuleArchive = new File(dp.yq.binDirectoryPath, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.yq.binDirectoryPath, getBundleFilename(dp.yq.projectName));
+    public AppBundleCompiler(ProjectBuilder builder) {
+        this.builder = builder;
+        mainModuleArchive = new File(builder.yq.binDirectoryPath, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(builder.yq.binDirectoryPath, getBundleFilename(builder.yq.projectName));
     }
 
     public static String getBundleFilename(String sc_id) {
@@ -67,7 +67,7 @@ public class AppBundleCompiler {
         Path appBundlePath = appBundle.toPath();
         LogUtil.d(TAG, "Converting main module " + mainModule + " to " + appBundlePath);
 
-        BuildBundleCommand.Builder builder = BuildBundleCommand.builder()
+        BuildBundleCommand.Builder bundleBuilder = BuildBundleCommand.builder()
                 .setModulesPaths(ImmutableList.of(mainModule))
                 .setOverwriteOutput(true)
                 .setOutputPath(appBundlePath)
@@ -76,14 +76,14 @@ public class AppBundleCompiler {
                                 .addAllUncompressedGlob(uncompressedModuleMainPaths).build()
                         ).build()
                 );
-        if (mDp.proguard.isProguardEnabled() && mDp.proguard.isDebugFilesEnabled()) {
-            Path mapping = Paths.get(mDp.yq.proGuardMappingPath);
+        if (builder.proguard.isProguardEnabled() && builder.proguard.isDebugFilesEnabled()) {
+            Path mapping = Paths.get(builder.yq.proGuardMappingPath);
             LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
-            builder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);
+            bundleBuilder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);
         }
 
         try {
-            BuildBundleCommand command = builder.build();
+            BuildBundleCommand command = bundleBuilder.build();
             LogUtil.d(TAG, "Now running " + command);
             command.execute();
         } catch (Exception e) {
@@ -105,12 +105,12 @@ public class AppBundleCompiler {
                 /* Finally, use it as ZipOutputStream */
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
                     /* Get an automatically closed FileInputStream of <project name>.apk.res */
-                    try (FileInputStream apkResStream = new FileInputStream(mDp.yq.resourcesApkPath)) {
+                    try (FileInputStream apkResStream = new FileInputStream(builder.yq.resourcesApkPath)) {
                         /* Create an automatically closed ZipInputStream of <project name>.apk.res */
                         try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
 
                             /* First, compress DEX files into module-main.zip */
-                            File[] binDirectoryContent = new File(mDp.yq.binDirectoryPath).listFiles();
+                            File[] binDirectoryContent = new File(builder.yq.binDirectoryPath).listFiles();
                             if (binDirectoryContent != null) {
                                 for (File file : binDirectoryContent) {
                                     if (file.isFile() && file.getName().endsWith(".dex")) {
@@ -175,7 +175,7 @@ public class AppBundleCompiler {
                         }
                     }
 
-                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.yq.sc_id));
+                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(builder.yq.sc_id));
                     File[] architectures = nativeLibrariesDirectory.listFiles();
 
                     if (architectures != null) {
@@ -203,10 +203,10 @@ public class AppBundleCompiler {
                     }
 
                     /* Start with enabled Local libraries' JARs */
-                    ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.sc_id).getLocalLibraryJars();
+                    ArrayList<File> jars = new ManageLocalLibrary(builder.yq.sc_id).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
-                    for (Jp library : mDp.builtInLibraryManager.getLibraries()) {
+                    for (Jp library : builder.builtInLibraryManager.getLibraries()) {
                         jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
                     }
 

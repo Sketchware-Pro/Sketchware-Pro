@@ -35,15 +35,15 @@ public class BuiltInLibraryManager {
         //noinspection SimplifyOptionalCallChains because #isEmpty() isn't available on Android.
         if (!library.isPresent() || !excludedLibraries.contains(library.get())) {
             if (!libraryNames.contains(libraryName)) {
-                Log.d(Dp.TAG, "Added built-in library \"" + libraryName + "\" to project's dependencies");
+                Log.d(ProjectBuilder.TAG, "Added built-in library \"" + libraryName + "\" to project's dependencies");
                 libraryNames.add(libraryName);
                 libraries.add(new Jp(libraryName));
                 addDependencies(libraryName);
             } else {
-                Log.v(Dp.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies again");
+                Log.v(ProjectBuilder.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies again");
             }
         } else {
-            Log.v(Dp.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies as it's excluded");
+            Log.v(ProjectBuilder.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies as it's excluded");
         }
     }
 

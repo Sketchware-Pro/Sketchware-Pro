@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import a.a.a.Dp;
+import a.a.a.ProjectBuilder;
 import a.a.a.oB;
 import a.a.a.yq;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -36,7 +36,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
     private final yq projectConfig;
     private final BuildSettings buildSettings;
-    private final Dp compileHelper;
+    private final ProjectBuilder compileHelper;
     private final ManageLocalLibrary manageLocalLibrary;
     private final ArrayList<String> builtInLibraries = new ArrayList<>();
     private final oB fileUtil;
@@ -48,7 +48,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
         this.projectConfig = projectConfig;
         buildSettings = new BuildSettings(projectConfig.sc_id);
-        compileHelper = new Dp(getContext(), projectConfig);
+        compileHelper = new ProjectBuilder(getContext(), projectConfig);
         compileHelper.getBuiltInLibrariesReady();
         manageLocalLibrary = new ManageLocalLibrary(projectConfig.sc_id);
         fileUtil = new oB(false);

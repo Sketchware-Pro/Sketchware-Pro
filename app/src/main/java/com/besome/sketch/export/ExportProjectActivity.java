@@ -43,9 +43,9 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.Dp;
 import a.a.a.KB;
 import a.a.a.MA;
+import a.a.a.ProjectBuilder;
 import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.hC;
@@ -612,7 +612,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private final yq project_metadata;
         private final WeakReference<LottieAnimationView> loading_sign_apk;
 
-        private Dp dp;
+        private ProjectBuilder builder;
         private boolean canceled = false;
         private boolean buildingAppBundle = false;
         private String signingKeystorePath = null;
@@ -699,12 +699,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     cancel(true);
                     return;
                 }
-                dp = new Dp(this, a, project_metadata);
-                dp.setBuildAppBundle(buildingAppBundle);
+                builder = new ProjectBuilder(this, a, project_metadata);
+                builder.setBuildAppBundle(buildingAppBundle);
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");
-                dp.maybeExtractAapt2();
+                builder.maybeExtractAapt2();
                 if (canceled) {
                     cancel(true);
                     return;
@@ -712,27 +712,27 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Check built-in libraries */
                 publishProgress("Extracting built-in libraries...");
-                dp.getBuiltInLibrariesReady();
+                builder.getBuiltInLibrariesReady();
                 if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 publishProgress("AAPT2 is running...");
-                dp.compileResources();
+                builder.compileResources();
                 if (canceled) {
                     cancel(true);
                     return;
                 }
 
-                KotlinCompilerBridge.compileKotlinCodeIfPossible(this, dp);
+                KotlinCompilerBridge.compileKotlinCodeIfPossible(this, builder);
                 if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 publishProgress("Java is compiling...");
-                dp.compileJavaCode();
+                builder.compileJavaCode();
                 if (canceled) {
                     cancel(true);
                     return;
@@ -740,7 +740,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Encrypt Strings in classes if enabled */
                 StringfogHandler stringfogHandler = new StringfogHandler(project_metadata.sc_id);
-                stringfogHandler.start(this, dp);
+                stringfogHandler.start(this, builder);
                 if (canceled) {
                     cancel(true);
                     return;
@@ -748,15 +748,15 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Obfuscate classes if enabled */
                 ProguardHandler proguardHandler = new ProguardHandler(project_metadata.sc_id);
-                proguardHandler.start(this, dp);
+                proguardHandler.start(this, builder);
                 if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 /* Create DEX file(s) */
-                publishProgress(dp.getDxRunningText());
-                dp.createDexFilesFromClasses();
+                publishProgress(builder.getDxRunningText());
+                builder.createDexFilesFromClasses();
                 if (canceled) {
                     cancel(true);
                     return;
@@ -764,14 +764,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Merge DEX file(s) with libraries' dexes */
                 publishProgress("Merging libraries' DEX files...");
-                dp.getDexFilesReady();
+                builder.getDexFilesReady();
                 if (canceled) {
                     cancel(true);
                     return;
                 }
 
                 if (buildingAppBundle) {
-                    AppBundleCompiler compiler = new AppBundleCompiler(dp);
+                    AppBundleCompiler compiler = new AppBundleCompiler(builder);
                     publishProgress("Creating app module...");
                     compiler.createModuleMainArchive();
                     publishProgress("Building app bundle...");
@@ -809,23 +809,23 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     }
                 } else {
                     publishProgress("Building APK...");
-                    dp.buildApk();
+                    builder.buildApk();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Aligning APK...");
-                    dp.runZipalign(dp.yq.unsignedUnalignedApkPath, dp.yq.unsignedAlignedApkPath);
+                    builder.runZipalign(builder.yq.unsignedUnalignedApkPath, builder.yq.unsignedAlignedApkPath);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Signing APK...");
-                    String outputLocation = getCorrectResultFilename(dp.yq.releaseApkPath);
+                    String outputLocation = getCorrectResultFilename(builder.yq.releaseApkPath);
                     if (signWithTestkey) {
-                        TestkeySignBridge.signWithTestkey(dp.yq.unsignedAlignedApkPath, outputLocation);
+                        TestkeySignBridge.signWithTestkey(builder.yq.unsignedAlignedApkPath, outputLocation);
                     } else if (isResultJarSigningEnabled()) {
                         Security.addProvider(new BouncyCastleProvider());
                         CustomKeySigner.signZip(
@@ -835,11 +835,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                 signingAliasName,
                                 signingKeystorePassword,
                                 signingAlgorithm,
-                                dp.yq.unsignedAlignedApkPath,
+                                builder.yq.unsignedAlignedApkPath,
                                 outputLocation
                         );
                     } else {
-                        FileUtil.copyFile(dp.yq.unsignedAlignedApkPath, outputLocation);
+                        FileUtil.copyFile(builder.yq.unsignedAlignedApkPath, outputLocation);
                     }
                 }
             } catch (Throwable throwable) {
@@ -870,7 +870,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         @Override
         public void onCancelled() {
             super.onCancelled();
-            dp = null;
+            builder = null;
             activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             activity.get().i();

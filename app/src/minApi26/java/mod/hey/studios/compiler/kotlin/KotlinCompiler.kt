@@ -1,6 +1,6 @@
 package mod.hey.studios.compiler.kotlin
 
-import a.a.a.Dp
+import a.a.a.ProjectBuilder
 import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil.*
 import mod.jbk.util.LogUtil
@@ -16,7 +16,7 @@ import java.io.File
  * A huge thank you to [tyron][https://github.com/tyron12233] for porting `kotlinc` to Android.
  */
 class KotlinCompiler(
-    private val builder: Dp
+    private val builder: ProjectBuilder
 ) {
     private val workspace = builder.yq
 
