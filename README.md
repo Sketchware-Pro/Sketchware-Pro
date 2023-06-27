@@ -1,6 +1,11 @@
-<p align="center">
-  <img src="assets/Sketchware-Pro.png" />
+<p>
+  <img src="assets/Sketchware-Pro.png"  alt="Sketchware Pro logo"/>
 </p>
+<style>
+p {
+    text-align: center;
+}
+</style>
 
 # Sketchware Pro
 ![GitHub contributors](https://img.shields.io/github/contributors/Sketchware-Pro/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/Sketchware-Pro/Sketchware-Pro) ![Discord server stats](https://img.shields.io/discord/790686719753846785)
