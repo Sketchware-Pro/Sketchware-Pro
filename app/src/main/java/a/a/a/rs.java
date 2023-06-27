@@ -918,23 +918,23 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                 eventBean.buttonPressed = i;
                                 eventBean.isConfirmation = false;
                                 eventBean.isCollapsed = false;
-                                EventAdapter.this.notifyItemChanged(lastSelectedItem);
+                                notifyItemChanged(lastSelectedItem);
                                 showSaveMoreBlockToCollectionsDialog(lastSelectedItem);
                             } else {
                                 eventBean.buttonPressed = i;
                                 eventBean.isConfirmation = true;
-                                EventAdapter.this.notifyItemChanged(lastSelectedItem);
+                                notifyItemChanged(lastSelectedItem);
                             }
                         } else {
                             if (v.getId() == R.id.confirm_no) {
                                 eventBean.isConfirmation = false;
-                                EventAdapter.this.notifyItemChanged(lastSelectedItem);
+                                notifyItemChanged(lastSelectedItem);
                             } else if (v.getId() == R.id.confirm_yes) {
                                 if (eventBean.buttonPressed == 0) {
                                     eventBean.isConfirmation = false;
                                     eventBean.isCollapsed = true;
                                     resetEvent(eventBean);
-                                    EventAdapter.this.notifyItemChanged(lastSelectedItem);
+                                    notifyItemChanged(lastSelectedItem);
                                 } else if (eventBean.buttonPressed == 1) {
                                     eventBean.isConfirmation = false;
                                     if (categoryAdapter.index != 4) {
