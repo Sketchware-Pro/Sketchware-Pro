@@ -117,6 +117,7 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
+                container.setOnClickListener(v -> createEvent(getLayoutPosition()));
             }
         }
 
@@ -132,22 +133,20 @@ public class ViewEvents extends LinearLayout {
                     dialog.b("Confirm Delete");
                     dialog.a("Click on Confirm to delete selected event.");
 
-                    dialog.b("Delete", del -> {
+                    dialog.b(Helper.getResString(R.string.common_word_delete), del -> {
                         dialog.dismiss();
                         EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
                         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
                         eventBean.isSelected = false;
                         eventAdapter.notifyItemChanged(position);
                     });
-                    dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
+                    dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
                     dialog.show();
                     return true;
                 });
-                holder.container.setOnClickListener(v -> createEvent(position));
             } else {
                 holder.addAvailableIcon.setVisibility(View.VISIBLE);
                 mB.a(holder.icon, 0);
-                holder.container.setOnClickListener(v -> createEvent(position));
             }
             holder.icon.setImageResource(oq.a(eventBean.eventName));
             holder.name.setText(eventBean.eventName);
