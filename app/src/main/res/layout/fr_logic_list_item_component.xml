@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="4dp"
@@ -19,7 +20,8 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="24dp"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            tools:src="@drawable/widget_firebase" />
 
         <TextView
             android:id="@+id/tv_component_type"
@@ -28,7 +30,8 @@
             android:layout_marginLeft="72dp"
             android:layout_marginTop="12dp"
             android:textColor="#ff404040"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="Firebase DB" />
 
         <TextView
             android:id="@+id/tv_component_id"
@@ -39,7 +42,8 @@
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:textColor="#ff9a9a9a"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="amogus" />
 
         <LinearLayout
             android:id="@+id/events_preview"
@@ -67,7 +71,8 @@
         android:layout_height="wrap_content"
         android:background="#ffffffff"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <HorizontalScrollView
             android:id="@+id/sv_component_events"
