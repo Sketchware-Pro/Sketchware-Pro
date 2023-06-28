@@ -56,19 +56,18 @@ public class br extends qA implements View.OnClickListener {
     });
 
     public void refreshData() {
-        if (this.projectFile == null || this.adapter == null) {
-            return;
+        if (projectFile != null && adapter != null) {
+            components = jC.a(sc_id).e(projectFile.getJavaName());
+            adapter.notifyDataSetChanged();
         }
-        this.components = jC.a(this.sc_id).e(this.projectFile.getJavaName());
-        this.adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == R.id.fab) {
             Intent intent = new Intent(getContext(), ComponentAddActivity.class);
-            intent.putExtra("sc_id", this.sc_id);
-            intent.putExtra("project_file", this.projectFile);
+            intent.putExtra("sc_id", sc_id);
+            intent.putExtra("project_file", projectFile);
             addComponent.launch(intent);
         }
     }
@@ -76,10 +75,9 @@ public class br extends qA implements View.OnClickListener {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (getUserVisibleHint()) {
-            if (item.getItemId() != 4) {
-                return true;
+            if (item.getItemId() == 4) {
+                showDeleteComponentDialog(adapter.lastSelectedItem);
             }
-            showDeleteComponentDialog(this.adapter.lastSelectedItem);
             return true;
         }
         return false;
@@ -105,16 +103,16 @@ public class br extends qA implements View.OnClickListener {
         initialize(root);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
-            this.sc_id = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         } else {
-            this.sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = getActivity().getIntent().getStringExtra("sc_id");
         }
         return root;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString("sc_id", this.sc_id);
+        outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
     }
 
@@ -134,21 +132,21 @@ public class br extends qA implements View.OnClickListener {
 
             public ViewHolder(View view) {
                 super(view);
-                this.t = (ImageView) view.findViewById(R.id.img_icon);
-                this.u = (TextView) view.findViewById(R.id.tv_component_type);
-                this.v = (TextView) view.findViewById(R.id.tv_component_id);
-                this.w = (ImageView) view.findViewById(R.id.img_menu);
-                this.y = (LinearLayout) view.findViewById(R.id.events_preview);
-                this.A = (LinearLayout) view.findViewById(R.id.component_option_layout);
-                this.z = (LinearLayout) view.findViewById(R.id.component_option);
-                this.B = (LinearLayout) view.findViewById(R.id.component_events);
-                this.x = new CollapsibleComponentLayout(br.this.getContext());
-                this.x.setLayoutParams(new FrameLayout.LayoutParams(
+                t = view.findViewById(R.id.img_icon);
+                u = view.findViewById(R.id.tv_component_type);
+                v = view.findViewById(R.id.tv_component_id);
+                w = view.findViewById(R.id.img_menu);
+                y = view.findViewById(R.id.events_preview);
+                A = view.findViewById(R.id.component_option_layout);
+                z = view.findViewById(R.id.component_option);
+                B = view.findViewById(R.id.component_events);
+                x = new CollapsibleComponentLayout(getContext());
+                x.setLayoutParams(new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
-                this.x.n.e.setText(xB.b().a(br.this.getContext(), R.string.component_context_menu_title_delete_component));
-                this.z.addView(this.x);
-                this.x.setButtonOnClickListener(v -> {
+                x.n.e.setText(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
+                z.addView(x);
+                x.setButtonOnClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
                     if (v instanceof CollapsibleButton) {
@@ -178,7 +176,7 @@ public class br extends qA implements View.OnClickListener {
                         D();
                     }
                 });
-                this.w.setOnClickListener(v -> {
+                w.setOnClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = components.get(lastSelectedItem);
                     if (bean.isCollapsed) {
@@ -204,8 +202,8 @@ public class br extends qA implements View.OnClickListener {
             }
 
             public void D() {
-                gB.a(this.w, 0.0f, (Animator.AnimatorListener) null);
-                gB.a((ViewGroup) this.A, 200, new Animator.AnimatorListener() {
+                gB.a(w, 0.0f, null);
+                gB.a(A, 200, new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(@NonNull Animator animation) {
                     }
@@ -223,19 +221,18 @@ public class br extends qA implements View.OnClickListener {
                     public void onAnimationRepeat(@NonNull Animator animation) {
                     }
                 });
-                this.y.animate().translationX(0.0f).alpha(1.0f).setStartDelay(120L).setDuration(150L).start();
-                this.B.animate().translationX(-this.B.getWidth()).setDuration(150L).alpha(0.0f).start();
+                y.animate().translationX(0.0f).alpha(1.0f).setStartDelay(120L).setDuration(150L).start();
+                B.animate().translationX(-B.getWidth()).setDuration(150L).alpha(0.0f).start();
             }
 
             public void E() {
-                this.A.setVisibility(View.VISIBLE);
-                gB.a(this.w, -180.0f, (Animator.AnimatorListener) null);
-                gB.b(this.A, 200, null);
-                this.y.animate().translationX(this.y.getWidth()).alpha(0.0f).setDuration(150L).start();
-                LinearLayout linearLayout = this.B;
-                linearLayout.setTranslationX(-linearLayout.getWidth());
-                this.B.setAlpha(0.0f);
-                this.B.animate().translationX(0.0f).setStartDelay(200L).setDuration(120L).alpha(1.0f).start();
+                A.setVisibility(View.VISIBLE);
+                gB.a(w, -180.0f, null);
+                gB.b(A, 200, null);
+                y.animate().translationX(y.getWidth()).alpha(0.0f).setDuration(150L).start();
+                B.setTranslationX(-B.getWidth());
+                B.setAlpha(0.0f);
+                B.animate().translationX(0.0f).setStartDelay(200L).setDuration(120L).alpha(1.0f).start();
             }
         }
 
@@ -266,8 +263,8 @@ public class br extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ComponentBean componentBean = br.this.components.get(position);
-            holder.u.setText(ComponentBean.getComponentName(br.this.getContext(), componentBean.type));
+            ComponentBean componentBean = components.get(position);
+            holder.u.setText(ComponentBean.getComponentName(getContext(), componentBean.type));
             holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
             int i2 = componentBean.type;
             if (i2 == 2) {
@@ -283,7 +280,7 @@ public class br extends qA implements View.OnClickListener {
                 TextView textView2 = holder.v;
                 textView2.setText(componentBean.componentId + " : " + str);
             }
-            ArrayList<EventBean> a2 = jC.a(br.this.sc_id).a(br.this.projectFile.getJavaName(), componentBean);
+            ArrayList<EventBean> a2 = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
             ArrayList arrayList = new ArrayList();
             arrayList.addAll(Arrays.asList(oq.a(componentBean.getClassInfo())));
             holder.y.removeAllViews();
@@ -307,15 +304,15 @@ public class br extends qA implements View.OnClickListener {
             while (it.hasNext()) {
                 EventBean next = it.next();
                 if (arrayList.contains(next.eventName)) {
-                    LinearLayout linearLayout = (LinearLayout) wB.a(br.this.getContext(), R.layout.fr_logic_list_item_event_preview);
+                    LinearLayout linearLayout = (LinearLayout) wB.a(getContext(), R.layout.fr_logic_list_item_event_preview);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 0, (int) wB.a(br.this.getContext(), 4.0f), 0);
+                    layoutParams.setMargins(0, 0, (int) wB.a(getContext(), 4.0f), 0);
                     linearLayout.setLayoutParams(layoutParams);
                     ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(next.eventName));
-                    ((LinearLayout) linearLayout.findViewById(R.id.icon_bg)).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
-                    ComponentEventButton componentEventButton = new ComponentEventButton(br.this.getContext());
+                    linearLayout.findViewById(R.id.icon_bg).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
+                    ComponentEventButton componentEventButton = new ComponentEventButton(getContext());
                     componentEventButton.e.setText(next.eventName);
                     componentEventButton.c.setImageResource(oq.a(next.eventName));
                     componentEventButton.setClickListener(v -> {
@@ -331,13 +328,13 @@ public class br extends qA implements View.OnClickListener {
             Iterator it2 = arrayList.iterator();
             while (it2.hasNext()) {
                 String str2 = (String) it2.next();
-                LinearLayout linearLayout2 = (LinearLayout) wB.a(br.this.getContext(), R.layout.fr_logic_list_item_event_preview);
+                LinearLayout linearLayout2 = (LinearLayout) wB.a(getContext(), R.layout.fr_logic_list_item_event_preview);
                 LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams2.setMargins(0, 0, (int) wB.a(br.this.getContext(), 4.0f), 0);
+                layoutParams2.setMargins(0, 0, (int) wB.a(getContext(), 4.0f), 0);
                 linearLayout2.setLayoutParams(layoutParams2);
-                ImageView imageView = (ImageView) linearLayout2.findViewById(R.id.icon);
+                ImageView imageView = linearLayout2.findViewById(R.id.icon);
                 imageView.setImageResource(oq.a(str2));
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(0.0f);
@@ -345,7 +342,7 @@ public class br extends qA implements View.OnClickListener {
                 holder.y.addView(linearLayout2);
                 linearLayout2.setScaleX(0.8f);
                 linearLayout2.setScaleY(0.8f);
-                ComponentEventButton componentEventButton2 = new ComponentEventButton(br.this.getContext());
+                ComponentEventButton componentEventButton2 = new ComponentEventButton(getContext());
                 componentEventButton2.a();
                 componentEventButton2.e.setText(str2);
                 componentEventButton2.c.setImageResource(oq.a(str2));
@@ -376,67 +373,66 @@ public class br extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            int size = br.this.components.size();
+            int size = components.size();
             if (size == 0) {
-                br.this.empty.setVisibility(View.VISIBLE);
+                empty.setVisibility(View.VISIBLE);
             } else {
-                br.this.empty.setVisibility(View.GONE);
+                empty.setVisibility(View.GONE);
             }
             return size;
         }
     }
 
     public void unselectAll() {
-        if (this.projectFile == null) {
-            return;
+        if (projectFile != null) {
+            Iterator<ComponentBean> it = jC.a(sc_id).e(projectFile.getJavaName()).iterator();
+            while (it.hasNext()) {
+                it.next().initValue();
+            }
+            adapter.notifyDataSetChanged();
         }
-        Iterator<ComponentBean> it = jC.a(this.sc_id).e(this.projectFile.getJavaName()).iterator();
-        while (it.hasNext()) {
-            it.next().initValue();
-        }
-        this.adapter.notifyDataSetChanged();
     }
 
     private void initialize(ViewGroup viewGroup) {
-        this.empty = (TextView) viewGroup.findViewById(R.id.empty_message);
-        RecyclerView componentList = (RecyclerView) viewGroup.findViewById(R.id.component_list);
+        empty = viewGroup.findViewById(R.id.empty_message);
+        RecyclerView componentList = viewGroup.findViewById(R.id.component_list);
         componentList.setHasFixedSize(true);
-        this.empty.setVisibility(View.GONE);
-        this.empty.setText(xB.b().a(getContext(), R.string.component_message_no_components));
+        empty.setVisibility(View.GONE);
+        empty.setText(xB.b().a(getContext(), R.string.component_message_no_components));
         componentList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        this.adapter = new Adapter(componentList);
-        componentList.setAdapter(this.adapter);
-        this.fab = (FloatingActionButton) viewGroup.findViewById(R.id.fab);
-        this.fab.setOnClickListener(this);
+        adapter = new Adapter(componentList);
+        componentList.setAdapter(adapter);
+        fab = viewGroup.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
     }
 
     public void setProjectFile(ProjectFileBean projectFileBean) {
-        this.projectFile = projectFileBean;
+        projectFile = projectFileBean;
     }
 
     private void showDeleteComponentDialog(int componentIndex) {
-        aB aBVar = new aB(this.a);
-        aBVar.b(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
-        aBVar.a(R.drawable.delete_96);
-        aBVar.a(xB.b().a(getContext(), R.string.event_dialog_confirm_delete_component));
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        aB dialog = new aB(a);
+        dialog.b(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
+        dialog.a(R.drawable.delete_96);
+        dialog.a(xB.b().a(getContext(), R.string.event_dialog_confirm_delete_component));
+        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             ComponentBean component = jC.a(sc_id).a(projectFile.getJavaName(), componentIndex);
             jC.a(sc_id).b(projectFile.getJavaName(), component);
             refreshData();
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-            aBVar.dismiss();
+            dialog.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     private void openEvent(String targetId, String eventName, String eventText) {
         Intent intent = new Intent(getActivity(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", this.sc_id);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("id", targetId);
         intent.putExtra("event", eventName);
-        intent.putExtra("project_file", this.projectFile);
+        intent.putExtra("project_file", projectFile);
         intent.putExtra("event_text", eventText);
         startActivity(intent);
     }
