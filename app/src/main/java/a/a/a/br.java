@@ -43,21 +43,17 @@ import java.util.Iterator;
 import mod.hey.studios.util.Helper;
 
 public class br extends qA implements View.OnClickListener {
-    public ProjectFileBean f;
-    public a h;
-    public TextView i;
-    public RecyclerView k;
-    public FloatingActionButton n;
-    public String o;
-    public ArrayList<ComponentBean> g = new ArrayList<>();
-    public boolean j = false;
+    private ProjectFileBean f;
+    private a h;
+    private TextView i;
+    private FloatingActionButton n;
+    private String o;
+    private ArrayList<ComponentBean> g = new ArrayList<>();
     private final ActivityResultLauncher<Intent> addComponent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             d();
         }
     });
-    public final String l = "component";
-    public final int m = 4;
 
     public void d() {
         if (this.f == null || this.h == null) {
@@ -122,19 +118,19 @@ public class br extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    class a extends RecyclerView.Adapter<br.a.ViewHolder> {
-        public int c = -1;
+    private class a extends RecyclerView.Adapter<br.a.ViewHolder> {
+        private int c = -1;
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            public LinearLayout A;
-            public LinearLayout B;
-            public ImageView t;
-            public TextView u;
-            public TextView v;
-            public ImageView w;
-            public CollapsibleComponentLayout x;
-            public LinearLayout y;
-            public LinearLayout z;
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final LinearLayout A;
+            public final LinearLayout B;
+            public final ImageView t;
+            public final TextView u;
+            public final TextView v;
+            public final ImageView w;
+            public final CollapsibleComponentLayout x;
+            public final LinearLayout y;
+            public final LinearLayout z;
 
             public ViewHolder(View view) {
                 super(view);
@@ -401,15 +397,15 @@ public class br extends qA implements View.OnClickListener {
         this.h.notifyDataSetChanged();
     }
 
-    public final void a(ViewGroup viewGroup) {
+    private void a(ViewGroup viewGroup) {
         this.i = (TextView) viewGroup.findViewById(R.id.empty_message);
-        this.k = (RecyclerView) viewGroup.findViewById(R.id.component_list);
-        this.k.setHasFixedSize(true);
+        RecyclerView componentList = (RecyclerView) viewGroup.findViewById(R.id.component_list);
+        componentList.setHasFixedSize(true);
         this.i.setVisibility(View.GONE);
         this.i.setText(xB.b().a(getContext(), R.string.component_message_no_components));
-        this.k.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        this.h = new a(this.k);
-        this.k.setAdapter(this.h);
+        componentList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        this.h = new a(componentList);
+        componentList.setAdapter(this.h);
         this.n = (FloatingActionButton) viewGroup.findViewById(R.id.fab);
         this.n.setOnClickListener(this);
     }
@@ -418,7 +414,7 @@ public class br extends qA implements View.OnClickListener {
         this.f = projectFileBean;
     }
 
-    public final void a(int i) {
+    private void a(int i) {
         aB aBVar = new aB(this.a);
         aBVar.b(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
         aBVar.a(R.drawable.delete_96);
@@ -434,7 +430,7 @@ public class br extends qA implements View.OnClickListener {
         aBVar.show();
     }
 
-    public final void a(String str, String str2, String str3) {
+    private void a(String str, String str2, String str3) {
         Intent intent = new Intent(getActivity(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", this.o);
