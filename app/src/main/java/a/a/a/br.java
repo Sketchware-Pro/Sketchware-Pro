@@ -6,11 +6,7 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -38,8 +34,6 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import mod.hey.studios.util.Helper;
 
 public class br extends qA implements View.OnClickListener {
     private ProjectFileBean projectFile;
@@ -72,31 +66,6 @@ public class br extends qA implements View.OnClickListener {
     }
 
     @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (getUserVisibleHint()) {
-            if (item.getItemId() == 4) {
-                showDeleteComponentDialog(adapter.lastSelectedItem);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getTag().equals("component")) {
-            menu.setHeaderTitle(xB.b().a(requireContext(), R.string.component_context_menu_title));
-            menu.add(0, 4, 0, xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,  @Nullable Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fr_component_list, container, false);
         initialize(root);
@@ -116,8 +85,6 @@ public class br extends qA implements View.OnClickListener {
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private int lastSelectedItem = -1;
-
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout optionLayout;
             public final LinearLayout componentEvents;
@@ -146,7 +113,7 @@ public class br extends qA implements View.OnClickListener {
                 collapsibleComponentLayout.n.e.setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
                 option.addView(collapsibleComponentLayout);
                 collapsibleComponentLayout.setButtonOnClickListener(v -> {
-                    lastSelectedItem = getLayoutPosition();
+                    int lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
                     if (v instanceof CollapsibleButton) {
                         bean.isConfirmation = true;
@@ -165,7 +132,6 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
                 itemView.setOnClickListener(v -> {
-                    lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), getLayoutPosition());
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
@@ -176,8 +142,7 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
                 menu.setOnClickListener(v -> {
-                    lastSelectedItem = getLayoutPosition();
-                    ComponentBean bean = components.get(lastSelectedItem);
+                    ComponentBean bean = components.get(getLayoutPosition());
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
                         expand();
@@ -187,8 +152,7 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
                 itemView.setOnLongClickListener(v -> {
-                    lastSelectedItem = getLayoutPosition();
-                    ComponentBean bean = components.get(lastSelectedItem);
+                    ComponentBean bean = components.get(getLayoutPosition());
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
                         expand();
@@ -349,7 +313,7 @@ public class br extends qA implements View.OnClickListener {
                         jC.a(sc_id).a(projectFile.getJavaName(), event);
                         bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();
                         componentEventButton2.b();
-                        notifyItemChanged(lastSelectedItem);
+                        notifyItemChanged(holder.getLayoutPosition());
                         openEvent(event.targetId, event.eventName, event.eventName);
                     }
                 });
@@ -404,22 +368,6 @@ public class br extends qA implements View.OnClickListener {
 
     public void setProjectFile(ProjectFileBean projectFileBean) {
         projectFile = projectFileBean;
-    }
-
-    private void showDeleteComponentDialog(int componentIndex) {
-        aB dialog = new aB(a);
-        dialog.b(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
-        dialog.a(R.drawable.delete_96);
-        dialog.a(xB.b().a(requireContext(), R.string.event_dialog_confirm_delete_component));
-        dialog.b(xB.b().a(requireContext(), R.string.common_word_delete), v -> {
-            ComponentBean component = jC.a(sc_id).a(projectFile.getJavaName(), componentIndex);
-            jC.a(sc_id).b(projectFile.getJavaName(), component);
-            refreshData();
-            bB.a(requireContext(), xB.b().a(requireContext(), R.string.common_message_complete_delete), 0).show();
-            dialog.dismiss();
-        });
-        dialog.a(xB.b().a(requireContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.show();
     }
 
     private void openEvent(String targetId, String eventName, String eventText) {
