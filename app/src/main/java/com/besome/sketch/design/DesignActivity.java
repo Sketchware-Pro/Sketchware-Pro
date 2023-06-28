@@ -445,8 +445,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
                 }
                 if (componentTabAdapter != null && projectFileBean != null) {
-                    componentTabAdapter.a(projectFileBean);
-                    componentTabAdapter.d();
+                    componentTabAdapter.setProjectFile(projectFileBean);
+                    componentTabAdapter.refreshData();
                 }
             }
         });
@@ -470,7 +470,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         eventTabAdapter.c();
                     }
                 } else if (currentTabNumber == 2 && componentTabAdapter != null) {
-                    componentTabAdapter.c();
+                    componentTabAdapter.unselectAll();
                 }
                 if (position == 0) {
                     if (viewTabAdapter != null) {
@@ -496,7 +496,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         projectFileSelector.setFileType(1);
                         projectFileSelector.syncState();
                         if (componentTabAdapter != null) {
-                            componentTabAdapter.d();
+                            componentTabAdapter.refreshData();
                         }
                     }
                 }

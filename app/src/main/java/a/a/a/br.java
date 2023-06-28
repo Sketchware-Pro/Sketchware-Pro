@@ -43,32 +43,32 @@ import java.util.Iterator;
 import mod.hey.studios.util.Helper;
 
 public class br extends qA implements View.OnClickListener {
-    private ProjectFileBean f;
-    private a h;
-    private TextView i;
-    private FloatingActionButton n;
-    private String o;
-    private ArrayList<ComponentBean> g = new ArrayList<>();
+    private ProjectFileBean projectFile;
+    private Adapter adapter;
+    private TextView empty;
+    private FloatingActionButton fab;
+    private String sc_id;
+    private ArrayList<ComponentBean> components = new ArrayList<>();
     private final ActivityResultLauncher<Intent> addComponent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
-            d();
+            refreshData();
         }
     });
 
-    public void d() {
-        if (this.f == null || this.h == null) {
+    public void refreshData() {
+        if (this.projectFile == null || this.adapter == null) {
             return;
         }
-        this.g = jC.a(this.o).e(this.f.getJavaName());
-        this.h.notifyDataSetChanged();
+        this.components = jC.a(this.sc_id).e(this.projectFile.getJavaName());
+        this.adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == R.id.fab) {
             Intent intent = new Intent(getContext(), ComponentAddActivity.class);
-            intent.putExtra("sc_id", this.o);
-            intent.putExtra("project_file", this.f);
+            intent.putExtra("sc_id", this.sc_id);
+            intent.putExtra("project_file", this.projectFile);
             addComponent.launch(intent);
         }
     }
@@ -79,7 +79,7 @@ public class br extends qA implements View.OnClickListener {
             if (item.getItemId() != 4) {
                 return true;
             }
-            a(this.h.c);
+            showDeleteComponentDialog(this.adapter.lastSelectedItem);
             return true;
         }
         return false;
@@ -101,25 +101,25 @@ public class br extends qA implements View.OnClickListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,  @Nullable Bundle savedInstanceState) {
-        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_component_list, container, false);
-        a(viewGroup2);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fr_component_list, container, false);
+        initialize(root);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
-            this.o = savedInstanceState.getString("sc_id");
+            this.sc_id = savedInstanceState.getString("sc_id");
         } else {
-            this.o = getActivity().getIntent().getStringExtra("sc_id");
+            this.sc_id = getActivity().getIntent().getStringExtra("sc_id");
         }
-        return viewGroup2;
+        return root;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString("sc_id", this.o);
+        outState.putString("sc_id", this.sc_id);
         super.onSaveInstanceState(outState);
     }
 
-    private class a extends RecyclerView.Adapter<br.a.ViewHolder> {
-        private int c = -1;
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        private int lastSelectedItem = -1;
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout A;
@@ -149,27 +149,27 @@ public class br extends qA implements View.OnClickListener {
                 this.x.n.e.setText(xB.b().a(br.this.getContext(), R.string.component_context_menu_title_delete_component));
                 this.z.addView(this.x);
                 this.x.setButtonOnClickListener(v -> {
-                    c = getLayoutPosition();
-                    ComponentBean bean = jC.a(o).a(f.getJavaName(), c);
+                    lastSelectedItem = getLayoutPosition();
+                    ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
                     if (v instanceof CollapsibleButton) {
                         bean.isConfirmation = true;
-                        notifyItemChanged(c);
+                        notifyItemChanged(lastSelectedItem);
                     } else {
                         int id = v.getId();
                         if (id == R.id.confirm_no) {
                             bean.isConfirmation = false;
-                            notifyItemChanged(c);
+                            notifyItemChanged(lastSelectedItem);
                         } else if (id == R.id.confirm_yes) {
-                            jC.a(o).b(f.getJavaName(), bean);
+                            jC.a(sc_id).b(projectFile.getJavaName(), bean);
                             bean.isConfirmation = false;
-                            notifyItemRemoved(c);
-                            notifyItemRangeChanged(c, getItemCount());
+                            notifyItemRemoved(lastSelectedItem);
+                            notifyItemRangeChanged(lastSelectedItem, getItemCount());
                         }
                     }
                 });
                 view.setOnClickListener(v -> {
-                    c = getLayoutPosition();
-                    ComponentBean bean = jC.a(o).a(f.getJavaName(), getLayoutPosition());
+                    lastSelectedItem = getLayoutPosition();
+                    ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), getLayoutPosition());
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
                         E();
@@ -179,8 +179,8 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
                 this.w.setOnClickListener(v -> {
-                    c = getLayoutPosition();
-                    ComponentBean bean = g.get(c);
+                    lastSelectedItem = getLayoutPosition();
+                    ComponentBean bean = components.get(lastSelectedItem);
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
                         E();
@@ -190,8 +190,8 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
                 view.setOnLongClickListener(v -> {
-                    c = getLayoutPosition();
-                    ComponentBean bean = g.get(c);
+                    lastSelectedItem = getLayoutPosition();
+                    ComponentBean bean = components.get(lastSelectedItem);
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
                         E();
@@ -239,19 +239,19 @@ public class br extends qA implements View.OnClickListener {
             }
         }
 
-        public a(RecyclerView recyclerView) {
+        public Adapter(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
                         if (dy > 2) {
-                            if (n.isEnabled()) {
-                                n.hide();
+                            if (fab.isEnabled()) {
+                                fab.hide();
                             }
                         } else if (dy < -2) {
-                            if (n.isEnabled()) {
-                                n.show();
+                            if (fab.isEnabled()) {
+                                fab.show();
                             }
                         }
                     }
@@ -266,7 +266,7 @@ public class br extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ComponentBean componentBean = br.this.g.get(position);
+            ComponentBean componentBean = br.this.components.get(position);
             holder.u.setText(ComponentBean.getComponentName(br.this.getContext(), componentBean.type));
             holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
             int i2 = componentBean.type;
@@ -283,7 +283,7 @@ public class br extends qA implements View.OnClickListener {
                 TextView textView2 = holder.v;
                 textView2.setText(componentBean.componentId + " : " + str);
             }
-            ArrayList<EventBean> a2 = jC.a(br.this.o).a(br.this.f.getJavaName(), componentBean);
+            ArrayList<EventBean> a2 = jC.a(br.this.sc_id).a(br.this.projectFile.getJavaName(), componentBean);
             ArrayList arrayList = new ArrayList();
             arrayList.addAll(Arrays.asList(oq.a(componentBean.getClassInfo())));
             holder.y.removeAllViews();
@@ -320,7 +320,7 @@ public class br extends qA implements View.OnClickListener {
                     componentEventButton.c.setImageResource(oq.a(next.eventName));
                     componentEventButton.setClickListener(v -> {
                         if (!mB.a()) {
-                            a(next.targetId, next.eventName, next.eventName);
+                            openEvent(next.targetId, next.eventName, next.eventName);
                         }
                     });
                     holder.y.addView(linearLayout);
@@ -352,11 +352,11 @@ public class br extends qA implements View.OnClickListener {
                 componentEventButton2.setClickListener(v -> {
                     if (!mB.a()) {
                         EventBean event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, componentBean.type, componentBean.componentId, str2);
-                        jC.a(o).a(f.getJavaName(), event);
+                        jC.a(sc_id).a(projectFile.getJavaName(), event);
                         bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
                         componentEventButton2.b();
-                        notifyItemChanged(c);
-                        a(event.targetId, event.eventName, event.eventName);
+                        notifyItemChanged(lastSelectedItem);
+                        openEvent(event.targetId, event.eventName, event.eventName);
                     }
                 });
                 holder.B.addView(componentEventButton2);
@@ -376,53 +376,53 @@ public class br extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            int size = br.this.g.size();
+            int size = br.this.components.size();
             if (size == 0) {
-                br.this.i.setVisibility(View.VISIBLE);
+                br.this.empty.setVisibility(View.VISIBLE);
             } else {
-                br.this.i.setVisibility(View.GONE);
+                br.this.empty.setVisibility(View.GONE);
             }
             return size;
         }
     }
 
-    public void c() {
-        if (this.f == null) {
+    public void unselectAll() {
+        if (this.projectFile == null) {
             return;
         }
-        Iterator<ComponentBean> it = jC.a(this.o).e(this.f.getJavaName()).iterator();
+        Iterator<ComponentBean> it = jC.a(this.sc_id).e(this.projectFile.getJavaName()).iterator();
         while (it.hasNext()) {
             it.next().initValue();
         }
-        this.h.notifyDataSetChanged();
+        this.adapter.notifyDataSetChanged();
     }
 
-    private void a(ViewGroup viewGroup) {
-        this.i = (TextView) viewGroup.findViewById(R.id.empty_message);
+    private void initialize(ViewGroup viewGroup) {
+        this.empty = (TextView) viewGroup.findViewById(R.id.empty_message);
         RecyclerView componentList = (RecyclerView) viewGroup.findViewById(R.id.component_list);
         componentList.setHasFixedSize(true);
-        this.i.setVisibility(View.GONE);
-        this.i.setText(xB.b().a(getContext(), R.string.component_message_no_components));
+        this.empty.setVisibility(View.GONE);
+        this.empty.setText(xB.b().a(getContext(), R.string.component_message_no_components));
         componentList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        this.h = new a(componentList);
-        componentList.setAdapter(this.h);
-        this.n = (FloatingActionButton) viewGroup.findViewById(R.id.fab);
-        this.n.setOnClickListener(this);
+        this.adapter = new Adapter(componentList);
+        componentList.setAdapter(this.adapter);
+        this.fab = (FloatingActionButton) viewGroup.findViewById(R.id.fab);
+        this.fab.setOnClickListener(this);
     }
 
-    public void a(ProjectFileBean projectFileBean) {
-        this.f = projectFileBean;
+    public void setProjectFile(ProjectFileBean projectFileBean) {
+        this.projectFile = projectFileBean;
     }
 
-    private void a(int i) {
+    private void showDeleteComponentDialog(int componentIndex) {
         aB aBVar = new aB(this.a);
         aBVar.b(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
         aBVar.a(R.drawable.delete_96);
         aBVar.a(xB.b().a(getContext(), R.string.event_dialog_confirm_delete_component));
         aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
-            ComponentBean component = jC.a(o).a(f.getJavaName(), i);
-            jC.a(o).b(f.getJavaName(), component);
-            d();
+            ComponentBean component = jC.a(sc_id).a(projectFile.getJavaName(), componentIndex);
+            jC.a(sc_id).b(projectFile.getJavaName(), component);
+            refreshData();
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             aBVar.dismiss();
         });
@@ -430,14 +430,14 @@ public class br extends qA implements View.OnClickListener {
         aBVar.show();
     }
 
-    private void a(String str, String str2, String str3) {
+    private void openEvent(String targetId, String eventName, String eventText) {
         Intent intent = new Intent(getActivity(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", this.o);
-        intent.putExtra("id", str);
-        intent.putExtra("event", str2);
-        intent.putExtra("project_file", this.f);
-        intent.putExtra("event_text", str3);
+        intent.putExtra("sc_id", this.sc_id);
+        intent.putExtra("id", targetId);
+        intent.putExtra("event", eventName);
+        intent.putExtra("project_file", this.projectFile);
+        intent.putExtra("event_text", eventText);
         startActivity(intent);
     }
 }
