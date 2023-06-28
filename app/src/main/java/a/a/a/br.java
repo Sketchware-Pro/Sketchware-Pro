@@ -1,6 +1,7 @@
 package a.a.a;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +50,11 @@ public class br extends qA implements View.OnClickListener {
     public String o;
     public ArrayList<ComponentBean> g = new ArrayList<>();
     public boolean j = false;
+    private final ActivityResultLauncher<Intent> addComponent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            d();
+        }
+    });
     public final String l = "component";
     public final int m = 4;
 
@@ -59,20 +67,12 @@ public class br extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 224 && i2 == -1) {
-            d();
-        }
-    }
-
-    @Override
     public void onClick(View view) {
         if (!mB.a() && view.getId() == R.id.fab) {
             Intent intent = new Intent(getContext(), ComponentAddActivity.class);
             intent.putExtra("sc_id", this.o);
             intent.putExtra("project_file", this.f);
-            startActivityForResult(intent, 224);
+            addComponent.launch(intent);
         }
     }
 

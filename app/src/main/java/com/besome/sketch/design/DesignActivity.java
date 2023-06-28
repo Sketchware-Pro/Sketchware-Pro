@@ -301,14 +301,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case 224:
-                if (resultCode == RESULT_OK) {
-                    if (componentTabAdapter != null) {
-                        componentTabAdapter.d();
-                    }
-                }
-                break;
-
             case 462:
                 if (resultCode == RESULT_OK && data.getBooleanExtra("req_update_design_activity", false)) {
                     viewTabAdapter.j();
