@@ -38,7 +38,6 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
 
@@ -266,21 +265,23 @@ public class br extends qA implements View.OnClickListener {
             ComponentBean componentBean = components.get(position);
             holder.type.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
             holder.icon.setImageResource(ComponentBean.getIconResource(componentBean.type));
-            int i2 = componentBean.type;
-            if (i2 == 2) {
-                holder.id.setText(componentBean.componentId + " : " + componentBean.param1);
-            } else if (i2 != 6 && i2 != 14 && i2 != 16) {
-                holder.id.setText(componentBean.componentId);
-            } else {
-                String str = componentBean.param1;
-                if (str.length() <= 0) {
-                    str = "/";
+
+            switch (componentBean.type) {
+                case ComponentBean.COMPONENT_TYPE_SHAREDPREF ->
+                        holder.id.setText(componentBean.componentId + " : " + componentBean.param1);
+                case ComponentBean.COMPONENT_TYPE_FIREBASE, ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE, ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
+                    String path = componentBean.param1;
+                    if (path.length() == 0) {
+                        path = "/";
+                    }
+                    holder.id.setText(componentBean.componentId + " : " + path);
                 }
-                holder.id.setText(componentBean.componentId + " : " + str);
+                default -> holder.id.setText(componentBean.componentId);
             }
-            ArrayList<EventBean> a2 = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
-            ArrayList arrayList = new ArrayList();
-            arrayList.addAll(Arrays.asList(oq.a(componentBean.getClassInfo())));
+
+            ArrayList<EventBean> addedEvents = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
+            ArrayList<String> availableEvents = new ArrayList<>(Arrays.asList(oq.a(componentBean.getClassInfo())));
+
             holder.eventsPreview.removeAllViews();
             holder.componentEvents.removeAllViews();
             holder.eventsPreview.setAlpha(1.0f);
@@ -298,34 +299,32 @@ public class br extends qA implements View.OnClickListener {
                 }
             }
             holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            Iterator<EventBean> it = a2.iterator();
-            while (it.hasNext()) {
-                EventBean next = it.next();
-                if (arrayList.contains(next.eventName)) {
+
+            for (EventBean event : addedEvents) {
+                if (availableEvents.contains(event.eventName)) {
                     LinearLayout linearLayout = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
                     linearLayout.setLayoutParams(layoutParams);
-                    ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(next.eventName));
+                    ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(event.eventName));
                     linearLayout.findViewById(R.id.icon_bg).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
                     ComponentEventButton componentEventButton = new ComponentEventButton(requireContext());
-                    componentEventButton.e.setText(next.eventName);
-                    componentEventButton.c.setImageResource(oq.a(next.eventName));
+                    componentEventButton.e.setText(event.eventName);
+                    componentEventButton.c.setImageResource(oq.a(event.eventName));
                     componentEventButton.setClickListener(v -> {
                         if (!mB.a()) {
-                            openEvent(next.targetId, next.eventName, next.eventName);
+                            openEvent(event.targetId, event.eventName, event.eventName);
                         }
                     });
                     holder.eventsPreview.addView(linearLayout);
                     holder.componentEvents.addView(componentEventButton);
-                    arrayList.remove(next.eventName);
+                    availableEvents.remove(event.eventName);
                 }
             }
-            Iterator it2 = arrayList.iterator();
-            while (it2.hasNext()) {
-                String str2 = (String) it2.next();
+
+            for (String eventName : availableEvents) {
                 LinearLayout linearLayout2 = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
                 LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -333,7 +332,7 @@ public class br extends qA implements View.OnClickListener {
                 layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
                 linearLayout2.setLayoutParams(layoutParams2);
                 ImageView imageView = linearLayout2.findViewById(R.id.icon);
-                imageView.setImageResource(oq.a(str2));
+                imageView.setImageResource(oq.a(eventName));
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(0.0f);
                 imageView.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
@@ -342,11 +341,11 @@ public class br extends qA implements View.OnClickListener {
                 linearLayout2.setScaleY(0.8f);
                 ComponentEventButton componentEventButton2 = new ComponentEventButton(requireContext());
                 componentEventButton2.a();
-                componentEventButton2.e.setText(str2);
-                componentEventButton2.c.setImageResource(oq.a(str2));
+                componentEventButton2.e.setText(eventName);
+                componentEventButton2.c.setImageResource(oq.a(eventName));
                 componentEventButton2.setClickListener(v -> {
                     if (!mB.a()) {
-                        EventBean event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, componentBean.type, componentBean.componentId, str2);
+                        EventBean event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, componentBean.type, componentBean.componentId, eventName);
                         jC.a(sc_id).a(projectFile.getJavaName(), event);
                         bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();
                         componentEventButton2.b();
@@ -383,9 +382,8 @@ public class br extends qA implements View.OnClickListener {
 
     public void unselectAll() {
         if (projectFile != null) {
-            Iterator<ComponentBean> it = jC.a(sc_id).e(projectFile.getJavaName()).iterator();
-            while (it.hasNext()) {
-                it.next().initValue();
+            for (ComponentBean component : jC.a(sc_id).e(projectFile.getJavaName())) {
+                component.initValue();
             }
             adapter.notifyDataSetChanged();
         }
