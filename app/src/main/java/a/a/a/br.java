@@ -29,7 +29,6 @@ import com.besome.sketch.editor.component.CollapsibleComponentLayout;
 import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
 import com.besome.sketch.editor.event.CollapsibleButton;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -426,68 +425,12 @@ public class br extends qA implements View.OnClickListener {
         aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             ComponentBean component = jC.a(o).a(f.getJavaName(), i);
             jC.a(o).b(f.getJavaName(), component);
-            a("Remove", component.type, 0);
             d();
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             aBVar.dismiss();
         });
         aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
-    }
-
-    public final void a(String str, int i, long j) {
-        String str2 = "INTENT";
-        if (i != 1) {
-            if (i == 2) {
-                str2 = "FILE";
-            } else if (i == 3) {
-                str2 = "CALENDAR";
-            } else if (i == 4) {
-                str2 = "VIBRATOR";
-            } else if (i == 5) {
-                str2 = "TIMER";
-            } else if (i == 6) {
-                str2 = "FIREBASE";
-            } else if (i == 12) {
-                str2 = "FIREBASEAUTH";
-            } else if (i == 7) {
-                str2 = "DIALOG";
-            } else if (i == 8) {
-                str2 = "MEDIAPLAYER";
-            } else if (i == 9) {
-                str2 = "SOUNDPOOL";
-            } else if (i == 10) {
-                str2 = "OBJECTANIMATOR";
-            } else if (i == 11) {
-                str2 = "GYROSCOPE";
-            } else if (i == 14) {
-                str2 = "FIREBASESTORAGE";
-            } else if (i == 15) {
-                str2 = "CAMERA";
-            } else if (i == 16) {
-                str2 = "FILEPICKER";
-            } else if (i == 17) {
-                str2 = "REQUESTNETWORK";
-            } else if (i == 18) {
-                str2 = "TEXTTOSPEECH";
-            } else if (i == 19) {
-                str2 = "SPEECHTOTEXT";
-            } else if (i == 20) {
-                str2 = "BLUETOOTHCONNECT";
-            } else if (i == 21) {
-                str2 = "LOCATIONMANAGER";
-            }
-        }
-        a("Component", str, str2, j);
-    }
-
-    public final void a(String str, String str2, String str3, long j) {
-        HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
-        eventBuilder.setCategory(str);
-        eventBuilder.setAction(str2);
-        eventBuilder.setLabel(str3);
-        eventBuilder.setValue(j);
-        this.c.send(eventBuilder.build());
     }
 
     public final void a(String str, String str2, String str3) {
