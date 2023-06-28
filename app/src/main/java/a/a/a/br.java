@@ -120,33 +120,33 @@ public class br extends qA implements View.OnClickListener {
         private int lastSelectedItem = -1;
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout A;
-            public final LinearLayout B;
-            public final ImageView t;
-            public final TextView u;
-            public final TextView v;
-            public final ImageView w;
-            public final CollapsibleComponentLayout x;
-            public final LinearLayout y;
-            public final LinearLayout z;
+            public final LinearLayout optionLayout;
+            public final LinearLayout componentEvents;
+            public final ImageView icon;
+            public final TextView type;
+            public final TextView id;
+            public final ImageView menu;
+            public final CollapsibleComponentLayout collapsibleComponentLayout;
+            public final LinearLayout eventsPreview;
+            public final LinearLayout option;
 
-            public ViewHolder(View view) {
-                super(view);
-                t = view.findViewById(R.id.img_icon);
-                u = view.findViewById(R.id.tv_component_type);
-                v = view.findViewById(R.id.tv_component_id);
-                w = view.findViewById(R.id.img_menu);
-                y = view.findViewById(R.id.events_preview);
-                A = view.findViewById(R.id.component_option_layout);
-                z = view.findViewById(R.id.component_option);
-                B = view.findViewById(R.id.component_events);
-                x = new CollapsibleComponentLayout(requireContext());
-                x.setLayoutParams(new FrameLayout.LayoutParams(
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                icon = itemView.findViewById(R.id.img_icon);
+                type = itemView.findViewById(R.id.tv_component_type);
+                id = itemView.findViewById(R.id.tv_component_id);
+                menu = itemView.findViewById(R.id.img_menu);
+                eventsPreview = itemView.findViewById(R.id.events_preview);
+                optionLayout = itemView.findViewById(R.id.component_option_layout);
+                option = itemView.findViewById(R.id.component_option);
+                componentEvents = itemView.findViewById(R.id.component_events);
+                collapsibleComponentLayout = new CollapsibleComponentLayout(requireContext());
+                collapsibleComponentLayout.setLayoutParams(new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
-                x.n.e.setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
-                z.addView(x);
-                x.setButtonOnClickListener(v -> {
+                collapsibleComponentLayout.n.e.setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
+                option.addView(collapsibleComponentLayout);
+                collapsibleComponentLayout.setButtonOnClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
                     if (v instanceof CollapsibleButton) {
@@ -165,52 +165,52 @@ public class br extends qA implements View.OnClickListener {
                         }
                     }
                 });
-                view.setOnClickListener(v -> {
+                itemView.setOnClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), getLayoutPosition());
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
-                        E();
+                        expand();
                     } else {
                         bean.isCollapsed = true;
-                        D();
+                        collapse();
                     }
                 });
-                w.setOnClickListener(v -> {
+                menu.setOnClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = components.get(lastSelectedItem);
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
-                        E();
+                        expand();
                     } else {
                         bean.isCollapsed = true;
-                        D();
+                        collapse();
                     }
                 });
-                view.setOnLongClickListener(v -> {
+                itemView.setOnLongClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
                     ComponentBean bean = components.get(lastSelectedItem);
                     if (bean.isCollapsed) {
                         bean.isCollapsed = false;
-                        E();
+                        expand();
                     } else {
                         bean.isCollapsed = true;
-                        D();
+                        collapse();
                     }
                     return true;
                 });
             }
 
-            public void D() {
-                gB.a(w, 0.0f, null);
-                gB.a(A, 200, new Animator.AnimatorListener() {
+            private void collapse() {
+                gB.a(menu, 0.0f, null);
+                gB.a(optionLayout, 200, new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(@NonNull Animator animation) {
                     }
 
                     @Override
                     public void onAnimationEnd(@NonNull Animator animation) {
-                        A.setVisibility(View.GONE);
+                        optionLayout.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -221,18 +221,18 @@ public class br extends qA implements View.OnClickListener {
                     public void onAnimationRepeat(@NonNull Animator animation) {
                     }
                 });
-                y.animate().translationX(0.0f).alpha(1.0f).setStartDelay(120L).setDuration(150L).start();
-                B.animate().translationX(-B.getWidth()).setDuration(150L).alpha(0.0f).start();
+                eventsPreview.animate().translationX(0.0f).alpha(1.0f).setStartDelay(120L).setDuration(150L).start();
+                componentEvents.animate().translationX(-componentEvents.getWidth()).setDuration(150L).alpha(0.0f).start();
             }
 
-            public void E() {
-                A.setVisibility(View.VISIBLE);
-                gB.a(w, -180.0f, null);
-                gB.b(A, 200, null);
-                y.animate().translationX(y.getWidth()).alpha(0.0f).setDuration(150L).start();
-                B.setTranslationX(-B.getWidth());
-                B.setAlpha(0.0f);
-                B.animate().translationX(0.0f).setStartDelay(200L).setDuration(120L).alpha(1.0f).start();
+            private void expand() {
+                optionLayout.setVisibility(View.VISIBLE);
+                gB.a(menu, -180.0f, null);
+                gB.b(optionLayout, 200, null);
+                eventsPreview.animate().translationX(eventsPreview.getWidth()).alpha(0.0f).setDuration(150L).start();
+                componentEvents.setTranslationX(-componentEvents.getWidth());
+                componentEvents.setAlpha(0.0f);
+                componentEvents.animate().translationX(0.0f).setStartDelay(200L).setDuration(120L).alpha(1.0f).start();
             }
         }
 
@@ -264,42 +264,40 @@ public class br extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ComponentBean componentBean = components.get(position);
-            holder.u.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
-            holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
+            holder.type.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
+            holder.icon.setImageResource(ComponentBean.getIconResource(componentBean.type));
             int i2 = componentBean.type;
             if (i2 == 2) {
-                TextView textView = holder.v;
-                textView.setText(componentBean.componentId + " : " + componentBean.param1);
+                holder.id.setText(componentBean.componentId + " : " + componentBean.param1);
             } else if (i2 != 6 && i2 != 14 && i2 != 16) {
-                holder.v.setText(componentBean.componentId);
+                holder.id.setText(componentBean.componentId);
             } else {
                 String str = componentBean.param1;
                 if (str.length() <= 0) {
                     str = "/";
                 }
-                TextView textView2 = holder.v;
-                textView2.setText(componentBean.componentId + " : " + str);
+                holder.id.setText(componentBean.componentId + " : " + str);
             }
             ArrayList<EventBean> a2 = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
             ArrayList arrayList = new ArrayList();
             arrayList.addAll(Arrays.asList(oq.a(componentBean.getClassInfo())));
-            holder.y.removeAllViews();
-            holder.B.removeAllViews();
-            holder.y.setAlpha(1.0f);
-            holder.y.setTranslationX(0.0f);
+            holder.eventsPreview.removeAllViews();
+            holder.componentEvents.removeAllViews();
+            holder.eventsPreview.setAlpha(1.0f);
+            holder.eventsPreview.setTranslationX(0.0f);
             if (componentBean.isCollapsed) {
-                holder.A.setVisibility(View.GONE);
-                holder.w.setRotation(0.0f);
+                holder.optionLayout.setVisibility(View.GONE);
+                holder.menu.setRotation(0.0f);
             } else {
-                holder.A.setVisibility(View.VISIBLE);
-                holder.w.setRotation(-180.0f);
+                holder.optionLayout.setVisibility(View.VISIBLE);
+                holder.menu.setRotation(-180.0f);
                 if (componentBean.isConfirmation) {
-                    holder.x.b();
+                    holder.collapsibleComponentLayout.b();
                 } else {
-                    holder.x.a();
+                    holder.collapsibleComponentLayout.a();
                 }
             }
-            holder.A.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
             Iterator<EventBean> it = a2.iterator();
             while (it.hasNext()) {
                 EventBean next = it.next();
@@ -320,8 +318,8 @@ public class br extends qA implements View.OnClickListener {
                             openEvent(next.targetId, next.eventName, next.eventName);
                         }
                     });
-                    holder.y.addView(linearLayout);
-                    holder.B.addView(componentEventButton);
+                    holder.eventsPreview.addView(linearLayout);
+                    holder.componentEvents.addView(componentEventButton);
                     arrayList.remove(next.eventName);
                 }
             }
@@ -339,7 +337,7 @@ public class br extends qA implements View.OnClickListener {
                 ColorMatrix colorMatrix = new ColorMatrix();
                 colorMatrix.setSaturation(0.0f);
                 imageView.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-                holder.y.addView(linearLayout2);
+                holder.eventsPreview.addView(linearLayout2);
                 linearLayout2.setScaleX(0.8f);
                 linearLayout2.setScaleY(0.8f);
                 ComponentEventButton componentEventButton2 = new ComponentEventButton(requireContext());
@@ -356,7 +354,7 @@ public class br extends qA implements View.OnClickListener {
                         openEvent(event.targetId, event.eventName, event.eventName);
                     }
                 });
-                holder.B.addView(componentEventButton2);
+                holder.componentEvents.addView(componentEventButton2);
             }
         }
 
