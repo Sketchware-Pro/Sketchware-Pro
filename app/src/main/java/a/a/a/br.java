@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,8 +68,8 @@ public class br extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        if (!mB.a() && view.getId() == R.id.fab) {
+    public void onClick(View v) {
+        if (!mB.a() && v.getId() == R.id.fab) {
             Intent intent = new Intent(getContext(), ComponentAddActivity.class);
             intent.putExtra("sc_id", this.o);
             intent.putExtra("project_file", this.f);
@@ -77,9 +78,9 @@ public class br extends qA implements View.OnClickListener {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem menuItem) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (getUserVisibleHint()) {
-            if (menuItem.getItemId() != 4) {
+            if (item.getItemId() != 4) {
                 return true;
             }
             a(this.h.c);
@@ -89,26 +90,26 @@ public class br extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-        super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
-        if (view.getTag().equals("component")) {
-            contextMenu.setHeaderTitle(xB.b().a(getContext(), R.string.component_context_menu_title));
-            contextMenu.add(0, 4, 0, xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getTag().equals("component")) {
+            menu.setHeaderTitle(xB.b().a(getContext(), R.string.component_context_menu_title));
+            menu.add(0, 4, 0, xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        super.onCreateOptionsMenu(menu, menuInflater);
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_component_list, viewGroup, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,  @Nullable Bundle savedInstanceState) {
+        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_component_list, container, false);
         a(viewGroup2);
         setHasOptionsMenu(true);
-        if (bundle != null) {
-            this.o = bundle.getString("sc_id");
+        if (savedInstanceState != null) {
+            this.o = savedInstanceState.getString("sc_id");
         } else {
             this.o = getActivity().getIntent().getStringExtra("sc_id");
         }
@@ -116,9 +117,9 @@ public class br extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", this.o);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("sc_id", this.o);
+        super.onSaveInstanceState(outState);
     }
 
     class a extends RecyclerView.Adapter<br.a.ViewHolder> {
@@ -268,7 +269,7 @@ public class br extends qA implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ComponentBean componentBean = br.this.g.get(position);
             holder.u.setText(ComponentBean.getComponentName(br.this.getContext(), componentBean.type));
             holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
