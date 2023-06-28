@@ -65,7 +65,7 @@ public class br extends qA implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == R.id.fab) {
-            Intent intent = new Intent(getContext(), ComponentAddActivity.class);
+            Intent intent = new Intent(requireContext(), ComponentAddActivity.class);
             intent.putExtra("sc_id", sc_id);
             intent.putExtra("project_file", projectFile);
             addComponent.launch(intent);
@@ -87,8 +87,8 @@ public class br extends qA implements View.OnClickListener {
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         if (v.getTag().equals("component")) {
-            menu.setHeaderTitle(xB.b().a(getContext(), R.string.component_context_menu_title));
-            menu.add(0, 4, 0, xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
+            menu.setHeaderTitle(xB.b().a(requireContext(), R.string.component_context_menu_title));
+            menu.add(0, 4, 0, xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
         }
     }
 
@@ -105,7 +105,7 @@ public class br extends qA implements View.OnClickListener {
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");
         } else {
-            sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         }
         return root;
     }
@@ -140,11 +140,11 @@ public class br extends qA implements View.OnClickListener {
                 A = view.findViewById(R.id.component_option_layout);
                 z = view.findViewById(R.id.component_option);
                 B = view.findViewById(R.id.component_events);
-                x = new CollapsibleComponentLayout(getContext());
+                x = new CollapsibleComponentLayout(requireContext());
                 x.setLayoutParams(new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
-                x.n.e.setText(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
+                x.n.e.setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
                 z.addView(x);
                 x.setButtonOnClickListener(v -> {
                     lastSelectedItem = getLayoutPosition();
@@ -264,7 +264,7 @@ public class br extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ComponentBean componentBean = components.get(position);
-            holder.u.setText(ComponentBean.getComponentName(getContext(), componentBean.type));
+            holder.u.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
             holder.t.setImageResource(ComponentBean.getIconResource(componentBean.type));
             int i2 = componentBean.type;
             if (i2 == 2) {
@@ -304,15 +304,15 @@ public class br extends qA implements View.OnClickListener {
             while (it.hasNext()) {
                 EventBean next = it.next();
                 if (arrayList.contains(next.eventName)) {
-                    LinearLayout linearLayout = (LinearLayout) wB.a(getContext(), R.layout.fr_logic_list_item_event_preview);
+                    LinearLayout linearLayout = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 0, (int) wB.a(getContext(), 4.0f), 0);
+                    layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
                     linearLayout.setLayoutParams(layoutParams);
                     ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(next.eventName));
                     linearLayout.findViewById(R.id.icon_bg).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
-                    ComponentEventButton componentEventButton = new ComponentEventButton(getContext());
+                    ComponentEventButton componentEventButton = new ComponentEventButton(requireContext());
                     componentEventButton.e.setText(next.eventName);
                     componentEventButton.c.setImageResource(oq.a(next.eventName));
                     componentEventButton.setClickListener(v -> {
@@ -328,11 +328,11 @@ public class br extends qA implements View.OnClickListener {
             Iterator it2 = arrayList.iterator();
             while (it2.hasNext()) {
                 String str2 = (String) it2.next();
-                LinearLayout linearLayout2 = (LinearLayout) wB.a(getContext(), R.layout.fr_logic_list_item_event_preview);
+                LinearLayout linearLayout2 = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
                 LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams2.setMargins(0, 0, (int) wB.a(getContext(), 4.0f), 0);
+                layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
                 linearLayout2.setLayoutParams(layoutParams2);
                 ImageView imageView = linearLayout2.findViewById(R.id.icon);
                 imageView.setImageResource(oq.a(str2));
@@ -342,7 +342,7 @@ public class br extends qA implements View.OnClickListener {
                 holder.y.addView(linearLayout2);
                 linearLayout2.setScaleX(0.8f);
                 linearLayout2.setScaleY(0.8f);
-                ComponentEventButton componentEventButton2 = new ComponentEventButton(getContext());
+                ComponentEventButton componentEventButton2 = new ComponentEventButton(requireContext());
                 componentEventButton2.a();
                 componentEventButton2.e.setText(str2);
                 componentEventButton2.c.setImageResource(oq.a(str2));
@@ -350,7 +350,7 @@ public class br extends qA implements View.OnClickListener {
                     if (!mB.a()) {
                         EventBean event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, componentBean.type, componentBean.componentId, str2);
                         jC.a(sc_id).a(projectFile.getJavaName(), event);
-                        bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
+                        bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();
                         componentEventButton2.b();
                         notifyItemChanged(lastSelectedItem);
                         openEvent(event.targetId, event.eventName, event.eventName);
@@ -398,8 +398,8 @@ public class br extends qA implements View.OnClickListener {
         RecyclerView componentList = viewGroup.findViewById(R.id.component_list);
         componentList.setHasFixedSize(true);
         empty.setVisibility(View.GONE);
-        empty.setText(xB.b().a(getContext(), R.string.component_message_no_components));
-        componentList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        empty.setText(xB.b().a(requireContext(), R.string.component_message_no_components));
+        componentList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
         adapter = new Adapter(componentList);
         componentList.setAdapter(adapter);
         fab = viewGroup.findViewById(R.id.fab);
@@ -412,22 +412,22 @@ public class br extends qA implements View.OnClickListener {
 
     private void showDeleteComponentDialog(int componentIndex) {
         aB dialog = new aB(a);
-        dialog.b(xB.b().a(getContext(), R.string.component_context_menu_title_delete_component));
+        dialog.b(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
         dialog.a(R.drawable.delete_96);
-        dialog.a(xB.b().a(getContext(), R.string.event_dialog_confirm_delete_component));
-        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        dialog.a(xB.b().a(requireContext(), R.string.event_dialog_confirm_delete_component));
+        dialog.b(xB.b().a(requireContext(), R.string.common_word_delete), v -> {
             ComponentBean component = jC.a(sc_id).a(projectFile.getJavaName(), componentIndex);
             jC.a(sc_id).b(projectFile.getJavaName(), component);
             refreshData();
-            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+            bB.a(requireContext(), xB.b().a(requireContext(), R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(requireContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void openEvent(String targetId, String eventName, String eventText) {
-        Intent intent = new Intent(getActivity(), LogicEditorActivity.class);
+        Intent intent = new Intent(requireActivity().getApplicationContext(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("id", targetId);
