@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -22,19 +23,21 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 
 import a.a.a.Qs;
+import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class ViewEvents extends LinearLayout {
     private String sc_id;
     private ProjectFileBean projectFileBean;
     private ArrayList<EventBean> events;
-    private RecyclerView eventsList;
     private Qs eventClickListener;
+    private EventAdapter eventAdapter;
 
     public ViewEvents(Context context) {
         super(context);
@@ -49,12 +52,13 @@ public class ViewEvents extends LinearLayout {
     private void initialize(Context context) {
         wB.a(context, this, R.layout.view_events);
         events = new ArrayList<>();
-        eventsList = findViewById(R.id.list_events);
+        RecyclerView eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         eventsList.setLayoutManager(linearLayoutManager);
-        eventsList.setAdapter(new EventAdapter());
+        eventAdapter = new EventAdapter();
+        eventsList.setAdapter(eventAdapter);
         eventsList.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -83,7 +87,7 @@ public class ViewEvents extends LinearLayout {
                 events.add(eventBean);
             }
         }
-        eventsList.getAdapter().notifyDataSetChanged();
+        eventAdapter.notifyDataSetChanged();
     }
 
     private void createEvent(int eventPosition) {
@@ -91,7 +95,7 @@ public class ViewEvents extends LinearLayout {
         if (!eventBean.isSelected) {
             eventBean.isSelected = true;
             jC.a(sc_id).a(projectFileBean.getJavaName(), eventBean);
-            eventsList.getAdapter().notifyItemChanged(eventPosition);
+            eventAdapter.notifyItemChanged(eventPosition);
             bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
         if (eventClickListener != null) {
@@ -113,7 +117,7 @@ public class ViewEvents extends LinearLayout {
                 icon = itemView.findViewById(R.id.img_icon);
                 addAvailableIcon = itemView.findViewById(R.id.img_used_event);
                 name = itemView.findViewById(R.id.tv_title);
-                itemView.setOnClickListener(v -> createEvent(getLayoutPosition()));
+                container.setOnClickListener(v -> createEvent(getLayoutPosition()));
             }
         }
 
@@ -123,6 +127,23 @@ public class ViewEvents extends LinearLayout {
             if (eventBean.isSelected) {
                 holder.addAvailableIcon.setVisibility(View.GONE);
                 mB.a(holder.icon, 1);
+                holder.container.setOnLongClickListener(v -> {
+                    aB dialog = new aB((Activity) getContext());
+                    dialog.a(R.drawable.delete_96);
+                    dialog.b("Confirm Delete");
+                    dialog.a("Click on Confirm to delete the selected Event.");
+
+                    dialog.b(Helper.getResString(R.string.common_word_delete), del -> {
+                        dialog.dismiss();
+                        EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
+                        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+                        eventBean.isSelected = false;
+                        eventAdapter.notifyItemChanged(position);
+                    });
+                    dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+                    dialog.show();
+                    return true;
+                });
             } else {
                 holder.addAvailableIcon.setVisibility(View.VISIBLE);
                 mB.a(holder.icon, 0);

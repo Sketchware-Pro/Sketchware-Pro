@@ -83,27 +83,27 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/layout1"
+                android:id="@+id/modders_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview1"
+                    android:id="@+id/modders"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout2"
+                android:id="@+id/changelog_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview2"
+                    android:id="@+id/changelog"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

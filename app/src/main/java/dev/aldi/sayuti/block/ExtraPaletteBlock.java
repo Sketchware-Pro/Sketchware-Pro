@@ -65,7 +65,13 @@ public class ExtraPaletteBlock {
             }
         }
         if (eventName.equals("onBindCustomView")) {
-            String customView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
+            var eC = jC.a(sc_id);
+            var view = eC.c(xmlName, logicEditor.C);
+            if (view == null) {
+                // in case the View's in a Drawer
+                view = eC.c("_drawer_" + xmlName, logicEditor.C);
+            }
+            String customView = view.customView;
             if (customView != null && customView.length() > 0) {
                 for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
                     if (viewBean.getClassInfo().a(str)) {
@@ -257,31 +263,34 @@ public class ExtraPaletteBlock {
     private void blockCustomViews() {
         if (eventName.equals("onBindCustomView")) {
             String viewId = logicEditor.C;
-            ViewBean viewBean = jC.a(sc_id).c(xmlName, viewId);
-            if (viewBean != null) {
-                String viewBeanCustomView = viewBean.customView;
-                if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
-                    ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
-                    for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
-                        ViewBean customView = customViews.get(i);
+            var eC = jC.a(sc_id);
+            ViewBean viewBean = eC.c(xmlName, viewId);
+            if (viewBean == null) {
+                // Event is of a Drawer View
+                viewBean = eC.c("_drawer_" + xmlName, viewId);
+            }
+            String viewBeanCustomView = viewBean.customView;
+            if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
+                ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
+                for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
+                    ViewBean customView = customViews.get(i);
 
-                        if (i == 0) {
-                            logicEditor.a("Custom Views", 0xff555555);
-                        }
+                    if (i == 0) {
+                        logicEditor.a("Custom Views", 0xff555555);
+                    }
 
-                        if (!customView.convert.equals("include")) {
-                            String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
-                            logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
-                        }
+                    if (!customView.convert.equals("include")) {
+                        String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
+                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
                     }
                 }
-                logicEditor.a(" ", "notifyDataSetChanged");
-                logicEditor.a("c", "viewOnClick");
-                logicEditor.a("c", "viewOnLongClick");
-                logicEditor.a("c", "checkboxOnChecked");
-                logicEditor.a("b", "checkboxIsChecked");
-                return;
             }
+            logicEditor.a(" ", "notifyDataSetChanged");
+            logicEditor.a("c", "viewOnClick");
+            logicEditor.a("c", "viewOnLongClick");
+            logicEditor.a("c", "checkboxOnChecked");
+            logicEditor.a("b", "checkboxIsChecked");
+            return;
         }
         ArrayList<ViewBean> views = jC.a(sc_id).d(xmlName);
         for (int i = 0, viewsSize = views.size(); i < viewsSize; i++) {

@@ -830,7 +830,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             String javaName = M.getJavaName();
                             String xmlName = M.getXmlName();
                             if (D.equals("onBindCustomView")) {
-                                String customView = jC.a(B).c(M.getXmlName(), C).customView;
+                                var eC = jC.a(B);
+                                var view = eC.c(xmlName, C);
+                                if (view == null) {
+                                    // Event is of a Drawer View
+                                    view = eC.c("_drawer_" + xmlName, C);
+                                }
+                                String customView = view.customView;
                                 if (customView != null) {
                                     xmlName = ProjectFileBean.getXmlName(customView);
                                 }
@@ -1686,13 +1692,21 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void f(Ss ss) {
-        String str;
         aB dialog = new aB(this);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         String xmlName = M.getXmlName();
-        if (D.equals("onBindCustomView") && (str = jC.a(B).c(M.getXmlName(), C).customView) != null) {
-            xmlName = ProjectFileBean.getXmlName(str);
+        String customViewName;
+        if (D.equals("onBindCustomView")) {
+            var eC = jC.a(B);
+            var view = eC.c(xmlName, C);
+            if (view == null) {
+                // Event is of a Drawer View
+                view = eC.c("_drawer_" + xmlName, C);
+            }
+            if ((customViewName = view.customView) != null) {
+                xmlName = ProjectFileBean.getXmlName(customViewName);
+            }
         }
         dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_view));
         for (Pair<Integer, String> next : jC.a(B).d(xmlName, ss.getClassInfo().a())) {

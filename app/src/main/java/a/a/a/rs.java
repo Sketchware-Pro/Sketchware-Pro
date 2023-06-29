@@ -577,10 +577,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void deleteEvent(EventBean event) {
-        jC.a(sc_id).d(currentActivity.getJavaName(), event.targetId, event.eventName);
-        eC a2 = jC.a(sc_id);
-        String javaName = currentActivity.getJavaName();
-        a2.k(javaName, event.targetId + "_" + event.eventName);
+        EventBean.deleteEvent(sc_id, event, currentActivity);
         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
         events.get(categoryAdapter.index).remove(eventAdapter.lastSelectedItem);
         eventAdapter.notifyItemRemoved(eventAdapter.lastSelectedItem);

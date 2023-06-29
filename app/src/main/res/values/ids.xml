@@ -530,8 +530,6 @@
     <item type="id" name="language_uploadnoti_version" />
     <item type="id" name="largeLabel" />
     <item type="id" name="layout" />
-    <item type="id" name="layout1" />
-    <item type="id" name="layout2" />
     <item type="id" name="layout_adchoice" />
     <item type="id" name="layout_admin" />
     <item type="id" name="layout_ads" />
@@ -872,8 +870,6 @@
     <item type="id" name="read_more" />
     <item type="id" name="recycler_list" />
     <item type="id" name="recycler_view" />
-    <item type="id" name="recyclerview1" />
-    <item type="id" name="recyclerview2" />
     <item type="id" name="remove_area" />
     <item type="id" name="report_project" />
     <item type="id" name="rg" />
@@ -1530,75 +1526,18 @@
     <item type="id" name="list_file" />
     <item type="id" name="fab_plus" />
     <item type="id" name="text_info" />
-    <item type="id" name="managepermissionLinearLayout1" />
     <item type="id" name="search_perm" />
     <item type="id" name="main_content" />
-    <item type="id" name="viewcodeLinearLayout1" />
     <item type="id" name="text_title" />
     <item type="id" name="text_content" />
-    <item type="id" name="image_file" />
-    <item type="id" name="name_file" />
     <item type="id" name="checkbox_content" />
     <item type="id" name="edit" />
     <item type="id" name="delete" />
-    <item type="id" name="dialoginputlayoutLinearLayout1" />
     <item type="id" name="dialoginputlayoutLinearLayout2" />
     <item type="id" name="edittext_change_name" />
     <item type="id" name="text_cancel" />
     <item type="id" name="text_save" />
     <item type="id" name="rename" />
-    <item type="id" name="header_layout" />
-    <item type="id" name="header_content_layout" />
-    <item type="id" name="slogan" />
-    <item type="id" name="version" />
-    <item type="id" name="vscroll1" />
-    <item type="id" name="linear1" />
-    <item type="id" name="linear4" />
-    <item type="id" name="textview3" />
-    <item type="id" name="item_website" />
-    <item type="id" name="imageview2" />
-    <item type="id" name="linear5" />
-    <item type="id" name="textview5" />
-    <item type="id" name="textview4" />
-    <item type="id" name="item_indosw" />
-    <item type="id" name="imageview3" />
-    <item type="id" name="linear7" />
-    <item type="id" name="textview6" />
-    <item type="id" name="textview7" />
-    <item type="id" name="item_whatsapp" />
-    <item type="id" name="imageview4" />
-    <item type="id" name="linear9" />
-    <item type="id" name="textview8" />
-    <item type="id" name="textview9" />
-    <item type="id" name="linear10" />
-    <item type="id" name="textview10" />
-    <item type="id" name="linear11" />
-    <item type="id" name="imageview5" />
-    <item type="id" name="linear12" />
-    <item type="id" name="textview11" />
-    <item type="id" name="textview12" />
-    <item type="id" name="linear13" />
-    <item type="id" name="imageview6" />
-    <item type="id" name="linear14" />
-    <item type="id" name="textview13" />
-    <item type="id" name="textview14" />
-    <item type="id" name="linear15" />
-    <item type="id" name="imageview7" />
-    <item type="id" name="linear16" />
-    <item type="id" name="textview15" />
-    <item type="id" name="textview16" />
-    <item type="id" name="linear17" />
-    <item type="id" name="imageview8" />
-    <item type="id" name="linear18" />
-    <item type="id" name="textview17" />
-    <item type="id" name="textview18" />
-    <item type="id" name="linear21" />
-    <item type="id" name="imageview10" />
-    <item type="id" name="linear22" />
-    <item type="id" name="textview21" />
-    <item type="id" name="textview22" />
-    <item type="id" name="cv_create" />
-    <item type="id" name="cv_load" />
     <item type="id" name="tv_title_select_mb_type" />
     <item type="id" name="radio_mb_type" />
     <item type="id" name="radio_mb_type_void" />
@@ -1678,10 +1617,6 @@
     <item type="id" name="add_view_type_selector_layout" />
     <item type="id" name="project_config_pref_layout" />
     <item type="id" name="dialog_create_new_file_layoutTitle" />
-    <item type="id" name="linear3" />
-    <item type="id" name="progressbar1" />
-    <item type="id" name="linear8" />
-    <item type="id" name="edittext1" />
     <item type="id" name="background" />
     <item type="id" name="recycle_bin" />
     <item type="id" name="dirs" />
@@ -1706,18 +1641,14 @@
     <item type="id" name="down" />
     <item type="id" name="up_layout" />
     <item type="id" name="down_layout" />
-    <item type="id" name="back_ico" />
-    <item type="id" name="titlee" />
     <item type="id" name="cardv" />
     <item type="id" name="name_lay" />
     <item type="id" name="select_type" />
     <item type="id" name="type" />
     <item type="id" name="type_name" />
-    <item type="id" name="hscroll1" />
     <item type="id" name="spec_2lay" />
     <item type="id" name="colour_lay" />
     <item type="id" name="colour_selector" />
-    <item type="id" name="image_view1" />
     <item type="id" name="parameter_holder" />
     <item type="id" name="spec2" />
     <item type="id" name="code" />
@@ -1728,9 +1659,7 @@
     <item type="id" name="a2_sw" />
     <item type="id" name="customimport" />
     <item type="id" name="back" />
-    <item type="id" name="pageti" />
     <item type="id" name="card" />
-    <item type="id" name="lin13" />
     <item type="id" name="back_i" />
     <item type="id" name="label" />
     <item type="id" name="contai" />

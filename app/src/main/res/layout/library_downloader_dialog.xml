@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/linear1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
@@ -20,18 +19,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusable="false"
             android:singleLine="true"
-            android:text="Write lib dependency"
+            android:text="Write dependency"
             android:textColor="#ff296cf7"
             android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@id/linear3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -40,9 +38,8 @@
         android:orientation="horizontal">
 
         <ProgressBar
-            android:id="@id/progressbar1"
             style="?android:progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -52,14 +49,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@id/linear4"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-    <EditText
-            android:id="@id/edittext1"
+        <EditText
+            android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Example: com.anjlab.android.iab.v3:library:1.0.44"
@@ -76,12 +72,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@id/textview3"
+            android:id="@+id/tv_progress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusable="false"
-            android:gravity="center|left|top"
             android:paddingTop="2dp"
             android:paddingBottom="10dp"
             android:text="You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately."
@@ -94,13 +89,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:paddingRight="4dp"
+        android:baselineAligned="false">
 
         <LinearLayout
-            android:id="@id/linear8"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_download"
+            android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginHorizontal="2dp"
             android:layout_weight="1"
             android:background="#ff296cf7"
             android:gravity="center"
@@ -111,69 +107,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:singleLine="true"
-                android:text="    Start    "
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@id/linear9"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="  Pause  "
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@id/linear10"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="Resume"
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@id/linear11"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="  Cancel  "
+                android:text="Start"
                 android:textColor="#ffffffff"
                 android:textSize="14sp" />
         </LinearLayout>

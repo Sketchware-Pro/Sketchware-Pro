@@ -3,23 +3,22 @@ package mod.hey.studios.compiler.kotlin;
 import java.io.File;
 
 import a.a.a.BuiltInLibraryManager;
-import a.a.a.Dp;
+import a.a.a.ProjectBuilder;
 import a.a.a.yq;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 
 public class KotlinCompilerBridge {
-
-    public static void compileKotlinCodeIfPossible(BuildProgressReceiver receiver, Dp dp) throws Throwable {
-        if (KotlinCompilerUtil.areAnyKtFilesPresent(dp)) {
+    public static void compileKotlinCodeIfPossible(BuildProgressReceiver receiver, ProjectBuilder builder) throws Throwable {
+        if (KotlinCompilerUtil.areAnyKtFilesPresent(builder)) {
             receiver.onProgress("Kotlin is compiling...");
-            new KotlinCompiler(dp).compile();
+            new KotlinCompiler(builder).compile();
         }
     }
 
-    public static void maybeAddKotlinBuiltInLibraryDependenciesIfPossible(Dp dp, BuiltInLibraryManager builtInLibraryManager) {
-        if (KotlinCompilerUtil.areAnyKtFilesPresent(dp)) {
+    public static void maybeAddKotlinBuiltInLibraryDependenciesIfPossible(ProjectBuilder builder, BuiltInLibraryManager builtInLibraryManager) {
+        if (KotlinCompilerUtil.areAnyKtFilesPresent(builder)) {
             builtInLibraryManager.addLibrary(BuiltInLibraries.KOTLIN_STDLIB);
         }
     }

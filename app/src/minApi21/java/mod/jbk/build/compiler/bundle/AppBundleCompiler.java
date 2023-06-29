@@ -2,12 +2,12 @@ package mod.jbk.build.compiler.bundle;
 
 import java.io.File;
 
-import a.a.a.Dp;
+import a.a.a.ProjectBuilder;
 import a.a.a.yq;
 
 public class AppBundleCompiler {
 
-    public AppBundleCompiler(Dp dp) {
+    public AppBundleCompiler(ProjectBuilder builder) {
     }
 
     public static File getDefaultAppBundleOutputFile(yq projectMetadata) {
