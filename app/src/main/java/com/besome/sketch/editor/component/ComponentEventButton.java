@@ -3,6 +3,7 @@ package com.besome.sketch.editor.component;
 import android.content.Context;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +20,11 @@ public class ComponentEventButton extends LinearLayout {
     private TextView name;
 
     public ComponentEventButton(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public ComponentEventButton(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         initialize(context);
     }
 
