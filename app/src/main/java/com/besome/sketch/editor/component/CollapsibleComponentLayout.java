@@ -1,10 +1,11 @@
 package com.besome.sketch.editor.component;
 
-import a.a.a.As;
-import a.a.a.Bs;
 import a.a.a.wB;
 import a.a.a.xB;
+
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
@@ -63,7 +64,23 @@ public class CollapsibleComponentLayout extends FrameLayout {
         this.j.setTarget(this.g);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(this.k).with(this.j);
-        animatorSet.addListener(new As(this));
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                n.setEnabled(false);
+                c.setEnabled(true);
+                f.setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                g.setVisibility(GONE);
+                h.setVisibility(GONE);
+                n.setEnabled(false);
+                c.setEnabled(false);
+            }
+        });
         animatorSet.start();
     }
 
@@ -86,7 +103,23 @@ public class CollapsibleComponentLayout extends FrameLayout {
         this.m.setTarget(this.g);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(this.l).with(this.m);
-        animatorSet.addListener(new Bs(this));
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                n.setEnabled(true);
+                c.setEnabled(false);
+                g.setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                h.setVisibility(GONE);
+                f.setVisibility(VISIBLE);
+                n.setEnabled(false);
+                c.setEnabled(false);
+            }
+        });
         animatorSet.start();
     }
 }
