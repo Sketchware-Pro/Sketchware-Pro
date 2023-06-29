@@ -110,7 +110,7 @@ public class br extends qA implements View.OnClickListener {
                 collapsibleComponentLayout.setLayoutParams(new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
-                collapsibleComponentLayout.n.e.setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
+                collapsibleComponentLayout.getDeleteButton().e.setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
                 option.addView(collapsibleComponentLayout);
                 collapsibleComponentLayout.setButtonOnClickListener(v -> {
                     int lastSelectedItem = getLayoutPosition();
