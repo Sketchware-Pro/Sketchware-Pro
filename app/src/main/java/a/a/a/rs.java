@@ -63,6 +63,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private FloatingActionButton fab;
     private final ActivityResultLauncher<Intent> addEventLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> refreshEvents());
+    private final ActivityResultLauncher<Intent> openEvent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        // in case any Events were added, e.g. a new MoreBlock
+        refreshEvents();
+    });
 
     private HashMap<Integer, ArrayList<EventBean>> events;
     private ArrayList<EventBean> moreBlocks;
@@ -605,7 +609,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         intent.putExtra("event", eventId);
         intent.putExtra("project_file", currentActivity);
         intent.putExtra("event_text", description);
-        startActivity(intent);
+        openEvent.launch(intent);
     }
 
     private void saveMoreBlockToCollection(String moreBlockName, EventBean moreBlock) {
