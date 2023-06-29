@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.besome.sketch.editor.event.CollapsibleButton;
+import com.sketchware.remod.R;
 
 public class CollapsibleComponentLayout extends FrameLayout {
     public Context a;
@@ -37,26 +38,26 @@ public class CollapsibleComponentLayout extends FrameLayout {
 
     public final void a(Context context) {
         this.a = context;
-        wB.a(context, this, 2131427432);
-        this.f = (LinearLayout) findViewById(2131231612);
-        this.h = (LinearLayout) findViewById(2131231479);
-        this.g = findViewById(2131230922);
-        this.b = findViewById(2131230927);
-        this.c = findViewById(2131230923);
-        this.i = (TextView) findViewById(2131232287);
-        this.d = (TextView) findViewById(2131230929);
-        this.d.setText(xB.b().a(getContext(), 2131624980));
-        this.e = (TextView) findViewById(2131230925);
-        this.e.setText(xB.b().a(getContext(), 2131624974));
-        this.g.setVisibility(4);
-        this.h.setVisibility(8);
-        this.i.setText(xB.b().a(getContext(), 2131624941));
-        this.n = a(0, 2131165524, xB.b().a(context, 2131624986));
+        wB.a(context, this, R.layout.fr_logic_list_item_buttons);
+        this.f = (LinearLayout) findViewById(R.id.project_buttons);
+        this.h = (LinearLayout) findViewById(R.id.ll_warning);
+        this.g = findViewById(R.id.confirm_layout);
+        this.b = findViewById(R.id.confirm_yes);
+        this.c = findViewById(R.id.confirm_no);
+        this.i = (TextView) findViewById(R.id.tv_warning_message);
+        this.d = (TextView) findViewById(R.id.confirm_yes_text);
+        this.d.setText(xB.b().a(getContext(), R.string.common_word_continue));
+        this.e = (TextView) findViewById(R.id.confirm_no_text);
+        this.e.setText(xB.b().a(getContext(), R.string.common_word_cancel));
+        this.g.setVisibility(INVISIBLE);
+        this.h.setVisibility(GONE);
+        this.i.setText(xB.b().a(getContext(), R.string.common_message_confirm));
+        this.n = a(0, R.drawable.delete_96, xB.b().a(context, R.string.common_word_delete));
         this.f.addView(this.n);
-        this.j = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837513);
-        this.k = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837514);
-        this.l = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837507);
-        this.m = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837508);
+        this.j = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
+        this.k = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
+        this.l = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_in);
+        this.m = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_out);
     }
 
     public void b() {
