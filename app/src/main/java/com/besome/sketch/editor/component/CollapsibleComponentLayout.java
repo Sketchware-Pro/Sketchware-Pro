@@ -1,8 +1,5 @@
 package com.besome.sketch.editor.component;
 
-import a.a.a.wB;
-import a.a.a.xB;
-
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
@@ -13,8 +10,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.besome.sketch.editor.event.CollapsibleButton;
 import com.sketchware.remod.R;
+
+import a.a.a.wB;
+import mod.hey.studios.util.Helper;
 
 public class CollapsibleComponentLayout extends FrameLayout {
     private Context context;
@@ -46,15 +47,16 @@ public class CollapsibleComponentLayout extends FrameLayout {
         confirmLayout = findViewById(R.id.confirm_layout);
         confirmYes = findViewById(R.id.confirm_yes);
         confirmNo = findViewById(R.id.confirm_no);
-        TextView i = findViewById(R.id.tv_warning_message);
-        TextView d = findViewById(R.id.confirm_yes_text);
-        d.setText(xB.b().a(getContext(), R.string.common_word_continue));
-        TextView e = findViewById(R.id.confirm_no_text);
-        e.setText(xB.b().a(getContext(), R.string.common_word_cancel));
+        TextView warningMessage = findViewById(R.id.tv_warning_message);
+        TextView yes = findViewById(R.id.confirm_yes_text);
+        yes.setText(Helper.getResString(yes, R.string.common_word_continue));
+        TextView no = findViewById(R.id.confirm_no_text);
+        no.setText(Helper.getResString(no, R.string.common_word_cancel));
         confirmLayout.setVisibility(INVISIBLE);
         warning.setVisibility(GONE);
-        i.setText(xB.b().a(getContext(), R.string.common_message_confirm));
-        delete = createDelete(0, R.drawable.delete_96, xB.b().a(context, R.string.common_word_delete));
+        warningMessage.setText(Helper.getResString(warningMessage, R.string.common_message_confirm));
+        // if the view's being previewed, all views are in edit mode
+        delete = createDelete(0, R.drawable.delete_96, Helper.getResString(warningMessage, R.string.common_word_delete));
         projectButtons.addView(delete);
         flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
         flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
