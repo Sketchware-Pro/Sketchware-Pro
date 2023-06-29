@@ -37,34 +37,34 @@ public class CollapsibleComponentLayout extends FrameLayout {
     }
 
     public final void a(Context context) {
-        this.a = context;
+        a = context;
         wB.a(context, this, R.layout.fr_logic_list_item_buttons);
-        this.f = (LinearLayout) findViewById(R.id.project_buttons);
-        this.h = (LinearLayout) findViewById(R.id.ll_warning);
-        this.g = findViewById(R.id.confirm_layout);
-        this.b = findViewById(R.id.confirm_yes);
-        this.c = findViewById(R.id.confirm_no);
-        this.i = (TextView) findViewById(R.id.tv_warning_message);
-        this.d = (TextView) findViewById(R.id.confirm_yes_text);
-        this.d.setText(xB.b().a(getContext(), R.string.common_word_continue));
-        this.e = (TextView) findViewById(R.id.confirm_no_text);
-        this.e.setText(xB.b().a(getContext(), R.string.common_word_cancel));
-        this.g.setVisibility(INVISIBLE);
-        this.h.setVisibility(GONE);
-        this.i.setText(xB.b().a(getContext(), R.string.common_message_confirm));
-        this.n = a(0, R.drawable.delete_96, xB.b().a(context, R.string.common_word_delete));
-        this.f.addView(this.n);
-        this.j = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
-        this.k = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
-        this.l = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_in);
-        this.m = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_out);
+        f = findViewById(R.id.project_buttons);
+        h = findViewById(R.id.ll_warning);
+        g = findViewById(R.id.confirm_layout);
+        b = findViewById(R.id.confirm_yes);
+        c = findViewById(R.id.confirm_no);
+        i = findViewById(R.id.tv_warning_message);
+        d = findViewById(R.id.confirm_yes_text);
+        d.setText(xB.b().a(getContext(), R.string.common_word_continue));
+        e = findViewById(R.id.confirm_no_text);
+        e.setText(xB.b().a(getContext(), R.string.common_word_cancel));
+        g.setVisibility(INVISIBLE);
+        h.setVisibility(GONE);
+        i.setText(xB.b().a(getContext(), R.string.common_message_confirm));
+        n = a(0, R.drawable.delete_96, xB.b().a(context, R.string.common_word_delete));
+        f.addView(n);
+        j = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
+        k = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
+        l = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_in);
+        m = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_out);
     }
 
     public void b() {
-        this.k.setTarget(this.f);
-        this.j.setTarget(this.g);
+        k.setTarget(f);
+        j.setTarget(g);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(this.k).with(this.j);
+        animatorSet.play(k).with(j);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -86,13 +86,13 @@ public class CollapsibleComponentLayout extends FrameLayout {
     }
 
     public void setButtonOnClickListener(View.OnClickListener onClickListener) {
-        this.b.setOnClickListener(onClickListener);
-        this.c.setOnClickListener(onClickListener);
-        this.n.setOnClickListener(onClickListener);
+        b.setOnClickListener(onClickListener);
+        c.setOnClickListener(onClickListener);
+        n.setOnClickListener(onClickListener);
     }
 
     public final CollapsibleButton a(int i, int i2, String str) {
-        CollapsibleButton collapsibleButton = new CollapsibleButton(this.a);
+        CollapsibleButton collapsibleButton = new CollapsibleButton(a);
         collapsibleButton.b = i;
         collapsibleButton.d.setImageResource(i2);
         collapsibleButton.e.setText(str);
@@ -100,10 +100,10 @@ public class CollapsibleComponentLayout extends FrameLayout {
     }
 
     public void a() {
-        this.l.setTarget(this.f);
-        this.m.setTarget(this.g);
+        l.setTarget(f);
+        m.setTarget(g);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(this.l).with(this.m);
+        animatorSet.play(l).with(m);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
