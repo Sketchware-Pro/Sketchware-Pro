@@ -21,33 +21,33 @@ public class ComponentEventButton extends LinearLayout {
 
     public ComponentEventButton(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, R.layout.fr_logic_list_item_component_event);
-        this.a = (LinearLayout) findViewById(R.id.container);
-        this.d = (ImageView) findViewById(R.id.add_event);
-        this.b = (LinearLayout) findViewById(R.id.icon_bg);
-        this.c = (ImageView) findViewById(R.id.icon);
-        this.e = (TextView) findViewById(R.id.name);
+        a = findViewById(R.id.container);
+        d = findViewById(R.id.add_event);
+        b = findViewById(R.id.icon_bg);
+        c = findViewById(R.id.icon);
+        e = findViewById(R.id.name);
     }
 
     public void b() {
-        this.d.setVisibility(GONE);
+        d.setVisibility(GONE);
         ColorMatrix colorMatrix = new ColorMatrix();
         colorMatrix.setSaturation(1);
-        this.c.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        c.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
     }
 
     public void setClickListener(View.OnClickListener onClickListener) {
-        this.a.setOnClickListener(onClickListener);
+        a.setOnClickListener(onClickListener);
     }
 
     public void a() {
-        this.d.setVisibility(VISIBLE);
+        d.setVisibility(VISIBLE);
         ColorMatrix colorMatrix = new ColorMatrix();
         colorMatrix.setSaturation(0);
-        this.c.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        c.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
     }
 }
