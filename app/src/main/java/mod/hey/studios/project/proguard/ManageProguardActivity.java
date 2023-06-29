@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+
 import android.widget.TextView;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -18,13 +19,12 @@ import java.util.HashMap;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.util.Helper;
 
-//changed in 6.3.0
 public class ManageProguardActivity extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ProguardHandler pg;
-    private Switch sw_pg_enabled;
-    private Switch sw_pg_debug;
-    private Switch r8_enabled;
+        private MaterialSwitch sw_pg_enabled;
+    private MaterialSwitch sw_pg_debug;
+    private MaterialSwitch r8_enabled;
 
     @Override
     public void onClick(View v) {
