@@ -8,6 +8,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -29,7 +30,11 @@ public class CollapsibleComponentLayout extends FrameLayout {
     private CollapsibleButton delete;
 
     public CollapsibleComponentLayout(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public CollapsibleComponentLayout(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         initialize(context);
     }
 
