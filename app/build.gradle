@@ -48,6 +48,7 @@ android {
             dimension "api"
             minSdkVersion 26
             versionNameSuffix "-minApi26"
+            isDefault = true
         }
 
         minApi21 {
