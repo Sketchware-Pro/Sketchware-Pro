@@ -275,8 +275,8 @@ public class br extends qA implements View.OnClickListener {
                     ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(event.eventName));
                     linearLayout.findViewById(R.id.icon_bg).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
                     ComponentEventButton componentEventButton = new ComponentEventButton(requireContext());
-                    componentEventButton.e.setText(event.eventName);
-                    componentEventButton.c.setImageResource(oq.a(event.eventName));
+                    componentEventButton.getName().setText(event.eventName);
+                    componentEventButton.getIcon().setImageResource(oq.a(event.eventName));
                     componentEventButton.setClickListener(v -> {
                         if (!mB.a()) {
                             openEvent(event.targetId, event.eventName, event.eventName);
@@ -304,15 +304,15 @@ public class br extends qA implements View.OnClickListener {
                 linearLayout2.setScaleX(0.8f);
                 linearLayout2.setScaleY(0.8f);
                 ComponentEventButton componentEventButton2 = new ComponentEventButton(requireContext());
-                componentEventButton2.a();
-                componentEventButton2.e.setText(eventName);
-                componentEventButton2.c.setImageResource(oq.a(eventName));
+                componentEventButton2.onEventAvailableToAdd();
+                componentEventButton2.getName().setText(eventName);
+                componentEventButton2.getIcon().setImageResource(oq.a(eventName));
                 componentEventButton2.setClickListener(v -> {
                     if (!mB.a()) {
                         EventBean event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, componentBean.type, componentBean.componentId, eventName);
                         jC.a(sc_id).a(projectFile.getJavaName(), event);
                         bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();
-                        componentEventButton2.b();
+                        componentEventButton2.onEventAdded();
                         notifyItemChanged(holder.getLayoutPosition());
                         openEvent(event.targetId, event.eventName, event.eventName);
                     }

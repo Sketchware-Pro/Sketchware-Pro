@@ -13,11 +13,10 @@ import com.sketchware.remod.R;
 import a.a.a.wB;
 
 public class ComponentEventButton extends LinearLayout {
-    public LinearLayout a;
-    public LinearLayout b;
-    public ImageView c;
-    public ImageView d;
-    public TextView e;
+    private LinearLayout container;
+    private ImageView icon;
+    private ImageView addEvent;
+    private TextView name;
 
     public ComponentEventButton(Context context) {
         super(context);
@@ -26,28 +25,35 @@ public class ComponentEventButton extends LinearLayout {
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.fr_logic_list_item_component_event);
-        a = findViewById(R.id.container);
-        d = findViewById(R.id.add_event);
-        b = findViewById(R.id.icon_bg);
-        c = findViewById(R.id.icon);
-        e = findViewById(R.id.name);
+        container = findViewById(R.id.container);
+        addEvent = findViewById(R.id.add_event);
+        icon = findViewById(R.id.icon);
+        name = findViewById(R.id.name);
     }
 
-    public void b() {
-        d.setVisibility(GONE);
+    public void onEventAdded() {
+        addEvent.setVisibility(GONE);
         ColorMatrix colorMatrix = new ColorMatrix();
         colorMatrix.setSaturation(1);
-        c.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
     }
 
     public void setClickListener(View.OnClickListener onClickListener) {
-        a.setOnClickListener(onClickListener);
+        container.setOnClickListener(onClickListener);
     }
 
-    public void a() {
-        d.setVisibility(VISIBLE);
+    public void onEventAvailableToAdd() {
+        addEvent.setVisibility(VISIBLE);
         ColorMatrix colorMatrix = new ColorMatrix();
         colorMatrix.setSaturation(0);
-        c.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+    }
+
+    public ImageView getIcon() {
+        return icon;
+    }
+
+    public TextView getName() {
+        return name;
     }
 }
