@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -127,7 +126,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
     }
 
     private void _initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("ProGuard Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Code Shrinking Manager");
 
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(this);

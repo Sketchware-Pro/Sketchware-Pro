@@ -191,13 +191,6 @@ public class Dp {
         ).equals(BuildSettings.SETTING_DEXER_D8);
     }
 
-    public boolean isR8Enabled() {
-        return build_settings.getValue(
-                BuildSettings.SETTING_SHRINKER,
-                BuildSettings.SETTING_SHRINKER_PROGUARD
-        ).equals(BuildSettings.SETTING_SHRINKER_R8);
-    }
-
     public String getDxRunningText() {
         return (isD8Enabled() ? "D8" : "Dx") + " is running...";
     }
@@ -209,7 +202,7 @@ public class Dp {
      */
     public void createDexFilesFromClasses() throws Exception {
         FileUtil.makeDir(yq.binDirectoryPath + File.separator + "dex");
-        if (proguard.isProguardEnabled() && isR8Enabled()) return;
+        if (proguard.isProguardEnabled() && proguard.isR8Enabled()) return;
 
         if (isD8Enabled()) {
             long savedTimeMillis = System.currentTimeMillis();
@@ -849,42 +842,41 @@ public class Dp {
         return sb.toString();
     }
 
-    public void runProguard() throws IOException {
+    public void runR8() throws IOException {
         long savedTimeMillis = System.currentTimeMillis();
 
-        if (proguard.isR8Enabled()) {
-            ArrayList<String> config = new ArrayList<>();
-            config.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
-            config.add(yq.aaptProGuardRules);
-            config.add(proguard.getCustomProguardRules());
-            var rules = new ArrayList<String>(Arrays.asList(getRJavaRules().split("\n")));
-            for (Jp library : builtInLibraryManager.getLibraries()) {
-                File f = BuiltInLibraries.getLibraryProGuardConfiguration(library.a());
-                if (f.exists()) {
-                    config.add(f.getAbsolutePath());
-                }
+        ArrayList<String> config = new ArrayList<>();
+        config.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
+        config.add(yq.aaptProGuardRules);
+        config.add(proguard.getCustomProguardRules());
+        var rules = new ArrayList<>(Arrays.asList(getRJavaRules().split("\n")));
+        for (Jp library : builtInLibraryManager.getLibraries()) {
+            File f = BuiltInLibraries.getLibraryProGuardConfiguration(library.a());
+            if (f.exists()) {
+                config.add(f.getAbsolutePath());
             }
-            for (String localLibraryProGuardRule : mll.getPgRules()) {
-                config.add(localLibraryProGuardRule);
-            }
-            ArrayList<String> jars = new ArrayList<>();
-            jars.add(yq.compiledClassesPath + ".jar");
-
-            for (HashMap<String, Object> hashMap : mll.list) {
-                String obj = hashMap.get("name").toString();
-                if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
-                    jars.add(hashMap.get("jarPath").toString());
-                }
-            }
-            try {
-                JarBuilder.INSTANCE.generateJar(new File(yq.compiledClassesPath));
-                new R8Compiler(rules, config.toArray(new String[0]), getProGuardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
-            } catch (Exception e) {
-                throw new IOException(e);
-            }
-            LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-            return;
         }
+        config.addAll(mll.getPgRules());
+        ArrayList<String> jars = new ArrayList<>();
+        jars.add(yq.compiledClassesPath + ".jar");
+
+        for (HashMap<String, Object> hashMap : mll.list) {
+            String obj = hashMap.get("name").toString();
+            if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
+                jars.add(hashMap.get("jarPath").toString());
+            }
+        }
+        try {
+            JarBuilder.INSTANCE.generateJar(new File(yq.compiledClassesPath));
+            new R8Compiler(rules, config.toArray(new String[0]), getProGuardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+        LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+    }
+
+    public void runProguard() throws IOException {
+        long savedTimeMillis = System.currentTimeMillis();
 
         ArrayList<String> args = new ArrayList<>();
 

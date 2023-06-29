@@ -237,8 +237,13 @@ public class ProguardHandler {
 
     public void start(BuildProgressReceiver progressReceiver, Dp dp) throws IOException {
         if (isProguardEnabled()) {
-            progressReceiver.onProgress("ProGuarding classes...");
-            dp.runProguard();
+            if (isR8Enabled()) {
+                progressReceiver.onProgress("Running R8 on classes...");
+                dp.runR8();
+            } else {
+                progressReceiver.onProgress("Proguarding classes...");
+                dp.runProguard();
+            }
         }
     }
 }
