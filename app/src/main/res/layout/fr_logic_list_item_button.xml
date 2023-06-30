@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/img_button"
     android:layout_width="0dp"
     android:layout_height="48dp"
     android:layout_weight="1"
     android:background="?android:selectableItemBackground"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:layout_width="match_parent">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:contentDescription="@null"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        tools:src="@drawable/delete_96" />
 
     <TextView
         android:id="@+id/name"
@@ -22,5 +25,6 @@
         android:layout_marginLeft="8dp"
         android:gravity="center"
         android:textColor="#ff757575"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        tools:text="@string/common_word_delete" />
 </LinearLayout>
