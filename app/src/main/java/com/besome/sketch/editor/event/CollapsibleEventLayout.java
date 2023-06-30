@@ -1,16 +1,17 @@
 package com.besome.sketch.editor.event;
 
-import a.a.a.Os;
-import a.a.a.Ps;
-import a.a.a.wB;
-import a.a.a.xB;
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import a.a.a.wB;
+import a.a.a.xB;
 
 public class CollapsibleEventLayout extends FrameLayout {
     public Context a;
@@ -77,7 +78,23 @@ public class CollapsibleEventLayout extends FrameLayout {
         this.j.setTarget(this.h);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(this.k).with(this.j);
-        animatorSet.addListener(new Os(this));
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                o.setEnabled(false);
+                c.setEnabled(true);
+                g.setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                f.setVisibility(VISIBLE);
+                h.setVisibility(VISIBLE);
+                o.setEnabled(false);
+                c.setEnabled(false);
+            }
+        });
         animatorSet.start();
     }
 
@@ -110,7 +127,23 @@ public class CollapsibleEventLayout extends FrameLayout {
         this.m.setTarget(this.h);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(this.l).with(this.m);
-        animatorSet.addListener(new Ps(this));
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                o.setEnabled(true);
+                c.setEnabled(false);
+                h.setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                f.setVisibility(GONE);
+                g.setVisibility(VISIBLE);
+                o.setEnabled(false);
+                c.setEnabled(false);
+            }
+        });
         animatorSet.start();
     }
 }
