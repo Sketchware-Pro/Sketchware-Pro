@@ -16,7 +16,6 @@ import a.a.a.wB;
 import a.a.a.xB;
 
 public class CollapsibleEventLayout extends FrameLayout {
-    private Context context;
     private View confirmYes;
     private View confirmNo;
     private LinearLayout warning;
@@ -36,7 +35,6 @@ public class CollapsibleEventLayout extends FrameLayout {
     }
 
     private void initialize(Context context) {
-        this.context = context;
         wB.a(context, this, R.layout.fr_logic_list_item_buttons);
         projectButtons = findViewById(R.id.project_buttons);
         warning = findViewById(R.id.ll_warning);
@@ -51,9 +49,9 @@ public class CollapsibleEventLayout extends FrameLayout {
         confirm.setVisibility(INVISIBLE);
         warning.setVisibility(GONE);
         warningMessage.setText(xB.b().a(getContext(), R.string.common_message_confirm));
-        reset = a(0, R.drawable.ic_reset_color_32dp, xB.b().a(context, R.string.common_word_reset));
-        delete = a(1, R.drawable.delete_96, xB.b().a(context, R.string.common_word_delete));
-        addToCollection = a(2, R.drawable.ic_bookmark_red_48dp, xB.b().a(context, R.string.logic_list_menu_add_to_collection));
+        reset = CollapsibleButton.create(context, 0, R.drawable.ic_reset_color_32dp, R.string.common_word_reset);
+        delete = CollapsibleButton.create(context, 1, R.drawable.delete_96, R.string.common_word_delete);
+        addToCollection = CollapsibleButton.create(context, 2, R.drawable.ic_bookmark_red_48dp, R.string.logic_list_menu_add_to_collection);
         addToCollection.setVisibility(GONE);
         projectButtons.addView(reset);
         projectButtons.addView(delete);
@@ -111,14 +109,6 @@ public class CollapsibleEventLayout extends FrameLayout {
         reset.setOnClickListener(onClickListener);
         delete.setOnClickListener(onClickListener);
         addToCollection.setOnClickListener(onClickListener);
-    }
-
-    public final CollapsibleButton a(int i, int i2, String str) {
-        CollapsibleButton collapsibleButton = new CollapsibleButton(context);
-        collapsibleButton.b = i;
-        collapsibleButton.d.setImageResource(i2);
-        collapsibleButton.e.setText(str);
-        return collapsibleButton;
     }
 
     public void a() {

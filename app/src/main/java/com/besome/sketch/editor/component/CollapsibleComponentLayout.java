@@ -18,7 +18,6 @@ import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
 public class CollapsibleComponentLayout extends FrameLayout {
-    private Context context;
     private View confirmYes;
     private View confirmNo;
     private LinearLayout projectButtons;
@@ -40,7 +39,6 @@ public class CollapsibleComponentLayout extends FrameLayout {
     }
 
     private void initialize(Context context) {
-        this.context = context;
         wB.a(context, this, R.layout.fr_logic_list_item_buttons);
         projectButtons = findViewById(R.id.project_buttons);
         warning = findViewById(R.id.ll_warning);
@@ -55,8 +53,7 @@ public class CollapsibleComponentLayout extends FrameLayout {
         confirmLayout.setVisibility(INVISIBLE);
         warning.setVisibility(GONE);
         warningMessage.setText(Helper.getResString(warningMessage, R.string.common_message_confirm));
-        // if the view's being previewed, all views are in edit mode
-        delete = createDelete(0, R.drawable.delete_96, Helper.getResString(warningMessage, R.string.common_word_delete));
+        delete = CollapsibleButton.create(context, 0, R.drawable.delete_96, R.string.common_word_delete);
         projectButtons.addView(delete);
         flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
         flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
@@ -93,14 +90,6 @@ public class CollapsibleComponentLayout extends FrameLayout {
         confirmYes.setOnClickListener(onClickListener);
         confirmNo.setOnClickListener(onClickListener);
         delete.setOnClickListener(onClickListener);
-    }
-
-    private CollapsibleButton createDelete(int i, int i2, String str) {
-        CollapsibleButton collapsibleButton = new CollapsibleButton(context);
-        collapsibleButton.b = i;
-        collapsibleButton.d.setImageResource(i2);
-        collapsibleButton.e.setText(str);
-        return collapsibleButton;
     }
 
     public CollapsibleButton getDeleteButton() {
