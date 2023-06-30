@@ -2,6 +2,7 @@ package com.besome.sketch.editor.event;
 
 import a.a.a.wB;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,7 +16,11 @@ public class CollapsibleButton extends LinearLayout {
     public TextView e;
 
     public CollapsibleButton(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public CollapsibleButton(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         initialize(context);
     }
 
