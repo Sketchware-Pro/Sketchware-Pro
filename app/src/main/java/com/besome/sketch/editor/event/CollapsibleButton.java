@@ -2,9 +2,12 @@ package com.besome.sketch.editor.event;
 
 import a.a.a.wB;
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.sketchware.remod.R;
 
 public class CollapsibleButton extends LinearLayout {
     public int b;
@@ -17,12 +20,12 @@ public class CollapsibleButton extends LinearLayout {
     }
 
     private void initialize(Context context) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, -2);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
         setLayoutParams(layoutParams);
-        wB.a(context, this, 2131427431);
-        LinearLayout c = (LinearLayout) findViewById(2131231120);
-        this.d = (ImageView) findViewById(2131231090);
-        this.e = (TextView) findViewById(2131231561);
+        wB.a(context, this, R.layout.fr_logic_list_item_button);
+        d = findViewById(R.id.icon);
+        e = findViewById(R.id.name);
     }
 }
