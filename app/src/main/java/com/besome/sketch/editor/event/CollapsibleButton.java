@@ -16,9 +16,9 @@ import androidx.annotation.StringRes;
 import com.sketchware.remod.R;
 
 public class CollapsibleButton extends LinearLayout {
-    public int b;
-    public ImageView d;
-    public TextView e;
+    private int id;
+    private ImageView icon;
+    private TextView label;
 
     public CollapsibleButton(Context context) {
         this(context, null);
@@ -35,15 +35,23 @@ public class CollapsibleButton extends LinearLayout {
         layoutParams.weight = 1.0f;
         setLayoutParams(layoutParams);
         wB.a(context, this, R.layout.fr_logic_list_item_button);
-        d = findViewById(R.id.icon);
-        e = findViewById(R.id.name);
+        icon = findViewById(R.id.icon);
+        label = findViewById(R.id.name);
     }
 
     public static CollapsibleButton create(Context context, int id, @DrawableRes int icon, @StringRes int label) {
         CollapsibleButton collapsibleButton = new CollapsibleButton(context);
-        collapsibleButton.b = id;
-        collapsibleButton.d.setImageResource(icon);
-        collapsibleButton.e.setText(Helper.getResString(collapsibleButton, label));
+        collapsibleButton.id = id;
+        collapsibleButton.icon.setImageResource(icon);
+        collapsibleButton.label.setText(Helper.getResString(collapsibleButton, label));
         return collapsibleButton;
+    }
+
+    public int getButtonId() {
+        return id;
+    }
+
+    public TextView getLabel() {
+        return label;
     }
 }

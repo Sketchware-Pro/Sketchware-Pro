@@ -917,7 +917,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                         lastSelectedItem = getLayoutPosition();
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(lastSelectedItem);
                         if (v instanceof CollapsibleButton) {
-                            int i = ((CollapsibleButton) v).b;
+                            int i = ((CollapsibleButton) v).getButtonId();
                             if (i == 2) {
                                 eventBean.buttonPressed = i;
                                 eventBean.isConfirmation = false;
