@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +39,7 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 public class br extends qA implements View.OnClickListener {
     private ProjectFileBean projectFile;
@@ -93,6 +97,9 @@ public class br extends qA implements View.OnClickListener {
         private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
 
         private class ViewHolder extends RecyclerView.ViewHolder {
+            private static final Handler handler = new Handler(Looper.getMainLooper());
+            private static final Executor mainThreadExecutor = handler::post;
+
             public final LinearLayout optionLayout;
             public final RecyclerView componentEvents;
             public final ImageView icon;
@@ -171,6 +178,7 @@ public class br extends qA implements View.OnClickListener {
                 if (componentEvents.getLayoutManager() instanceof LinearLayoutManager manager) {
                     manager.setRecycleChildrenOnDetach(true);
                 }
+                componentEvents.setItemAnimator(null);
                 addedEventsAdapter = new AddedEventsAdapter();
                 availableEventsAdapter = new AvailableEventsAdapter();
                 componentEventsAdapter = new ConcatAdapter(EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
@@ -222,9 +230,12 @@ public class br extends qA implements View.OnClickListener {
                         return true;
                     }
                 };
+                private static final AsyncDifferConfig<EventBean> CONFIG = new AsyncDifferConfig.Builder<>(DIFF_CALLBACK)
+                        .setBackgroundThreadExecutor(mainThreadExecutor)
+                        .build();
 
                 public AddedEventsAdapter() {
-                    super(DIFF_CALLBACK);
+                    super(CONFIG);
                 }
 
                 @NonNull
@@ -255,9 +266,12 @@ public class br extends qA implements View.OnClickListener {
                         return true;
                     }
                 };
+                private static final AsyncDifferConfig<String> CONFIG = new AsyncDifferConfig.Builder<>(DIFF_CALLBACK)
+                        .setBackgroundThreadExecutor(mainThreadExecutor)
+                        .build();
 
                 public AvailableEventsAdapter() {
-                    super(DIFF_CALLBACK);
+                    super(CONFIG);
                 }
 
                 @NonNull
@@ -323,11 +337,6 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
             }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
         }
 
         @Override
@@ -413,11 +422,6 @@ public class br extends qA implements View.OnClickListener {
             } else {
                 holder.componentEvents.setVisibility(View.GONE);
             }
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return position;
         }
 
         @Override
