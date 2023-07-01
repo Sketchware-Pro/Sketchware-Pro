@@ -90,6 +90,7 @@ public class br extends qA implements View.OnClickListener {
         private static final ConcatAdapter.Config EVENTS_ADAPTER_CONFIG = new ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build();
+        private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout optionLayout;
@@ -166,6 +167,10 @@ public class br extends qA implements View.OnClickListener {
                     }
                     return true;
                 });
+                componentEvents.setRecycledViewPool(eventViewHolders);
+                if (componentEvents.getLayoutManager() instanceof LinearLayoutManager manager) {
+                    manager.setRecycleChildrenOnDetach(true);
+                }
                 addedEventsAdapter = new AddedEventsAdapter();
                 availableEventsAdapter = new AvailableEventsAdapter();
                 componentEventsAdapter = new ConcatAdapter(EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
