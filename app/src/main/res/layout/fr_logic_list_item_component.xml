@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -74,19 +75,17 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <HorizontalScrollView
-            android:id="@+id/sv_component_events"
+        <!-- setting its height to wrap_content causes it to be invisible until this @layout
+             gets reused by its RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/component_events"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:paddingHorizontal="24dp"
-            android:visibility="visible">
-
-            <LinearLayout
-                android:id="@+id/component_events"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/fr_logic_list_item_component_event" />
 
         <View
             android:layout_width="match_parent"
@@ -94,10 +93,9 @@
             android:layout_marginHorizontal="16dp"
             android:background="@color/color_secondary" />
 
-        <LinearLayout
+        <com.besome.sketch.editor.component.CollapsibleComponentLayout
             android:id="@+id/component_option"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>
