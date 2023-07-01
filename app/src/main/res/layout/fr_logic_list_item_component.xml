@@ -84,6 +84,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="24dp"
             android:visibility="visible"
+            android:scrollbars="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/fr_logic_list_item_component_event" />
 
