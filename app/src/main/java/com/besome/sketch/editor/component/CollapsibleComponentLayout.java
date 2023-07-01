@@ -10,7 +10,7 @@ import com.besome.sketch.editor.event.CollapsibleButton;
 import com.besome.sketch.lib.base.CollapsibleLayout;
 import com.sketchware.remod.R;
 
-import java.util.Set;
+import java.util.List;
 
 public class CollapsibleComponentLayout extends CollapsibleLayout {
     private CollapsibleButton delete;
@@ -24,9 +24,9 @@ public class CollapsibleComponentLayout extends CollapsibleLayout {
     }
 
     @Override
-    protected Set<CollapsibleButton> initializeButtons(@NonNull Context context) {
+    protected List<CollapsibleButton> initializeButtons(@NonNull Context context) {
         delete = CollapsibleButton.create(context, 0, R.drawable.delete_96, R.string.common_word_delete);
-        return Set.of(delete);
+        return List.of(delete);
     }
 
     public CollapsibleButton getDeleteButton() {

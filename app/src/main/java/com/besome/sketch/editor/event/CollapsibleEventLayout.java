@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.besome.sketch.lib.base.CollapsibleLayout;
 import com.sketchware.remod.R;
 
-import java.util.Set;
+import java.util.List;
 
 public class CollapsibleEventLayout extends CollapsibleLayout {
     private CollapsibleButton delete;
@@ -23,12 +23,12 @@ public class CollapsibleEventLayout extends CollapsibleLayout {
     }
 
     @Override
-    protected Set<CollapsibleButton> initializeButtons(@NonNull Context context) {
+    protected List<CollapsibleButton> initializeButtons(@NonNull Context context) {
         CollapsibleButton reset = CollapsibleButton.create(context, 0, R.drawable.ic_reset_color_32dp, R.string.common_word_reset);
         delete = CollapsibleButton.create(context, 1, R.drawable.delete_96, R.string.common_word_delete);
         addToCollection = CollapsibleButton.create(context, 2, R.drawable.ic_bookmark_red_48dp, R.string.logic_list_menu_add_to_collection);
         addToCollection.setVisibility(GONE);
-        return Set.of(reset, delete, addToCollection);
+        return List.of(reset, delete, addToCollection);
     }
 
     public void b() {
