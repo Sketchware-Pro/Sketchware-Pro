@@ -403,6 +403,10 @@ public class br extends qA implements View.OnClickListener {
                 }
 
                 holder.componentEvents.setVisibility(View.VISIBLE);
+                if (!componentBean.isCollapsed) {
+                    holder.eventsPreview.setTranslationX(holder.eventsPreview.getWidth());
+                    holder.eventsPreview.setAlpha(0);
+                }
                 holder.addedEventsAdapter.submitList(addedEvents);
                 holder.availableEventsAdapter.submitList(availableEvents);
                 holder.componentEvents.setAdapter(holder.componentEventsAdapter);
