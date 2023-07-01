@@ -31,19 +31,19 @@ public class CollapsibleEventLayout extends CollapsibleLayout {
         return List.of(reset, delete, addToCollection);
     }
 
-    public void b() {
+    public void hideDelete() {
         delete.setVisibility(GONE);
     }
 
-    public void c() {
+    public void hideAddToCollection() {
         addToCollection.setVisibility(GONE);
     }
 
-    public void e() {
+    public void showDelete() {
         delete.setVisibility(VISIBLE);
     }
 
-    public void f() {
+    public void showAddToCollection() {
         addToCollection.setVisibility(VISIBLE);
     }
 }

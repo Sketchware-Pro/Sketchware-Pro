@@ -806,18 +806,15 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             holder.previewContainer.setVisibility(View.VISIBLE);
             holder.preview.setVisibility(View.VISIBLE);
             holder.preview.setImageResource(oq.a(eventBean.eventName));
-            holder.optionsLayout.e();
+            holder.optionsLayout.showDelete();
             if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
-                // Show Add to Collection
-                holder.optionsLayout.f();
+                holder.optionsLayout.showAddToCollection();
             } else {
-                // Hide Add to Collection
-                holder.optionsLayout.c();
+                holder.optionsLayout.hideAddToCollection();
             }
             if (eventBean.eventType == EventBean.EVENT_TYPE_ACTIVITY) {
                 if (eventBean.eventName.equals("initializeLogic")) {
-                    // Hide Delete
-                    holder.optionsLayout.b();
+                    holder.optionsLayout.hideDelete();
                 }
                 holder.targetId.setText(eventBean.targetId);
                 holder.type.setBackgroundResource(oq.a(eventBean.eventName));
