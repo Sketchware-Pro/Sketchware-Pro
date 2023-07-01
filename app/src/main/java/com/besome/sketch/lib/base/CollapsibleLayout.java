@@ -60,6 +60,9 @@ public abstract class CollapsibleLayout extends FrameLayout {
         flipBottomOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_out);
         buttons = initializeButtons(context);
         buttons.forEach(projectButtons::addView);
+        if (isInEditMode()) {
+            confirmLayout.setVisibility(GONE);
+        }
     }
 
     protected abstract List<CollapsibleButton> initializeButtons(@NonNull Context context);
