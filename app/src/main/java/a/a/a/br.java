@@ -369,7 +369,7 @@ public class br extends qA implements View.OnClickListener {
             }
             holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-            if (addedEvents.size() > 0 && availableEvents.size() > 0) {
+            if (addedEvents.size() > 0 || availableEvents.size() > 0) {
                 for (EventBean event : addedEvents) {
                     if (availableEvents.contains(event.eventName)) {
                         LinearLayout linearLayout = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
