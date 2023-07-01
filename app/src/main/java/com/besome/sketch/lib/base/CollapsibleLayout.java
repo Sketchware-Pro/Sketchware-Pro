@@ -80,7 +80,7 @@ public abstract class CollapsibleLayout extends FrameLayout {
             public void onAnimationEnd(Animator animation) {
                 confirmYes.setEnabled(true);
                 confirmNo.setEnabled(true);
-                projectButtons.setVisibility(INVISIBLE);
+                projectButtons.setVisibility(GONE);
             }
 
             @Override

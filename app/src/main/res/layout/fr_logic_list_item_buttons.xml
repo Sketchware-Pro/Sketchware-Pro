@@ -8,15 +8,14 @@
         android:id="@+id/confirm_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
-            android:id="@+id/ll_warning"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:gravity="bottom|center"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:gravity="bottom|center">
 
             <TextView
                 android:id="@+id/tv_warning_message"
