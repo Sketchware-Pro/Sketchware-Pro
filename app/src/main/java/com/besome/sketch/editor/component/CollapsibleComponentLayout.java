@@ -1,123 +1,35 @@
 package com.besome.sketch.editor.component;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.besome.sketch.editor.event.CollapsibleButton;
+import com.besome.sketch.lib.base.CollapsibleLayout;
 import com.sketchware.remod.R;
 
-import a.a.a.wB;
-import mod.hey.studios.util.Helper;
+import java.util.Set;
 
-public class CollapsibleComponentLayout extends FrameLayout {
-    private View confirmYes;
-    private View confirmNo;
-    private LinearLayout projectButtons;
-    private View confirmLayout;
-    private LinearLayout warning;
-    private AnimatorSet flipTopIn;
-    private AnimatorSet flipTopOut;
-    private AnimatorSet flipBottomIn;
-    private AnimatorSet flipBottomOut;
+public class CollapsibleComponentLayout extends CollapsibleLayout {
     private CollapsibleButton delete;
 
-    public CollapsibleComponentLayout(Context context) {
-        this(context, null);
+    public CollapsibleComponentLayout(@NonNull Context context) {
+        super(context);
     }
 
-    public CollapsibleComponentLayout(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        initialize(context);
+    public CollapsibleComponentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    private void initialize(Context context) {
-        wB.a(context, this, R.layout.fr_logic_list_item_buttons);
-        projectButtons = findViewById(R.id.project_buttons);
-        warning = findViewById(R.id.ll_warning);
-        confirmLayout = findViewById(R.id.confirm_layout);
-        confirmYes = findViewById(R.id.confirm_yes);
-        confirmNo = findViewById(R.id.confirm_no);
-        TextView warningMessage = findViewById(R.id.tv_warning_message);
-        TextView yes = findViewById(R.id.confirm_yes_text);
-        yes.setText(Helper.getResString(yes, R.string.common_word_continue));
-        TextView no = findViewById(R.id.confirm_no_text);
-        no.setText(Helper.getResString(no, R.string.common_word_cancel));
-        confirmLayout.setVisibility(INVISIBLE);
-        warning.setVisibility(GONE);
-        warningMessage.setText(Helper.getResString(warningMessage, R.string.common_message_confirm));
+    @Override
+    protected Set<CollapsibleButton> initializeButtons(@NonNull Context context) {
         delete = CollapsibleButton.create(context, 0, R.drawable.delete_96, R.string.common_word_delete);
-        projectButtons.addView(delete);
-        flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
-        flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
-        flipBottomIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_in);
-        flipBottomOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_out);
-    }
-
-    public void b() {
-        flipTopOut.setTarget(projectButtons);
-        flipTopIn.setTarget(confirmLayout);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(flipTopOut).with(flipTopIn);
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                delete.setEnabled(false);
-                confirmNo.setEnabled(true);
-                projectButtons.setVisibility(INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                confirmLayout.setVisibility(GONE);
-                warning.setVisibility(GONE);
-                delete.setEnabled(false);
-                confirmNo.setEnabled(false);
-            }
-        });
-        animatorSet.start();
-    }
-
-    public void setButtonOnClickListener(View.OnClickListener onClickListener) {
-        confirmYes.setOnClickListener(onClickListener);
-        confirmNo.setOnClickListener(onClickListener);
-        delete.setOnClickListener(onClickListener);
+        return Set.of(delete);
     }
 
     public CollapsibleButton getDeleteButton() {
         return delete;
-    }
-
-    public void a() {
-        flipBottomIn.setTarget(projectButtons);
-        flipBottomOut.setTarget(confirmLayout);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(flipBottomIn).with(flipBottomOut);
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                delete.setEnabled(true);
-                confirmNo.setEnabled(false);
-                confirmLayout.setVisibility(INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                warning.setVisibility(GONE);
-                projectButtons.setVisibility(VISIBLE);
-                delete.setEnabled(false);
-                confirmNo.setEnabled(false);
-            }
-        });
-        animatorSet.start();
     }
 }

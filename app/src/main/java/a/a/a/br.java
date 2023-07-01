@@ -257,9 +257,9 @@ public class br extends qA implements View.OnClickListener {
                 holder.optionLayout.setVisibility(View.VISIBLE);
                 holder.menu.setRotation(-180.0f);
                 if (componentBean.isConfirmation) {
-                    holder.collapsibleComponentLayout.b();
+                    holder.collapsibleComponentLayout.showConfirmation();
                 } else {
-                    holder.collapsibleComponentLayout.a();
+                    holder.collapsibleComponentLayout.hideConfirmation();
                 }
             }
             holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;

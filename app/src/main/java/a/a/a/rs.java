@@ -860,9 +860,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 holder.menu.setRotation(-180);
             }
             if (eventBean.isConfirmation) {
-                holder.optionsLayout.d();
+                holder.optionsLayout.showConfirmation();
             } else {
-                holder.optionsLayout.a();
+                holder.optionsLayout.hideConfirmation();
             }
             holder.optionContainer.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
