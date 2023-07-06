@@ -163,8 +163,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     });
     public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        assert result.getData() != null;
-        projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
+        }
     });
 
     /**
