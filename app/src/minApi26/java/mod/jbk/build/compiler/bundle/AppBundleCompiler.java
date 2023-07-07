@@ -76,7 +76,7 @@ public class AppBundleCompiler {
                                 .addAllUncompressedGlob(uncompressedModuleMainPaths).build()
                         ).build()
                 );
-        if (mDp.proguard.isProguardEnabled() && mDp.proguard.isDebugFilesEnabled()) {
+        if (mDp.proguard.isShrinkingEnabled() && mDp.proguard.isDebugFilesEnabled()) {
             Path mapping = Paths.get(mDp.yq.proGuardMappingPath);
             LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
             builder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);

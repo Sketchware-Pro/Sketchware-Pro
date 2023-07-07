@@ -50,10 +50,11 @@ public class BuildSettingsDialog {
                 addInputPref(BuildSettings.SETTING_ANDROID_JAR_PATH, "", "Custom android.jar", EditorInfo.TYPE_CLASS_TEXT, contentView),
                 addInputPref(BuildSettings.SETTING_CLASSPATH, "", "Classpath (separated by :)", EditorInfo.TYPE_CLASS_TEXT, contentView),
                 addSingleChoicePref(BuildSettings.SETTING_DEXER, new String[]{"Dx", "D8"}, "Dx", "Dexer", contentView),
-                addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, BuildSettingsDialogBridge.getAvailableJavaVersions(), "1.8", "Java version", contentView),
+                addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, BuildSettingsDialogBridge.getAvailableJavaVersions(), "1.7", "Java version", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, true, "Hide warnings in error log", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", 12, contentView),
-                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, true, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", 12, contentView)
+                // Most of the time, the user doesn't check logcat, so it's disabled by default.
+                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, false, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", 12, contentView)
         };
 
         builder.setView(inflate);
