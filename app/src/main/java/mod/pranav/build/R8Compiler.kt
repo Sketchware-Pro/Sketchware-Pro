@@ -35,5 +35,4 @@ class R8Compiler(
             .build()
         R8.run(command)
     }
-
 }

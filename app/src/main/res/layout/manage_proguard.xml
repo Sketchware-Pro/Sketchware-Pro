@@ -37,10 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:checked="true"
-                android:gravity="center|start"
+                android:gravity="center|left"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/use_r8"
+                android:text="@string/code_shrinker_use_r8"
                 android:textColor="#5271FF"
                 android:textSize="16sp" />
 
@@ -54,7 +54,7 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:padding="4dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/connected_96" />
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/obfuscate_def"
+                    android:text="@string/code_shrinker_obfuscate_def"
                     android:textColor="#ff757575"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -115,7 +115,7 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:padding="4dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/side_menu_setting_icon_over" />
@@ -123,7 +123,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/configure_shrinker"
+                    android:text="@string/code_shrinker_configure_shrinker"
                     android:textColor="#ff757575"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -167,7 +167,7 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:padding="4dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/side_menu_setting_icon_over" />
@@ -175,7 +175,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/full_mode_def"
+                    android:text="@string/code_shrinker_full_mode_def"
                     android:textColor="#ff757575"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -190,7 +190,7 @@
                 android:gravity="center|start"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/generate_debug"
+                android:text="@string/generate_debug_files"
                 android:textColor="#ffe53935"
                 android:textSize="16sp" />
         </LinearLayout>

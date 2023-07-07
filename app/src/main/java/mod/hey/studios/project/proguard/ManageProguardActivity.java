@@ -120,7 +120,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
     private void initializeLogic() {
         _initToolbar();
         pg = new ProguardHandler(getIntent().getStringExtra("sc_id"));
-        sw_pg_enabled.setChecked(pg.isProguardEnabled());
+        sw_pg_enabled.setChecked(pg.isShrinkingEnabled());
         sw_pg_debug.setChecked(pg.isDebugFilesEnabled());
         r8_enabled.setChecked(pg.isR8Enabled());
     }

@@ -149,7 +149,7 @@ public class ProguardHandler {
         return debugFiles;
     }
 
-    public boolean isProguardEnabled() {
+    public boolean isShrinkingEnabled() {
         boolean proguardEnabled = true;
         if (FileUtil.isExistFile(config_path)) {
             try {
@@ -197,8 +197,9 @@ public class ProguardHandler {
 
         return r8Enabled;
     }
+
     public void setR8Enabled(boolean r8Enabled) {
-        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), TypeToken.get(HashMap.class).getType());
+        var config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
         config.put("r8", String.valueOf(r8Enabled));
 
         FileUtil.writeFile(config_path, new Gson().toJson(config));
@@ -206,7 +207,7 @@ public class ProguardHandler {
 
     public boolean libIsProguardFMEnabled(String library) {
         boolean enabled;
-        if (isProguardEnabled() && FileUtil.isExistFile(fm_config_path)) {
+        if (isShrinkingEnabled() && FileUtil.isExistFile(fm_config_path)) {
             String configContent = FileUtil.readFile(fm_config_path);
 
             if (configContent.isEmpty()) {
@@ -236,7 +237,7 @@ public class ProguardHandler {
     }
 
     public void start(BuildProgressReceiver progressReceiver, Dp dp) throws IOException {
-        if (isProguardEnabled()) {
+        if (isShrinkingEnabled()) {
             if (isR8Enabled()) {
                 progressReceiver.onProgress("Running R8 on classes...");
                 dp.runR8();
