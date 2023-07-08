@@ -1,17 +1,8 @@
 /*
- * Copyright 2010-2017 JetBrains s.r.o.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This file is part of Cosmic IDE.
+ * Cosmic IDE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Cosmic IDE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.jetbrains.kotlin.cli.jvm.javac
@@ -27,7 +18,7 @@ import java.io.Writer
 class JavacLogger(
     context: Context,
     errorWriter: PrintWriter,
-    warningWriter: PrintWriter,
+    @Suppress("UNUSED_PARAMETER") warningWriter: PrintWriter,
     infoWriter: PrintWriter
 ) : Log(context, infoWriter, errorWriter) {
 
@@ -35,14 +26,32 @@ class JavacLogger(
 
     companion object {
         fun preRegister(context: Context, messageCollector: MessageCollector) {
-            context.put(Log.logKey, Context.Factory<Log> {
-                JavacLogger(
-                    it,
-                    PrintWriter(MessageCollectorAdapter(messageCollector, CompilerMessageSeverity.ERROR)),
-                    PrintWriter(MessageCollectorAdapter(messageCollector, CompilerMessageSeverity.WARNING)),
-                    PrintWriter(MessageCollectorAdapter(messageCollector, CompilerMessageSeverity.INFO))
-                )
-            })
+            context.put(
+                logKey,
+                Context.Factory<Log> {
+                    JavacLogger(
+                        it,
+                        PrintWriter(
+                            MessageCollectorAdapter(
+                                messageCollector,
+                                CompilerMessageSeverity.ERROR
+                            )
+                        ),
+                        PrintWriter(
+                            MessageCollectorAdapter(
+                                messageCollector,
+                                CompilerMessageSeverity.WARNING
+                            )
+                        ),
+                        PrintWriter(
+                            MessageCollectorAdapter(
+                                messageCollector,
+                                CompilerMessageSeverity.INFO
+                            )
+                        )
+                    )
+                }
+            )
         }
     }
 }
