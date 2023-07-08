@@ -14,7 +14,7 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_ENABLE_LOGCAT = "enable_logcat";
 
     public static final String SETTING_DEXER_D8 = "D8";
-    public static final String SETTING_DEXER_DX = "DX";
+    public static final String SETTING_DEXER_DX = "Dx";
     public static final String SETTING_JAVA_VERSION_1_7 = "1.7";
     public static final String SETTING_JAVA_VERSION_1_8 = "1.8";
     public static final String SETTING_JAVA_VERSION_1_9 = "1.9";

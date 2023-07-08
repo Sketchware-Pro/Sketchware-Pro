@@ -181,7 +181,7 @@ public class ProguardHandler {
         boolean r8Enabled = true;
         if (FileUtil.isExistFile(config_path)) {
             try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), TypeToken.get(HashMap.class).getType());
+                var config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
 
                 String enabled = config.get("r8");
                 if (enabled == null) {
