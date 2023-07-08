@@ -1,20 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:id="@id/confirm_layout" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <LinearLayout android:gravity="bottom|center" android:id="@id/ll_warning" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="32.0dip">
-            <TextView android:textSize="13.0sp" android:textColor="#ff7d7d7d" android:id="@id/tv_warning_message" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/confirm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:gravity="bottom|center">
+
+            <TextView
+                android:id="@+id/tv_warning_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff7d7d7d"
+                android:textSize="13sp"
+                tools:text="@string/common_message_confirm" />
         </LinearLayout>
-        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="48.0dip">
-            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/confirm_yes" android:background="?selectableItemBackground" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
-                <ImageView android:id="@id/confirm_yes_icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_checkmark_green_48dp" android:contentDescription="@null" />
-                <TextView android:textSize="12.0sp" android:textColor="#ff757575" android:id="@id/confirm_yes_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:id="@+id/confirm_yes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/confirm_yes_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_checkmark_green_48dp" />
+
+                <TextView
+                    android:id="@+id/confirm_yes_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:textColor="#ff757575"
+                    android:textSize="12sp" />
             </LinearLayout>
-            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/confirm_no" android:background="?selectableItemBackground" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
-                <ImageView android:id="@id/confirm_no_icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/delete_96" android:contentDescription="@null" />
-                <TextView android:textSize="12.0sp" android:textColor="#ff757575" android:id="@id/confirm_no_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@null" />
+
+            <LinearLayout
+                android:id="@+id/confirm_no"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/confirm_no_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/delete_96" />
+
+                <TextView
+                    android:id="@+id/confirm_no_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:textColor="#ff757575"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:orientation="horizontal" android:id="@id/project_buttons" android:layout_width="fill_parent" android:layout_height="48.0dip" />
+
+    <LinearLayout
+        android:id="@+id/project_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal" />
 </FrameLayout>

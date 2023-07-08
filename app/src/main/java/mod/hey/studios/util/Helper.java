@@ -60,6 +60,14 @@ public class Helper {
         }
     }
 
+    public static String getResString(View target, @StringRes int resId) {
+        if (target.isInEditMode()) {
+            return target.getContext().getString(resId);
+        } else {
+            return getResString(resId);
+        }
+    }
+
     public static String getResString(@StringRes int resId) {
         return xB.b().a(getContext(), resId);
     }

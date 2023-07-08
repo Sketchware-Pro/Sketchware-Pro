@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="4dp"
@@ -37,7 +38,8 @@
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                tools:src="@drawable/widget_button" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,7 +55,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#ff404040"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    tools:text="Button" />
 
                 <TextView
                     android:id="@+id/tv_target_id"
@@ -63,7 +66,8 @@
                     android:maxLines="1"
                     android:textColor="#ff202020"
                     android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="button1" />
 
                 <TextView
                     android:id="@+id/tv_event_name"
@@ -83,7 +87,8 @@
                         android:id="@+id/img_preview"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_marginRight="4dp" />
+                        android:layout_marginRight="4dp"
+                        tools:src="@drawable/event_on_click_48dp" />
 
                     <TextView
                         android:id="@+id/tv_event_text"
@@ -91,7 +96,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:textColor="#ff9a9a9a"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="@string/event_onclick" />
                 </LinearLayout>
             </LinearLayout>
 
