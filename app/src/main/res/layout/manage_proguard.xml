@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:checked="true"
-                android:gravity="center|start"
+                android:gravity="center|left"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/activated"
@@ -187,10 +187,10 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:checked="true"
-                android:gravity="center|start"
+                android:gravity="center|left"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/generate_debug_files"
+                android:text="@string/code_shrinker_generate_debug_files"
                 android:textColor="#ffe53935"
                 android:textSize="16sp" />
         </LinearLayout>

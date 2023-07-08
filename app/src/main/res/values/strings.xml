@@ -2578,13 +2578,13 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_subtitle_logcat_reader">Read logs from enabled projects</string>
     <string name="text_to_search">Text to search</string>
     <string name="myprojects_list_menu_title_restore_projects">Restore Projects</string>
+    <string name="activated">Activated</string>
     <string name="sort_projects">Sort projects</string>
     <string name="code_shrinker_use_r8">Use R8</string>
-    <string name="activated">Activated</string>
     <string name="code_shrinker_obfuscate_def">Activating R8/ProGuard will minimize and obfuscate your project by renaming existing classes and methods on compilation time.</string>
     <string name="code_shrinker_warning">Using R8/ProGuard might be risky to some extent. Make sure to provide a proper rules configuration file in order not to break your project.</string>
     <string name="code_shrinker_rules">Code Shrinker Rules</string>
     <string name="code_shrinker_configure_shrinker">Configure R8/ProGuard by editing the rules file. This step is necessary because without a proper configuration, ProGuard might break your project.</string>
     <string name="code_shrinker_full_mode_def">Using this, you can configure specific local libs to be included in R8/ProGuarding process. (Note: Enabling this will ignore DEX files of the local libs you select and it will force Sketchware to compile them to dex, making compilation noticeably slower.)</string>
-    <string name="generate_debug_files">Generate debug files</string>
+    <string name="code_shrinker_generate_debug_files">Generate debug files</string>
 </resources>
