@@ -147,6 +147,10 @@ class DependencyResolver(
                 callback.onDependencyResolveFailed(e)
                 return@forEach
             }
+            if (path.toFile().exists().not()) {
+                callback.log("Cannot download ${artifact.toStr()}")
+                return@forEach
+            }
             if (ext == "aar") {
                 callback.log("Unzipping ${artifact.toStr()}")
                 unzip(path)
