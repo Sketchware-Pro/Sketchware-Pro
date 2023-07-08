@@ -2578,7 +2578,6 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_subtitle_logcat_reader">Read logs from enabled projects</string>
     <string name="text_to_search">Text to search</string>
     <string name="myprojects_list_menu_title_restore_projects">Restore Projects</string>
-    <string name="activated">Activated</string>
     <string name="sort_projects">Sort projects</string>
     <string name="code_shrinker_use_r8">Use R8</string>
     <string name="code_shrinker_obfuscate_def">Activating R8/ProGuard will minimize and obfuscate your project by renaming existing classes and methods on compilation time.</string>

@@ -26,7 +26,7 @@
                 android:gravity="center|left"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/activated"
+                android:text="Activated"
                 android:textColor="#ffe53935"
                 android:textSize="16sp" />
 
