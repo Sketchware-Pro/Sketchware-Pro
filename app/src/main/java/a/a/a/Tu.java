@@ -33,7 +33,7 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
 
     public Tu(Context context) {
         super(context);
-        this.c = new ArrayList<>();
+        c = new ArrayList<>();
         a(context);
     }
 
@@ -66,8 +66,8 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
 
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
-        this.c = projectLibraryBean.testDevices;
-        this.b.notifyDataSetChanged();
+        c = projectLibraryBean.testDevices;
+        b.notifyDataSetChanged();
     }
 
     class a extends RecyclerView.Adapter<a.ViewHolder> {
@@ -79,9 +79,9 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                this.t = (TextView) itemView.findViewById(R.id.tv_device_id);
-                this.u = (ImageView) itemView.findViewById(R.id.img_delete);
-                this.u.setOnClickListener(v -> {
+                t = itemView.findViewById(R.id.tv_device_id);
+                u = itemView.findViewById(R.id.img_delete);
+                u.setOnClickListener(v -> {
                     Tu.this.a(getLayoutPosition());
                 });
             }
@@ -112,15 +112,15 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         gB.b(this, 600, 200, null);
         ((TextView) findViewById(R.id.tv_set_test_device)).setText(xB.b().a(getContext(), R.string.design_library_admob_button_set_test_device));
         findViewById(R.id.layout_set_test_device).setOnClickListener(this);
-        this.a = (RecyclerView) findViewById(R.id.list_test_device);
-        this.a.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        this.b = new a();
-        this.a.setAdapter(this.b);
+        a = findViewById(R.id.list_test_device);
+        a.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        b = new a();
+        a.setAdapter(b);
     }
 
     @Override
     public void a(ProjectLibraryBean projectLibraryBean) {
-        projectLibraryBean.testDevices = this.c;
+        projectLibraryBean.testDevices = c;
     }
 
     public final String a(String str) {
@@ -144,9 +144,9 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         aBVar.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
         aBVar.a(R.drawable.add_96_blue);
         View a2 = wB.a(getContext(), R.layout.manage_library_setting_admob_test_device_add);
-        EditText editText = (EditText) a2.findViewById(R.id.ed_device_id);
+        EditText editText = a2.findViewById(R.id.ed_device_id);
         ((TextInputLayout) a2.findViewById(R.id.ti_device_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_hint_device_id));
-        SB sb = new SB(getContext(), (TextInputLayout) a2.findViewById(R.id.ti_device_id), 1, 100);
+        SB sb = new SB(getContext(), a2.findViewById(R.id.ti_device_id), 1, 100);
         editText.setText(getCurrentDeviceId());
         editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
