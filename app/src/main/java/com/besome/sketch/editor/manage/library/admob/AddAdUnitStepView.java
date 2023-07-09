@@ -76,7 +76,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -91,7 +91,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
             bB.a(getContext(), Helper.getResString(R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
