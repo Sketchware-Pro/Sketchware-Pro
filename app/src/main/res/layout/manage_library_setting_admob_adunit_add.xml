@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffffff">
@@ -17,8 +18,8 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="24dp"
-            android:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_name"
-            android:importantForAutofill="noExcludeDescendants">
+            android:importantForAutofill="noExcludeDescendants"
+            tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_name">
 
             <EditText
                 android:id="@+id/ed_name"
@@ -37,8 +38,8 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="24dp"
-            android:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_id"
-            android:importantForAutofill="noExcludeDescendants">
+            android:importantForAutofill="noExcludeDescendants"
+            tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_id">
 
             <EditText
                 android:id="@+id/ed_adunit_id"

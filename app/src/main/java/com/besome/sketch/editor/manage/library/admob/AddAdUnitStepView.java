@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -47,10 +48,17 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_title));
         dialog.a(R.drawable.add_96_blue);
         View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
+
+        TextInputLayout tiName = rootView.findViewById(R.id.ti_name);
+        tiName.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_name));
         EditText edName = rootView.findViewById(R.id.ed_name);
-        SB nameValidator = new SB(getContext(), rootView.findViewById(R.id.ti_name), 1, 50);
+        SB nameValidator = new SB(getContext(), tiName, 1, 50);
+
+        TextInputLayout tiAdUnitId = rootView.findViewById(R.id.ti_adunit_id);
+        tiAdUnitId.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
         EditText edAdUnitId = rootView.findViewById(R.id.ed_adunit_id);
-        SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.id.ti_adunit_id), 1, 100);
+        SB adUnitValidator = new SB(getContext(), tiAdUnitId, 1, 100);
+
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_add), view -> {
