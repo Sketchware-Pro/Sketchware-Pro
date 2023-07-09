@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +33,6 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_FIREBASE_SETTINGS = 237;
@@ -73,7 +71,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         }
     }
 
-    @SuppressLint("WrongConstant")
     private void openDoc() {
         try {
             s.a("P1I15", true);
