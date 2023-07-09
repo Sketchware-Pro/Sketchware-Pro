@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +42,6 @@ import mod.hey.studios.util.Helper;
 public class ProjectsFragment extends DA implements View.OnClickListener {
     private static final int REQUEST_CODE_RESTORE_PROJECT = 700;
     private static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
-    public static final int REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY = 206;
 
     private SwipeRefreshLayout swipeRefresh;
     private SearchView projectsSearchView;
@@ -49,6 +50,17 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private DB preference;
     private LottieAnimationView loading;
     private RecyclerView myProjects;
+
+    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            var data = result.getData();
+            assert data != null;
+            refreshProjectsList();
+            if (data.getBooleanExtra("is_new", false)) {
+                toDesignActivity(data.getStringExtra("sc_id"));
+            }
+        }
+    });
 
     private void initialize(View view) {
         preference = new DB(requireContext(), "project");
@@ -103,9 +115,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     @Override
     public void b(int requestCode) {
-        if (requestCode == REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY) {
-            toProjectSettingsActivity();
-        } else if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
+        if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
             restoreProject();
         }
     }
@@ -148,7 +158,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     public void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
+        openProjectSettings.launch(intent);
     }
 
     public void restoreProject() {
@@ -158,14 +168,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
-                refreshProjectsList();
-                if (data.getBooleanExtra("is_new", false)) {
-                    toDesignActivity(data.getStringExtra("sc_id"));
-                }
-            }
-        } else if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
+        if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
             if (resultCode == Activity.RESULT_OK) {
                 refreshProjectsList();
                 restoreProject();
@@ -177,7 +180,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     public void onClick(View v) {
         int viewId = v.getId();
 
-        if ((viewId == R.id.create_new_project) && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
+        if ((viewId == R.id.create_new_project)) {
             toProjectSettingsActivity();
         }
     }

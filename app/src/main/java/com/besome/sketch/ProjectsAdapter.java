@@ -1,7 +1,5 @@
 package com.besome.sketch;
 
-import static com.besome.sketch.ProjectsFragment.REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
@@ -406,7 +404,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         intent.putExtra("is_update", true);
         intent.putExtra("advanced_open", false);
         intent.putExtra("index", index);
-        activity.startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
+        projectsFragment.openProjectSettings.launch(intent);
     }
 
     private void showProjectSettingDialog(HashMap<String, Object> project) {
