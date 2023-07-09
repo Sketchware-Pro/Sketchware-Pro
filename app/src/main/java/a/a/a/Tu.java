@@ -11,13 +11,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.security.MessageDigest;
 import java.util.ArrayList;
+
+import mod.hey.studios.util.Helper;
 
 public class Tu extends LinearLayout implements Uu, View.OnClickListener {
     public RecyclerView a;
@@ -74,7 +79,9 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
                 super(view);
                 this.t = (TextView) view.findViewById(2131231956);
                 this.u = (ImageView) view.findViewById(2131231132);
-                this.u.setOnClickListener(new Su(this, a.this));
+                this.u.setOnClickListener(v -> {
+                    Tu.this.a(j());
+                });
             }
         }
 
@@ -140,8 +147,23 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         editText.setText(getCurrentDeviceId());
         editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), 2131624970), new Ou(this, sb, editText, aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new Pu(this, aBVar));
+        aBVar.b(xB.b().a(getContext(), 2131624970), v -> {
+            if (sb.b()) {
+                String text = editText.getText().toString();
+                for (AdTestDeviceBean device : c) {
+                    if (device.deviceId.equals(text)) {
+                        bB.a(getContext(), xB.b().a(getContext(), 2131625178), 0).show();
+                        return;
+                    }
+                }
+                c.add(new AdTestDeviceBean(text));
+                b.d(c.size() - 1);
+                aBVar.dismiss();
+            } else {
+                editText.requestFocus();
+            }
+        });
+        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -150,8 +172,13 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         aBVar.b(xB.b().a(getContext(), 2131625173));
         aBVar.a(2131165524);
         aBVar.a(xB.b().a(getContext(), 2131625171));
-        aBVar.b(xB.b().a(getContext(), 2131624986), new Qu(this, i, aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new Ru(this, aBVar));
+        aBVar.b(xB.b().a(getContext(), 2131624986), v -> {
+            c.remove(i);
+            b.e(i);
+            bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 }
