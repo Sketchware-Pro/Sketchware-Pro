@@ -301,7 +301,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
     }
 
-    private class ProjectViewHolder extends RecyclerView.ViewHolder {
+    private static class ProjectViewHolder extends RecyclerView.ViewHolder {
         public final TextView tvPublished;
         public final ImageView expand;
         public final MyProjectButtonLayout projectButtonLayout;
