@@ -121,6 +121,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                var oldMap = shownProjects.get(oldItemPosition);
+                var newMap = newProjects.get(newItemPosition);
+                var keysToCheck = new String[]{"my_app_name", "my_ws_name", "sc_ver_name", "sc_ver_code", "my_sc_pkg_name"};
+                for (var key : keysToCheck) {
+                    if (!yB.c(oldMap, key).equals(yB.c(newMap, key))) {
+                        return false;
+                    }
+                }
                 return true;
             }
         }, true /* sort behavior can be changed */);
