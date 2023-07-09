@@ -21,10 +21,10 @@
             android:importantForAutofill="noExcludeDescendants"
             tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_name">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ed_name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
@@ -41,10 +41,10 @@
             android:importantForAutofill="noExcludeDescendants"
             tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_id">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ed_adunit_id"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
