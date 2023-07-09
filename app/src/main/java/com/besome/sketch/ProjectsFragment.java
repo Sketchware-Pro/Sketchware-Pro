@@ -40,9 +40,6 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 
 public class ProjectsFragment extends DA implements View.OnClickListener {
-    private static final int REQUEST_CODE_RESTORE_PROJECT = 700;
-    private static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
-
     private SwipeRefreshLayout swipeRefresh;
     private SearchView projectsSearchView;
     private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
@@ -115,9 +112,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     @Override
     public void b(int requestCode) {
-        if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
-            restoreProject();
-        }
     }
 
     public void toDesignActivity(String sc_id) {
@@ -125,7 +119,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         ProjectTracker.setScId(sc_id);
         intent.putExtra("sc_id", sc_id);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        requireActivity().startActivityForResult(intent, REQUEST_CODE_DESIGN_ACTIVITY);
+        requireActivity().startActivity(intent);
     }
 
     @Override
@@ -163,17 +157,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     public void restoreProject() {
         (new BackupRestoreManager(getActivity(), this)).restore();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
-            if (resultCode == Activity.RESULT_OK) {
-                refreshProjectsList();
-                restoreProject();
-            }
-        }
     }
 
     @Override
