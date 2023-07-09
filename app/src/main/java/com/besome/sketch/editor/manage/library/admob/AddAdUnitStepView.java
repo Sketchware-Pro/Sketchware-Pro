@@ -101,6 +101,9 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         findViewById(R.id.layout_manual_add_ad_unit).setOnClickListener(this);
         tvWarning = findViewById(R.id.tv_warning);
 
+        TextView addManually = findViewById(R.id.tv_manual_add_ad_unit);
+        addManually.setText(Helper.getResString(R.string.design_library_admob_button_manual_add_to_adunit));
+
         RecyclerView listAdUnit = findViewById(R.id.list_ad_unit);
         listAdUnit.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adUnitsAdapter = new AdUnitsAdapter();

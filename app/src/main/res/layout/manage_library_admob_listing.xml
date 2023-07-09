@@ -30,8 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
-                android:text="@string/design_library_admob_button_manual_add_to_adunit"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="@string/design_library_admob_button_manual_add_to_adunit" />
         </LinearLayout>
 
         <View
