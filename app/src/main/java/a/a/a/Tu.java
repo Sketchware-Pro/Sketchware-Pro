@@ -24,6 +24,7 @@ import com.sketchware.remod.R;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import mod.hey.studios.util.Helper;
 
@@ -139,19 +140,15 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         View content = wB.a(getContext(), R.layout.manage_library_setting_admob_test_device_add);
         EditText edDeviceId = content.findViewById(R.id.ed_device_id);
         ((TextInputLayout) content.findViewById(R.id.ti_device_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_hint_device_id));
-        SB validator = new SB(getContext(), content.findViewById(R.id.ti_device_id), 1, 100);
+        NB validator = new NB(getContext(), content.findViewById(R.id.ti_device_id), testDevices.stream()
+                .map(AdTestDeviceBean::getDeviceId)
+                .collect(Collectors.toCollection(ArrayList::new)));
         edDeviceId.setText(getCurrentDeviceId());
         edDeviceId.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(content);
         dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
             if (validator.b()) {
                 String deviceId = edDeviceId.getText().toString();
-                for (AdTestDeviceBean device : testDevices) {
-                    if (device.deviceId.equals(deviceId)) {
-                        bB.a(getContext(), xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_warning_duplicated), 0).show();
-                        return;
-                    }
-                }
                 testDevices.add(new AdTestDeviceBean(deviceId));
                 adapter.notifyItemInserted(testDevices.size() - 1);
                 dialog.dismiss();
