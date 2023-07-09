@@ -24,11 +24,11 @@ public class MyProjectButtonLayout extends CollapsibleLayout<MyProjectButton> {
     @Override
     protected List<MyProjectButton> initializeButtons(@NonNull Context context) {
         return List.of(
-                createButton(0, R.drawable.settings_96, Helper.getResString(this, R.string.myprojects_list_menu_title_settings)),
-                createButton(1, R.drawable.ic_backup, "Back up"),
-                createButton(2, R.drawable.ic_export_grey_48dp, Helper.getResString(this, R.string.myprojects_list_menu_title_sign_export)),
-                createButton(3, R.drawable.ic_delete_grey_48dp, Helper.getResString(this, R.string.myprojects_list_menu_title_delete)),
-                createButton(4, R.drawable.settings_96, "Config")
+                MyProjectButton.create(context, 0, R.drawable.settings_96, Helper.getResString(this, R.string.myprojects_list_menu_title_settings)),
+                MyProjectButton.create(context, 1, R.drawable.ic_backup, "Back up"),
+                MyProjectButton.create(context, 2, R.drawable.ic_export_grey_48dp, Helper.getResString(this, R.string.myprojects_list_menu_title_sign_export)),
+                MyProjectButton.create(context, 3, R.drawable.ic_delete_grey_48dp, Helper.getResString(this, R.string.myprojects_list_menu_title_delete)),
+                MyProjectButton.create(context, 4, R.drawable.settings_96, "Config")
         );
     }
 
@@ -45,13 +45,5 @@ public class MyProjectButtonLayout extends CollapsibleLayout<MyProjectButton> {
     @Override
     protected CharSequence getNoLabel() {
         return Helper.getResString(this, R.string.common_word_cancel);
-    }
-
-    private MyProjectButton createButton(int id, int imageResId, String label) {
-        MyProjectButton myProjectButton = new MyProjectButton(getContext());
-        myProjectButton.b = id;
-        myProjectButton.icon.setImageResource(imageResId);
-        myProjectButton.name.setText(label);
-        return myProjectButton;
     }
 }

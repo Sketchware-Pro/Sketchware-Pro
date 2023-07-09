@@ -227,7 +227,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.projectButtonLayout.setButtonOnClickListener(v -> {
                 if (mB.a()) return;
                 if (v instanceof MyProjectButton) {
-                    switch (((MyProjectButton) v).b) {
+                    switch (((MyProjectButton) v).getButtonId()) {
                         case 0:
                             toProjectSettingOrRequestPermission(projectMap, position);
                             break;

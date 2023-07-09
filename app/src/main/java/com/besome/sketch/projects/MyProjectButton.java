@@ -6,16 +6,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+
 import com.sketchware.remod.R;
 
 import a.a.a.wB;
 
 public class MyProjectButton extends LinearLayout {
-
-    /* Referenced by a.a.a.IC */
-    public int b;
-    public ImageView icon;
-    public TextView name;
+    private int id;
+    private ImageView icon;
+    private TextView name;
 
     public MyProjectButton(Context context) {
         super(context);
@@ -31,5 +31,17 @@ public class MyProjectButton extends LinearLayout {
         wB.a(context, this, R.layout.myproject_button);
         icon = findViewById(R.id.icon);
         name = findViewById(R.id.name);
+    }
+
+    public int getButtonId() {
+        return id;
+    }
+
+    public static MyProjectButton create(Context context, int id, @DrawableRes int resId, String label) {
+        MyProjectButton button = new MyProjectButton(context);
+        button.id = id;
+        button.icon.setImageResource(resId);
+        button.name.setText(label);
+        return button;
     }
 }
