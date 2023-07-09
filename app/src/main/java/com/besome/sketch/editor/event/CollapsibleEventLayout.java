@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.lib.base.CollapsibleLayout;
+import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.sketchware.remod.R;
 
 import java.util.List;

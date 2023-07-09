@@ -33,7 +33,7 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.component.CollapsibleComponentLayout;
 import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
-import com.besome.sketch.editor.event.CollapsibleButton;
+import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
