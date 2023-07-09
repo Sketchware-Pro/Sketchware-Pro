@@ -7,31 +7,25 @@
     android:padding="16dp">
 
     <LinearLayout
+        android:id="@+id/layout_set_test_device"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/layout_set_test_device"
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_add_circle_outline_grey600_36dp" />
+
+        <TextView
+            android:id="@+id/tv_set_test_device"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_add_circle_outline_grey600_36dp" />
-
-            <TextView
-                android:id="@+id/tv_set_test_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:textSize="12sp"
-                tools:text="@string/design_library_admob_button_set_test_device" />
-        </LinearLayout>
+            android:paddingLeft="4dp"
+            android:textSize="12sp"
+            tools:text="@string/design_library_admob_button_set_test_device" />
     </LinearLayout>
 
     <View
