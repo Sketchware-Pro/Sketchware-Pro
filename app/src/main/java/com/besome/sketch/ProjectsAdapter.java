@@ -312,7 +312,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final ImageView expand;
         public final MyProjectButtonLayout projectButtonLayout;
         public final LinearLayout projectOptionLayout;
-        public final LinearLayout projectOption;
         public final LinearLayout projectView;
         public final View appIconLayout;
         public final CircleImageView imgIcon;
@@ -333,9 +332,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvPublished = itemView.findViewById(R.id.tv_published);
             expand = itemView.findViewById(R.id.expand);
             projectOptionLayout = itemView.findViewById(R.id.project_option_layout);
-            projectOption = itemView.findViewById(R.id.project_option);
-            projectButtonLayout = new MyProjectButtonLayout(activity);
-            projectOption.addView(projectButtonLayout);
+            projectButtonLayout = itemView.findViewById(R.id.project_option);
         }
 
         public void collapse(HashMap<String, Object> project) {

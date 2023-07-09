@@ -129,8 +129,7 @@
             android:id="@+id/project_option_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:visibility="gone">
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
@@ -138,11 +137,10 @@
                 android:layout_marginHorizontal="16dp"
                 android:background="@color/color_secondary" />
 
-            <LinearLayout
+            <com.besome.sketch.projects.MyProjectButtonLayout
                 android:id="@+id/project_option"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
