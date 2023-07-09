@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -28,7 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="@string/design_library_admob_button_set_test_device" />
         </LinearLayout>
     </LinearLayout>
 
@@ -41,5 +43,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_test_device"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/manage_library_setting_admob_test_device_item" />
 </LinearLayout>
