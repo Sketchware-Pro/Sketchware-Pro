@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import mod.hey.studios.util.Helper;
@@ -121,14 +122,13 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.update(str.getBytes());
             byte[] digest = messageDigest.digest();
-            StringBuffer stringBuffer = new StringBuffer();
-            for (int i = 0; i < digest.length; i++) {
-                stringBuffer.append(String.format("%02X", Integer.valueOf(digest[i] & 255)));
+            StringBuilder stringBuffer = new StringBuilder();
+            for (byte b : digest) {
+                stringBuffer.append(String.format("%02X", b & 0xff));
             }
             return stringBuffer.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
     }
 
