@@ -4391,7 +4391,6 @@ com.sketchware.remod:layout/mypage_settings = 0x7f0b00f9
 com.sketchware.remod:layout/mypage_shared_projects = 0x7f0b00fa
 com.sketchware.remod:layout/mypage_tab = 0x7f0b00fb
 com.sketchware.remod:layout/myproject_button = 0x7f0b00fc
-com.sketchware.remod:layout/myproject_buttons = 0x7f0b00fd
 com.sketchware.remod:layout/myproject_color = 0x7f0b00fe
 com.sketchware.remod:layout/myproject_setting = 0x7f0b00ff
 com.sketchware.remod:layout/myprojects = 0x7f0b0100

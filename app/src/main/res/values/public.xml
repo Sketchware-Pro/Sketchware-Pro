@@ -4392,7 +4392,6 @@
     <public name="mypage_settings" id="0x7f0b00f9" type="layout" />
     <public name="mypage_tab" id="0x7f0b00fb" type="layout" />
     <public name="myproject_button" id="0x7f0b00fc" type="layout" />
-    <public name="myproject_buttons" id="0x7f0b00fd" type="layout" />
     <public name="myproject_color" id="0x7f0b00fe" type="layout" />
     <public name="myproject_setting" id="0x7f0b00ff" type="layout" />
     <public name="myprojects" id="0x7f0b0100" type="layout" />

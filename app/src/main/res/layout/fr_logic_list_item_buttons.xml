@@ -89,6 +89,6 @@
     <LinearLayout
         android:id="@+id/project_buttons"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal" />
 </FrameLayout>

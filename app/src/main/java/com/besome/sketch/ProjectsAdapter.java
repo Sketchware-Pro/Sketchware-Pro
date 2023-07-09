@@ -185,9 +185,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.projectOptionLayout.setVisibility(visibility);
             holder.expand.setRotation(rotation);
             if (yB.a(projectMap, "confirmation")) {
-                holder.projectButtonLayout.b();
+                holder.projectButtonLayout.showConfirmation();
             } else {
-                holder.projectButtonLayout.a();
+                holder.projectButtonLayout.hideConfirmation();
             }
 
             holder.imgIcon.setImageResource(R.drawable.default_icon);
@@ -242,21 +242,18 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                         case 3:
                             projectMap.put("confirmation", true);
-                            holder.projectButtonLayout.b();
+                            notifyItemChanged(holder.getLayoutPosition());
                             break;
 
                         case 4:
                             showProjectSettingDialog(projectMap);
                             break;
                     }
-                    return;
-                }
-
-                if (v.getId() == R.id.confirm_yes) {
-                    deleteProject(holder.getBindingAdapterPosition());
+                } else if (v.getId() == R.id.confirm_yes) {
+                    deleteProject(holder.getLayoutPosition());
                 } else if (v.getId() == R.id.confirm_no) {
                     projectMap.put("confirmation", false);
-                    notifyItemChanged(holder.getBindingAdapterPosition());
+                    notifyItemChanged(holder.getLayoutPosition());
                 }
             });
 
