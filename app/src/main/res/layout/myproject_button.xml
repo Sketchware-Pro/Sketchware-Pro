@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/img_button"
     android:layout_width="0dp"
     android:layout_height="@dimen/project_button_height"
@@ -7,7 +8,8 @@
     android:background="?android:selectableItemBackground"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    tools:layout_width="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +22,8 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:contentDescription="@null"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            tools:src="@drawable/ic_backup" />
 
         <TextView
             android:id="@+id/name"
@@ -28,6 +31,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="#ff757575"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="Back up" />
     </LinearLayout>
 </LinearLayout>
