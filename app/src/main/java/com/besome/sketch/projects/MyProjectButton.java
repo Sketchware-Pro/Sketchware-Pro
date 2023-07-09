@@ -1,6 +1,7 @@
 package com.besome.sketch.projects;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +19,11 @@ public class MyProjectButton extends LinearLayout {
     private TextView name;
 
     public MyProjectButton(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public MyProjectButton(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         initialize(context);
     }
 
