@@ -19,7 +19,6 @@ import com.sketchware.remod.R;
 import java.util.List;
 
 import a.a.a.wB;
-import mod.hey.studios.util.Helper;
 
 public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
     private View confirmYes;
@@ -49,10 +48,10 @@ public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
         confirmNo = findViewById(R.id.confirm_no);
         TextView warningMessage = findViewById(R.id.tv_warning_message);
         TextView yes = findViewById(R.id.confirm_yes_text);
-        yes.setText(Helper.getResString(yes, R.string.common_word_continue));
+        yes.setText(getYesLabel());
         TextView no = findViewById(R.id.confirm_no_text);
-        no.setText(Helper.getResString(no, R.string.common_word_cancel));
-        warningMessage.setText(Helper.getResString(warningMessage, R.string.common_message_confirm));
+        no.setText(getNoLabel());
+        warningMessage.setText(getWarningMessage());
         flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
         flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
         flipBottomIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_in);
@@ -65,6 +64,12 @@ public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
     }
 
     protected abstract List<T> initializeButtons(@NonNull Context context);
+
+    protected abstract CharSequence getWarningMessage();
+
+    protected abstract CharSequence getYesLabel();
+
+    protected abstract CharSequence getNoLabel();
 
     public final void setButtonOnClickListener(View.OnClickListener listener) {
         confirmYes.setOnClickListener(listener);
