@@ -4364,7 +4364,6 @@ com.sketchware.remod:layout/manage_library_popup_project_list_item = 0x7f0b00dd
 com.sketchware.remod:layout/manage_library_popup_project_selector = 0x7f0b00de
 com.sketchware.remod:layout/manage_library_setting_admob_adunit_add = 0x7f0b00df
 com.sketchware.remod:layout/manage_library_setting_admob_adunit_item = 0x7f0b00e0
-com.sketchware.remod:layout/manage_library_setting_admob_tab_item = 0x7f0b00e1
 com.sketchware.remod:layout/manage_library_setting_admob_test_device_add = 0x7f0b00e2
 com.sketchware.remod:layout/manage_library_setting_admob_test_device_item = 0x7f0b00e3
 com.sketchware.remod:layout/manage_screen_activity_add_feature_item = 0x7f0b00e4

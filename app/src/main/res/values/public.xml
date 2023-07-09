@@ -4366,7 +4366,6 @@
     <public name="manage_library_popup_project_selector" id="0x7f0b00de" type="layout" />
     <public name="manage_library_setting_admob_adunit_add" id="0x7f0b00df" type="layout" />
     <public name="manage_library_setting_admob_adunit_item" id="0x7f0b00e0" type="layout" />
-    <public name="manage_library_setting_admob_tab_item" id="0x7f0b00e1" type="layout" />
     <public name="manage_library_setting_admob_test_device_add" id="0x7f0b00e2" type="layout" />
     <public name="manage_library_setting_admob_test_device_item" id="0x7f0b00e3" type="layout" />
     <public name="manage_screen_activity_add_feature_item" id="0x7f0b00e4" type="layout" />
