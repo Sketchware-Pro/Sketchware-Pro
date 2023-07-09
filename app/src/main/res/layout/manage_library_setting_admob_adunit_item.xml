@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ff000000"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="&lt;Ad Unit name&gt;" />
 
         <TextView
             android:id="@+id/tv_unit_id"
@@ -27,7 +29,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textColor="#ff555555"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            tools:text="&lt;Ad Unit ID&gt;" />
     </LinearLayout>
 
     <ImageView
