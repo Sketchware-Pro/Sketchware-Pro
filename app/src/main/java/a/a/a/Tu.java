@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != 2131231403) {
+        if (view.getId() != R.id.layout_set_test_device) {
             return;
         }
         a();
@@ -78,8 +79,8 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                this.t = (TextView) itemView.findViewById(2131231956);
-                this.u = (ImageView) itemView.findViewById(2131231132);
+                this.t = (TextView) itemView.findViewById(R.id.tv_device_id);
+                this.u = (ImageView) itemView.findViewById(R.id.img_delete);
                 this.u.setOnClickListener(v -> {
                     Tu.this.a(getLayoutPosition());
                 });
@@ -102,17 +103,17 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427555, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
     }
 
     public final void a(Context context) {
-        wB.a(context, this, 2131427536);
+        wB.a(context, this, R.layout.manage_library_admob_test_device);
         gB.b(this, 600, 200, null);
-        ((TextView) findViewById(2131232154)).setText(xB.b().a(getContext(), 2131625164));
-        findViewById(2131231403).setOnClickListener(this);
-        this.a = (RecyclerView) findViewById(2131231468);
-        this.a.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        ((TextView) findViewById(R.id.tv_set_test_device)).setText(xB.b().a(getContext(), R.string.design_library_admob_button_set_test_device));
+        findViewById(R.id.layout_set_test_device).setOnClickListener(this);
+        this.a = (RecyclerView) findViewById(R.id.list_test_device);
+        this.a.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         this.b = new a();
         this.a.setAdapter(this.b);
     }
@@ -140,21 +141,21 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
 
     public final void a() {
         aB aBVar = new aB((Activity) getContext());
-        aBVar.b(xB.b().a(getContext(), 2131625177));
-        aBVar.a(2131165298);
-        View a2 = wB.a(getContext(), 2131427554);
-        EditText editText = (EditText) a2.findViewById(2131230989);
-        ((TextInputLayout) a2.findViewById(2131231809)).setHint(xB.b().a(getContext(), 2131625176));
-        SB sb = new SB(getContext(), (TextInputLayout) a2.findViewById(2131231809), 1, 100);
+        aBVar.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
+        aBVar.a(R.drawable.add_96_blue);
+        View a2 = wB.a(getContext(), R.layout.manage_library_setting_admob_test_device_add);
+        EditText editText = (EditText) a2.findViewById(R.id.ed_device_id);
+        ((TextInputLayout) a2.findViewById(R.id.ti_device_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_hint_device_id));
+        SB sb = new SB(getContext(), (TextInputLayout) a2.findViewById(R.id.ti_device_id), 1, 100);
         editText.setText(getCurrentDeviceId());
         editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), 2131624970), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
             if (sb.b()) {
                 String text = editText.getText().toString();
                 for (AdTestDeviceBean device : c) {
                     if (device.deviceId.equals(text)) {
-                        bB.a(getContext(), xB.b().a(getContext(), 2131625178), 0).show();
+                        bB.a(getContext(), xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_warning_duplicated), 0).show();
                         return;
                     }
                 }
@@ -165,22 +166,22 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
                 editText.requestFocus();
             }
         });
-        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
     public final void a(int i) {
         aB aBVar = new aB((Activity) getContext());
-        aBVar.b(xB.b().a(getContext(), 2131625173));
-        aBVar.a(2131165524);
-        aBVar.a(xB.b().a(getContext(), 2131625171));
-        aBVar.b(xB.b().a(getContext(), 2131624986), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_test_device_title));
+        aBVar.a(R.drawable.delete_96);
+        aBVar.a(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_test_device));
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             c.remove(i);
             b.notifyItemRemoved(i);
-            bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
+            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 }
