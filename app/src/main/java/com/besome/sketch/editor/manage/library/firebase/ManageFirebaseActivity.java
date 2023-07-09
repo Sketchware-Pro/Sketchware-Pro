@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -34,12 +37,18 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
-    private static final int REQUEST_CODE_FIREBASE_SETTINGS = 237;
     private final String realtime_db = "realtime_db";
     private final String app_id = "app_id";
     private final String api_key = "api_key";
     private final String storage_bucket = "storage_bucket";
+
+    private final ActivityResultLauncher<Intent> openSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            initializeLibrary(result.getData().getParcelableExtra("firebase"));
+        }
+    });
+
     private Switch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
@@ -117,13 +126,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
             dialog.dismiss();
         });
         dialog.show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_FIREBASE_SETTINGS && resultCode == RESULT_OK) {
-            initializeLibrary(data.getParcelableExtra("firebase"));
-        }
     }
 
     @Override
@@ -219,7 +221,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("firebase", firebaseLibraryBean);
-        startActivityForResult(intent, REQUEST_CODE_FIREBASE_SETTINGS);
+        openSettings.launch(intent);
     }
 
     private void configure() {
