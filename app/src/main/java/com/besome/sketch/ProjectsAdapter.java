@@ -226,28 +226,16 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             holder.projectButtonLayout.setButtonOnClickListener(v -> {
                 if (mB.a()) return;
-                if (v instanceof MyProjectButton) {
-                    switch (((MyProjectButton) v).getButtonId()) {
-                        case 0:
-                            toProjectSettingOrRequestPermission(projectMap, position);
-                            break;
-
-                        case 1:
-                            backupProject(projectMap);
-                            break;
-
-                        case 2:
-                            toExportProjectActivity(projectMap);
-                            break;
-
-                        case 3:
+                if (v instanceof MyProjectButton button) {
+                    switch (button.getButtonId()) {
+                        case 0 -> toProjectSettingOrRequestPermission(projectMap, position);
+                        case 1 -> backupProject(projectMap);
+                        case 2 -> toExportProjectActivity(projectMap);
+                        case 3 -> {
                             projectMap.put("confirmation", true);
                             notifyItemChanged(holder.getLayoutPosition());
-                            break;
-
-                        case 4:
-                            showProjectSettingDialog(projectMap);
-                            break;
+                        }
+                        case 4 -> showProjectSettingDialog(projectMap);
                     }
                 } else if (v.getId() == R.id.confirm_yes) {
                     deleteProject(holder.getLayoutPosition());
