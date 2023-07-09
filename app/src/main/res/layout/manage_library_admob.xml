@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffffff"
@@ -35,7 +36,8 @@
             android:textColor="@color/color_primary"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="@string/common_word_prev" />
 
         <TextView
             android:id="@+id/tv_toptitle"
@@ -54,7 +56,8 @@
             android:layout_centerVertical="true"
             android:textColor="@color/color_primary"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="@string/common_word_next" />
     </RelativeLayout>
 
     <LinearLayout
@@ -78,7 +81,8 @@
             android:layout_marginTop="16dp"
             android:textColor="#ff212121"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="@string/design_library_admob_setting_step1_title" />
 
         <TextView
             android:id="@+id/tv_step_desc"
@@ -87,7 +91,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"
             android:textColor="#ff4d4d4d"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="@string/design_library_admob_setting_step1_desc" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_console"
@@ -116,7 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    tools:text="@string/design_library_admob_button_goto_setting" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
@@ -149,7 +155,8 @@
         android:layout_marginRight="16dp"
         android:textColor="#ffffffff"
         android:textSize="@dimen/text_size_button_material"
-        android:theme="@style/AppTheme.Button.LightPink" />
+        android:theme="@style/AppTheme.Button.LightPink"
+        tools:text="@string/design_library_button_import_from_other_project" />
 
     <Button
         android:id="@+id/btn_open_doc"
@@ -161,5 +168,6 @@
         android:layout_marginBottom="8dp"
         android:textColor="#ffffffff"
         android:textSize="@dimen/text_size_button_material"
-        android:theme="@style/AppTheme.Button.Green" />
+        android:theme="@style/AppTheme.Button.Green"
+        tools:text="@string/common_word_go_to_documentation" />
 </LinearLayout>

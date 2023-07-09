@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffffff"
@@ -31,7 +32,8 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/scolor_red_02"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="@string/design_library_settings_title_enabled" />
 
             <Switch
                 android:id="@+id/switch_lib"
@@ -72,7 +74,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:textColor="#ff757575"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        tools:text="@string/design_library_google_maps_description_operate_normally" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -96,7 +99,8 @@
                         android:layout_gravity="center_vertical"
                         android:textColor="#ff4d4d4d"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="@string/design_library_google_map_title_api_key" />
                 </LinearLayout>
 
                 <androidx.core.widget.NestedScrollView
@@ -128,7 +132,8 @@
             android:layout_marginTop="8dp"
             android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightPink" />
+            android:theme="@style/AppTheme.Button.LightPink"
+            tools:text="@string/design_library_button_import_from_other_project" />
 
         <Button
             android:id="@+id/btn_open_doc"
@@ -136,6 +141,7 @@
             android:layout_height="wrap_content"
             android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightBlue" />
+            android:theme="@style/AppTheme.Button.LightBlue"
+            tools:text="@string/design_library_google_map_button_open_doc" />
     </LinearLayout>
 </LinearLayout>

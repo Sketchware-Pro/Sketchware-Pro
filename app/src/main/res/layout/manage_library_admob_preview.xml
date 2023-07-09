@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -24,7 +25,8 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@color/scolor_red_02"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="@string/design_library_settings_title_enabled" />
 
         <Switch
             android:id="@+id/lib_switch"
@@ -65,7 +67,8 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="#ff4d4d4d"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="@string/design_library_admob_title_banner" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -91,7 +94,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:textColor="#ff404040"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            tools:text="@string/design_library_admob_title_ad_name" />
 
                         <TextView
                             android:id="@+id/tv_banner_name"
@@ -113,7 +117,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:textColor="#ff404040"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            tools:text="@string/design_library_admob_title_ad_unit_id" />
 
                         <TextView
                             android:id="@+id/tv_banner_id"
@@ -153,7 +158,8 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="#ff4d4d4d"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="@string/design_library_admob_title_interstitial" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -179,7 +185,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:textColor="#ff404040"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            tools:text="@string/design_library_admob_title_ad_name" />
 
                         <TextView
                             android:id="@+id/tv_inter_name"
@@ -201,7 +208,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:textColor="#ff404040"
-                            android:textSize="14.0sp" />
+                            android:textSize="14.0sp"
+                            tools:text="@string/design_library_admob_title_ad_unit_id" />
 
                         <TextView
                             android:id="@+id/tv_inter_id"
@@ -327,7 +335,8 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="#ff4d4d4d"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="@string/design_library_admob_dialog_set_test_device_title" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -339,7 +348,8 @@
                 android:id="@+id/list_test_device"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp" />
+                android:padding="8dp"
+                tools:listitem="@layout/manage_library_setting_admob_test_device_item" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -39,7 +40,8 @@
                     android:gravity="center|left"
                     android:textColor="@color/scolor_blue_01"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="@string/design_library_admob_title_banner" />
 
                 <TextView
                     android:id="@+id/tv_banner_edit"
@@ -73,7 +75,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textColor="#ff404040"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/design_library_admob_title_ad_name" />
 
                 <TextView
                     android:id="@+id/tv_banner_name"
@@ -98,7 +101,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textColor="#ff404040"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/design_library_admob_title_ad_unit_id" />
 
                 <TextView
                     android:id="@+id/tv_banner_id"
@@ -144,7 +148,8 @@
                     android:gravity="center|left"
                     android:textColor="@color/scolor_blue_01"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="@string/design_library_admob_title_interstitial" />
 
                 <TextView
                     android:id="@+id/tv_inter_edit"
@@ -178,7 +183,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textColor="#ff404040"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/design_library_admob_title_ad_name" />
 
                 <TextView
                     android:id="@+id/tv_inter_name"
@@ -203,7 +209,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textColor="#ff404040"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/design_library_admob_title_ad_unit_id" />
 
                 <TextView
                     android:id="@+id/tv_inter_id"
@@ -284,7 +291,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textColor="#ff404040"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/design_library_admob_title_ad_name" />
 
                 <TextView
                     android:id="@+id/tv_reward_name"
@@ -309,7 +317,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textColor="#ff404040"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/design_library_admob_title_ad_unit_id" />
 
                 <TextView
                     android:id="@+id/tv_reward_id"
