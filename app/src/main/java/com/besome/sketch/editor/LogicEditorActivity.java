@@ -51,7 +51,6 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.HistoryBlockBean;
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.logic.BlockPane;
@@ -78,15 +77,11 @@ import a.a.a.DB;
 import a.a.a.FB;
 import a.a.a.Fx;
 import a.a.a.GB;
-import a.a.a.Gx;
 import a.a.a.Lx;
 import a.a.a.MA;
 import a.a.a.Mp;
 import a.a.a.NB;
-import a.a.a.Np;
-import a.a.a.Op;
 import a.a.a.Pp;
-import a.a.a.Qp;
 import a.a.a.Rs;
 import a.a.a.Ss;
 import a.a.a.Ts;
@@ -95,7 +90,6 @@ import a.a.a.Vs;
 import a.a.a.ZB;
 import a.a.a.Zx;
 import a.a.a.aB;
-import a.a.a.bB;
 import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
@@ -106,7 +100,6 @@ import a.a.a.oB;
 import a.a.a.sq;
 import a.a.a.uq;
 import a.a.a.wB;
-import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.xq;
 import a.a.a.yq;
@@ -121,6 +114,7 @@ import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
+import mod.jbk.editor.manage.MoreblockImporter;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -141,15 +135,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public ExtraPaletteBlock extraPaletteBlock;
     public ObjectAnimator fa;
     public ObjectAnimator ga;
-    public ArrayList<Pair<Integer, String>> ja;
     public Toolbar k;
-    public ArrayList<Pair<Integer, String>> ka;
     public PaletteSelector l;
-    public ArrayList<ProjectResourceBean> la;
     public PaletteBlock m;
-    public ArrayList<ProjectResourceBean> ma;
     public ViewLogicEditor n;
-    public ArrayList<ProjectResourceBean> na;
     public BlockPane o;
     public ViewDummy p;
     public ArrayList<MoreBlockCollectionBean> pa;
@@ -1153,17 +1142,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public final void a(MoreBlockCollectionBean moreBlockCollectionBean) {
-        String str = moreBlockCollectionBean.spec;
-        String substring = str.contains(" ") ? str.substring(0, str.indexOf(' ')) : str;
-        jC.a(B).a(M.getJavaName(), substring, str);
-        eC a2 = jC.a(B);
-        String javaName = M.getJavaName();
-        a2.a(javaName, substring + "_moreBlock", moreBlockCollectionBean.blocks);
-        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-        a(8, 0xff8a55d7);
-    }
-
     public final void a(String str, int i) {
         m.a(str, i);
     }
@@ -1281,32 +1259,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         zx.showAtLocation(a2, Gravity.CENTER, 0, 0);
     }
 
-    public final void b(MoreBlockCollectionBean moreBlockCollectionBean) {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_change_block_name));
-        aBVar.a(R.drawable.more_block_96dp);
-        View a2 = wB.a(getBaseContext(), R.layout.property_popup_save_to_favorite);
-        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.logic_more_block_desc_change_block_name));
-        EditText editText = a2.findViewById(R.id.ed_input);
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        editText.setLines(1);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        ZB zb = new ZB(getBaseContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
-            if (zb.b()) {
-                String spec = moreBlockCollectionBean.spec;
-                String substring = spec.contains(" ") ? spec.substring(spec.indexOf(" ")) : "";
-                moreBlockCollectionBean.spec = editText.getText().toString() + substring;
-                d(moreBlockCollectionBean);
-                aBVar.dismiss();
-            }
-        });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
-    }
-
     public final void b(String str, String str2) {
         TextView a2 = m.a(str);
         a2.setTag(str2);
@@ -1327,32 +1279,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final boolean b(float f, float f2) {
         return N.b(f, f2);
-    }
-
-    public final void c(int i, String str) {
-        if (ka == null) {
-            ka = new ArrayList<>();
-        }
-        for (Pair<Integer, String> next : jC.a(B).j(M.getJavaName())) {
-            if (next.first == i && next.second.equals(str)) {
-                return;
-            }
-        }
-        boolean z = false;
-        Iterator<Pair<Integer, String>> it2 = ka.iterator();
-        while (true) {
-            if (!it2.hasNext()) {
-                break;
-            }
-            Pair<Integer, String> next2 = it2.next();
-            if (next2.first == i && next2.second.equals(str)) {
-                z = true;
-                break;
-            }
-        }
-        if (!z) {
-            ka.add(new Pair<>(i, str));
-        }
     }
 
     public final void c(Rs rs) {
@@ -1396,30 +1322,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         });
         aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
-    }
-
-    public final void c(MoreBlockCollectionBean moreBlockCollectionBean) {
-        String str = moreBlockCollectionBean.spec;
-        boolean z = false;
-        if (str.contains(" ")) {
-            str = str.substring(0, str.indexOf(' '));
-        }
-        Iterator<Pair<String, String>> it = jC.a(B).i(M.getJavaName()).iterator();
-        while (true) {
-            if (it.hasNext()) {
-                if (it.next().first.equals(str)) {
-                    z = true;
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-        if (!z) {
-            d(moreBlockCollectionBean);
-        } else {
-            b(moreBlockCollectionBean);
-        }
     }
 
     public void c(String str, String str2) {
@@ -1477,32 +1379,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return radioButton;
     }
 
-    public final void d(int i, String str) {
-        if (ja == null) {
-            ja = new ArrayList<>();
-        }
-        for (Pair<Integer, String> next : jC.a(B).k(M.getJavaName())) {
-            if (next.first == i && next.second.equals(str)) {
-                return;
-            }
-        }
-        boolean z = false;
-        Iterator<Pair<Integer, String>> it2 = ja.iterator();
-        while (true) {
-            if (!it2.hasNext()) {
-                break;
-            }
-            Pair<Integer, String> next2 = it2.next();
-            if (next2.first == i && next2.second.equals(str)) {
-                z = true;
-                break;
-            }
-        }
-        if (!z) {
-            ja.add(new Pair<>(i, str));
-        }
-    }
-
     public final void d(Ss ss) {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_font));
@@ -1541,70 +1417,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public final void d(MoreBlockCollectionBean moreBlockCollectionBean) {
-        ja = new ArrayList<>();
-        ka = new ArrayList<>();
-        la = new ArrayList<>();
-        ma = new ArrayList<>();
-        na = new ArrayList<>();
-        for (BlockBean next : moreBlockCollectionBean.blocks) {
-            if (next.opCode.equals("getVar")) {
-                if (next.type.equals("b")) {
-                    d(0, next.spec);
-                } else if (next.type.equals("d")) {
-                    d(1, next.spec);
-                } else if (next.type.equals("s")) {
-                    d(2, next.spec);
-                } else if (next.type.equals("a")) {
-                    d(3, next.spec);
-                } else if (next.type.equals("l")) {
-                    if (next.typeName.equals("List Number")) {
-                        c(1, next.spec);
-                    } else if (next.typeName.equals("List String")) {
-                        c(2, next.spec);
-                    } else if (next.typeName.equals("List Map")) {
-                        c(3, next.spec);
-                    }
-                }
-            }
-            ArrayList<Gx> paramClassInfo = next.getParamClassInfo();
-            if (paramClassInfo.size() > 0) {
-                for (int i = 0; i < paramClassInfo.size(); i++) {
-                    Gx gx = paramClassInfo.get(i);
-                    String str = next.parameters.get(i);
-                    if (str.length() > 0 && str.charAt(0) != '@') {
-                        if (gx.b("boolean.SelectBoolean")) {
-                            d(0, str);
-                        } else if (gx.b("double.SelectDouble")) {
-                            d(1, str);
-                        } else if (gx.b("String.SelectString")) {
-                            d(2, str);
-                        } else if (gx.b("Map")) {
-                            d(3, str);
-                        } else if (gx.b("ListInt")) {
-                            c(1, str);
-                        } else if (gx.b("ListString")) {
-                            c(2, str);
-                        } else if (gx.b("ListMap")) {
-                            c(3, str);
-                        } else if (gx.b("resource_bg") || gx.b("resource")) {
-                            j(str);
-                        } else if (gx.b("sound")) {
-                            k(str);
-                        } else if (gx.b("font")) {
-                            i(str);
-                        }
-                    }
-                }
-            }
-        }
-        if (ja.size() > 0 || ka.size() > 0 || la.size() > 0 || ma.size() > 0 || na.size() > 0) {
-            f(moreBlockCollectionBean);
-        } else {
-            a(moreBlockCollectionBean);
-        }
-    }
-
     public final void d(boolean z) {
         N.d(z);
     }
@@ -1641,10 +1453,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         });
         aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
-    }
-
-    public final void e(MoreBlockCollectionBean moreBlockCollectionBean) {
-        c(moreBlockCollectionBean);
     }
 
     public void e(boolean z) {
@@ -1754,47 +1562,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public final void f(MoreBlockCollectionBean moreBlockCollectionBean) {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getContext(), R.string.logic_more_block_title_add_variable_resource));
-        aBVar.a(R.drawable.break_warning_96_red);
-        aBVar.a(xB.b().a(getContext(), R.string.logic_more_block_desc_add_variable_resource));
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_continue), v -> {
-            for (Pair<Integer, String> integerStringPair : ja) {
-                jC.a(B).c(M.getJavaName(), integerStringPair.first, integerStringPair.second);
-            }
-            for (Pair<Integer, String> integerStringPair : ka) {
-                jC.a(B).b(M.getJavaName(), integerStringPair.first, integerStringPair.second);
-            }
-            for (ProjectResourceBean projectResourceBean : la) {
-                g(projectResourceBean.resName);
-            }
-            for (ProjectResourceBean projectResourceBean : ma) {
-                h(projectResourceBean.resName);
-            }
-            for (ProjectResourceBean projectResourceBean : na) {
-                f(projectResourceBean.resName);
-            }
-            a(moreBlockCollectionBean);
-            aBVar.dismiss();
-        });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
-    }
-
-    public final void f(String str) {
-        if (!Np.g().b(str)) {
-            return;
-        }
-        ProjectResourceBean a2 = Np.g().a(str);
-        try {
-            P.a(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + a2.resFullName, wq.d() + File.separator + B + File.separator + a2.resFullName);
-            jC.d(B).d.add(a2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public final void f(boolean z) {
         N.e(z);
     }
@@ -1840,19 +1607,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         J.setLayoutParams(layoutParams);
         h(i);
         f(i);
-    }
-
-    public final void g(String str) {
-        if (!Op.g().b(str)) {
-            return;
-        }
-        ProjectResourceBean a2 = Op.g().a(str);
-        try {
-            P.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + B + File.separator + a2.resFullName);
-            jC.d(B).b.add(a2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public final void g(boolean z) {
@@ -1944,18 +1698,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public final void h(String str) {
-        if (Qp.g().b(str)) {
-            ProjectResourceBean a2 = Qp.g().a(str);
-            try {
-                P.a(wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + a2.resFullName, wq.t() + File.separator + B + File.separator + a2.resFullName);
-                jC.d(B).c.add(a2);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public final void h(boolean z) {
         N.b(false);
         N.a(false);
@@ -2004,99 +1746,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         });
         aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
-    }
-
-    public final void i(String str) {
-        if (na == null) {
-            na = new ArrayList<>();
-        }
-        for (String value : jC.d(B).k()) {
-            if (value.equals(str)) {
-                return;
-            }
-        }
-        ProjectResourceBean a2 = Np.g().a(str);
-        if (a2 == null) {
-            return;
-        }
-        boolean z = false;
-        Iterator<ProjectResourceBean> it2 = na.iterator();
-        while (true) {
-            if (it2.hasNext()) {
-                if (it2.next().resName.equals(str)) {
-                    z = true;
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-        if (z) {
-            return;
-        }
-        na.add(a2);
-    }
-
-    public final void j(String str) {
-        if (la == null) {
-            la = new ArrayList<>();
-        }
-        for (String value : jC.d(B).m()) {
-            if (value.equals(str)) {
-                return;
-            }
-        }
-        ProjectResourceBean a2 = Op.g().a(str);
-        if (a2 == null) {
-            return;
-        }
-        boolean z = false;
-        Iterator<ProjectResourceBean> it2 = la.iterator();
-        while (true) {
-            if (it2.hasNext()) {
-                if (it2.next().resName.equals(str)) {
-                    z = true;
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-        if (z) {
-            return;
-        }
-        la.add(a2);
-    }
-
-    public final void k(String str) {
-        if (ma == null) {
-            ma = new ArrayList<>();
-        }
-        for (String value : jC.d(B).p()) {
-            if (value.equals(str)) {
-                return;
-            }
-        }
-        ProjectResourceBean a2 = Qp.g().a(str);
-        if (a2 == null) {
-            return;
-        }
-        boolean z = false;
-        Iterator<ProjectResourceBean> it2 = ma.iterator();
-        while (true) {
-            if (it2.hasNext()) {
-                if (it2.next().resName.equals(str)) {
-                    z = true;
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-        if (z) {
-            return;
-        }
-        ma.add(a2);
     }
 
     public final void l() {
@@ -2432,7 +2081,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public void onSelected(MoreBlockCollectionBean moreBlockCollectionBean) {
-        c(moreBlockCollectionBean);
+        new MoreblockImporter(this, B, M).importMoreblock(moreBlockCollectionBean, () -> a(8, 0xff8a55d7));
     }
 
     @Override
