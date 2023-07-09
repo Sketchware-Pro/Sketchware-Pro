@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.library.admob;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,13 +25,20 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import a.a.a.NB;
+import a.a.a.Uu;
+import a.a.a.aB;
+import a.a.a.bB;
+import a.a.a.gB;
+import a.a.a.wB;
+import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
-public class Tu extends LinearLayout implements Uu, View.OnClickListener {
+public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClickListener {
     private TestDeviceAdapter adapter;
     private ArrayList<AdTestDeviceBean> testDevices;
 
-    public Tu(Context context) {
+    public TestDevicesStepView(Context context) {
         super(context);
         testDevices = new ArrayList<>();
         initialize(context);
