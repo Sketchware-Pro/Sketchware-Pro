@@ -141,9 +141,9 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         int id = view.getId();
         if (id == R.id.btn_console) {
             goToConsole();
-        }
-
-        if (id == R.id.layout_switch) {
+        } else if (id == R.id.btn_import) {
+            showImportJsonDialog();
+        } else if (id == R.id.layout_switch) {
             //Enable Disable Firebase
             if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
                 libSwitch.setChecked(!libSwitch.isChecked());
@@ -192,13 +192,12 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         tvAppId = findViewById(R.id.tv_app_id);
         tvApiKey = findViewById(R.id.tv_api_key);
         tvStorageUrl = findViewById(R.id.tv_storage_url);
+        Button btnImport = findViewById(R.id.btn_import);
+        btnImport.setOnClickListener(this);
         Button btnConsole = findViewById(R.id.btn_console);
         btnConsole.setText(Helper.getResString(R.string.design_library_firebase_button_goto_firebase_console));
         btnConsole.setOnClickListener(this);
         configure();
-
-        final Button importFirebaseConfigFromJsonBtn = ((LinearLayout) btnConsole.getParent()).findViewWithTag("importFirebaseConfigFromJsonBtn");
-        importFirebaseConfigFromJsonBtn.setOnClickListener(v -> showImportJsonDialog());
     }
 
     @Override
