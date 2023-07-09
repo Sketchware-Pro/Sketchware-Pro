@@ -2,7 +2,6 @@ package a.a.a;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,11 +59,6 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
-    }
-
-    @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
         testDevices = projectLibraryBean.testDevices;
         adapter.notifyDataSetChanged();
@@ -79,9 +73,7 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
                 super(itemView);
                 deviceId = itemView.findViewById(R.id.tv_device_id);
                 delete = itemView.findViewById(R.id.img_delete);
-                delete.setOnClickListener(v -> {
-                    showDeleteTestDeviceDialog(getLayoutPosition());
-                });
+                delete.setOnClickListener(v -> showDeleteTestDeviceDialog(getLayoutPosition()));
             }
         }
 
