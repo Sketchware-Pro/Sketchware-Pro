@@ -1,8 +1,8 @@
 package com.besome.sketch.editor.manage.library.admob;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,16 +31,18 @@ import a.a.a.gB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ViewConstructor")
 public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
-
     private AdUnitsAdapter adUnitsAdapter;
     private ArrayList<AdUnitBean> adUnitBeanArrayList = new ArrayList<>();
     private TextView tvWarning;
 
     public AddAdUnitStepView(AdmobActivity activity) {
-        super(activity);
-        initialize(activity);
+        this(activity, null);
+    }
+
+    public AddAdUnitStepView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initialize(context);
     }
 
     private void createAdUnit() {
