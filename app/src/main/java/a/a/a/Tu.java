@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,22 +66,22 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
         this.c = projectLibraryBean.testDevices;
-        this.b.c();
+        this.b.notifyDataSetChanged();
     }
 
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.Adapter<a.ViewHolder> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class ViewHolder extends RecyclerView.ViewHolder {
             public TextView t;
             public ImageView u;
 
-            public a(View view) {
-                super(view);
-                this.t = (TextView) view.findViewById(2131231956);
-                this.u = (ImageView) view.findViewById(2131231132);
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                this.t = (TextView) itemView.findViewById(2131231956);
+                this.u = (ImageView) itemView.findViewById(2131231132);
                 this.u.setOnClickListener(v -> {
-                    Tu.this.a(j());
+                    Tu.this.a(getLayoutPosition());
                 });
             }
         }
@@ -89,18 +90,19 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         }
 
         @Override
-        public void b(a aVar, int i) {
-            aVar.t.setText(Tu.this.c.get(i).deviceId);
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.t.setText(Tu.this.c.get(position).deviceId);
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return Tu.this.c.size();
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427555, viewGroup, false));
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427555, parent, false));
         }
     }
 
@@ -157,7 +159,7 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
                     }
                 }
                 c.add(new AdTestDeviceBean(text));
-                b.d(c.size() - 1);
+                b.notifyItemInserted(c.size() - 1);
                 aBVar.dismiss();
             } else {
                 editText.requestFocus();
@@ -174,7 +176,7 @@ public class Tu extends LinearLayout implements Uu, View.OnClickListener {
         aBVar.a(xB.b().a(getContext(), 2131625171));
         aBVar.b(xB.b().a(getContext(), 2131624986), v -> {
             c.remove(i);
-            b.e(i);
+            b.notifyItemRemoved(i);
             bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
             aBVar.dismiss();
         });
