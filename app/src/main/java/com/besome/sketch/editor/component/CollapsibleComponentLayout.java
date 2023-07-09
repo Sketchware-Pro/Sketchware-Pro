@@ -12,7 +12,7 @@ import com.sketchware.remod.R;
 
 import java.util.List;
 
-public class CollapsibleComponentLayout extends CollapsibleLayout {
+public class CollapsibleComponentLayout extends CollapsibleLayout<CollapsibleButton> {
     private CollapsibleButton delete;
 
     public CollapsibleComponentLayout(@NonNull Context context) {

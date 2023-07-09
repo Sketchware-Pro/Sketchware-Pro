@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.besome.sketch.editor.event.CollapsibleButton;
 import com.sketchware.remod.R;
 
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
-public abstract class CollapsibleLayout extends FrameLayout {
+public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
     private View confirmYes;
     private View confirmNo;
     private LinearLayout projectButtons;
@@ -31,7 +30,7 @@ public abstract class CollapsibleLayout extends FrameLayout {
     private AnimatorSet flipTopOut;
     private AnimatorSet flipBottomIn;
     private AnimatorSet flipBottomOut;
-    private List<CollapsibleButton> buttons;
+    private List<T> buttons;
 
     public CollapsibleLayout(@NonNull Context context) {
         this(context, null);
@@ -65,7 +64,7 @@ public abstract class CollapsibleLayout extends FrameLayout {
         }
     }
 
-    protected abstract List<CollapsibleButton> initializeButtons(@NonNull Context context);
+    protected abstract List<T> initializeButtons(@NonNull Context context);
 
     public final void setButtonOnClickListener(View.OnClickListener listener) {
         confirmYes.setOnClickListener(listener);

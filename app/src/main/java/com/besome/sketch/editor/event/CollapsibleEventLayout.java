@@ -10,7 +10,7 @@ import com.sketchware.remod.R;
 
 import java.util.List;
 
-public class CollapsibleEventLayout extends CollapsibleLayout {
+public class CollapsibleEventLayout extends CollapsibleLayout<CollapsibleButton> {
     private CollapsibleButton delete;
     private CollapsibleButton addToCollection;
 
