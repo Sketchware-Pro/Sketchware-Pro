@@ -121,7 +121,8 @@
         android:layout_height="48dp"
         android:background="#ffffffff"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <View
             android:layout_width="match_parent"
