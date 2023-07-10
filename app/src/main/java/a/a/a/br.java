@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
@@ -33,12 +32,14 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.component.CollapsibleComponentLayout;
 import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
+import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.Executor;
 
 public class br extends qA implements View.OnClickListener {
@@ -96,10 +97,11 @@ public class br extends qA implements View.OnClickListener {
                 .build();
         private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        private class ViewHolder extends CollapsibleViewHolder {
             private static final Handler handler = new Handler(Looper.getMainLooper());
             private static final Executor mainThreadExecutor = handler::post;
 
+            public final LinearLayout root;
             public final LinearLayout optionLayout;
             public final RecyclerView componentEvents;
             public final ImageView icon;
@@ -115,6 +117,7 @@ public class br extends qA implements View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
+                root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
                 id = itemView.findViewById(R.id.tv_component_id);
@@ -143,37 +146,7 @@ public class br extends qA implements View.OnClickListener {
                         }
                     }
                 });
-                itemView.setOnClickListener(v -> {
-                    ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), getLayoutPosition());
-                    if (bean.isCollapsed) {
-                        bean.isCollapsed = false;
-                        expand();
-                    } else {
-                        bean.isCollapsed = true;
-                        collapse();
-                    }
-                });
-                menu.setOnClickListener(v -> {
-                    ComponentBean bean = components.get(getLayoutPosition());
-                    if (bean.isCollapsed) {
-                        bean.isCollapsed = false;
-                        expand();
-                    } else {
-                        bean.isCollapsed = true;
-                        collapse();
-                    }
-                });
-                itemView.setOnLongClickListener(v -> {
-                    ComponentBean bean = components.get(getLayoutPosition());
-                    if (bean.isCollapsed) {
-                        bean.isCollapsed = false;
-                        expand();
-                    } else {
-                        bean.isCollapsed = true;
-                        collapse();
-                    }
-                    return true;
-                });
+                onDoneInitializingViews();
                 componentEvents.setRecycledViewPool(eventViewHolders);
                 if (componentEvents.getLayoutManager() instanceof LinearLayoutManager manager) {
                     manager.setRecycleChildrenOnDetach(true);
@@ -184,34 +157,44 @@ public class br extends qA implements View.OnClickListener {
                 componentEventsAdapter = new ConcatAdapter(EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
             }
 
-            private void collapse() {
-                gB.a(menu, 0.0f, null);
-                gB.a(optionLayout, 200, new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(@NonNull Animator animation) {
-                    }
+            @Override
+            protected boolean isCollapsed() {
+                return components.get(getLayoutPosition()).isCollapsed;
+            }
 
-                    @Override
-                    public void onAnimationEnd(@NonNull Animator animation) {
-                        optionLayout.setVisibility(View.GONE);
-                    }
+            @Override
+            protected void setIsCollapsed(boolean isCollapsed) {
+                components.get(getLayoutPosition()).isCollapsed = isCollapsed;
+            }
 
-                    @Override
-                    public void onAnimationCancel(@NonNull Animator animation) {
-                    }
+            @NonNull
+            @Override
+            protected ViewGroup getOptionsLayout() {
+                return optionLayout;
+            }
 
-                    @Override
-                    public void onAnimationRepeat(@NonNull Animator animation) {
-                    }
-                });
+            @NonNull
+            @Override
+            protected Set<? extends View> getOnClickCollapseTriggerViews() {
+                return Set.of(menu, root);
+            }
+
+            @NonNull
+            @Override
+            protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
+                return Set.of(root);
+            }
+
+            @Override
+            public void collapse() {
+                super.collapse();
                 eventsPreview.animate().translationX(0.0f).alpha(1.0f).setStartDelay(120L).setDuration(150L).start();
                 componentEvents.animate().translationX(-componentEvents.getWidth()).setDuration(150L).alpha(0.0f).start();
             }
 
-            private void expand() {
-                optionLayout.setVisibility(View.VISIBLE);
-                gB.a(menu, -180.0f, null);
-                gB.b(optionLayout, 200, null);
+            @Override
+            public void expand() {
+                super.expand();
                 eventsPreview.animate().translationX(eventsPreview.getWidth()).alpha(0.0f).setDuration(150L).start();
                 componentEvents.setTranslationX(-componentEvents.getWidth());
                 componentEvents.setAlpha(0.0f);
