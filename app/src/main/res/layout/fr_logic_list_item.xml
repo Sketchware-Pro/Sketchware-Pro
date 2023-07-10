@@ -130,10 +130,9 @@
             android:layout_marginRight="16dp"
             android:background="@color/color_secondary" />
 
-        <LinearLayout
+        <com.besome.sketch.editor.event.CollapsibleEventLayout
             android:id="@+id/event_option"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

@@ -16,7 +16,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -574,7 +573,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final ImageView preview;
             public final LinearLayout previewContainer;
             public final LinearLayout optionContainer;
-            public final LinearLayout options;
             public final CollapsibleEventLayout optionsLayout;
             public final ImageView icon;
             public final TextView targetType;
@@ -596,10 +594,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 preview = itemView.findViewById(R.id.img_preview);
                 previewContainer = itemView.findViewById(R.id.ll_preview);
                 optionContainer = itemView.findViewById(R.id.event_option_layout);
-                options = itemView.findViewById(R.id.event_option);
-                optionsLayout = new CollapsibleEventLayout(requireContext());
-                optionsLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                options.addView(optionsLayout);
+                optionsLayout = itemView.findViewById(R.id.event_option);
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(getLayoutPosition());
