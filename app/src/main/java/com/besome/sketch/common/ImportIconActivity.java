@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
@@ -316,11 +317,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 holder.background.setBackgroundColor(0xffffccbc);
             }
             holder.name.setText(getItem(position).first);
-            try {
-                holder.icon.setImageBitmap(iB.a(getItem(position).second, 1));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Glide.with(ImportIconActivity.this)
+                    .load(getItem(position).second)
+                    .into(holder.icon);
         }
 
         @Override
