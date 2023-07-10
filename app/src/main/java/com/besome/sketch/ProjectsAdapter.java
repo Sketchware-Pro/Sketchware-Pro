@@ -1,7 +1,5 @@
 package com.besome.sketch;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +17,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
+import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
 import com.besome.sketch.projects.MyProjectButtonLayout;
@@ -29,11 +28,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import a.a.a.ZA;
-import a.a.a.gB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
@@ -177,16 +177,17 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (viewHolder instanceof ProjectViewHolder holder) {
             int position = truePosition - shownSpecialActions;
             HashMap<String, Object> projectMap = shownProjects.get(position);
+            holder.setProject(projectMap);
             String scId = yB.c(projectMap, "sc_id");
 
             float rotation;
             int visibility;
-            if (yB.a(projectMap, "expand")) {
-                visibility = View.VISIBLE;
-                rotation = -180.0F;
-            } else {
+            if (holder.isCollapsed()) {
                 visibility = View.GONE;
                 rotation = 0.0F;
+            } else {
+                visibility = View.VISIBLE;
+                rotation = -180.0F;
             }
             holder.projectOptionLayout.setVisibility(visibility);
             holder.expand.setRotation(rotation);
@@ -268,29 +269,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     projectsFragment.toDesignActivity(yB.c(projectMap, "sc_id"));
                 }
             });
-            holder.projectView.setOnLongClickListener(v -> {
-                if (yB.a(projectMap, "expand")) {
-                    holder.collapse(projectMap);
-                } else {
-                    holder.expand(projectMap);
-                }
-
-                return true;
-            });
 
             holder.appIconLayout.setOnClickListener(v -> {
                 mB.a(v);
                 toProjectSettingOrRequestPermission(projectMap, position);
-            });
-
-            holder.expand.setOnClickListener(v -> {
-                if (!mB.a()) {
-                    if (yB.a(projectMap, "expand")) {
-                        holder.collapse(projectMap);
-                    } else {
-                        holder.expand(projectMap);
-                    }
-                }
             });
         } else if (viewHolder instanceof SpecialActionViewHolder holder) {
             boolean isNewProjectView = allProjects.isEmpty() && truePosition == 0;
@@ -313,7 +295,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
     }
 
-    private static class ProjectViewHolder extends RecyclerView.ViewHolder {
+    private static class ProjectViewHolder extends CollapsibleViewHolder {
         public final TextView tvPublished;
         public final ImageView expand;
         public final MyProjectButtonLayout projectButtonLayout;
@@ -326,7 +308,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final TextView packageName;
         public final TextView projectVersion;
 
-        private boolean animateNextTransformation = false;
+        private Map<String, Object> project;
 
         public ProjectViewHolder(View itemView) {
             super(itemView);
@@ -341,32 +323,44 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             expand = itemView.findViewById(R.id.expand);
             projectOptionLayout = itemView.findViewById(R.id.project_option_layout);
             projectButtonLayout = itemView.findViewById(R.id.project_option);
+            onDoneInitializingViews();
         }
 
-        public void collapse(HashMap<String, Object> project) {
-            project.put("expand", false);
-            gB.a(expand, 0.0F, null);
-            gB.a(projectOptionLayout, 300, new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    projectOptionLayout.setVisibility(View.GONE);
-                }
-            });
+        @Override
+        protected boolean isCollapsed() {
+            var value = project.get("expand");
+            if (value != null) {
+                return (boolean) value;
+            } else {
+                return true;
+            }
         }
 
-        public void expand(HashMap<String, Object> project) {
-            projectOptionLayout.setVisibility(View.VISIBLE);
-            project.put("expand", true);
-            gB.a(expand, -180.0F, null);
-            gB.b(projectOptionLayout, 300, null);
+        @Override
+        protected void setIsCollapsed(boolean isCollapsed) {
+            project.put("expand", isCollapsed);
         }
 
-        public boolean shouldAnimateNextTransformation() {
-            return animateNextTransformation;
+        @NonNull
+        @Override
+        protected ViewGroup getOptionsLayout() {
+            return projectOptionLayout;
         }
 
-        public void setAnimateNextTransformation(boolean animateNextTransformation) {
-            this.animateNextTransformation = animateNextTransformation;
+        @NonNull
+        @Override
+        protected Set<? extends View> getOnClickCollapseTriggerViews() {
+            return Set.of(expand);
+        }
+
+        @NonNull
+        @Override
+        protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
+            return Set.of(projectView);
+        }
+
+        public void setProject(Map<String, Object> project) {
+            this.project = project;
         }
     }
 
