@@ -21,7 +21,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -65,7 +67,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
      */
     private int iconType = -1;
     private ArrayList<Pair<String, String>> icons = new ArrayList<>();
-    private ArrayList<Pair<String, String>> filteredIcons = new ArrayList<>();
 
     private int getGridLayoutColumnCount() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 60;
@@ -88,7 +89,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
                     Intent intent = new Intent();
                     intent.putExtra("iconName", iconName.getText().toString());
-                    intent.putExtra("iconPath", filteredIcons.get(adapter.selectedIconPosition).second);
+                    intent.putExtra("iconPath", adapter.getCurrentList().get(adapter.selectedIconPosition).second);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
@@ -181,7 +182,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     private void setIconName(int iconPosition) {
-        iconName.setText(filteredIcons.get(iconPosition).first);
+        iconName.setText(adapter.getCurrentList().get(iconPosition).first);
     }
 
     private void setIconColor(int colorType) {
@@ -224,25 +225,37 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         } catch (IOException e) {
             e.printStackTrace();
         }
-        filteredIcons = new ArrayList<>(icons);
     }
 
     private void filterIcons(String query) {
-        filteredIcons.clear();
+        var filteredIcons = new ArrayList<Pair<String, String>>(icons.size());
         for (Pair<String, String> icon : icons) {
             if (icon.first.toLowerCase().contains(query.toLowerCase())) {
                 filteredIcons.add(icon);
             }
         }
-        adapter.notifyDataSetChanged();
+        adapter.submitList(filteredIcons);
     }
 
-    private class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
+    private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
+        private static final DiffUtil.ItemCallback<Pair<String, String>> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull Pair<String, String> oldItem, @NonNull Pair<String, String> newItem) {
+                return oldItem.first.equals(newItem.first);
+            }
 
+            @Override
+            public boolean areContentsTheSame(@NonNull Pair<String, String> oldItem, @NonNull Pair<String, String> newItem) {
+                return true;
+            }
+        };
         private int selectedIconPosition = -1;
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        protected IconAdapter() {
+            super(DIFF_CALLBACK);
+        }
 
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public final RelativeLayout background;
             public final TextView name;
             public final ImageView icon;
@@ -275,9 +288,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             } else {
                 holder.background.setBackgroundColor(0xffffccbc);
             }
-            holder.name.setText(filteredIcons.get(position).first);
+            holder.name.setText(getItem(position).first);
             try {
-                holder.icon.setImageBitmap(iB.a(filteredIcons.get(position).second, 1));
+                holder.icon.setImageBitmap(iB.a(getItem(position).second, 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -287,11 +300,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return filteredIcons.size();
         }
     }
 
@@ -345,8 +353,10 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             var activity = this.activity.get();
             activity.h();
             activity.iconName.setText("");
+            int oldPosition = activity.adapter.selectedIconPosition;
             activity.adapter.selectedIconPosition = -1;
-            activity.adapter.notifyDataSetChanged();
+            activity.adapter.notifyItemChanged(oldPosition);
+            activity.adapter.submitList(activity.icons);
         }
 
         @Override
