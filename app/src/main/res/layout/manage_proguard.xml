@@ -167,7 +167,7 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:padding="4dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/side_menu_setting_icon_over" />
