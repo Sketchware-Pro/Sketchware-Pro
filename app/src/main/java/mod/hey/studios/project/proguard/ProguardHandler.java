@@ -1,7 +1,6 @@
 package mod.hey.studios.project.proguard;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
