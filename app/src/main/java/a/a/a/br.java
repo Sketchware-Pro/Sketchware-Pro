@@ -132,11 +132,13 @@ public class br extends qA implements View.OnClickListener {
                     ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
                     if (v instanceof CollapsibleButton) {
                         bean.isConfirmation = true;
+                        setAnimateNextTransformation(true);
                         notifyItemChanged(lastSelectedItem);
                     } else {
                         int id = v.getId();
                         if (id == R.id.confirm_no) {
                             bean.isConfirmation = false;
+                            setAnimateNextTransformation(true);
                             notifyItemChanged(lastSelectedItem);
                         } else if (id == R.id.confirm_yes) {
                             jC.a(sc_id).b(projectFile.getJavaName(), bean);
@@ -355,9 +357,19 @@ public class br extends qA implements View.OnClickListener {
                 holder.optionLayout.setVisibility(View.VISIBLE);
                 holder.menu.setRotation(-180.0f);
                 if (componentBean.isConfirmation) {
-                    holder.collapsibleComponentLayout.showConfirmation();
+                    if (holder.shouldAnimateNextTransformation()) {
+                        holder.collapsibleComponentLayout.showConfirmation();
+                        holder.setAnimateNextTransformation(false);
+                    } else {
+                        holder.collapsibleComponentLayout.showConfirmationWithoutAnimation();
+                    }
                 } else {
-                    holder.collapsibleComponentLayout.hideConfirmation();
+                    if (holder.shouldAnimateNextTransformation()) {
+                        holder.collapsibleComponentLayout.hideConfirmation();
+                        holder.setAnimateNextTransformation(false);
+                    } else {
+                        holder.collapsibleComponentLayout.hideConfirmationWithoutAnimation();
+                    }
                 }
             }
             holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
