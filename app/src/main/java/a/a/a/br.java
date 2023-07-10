@@ -147,6 +147,7 @@ public class br extends qA implements View.OnClickListener {
                     }
                 });
                 onDoneInitializingViews();
+                setOnClickCollapseConfig(v -> v != root);
                 componentEvents.setRecycledViewPool(eventViewHolders);
                 if (componentEvents.getLayoutManager() instanceof LinearLayoutManager manager) {
                     manager.setRecycleChildrenOnDetach(true);

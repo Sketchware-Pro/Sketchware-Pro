@@ -14,6 +14,7 @@ import java.util.Set;
 import a.a.a.gB;
 
 public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
+    private OnClickCollapseConfig config;
     private boolean animateNextTransformation = false;
 
     /**
@@ -76,7 +77,9 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
     public void collapse() {
         setIsCollapsed(true);
         for (var v : getOnClickCollapseTriggerViews()) {
-            gB.a(v, 0, null);
+            if (config == null || config.shouldRotateView(v)) {
+                gB.a(v, 0, null);
+            }
         }
         gB.a(getOptionsLayout(), 300, new AnimatorListenerAdapter() {
             @Override
@@ -90,7 +93,9 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
         setIsCollapsed(false);
         getOptionsLayout().setVisibility(View.VISIBLE);
         for (var v : getOnClickCollapseTriggerViews()) {
-            gB.a(v, -180, null);
+            if (config == null || config.shouldRotateView(v)) {
+                gB.a(v, -180, null);
+            }
         }
         gB.b(getOptionsLayout(), 300, null);
     }
@@ -101,5 +106,13 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
 
     public final void setAnimateNextTransformation(boolean animateNextTransformation) {
         this.animateNextTransformation = animateNextTransformation;
+    }
+
+    public void setOnClickCollapseConfig(OnClickCollapseConfig config) {
+        this.config = config;
+    }
+
+    public interface OnClickCollapseConfig {
+        boolean shouldRotateView(View v);
     }
 }
