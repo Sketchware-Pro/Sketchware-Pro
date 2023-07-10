@@ -41,18 +41,24 @@ import a.a.a.xB;
 
 public class ImportIconActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
+    private static final int ICON_COLOR_BLACK = 0;
+    private static final int ICON_COLOR_GREY = 1;
+    private static final int ICON_COLOR_WHITE = 2;
+    
     private RecyclerView iconsList;
     private Button showBlackIcons;
     private Button showGreyIcons;
     private Button showWhiteIcons;
     private EditText iconName;
     private WB iconNameValidator;
+    private SearchView searchView;
     private IconAdapter adapter = null;
     /**
      * Current icons' color, where 0 stands for black, 1 for grey, and 2 for white.
      */
     private int iconType = -1;
     private ArrayList<Pair<String, String>> icons = new ArrayList<>();
+    private ArrayList<Pair<String, String>> filteredIcons = new ArrayList<>();
 
     private int getGridLayoutColumnCount() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 60;
@@ -75,19 +81,19 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
                     Intent intent = new Intent();
                     intent.putExtra("iconName", iconName.getText().toString());
-                    intent.putExtra("iconPath", icons.get(adapter.selectedIconPosition).second);
+                    intent.putExtra("iconPath", filteredIcons.get(adapter.selectedIconPosition).second);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
             } else if (id == R.id.btn_black) {
-                setIconColor(0);
+                setIconColor(ICON_COLOR_BLACK);
             } else if (id == R.id.btn_cancel) {
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             } else if (id == R.id.btn_grey) {
-                setIconColor(1);
+                setIconColor(ICON_COLOR_GREY);
             } else if (id == R.id.btn_white) {
-                setIconColor(2);
+                setIconColor(ICON_COLOR_WHITE);
             }
         }
     }
@@ -146,22 +152,42 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         new Handler().postDelayed(() -> new InitialIconLoader(getApplicationContext()).execute(), 300L);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.contents_search_menu, menu);
+        MenuItem mSearch = menu.findItem(R.id.menu_find);
+        searchView = (SearchView) mSearch.getActionView();
+        searchView.setQueryHint("Search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterIcons(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void setIconName(int iconPosition) {
-        iconName.setText(icons.get(iconPosition).first);
+        iconName.setText(filteredIcons.get(iconPosition).first);
     }
 
     private void setIconColor(int colorType) {
         if (iconType != colorType) {
             iconType = colorType;
-            if (colorType == 0) {
+            if (colorType == ICON_COLOR_BLACK) {
                 showBlackIcons.setBackgroundColor(0xff33b8f5);
                 showGreyIcons.setBackgroundColor(0xffe5e5e5);
                 showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == 1) {
+            } else if (colorType == ICON_COLOR_GREY) {
                 showBlackIcons.setBackgroundColor(0xffe5e5e5);
                 showGreyIcons.setBackgroundColor(0xff33b8f5);
                 showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == 2) {
+            } else if (colorType == ICON_COLOR_WHITE) {
                 showBlackIcons.setBackgroundColor(0xffe5e5e5);
                 showGreyIcons.setBackgroundColor(0xffe5e5e5);
                 showWhiteIcons.setBackgroundColor(0xff33b8f5);
@@ -172,21 +198,35 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
     private void listIcons() {
         icons = new ArrayList<>();
-        String color = "black";
-        if (iconType != 0) {
-            if (iconType == 1) {
-                color = "grey";
-            } else if (iconType == 2) {
-                color = "white";
+        String color = switch (iconType) {
+            case ICON_COLOR_BLACK -> "black";
+            case ICON_COLOR_GREY -> "grey";
+            case ICON_COLOR_WHITE -> "white";
+            default -> "black";
+        };
+        String iconFolderName = "icon_" + color;
+        String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
+        try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
+            iconFiles.map(Path::getFileName)
+                .map(Path::toString)
+                .forEach(iconName -> icons.add(new Pair<>(
+                    iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
+                    Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
+                )));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        filteredIcons = new ArrayList<>(icons);
+    }
+    
+    private void filterIcons(String query) {
+        filteredIcons.clear();
+        for (Pair<String, String> icon : icons) {
+            if (icon.first.toLowerCase().contains(query.toLowerCase())) {
+                filteredIcons.add(icon);
             }
         }
-        String iconFolderName = "icon_" + color;
-        for (String iconName : new File(wq.getExtractedIconPackStoreLocation() + File.separator + iconFolderName).list()) {
-            icons.add(new Pair<>(
-                    iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
-                    wq.getExtractedIconPackStoreLocation() + File.separator + iconFolderName + File.separator + iconName
-            ));
-        }
+        adapter.notifyDataSetChanged();
     }
 
     private class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
@@ -219,7 +259,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (position != selectedIconPosition) {
-                if (iconType == 2) {
+                if (iconType == ICON_COLOR_WHITE) {
                     holder.background.setBackgroundColor(0xffbdbdbd);
                 } else {
                     holder.background.setBackgroundColor(Color.WHITE);
@@ -227,9 +267,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             } else {
                 holder.background.setBackgroundColor(0xffffccbc);
             }
-            holder.name.setText(icons.get(position).first);
+            holder.name.setText(filteredIcons.get(position).first);
             try {
-                holder.icon.setImageBitmap(iB.a(icons.get(position).second, 1));
+                holder.icon.setImageBitmap(iB.a(filteredIcons.get(position).second, 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -243,7 +283,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public int getItemCount() {
-            return icons.size();
+            return filteredIcons.size();
         }
     }
 
@@ -256,7 +296,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @Override
         public void a() {
             h();
-            setIconColor(0);
+            setIconColor(ICON_COLOR_BLACK);
         }
 
         @Override
@@ -295,6 +335,11 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         @Override
         public void b() {
             listIcons();
+            runOnUiThread(() -> {
+                if (searchView != null) {
+                    searchView.setQuery("", false);
+                }
+            });
         }
 
         @Override
