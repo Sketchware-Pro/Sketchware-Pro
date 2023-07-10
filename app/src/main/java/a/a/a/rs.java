@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
@@ -40,6 +39,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.event.AddEventActivity;
 import com.besome.sketch.editor.event.CollapsibleEventLayout;
+import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
@@ -47,6 +47,7 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -558,7 +559,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item, parent, false));
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        private class ViewHolder extends CollapsibleViewHolder {
+            public final LinearLayout root;
             public final ImageView menu;
             public final ImageView preview;
             public final LinearLayout previewContainer;
@@ -574,6 +576,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public ViewHolder(View itemView) {
                 super(itemView);
+                root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 targetType = itemView.findViewById(R.id.tv_target_type);
                 targetId = itemView.findViewById(R.id.tv_target_id);
@@ -627,28 +630,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                         }
                     }
                 });
-                menu.setOnClickListener(v -> {
-                    EventBean eventBean = events.get(categoryAdapter.index).get(getLayoutPosition());
-                    if (eventBean.isCollapsed) {
-                        eventBean.isCollapsed = false;
-                        showOptions();
-                    } else {
-                        eventBean.isCollapsed = true;
-                        hideOptions();
-                    }
-                });
-                itemView.setOnLongClickListener(v -> {
-                    EventBean eventBean = events.get(categoryAdapter.index).get(getLayoutPosition());
-                    if (eventBean.isCollapsed) {
-                        eventBean.isCollapsed = false;
-                        showOptions();
-                    } else {
-                        eventBean.isCollapsed = true;
-                        hideOptions();
-                    }
-                    return true;
-                });
-                itemView.setOnClickListener(v -> {
+                onDoneInitializingViews();
+                root.setOnClickListener(v -> {
                     if (!mB.a()) {
                         EventBean eventBean = events.get(categoryAdapter.index).get(getLayoutPosition());
                         openEvent(eventBean.targetId, eventBean.eventName, description.getText().toString());
@@ -656,32 +639,32 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 });
             }
 
-            private void hideOptions() {
-                gB.a(menu, 0, null);
-                gB.a(optionContainer, 200, new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        optionContainer.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-                    }
-                });
+            @Override
+            protected boolean isCollapsed() {
+                return events.get(categoryAdapter.index).get(getLayoutPosition()).isCollapsed;
             }
 
-            private void showOptions() {
-                optionContainer.setVisibility(View.VISIBLE);
-                gB.a(menu, -180, null);
-                gB.b(optionContainer, 200, null);
+            @Override
+            protected void setIsCollapsed(boolean isCollapsed) {
+                events.get(categoryAdapter.index).get(getLayoutPosition()).isCollapsed = isCollapsed;
+            }
+
+            @NonNull
+            @Override
+            protected ViewGroup getOptionsLayout() {
+                return optionContainer;
+            }
+
+            @NonNull
+            @Override
+            protected Set<? extends View> getOnClickCollapseTriggerViews() {
+                return Set.of(menu);
+            }
+
+            @NonNull
+            @Override
+            protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
+                return Set.of(root);
             }
         }
     }
