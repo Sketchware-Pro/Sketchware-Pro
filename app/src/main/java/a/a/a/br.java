@@ -94,7 +94,6 @@ public class br extends qA implements View.OnClickListener {
         private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
 
         private class ViewHolder extends CollapsibleViewHolder {
-
             public final LinearLayout root;
             public final LinearLayout optionLayout;
             public final RecyclerView componentEvents;
@@ -110,7 +109,7 @@ public class br extends qA implements View.OnClickListener {
             public final ConcatAdapter componentEventsAdapter;
 
             public ViewHolder(@NonNull View itemView) {
-                super(itemView);
+                super(itemView, 200);
                 root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);

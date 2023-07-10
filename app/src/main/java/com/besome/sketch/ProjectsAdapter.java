@@ -311,7 +311,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private Map<String, Object> project;
 
         public ProjectViewHolder(View itemView) {
-            super(itemView);
+            super(itemView, 300);
             projectView = itemView.findViewById(R.id.project_one);
             projectName = itemView.findViewById(R.id.project_name);
             appIconLayout = itemView.findViewById(R.id.app_icon_layout);

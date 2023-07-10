@@ -14,6 +14,7 @@ import java.util.Set;
 import a.a.a.gB;
 
 public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
+    private final int animationDurationInMs;
     private OnClickCollapseConfig config;
     private boolean animateNextTransformation = false;
 
@@ -21,8 +22,9 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
      * Descendants <em>MUST</em> call {@link #onDoneInitializingViews()} in the constructor after
      * initializing the view holder's views.
      */
-    public CollapsibleViewHolder(@NonNull View itemView) {
+    public CollapsibleViewHolder(@NonNull View itemView, int animationDurationInMs) {
         super(itemView);
+        this.animationDurationInMs = animationDurationInMs;
     }
 
     protected final void onDoneInitializingViews() {
@@ -81,7 +83,7 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
                 gB.a(v, 0, null);
             }
         }
-        gB.a(getOptionsLayout(), 300, new AnimatorListenerAdapter() {
+        gB.a(getOptionsLayout(), animationDurationInMs, new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 getOptionsLayout().setVisibility(View.GONE);
@@ -97,7 +99,7 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
                 gB.a(v, -180, null);
             }
         }
-        gB.b(getOptionsLayout(), 300, null);
+        gB.b(getOptionsLayout(), animationDurationInMs, null);
     }
 
     public final boolean shouldAnimateNextTransformation() {

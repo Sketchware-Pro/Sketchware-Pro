@@ -582,7 +582,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final TextView description;
 
             public ViewHolder(View itemView) {
-                super(itemView);
+                super(itemView, 200);
                 root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 targetType = itemView.findViewById(R.id.tv_target_type);
