@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,7 +37,6 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.concurrent.Executor;
 
 public class br extends qA implements View.OnClickListener {
     private ProjectFileBean projectFile;
@@ -98,8 +94,6 @@ public class br extends qA implements View.OnClickListener {
         private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
 
         private class ViewHolder extends CollapsibleViewHolder {
-            private static final Handler handler = new Handler(Looper.getMainLooper());
-            private static final Executor mainThreadExecutor = handler::post;
 
             public final LinearLayout root;
             public final LinearLayout optionLayout;
@@ -216,12 +210,9 @@ public class br extends qA implements View.OnClickListener {
                         return true;
                     }
                 };
-                private static final AsyncDifferConfig<EventBean> CONFIG = new AsyncDifferConfig.Builder<>(DIFF_CALLBACK)
-                        .setBackgroundThreadExecutor(mainThreadExecutor)
-                        .build();
 
                 public AddedEventsAdapter() {
-                    super(CONFIG);
+                    super(DIFF_CALLBACK);
                 }
 
                 @NonNull
@@ -252,12 +243,9 @@ public class br extends qA implements View.OnClickListener {
                         return true;
                     }
                 };
-                private static final AsyncDifferConfig<String> CONFIG = new AsyncDifferConfig.Builder<>(DIFF_CALLBACK)
-                        .setBackgroundThreadExecutor(mainThreadExecutor)
-                        .build();
 
                 public AvailableEventsAdapter() {
-                    super(CONFIG);
+                    super(DIFF_CALLBACK);
                 }
 
                 @NonNull
