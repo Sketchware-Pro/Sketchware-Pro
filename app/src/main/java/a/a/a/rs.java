@@ -537,9 +537,18 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 holder.menu.setRotation(-180);
             }
             if (eventBean.isConfirmation) {
-                holder.optionsLayout.showConfirmation();
+                if (holder.shouldAnimateNextTransformation()) {
+                    holder.optionsLayout.showConfirmation();
+                    holder.setAnimateNextTransformation(false);
+                } else {
+                    holder.optionsLayout.showConfirmationWithoutAnimation();
+                }
             } else {
-                holder.optionsLayout.hideConfirmation();
+                if (holder.shouldAnimateNextTransformation()) {
+                    holder.optionsLayout.hideConfirmation();
+                } else {
+                    holder.optionsLayout.hideConfirmationWithoutAnimation();
+                }
             }
             holder.optionContainer.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
@@ -595,6 +604,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     if (!mB.a()) {
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(getLayoutPosition());
                         if (v instanceof CollapsibleButton) {
+                            setAnimateNextTransformation(true);
                             int i = ((CollapsibleButton) v).getButtonId();
                             if (i == 2) {
                                 eventBean.buttonPressed = i;
@@ -610,11 +620,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                         } else {
                             if (v.getId() == R.id.confirm_no) {
                                 eventBean.isConfirmation = false;
+                                setAnimateNextTransformation(true);
                                 notifyItemChanged(getLayoutPosition());
                             } else if (v.getId() == R.id.confirm_yes) {
                                 if (eventBean.buttonPressed == 0) {
                                     eventBean.isConfirmation = false;
                                     eventBean.isCollapsed = true;
+                                    setAnimateNextTransformation(true);
                                     resetEvent(eventBean);
                                     notifyItemChanged(getLayoutPosition());
                                 } else if (eventBean.buttonPressed == 1) {
