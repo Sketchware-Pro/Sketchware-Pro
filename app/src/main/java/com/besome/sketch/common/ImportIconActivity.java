@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -54,12 +55,26 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private static final int ICON_COLOR_GREY = 1;
     private static final int ICON_COLOR_WHITE = 2;
 
+    private final OnBackPressedCallback searchViewCloser = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            setEnabled(false);
+            if (search.isActionViewExpanded()) {
+                search.collapseActionView();
+                searchView.setQuery("", true);
+            } else {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        }
+    };
+
     private RecyclerView iconsList;
     private Button showBlackIcons;
     private Button showGreyIcons;
     private Button showWhiteIcons;
     private EditText iconName;
     private WB iconNameValidator;
+    private MenuItem search;
     private SearchView searchView;
     private IconAdapter adapter = null;
     /**
@@ -164,9 +179,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.contents_search_menu, menu);
-        MenuItem mSearch = menu.findItem(R.id.menu_find);
-        searchView = (SearchView) mSearch.getActionView();
+        getMenuInflater().inflate(R.menu.menu_import_icon, menu);
+        search = menu.findItem(R.id.menu_find);
+        searchView = (SearchView) search.getActionView();
         searchView.setQueryHint("Search");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -181,6 +196,16 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_find) {
+            searchViewCloser.setEnabled(true);
+            getOnBackPressedDispatcher().addCallback(this, searchViewCloser);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setIconName(int iconPosition) {
