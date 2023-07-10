@@ -603,17 +603,17 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
                         EventBean eventBean = (events.get(categoryAdapter.index)).get(getLayoutPosition());
-                        if (v instanceof CollapsibleButton) {
+                        if (v instanceof CollapsibleButton button) {
                             setAnimateNextTransformation(true);
-                            int i = ((CollapsibleButton) v).getButtonId();
-                            if (i == 2) {
-                                eventBean.buttonPressed = i;
+                            int id = button.getButtonId();
+                            if (id == 2) {
+                                eventBean.buttonPressed = id;
                                 eventBean.isConfirmation = false;
                                 eventBean.isCollapsed = false;
                                 notifyItemChanged(getLayoutPosition());
                                 showSaveMoreBlockToCollectionsDialog(getLayoutPosition());
                             } else {
-                                eventBean.buttonPressed = i;
+                                eventBean.buttonPressed = id;
                                 eventBean.isConfirmation = true;
                                 notifyItemChanged(getLayoutPosition());
                             }
