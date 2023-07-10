@@ -77,6 +77,37 @@ public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
         buttons.forEach(v -> v.setOnClickListener(listener));
     }
 
+    public final void showConfirmationWithoutAnimation() {
+        onShowAnimationStart();
+        projectButtons.setRotationX(180);
+        projectButtons.setAlpha(0);
+        confirmLayout.setRotationX(0);
+        confirmLayout.setAlpha(1);
+        onShowAnimationEnd();
+    }
+
+    public final void hideConfirmationWithoutAnimation() {
+        onHideAnimationStart();
+        projectButtons.setRotationX(0);
+        projectButtons.setAlpha(1);
+        confirmLayout.setRotationX(-180);
+        confirmLayout.setAlpha(0);
+        onHideAnimationEnd();
+    }
+
+    private void onShowAnimationStart() {
+        confirmLayout.setVisibility(VISIBLE);
+        buttons.forEach(button -> button.setEnabled(false));
+        confirmYes.setEnabled(false);
+        confirmNo.setEnabled(false);
+    }
+
+    private void onShowAnimationEnd() {
+        confirmYes.setEnabled(true);
+        confirmNo.setEnabled(true);
+        projectButtons.setVisibility(GONE);
+    }
+
     public final void showConfirmation() {
         flipTopOut.setTarget(projectButtons);
         flipTopIn.setTarget(confirmLayout);
@@ -85,21 +116,26 @@ public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                confirmYes.setEnabled(true);
-                confirmNo.setEnabled(true);
-                projectButtons.setVisibility(GONE);
+                onShowAnimationEnd();
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                confirmLayout.setVisibility(VISIBLE);
-                buttons.forEach(button -> button.setEnabled(false));
-                confirmYes.setEnabled(false);
-                confirmNo.setEnabled(false);
+                onShowAnimationStart();
             }
         });
         animatorSet.start();
+    }
+
+    private void onHideAnimationStart() {
+        projectButtons.setVisibility(VISIBLE);
+        confirmYes.setEnabled(false);
+        confirmNo.setEnabled(false);
+    }
+
+    private void onHideAnimationEnd() {
+        buttons.forEach(button -> button.setEnabled(true));
+        confirmLayout.setVisibility(GONE);
     }
 
     public final void hideConfirmation() {
@@ -110,16 +146,12 @@ public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                buttons.forEach(button -> button.setEnabled(true));
-                confirmLayout.setVisibility(GONE);
+                onHideAnimationEnd();
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                projectButtons.setVisibility(VISIBLE);
-                confirmYes.setEnabled(false);
-                confirmNo.setEnabled(false);
+                onHideAnimationStart();
             }
         });
         animatorSet.start();
