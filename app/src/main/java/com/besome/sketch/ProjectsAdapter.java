@@ -191,9 +191,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.projectOptionLayout.setVisibility(visibility);
             holder.expand.setRotation(rotation);
             if (yB.a(projectMap, "confirmation")) {
-                holder.projectButtonLayout.showConfirmation();
+                if (holder.shouldAnimateNextTransformation()) {
+                    holder.projectButtonLayout.showConfirmation();
+                    holder.setAnimateNextTransformation(false);
+                } else {
+                    holder.projectButtonLayout.showConfirmationWithoutAnimation();
+                }
             } else {
-                holder.projectButtonLayout.hideConfirmation();
+                if (holder.shouldAnimateNextTransformation()) {
+                    holder.projectButtonLayout.hideConfirmation();
+                    holder.setAnimateNextTransformation(false);
+                } else {
+                    holder.projectButtonLayout.hideConfirmationWithoutAnimation();
+                }
             }
 
             holder.imgIcon.setImageResource(R.drawable.default_icon);
@@ -239,6 +249,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         case 2 -> toExportProjectActivity(projectMap);
                         case 3 -> {
                             projectMap.put("confirmation", true);
+                            holder.setAnimateNextTransformation(true);
                             notifyItemChanged(holder.getLayoutPosition());
                         }
                         case 4 -> showProjectSettingDialog(projectMap);
@@ -247,6 +258,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     deleteProject(holder.getLayoutPosition());
                 } else if (v.getId() == R.id.confirm_no) {
                     projectMap.put("confirmation", false);
+                    holder.setAnimateNextTransformation(true);
                     notifyItemChanged(holder.getLayoutPosition());
                 }
             });
@@ -314,6 +326,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final TextView packageName;
         public final TextView projectVersion;
 
+        private boolean animateNextTransformation = false;
+
         public ProjectViewHolder(View itemView) {
             super(itemView);
             projectView = itemView.findViewById(R.id.project_one);
@@ -345,6 +359,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             project.put("expand", true);
             gB.a(expand, -180.0F, null);
             gB.b(projectOptionLayout, 300, null);
+        }
+
+        public boolean shouldAnimateNextTransformation() {
+            return animateNextTransformation;
+        }
+
+        public void setAnimateNextTransformation(boolean animateNextTransformation) {
+            this.animateNextTransformation = animateNextTransformation;
         }
     }
 
