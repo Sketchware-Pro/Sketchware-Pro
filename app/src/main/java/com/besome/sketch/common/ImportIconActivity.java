@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +48,10 @@ import a.a.a.wq;
 import a.a.a.xB;
 
 public class ImportIconActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
     private static final int ICON_COLOR_BLACK = 0;
     private static final int ICON_COLOR_GREY = 1;
     private static final int ICON_COLOR_WHITE = 2;
-    
+
     private RecyclerView iconsList;
     private Button showBlackIcons;
     private Button showGreyIcons;
@@ -172,6 +170,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 filterIcons(newText);
@@ -217,17 +216,17 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
             iconFiles.map(Path::getFileName)
-                .map(Path::toString)
-                .forEach(iconName -> icons.add(new Pair<>(
-                    iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
-                    Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
-                )));
+                    .map(Path::toString)
+                    .forEach(iconName -> icons.add(new Pair<>(
+                            iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
+                            Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
+                    )));
         } catch (IOException e) {
             e.printStackTrace();
         }
         filteredIcons = new ArrayList<>(icons);
     }
-    
+
     private void filterIcons(String query) {
         filteredIcons.clear();
         for (Pair<String, String> icon : icons) {
