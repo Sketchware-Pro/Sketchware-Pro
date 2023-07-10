@@ -241,7 +241,7 @@ public class ProguardHandler {
                 progressReceiver.onProgress("Running R8 on classes...");
                 dp.runR8();
             } else {
-                progressReceiver.onProgress("Proguarding classes...");
+                progressReceiver.onProgress("ProGuarding classes...");
                 dp.runProguard();
             }
         }

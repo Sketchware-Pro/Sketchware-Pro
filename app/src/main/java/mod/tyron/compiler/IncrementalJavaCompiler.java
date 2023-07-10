@@ -120,7 +120,7 @@ public class IncrementalJavaCompiler extends Compiler {
         args.add("-proc:none");
 
         args.add("-cp");
-        args.add(compileHelper.getProGuardClasspath());
+        args.add(compileHelper.getProguardClasspath());
 
         for (File file : projectJavaFiles) {
             args.add(file.getAbsolutePath());

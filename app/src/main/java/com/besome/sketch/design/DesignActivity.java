@@ -835,7 +835,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Opens {@link ManageProguardActivity}.
      */
-    void toProGuardManager() {
+    void toProguardManager() {
         launchActivity(ManageProguardActivity.class, null);
     }
 

@@ -27,7 +27,7 @@ class R8Compiler(
             .addProgramFiles(inputs.map { Paths.get(it) })
             .addProguardConfiguration(rules, Origin.unknown())
             .addProguardConfigurationFiles(configs.map { Paths.get(it) })
-            .setProguardMapOutputPath(Paths.get(yq.proGuardMappingPath))
+            .setProguardMapOutputPath(Paths.get(yq.proguardMappingPath))
             .setMinApiLevel(minApi)
             .addLibraryFiles(libs.map { Paths.get(it) })
             .setOutput(output, OutputMode.DexIndexed)

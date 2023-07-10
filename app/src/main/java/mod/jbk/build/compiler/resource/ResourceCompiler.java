@@ -251,7 +251,7 @@ public class ResourceCompiler {
 
             /* Output AAPT2's generated ProGuard rules to a.a.a.yq.aapt_rules */
             args.add("--proguard");
-            args.add(buildHelper.yq.aaptProGuardRules);
+            args.add(buildHelper.yq.proguardAaptRules);
 
             /* Add AndroidManifest.xml */
             linkingAssertFileExists(buildHelper.yq.androidManifestPath);
