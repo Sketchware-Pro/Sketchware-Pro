@@ -110,6 +110,7 @@
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:contentDescription="@null"
+                android:focusable="true"
                 android:padding="16dp"
                 android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
         </RelativeLayout>
