@@ -1,7 +1,6 @@
 package com.besome.sketch.common;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -31,6 +30,7 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -156,7 +156,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         iconNameValidator = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, alreadyAddedImageNames);
         iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();
-        new Handler().postDelayed(() -> new InitialIconLoader(getApplicationContext()).execute(), 300L);
+        new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                 showGreyIcons.setBackgroundColor(0xffe5e5e5);
                 showWhiteIcons.setBackgroundColor(0xff33b8f5);
             }
-            new IconColorChangedIconLoader(getApplicationContext()).execute();
+            new IconColorChangedIconLoader(this).execute();
         }
     }
 
@@ -295,28 +295,33 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    private class InitialIconLoader extends MA {
-        public InitialIconLoader(Context context) {
-            super(context);
-            addTask(this);
+    private static class InitialIconLoader extends MA {
+        private final WeakReference<ImportIconActivity> activity;
+
+        public InitialIconLoader(ImportIconActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
-            h();
-            setIconColor(ICON_COLOR_BLACK);
+            var activity = this.activity.get();
+            activity.h();
+            activity.setIconColor(ICON_COLOR_BLACK);
         }
 
         @Override
         public void b() {
-            if (!doExtractedIconsExist()) {
-                extractIcons();
+            var activity = this.activity.get();
+            if (!activity.doExtractedIconsExist()) {
+                activity.extractIcons();
             }
         }
 
         @Override
         public void a(String str) {
-            h();
+            activity.get().h();
         }
 
         @Override
@@ -325,34 +330,39 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
     }
 
-    private class IconColorChangedIconLoader extends MA {
-        public IconColorChangedIconLoader(Context context) {
-            super(context);
-            addTask(this);
-            k();
+    private static class IconColorChangedIconLoader extends MA {
+        private final WeakReference<ImportIconActivity> activity;
+
+        public IconColorChangedIconLoader(ImportIconActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
+            activity.k();
         }
 
         @Override
         public void a() {
-            h();
-            iconName.setText("");
-            adapter.selectedIconPosition = -1;
-            adapter.notifyDataSetChanged();
+            var activity = this.activity.get();
+            activity.h();
+            activity.iconName.setText("");
+            activity.adapter.selectedIconPosition = -1;
+            activity.adapter.notifyDataSetChanged();
         }
 
         @Override
         public void b() {
-            listIcons();
-            runOnUiThread(() -> {
-                if (searchView != null) {
-                    searchView.setQuery("", false);
+            var activity = this.activity.get();
+            activity.listIcons();
+            activity.runOnUiThread(() -> {
+                if (activity.searchView != null) {
+                    activity.searchView.setQuery("", false);
                 }
             });
         }
 
         @Override
         public void a(String str) {
-            h();
+            activity.get().h();
         }
 
         @Override
