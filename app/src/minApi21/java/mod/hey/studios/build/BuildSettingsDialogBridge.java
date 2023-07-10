@@ -17,7 +17,7 @@ public class BuildSettingsDialogBridge {
     }
 
     public static void handleJavaVersionChange(String choice) {
-        if (choice.equals(SETTING_JAVA_VERSION_1_8)) {
+        if (!choice.equals(SETTING_JAVA_VERSION_1_7)) {
             SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8 code");
         }
     }

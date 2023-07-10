@@ -36,8 +36,8 @@ public class DexCompiler {
         }
 
         Collection<Path> programFiles = new LinkedList<>();
-        if (builder.proguard.isProguardEnabled()) {
-            programFiles.add(Paths.get(builder.yq.classesProGuardPath));
+        if (builder.proguard.isShrinkingEnabled()) {
+            programFiles.add(Paths.get(builder.yq.proguardClassesPath));
         } else {
             for (File file : FileUtil.listFilesRecursively(new File(builder.yq.compiledClassesPath), ".class")) {
                 programFiles.add(file.toPath());

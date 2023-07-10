@@ -405,12 +405,12 @@ public class BuiltInLibraries {
         return getLibraryResources(libraryName).getAbsolutePath();
     }
 
-    public static File getLibraryProGuardConfiguration(String libraryName) {
+    public static File getLibraryProguardConfiguration(String libraryName) {
         return new File(EXTRACTED_BUILT_IN_LIBRARIES_PATH, libraryName + File.separator + "proguard.txt");
     }
 
-    public static String getLibraryProGuardConfigurationPath(String libraryName) {
-        return getLibraryProGuardConfiguration(libraryName).getAbsolutePath();
+    public static String getLibraryProguardConfigurationPath(String libraryName) {
+        return getLibraryProguardConfiguration(libraryName).getAbsolutePath();
     }
 
     public static void extractCompileAssets(@NonNull BuildProgressReceiver... progressReceivers) {

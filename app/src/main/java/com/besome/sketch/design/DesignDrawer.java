@@ -183,7 +183,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         return;
 
                     case 17:
-                        designActivity.toProGuardManager();
+                        designActivity.toProguardManager();
                         return;
 
                     case 18:
