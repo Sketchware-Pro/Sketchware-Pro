@@ -39,6 +39,7 @@ import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -274,7 +275,9 @@ public class ExtraMenuBean {
 
             case "list":
                 title = Helper.getResString(R.string.logic_editor_title_select_list);
-                menus = projectDataManager.c(javaName);
+                for(String variable : projectDataManager.c(javaName)){
+                    menus.add(CustomVariableUtil.getVariableName(variable));
+                }
                 break;
 
             case "intent":
@@ -648,7 +651,7 @@ public class ExtraMenuBean {
             case "Variable":
                 title = "Select a Variable";
                 for (Pair<Integer, String> integerStringPair : projectDataManager.k(javaName)) {
-                    menus.add(integerStringPair.second.replaceFirst("^\\w+[\\s]+(\\w+)", "$1"));
+                    menus.add(CuatomVariableUtil.getVariableName(integerStringPair.second));
                 }
                 break;
 
@@ -667,6 +670,9 @@ public class ExtraMenuBean {
                         menus.add(matcher.group(2));
                     }
                 }
+                for(String variable : projectDataManager.e(javaName, 6)){
+                    menus.add(CustomVariableUtil.getVariableName(variable));
+                }
                 break;
 
             default:
@@ -682,6 +688,14 @@ public class ExtraMenuBean {
                             title = "Select a " + matcher2.group(1) + " Variable";
                             menus.add(matcher2.group(2));
                         }
+                    }
+                }
+                for(String variable : projectDataManager.e(javaName, 6)){
+                    String variableType = CustomVariableUtil.getVariableType(variable);
+                    String variableName = CustomVariableUtil.getVariableName(variable);
+                    if(menuName.equals(variableType)){
+                        title = "Select a " + variableType + " Variable";
+                        menus.add(variableName);
                     }
                 }
                 for (ComponentBean componentBean : projectDataManager.e(javaName)) {
