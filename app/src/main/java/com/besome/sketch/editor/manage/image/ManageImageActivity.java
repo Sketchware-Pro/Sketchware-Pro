@@ -16,12 +16,10 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
 
-import a.a.a.By;
 import a.a.a.MA;
 import a.a.a.Op;
-import a.a.a.bu;
-import a.a.a.cu;
 import a.a.a.fu;
+import a.a.a.mB;
 import a.a.a.pu;
 import a.a.a.to;
 import a.a.a.xB;
@@ -71,7 +69,9 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         k();
         try {
             if (this.j.h()) {
-                new Handler().postDelayed(new cu(this), 500L);
+                new Handler().postDelayed(() -> {
+                    new b(getApplicationContext()).execute();
+                }, 500L);
             } else {
                 xo.a(getApplicationContext());
             }
@@ -94,7 +94,11 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625136));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        this.m.setNavigationOnClickListener(new bu(this));
+        this.m.setNavigationOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        });
         if (bundle == null) {
             this.l = getIntent().getStringExtra("sc_id");
         } else {
@@ -203,18 +207,18 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void b() {
-            try {
-                publishProgress("Now processing..");
-                ManageImageActivity.this.p.i();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new By(xB.b().a(ManageImageActivity.this.getApplicationContext(), 2131624916));
-            }
+            publishProgress("Now processing..");
+            ManageImageActivity.this.p.i();
         }
 
         @Override
         public void a(String str) {
             ManageImageActivity.this.h();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return a(voids);
         }
     }
 }
