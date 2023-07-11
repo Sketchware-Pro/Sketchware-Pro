@@ -20,15 +20,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.common.ImportIconActivity;
 import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
-import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.Key;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -305,10 +308,10 @@ public class pu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.Adapter<a.a> {
+    class a extends RecyclerView.Adapter<pu.a.ViewHolder> {
         public int c = -1;
 
-        class a extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             public CheckBox t;
             public TextView u;
             public ImageView v;
@@ -316,7 +319,7 @@ public class pu extends qA implements View.OnClickListener {
             public ImageView x;
             public LinearLayout y;
 
-            public a(@NonNull View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 this.t = (CheckBox) itemView.findViewById(2131230893);
                 this.u = (TextView) itemView.findViewById(2131232003);
@@ -324,19 +327,48 @@ public class pu extends qA implements View.OnClickListener {
                 this.w = (ImageView) itemView.findViewById(2131231132);
                 this.x = (ImageView) itemView.findViewById(2131231161);
                 this.y = (LinearLayout) itemView.findViewById(2131230959);
-                this.v.setOnClickListener(new nu(this, a.this));
-                this.v.setOnLongClickListener(new ou(this, a.this));
+                this.v.setOnClickListener(v -> {
+                    c = getLayoutPosition();
+                    if (!p) {
+                        b(j.get(getLayoutPosition()));
+                    } else {
+                        t.setChecked(!t.isChecked());
+                        j.get(c).isSelected = t.isChecked();
+                        notifyItemChanged(c);
+                    }
+                });
+                this.v.setOnLongClickListener(v -> {
+                    a(true);
+                    c = getLayoutPosition();
+                    t.setChecked(!t.isChecked());
+                    j.get(c).isSelected = t.isChecked();
+                    return true;
+                });
             }
         }
 
         public a(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new ku(this, pu.this));
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
+                            if (q.isEnabled()) {
+                                q.hide();
+                            }
+                        } else if (dy < -2) {
+                            if (q.isEnabled()) {
+                                q.show();
+                            }
+                        }
+                    }
+                });
             }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull a holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (pu.this.p) {
                 holder.y.setVisibility(0);
             } else {
@@ -359,18 +391,28 @@ public class pu extends qA implements View.OnClickListener {
                 int i3 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
                 int i4 = ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal;
                 RequestManager with = Glide.with(pu.this.getActivity());
-                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new lu(this, holder.v, i2, i4, i3));
+                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into(new BitmapImageViewTarget(holder.v) {
+                            @Override
+                            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                super.onResourceReady(iB.a(bitmap, i2, i4, i3), glideAnimation);
+                            }
+                        });
                 return;
             }
             int i5 = ((ProjectResourceBean) pu.this.j.get(position)).rotate;
             int i6 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
-            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new mu(this, holder.v, i5, ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal, i6));
+            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into(new BitmapImageViewTarget(holder.v) {
+                        @Override
+                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                            super.onResourceReady(iB.a(bitmap, i5, ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal, i6), glideAnimation);
+                        }
+                    });
         }
 
         @Override
         @NonNull
-        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
         }
 
         @Override
