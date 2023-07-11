@@ -29,13 +29,10 @@ import a.a.a.xB;
 import a.a.a.xo;
 
 public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
-    public final int k = 2;
-    public String l;
-    public Toolbar m;
-    public ViewPager n;
-    public TabLayout o;
-    public pu p;
-    public fu q;
+    private String sc_id;
+    private ViewPager viewPager;
+    private pu projectImagesFragment;
+    private fu collectionImagesFragment;
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -47,31 +44,34 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void d(int i) {
-        new b(getApplicationContext()).execute();
+        new SaveImagesAsyncTask(getApplicationContext()).execute();
     }
 
+    // don't change signature: referenced by La/a/a/fu;
     public void f(int i) {
-        n.setCurrentItem(i);
+        viewPager.setCurrentItem(i);
     }
 
+    // don't change signature: referenced by La/a/a/pu;
     public fu l() {
-        return q;
+        return collectionImagesFragment;
     }
 
+    // don't change signature: referenced by La/a/a/fu;
     public pu m() {
-        return p;
+        return projectImagesFragment;
     }
 
     @Override
     public void onBackPressed() {
-        if (p.p) {
-            p.a(false);
+        if (projectImagesFragment.p) {
+            projectImagesFragment.a(false);
         } else {
             k();
             try {
                 if (j.h()) {
                     new Handler().postDelayed(() ->
-                            new b(getApplicationContext()).execute(), 500L);
+                            new SaveImagesAsyncTask(getApplicationContext()).execute(), 500L);
                 } else {
                     xo.a(getApplicationContext());
                 }
@@ -89,28 +89,28 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        m = findViewById(R.id.toolbar);
-        setSupportActionBar(m);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_image));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        m.setNavigationOnClickListener(v -> {
+        toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
         if (savedInstanceState == null) {
-            l = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         } else {
-            l = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         }
-        o = findViewById(R.id.tab_layout);
-        n = findViewById(R.id.view_pager);
-        n.setAdapter(new a(getSupportFragmentManager()));
-        n.setOffscreenPageLimit(2);
-        n.addOnPageChangeListener(this);
-        o.setupWithViewPager(n);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.addOnPageChangeListener(this);
+        tabLayout.setupWithViewPager(viewPager);
         xo.a((to) this);
     }
 
@@ -137,27 +137,27 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", l);
+        outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onPageSelected(int position) {
         if (position == 0) {
-            q.f();
+            collectionImagesFragment.f();
         } else {
-            p.a(false);
+            projectImagesFragment.a(false);
         }
     }
 
-    class a extends FragmentPagerAdapter {
-        public String[] f;
+    private class PagerAdapter extends FragmentPagerAdapter {
+        private final String[] labels;
 
-        public a(FragmentManager manager) {
+        public PagerAdapter(FragmentManager manager) {
             super(manager);
-            f = new String[2];
-            f[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            f[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            labels = new String[2];
+            labels[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            labels[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -169,10 +169,10 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         @NonNull
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            if (position != 0) {
-                q = (fu) fragment;
+            if (position == 0) {
+                projectImagesFragment = (pu) fragment;
             } else {
-                p = (pu) fragment;
+                collectionImagesFragment = (fu) fragment;
             }
             return fragment;
         }
@@ -188,12 +188,12 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return f[position];
+            return labels[position];
         }
     }
 
-    class b extends MA {
-        public b(Context context) {
+    private class SaveImagesAsyncTask extends MA {
+        public SaveImagesAsyncTask(Context context) {
             super(context);
             ManageImageActivity.this.a(this);
         }
@@ -209,7 +209,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         public void b() {
             publishProgress("Now processing..");
-            p.i();
+            projectImagesFragment.i();
         }
 
         @Override
