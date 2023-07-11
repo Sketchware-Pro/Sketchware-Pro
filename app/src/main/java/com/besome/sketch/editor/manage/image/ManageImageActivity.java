@@ -97,11 +97,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (!super.j()) {
@@ -186,7 +181,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void b() {
-            publishProgress("Now processing..");
             activity.get().projectImagesFragment.i();
         }
 
