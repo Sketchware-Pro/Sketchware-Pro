@@ -1,29 +1,33 @@
 package com.besome.sketch.editor.manage.image;
 
-import a.a.a.By;
-import a.a.a.MA;
-import a.a.a.Op;
-import a.a.a.Xf;
-import a.a.a.bu;
-import a.a.a.cu;
-import a.a.a.fu;
-import a.a.a.gg;
-import a.a.a.pu;
-import a.a.a.to;
-import a.a.a.xB;
-import a.a.a.xo;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
 
-public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.e, to {
+import a.a.a.By;
+import a.a.a.MA;
+import a.a.a.Op;
+import a.a.a.bu;
+import a.a.a.cu;
+import a.a.a.fu;
+import a.a.a.pu;
+import a.a.a.to;
+import a.a.a.xB;
+import a.a.a.xo;
+
+public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
     public final int k = 2;
     public String l;
     public Toolbar m;
@@ -33,11 +37,11 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     public fu q;
 
     @Override
-    public void a(int i) {
+    public void onPageScrollStateChanged(int state) {
     }
 
     @Override
-    public void a(int i, float f, int i2) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
@@ -85,11 +89,11 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             finish();
         }
         this.m = (Toolbar) findViewById(2131231847);
-        a(this.m);
+        setSupportActionBar(this.m);
         findViewById(2131231370).setVisibility(8);
-        d().a(xB.b().a(getApplicationContext(), 2131625136));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625136));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         this.m.setNavigationOnClickListener(new bu(this));
         if (bundle == null) {
             this.l = getIntent().getStringExtra("sc_id");
@@ -100,7 +104,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         this.n = (ViewPager) findViewById(2131232325);
         this.n.setAdapter(new a(getSupportFragmentManager()));
         this.n.setOffscreenPageLimit(2);
-        this.n.a(this);
+        this.n.addOnPageChangeListener(this);
         this.o.setupWithViewPager(this.n);
         xo.a((to) this);
     }
@@ -133,33 +137,34 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void b(int i) {
-        if (i == 0) {
+    public void onPageSelected(int position) {
+        if (position == 0) {
             this.q.f();
         } else {
             this.p.a(false);
         }
     }
 
-    class a extends gg {
+    class a extends FragmentPagerAdapter {
         public String[] f;
 
-        public a(Xf xf) {
-            super(xf);
+        public a(FragmentManager manager) {
+            super(manager);
             this.f = new String[2];
             this.f[0] = xB.b().a(ManageImageActivity.this.getApplicationContext(), 2131625288).toUpperCase();
             this.f[1] = xB.b().a(ManageImageActivity.this.getApplicationContext(), 2131625287).toUpperCase();
         }
 
         @Override
-        public int a() {
+        public int getCount() {
             return 2;
         }
 
         @Override
-        public Object a(ViewGroup viewGroup, int i) {
-            Fragment fragment = (Fragment) super.a(viewGroup, i);
-            if (i != 0) {
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            if (position != 0) {
                 ManageImageActivity.this.q = (fu) fragment;
             } else {
                 ManageImageActivity.this.p = (pu) fragment;
@@ -168,16 +173,17 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         }
 
         @Override
-        public Fragment c(int i) {
-            if (i != 0) {
+        @NonNull
+        public Fragment getItem(int position) {
+            if (position != 0) {
                 return new fu();
             }
             return new pu();
         }
 
         @Override
-        public CharSequence a(int i) {
-            return this.f[i];
+        public CharSequence getPageTitle(int position) {
+            return this.f[position];
         }
     }
 
