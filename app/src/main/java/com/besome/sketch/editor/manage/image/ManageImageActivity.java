@@ -1,8 +1,10 @@
 package com.besome.sketch.editor.manage.image;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
+import com.sketchware.remod.R;
 
 import a.a.a.MA;
 import a.a.a.Op;
@@ -84,14 +87,14 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(2131427525);
+        setContentView(R.layout.manage_image);
         if (!super.j()) {
             finish();
         }
-        this.m = (Toolbar) findViewById(2131231847);
+        this.m = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(this.m);
-        findViewById(2131231370).setVisibility(8);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625136));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_image));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         this.m.setNavigationOnClickListener(v -> {
@@ -104,8 +107,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         } else {
             this.l = bundle.getString("sc_id");
         }
-        this.o = (TabLayout) findViewById(2131231781);
-        this.n = (ViewPager) findViewById(2131232325);
+        this.o = (TabLayout) findViewById(R.id.tab_layout);
+        this.n = (ViewPager) findViewById(R.id.view_pager);
         this.n.setAdapter(new a(getSupportFragmentManager()));
         this.n.setOffscreenPageLimit(2);
         this.n.addOnPageChangeListener(this);
@@ -155,8 +158,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public a(FragmentManager manager) {
             super(manager);
             this.f = new String[2];
-            this.f[0] = xB.b().a(ManageImageActivity.this.getApplicationContext(), 2131625288).toUpperCase();
-            this.f[1] = xB.b().a(ManageImageActivity.this.getApplicationContext(), 2131625287).toUpperCase();
+            this.f[0] = xB.b().a(ManageImageActivity.this.getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            this.f[1] = xB.b().a(ManageImageActivity.this.getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -200,7 +203,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         public void a() {
             ManageImageActivity.this.h();
-            ManageImageActivity.this.setResult(-1);
+            ManageImageActivity.this.setResult(Activity.RESULT_OK);
             ManageImageActivity.this.finish();
             Op.g().d();
         }
