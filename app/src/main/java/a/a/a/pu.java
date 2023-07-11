@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,7 +91,7 @@ public class pu extends qA implements View.OnClickListener {
                     this.j.remove(size);
                 }
             } else {
-                this.k.c();
+                this.k.notifyDataSetChanged();
                 return;
             }
         }
@@ -167,7 +169,7 @@ public class pu extends qA implements View.OnClickListener {
         }
         this.h = new oB();
         this.h.f(this.g);
-        this.k.c();
+        this.k.notifyDataSetChanged();
         j();
     }
 
@@ -189,7 +191,7 @@ public class pu extends qA implements View.OnClickListener {
                 while (it.hasNext()) {
                     this.j.add((ProjectResourceBean) it.next());
                 }
-                this.k.b(this.j.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
+                this.k.notifyItemRangeInserted(this.j.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
                 j();
                 ((ManageImageActivity) getActivity()).l().e();
                 bB.a(getActivity(), xB.b().a(getActivity(), 2131625276), 0).show();
@@ -205,7 +207,7 @@ public class pu extends qA implements View.OnClickListener {
                 ProjectResourceBean next = it2.next();
                 if (next.resName.equals(projectResourceBean2.resName)) {
                     next.copy(projectResourceBean2);
-                    this.k.c(this.j.indexOf(next));
+                    this.k.notifyItemChanged(this.j.indexOf(next));
                     break;
                 }
             }
@@ -227,7 +229,7 @@ public class pu extends qA implements View.OnClickListener {
                 a(false);
                 j();
                 bB.a(getActivity(), xB.b().a(getActivity(), 2131624935), 1).show();
-                this.q.f();
+                this.q.show();
             }
         } else if (id2 == 2131230810) {
             if (this.p) {
@@ -241,9 +243,9 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration configuration) {
+    public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        ((GridLayoutManager) this.i.getLayoutManager()).d(e());
+        ((GridLayoutManager) this.i.getLayoutManager()).setSpanCount(e());
         this.i.requestLayout();
     }
 
@@ -303,10 +305,10 @@ public class pu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.Adapter<a.a> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class a extends RecyclerView.ViewHolder {
             public CheckBox t;
             public TextView u;
             public ImageView v;
@@ -314,14 +316,14 @@ public class pu extends qA implements View.OnClickListener {
             public ImageView x;
             public LinearLayout y;
 
-            public a(View view) {
-                super(view);
-                this.t = (CheckBox) view.findViewById(2131230893);
-                this.u = (TextView) view.findViewById(2131232003);
-                this.v = (ImageView) view.findViewById(2131231102);
-                this.w = (ImageView) view.findViewById(2131231132);
-                this.x = (ImageView) view.findViewById(2131231161);
-                this.y = (LinearLayout) view.findViewById(2131230959);
+            public a(@NonNull View itemView) {
+                super(itemView);
+                this.t = (CheckBox) itemView.findViewById(2131230893);
+                this.u = (TextView) itemView.findViewById(2131232003);
+                this.v = (ImageView) itemView.findViewById(2131231102);
+                this.w = (ImageView) itemView.findViewById(2131231132);
+                this.x = (ImageView) itemView.findViewById(2131231161);
+                this.y = (LinearLayout) itemView.findViewById(2131230959);
                 this.v.setOnClickListener(new nu(this, a.this));
                 this.v.setOnLongClickListener(new ou(this, a.this));
             }
@@ -329,49 +331,50 @@ public class pu extends qA implements View.OnClickListener {
 
         public a(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.a(new ku(this, pu.this));
+                recyclerView.addOnScrollListener(new ku(this, pu.this));
             }
         }
 
         @Override
-        public void b(a aVar, int i) {
+        public void onBindViewHolder(@NonNull a holder, int position) {
             if (pu.this.p) {
-                aVar.y.setVisibility(0);
+                holder.y.setVisibility(0);
             } else {
-                aVar.y.setVisibility(8);
+                holder.y.setVisibility(8);
             }
-            if (((ProjectResourceBean) pu.this.j.get(i)).isNinePatch()) {
-                aVar.x.setVisibility(0);
+            if (((ProjectResourceBean) pu.this.j.get(position)).isNinePatch()) {
+                holder.x.setVisibility(0);
             } else {
-                aVar.x.setVisibility(8);
+                holder.x.setVisibility(8);
             }
-            if (((ProjectResourceBean) pu.this.j.get(i)).isSelected) {
-                aVar.w.setImageResource(2131165707);
+            if (((ProjectResourceBean) pu.this.j.get(position)).isSelected) {
+                holder.w.setImageResource(2131165707);
             } else {
-                aVar.w.setImageResource(2131165875);
+                holder.w.setImageResource(2131165875);
             }
-            aVar.t.setChecked(((ProjectResourceBean) pu.this.j.get(i)).isSelected);
-            aVar.u.setText(((ProjectResourceBean) pu.this.j.get(i)).resName);
-            if (((ProjectResourceBean) pu.this.j.get(i)).savedPos == 0) {
-                int i2 = ((ProjectResourceBean) pu.this.j.get(i)).rotate;
-                int i3 = ((ProjectResourceBean) pu.this.j.get(i)).flipVertical;
-                int i4 = ((ProjectResourceBean) pu.this.j.get(i)).flipHorizontal;
+            holder.t.setChecked(((ProjectResourceBean) pu.this.j.get(position)).isSelected);
+            holder.u.setText(((ProjectResourceBean) pu.this.j.get(position)).resName);
+            if (((ProjectResourceBean) pu.this.j.get(position)).savedPos == 0) {
+                int i2 = ((ProjectResourceBean) pu.this.j.get(position)).rotate;
+                int i3 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
+                int i4 = ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal;
                 RequestManager with = Glide.with(pu.this.getActivity());
-                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(i)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new lu(this, aVar.v, i2, i4, i3));
+                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new lu(this, holder.v, i2, i4, i3));
                 return;
             }
-            int i5 = ((ProjectResourceBean) pu.this.j.get(i)).rotate;
-            int i6 = ((ProjectResourceBean) pu.this.j.get(i)).flipVertical;
-            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(i)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new mu(this, aVar.v, i5, ((ProjectResourceBean) pu.this.j.get(i)).flipHorizontal, i6));
+            int i5 = ((ProjectResourceBean) pu.this.j.get(position)).rotate;
+            int i6 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
+            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new mu(this, holder.v, i5, ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal, i6));
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427529, viewGroup, false));
+        @NonNull
+        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return pu.this.j.size();
         }
     }
@@ -430,7 +433,7 @@ public class pu extends qA implements View.OnClickListener {
         } else {
             bB.a(getActivity(), xB.b().a(getActivity(), 2131625280), 1).show();
         }
-        this.k.c();
+        this.k.notifyDataSetChanged();
         j();
     }
 
@@ -457,14 +460,14 @@ public class pu extends qA implements View.OnClickListener {
         } else {
             this.l.setVisibility(8);
         }
-        this.k.c();
+        this.k.notifyDataSetChanged();
     }
 
     public void a(ProjectResourceBean projectResourceBean, boolean z) {
         this.j.add(projectResourceBean);
         if (z) {
             a aVar = this.k;
-            aVar.d(aVar.a());
+            aVar.notifyItemInserted(aVar.getItemCount());
             j();
         }
     }
@@ -476,7 +479,7 @@ public class pu extends qA implements View.OnClickListener {
         }
         if (z) {
             a aVar = this.k;
-            aVar.d(aVar.a());
+            aVar.notifyItemInserted(aVar.getItemCount());
             j();
         }
     }
