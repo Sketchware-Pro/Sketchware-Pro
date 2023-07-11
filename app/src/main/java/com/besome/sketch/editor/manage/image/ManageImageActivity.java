@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.manage.image;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -17,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
+
+import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.Op;
@@ -60,7 +61,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             projectImagesFragment.a(false);
         } else {
             k();
-            new Handler().postDelayed(() -> new SaveImagesAsyncTask(getApplicationContext()).execute(), 500L);
+            new Handler().postDelayed(() -> new SaveImagesAsyncTask(this).execute(), 500L);
         }
     }
 
@@ -165,29 +166,33 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
-    private class SaveImagesAsyncTask extends MA {
-        public SaveImagesAsyncTask(Context context) {
-            super(context);
-            ManageImageActivity.this.a(this);
+    private static class SaveImagesAsyncTask extends MA {
+        private final WeakReference<ManageImageActivity> activity;
+
+        public SaveImagesAsyncTask(ManageImageActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.a(this);
         }
 
         @Override
         public void a() {
-            h();
-            setResult(Activity.RESULT_OK);
-            finish();
+            var activity = this.activity.get();
+            activity.h();
+            activity.setResult(Activity.RESULT_OK);
+            activity.finish();
             Op.g().d();
         }
 
         @Override
         public void b() {
             publishProgress("Now processing..");
-            projectImagesFragment.i();
+            activity.get().projectImagesFragment.i();
         }
 
         @Override
         public void a(String str) {
-            h();
+            activity.get().h();
         }
 
         @Override
