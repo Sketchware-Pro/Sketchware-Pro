@@ -235,7 +235,7 @@ public class ExtraPaletteBlock {
                 case "double":
                 case "int":
                 case "float":
-                case "long"
+                case "long":
                     type = "d";
                     break;
                 default:
