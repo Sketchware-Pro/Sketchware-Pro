@@ -45,7 +45,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         viewPager.setCurrentItem(i);
     }
 
-    // don't change signature: referenced by La/a/a/pu;
     public fu l() {
         return collectionImagesFragment;
     }
