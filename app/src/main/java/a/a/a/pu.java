@@ -28,7 +28,6 @@ import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.Key;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,7 +52,7 @@ public class pu extends qA implements View.OnClickListener {
     public boolean p = false;
 
     public ArrayList<ProjectResourceBean> d() {
-        return this.j;
+        return j;
     }
 
     public final int e() {
@@ -61,13 +60,11 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     public void f() {
-        this.f = getActivity().getIntent().getStringExtra("sc_id");
-        this.g = jC.d(this.f).l();
-        ArrayList<ProjectResourceBean> arrayList = jC.d(this.f).b;
+        f = getActivity().getIntent().getStringExtra("sc_id");
+        g = jC.d(f).l();
+        ArrayList<ProjectResourceBean> arrayList = jC.d(f).b;
         if (arrayList != null) {
-            Iterator<ProjectResourceBean> it = arrayList.iterator();
-            while (it.hasNext()) {
-                ProjectResourceBean next = it.next();
+            for (ProjectResourceBean next : arrayList) {
                 if (next.flipVertical == 0) {
                     next.flipVertical = 1;
                 }
@@ -75,83 +72,80 @@ public class pu extends qA implements View.OnClickListener {
                     next.flipHorizontal = 1;
                 }
                 next.savedPos = 0;
-                this.j.add(next);
+                j.add(next);
             }
         }
     }
 
     public final void g() {
-        Iterator<ProjectResourceBean> it = this.j.iterator();
-        while (it.hasNext()) {
-            it.next().isSelected = false;
+        for (ProjectResourceBean projectResourceBean : j) {
+            projectResourceBean.isSelected = false;
         }
     }
 
     public void h() {
-        int size = this.j.size();
+        int size = j.size();
         while (true) {
             size--;
             if (size >= 0) {
-                if (this.j.get(size).isSelected) {
-                    this.j.remove(size);
+                if (j.get(size).isSelected) {
+                    j.remove(size);
                 }
             } else {
-                this.k.notifyDataSetChanged();
+                k.notifyDataSetChanged();
                 return;
             }
         }
     }
 
     public void i() {
-        String str;
-        Iterator<ProjectResourceBean> it = this.j.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean next = it.next();
-            if (next.isNew || next.isEdited) {
+        for (ProjectResourceBean image : j) {
+            if (image.isNew || image.isEdited) {
                 try {
-                    String str2 = this.g + File.separator + next.resName;
-                    String str3 = next.isNinePatch() ? str2 + ".9.png" : str2 + ".png";
-                    if (next.savedPos == 1) {
-                        str = next.resFullName;
-                    } else if (next.savedPos == 0) {
-                        str = a(next);
+                    String str2 = g + File.separator + image.resName;
+                    String str3 = image.isNinePatch() ? str2 + ".9.png" : str2 + ".png";
+                    String str;
+                    if (image.savedPos == 1) {
+                        str = image.resFullName;
+                    } else if (image.savedPos == 0) {
+                        str = a(image);
                     } else {
-                        str = next.resFullName;
+                        str = image.resFullName;
                     }
-                    iB.a(str, str3, next.rotate, next.flipHorizontal, next.flipVertical);
+                    iB.a(str, str3, image.rotate, image.flipHorizontal, image.flipVertical);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        for (int i = 0; i < this.j.size(); i++) {
-            ProjectResourceBean projectResourceBean = this.j.get(i);
-            if (projectResourceBean.isNew || projectResourceBean.isEdited) {
-                String str4 = projectResourceBean.resName;
-                this.j.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, projectResourceBean.resName, projectResourceBean.isNinePatch() ? str4 + ".9.png" : str4 + ".png"));
+        for (int i = 0; i < j.size(); i++) {
+            ProjectResourceBean image = j.get(i);
+            if (image.isNew || image.isEdited) {
+                String str4 = image.resName;
+                j.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.isNinePatch() ? str4 + ".9.png" : str4 + ".png"));
             }
         }
-        jC.d(this.f).b(this.j);
-        jC.d(this.f).y();
-        jC.a(this.f).b(jC.d(this.f));
-        jC.a(this.f).k();
+        jC.d(f).b(j);
+        jC.d(f).y();
+        jC.a(f).b(jC.d(f));
+        jC.a(f).k();
     }
 
     public void j() {
-        if (this.j.size() == 0) {
-            this.o.setVisibility(View.VISIBLE);
-            this.i.setVisibility(View.GONE);
-            return;
+        if (j.size() == 0) {
+            o.setVisibility(View.VISIBLE);
+            i.setVisibility(View.GONE);
+        } else {
+            i.setVisibility(View.VISIBLE);
+            o.setVisibility(View.GONE);
         }
-        this.i.setVisibility(View.VISIBLE);
-        this.o.setVisibility(View.GONE);
     }
 
     public final void k() {
         Intent intent = new Intent(getContext(), AddImageActivity.class);
-        intent.putParcelableArrayListExtra("images", this.j);
-        intent.putExtra("sc_id", this.f);
-        intent.putExtra("dir_path", this.g);
+        intent.putParcelableArrayListExtra("images", j);
+        intent.putExtra("sc_id", f);
+        intent.putExtra("dir_path", g);
         startActivityForResult(intent, 267);
     }
 
@@ -168,13 +162,13 @@ public class pu extends qA implements View.OnClickListener {
         if (bundle == null) {
             f();
         } else {
-            this.f = bundle.getString("sc_id");
-            this.g = bundle.getString("dir_path");
-            this.j = bundle.getParcelableArrayList("images");
+            f = bundle.getString("sc_id");
+            g = bundle.getString("dir_path");
+            j = bundle.getParcelableArrayList("images");
         }
-        this.h = new oB();
-        this.h.f(this.g);
-        this.k.notifyDataSetChanged();
+        h = new oB();
+        h.f(g);
+        k.notifyDataSetChanged();
         j();
     }
 
@@ -194,17 +188,17 @@ public class pu extends qA implements View.OnClickListener {
                 ArrayList parcelableArrayListExtra = intent.getParcelableArrayListExtra("images");
                 Iterator it = parcelableArrayListExtra.iterator();
                 while (it.hasNext()) {
-                    this.j.add((ProjectResourceBean) it.next());
+                    j.add((ProjectResourceBean) it.next());
                 }
-                this.k.notifyItemRangeInserted(this.j.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
+                k.notifyItemRangeInserted(j.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
                 j();
                 ((ManageImageActivity) getActivity()).l().e();
                 bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
         } else if (i == 268 && i2 == Activity.RESULT_OK) {
-            ProjectResourceBean projectResourceBean2 = (ProjectResourceBean) intent.getParcelableExtra("image");
+            ProjectResourceBean projectResourceBean2 = intent.getParcelableExtra("image");
             kC.z();
-            Iterator<ProjectResourceBean> it2 = this.j.iterator();
+            Iterator<ProjectResourceBean> it2 = j.iterator();
             while (true) {
                 if (!it2.hasNext()) {
                     break;
@@ -212,7 +206,7 @@ public class pu extends qA implements View.OnClickListener {
                 ProjectResourceBean next = it2.next();
                 if (next.resName.equals(projectResourceBean2.resName)) {
                     next.copy(projectResourceBean2);
-                    this.k.notifyItemChanged(this.j.indexOf(next));
+                    k.notifyItemChanged(j.indexOf(next));
                     break;
                 }
             }
@@ -223,70 +217,64 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        if (mB.a()) {
-            return;
-        }
-        int id2 = view.getId();
-        if (id2 == R.id.btn_accept) {
-            if (this.p) {
-                h();
+    public void onClick(View v) {
+        if (!mB.a()) {
+            int id = v.getId();
+            if (id == R.id.btn_accept) {
+                if (p) {
+                    h();
+                    a(false);
+                    j();
+                    bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
+                    q.show();
+                }
+            } else if (id == R.id.btn_cancel) {
+                if (p) {
+                    a(false);
+                }
+            } else if (id == R.id.fab) {
                 a(false);
-                j();
-                bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
-                this.q.show();
+                k();
             }
-        } else if (id2 == R.id.btn_cancel) {
-            if (this.p) {
-                a(false);
-            }
-        } else if (id2 != R.id.fab) {
-        } else {
-            a(false);
-            k();
         }
     }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        ((GridLayoutManager) this.i.getLayoutManager()).setSpanCount(e());
-        this.i.requestLayout();
+        ((GridLayoutManager) i.getLayoutManager()).setSpanCount(e());
+        i.requestLayout();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.manage_image_menu, menu);
-        if (this.p) {
-            menu.findItem(R.id.menu_image_delete).setVisible(false);
-        } else {
-            menu.findItem(R.id.menu_image_delete).setVisible(true);
-        }
+        menu.findItem(R.id.menu_image_delete).setVisible(!p);
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_image_list, viewGroup, false);
         setHasOptionsMenu(true);
-        this.j = new ArrayList<>();
-        this.i = (RecyclerView) viewGroup2.findViewById(R.id.image_list);
-        this.i.setHasFixedSize(true);
-        this.i.setLayoutManager(new GridLayoutManager(getActivity(), e()));
-        this.k = new a(this.i);
-        this.i.setAdapter(this.k);
-        this.o = (TextView) viewGroup2.findViewById(R.id.tv_guide);
-        this.o.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
-        this.l = (LinearLayout) viewGroup2.findViewById(R.id.layout_btn_group);
-        this.m = (Button) viewGroup2.findViewById(R.id.btn_accept);
-        this.n = (Button) viewGroup2.findViewById(R.id.btn_cancel);
-        this.m.setText(xB.b().a(getContext(), R.string.common_word_delete));
-        this.n.setText(xB.b().a(getContext(), R.string.common_word_cancel));
-        this.m.setOnClickListener(this);
-        this.n.setOnClickListener(this);
-        this.q = (FloatingActionButton) viewGroup2.findViewById(R.id.fab);
-        this.q.setVisibility(View.VISIBLE);
-        this.q.setOnClickListener(this);
+        j = new ArrayList<>();
+        i = viewGroup2.findViewById(R.id.image_list);
+        i.setHasFixedSize(true);
+        i.setLayoutManager(new GridLayoutManager(getActivity(), e()));
+        k = new a(i);
+        i.setAdapter(k);
+        o = viewGroup2.findViewById(R.id.tv_guide);
+        o.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
+        l = viewGroup2.findViewById(R.id.layout_btn_group);
+        m = viewGroup2.findViewById(R.id.btn_accept);
+        n = viewGroup2.findViewById(R.id.btn_cancel);
+        m.setText(xB.b().a(getContext(), R.string.common_word_delete));
+        n.setText(xB.b().a(getContext(), R.string.common_word_cancel));
+        m.setOnClickListener(this);
+        n.setOnClickListener(this);
+        q = viewGroup2.findViewById(R.id.fab);
+        q.setVisibility(View.VISIBLE);
+        q.setOnClickListener(this);
         kC.z();
         return viewGroup2;
     }
@@ -295,7 +283,7 @@ public class pu extends qA implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int itemId = menuItem.getItemId();
         if (itemId == R.id.menu_image_delete) {
-            a(!this.p);
+            a(!p);
         } else if (itemId == R.id.menu_image_import) {
             l();
         }
@@ -304,9 +292,9 @@ public class pu extends qA implements View.OnClickListener {
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", this.f);
-        bundle.putString("dir_path", this.g);
-        bundle.putParcelableArrayList("images", this.j);
+        bundle.putString("sc_id", f);
+        bundle.putString("dir_path", g);
+        bundle.putParcelableArrayList("images", j);
         super.onSaveInstanceState(bundle);
     }
 
@@ -323,13 +311,13 @@ public class pu extends qA implements View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                this.t = (CheckBox) itemView.findViewById(R.id.chk_select);
-                this.u = (TextView) itemView.findViewById(R.id.tv_image_name);
-                this.v = (ImageView) itemView.findViewById(R.id.img);
-                this.w = (ImageView) itemView.findViewById(R.id.img_delete);
-                this.x = (ImageView) itemView.findViewById(R.id.img_nine_patch);
-                this.y = (LinearLayout) itemView.findViewById(R.id.delete_img_container);
-                this.v.setOnClickListener(v -> {
+                t = itemView.findViewById(R.id.chk_select);
+                u = itemView.findViewById(R.id.tv_image_name);
+                v = itemView.findViewById(R.id.img);
+                w = itemView.findViewById(R.id.img_delete);
+                x = itemView.findViewById(R.id.img_nine_patch);
+                y = itemView.findViewById(R.id.delete_img_container);
+                v.setOnClickListener(v -> {
                     c = getLayoutPosition();
                     if (!p) {
                         b(j.get(getLayoutPosition()));
@@ -339,7 +327,7 @@ public class pu extends qA implements View.OnClickListener {
                         notifyItemChanged(c);
                     }
                 });
-                this.v.setOnLongClickListener(v -> {
+                v.setOnLongClickListener(v -> {
                     a(true);
                     c = getLayoutPosition();
                     t.setChecked(!t.isChecked());
@@ -371,29 +359,29 @@ public class pu extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (pu.this.p) {
+            if (p) {
                 holder.y.setVisibility(View.VISIBLE);
             } else {
                 holder.y.setVisibility(View.GONE);
             }
-            if (((ProjectResourceBean) pu.this.j.get(position)).isNinePatch()) {
+            if (j.get(position).isNinePatch()) {
                 holder.x.setVisibility(View.VISIBLE);
             } else {
                 holder.x.setVisibility(View.GONE);
             }
-            if (((ProjectResourceBean) pu.this.j.get(position)).isSelected) {
+            if (j.get(position).isSelected) {
                 holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
                 holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
-            holder.t.setChecked(((ProjectResourceBean) pu.this.j.get(position)).isSelected);
-            holder.u.setText(((ProjectResourceBean) pu.this.j.get(position)).resName);
-            if (((ProjectResourceBean) pu.this.j.get(position)).savedPos == 0) {
-                int i2 = ((ProjectResourceBean) pu.this.j.get(position)).rotate;
-                int i3 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
-                int i4 = ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal;
-                RequestManager with = Glide.with(pu.this.getActivity());
-                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
+            holder.t.setChecked(j.get(position).isSelected);
+            holder.u.setText(j.get(position).resName);
+            if (j.get(position).savedPos == 0) {
+                int i2 = j.get(position).rotate;
+                int i3 = j.get(position).flipVertical;
+                int i4 = j.get(position).flipHorizontal;
+                RequestManager with = Glide.with(getActivity());
+                with.load(g + File.separator + j.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
                             @Override
                             public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                                 super.onResourceReady(iB.a(bitmap, i2, i4, i3), glideAnimation);
@@ -401,12 +389,12 @@ public class pu extends qA implements View.OnClickListener {
                         });
                 return;
             }
-            int i5 = ((ProjectResourceBean) pu.this.j.get(position)).rotate;
-            int i6 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
-            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
+            int i5 = j.get(position).rotate;
+            int i6 = j.get(position).flipVertical;
+            Glide.with(getActivity()).load(j.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
                         @Override
                         public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            super.onResourceReady(iB.a(bitmap, i5, ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal, i6), glideAnimation);
+                            super.onResourceReady(iB.a(bitmap, i5, j.get(position).flipHorizontal, i6), glideAnimation);
                         }
                     });
         }
@@ -419,15 +407,15 @@ public class pu extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            return pu.this.j.size();
+            return j.size();
         }
     }
 
     public final void b(ProjectResourceBean projectResourceBean) {
         Intent intent = new Intent(getContext(), AddImageActivity.class);
-        intent.putParcelableArrayListExtra("images", this.j);
-        intent.putExtra("sc_id", this.f);
-        intent.putExtra("dir_path", this.g);
+        intent.putParcelableArrayListExtra("images", j);
+        intent.putExtra("sc_id", f);
+        intent.putExtra("dir_path", g);
         intent.putExtra("edit_target", projectResourceBean);
         startActivityForResult(intent, 268);
     }
@@ -435,19 +423,16 @@ public class pu extends qA implements View.OnClickListener {
     public final ArrayList<String> c() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.j.iterator();
-        while (it.hasNext()) {
-            arrayList.add(it.next().resName);
+        for (ProjectResourceBean projectResourceBean : j) {
+            arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
     }
 
     public void a(ArrayList<ProjectResourceBean> arrayList) {
         ArrayList<ProjectResourceBean> arrayList2 = new ArrayList<>();
-        ArrayList arrayList3 = new ArrayList();
-        Iterator<ProjectResourceBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean next = it.next();
+        ArrayList<String> arrayList3 = new ArrayList<>();
+        for (ProjectResourceBean next : arrayList) {
             String str = next.resName;
             if (a(str)) {
                 arrayList3.add(str);
@@ -463,28 +448,24 @@ public class pu extends qA implements View.OnClickListener {
         }
         a(arrayList2, false);
         if (arrayList3.size() > 0) {
-            String a2 = xB.b().a(getActivity(), R.string.common_message_name_unavailable);
-            Iterator it2 = arrayList3.iterator();
             String str2 = "";
-            while (it2.hasNext()) {
-                String str3 = (String) it2.next();
+            for (String str3 : arrayList3) {
                 if (str2.length() > 0) {
-                    str2 = str2 + ", ";
+                    str2 += ", ";
                 }
-                str2 = str2 + str3;
+                str2 += str3;
             }
-            bB.a(getActivity(), a2 + "\n[" + str2 + "]", bB.TOAST_WARNING).show();
+            bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", bB.TOAST_WARNING).show();
         } else {
             bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
         }
-        this.k.notifyDataSetChanged();
+        k.notifyDataSetChanged();
         j();
     }
 
     public boolean a(String str) {
-        Iterator<ProjectResourceBean> it = this.j.iterator();
-        while (it.hasNext()) {
-            if (it.next().resName.equals(str)) {
+        for (ProjectResourceBean projectResourceBean : j) {
+            if (projectResourceBean.resName.equals(str)) {
                 return true;
             }
         }
@@ -492,38 +473,33 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     public final String a(ProjectResourceBean projectResourceBean) {
-        return this.g + File.separator + projectResourceBean.resFullName;
+        return g + File.separator + projectResourceBean.resFullName;
     }
 
     public void a(boolean z) {
-        this.p = z;
+        p = z;
         getActivity().invalidateOptionsMenu();
         g();
-        if (this.p) {
-            this.l.setVisibility(View.VISIBLE);
+        if (p) {
+            l.setVisibility(View.VISIBLE);
         } else {
-            this.l.setVisibility(View.GONE);
+            l.setVisibility(View.GONE);
         }
-        this.k.notifyDataSetChanged();
+        k.notifyDataSetChanged();
     }
 
     public void a(ProjectResourceBean projectResourceBean, boolean z) {
-        this.j.add(projectResourceBean);
+        j.add(projectResourceBean);
         if (z) {
-            a aVar = this.k;
-            aVar.notifyItemInserted(aVar.getItemCount());
+            k.notifyItemInserted(k.getItemCount());
             j();
         }
     }
 
     public void a(ArrayList<ProjectResourceBean> arrayList, boolean z) {
-        Iterator<ProjectResourceBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            this.j.add(it.next());
-        }
+        j.addAll(arrayList);
         if (z) {
-            a aVar = this.k;
-            aVar.notifyItemInserted(aVar.getItemCount());
+            k.notifyItemInserted(k.getItemCount());
             j();
         }
     }
