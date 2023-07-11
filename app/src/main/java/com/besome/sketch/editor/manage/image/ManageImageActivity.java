@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
@@ -24,11 +23,9 @@ import a.a.a.Op;
 import a.a.a.fu;
 import a.a.a.mB;
 import a.a.a.pu;
-import a.a.a.to;
 import a.a.a.xB;
-import a.a.a.xo;
 
-public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, to {
+public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private String sc_id;
     private ViewPager viewPager;
     private pu projectImagesFragment;
@@ -40,11 +37,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void d(int i) {
-        new SaveImagesAsyncTask(getApplicationContext()).execute();
     }
 
     // don't change signature: referenced by La/a/a/fu;
@@ -68,17 +60,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             projectImagesFragment.a(false);
         } else {
             k();
-            try {
-                if (j.h()) {
-                    new Handler().postDelayed(() ->
-                            new SaveImagesAsyncTask(getApplicationContext()).execute(), 500L);
-                } else {
-                    xo.a(getApplicationContext());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                h();
-            }
+            new Handler().postDelayed(() -> new SaveImagesAsyncTask(getApplicationContext()).execute(), 500L);
         }
     }
 
@@ -111,13 +93,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
-        xo.a((to) this);
-    }
-
-    @Override
-    public void onDestroy() {
-        xo.i();
-        super.onDestroy();
     }
 
     @Override
@@ -131,8 +106,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        d.setScreenName(ManageImageActivity.class.getSimpleName().toString());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
