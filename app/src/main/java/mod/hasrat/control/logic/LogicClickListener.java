@@ -39,6 +39,7 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import mod.SketchwareUtil;
+import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.util.Helper;
@@ -416,7 +417,7 @@ public class LogicClickListener implements View.OnClickListener {
                 titleHolder.title.setText(item.text);
             } else if (viewType == Item.TYPE_ITEM) {
                 CheckBoxHolder checkBoxHolder = (CheckBoxHolder) holder;
-                checkBoxHolder.checkBox.setText(item.text);
+                checkBoxHolder.checkBox.setText(CustomVariableUtil.getVariableName(item.text));
                 checkBoxHolder.checkBox.setChecked(item.isChecked);
 
                 checkBoxHolder.checkBox.setOnClickListener(v -> {
