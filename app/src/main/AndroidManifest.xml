@@ -19,7 +19,6 @@
         android:name="com.besome.sketch.SketchApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -308,7 +307,8 @@
         <activity
             android:name="mod.ilyasse.activities.about.AboutModActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
+        <activity
+            android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.PresetSettingActivity"
             android:configChanges="orientation|screenSize"
