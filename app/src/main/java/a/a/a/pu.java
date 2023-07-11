@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ import com.bumptech.glide.load.Key;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -137,12 +139,12 @@ public class pu extends qA implements View.OnClickListener {
 
     public void j() {
         if (this.j.size() == 0) {
-            this.o.setVisibility(0);
-            this.i.setVisibility(8);
+            this.o.setVisibility(View.VISIBLE);
+            this.i.setVisibility(View.GONE);
             return;
         }
-        this.i.setVisibility(0);
-        this.o.setVisibility(8);
+        this.i.setVisibility(View.VISIBLE);
+        this.o.setVisibility(View.GONE);
     }
 
     public final void k() {
@@ -155,7 +157,7 @@ public class pu extends qA implements View.OnClickListener {
 
     public final void l() {
         Intent intent = new Intent(getActivity(), ImportIconActivity.class);
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putStringArrayListExtra("imageNames", c());
         startActivityForResult(intent, 210);
     }
@@ -180,15 +182,15 @@ public class pu extends qA implements View.OnClickListener {
     public void onActivityResult(int i, int i2, Intent intent) {
         super.onActivityResult(i, i2, intent);
         if (i == 210) {
-            if (i2 == -1) {
+            if (i2 == Activity.RESULT_OK) {
                 ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, intent.getStringExtra("iconName"), intent.getStringExtra("iconPath"));
                 projectResourceBean.savedPos = 2;
                 projectResourceBean.isNew = true;
                 a(projectResourceBean, true);
-                bB.a(getActivity(), xB.b().a(getActivity(), 2131625276), 0).show();
+                bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
         } else if (i == 267) {
-            if (i2 == -1) {
+            if (i2 == Activity.RESULT_OK) {
                 ArrayList parcelableArrayListExtra = intent.getParcelableArrayListExtra("images");
                 Iterator it = parcelableArrayListExtra.iterator();
                 while (it.hasNext()) {
@@ -197,9 +199,9 @@ public class pu extends qA implements View.OnClickListener {
                 this.k.notifyItemRangeInserted(this.j.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
                 j();
                 ((ManageImageActivity) getActivity()).l().e();
-                bB.a(getActivity(), xB.b().a(getActivity(), 2131625276), 0).show();
+                bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
-        } else if (i == 268 && i2 == -1) {
+        } else if (i == 268 && i2 == Activity.RESULT_OK) {
             ProjectResourceBean projectResourceBean2 = (ProjectResourceBean) intent.getParcelableExtra("image");
             kC.z();
             Iterator<ProjectResourceBean> it2 = this.j.iterator();
@@ -216,7 +218,7 @@ public class pu extends qA implements View.OnClickListener {
             }
             j();
             ((ManageImageActivity) getActivity()).l().e();
-            bB.a(getActivity(), xB.b().a(getActivity(), 2131625279), 0).show();
+            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -226,19 +228,19 @@ public class pu extends qA implements View.OnClickListener {
             return;
         }
         int id2 = view.getId();
-        if (id2 == 2131230804) {
+        if (id2 == R.id.btn_accept) {
             if (this.p) {
                 h();
                 a(false);
                 j();
-                bB.a(getActivity(), xB.b().a(getActivity(), 2131624935), 1).show();
+                bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                 this.q.show();
             }
-        } else if (id2 == 2131230810) {
+        } else if (id2 == R.id.btn_cancel) {
             if (this.p) {
                 a(false);
             }
-        } else if (id2 != 2131231054) {
+        } else if (id2 != R.id.fab) {
         } else {
             a(false);
             k();
@@ -255,35 +257,35 @@ public class pu extends qA implements View.OnClickListener {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(2131492878, menu);
+        menuInflater.inflate(R.menu.manage_image_menu, menu);
         if (this.p) {
-            menu.findItem(2131231513).setVisible(false);
+            menu.findItem(R.id.menu_image_delete).setVisible(false);
         } else {
-            menu.findItem(2131231513).setVisible(true);
+            menu.findItem(R.id.menu_image_delete).setVisible(true);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(2131427440, viewGroup, false);
+        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_image_list, viewGroup, false);
         setHasOptionsMenu(true);
         this.j = new ArrayList<>();
-        this.i = (RecyclerView) viewGroup2.findViewById(2131231101);
+        this.i = (RecyclerView) viewGroup2.findViewById(R.id.image_list);
         this.i.setHasFixedSize(true);
         this.i.setLayoutManager(new GridLayoutManager(getActivity(), e()));
         this.k = new a(this.i);
         this.i.setAdapter(this.k);
-        this.o = (TextView) viewGroup2.findViewById(2131231997);
-        this.o.setText(xB.b().a(getContext(), 2131625267));
-        this.l = (LinearLayout) viewGroup2.findViewById(2131231319);
-        this.m = (Button) viewGroup2.findViewById(2131230804);
-        this.n = (Button) viewGroup2.findViewById(2131230810);
-        this.m.setText(xB.b().a(getContext(), 2131624986));
-        this.n.setText(xB.b().a(getContext(), 2131624974));
+        this.o = (TextView) viewGroup2.findViewById(R.id.tv_guide);
+        this.o.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
+        this.l = (LinearLayout) viewGroup2.findViewById(R.id.layout_btn_group);
+        this.m = (Button) viewGroup2.findViewById(R.id.btn_accept);
+        this.n = (Button) viewGroup2.findViewById(R.id.btn_cancel);
+        this.m.setText(xB.b().a(getContext(), R.string.common_word_delete));
+        this.n.setText(xB.b().a(getContext(), R.string.common_word_cancel));
         this.m.setOnClickListener(this);
         this.n.setOnClickListener(this);
-        this.q = (FloatingActionButton) viewGroup2.findViewById(2131231054);
-        this.q.setVisibility(0);
+        this.q = (FloatingActionButton) viewGroup2.findViewById(R.id.fab);
+        this.q.setVisibility(View.VISIBLE);
         this.q.setOnClickListener(this);
         kC.z();
         return viewGroup2;
@@ -292,9 +294,9 @@ public class pu extends qA implements View.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int itemId = menuItem.getItemId();
-        if (itemId == 2131231513) {
+        if (itemId == R.id.menu_image_delete) {
             a(!this.p);
-        } else if (itemId == 2131231515) {
+        } else if (itemId == R.id.menu_image_import) {
             l();
         }
         return super.onOptionsItemSelected(menuItem);
@@ -321,12 +323,12 @@ public class pu extends qA implements View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                this.t = (CheckBox) itemView.findViewById(2131230893);
-                this.u = (TextView) itemView.findViewById(2131232003);
-                this.v = (ImageView) itemView.findViewById(2131231102);
-                this.w = (ImageView) itemView.findViewById(2131231132);
-                this.x = (ImageView) itemView.findViewById(2131231161);
-                this.y = (LinearLayout) itemView.findViewById(2131230959);
+                this.t = (CheckBox) itemView.findViewById(R.id.chk_select);
+                this.u = (TextView) itemView.findViewById(R.id.tv_image_name);
+                this.v = (ImageView) itemView.findViewById(R.id.img);
+                this.w = (ImageView) itemView.findViewById(R.id.img_delete);
+                this.x = (ImageView) itemView.findViewById(R.id.img_nine_patch);
+                this.y = (LinearLayout) itemView.findViewById(R.id.delete_img_container);
                 this.v.setOnClickListener(v -> {
                     c = getLayoutPosition();
                     if (!p) {
@@ -370,19 +372,19 @@ public class pu extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (pu.this.p) {
-                holder.y.setVisibility(0);
+                holder.y.setVisibility(View.VISIBLE);
             } else {
-                holder.y.setVisibility(8);
+                holder.y.setVisibility(View.GONE);
             }
             if (((ProjectResourceBean) pu.this.j.get(position)).isNinePatch()) {
-                holder.x.setVisibility(0);
+                holder.x.setVisibility(View.VISIBLE);
             } else {
-                holder.x.setVisibility(8);
+                holder.x.setVisibility(View.GONE);
             }
             if (((ProjectResourceBean) pu.this.j.get(position)).isSelected) {
-                holder.w.setImageResource(2131165707);
+                holder.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                holder.w.setImageResource(2131165875);
+                holder.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
             holder.t.setChecked(((ProjectResourceBean) pu.this.j.get(position)).isSelected);
             holder.u.setText(((ProjectResourceBean) pu.this.j.get(position)).resName);
@@ -391,7 +393,7 @@ public class pu extends qA implements View.OnClickListener {
                 int i3 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
                 int i4 = ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal;
                 RequestManager with = Glide.with(pu.this.getActivity());
-                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into(new BitmapImageViewTarget(holder.v) {
+                with.load(pu.this.g + File.separator + ((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
                             @Override
                             public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                                 super.onResourceReady(iB.a(bitmap, i2, i4, i3), glideAnimation);
@@ -401,7 +403,7 @@ public class pu extends qA implements View.OnClickListener {
             }
             int i5 = ((ProjectResourceBean) pu.this.j.get(position)).rotate;
             int i6 = ((ProjectResourceBean) pu.this.j.get(position)).flipVertical;
-            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(2131165831).into(new BitmapImageViewTarget(holder.v) {
+            Glide.with(pu.this.getActivity()).load(((ProjectResourceBean) pu.this.j.get(position)).resFullName).asBitmap().centerCrop().signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
                         @Override
                         public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                             super.onResourceReady(iB.a(bitmap, i5, ((ProjectResourceBean) pu.this.j.get(position)).flipHorizontal, i6), glideAnimation);
@@ -412,7 +414,7 @@ public class pu extends qA implements View.OnClickListener {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
         }
 
         @Override
@@ -461,7 +463,7 @@ public class pu extends qA implements View.OnClickListener {
         }
         a(arrayList2, false);
         if (arrayList3.size() > 0) {
-            String a2 = xB.b().a(getActivity(), 2131624950);
+            String a2 = xB.b().a(getActivity(), R.string.common_message_name_unavailable);
             Iterator it2 = arrayList3.iterator();
             String str2 = "";
             while (it2.hasNext()) {
@@ -471,9 +473,9 @@ public class pu extends qA implements View.OnClickListener {
                 }
                 str2 = str2 + str3;
             }
-            bB.a(getActivity(), a2 + "\n[" + str2 + "]", 1).show();
+            bB.a(getActivity(), a2 + "\n[" + str2 + "]", bB.TOAST_WARNING).show();
         } else {
-            bB.a(getActivity(), xB.b().a(getActivity(), 2131625280), 1).show();
+            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
         }
         this.k.notifyDataSetChanged();
         j();
@@ -498,9 +500,9 @@ public class pu extends qA implements View.OnClickListener {
         getActivity().invalidateOptionsMenu();
         g();
         if (this.p) {
-            this.l.setVisibility(0);
+            this.l.setVisibility(View.VISIBLE);
         } else {
-            this.l.setVisibility(8);
+            this.l.setVisibility(View.GONE);
         }
         this.k.notifyDataSetChanged();
     }
