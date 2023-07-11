@@ -651,7 +651,7 @@ public class ExtraMenuBean {
             case "Variable":
                 title = "Select a Variable";
                 for (Pair<Integer, String> integerStringPair : projectDataManager.k(javaName)) {
-                    menus.add(CuatomVariableUtil.getVariableName(integerStringPair.second));
+                    menus.add(CustomVariableUtil.getVariableName(integerStringPair.second));
                 }
                 break;
 
