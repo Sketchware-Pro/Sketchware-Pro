@@ -47,72 +47,70 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void d(int i) {
-        new b(getApplicationContext()).execute(new Void[0]);
+        new b(getApplicationContext()).execute();
     }
 
     public void f(int i) {
-        this.n.setCurrentItem(i);
+        n.setCurrentItem(i);
     }
 
     public fu l() {
-        return this.q;
+        return q;
     }
 
     public pu m() {
-        return this.p;
+        return p;
     }
 
     @Override
     public void onBackPressed() {
-        pu puVar = this.p;
-        if (puVar.p) {
-            puVar.a(false);
-            return;
-        }
-        k();
-        try {
-            if (this.j.h()) {
-                new Handler().postDelayed(() -> {
-                    new b(getApplicationContext()).execute();
-                }, 500L);
-            } else {
-                xo.a(getApplicationContext());
+        if (p.p) {
+            p.a(false);
+        } else {
+            k();
+            try {
+                if (j.h()) {
+                    new Handler().postDelayed(() ->
+                            new b(getApplicationContext()).execute(), 500L);
+                } else {
+                    xo.a(getApplicationContext());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                h();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            h();
         }
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_image);
         if (!super.j()) {
             finish();
         }
-        this.m = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(this.m);
+        m = findViewById(R.id.toolbar);
+        setSupportActionBar(m);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_image));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        this.m.setNavigationOnClickListener(v -> {
+        m.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
-        if (bundle == null) {
-            this.l = getIntent().getStringExtra("sc_id");
+        if (savedInstanceState == null) {
+            l = getIntent().getStringExtra("sc_id");
         } else {
-            this.l = bundle.getString("sc_id");
+            l = savedInstanceState.getString("sc_id");
         }
-        this.o = (TabLayout) findViewById(R.id.tab_layout);
-        this.n = (ViewPager) findViewById(R.id.view_pager);
-        this.n.setAdapter(new a(getSupportFragmentManager()));
-        this.n.setOffscreenPageLimit(2);
-        this.n.addOnPageChangeListener(this);
-        this.o.setupWithViewPager(this.n);
+        o = findViewById(R.id.tab_layout);
+        n = findViewById(R.id.view_pager);
+        n.setAdapter(new a(getSupportFragmentManager()));
+        n.setOffscreenPageLimit(2);
+        n.addOnPageChangeListener(this);
+        o.setupWithViewPager(n);
         xo.a((to) this);
     }
 
@@ -123,8 +121,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onPostCreate(Bundle bundle) {
-        super.onPostCreate(bundle);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override
@@ -133,22 +131,22 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(ManageImageActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
+        d.setScreenName(ManageImageActivity.class.getSimpleName().toString());
+        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", this.l);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", l);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onPageSelected(int position) {
         if (position == 0) {
-            this.q.f();
+            q.f();
         } else {
-            this.p.a(false);
+            p.a(false);
         }
     }
 
@@ -157,9 +155,9 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         public a(FragmentManager manager) {
             super(manager);
-            this.f = new String[2];
-            this.f[0] = xB.b().a(ManageImageActivity.this.getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            this.f[1] = xB.b().a(ManageImageActivity.this.getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            f = new String[2];
+            f[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            f[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -172,9 +170,9 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position != 0) {
-                ManageImageActivity.this.q = (fu) fragment;
+                q = (fu) fragment;
             } else {
-                ManageImageActivity.this.p = (pu) fragment;
+                p = (pu) fragment;
             }
             return fragment;
         }
@@ -190,7 +188,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return this.f[position];
+            return f[position];
         }
     }
 
@@ -202,21 +200,21 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void a() {
-            ManageImageActivity.this.h();
-            ManageImageActivity.this.setResult(Activity.RESULT_OK);
-            ManageImageActivity.this.finish();
+            h();
+            setResult(Activity.RESULT_OK);
+            finish();
             Op.g().d();
         }
 
         @Override
         public void b() {
             publishProgress("Now processing..");
-            ManageImageActivity.this.p.i();
+            p.i();
         }
 
         @Override
         public void a(String str) {
-            ManageImageActivity.this.h();
+            h();
         }
 
         @Override
