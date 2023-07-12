@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.sketchware.remod.R;
 
@@ -18,12 +20,12 @@ import java.util.HashMap;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.util.Helper;
 
-//changed in 6.3.0
 public class ManageProguardActivity extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ProguardHandler pg;
-    private Switch sw_pg_enabled;
-    private Switch sw_pg_debug;
+    private SwitchCompat sw_pg_enabled;
+    private SwitchCompat sw_pg_debug;
+    private SwitchCompat r8_enabled;
 
     @Override
     public void onClick(View v) {
@@ -82,6 +84,8 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
         int id = buttonView.getId();
         if (id == R.id.sw_pg_enabled) {
             pg.setProguardEnabled(isChecked);
+        } else if (id == R.id.r8_enabled) {
+            pg.setR8Enabled(isChecked);
         } else if (id == R.id.sw_pg_debug) {
             pg.setDebugEnabled(isChecked);
         }
@@ -106,6 +110,8 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
 
         sw_pg_enabled.setOnCheckedChangeListener(this);
         ln_pg_rules.setOnClickListener(this);
+        r8_enabled = findViewById(R.id.r8_enabled);
+        r8_enabled.setOnCheckedChangeListener(this);
 
         sw_pg_debug.setOnCheckedChangeListener(this);
         ln_pg_fm.setOnClickListener(this);
@@ -114,12 +120,13 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
     private void initializeLogic() {
         _initToolbar();
         pg = new ProguardHandler(getIntent().getStringExtra("sc_id"));
-        sw_pg_enabled.setChecked(pg.isProguardEnabled());
+        sw_pg_enabled.setChecked(pg.isShrinkingEnabled());
         sw_pg_debug.setChecked(pg.isDebugFilesEnabled());
+        r8_enabled.setChecked(pg.isR8Enabled());
     }
 
     private void _initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("ProGuard Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Code Shrinking Manager");
 
         ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(this);

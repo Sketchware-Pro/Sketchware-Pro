@@ -2,7 +2,6 @@ package mod.hasrat.dialog;
 
 import static android.text.TextUtils.isEmpty;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import com.sketchware.remod.R;
 
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class SketchDialog extends Dialog {
 
     private final Context mContext;

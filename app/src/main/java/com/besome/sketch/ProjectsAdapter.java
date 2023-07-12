@@ -1,9 +1,5 @@
 package com.besome.sketch;
 
-import static com.besome.sketch.ProjectsFragment.REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +17,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
+import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
 import com.besome.sketch.projects.MyProjectButtonLayout;
@@ -31,11 +28,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import a.a.a.ZA;
-import a.a.a.gB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
@@ -121,6 +119,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                var oldMap = shownProjects.get(oldItemPosition);
+                var newMap = newProjects.get(newItemPosition);
+                var keysToCheck = new String[]{"my_app_name", "my_ws_name", "sc_ver_name", "sc_ver_code", "my_sc_pkg_name"};
+                for (var key : keysToCheck) {
+                    if (!yB.c(oldMap, key).equals(yB.c(newMap, key))) {
+                        return false;
+                    }
+                }
                 return true;
             }
         }, true /* sort behavior can be changed */);
@@ -171,23 +177,34 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (viewHolder instanceof ProjectViewHolder holder) {
             int position = truePosition - shownSpecialActions;
             HashMap<String, Object> projectMap = shownProjects.get(position);
+            holder.setProject(projectMap);
             String scId = yB.c(projectMap, "sc_id");
 
             float rotation;
             int visibility;
-            if (yB.a(projectMap, "expand")) {
-                visibility = View.VISIBLE;
-                rotation = -180.0F;
-            } else {
+            if (holder.isCollapsed()) {
                 visibility = View.GONE;
                 rotation = 0.0F;
+            } else {
+                visibility = View.VISIBLE;
+                rotation = -180.0F;
             }
             holder.projectOptionLayout.setVisibility(visibility);
             holder.expand.setRotation(rotation);
             if (yB.a(projectMap, "confirmation")) {
-                holder.projectButtonLayout.b();
+                if (holder.shouldAnimateNextTransformation()) {
+                    holder.projectButtonLayout.showConfirmation();
+                    holder.setAnimateNextTransformation(false);
+                } else {
+                    holder.projectButtonLayout.showConfirmationWithoutAnimation();
+                }
             } else {
-                holder.projectButtonLayout.a();
+                if (holder.shouldAnimateNextTransformation()) {
+                    holder.projectButtonLayout.hideConfirmation();
+                    holder.setAnimateNextTransformation(false);
+                } else {
+                    holder.projectButtonLayout.hideConfirmationWithoutAnimation();
+                }
             }
 
             holder.imgIcon.setImageResource(R.drawable.default_icon);
@@ -226,37 +243,24 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             holder.projectButtonLayout.setButtonOnClickListener(v -> {
                 if (mB.a()) return;
-                if (v instanceof MyProjectButton) {
-                    switch (((MyProjectButton) v).b) {
-                        case 0:
-                            toProjectSettingOrRequestPermission(projectMap, position);
-                            break;
-
-                        case 1:
-                            backupProject(projectMap);
-                            break;
-
-                        case 2:
-                            toExportProjectActivity(projectMap);
-                            break;
-
-                        case 3:
+                if (v instanceof MyProjectButton button) {
+                    switch (button.getButtonId()) {
+                        case 0 -> toProjectSettingOrRequestPermission(projectMap, position);
+                        case 1 -> backupProject(projectMap);
+                        case 2 -> toExportProjectActivity(projectMap);
+                        case 3 -> {
                             projectMap.put("confirmation", true);
-                            holder.projectButtonLayout.b();
-                            break;
-
-                        case 4:
-                            showProjectSettingDialog(projectMap);
-                            break;
+                            holder.setAnimateNextTransformation(true);
+                            notifyItemChanged(holder.getLayoutPosition());
+                        }
+                        case 4 -> showProjectSettingDialog(projectMap);
                     }
-                    return;
-                }
-
-                if (v.getId() == R.id.confirm_yes) {
-                    deleteProject(holder.getBindingAdapterPosition());
+                } else if (v.getId() == R.id.confirm_yes) {
+                    deleteProject(holder.getLayoutPosition());
                 } else if (v.getId() == R.id.confirm_no) {
                     projectMap.put("confirmation", false);
-                    notifyItemChanged(holder.getBindingAdapterPosition());
+                    holder.setAnimateNextTransformation(true);
+                    notifyItemChanged(holder.getLayoutPosition());
                 }
             });
 
@@ -265,29 +269,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     projectsFragment.toDesignActivity(yB.c(projectMap, "sc_id"));
                 }
             });
-            holder.projectView.setOnLongClickListener(v -> {
-                if (yB.a(projectMap, "expand")) {
-                    holder.collapse(projectMap);
-                } else {
-                    holder.expand(projectMap);
-                }
-
-                return true;
-            });
 
             holder.appIconLayout.setOnClickListener(v -> {
                 mB.a(v);
                 toProjectSettingOrRequestPermission(projectMap, position);
-            });
-
-            holder.expand.setOnClickListener(v -> {
-                if (!mB.a()) {
-                    if (yB.a(projectMap, "expand")) {
-                        holder.collapse(projectMap);
-                    } else {
-                        holder.expand(projectMap);
-                    }
-                }
             });
         } else if (viewHolder instanceof SpecialActionViewHolder holder) {
             boolean isNewProjectView = allProjects.isEmpty() && truePosition == 0;
@@ -310,12 +295,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
     }
 
-    private class ProjectViewHolder extends RecyclerView.ViewHolder {
+    private static class ProjectViewHolder extends CollapsibleViewHolder {
         public final TextView tvPublished;
         public final ImageView expand;
         public final MyProjectButtonLayout projectButtonLayout;
         public final LinearLayout projectOptionLayout;
-        public final LinearLayout projectOption;
         public final LinearLayout projectView;
         public final View appIconLayout;
         public final CircleImageView imgIcon;
@@ -324,8 +308,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final TextView packageName;
         public final TextView projectVersion;
 
+        private Map<String, Object> project;
+
         public ProjectViewHolder(View itemView) {
-            super(itemView);
+            super(itemView, 300);
             projectView = itemView.findViewById(R.id.project_one);
             projectName = itemView.findViewById(R.id.project_name);
             appIconLayout = itemView.findViewById(R.id.app_icon_layout);
@@ -336,27 +322,45 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvPublished = itemView.findViewById(R.id.tv_published);
             expand = itemView.findViewById(R.id.expand);
             projectOptionLayout = itemView.findViewById(R.id.project_option_layout);
-            projectOption = itemView.findViewById(R.id.project_option);
-            projectButtonLayout = new MyProjectButtonLayout(activity);
-            projectOption.addView(projectButtonLayout);
+            projectButtonLayout = itemView.findViewById(R.id.project_option);
+            onDoneInitializingViews();
         }
 
-        public void collapse(HashMap<String, Object> project) {
-            project.put("expand", false);
-            gB.a(expand, 0.0F, null);
-            gB.a(projectOptionLayout, 300, new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    projectOptionLayout.setVisibility(View.GONE);
-                }
-            });
+        @Override
+        protected boolean isCollapsed() {
+            var value = project.get("expand");
+            if (value != null) {
+                return (boolean) value;
+            } else {
+                return true;
+            }
         }
 
-        public void expand(HashMap<String, Object> project) {
-            projectOptionLayout.setVisibility(View.VISIBLE);
-            project.put("expand", true);
-            gB.a(expand, -180.0F, null);
-            gB.b(projectOptionLayout, 300, null);
+        @Override
+        protected void setIsCollapsed(boolean isCollapsed) {
+            project.put("expand", isCollapsed);
+        }
+
+        @NonNull
+        @Override
+        protected ViewGroup getOptionsLayout() {
+            return projectOptionLayout;
+        }
+
+        @NonNull
+        @Override
+        protected Set<? extends View> getOnClickCollapseTriggerViews() {
+            return Set.of(expand);
+        }
+
+        @NonNull
+        @Override
+        protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
+            return Set.of(projectView);
+        }
+
+        public void setProject(Map<String, Object> project) {
+            this.project = project;
         }
     }
 
@@ -416,7 +420,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         intent.putExtra("is_update", true);
         intent.putExtra("advanced_open", false);
         intent.putExtra("index", index);
-        activity.startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
+        projectsFragment.openProjectSettings.launch(intent);
     }
 
     private void showProjectSettingDialog(HashMap<String, Object> project) {

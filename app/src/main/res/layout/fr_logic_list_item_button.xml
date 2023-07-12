@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/img_button" android:background="?android:selectableItemBackground" android:layout_width="0.0dip" android:layout_height="48.0dip" android:layout_weight="1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <ImageView android:id="@id/icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:scaleType="fitCenter" android:contentDescription="@null" />
-        <TextView android:textSize="12.0sp" android:textColor="#ff757575" android:gravity="center" android:id="@id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
-    </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/img_button"
+    android:layout_width="0dp"
+    android:layout_height="48dp"
+    android:layout_weight="1"
+    android:background="?android:selectableItemBackground"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:layout_width="match_parent">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/delete_96" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        android:textColor="#ff757575"
+        android:textSize="12sp"
+        tools:text="@string/common_word_delete" />
 </LinearLayout>

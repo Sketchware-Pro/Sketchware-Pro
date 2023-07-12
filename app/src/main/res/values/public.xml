@@ -3093,7 +3093,6 @@
     <public name="ll_more_projects" id="0x7f0802f4" type="id" />
     <public name="ll_preview" id="0x7f0802f5" type="id" />
     <public name="ll_projects_remaining" id="0x7f0802f6" type="id" />
-    <public name="ll_warning" id="0x7f0802f7" type="id" />
     <public name="loading_3balls" id="0x7f0802f8" type="id" />
     <public name="loading_3dots" id="0x7f0802f9" type="id" />
     <public name="loading_export_data" id="0x7f0802fa" type="id" />
@@ -4367,7 +4366,6 @@
     <public name="manage_library_popup_project_selector" id="0x7f0b00de" type="layout" />
     <public name="manage_library_setting_admob_adunit_add" id="0x7f0b00df" type="layout" />
     <public name="manage_library_setting_admob_adunit_item" id="0x7f0b00e0" type="layout" />
-    <public name="manage_library_setting_admob_tab_item" id="0x7f0b00e1" type="layout" />
     <public name="manage_library_setting_admob_test_device_add" id="0x7f0b00e2" type="layout" />
     <public name="manage_library_setting_admob_test_device_item" id="0x7f0b00e3" type="layout" />
     <public name="manage_screen_activity_add_feature_item" id="0x7f0b00e4" type="layout" />
@@ -4394,7 +4392,6 @@
     <public name="mypage_settings" id="0x7f0b00f9" type="layout" />
     <public name="mypage_tab" id="0x7f0b00fb" type="layout" />
     <public name="myproject_button" id="0x7f0b00fc" type="layout" />
-    <public name="myproject_buttons" id="0x7f0b00fd" type="layout" />
     <public name="myproject_color" id="0x7f0b00fe" type="layout" />
     <public name="myproject_setting" id="0x7f0b00ff" type="layout" />
     <public name="myprojects" id="0x7f0b0100" type="layout" />

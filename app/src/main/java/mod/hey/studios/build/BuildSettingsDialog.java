@@ -33,9 +33,9 @@ public class BuildSettingsDialog {
     }
 
     public void show() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        var builder = new AlertDialog.Builder(activity);
 
-        View inflate = activity.getLayoutInflater().inflate(R.layout.project_config_layout, null);
+        var inflate = activity.getLayoutInflater().inflate(R.layout.project_config_layout, null);
 
         ImageView icon = inflate.findViewById(R.id.project_config_icon);
         TextView title = inflate.findViewById(R.id.project_config_title);
@@ -51,14 +51,14 @@ public class BuildSettingsDialog {
                 addInputPref(BuildSettings.SETTING_CLASSPATH, "", "Classpath (separated by :)", EditorInfo.TYPE_CLASS_TEXT, contentView),
                 addSingleChoicePref(BuildSettings.SETTING_DEXER, new String[]{"Dx", "D8"}, "Dx", "Dexer", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, BuildSettingsDialogBridge.getAvailableJavaVersions(), "1.7", "Java version", contentView),
-                addTogglePref(BuildSettings.SETTING_NO_WARNINGS, true, "Hide warnings in error log", 12, contentView),
-                addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", 12, contentView),
-                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, true, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", 12, contentView)
+                addTogglePref(BuildSettings.SETTING_NO_WARNINGS, true, "Hide warnings in error log", contentView),
+                addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", contentView),
+                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, true, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", contentView)
         };
 
         builder.setView(inflate);
 
-        AlertDialog buildSettingsDialog = builder.create();
+        var buildSettingsDialog = builder.create();
         buildSettingsDialog.show();
         cancel.setOnClickListener(Helper.getDialogDismissListener(buildSettingsDialog));
         save.setOnClickListener(v -> {
@@ -68,7 +68,7 @@ public class BuildSettingsDialog {
     }
 
     private RadioGroup addSingleChoicePref(String key, String[] choices, String defaultValue, String title, LinearLayout addTo) {
-        TextView textView = new TextView(activity);
+        var textView = new TextView(activity);
 
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -86,7 +86,7 @@ public class BuildSettingsDialog {
 
         addTo.addView(textView);
 
-        RadioGroup radioGroup = new RadioGroup(activity);
+        var radioGroup = new RadioGroup(activity);
         radioGroup.setOrientation(LinearLayout.HORIZONTAL);
         radioGroup.setTag(key);
         radioGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -96,7 +96,7 @@ public class BuildSettingsDialog {
         for (String choice : choices) {
             RadioButton radioButton = new RadioButton(activity);
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            var layoutParams = new LinearLayout.LayoutParams(
                     0,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     1.0f);
@@ -124,7 +124,7 @@ public class BuildSettingsDialog {
         return radioGroup;
     }
 
-    private CheckBox addTogglePref(String key, boolean defaultValue, String label, int leftMargin, LinearLayout addTo) {
+    private CheckBox addTogglePref(String key, boolean defaultValue, String label, LinearLayout addTo) {
         CheckBox checkBox = new CheckBox(activity);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -132,7 +132,7 @@ public class BuildSettingsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(
                 0,
-                (int) getDip(leftMargin),
+                (int) getDip(12),
                 0,
                 0
         );

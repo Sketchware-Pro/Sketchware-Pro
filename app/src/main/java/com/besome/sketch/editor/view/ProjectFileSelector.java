@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.ViewSelectorActivity;
 import com.sketchware.remod.R;
 
@@ -212,7 +213,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("current_xml", currentXmlFileName);
         intent.putExtra("is_custom_view", currentFileIsCustomView);
-        ((Activity) getContext()).startActivityForResult(intent, 263);
+        ((DesignActivity) getContext()).changeOpenFile.launch(intent);
     }
 
     private class JavaFileAdapter extends RecyclerView.Adapter<JavaFileAdapter.ViewHolder> {

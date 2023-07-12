@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -60,7 +61,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#ff404040"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        tools:text="InternalDemo" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -73,7 +75,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#ff9a9a9a"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            tools:text="Sketchware Pro Demo" />
 
                         <TextView
                             android:id="@+id/project_version"
@@ -81,7 +84,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
                             android:textColor="#ff9a9a9a"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            tools:text="1.0(1)" />
                     </LinearLayout>
 
                     <TextView
@@ -89,7 +93,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#ff9a9a9a"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="com.jbk.internal.demo" />
                 </LinearLayout>
 
                 <ImageView

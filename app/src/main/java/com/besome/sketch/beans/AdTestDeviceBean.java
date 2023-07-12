@@ -63,4 +63,8 @@ public class AdTestDeviceBean implements Parcelable {
         adTestDeviceBean.copy(this);
         return adTestDeviceBean;
     }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
 }

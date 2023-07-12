@@ -1,8 +1,8 @@
 package com.besome.sketch.editor.manage.library.admob;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -30,16 +31,18 @@ import a.a.a.gB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ViewConstructor")
 public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
-
     private AdUnitsAdapter adUnitsAdapter;
     private ArrayList<AdUnitBean> adUnitBeanArrayList = new ArrayList<>();
     private TextView tvWarning;
 
     public AddAdUnitStepView(AdmobActivity activity) {
-        super(activity);
-        initialize(activity);
+        this(activity, null);
+    }
+
+    public AddAdUnitStepView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initialize(context);
     }
 
     private void createAdUnit() {
@@ -47,10 +50,17 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_title));
         dialog.a(R.drawable.add_96_blue);
         View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
+
+        TextInputLayout tiName = rootView.findViewById(R.id.ti_name);
+        tiName.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_name));
         EditText edName = rootView.findViewById(R.id.ed_name);
-        SB nameValidator = new SB(getContext(), rootView.findViewById(R.id.ti_name), 1, 50);
+        SB nameValidator = new SB(getContext(), tiName, 1, 50);
+
+        TextInputLayout tiAdUnitId = rootView.findViewById(R.id.ti_adunit_id);
+        tiAdUnitId.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
         EditText edAdUnitId = rootView.findViewById(R.id.ed_adunit_id);
-        SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.id.ti_adunit_id), 1, 100);
+        SB adUnitValidator = new SB(getContext(), tiAdUnitId, 1, 100);
+
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_add), view -> {
@@ -66,7 +76,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -81,7 +91,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
             bB.a(getContext(), Helper.getResString(R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -90,6 +100,9 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         gB.b(this, 600, 200, null);
         findViewById(R.id.layout_manual_add_ad_unit).setOnClickListener(this);
         tvWarning = findViewById(R.id.tv_warning);
+
+        TextView addManually = findViewById(R.id.tv_manual_add_ad_unit);
+        addManually.setText(Helper.getResString(R.string.design_library_admob_button_manual_add_to_adunit));
 
         RecyclerView listAdUnit = findViewById(R.id.list_ad_unit);
         listAdUnit.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

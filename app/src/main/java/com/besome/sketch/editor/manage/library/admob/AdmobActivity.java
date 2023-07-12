@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.GB;
-import a.a.a.Tu;
 import a.a.a.Uu;
 import a.a.a.aB;
 import a.a.a.bB;
@@ -103,7 +102,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
             case 2:
                 goToConsole.setVisibility(View.GONE);
-                Tu testDevicesStep = new Tu(this);
+                TestDevicesStepView testDevicesStep = new TestDevicesStepView(this);
                 stepContainer.addView(testDevicesStep);
                 testDevicesStep.setData(adMobSettings);
                 step = testDevicesStep;

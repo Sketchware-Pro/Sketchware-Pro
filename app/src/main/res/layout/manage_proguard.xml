@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,7 +17,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sw_pg_enabled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,6 +29,21 @@
                 android:text="Activated"
                 android:textColor="#ffe53935"
                 android:textSize="16sp" />
+
+            <!-- R8 code shrinker my beloved, I'll come to your house if your remove it -->
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/r8_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:checked="true"
+                android:gravity="center|left"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/code_shrinker_use_r8"
+                android:textColor="#5271FF"
+                android:textSize="16sp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,8 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="Activating ProGuard will minimize and obfuscate your project by renaming existing classes and methods on compilation time."
+                    android:text="@string/code_shrinker_obfuscate_def"
                     android:textColor="#ff757575"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -56,9 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:gravity="left"
                 android:padding="8dp"
-                android:text="Using ProGuard might be risky to some extent. Make sure to provide a proper rules configuration file in order not to break your project."
+                android:text="@string/code_shrinker_warning"
                 android:textColor="#ffde0000"
                 android:textSize="12sp" />
 
@@ -79,7 +93,7 @@
                     android:gravity="center_vertical"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="ProGuard Rules"
+                    android:text="@string/code_shrinker_rules"
                     android:textColor="#ffe53935"
                     android:textSize="16sp" />
 
@@ -89,7 +103,7 @@
                     android:padding="4dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_edit_white_48dp"
-                    android:tint="@color/colorAccent" />
+                    app:tint="@color/colorAccent" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,8 +123,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="Configure ProGuard by editing the rules file. This step is necessary because without a proper configuration, ProGuard might break your project."
+                    android:text="@string/code_shrinker_configure_shrinker"
                     android:textColor="#ff757575"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -142,7 +155,7 @@
                     android:padding="4dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_edit_white_48dp"
-                    android:tint="@color/colorAccent" />
+                    app:tint="@color/colorAccent" />
             </LinearLayout>
 
             <LinearLayout
@@ -162,13 +175,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="Using this, you can configure specific local libs to be included in ProGuarding process. (Note: Enabling this will ignore DEX files of the local libs you select and it will force Sketchware to compile them to dex, making compilation noticeably slower.)"
+                    android:text="@string/code_shrinker_full_mode_def"
                     android:textColor="#ff757575"
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sw_pg_debug"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -178,7 +190,7 @@
                 android:gravity="center|left"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Generate debug files"
+                android:text="@string/code_shrinker_generate_debug_files"
                 android:textColor="#ffe53935"
                 android:textSize="16sp" />
         </LinearLayout>

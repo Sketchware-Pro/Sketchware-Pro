@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -74,7 +75,8 @@
                         android:layout_gravity="center_vertical"
                         android:textColor="#ff4d4d4d"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="@string/design_library_firebase_title_project_id" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -122,7 +124,8 @@
                         android:layout_gravity="center_vertical"
                         android:textColor="#ff4d4d4d"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="@string/design_library_firebase_title_app_id" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -161,7 +164,8 @@
                         android:layout_gravity="center_vertical"
                         android:textColor="#ff4d4d4d"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="@string/design_library_firebase_title_api_key" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -200,7 +204,8 @@
                         android:layout_gravity="center_vertical"
                         android:textColor="#ff4d4d4d"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="@string/design_library_firebase_title_storage_bucket_url" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -221,9 +226,9 @@
         </ScrollView>
 
         <Button
+            android:id="@+id/btn_import"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:tag="importFirebaseConfigFromJsonBtn"
             android:text="Import from google-services.json"
             android:textAllCaps="false"
             android:textColor="#ffffffff"
@@ -236,6 +241,7 @@
             android:layout_height="wrap_content"
             android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightBlue" />
+            android:theme="@style/AppTheme.Button.LightBlue"
+            tools:text="@string/design_library_firebase_button_goto_firebase_console" />
     </LinearLayout>
 </LinearLayout>

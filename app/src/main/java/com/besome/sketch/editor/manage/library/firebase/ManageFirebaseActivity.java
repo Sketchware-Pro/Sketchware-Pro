@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -34,14 +36,19 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
-    private static final int REQUEST_CODE_FIREBASE_SETTINGS = 237;
     private final String realtime_db = "realtime_db";
     private final String app_id = "app_id";
     private final String api_key = "api_key";
     private final String storage_bucket = "storage_bucket";
+
+    private final ActivityResultLauncher<Intent> openSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            initializeLibrary(result.getData().getParcelableExtra("firebase"));
+        }
+    });
+
     private Switch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
@@ -73,7 +80,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         }
     }
 
-    @SuppressLint("WrongConstant")
     private void openDoc() {
         try {
             s.a("P1I15", true);
@@ -123,13 +129,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_FIREBASE_SETTINGS && resultCode == RESULT_OK) {
-            initializeLibrary(data.getParcelableExtra("firebase"));
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         getIntent().putExtra("firebase", firebaseLibraryBean);
         setResult(RESULT_OK, getIntent());
@@ -141,9 +140,9 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         int id = view.getId();
         if (id == R.id.btn_console) {
             goToConsole();
-        }
-
-        if (id == R.id.layout_switch) {
+        } else if (id == R.id.btn_import) {
+            showImportJsonDialog();
+        } else if (id == R.id.layout_switch) {
             //Enable Disable Firebase
             if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
                 libSwitch.setChecked(!libSwitch.isChecked());
@@ -192,13 +191,12 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         tvAppId = findViewById(R.id.tv_app_id);
         tvApiKey = findViewById(R.id.tv_api_key);
         tvStorageUrl = findViewById(R.id.tv_storage_url);
+        Button btnImport = findViewById(R.id.btn_import);
+        btnImport.setOnClickListener(this);
         Button btnConsole = findViewById(R.id.btn_console);
         btnConsole.setText(Helper.getResString(R.string.design_library_firebase_button_goto_firebase_console));
         btnConsole.setOnClickListener(this);
         configure();
-
-        final Button importFirebaseConfigFromJsonBtn = ((LinearLayout) btnConsole.getParent()).findViewWithTag("importFirebaseConfigFromJsonBtn");
-        importFirebaseConfigFromJsonBtn.setOnClickListener(v -> showImportJsonDialog());
     }
 
     @Override
@@ -223,7 +221,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("firebase", firebaseLibraryBean);
-        startActivityForResult(intent, REQUEST_CODE_FIREBASE_SETTINGS);
+        openSettings.launch(intent);
     }
 
     private void configure() {

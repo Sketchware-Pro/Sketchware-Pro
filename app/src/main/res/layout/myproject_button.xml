@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/img_button" android:background="?android:selectableItemBackground" android:padding="8.0dip" android:layout_width="0.0dip" android:layout_height="@dimen/project_button_height" android:layout_weight="1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <ImageView android:id="@id/icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:scaleType="fitCenter" android:contentDescription="@null" />
-        <TextView android:textSize="12.0sp" android:textColor="#ff757575" android:gravity="center" android:id="@id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/img_button"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/project_button_height"
+    android:layout_weight="1"
+    android:background="?android:selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:layout_width="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_backup" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#ff757575"
+        android:textSize="12sp"
+        tools:text="Back up" />
 </LinearLayout>

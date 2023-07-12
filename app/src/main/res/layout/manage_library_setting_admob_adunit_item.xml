@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout_item" android:padding="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
-        <TextView android:textSize="12.0sp" android:textColor="#ff000000" android:id="@id/tv_name" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <TextView android:textSize="11.0sp" android:textColor="#ff555555" android:id="@id/tv_unit_id" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginStart="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ff000000"
+            android:textSize="12sp"
+            tools:text="&lt;Ad Unit name&gt;" />
+
+        <TextView
+            android:id="@+id/tv_unit_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textColor="#ff555555"
+            android:textSize="11sp"
+            tools:text="&lt;Ad Unit ID&gt;" />
     </LinearLayout>
-    <ImageView android:id="@id/img_delete" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/icon_delete" />
+
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_delete" />
 </LinearLayout>

@@ -1,31 +1,41 @@
 plugins {
-    id 'java-library'
-    id 'org.jetbrains.kotlin.jvm'
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
 }
 
-configurations.implementation {
-    exclude group: "org.jetbrains", module: "annotations"
+android {
+    namespace 'org.jetbrains.kotlin'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 26
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+
+configurations.configureEach {
+    exclude group: 'org.jline', module: 'jline'
 }
 
 dependencies {
-    implementation 'com.github.marschall:zipfilesystem-standalone:1.0.1'
-    compileOnly 'androidx.annotation:annotation:1.4.0'
-    implementation 'io.github.itsaky:nb-javac-android:17.0.0.1'
-    implementation project(path: ':jaxp:xml')
-    implementation project(path: ':jaxp:internal')
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
 
+    implementation("org.jetbrains.kotlin:kotlin-scripting-compiler:1.8.21")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.8.21")
+    implementation("io.github.itsaky:nb-javac-android:17.0.0.3")
+    implementation("org.jetbrains.intellij.deps:trove4j:1.0.20200330")
+    implementation("org.jdom:jdom:2.0.2")
 
-    runtimeOnly ('org.jetbrains.kotlin:kotlin-reflect:1.7.10')
+    implementation(files("libs/jaxp.jar"))
+    api(files("libs/kotlin-compiler-1.9.0-RC.jar"))
 
-    api 'org.jetbrains.intellij.deps:trove4j:1.0.20200330'
-
-    api files('libs/kotlin-compiler-embeddable-1.7.10.jar')
-
-    compileOnly files('libs/the-unsafe.jar')
-    compileOnly files('libs/android-stubs.jar')
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    compileOnly(files("libs/the-unsafe.jar"))
 }
