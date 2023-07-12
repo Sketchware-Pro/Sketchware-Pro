@@ -148,6 +148,7 @@ public class LogicClickListener implements View.OnClickListener {
             if(isModifierNotEmpty && !isValidModifier) {
                 modifierLayout.requestFocus();
                 modifierLayout.setError("Error Invalid modifier");
+                return;
             } else {
                 modifierLayout.setError(null);
             }
@@ -157,9 +158,11 @@ public class LogicClickListener implements View.OnClickListener {
             } else if(validType && !isValidType) {
                 typeLayout.requestFocus();
                 typeLayout.setError("Error Invalid type");
+                return;
             }else {
                 if (validName) typeLayout.requestFocus();
                 typeLayout.setError("Type can't be empty");
+                return;
             }
 
             CharSequence nameError = nameLayout.getError();
@@ -169,6 +172,7 @@ public class LogicClickListener implements View.OnClickListener {
                 } else {
                     nameLayout.requestFocus();
                     nameLayout.setError("Name can't be empty");
+                    return;
                 }
             }
 
