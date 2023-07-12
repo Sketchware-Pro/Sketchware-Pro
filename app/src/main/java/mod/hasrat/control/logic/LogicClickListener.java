@@ -449,7 +449,7 @@ public class LogicClickListener implements View.OnClickListener {
                 String variableName = CustomVariableUtil.getVariableName(item.text);
                 String variable = item.text;
                 if(!variable.equals(variableName)) {
-                    variable = variableType + " : " + variableName;
+                    variable = variableType + ": " + variableName;
                 }
                 checkBoxHolder.checkBox.setText(variable);
                 checkBoxHolder.checkBox.setChecked(item.isChecked);
