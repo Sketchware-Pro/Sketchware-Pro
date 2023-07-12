@@ -224,6 +224,12 @@ public class ExtraPaletteBlock {
             String variable = customVariables2.get(i);
             String variableType = CustomVariableUtil.getVariableType(variable);
             String variableName = CustomVariableUtil.getVariableName(variable);
+            if(variableType.startsWith("ArrayList")||variableType.startsWith("List"){
+                variableType = "list";
+            }
+            if(variableType.startsWith("HashMap")||variableType.startsWith("Map"){
+                variableType = "Map";
+            }
             String type;
             switch(variableType){
                 case "boolean":
@@ -237,6 +243,12 @@ public class ExtraPaletteBlock {
                 case "float":
                 case "long":
                     type = "d";
+                    break;
+                case "Map":
+                    type = "a";
+                    break;
+                case "list":
+                    type = "l";
                     break;
                 default:
                     type = "v";
