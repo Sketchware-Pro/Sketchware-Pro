@@ -40,6 +40,8 @@ import a.a.a.jC;
 import a.a.a.uq;
 import mod.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
+import mod.elfilibustero.sketch.lib.valid.VariableModifierValidator;
+import mod.elfilibustero.sketch.lib.valid.VariableTypeValidator;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.util.Helper;
@@ -106,11 +108,15 @@ public class LogicClickListener implements View.OnClickListener {
         modifierLayout.setHelperText("Enter modifier e.g. private, public, public static, or empty (package private).");
         modifierLayout.setPadding(0, 0, 0, (int) getDip(8));
         root.addView(modifierLayout);
+        VariableModifierValidator modifiersValidator = new VariableModifierValidator(getContext(), modifierLayout);
+        modifier.addTextChangedListener(modifiersValidator);
 
         TextInputLayout typeLayout = commonTextInputLayout();
         EditText type = commonEditText("Type, e.g. File");
         typeLayout.addView(type);
         root.addView(typeLayout);
+        VariableTypeValidator varTypeValidator = new VariableTypeValidator(getContext(), typeLayout);
+        type.addTextChangedListener(varTypeValidator);
 
         TextInputLayout nameLayout = commonTextInputLayout();
         EditText name = commonEditText("Name, e.g. file");
@@ -121,26 +127,42 @@ public class LogicClickListener implements View.OnClickListener {
         EditText initializer = commonEditText("Initializer, e.g. new File() (optional)");
         initializerLayout.addView(initializer);
         root.addView(initializerLayout);
-
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
-
+        
         dialog.a(root);
         dialog.b(Helper.getResString(R.string.common_word_add), view -> {
-            String variableModifier = modifier.getText().toString();
-            variableModifier = isEmpty(variableModifier) ? "" : variableModifier + " ";
-            String variableType = type.getText().toString();
-            String variableName = name.getText().toString();
-            String variableInitializer = initializer.getText().toString();
+            boolean isValidModifier = modifiersValidator.b();
+            boolean isValidType = varTypeValidator.isValid();
+            boolean isValidName = validator.b();
+            
+            String variableModifier = modifier.getText().toString().trim();
+            String variableType = type.getText().toString().trim();
+            String variableName = name.getText().toString().trim();
+            String variableInitializer = initializer.getText().toString().trim();
 
-            boolean validType = !isEmpty(variableType);
-            boolean validName = !isEmpty(variableName);
-            boolean getsInitialized = !isEmpty(variableInitializer);
+            boolean isModifierNotEmpty = !variableModifier.isEmpty();
+            boolean validType = !variableType.isEmpty();
+            boolean validName = !variableName.isEmpty();
+            boolean getsInitialized = !variableInitializer.isEmpty();
 
-            if (validType) {
-                typeLayout.setError(null);
+            if(isModifierNotEmpty && !isValidModifier) {
+                modifierLayout.requestFocus();
+                modifierLayout.setError("Error Invalid modifier");
+                return;
             } else {
+                modifierLayout.setError(null);
+            }
+            
+            if (validType && isValidType) {
+                typeLayout.setError(null);
+            } else if(validType && !isValidType) {
+                typeLayout.requestFocus();
+                typeLayout.setError("Error Invalid type");
+                return;
+            }else {
                 if (validName) typeLayout.requestFocus();
                 typeLayout.setError("Type can't be empty");
+                return;
             }
 
             CharSequence nameError = nameLayout.getError();
@@ -150,15 +172,21 @@ public class LogicClickListener implements View.OnClickListener {
                 } else {
                     nameLayout.requestFocus();
                     nameLayout.setError("Name can't be empty");
+                    return;
                 }
             }
 
-            if (validName && validType && validator.b()) {
-                String toAdd = variableModifier + variableType + " " + variableName;
-                if (getsInitialized) {
-                    toAdd += " = " + variableInitializer;
+            if (validName && validType && isValidName && isValidType) {
+                StringBuilder toAdd = new StringBuilder();
+                if (isModifierNotEmpty) {
+                    toAdd.append(variableModifier).append(" ");
                 }
-                logicEditor.b(6, toAdd);
+                toAdd.append(variableType).append(" ").append(variableName);
+                if (getsInitialized) {
+                    toAdd.append(" = ").append(variableInitializer);
+                }
+                String toAddString = toAdd.toString().trim();
+                logicEditor.b(6, toAddString);
                 dialog.dismiss();
             }
         });
@@ -417,7 +445,13 @@ public class LogicClickListener implements View.OnClickListener {
                 titleHolder.title.setText(item.text);
             } else if (viewType == Item.TYPE_ITEM) {
                 CheckBoxHolder checkBoxHolder = (CheckBoxHolder) holder;
-                checkBoxHolder.checkBox.setText(CustomVariableUtil.getVariableName(item.text));
+                String variableType = CustomVariableUtil.getVariableType(item.text);
+                String variableName = CustomVariableUtil.getVariableName(item.text);
+                String variable = item.text;
+                if(!variable.equals(variableName)) {
+                    variable = variableType + ": " + variableName;
+                }
+                checkBoxHolder.checkBox.setText(variable);
                 checkBoxHolder.checkBox.setChecked(item.isChecked);
 
                 checkBoxHolder.checkBox.setOnClickListener(v -> {
