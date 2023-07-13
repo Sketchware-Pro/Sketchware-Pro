@@ -57,7 +57,7 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void initialize() {
-        sc_id = getActivity().getIntent().getStringExtra("sc_id");
+        sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         projectImagesDirectory = jC.d(sc_id).l();
         ArrayList<ProjectResourceBean> arrayList = jC.d(sc_id).b;
         if (arrayList != null) {
@@ -139,7 +139,7 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void showAddImageDialog() {
-        Intent intent = new Intent(getContext(), AddImageActivity.class);
+        Intent intent = new Intent(requireContext(), AddImageActivity.class);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", projectImagesDirectory);
@@ -147,7 +147,7 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void openImportIconActivity() {
-        Intent intent = new Intent(getActivity(), ImportIconActivity.class);
+        Intent intent = new Intent(requireActivity(), ImportIconActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putStringArrayListExtra("imageNames", getAllImageNames());
         startActivityForResult(intent, 210);
@@ -179,7 +179,7 @@ public class pu extends qA implements View.OnClickListener {
                 projectResourceBean.savedPos = 2;
                 projectResourceBean.isNew = true;
                 addImage(projectResourceBean, true);
-                bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
         } else if (i == 267) {
             if (i2 == Activity.RESULT_OK) {
@@ -190,8 +190,8 @@ public class pu extends qA implements View.OnClickListener {
                 }
                 adapter.notifyItemRangeInserted(images.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
                 updateGuideVisibility();
-                ((ManageImageActivity) getActivity()).l().e();
-                bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+                ((ManageImageActivity) requireActivity()).l().e();
+                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
         } else if (i == 268 && i2 == Activity.RESULT_OK) {
             ProjectResourceBean projectResourceBean2 = intent.getParcelableExtra("image");
@@ -209,8 +209,8 @@ public class pu extends qA implements View.OnClickListener {
                 }
             }
             updateGuideVisibility();
-            ((ManageImageActivity) getActivity()).l().e();
-            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+            ((ManageImageActivity) requireActivity()).l().e();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -223,7 +223,7 @@ public class pu extends qA implements View.OnClickListener {
                     deleteSelected();
                     a(false);
                     updateGuideVisibility();
-                    bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
+                    bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                     fab.show();
                 }
             } else if (id == R.id.btn_cancel) {
@@ -258,16 +258,16 @@ public class pu extends qA implements View.OnClickListener {
         images = new ArrayList<>();
         recyclerView = viewGroup2.findViewById(R.id.image_list);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getColumnCount()));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), getColumnCount()));
         adapter = new Adapter(recyclerView);
         recyclerView.setAdapter(adapter);
         guide = viewGroup2.findViewById(R.id.tv_guide);
-        guide.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
+        guide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
         actionButtonContainer = viewGroup2.findViewById(R.id.layout_btn_group);
         Button delete = viewGroup2.findViewById(R.id.btn_accept);
         Button cancel = viewGroup2.findViewById(R.id.btn_cancel);
-        delete.setText(xB.b().a(getContext(), R.string.common_word_delete));
-        cancel.setText(xB.b().a(getContext(), R.string.common_word_cancel));
+        delete.setText(xB.b().a(requireContext(), R.string.common_word_delete));
+        cancel.setText(xB.b().a(requireContext(), R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
         fab = viewGroup2.findViewById(R.id.fab);
@@ -374,7 +374,7 @@ public class pu extends qA implements View.OnClickListener {
                 int i2 = images.get(position).rotate;
                 int i3 = images.get(position).flipVertical;
                 int i4 = images.get(position).flipHorizontal;
-                RequestManager with = Glide.with(getActivity());
+                RequestManager with = Glide.with(requireActivity());
                 with.load(projectImagesDirectory + File.separator + images.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
                             @Override
                             public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -385,7 +385,7 @@ public class pu extends qA implements View.OnClickListener {
             }
             int i5 = images.get(position).rotate;
             int i6 = images.get(position).flipVertical;
-            Glide.with(getActivity()).load(images.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
+            Glide.with(requireActivity()).load(images.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
                         @Override
                         public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                             super.onResourceReady(iB.a(bitmap, i5, images.get(position).flipHorizontal, i6), glideAnimation);
@@ -406,7 +406,7 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
-        Intent intent = new Intent(getContext(), AddImageActivity.class);
+        Intent intent = new Intent(requireContext(), AddImageActivity.class);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", projectImagesDirectory);
@@ -449,9 +449,9 @@ public class pu extends qA implements View.OnClickListener {
                 }
                 str2 += str3;
             }
-            bB.a(getActivity(), xB.b().a(getActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", bB.TOAST_WARNING).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", bB.TOAST_WARNING).show();
         } else {
-            bB.a(getActivity(), xB.b().a(getActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
         }
         adapter.notifyDataSetChanged();
         updateGuideVisibility();
@@ -472,7 +472,7 @@ public class pu extends qA implements View.OnClickListener {
 
     public void a(boolean z) {
         isSelecting = z;
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
         unselectAll();
         if (isSelecting) {
             actionButtonContainer.setVisibility(View.VISIBLE);
