@@ -27,7 +27,6 @@ import com.besome.sketch.common.ImportIconActivity;
 import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -353,42 +352,26 @@ public class pu extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (isSelecting) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-            if (images.get(position).isNinePatch()) {
-                holder.ninePatch.setVisibility(View.VISIBLE);
-            } else {
-                holder.ninePatch.setVisibility(View.GONE);
-            }
-            if (images.get(position).isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-            holder.checkBox.setChecked(images.get(position).isSelected);
-            holder.name.setText(images.get(position).resName);
-            if (images.get(position).savedPos == 0) {
-                int i2 = images.get(position).rotate;
-                int i3 = images.get(position).flipVertical;
-                int i4 = images.get(position).flipHorizontal;
-                RequestManager with = Glide.with(requireActivity());
-                with.load(projectImagesDirectory + File.separator + images.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
-                            @Override
-                            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                                super.onResourceReady(iB.a(bitmap, i2, i4, i3), glideAnimation);
-                            }
-                        });
-                return;
-            }
-            int i5 = images.get(position).rotate;
-            int i6 = images.get(position).flipVertical;
-            Glide.with(requireActivity()).load(images.get(position).resFullName).asBitmap().centerCrop().signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
+            ProjectResourceBean image = images.get(position);
+
+            holder.deleteContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
+            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.delete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
+                    : R.drawable.ic_trashcan_white_48dp);
+            holder.checkBox.setChecked(image.isSelected);
+            holder.name.setText(image.resName);
+
+            Glide.with(requireActivity())
+                    .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
+                            : images.get(position).resFullName)
+                    .asBitmap()
+                    .centerCrop()
+                    .signature(kC.n())
+                    .error(R.drawable.ic_remove_grey600_24dp)
+                    .into(new BitmapImageViewTarget(holder.image) {
                         @Override
                         public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            super.onResourceReady(iB.a(bitmap, i5, images.get(position).flipHorizontal, i6), glideAnimation);
+                            super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
                         }
                     });
         }
