@@ -297,8 +297,6 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private int c = -1;
-
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final CheckBox checkBox;
             public final TextView name;
@@ -316,20 +314,18 @@ public class pu extends qA implements View.OnClickListener {
                 ninePatch = itemView.findViewById(R.id.img_nine_patch);
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 image.setOnClickListener(v -> {
-                    c = getLayoutPosition();
                     if (!isSelecting) {
                         showImageDetailsDialog(images.get(getLayoutPosition()));
                     } else {
                         checkBox.setChecked(!checkBox.isChecked());
-                        images.get(c).isSelected = checkBox.isChecked();
-                        notifyItemChanged(c);
+                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                        notifyItemChanged(getLayoutPosition());
                     }
                 });
                 image.setOnLongClickListener(v -> {
                     a(true);
-                    c = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
-                    images.get(c).isSelected = checkBox.isChecked();
+                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
                     return true;
                 });
             }
