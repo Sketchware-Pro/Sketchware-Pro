@@ -29,8 +29,38 @@ class DependencyResolver(
     private val version: String
 ) {
     companion object {
-        private const val DEFAULT_REPOS =
-            "[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"}]"
+        private val DEFAULT_REPOS = """
+            |[
+            |    {
+            |        "url": "https://repo.hortonworks.com/content/repositories/releases",
+            |        "name": "HortanWorks"
+            |    },
+            |    {
+            |        "url": "https://maven.atlassian.com/content/repositories/atlassian-public",
+            |        "name": "Atlassian"
+            |    },
+            |    {
+            |        "url": "https://jcenter.bintray.com",
+            |        "name": "JCenter"
+            |    },
+            |    {
+            |        "url": "https://oss.sonatype.org/content/repositories/releases",
+            |        "name": "Sonatype"
+            |    },
+            |    {
+            |        "url": "https://repo.spring.io/plugins-release",
+            |        "name": "Spring Plugins"
+            |    },
+            |    {
+            |        "url": "https://repo.spring.io/libs-milestone",
+            |        "name": "Spring Milestone"
+            |    },
+            |    {
+            |        "url": "https://repo.maven.apache.org/maven2",
+            |        "name": "Apache Maven"
+            |    }
+            |]
+            """.trimMargin()
     }
 
     private val downloadPath: String =
