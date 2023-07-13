@@ -56,7 +56,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onBackPressed() {
-        if (projectImagesFragment.p) {
+        if (projectImagesFragment.isSelecting) {
             projectImagesFragment.a(false);
         } else {
             k();
@@ -180,7 +180,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
         @Override
         public void b() {
-            activity.get().projectImagesFragment.i();
+            activity.get().projectImagesFragment.saveImages();
         }
 
         @Override
