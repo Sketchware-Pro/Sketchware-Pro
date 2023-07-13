@@ -80,35 +80,26 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void deleteSelected() {
-        int size = images.size();
-        while (true) {
-            size--;
-            if (size >= 0) {
-                if (images.get(size).isSelected) {
-                    images.remove(size);
-                }
-            } else {
-                adapter.notifyDataSetChanged();
-                return;
+        for (int i = images.size() - 1; i >= 0; i--) {
+            if (images.get(i).isSelected) {
+                images.remove(i);
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     public void saveImages() {
         for (ProjectResourceBean image : images) {
             if (image.isNew || image.isEdited) {
                 try {
-                    String str2 = projectImagesDirectory + File.separator + image.resName;
-                    String str3 = image.isNinePatch() ? str2 + ".9.png" : str2 + ".png";
-                    String str;
-                    if (image.savedPos == 1) {
-                        str = image.resFullName;
-                    } else if (image.savedPos == 0) {
-                        str = a(image);
+                    String path;
+                    if (image.savedPos == 0) {
+                        path = a(image);
                     } else {
-                        str = image.resFullName;
+                        path = image.resFullName;
                     }
-                    iB.a(str, str3, image.rotate, image.flipHorizontal, image.flipVertical);
+                    String str = projectImagesDirectory + File.separator + image.resName;
+                    iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -117,8 +108,8 @@ public class pu extends qA implements View.OnClickListener {
         for (int i = 0; i < images.size(); i++) {
             ProjectResourceBean image = images.get(i);
             if (image.isNew || image.isEdited) {
-                String str4 = image.resName;
-                images.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.isNinePatch() ? str4 + ".9.png" : str4 + ".png"));
+                images.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                        image.resName, image.isNinePatch() ? image.resName + ".9.png" : image.resName + ".png"));
             }
         }
         jC.d(sc_id).b(images);
@@ -153,14 +144,14 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
-        if (bundle == null) {
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState == null) {
             initialize();
         } else {
-            sc_id = bundle.getString("sc_id");
-            projectImagesDirectory = bundle.getString("dir_path");
-            images = bundle.getParcelableArrayList("images");
+            sc_id = savedInstanceState.getString("sc_id");
+            projectImagesDirectory = savedInstanceState.getString("dir_path");
+            images = savedInstanceState.getParcelableArrayList("images");
         }
         oB fileUtil = new oB();
         // mkdirs
@@ -170,19 +161,20 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 210) {
-            if (i2 == Activity.RESULT_OK) {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, intent.getStringExtra("iconName"), intent.getStringExtra("iconPath"));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 210) {
+            if (resultCode == Activity.RESULT_OK) {
+                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                        data.getStringExtra("iconName"), data.getStringExtra("iconPath"));
                 projectResourceBean.savedPos = 2;
                 projectResourceBean.isNew = true;
-                addImage(projectResourceBean, true);
+                addImage(projectResourceBean);
                 bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
-        } else if (i == 267) {
-            if (i2 == Activity.RESULT_OK) {
-                ArrayList parcelableArrayListExtra = intent.getParcelableArrayListExtra("images");
+        } else if (requestCode == 267) {
+            if (resultCode == Activity.RESULT_OK) {
+                ArrayList parcelableArrayListExtra = data.getParcelableArrayListExtra("images");
                 Iterator it = parcelableArrayListExtra.iterator();
                 while (it.hasNext()) {
                     images.add((ProjectResourceBean) it.next());
@@ -192,18 +184,13 @@ public class pu extends qA implements View.OnClickListener {
                 ((ManageImageActivity) requireActivity()).l().e();
                 bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
-        } else if (i == 268 && i2 == Activity.RESULT_OK) {
-            ProjectResourceBean projectResourceBean2 = intent.getParcelableExtra("image");
+        } else if (requestCode == 268 && resultCode == Activity.RESULT_OK) {
+            ProjectResourceBean projectResourceBean2 = data.getParcelableExtra("image");
             kC.z();
-            Iterator<ProjectResourceBean> it2 = images.iterator();
-            while (true) {
-                if (!it2.hasNext()) {
-                    break;
-                }
-                ProjectResourceBean next = it2.next();
-                if (next.resName.equals(projectResourceBean2.resName)) {
-                    next.copy(projectResourceBean2);
-                    adapter.notifyItemChanged(images.indexOf(next));
+            for (ProjectResourceBean image : images) {
+                if (image.resName.equals(projectResourceBean2.resName)) {
+                    image.copy(projectResourceBean2);
+                    adapter.notifyItemChanged(images.indexOf(image));
                     break;
                 }
             }
@@ -239,60 +226,62 @@ public class pu extends qA implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanCount(getColumnCount());
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager manager) {
+            manager.setSpanCount(getColumnCount());
+        }
         recyclerView.requestLayout();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.manage_image_menu, menu);
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.manage_image_menu, menu);
         menu.findItem(R.id.menu_image_delete).setVisible(!isSelecting);
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_image_list, viewGroup, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
         setHasOptionsMenu(true);
         images = new ArrayList<>();
-        recyclerView = viewGroup2.findViewById(R.id.image_list);
+        recyclerView = root.findViewById(R.id.image_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), getColumnCount()));
         adapter = new Adapter(recyclerView);
         recyclerView.setAdapter(adapter);
-        guide = viewGroup2.findViewById(R.id.tv_guide);
+        guide = root.findViewById(R.id.tv_guide);
         guide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
-        actionButtonContainer = viewGroup2.findViewById(R.id.layout_btn_group);
-        Button delete = viewGroup2.findViewById(R.id.btn_accept);
-        Button cancel = viewGroup2.findViewById(R.id.btn_cancel);
+        actionButtonContainer = root.findViewById(R.id.layout_btn_group);
+        Button delete = root.findViewById(R.id.btn_accept);
+        Button cancel = root.findViewById(R.id.btn_cancel);
         delete.setText(xB.b().a(requireContext(), R.string.common_word_delete));
         cancel.setText(xB.b().a(requireContext(), R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        fab = viewGroup2.findViewById(R.id.fab);
+        fab = root.findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(this);
         kC.z();
-        return viewGroup2;
+        return root;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int itemId = menuItem.getItemId();
-        if (itemId == R.id.menu_image_delete) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_image_delete) {
             a(!isSelecting);
-        } else if (itemId == R.id.menu_image_import) {
+        } else if (id == R.id.menu_image_import) {
             openImportIconActivity();
         }
-        return super.onOptionsItemSelected(menuItem);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", sc_id);
-        bundle.putString("dir_path", projectImagesDirectory);
-        bundle.putParcelableArrayList("images", images);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        outState.putString("dir_path", projectImagesDirectory);
+        outState.putParcelableArrayList("images", images);
+        super.onSaveInstanceState(outState);
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
@@ -398,41 +387,41 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private ArrayList<String> getAllImageNames() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("app_icon");
+        ArrayList<String> names = new ArrayList<>();
+        names.add("app_icon");
         for (ProjectResourceBean projectResourceBean : images) {
-            arrayList.add(projectResourceBean.resName);
+            names.add(projectResourceBean.resName);
         }
-        return arrayList;
+        return names;
     }
 
     public void a(ArrayList<ProjectResourceBean> arrayList) {
-        ArrayList<ProjectResourceBean> arrayList2 = new ArrayList<>();
-        ArrayList<String> arrayList3 = new ArrayList<>();
+        ArrayList<ProjectResourceBean> imagesToAdd = new ArrayList<>();
+        ArrayList<String> duplicateNames = new ArrayList<>();
         for (ProjectResourceBean next : arrayList) {
-            String str = next.resName;
-            if (isImageNameDuplicate(str)) {
-                arrayList3.add(str);
+            String imageName = next.resName;
+            if (isImageNameDuplicate(imageName)) {
+                duplicateNames.add(imageName);
             } else {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, str, next.resFullName);
-                projectResourceBean.savedPos = 1;
-                projectResourceBean.isNew = true;
-                projectResourceBean.rotate = 0;
-                projectResourceBean.flipVertical = 1;
-                projectResourceBean.flipHorizontal = 1;
-                arrayList2.add(projectResourceBean);
+                ProjectResourceBean image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, imageName, next.resFullName);
+                image.savedPos = 1;
+                image.isNew = true;
+                image.rotate = 0;
+                image.flipVertical = 1;
+                image.flipHorizontal = 1;
+                imagesToAdd.add(image);
             }
         }
-        addImages(arrayList2, false);
-        if (arrayList3.size() > 0) {
-            String str2 = "";
-            for (String str3 : arrayList3) {
-                if (str2.length() > 0) {
-                    str2 += ", ";
+        addImages(imagesToAdd);
+        if (duplicateNames.size() > 0) {
+            StringBuilder duplicates = new StringBuilder();
+            for (String name : duplicateNames) {
+                if (duplicates.length() > 0) {
+                    duplicates.append(", ");
                 }
-                str2 += str3;
+                duplicates.append(name);
             }
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", bB.TOAST_WARNING).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + duplicates + "]", bB.TOAST_WARNING).show();
         } else {
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
         }
@@ -441,8 +430,8 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private boolean isImageNameDuplicate(String imageName) {
-        for (ProjectResourceBean projectResourceBean : images) {
-            if (projectResourceBean.resName.equals(imageName)) {
+        for (ProjectResourceBean image : images) {
+            if (image.resName.equals(imageName)) {
                 return true;
             }
         }
@@ -453,31 +442,21 @@ public class pu extends qA implements View.OnClickListener {
         return projectImagesDirectory + File.separator + projectResourceBean.resFullName;
     }
 
-    public void a(boolean z) {
-        isSelecting = z;
+    public void a(boolean isSelecting) {
+        this.isSelecting = isSelecting;
         requireActivity().invalidateOptionsMenu();
         unselectAll();
-        if (isSelecting) {
-            actionButtonContainer.setVisibility(View.VISIBLE);
-        } else {
-            actionButtonContainer.setVisibility(View.GONE);
-        }
+        actionButtonContainer.setVisibility(this.isSelecting ? View.VISIBLE : View.GONE);
         adapter.notifyDataSetChanged();
     }
 
-    private void addImage(ProjectResourceBean projectResourceBean, boolean notifyAdapter) {
+    private void addImage(ProjectResourceBean projectResourceBean) {
         images.add(projectResourceBean);
-        if (notifyAdapter) {
-            adapter.notifyItemInserted(adapter.getItemCount());
-            updateGuideVisibility();
-        }
+        adapter.notifyItemInserted(adapter.getItemCount());
+        updateGuideVisibility();
     }
 
-    private void addImages(ArrayList<ProjectResourceBean> arrayList, boolean notifyAdapter) {
+    private void addImages(ArrayList<ProjectResourceBean> arrayList) {
         images.addAll(arrayList);
-        if (notifyAdapter) {
-            adapter.notifyItemInserted(adapter.getItemCount());
-            updateGuideVisibility();
-        }
     }
 }
