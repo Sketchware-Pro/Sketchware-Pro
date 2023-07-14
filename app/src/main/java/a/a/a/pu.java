@@ -51,10 +51,6 @@ public class pu extends qA implements View.OnClickListener {
         return images;
     }
 
-    private int getColumnCount() {
-        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
-    }
-
     private void initialize() {
         sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         projectImagesDirectory = jC.d(sc_id).l();
@@ -227,7 +223,7 @@ public class pu extends qA implements View.OnClickListener {
     public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager manager) {
-            manager.setSpanCount(getColumnCount());
+            manager.setSpanCount(ManageImageActivity.getImageGridColumnCount(requireContext()));
         }
         recyclerView.requestLayout();
     }
@@ -246,7 +242,7 @@ public class pu extends qA implements View.OnClickListener {
         images = new ArrayList<>();
         recyclerView = root.findViewById(R.id.image_list);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), getColumnCount()));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter(recyclerView);
         recyclerView.setAdapter(adapter);
         guide = root.findViewById(R.id.tv_guide);

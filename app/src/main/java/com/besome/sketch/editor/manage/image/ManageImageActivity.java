@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.manage.image;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -50,6 +51,11 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     public pu m() {
         return projectImagesFragment;
+    }
+
+    public static int getImageGridColumnCount(Context context) {
+        var displayMetrics = context.getResources().getDisplayMetrics();
+        return (int) (displayMetrics.widthPixels / displayMetrics.density) / 100;
     }
 
     @Override

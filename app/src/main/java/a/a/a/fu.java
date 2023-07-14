@@ -36,10 +36,6 @@ public class fu extends qA implements View.OnClickListener {
     private TextView guide;
     private Button importImages;
 
-    private int c() {
-        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
-    }
-
     public void refreshData() {
         collectionImages = Op.g().f();
         adapter.notifyDataSetChanged();
@@ -121,7 +117,7 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanCount(c());
+        ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanCount(ManageImageActivity.getImageGridColumnCount(requireContext()));
         recyclerView.requestLayout();
     }
 
@@ -130,7 +126,7 @@ public class fu extends qA implements View.OnClickListener {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
         recyclerView = viewGroup2.findViewById(R.id.image_list);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), c()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
         recyclerView.setAdapter(adapter);
         guide = viewGroup2.findViewById(R.id.tv_guide);
