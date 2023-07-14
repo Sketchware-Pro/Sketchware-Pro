@@ -40,7 +40,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
-    // don't change signature: referenced by La/a/a/fu;
     public void f(int i) {
         viewPager.setCurrentItem(i);
     }
@@ -49,7 +48,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         return collectionImagesFragment;
     }
 
-    // don't change signature: referenced by La/a/a/fu;
     public pu m() {
         return projectImagesFragment;
     }
