@@ -110,7 +110,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onPageSelected(int position) {
         if (position == 0) {
-            collectionImagesFragment.f();
+            collectionImagesFragment.unselectAll();
         } else {
             projectImagesFragment.a(false);
         }

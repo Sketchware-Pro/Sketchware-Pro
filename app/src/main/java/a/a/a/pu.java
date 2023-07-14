@@ -181,7 +181,7 @@ public class pu extends qA implements View.OnClickListener {
                 }
                 adapter.notifyItemRangeInserted(images.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
                 updateGuideVisibility();
-                ((ManageImageActivity) requireActivity()).l().e();
+                ((ManageImageActivity) requireActivity()).l().refreshData();
                 bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             }
         } else if (requestCode == 268 && resultCode == Activity.RESULT_OK) {
@@ -195,7 +195,7 @@ public class pu extends qA implements View.OnClickListener {
                 }
             }
             updateGuideVisibility();
-            ((ManageImageActivity) requireActivity()).l().e();
+            ((ManageImageActivity) requireActivity()).l().refreshData();
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
         }
     }

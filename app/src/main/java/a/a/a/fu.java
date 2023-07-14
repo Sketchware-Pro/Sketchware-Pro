@@ -27,45 +27,44 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class fu extends qA implements View.OnClickListener {
-    public RecyclerView f;
-    public String g;
-    public ArrayList<ProjectResourceBean> h;
-    public a i = null;
-    public TextView j;
-    public Button k;
+    private RecyclerView recyclerView;
+    private String sc_id;
+    private ArrayList<ProjectResourceBean> collectionImages;
+    private Adapter adapter = null;
+    private TextView guide;
+    private Button importImages;
 
-    public final int c() {
+    private int c() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
     }
 
-    public void d() {
-        g = getActivity().getIntent().getStringExtra("sc_id");
+    private void initialize() {
+        sc_id = getActivity().getIntent().getStringExtra("sc_id");
     }
 
-    public void e() {
-        h = Op.g().f();
-        i.notifyDataSetChanged();
-        g();
+    public void refreshData() {
+        collectionImages = Op.g().f();
+        adapter.notifyDataSetChanged();
+        updateGuideVisibility();
     }
 
-    public void f() {
-        for (ProjectResourceBean image : h) {
+    public void unselectAll() {
+        for (ProjectResourceBean image : collectionImages) {
             image.isSelected = false;
         }
     }
 
-    public void g() {
-        boolean isEmpty = h.size() == 0;
-        j.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-        f.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+    public void updateGuideVisibility() {
+        boolean isEmpty = collectionImages.size() == 0;
+        guide.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
 
-    public void h() {
+    public void importImages() {
         ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
-        for (ProjectResourceBean image : h) {
+        for (ProjectResourceBean image : collectionImages) {
             if (image.isSelected) {
                 arrayList.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName));
             }
@@ -77,22 +76,22 @@ public class fu extends qA implements View.OnClickListener {
             intent.putParcelableArrayListExtra("selected_collections", arrayList);
             startActivityForResult(intent, 232);
         }
-        f();
-        i.notifyDataSetChanged();
+        unselectAll();
+        adapter.notifyDataSetChanged();
     }
 
-    public final void i() {
+    private void onItemSelected() {
         int count = 0;
-        for (ProjectResourceBean image : h) {
+        for (ProjectResourceBean image : collectionImages) {
             if (image.isSelected) {
                 count += 1;
             }
         }
         if (count > 0) {
-            k.setText(xB.b().a(getContext(), R.string.common_word_import_count, count).toUpperCase());
-            k.setVisibility(View.VISIBLE);
+            importImages.setText(xB.b().a(getContext(), R.string.common_word_import_count, count).toUpperCase());
+            importImages.setVisibility(View.VISIBLE);
         } else {
-            k.setVisibility(View.GONE);
+            importImages.setVisibility(View.GONE);
         }
     }
 
@@ -100,106 +99,103 @@ public class fu extends qA implements View.OnClickListener {
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
         if (bundle == null) {
-            d();
+            initialize();
         } else {
-            g = bundle.getString("sc_id");
+            sc_id = bundle.getString("sc_id");
         }
-        e();
+        refreshData();
     }
 
     @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 232 && i2 == Activity.RESULT_OK && intent != null) {
-            a(intent.getParcelableArrayListExtra("results"));
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (!mB.a() && view.getId() == R.id.btn_import) {
-            k.setVisibility(View.GONE);
-            h();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 232 && resultCode == Activity.RESULT_OK && data != null) {
+            onImagesImported(data.getParcelableArrayListExtra("results"));
         }
     }
 
     @Override
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
-        ((GridLayoutManager) f.getLayoutManager()).setSpanCount(c());
-        f.requestLayout();
+    public void onClick(View v) {
+        if (!mB.a() && v.getId() == R.id.btn_import) {
+            importImages.setVisibility(View.GONE);
+            importImages();
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_image_list, viewGroup, false);
-        f = viewGroup2.findViewById(R.id.image_list);
-        f.setHasFixedSize(true);
-        f.setLayoutManager(new GridLayoutManager(getActivity(), c()));
-        i = new a();
-        f.setAdapter(i);
-        j = viewGroup2.findViewById(R.id.tv_guide);
-        j.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
-        k = viewGroup2.findViewById(R.id.btn_import);
-        k.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
-        k.setOnClickListener(this);
-        k.setVisibility(View.GONE);
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanCount(c());
+        recyclerView.requestLayout();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
+        recyclerView = viewGroup2.findViewById(R.id.image_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), c()));
+        adapter = new Adapter();
+        recyclerView.setAdapter(adapter);
+        guide = viewGroup2.findViewById(R.id.tv_guide);
+        guide.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
+        importImages = viewGroup2.findViewById(R.id.btn_import);
+        importImages.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
+        importImages.setOnClickListener(this);
+        importImages.setVisibility(View.GONE);
         return viewGroup2;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", g);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
-    class a extends RecyclerView.Adapter<fu.a.ViewHolder> {
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public int c = -1;
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            public CheckBox t;
-            public TextView u;
-            public ImageView v;
-            public ImageView w;
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final CheckBox checkBox;
+            public final TextView name;
+            public final ImageView image;
+            public final ImageView ninePatch;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.chk_select);
-                u = itemView.findViewById(R.id.tv_image_name);
-                v = itemView.findViewById(R.id.img);
-                w = itemView.findViewById(R.id.img_nine_patch);
-                t.setVisibility(View.VISIBLE);
-                v.setOnClickListener(v -> {
-                    t.setChecked(!t.isChecked());
+                checkBox = itemView.findViewById(R.id.chk_select);
+                name = itemView.findViewById(R.id.tv_image_name);
+                image = itemView.findViewById(R.id.img);
+                ninePatch = itemView.findViewById(R.id.img_nine_patch);
+                checkBox.setVisibility(View.VISIBLE);
+                image.setOnClickListener(v -> {
+                    checkBox.setChecked(!checkBox.isChecked());
                     c = getLayoutPosition();
-                    h.get(c).isSelected = t.isChecked();
-                    i();
+                    collectionImages.get(c).isSelected = checkBox.isChecked();
+                    onItemSelected();
                     notifyItemChanged(c);
                 });
             }
         }
 
-        public a() {
-        }
-
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean projectResourceBean = h.get(position);
+            ProjectResourceBean projectResourceBean = collectionImages.get(position);
             String str = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
-            holder.t.setVisibility(View.VISIBLE);
+            holder.checkBox.setVisibility(View.VISIBLE);
             if (projectResourceBean.isNinePatch()) {
-                holder.w.setVisibility(View.VISIBLE);
+                holder.ninePatch.setVisibility(View.VISIBLE);
             } else {
-                holder.w.setVisibility(View.GONE);
+                holder.ninePatch.setVisibility(View.GONE);
             }
-            Glide.with(getActivity()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
+            Glide.with(getActivity()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
                 @Override
                 public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                     super.onResourceReady(bitmap, glideAnimation);
                 }
             });
-            holder.u.setText(h.get(position).resName);
-            holder.t.setChecked(h.get(position).isSelected);
+            holder.name.setText(collectionImages.get(position).resName);
+            holder.checkBox.setChecked(collectionImages.get(position).isSelected);
         }
 
         @Override
@@ -210,11 +206,11 @@ public class fu extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            return h.size();
+            return collectionImages.size();
         }
     }
 
-    public void a(ArrayList<ProjectResourceBean> importedImages) {
+    private void onImagesImported(ArrayList<ProjectResourceBean> importedImages) {
         ArrayList<ProjectResourceBean> newImportedImages = new ArrayList<>();
         for (ProjectResourceBean image : importedImages) {
             newImportedImages.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.resFullName));
