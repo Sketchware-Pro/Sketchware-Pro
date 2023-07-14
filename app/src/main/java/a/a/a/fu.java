@@ -40,10 +40,6 @@ public class fu extends qA implements View.OnClickListener {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
     }
 
-    private void initialize() {
-        sc_id = getActivity().getIntent().getStringExtra("sc_id");
-    }
-
     public void refreshData() {
         collectionImages = Op.g().f();
         adapter.notifyDataSetChanged();
@@ -99,7 +95,7 @@ public class fu extends qA implements View.OnClickListener {
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
         if (bundle == null) {
-            initialize();
+            sc_id = getActivity().getIntent().getStringExtra("sc_id");
         } else {
             sc_id = bundle.getString("sc_id");
         }
