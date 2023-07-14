@@ -149,8 +149,6 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        public int c = -1;
-
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final CheckBox checkBox;
             public final TextView name;
@@ -166,10 +164,9 @@ public class fu extends qA implements View.OnClickListener {
                 checkBox.setVisibility(View.VISIBLE);
                 image.setOnClickListener(v -> {
                     checkBox.setChecked(!checkBox.isChecked());
-                    c = getLayoutPosition();
-                    collectionImages.get(c).isSelected = checkBox.isChecked();
+                    collectionImages.get(getLayoutPosition()).isSelected = checkBox.isChecked();
                     onItemSelected();
-                    notifyItemChanged(c);
+                    notifyItemChanged(getLayoutPosition());
                 });
             }
         }
