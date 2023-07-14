@@ -53,17 +53,16 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     public void importImages() {
-        ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
+        ArrayList<ProjectResourceBean> selectedCollections = new ArrayList<>();
         for (ProjectResourceBean image : collectionImages) {
             if (image.isSelected) {
-                arrayList.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName));
+                selectedCollections.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName));
             }
         }
-        if (arrayList.size() > 0) {
-            ArrayList<ProjectResourceBean> d = ((ManageImageActivity) requireActivity()).m().d();
+        if (selectedCollections.size() > 0) {
             Intent intent = new Intent(requireActivity(), ManageImageImportActivity.class);
-            intent.putParcelableArrayListExtra("project_images", d);
-            intent.putParcelableArrayListExtra("selected_collections", arrayList);
+            intent.putParcelableArrayListExtra("project_images", ((ManageImageActivity) requireActivity()).m().d());
+            intent.putParcelableArrayListExtra("selected_collections", selectedCollections);
             startActivityForResult(intent, 232);
         }
         unselectAll();
@@ -86,13 +85,10 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
-        if (bundle == null) {
-            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
-        } else {
-            sc_id = bundle.getString("sc_id");
-        }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sc_id = savedInstanceState != null ? savedInstanceState.getString("sc_id")
+                : requireActivity().getIntent().getStringExtra("sc_id");
         refreshData();
     }
 
@@ -115,25 +111,27 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanCount(ManageImageActivity.getImageGridColumnCount(requireContext()));
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager manager) {
+            manager.setSpanCount(ManageImageActivity.getImageGridColumnCount(requireContext()));
+        }
         recyclerView.requestLayout();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
-        recyclerView = viewGroup2.findViewById(R.id.image_list);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
+        recyclerView = root.findViewById(R.id.image_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
         recyclerView.setAdapter(adapter);
-        guide = viewGroup2.findViewById(R.id.tv_guide);
+        guide = root.findViewById(R.id.tv_guide);
         guide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
-        importImages = viewGroup2.findViewById(R.id.btn_import);
+        importImages = root.findViewById(R.id.btn_import);
         importImages.setText(xB.b().a(requireContext(), R.string.common_word_import).toUpperCase());
         importImages.setOnClickListener(this);
         importImages.setVisibility(View.GONE);
-        return viewGroup2;
+        return root;
     }
 
     @Override
