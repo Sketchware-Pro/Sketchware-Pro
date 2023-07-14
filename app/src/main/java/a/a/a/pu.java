@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -35,7 +38,6 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class pu extends qA implements View.OnClickListener {
     private String sc_id;
@@ -47,6 +49,57 @@ public class pu extends qA implements View.OnClickListener {
     private String projectImagesDirectory = "";
     private Adapter adapter = null;
     public boolean isSelecting = false;
+
+    private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            var data = result.getData();
+            assert data != null;
+            ProjectResourceBean icon = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                    data.getStringExtra("iconName"), data.getStringExtra("iconPath"));
+            icon.savedPos = 2;
+            icon.isNew = true;
+            addImage(icon);
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+        }
+    });
+    private final ActivityResultLauncher<Intent> showAddImageDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+       if (result.getResultCode() == Activity.RESULT_OK) {
+           assert result.getData() != null;
+           ArrayList<ProjectResourceBean> addedImages;
+           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+               addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
+           } else {
+               addedImages = result.getData().getParcelableArrayListExtra("images");
+           }
+           images.addAll(addedImages);
+           adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
+           updateGuideVisibility();
+           ((ManageImageActivity) requireActivity()).l().refreshData();
+           bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+       }
+    });
+    private final ActivityResultLauncher<Intent> showImageDetailsDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            ProjectResourceBean editedImage;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                editedImage = result.getData().getParcelableExtra("image", ProjectResourceBean.class);
+            } else {
+                editedImage = result.getData().getParcelableExtra("image");
+            }
+            kC.z();
+            for (ProjectResourceBean image : images) {
+                if (image.resName.equals(editedImage.resName)) {
+                    image.copy(editedImage);
+                    adapter.notifyItemChanged(images.indexOf(image));
+                    break;
+                }
+            }
+            updateGuideVisibility();
+            ((ManageImageActivity) requireActivity()).l().refreshData();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+        }
+    });
 
     public ArrayList<ProjectResourceBean> d() {
         return images;
@@ -130,14 +183,14 @@ public class pu extends qA implements View.OnClickListener {
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", projectImagesDirectory);
-        startActivityForResult(intent, 267);
+        showAddImageDialog.launch(intent);
     }
 
     private void openImportIconActivity() {
         Intent intent = new Intent(requireActivity(), ImportIconActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putStringArrayListExtra("imageNames", getAllImageNames());
-        startActivityForResult(intent, 210);
+        openImportIconActivity.launch(intent);
     }
 
     @Override
@@ -154,46 +207,6 @@ public class pu extends qA implements View.OnClickListener {
         new oB().f(projectImagesDirectory);
         adapter.notifyDataSetChanged();
         updateGuideVisibility();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 210) {
-            if (resultCode == Activity.RESULT_OK) {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                        data.getStringExtra("iconName"), data.getStringExtra("iconPath"));
-                projectResourceBean.savedPos = 2;
-                projectResourceBean.isNew = true;
-                addImage(projectResourceBean);
-                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
-            }
-        } else if (requestCode == 267) {
-            if (resultCode == Activity.RESULT_OK) {
-                ArrayList parcelableArrayListExtra = data.getParcelableArrayListExtra("images");
-                Iterator it = parcelableArrayListExtra.iterator();
-                while (it.hasNext()) {
-                    images.add((ProjectResourceBean) it.next());
-                }
-                adapter.notifyItemRangeInserted(images.size() - parcelableArrayListExtra.size(), parcelableArrayListExtra.size());
-                updateGuideVisibility();
-                ((ManageImageActivity) requireActivity()).l().refreshData();
-                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
-            }
-        } else if (requestCode == 268 && resultCode == Activity.RESULT_OK) {
-            ProjectResourceBean projectResourceBean2 = data.getParcelableExtra("image");
-            kC.z();
-            for (ProjectResourceBean image : images) {
-                if (image.resName.equals(projectResourceBean2.resName)) {
-                    image.copy(projectResourceBean2);
-                    adapter.notifyItemChanged(images.indexOf(image));
-                    break;
-                }
-            }
-            updateGuideVisibility();
-            ((ManageImageActivity) requireActivity()).l().refreshData();
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
-        }
     }
 
     @Override
@@ -379,7 +392,7 @@ public class pu extends qA implements View.OnClickListener {
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", projectImagesDirectory);
         intent.putExtra("edit_target", projectResourceBean);
-        startActivityForResult(intent, 268);
+        showImageDetailsDialog.launch(intent);
     }
 
     private ArrayList<String> getAllImageNames() {
