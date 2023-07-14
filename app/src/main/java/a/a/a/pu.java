@@ -423,14 +423,8 @@ public class pu extends qA implements View.OnClickListener {
         }
         addImages(imagesToAdd);
         if (duplicateNames.size() > 0) {
-            StringBuilder duplicates = new StringBuilder();
-            for (String name : duplicateNames) {
-                if (duplicates.length() > 0) {
-                    duplicates.append(", ");
-                }
-                duplicates.append(name);
-            }
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + duplicates + "]", bB.TOAST_WARNING).show();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
+                    "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
         } else {
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
         }
