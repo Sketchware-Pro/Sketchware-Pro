@@ -62,8 +62,8 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
         if (arrayList.size() > 0) {
-            ArrayList<ProjectResourceBean> d = ((ManageImageActivity) getActivity()).m().d();
-            Intent intent = new Intent(getActivity(), ManageImageImportActivity.class);
+            ArrayList<ProjectResourceBean> d = ((ManageImageActivity) requireActivity()).m().d();
+            Intent intent = new Intent(requireActivity(), ManageImageImportActivity.class);
             intent.putParcelableArrayListExtra("project_images", d);
             intent.putParcelableArrayListExtra("selected_collections", arrayList);
             startActivityForResult(intent, 232);
@@ -80,7 +80,7 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
         if (count > 0) {
-            importImages.setText(xB.b().a(getContext(), R.string.common_word_import_count, count).toUpperCase());
+            importImages.setText(xB.b().a(requireContext(), R.string.common_word_import_count, count).toUpperCase());
             importImages.setVisibility(View.VISIBLE);
         } else {
             importImages.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class fu extends qA implements View.OnClickListener {
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
         if (bundle == null) {
-            sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         } else {
             sc_id = bundle.getString("sc_id");
         }
@@ -126,13 +126,13 @@ public class fu extends qA implements View.OnClickListener {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
         recyclerView = viewGroup2.findViewById(R.id.image_list);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
         recyclerView.setAdapter(adapter);
         guide = viewGroup2.findViewById(R.id.tv_guide);
-        guide.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
+        guide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
         importImages = viewGroup2.findViewById(R.id.btn_import);
-        importImages.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
+        importImages.setText(xB.b().a(requireContext(), R.string.common_word_import).toUpperCase());
         importImages.setOnClickListener(this);
         importImages.setVisibility(View.GONE);
         return viewGroup2;
@@ -177,7 +177,7 @@ public class fu extends qA implements View.OnClickListener {
             } else {
                 holder.ninePatch.setVisibility(View.GONE);
             }
-            Glide.with(getActivity()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
+            Glide.with(requireActivity()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
                 @Override
                 public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                     super.onResourceReady(bitmap, glideAnimation);
@@ -205,8 +205,8 @@ public class fu extends qA implements View.OnClickListener {
             newImportedImages.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.resFullName));
         }
         if (newImportedImages.size() > 0) {
-            ((ManageImageActivity) getActivity()).m().a(newImportedImages);
-            ((ManageImageActivity) getActivity()).f(0);
+            ((ManageImageActivity) requireActivity()).m().a(newImportedImages);
+            ((ManageImageActivity) requireActivity()).f(0);
         }
     }
 }
