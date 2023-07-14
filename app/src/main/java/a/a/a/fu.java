@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageImportActivity;
-import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,7 +67,7 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     public void h() {
-        ArrayList<? extends Parcelable> arrayList = new ArrayList<>();
+        ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
         Iterator<ProjectResourceBean> it = this.h.iterator();
         while (it.hasNext()) {
             ProjectResourceBean next = it.next();
@@ -157,23 +159,29 @@ public class fu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.Adapter<a.a> {
+    class a extends RecyclerView.Adapter<fu.a.ViewHolder> {
         public int c = -1;
 
-        class a extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             public CheckBox t;
             public TextView u;
             public ImageView v;
             public ImageView w;
 
-            public a(@NonNull View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 this.t = (CheckBox) itemView.findViewById(2131230893);
                 this.u = (TextView) itemView.findViewById(2131232003);
                 this.v = (ImageView) itemView.findViewById(2131231102);
                 this.w = (ImageView) itemView.findViewById(2131231161);
                 this.t.setVisibility(0);
-                this.v.setOnClickListener(new eu(this, a.this));
+                this.v.setOnClickListener(v -> {
+                    t.setChecked(!t.isChecked());
+                    c = getLayoutPosition();
+                    h.get(c).isSelected = t.isChecked();
+                    i();
+                    notifyItemChanged(c);
+                });
             }
         }
 
@@ -181,7 +189,7 @@ public class fu extends qA implements View.OnClickListener {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull a holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean projectResourceBean = (ProjectResourceBean) fu.this.h.get(position);
             String str = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
             holder.t.setVisibility(0);
@@ -190,15 +198,20 @@ public class fu extends qA implements View.OnClickListener {
             } else {
                 holder.w.setVisibility(8);
             }
-            Glide.with(fu.this.getActivity()).load(str).asBitmap().centerCrop().error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new du(this, holder.v));
+            Glide.with(fu.this.getActivity()).load(str).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(holder.v) {
+                @Override
+                public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                    super.onResourceReady(bitmap, glideAnimation);
+                }
+            });
             holder.u.setText(((ProjectResourceBean) fu.this.h.get(position)).resName);
             holder.t.setChecked(((ProjectResourceBean) fu.this.h.get(position)).isSelected);
         }
 
         @Override
         @NonNull
-        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
         }
 
         @Override
