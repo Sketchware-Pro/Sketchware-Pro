@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -140,8 +141,8 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState == null) {
             initialize();
         } else {
@@ -149,9 +150,8 @@ public class pu extends qA implements View.OnClickListener {
             projectImagesDirectory = savedInstanceState.getString("dir_path");
             images = savedInstanceState.getParcelableArrayList("images");
         }
-        oB fileUtil = new oB();
         // mkdirs
-        fileUtil.f(projectImagesDirectory);
+        new oB().f(projectImagesDirectory);
         adapter.notifyDataSetChanged();
         updateGuideVisibility();
     }
