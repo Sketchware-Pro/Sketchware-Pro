@@ -38,9 +38,8 @@ public class fu extends qA implements View.OnClickListener {
     private Button importImages;
 
     private final ActivityResultLauncher<Intent> openImageImportDetails = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            var data = result.getData();
-            assert data != null;
+        var data = result.getData();
+        if (result.getResultCode() == Activity.RESULT_OK && data != null) {
             ArrayList<ProjectResourceBean> importedImages;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 importedImages = data.getParcelableArrayListExtra("results", ProjectResourceBean.class);
