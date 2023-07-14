@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,7 +30,8 @@
                     android:gravity="center"
                     android:textColor="@color/grey"
                     android:textSize="14sp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:text="@string/design_manager_image_description_guide_add_image" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/image_list"
@@ -38,7 +40,10 @@
                     android:layout_weight="1"
                     android:background="#fff5f5f5"
                     android:scrollbars="vertical"
-                    android:splitMotionEvents="false" />
+                    android:splitMotionEvents="false"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/manage_image_list_item"
+                    tools:spanCount="3" />
             </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -50,7 +55,8 @@
                 android:backgroundTint="@color/color_btn_ltpink_normal"
                 android:src="@drawable/ic_add_white_36dp"
                 android:visibility="gone"
-                app:borderWidth="0dp" />
+                app:borderWidth="0dp"
+                tools:visibility="visible" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
@@ -62,7 +68,8 @@
             android:background="#ffffffff"
             android:orientation="horizontal"
             android:padding="4dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <Button
                 android:id="@+id/btn_cancel"
@@ -72,7 +79,8 @@
                 android:layout_weight="1"
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"
-                android:theme="@style/AppTheme.Button.Blue" />
+                android:theme="@style/AppTheme.Button.Blue"
+                tools:text="@string/common_word_cancel" />
 
             <Button
                 android:id="@+id/btn_accept"
@@ -84,7 +92,8 @@
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"
                 android:textStyle="bold"
-                android:theme="@style/AppTheme.Button.LightBlue" />
+                android:theme="@style/AppTheme.Button.LightBlue"
+                tools:text="@string/common_word_delete" />
         </LinearLayout>
     </LinearLayout>
 
@@ -97,5 +106,6 @@
         android:textColor="#ffffffff"
         android:textStyle="bold"
         android:theme="@style/AppTheme.Button.LightBlue"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:text="@string/common_word_import" />
 </RelativeLayout>
