@@ -3,6 +3,7 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +36,28 @@ public class fu extends qA implements View.OnClickListener {
     private Adapter adapter = null;
     private TextView guide;
     private Button importImages;
+
+    private final ActivityResultLauncher<Intent> openImageImportDetails = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            var data = result.getData();
+            assert data != null;
+            ArrayList<ProjectResourceBean> importedImages;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                importedImages = data.getParcelableArrayListExtra("results", ProjectResourceBean.class);
+            } else {
+                importedImages = data.getParcelableArrayListExtra("results");
+            }
+
+            ArrayList<ProjectResourceBean> newImportedImages = new ArrayList<>();
+            for (ProjectResourceBean image : importedImages) {
+                newImportedImages.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.resFullName));
+            }
+            if (newImportedImages.size() > 0) {
+                ((ManageImageActivity) requireActivity()).m().a(newImportedImages);
+                ((ManageImageActivity) requireActivity()).f(0);
+            }
+        }
+    });
 
     public void refreshData() {
         collectionImages = Op.g().f();
@@ -63,7 +88,7 @@ public class fu extends qA implements View.OnClickListener {
             Intent intent = new Intent(requireActivity(), ManageImageImportActivity.class);
             intent.putParcelableArrayListExtra("project_images", ((ManageImageActivity) requireActivity()).m().d());
             intent.putParcelableArrayListExtra("selected_collections", selectedCollections);
-            startActivityForResult(intent, 232);
+            openImageImportDetails.launch(intent);
         }
         unselectAll();
         adapter.notifyDataSetChanged();
@@ -90,14 +115,6 @@ public class fu extends qA implements View.OnClickListener {
         sc_id = savedInstanceState != null ? savedInstanceState.getString("sc_id")
                 : requireActivity().getIntent().getStringExtra("sc_id");
         refreshData();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 232 && resultCode == Activity.RESULT_OK && data != null) {
-            onImagesImported(data.getParcelableArrayListExtra("results"));
-        }
     }
 
     @Override
@@ -187,17 +204,6 @@ public class fu extends qA implements View.OnClickListener {
         @Override
         public int getItemCount() {
             return collectionImages.size();
-        }
-    }
-
-    private void onImagesImported(ArrayList<ProjectResourceBean> importedImages) {
-        ArrayList<ProjectResourceBean> newImportedImages = new ArrayList<>();
-        for (ProjectResourceBean image : importedImages) {
-            newImportedImages.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.resFullName));
-        }
-        if (newImportedImages.size() > 0) {
-            ((ManageImageActivity) requireActivity()).m().a(newImportedImages);
-            ((ManageImageActivity) requireActivity()).f(0);
         }
     }
 }
