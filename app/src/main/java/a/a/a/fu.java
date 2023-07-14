@@ -3,7 +3,6 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageImportActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.sketchware.remod.R;
 
@@ -169,22 +167,17 @@ public class fu extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean projectResourceBean = collectionImages.get(position);
-            String str = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
+            ProjectResourceBean image = collectionImages.get(position);
             holder.checkBox.setVisibility(View.VISIBLE);
-            if (projectResourceBean.isNinePatch()) {
-                holder.ninePatch.setVisibility(View.VISIBLE);
-            } else {
-                holder.ninePatch.setVisibility(View.GONE);
-            }
-            Glide.with(requireActivity()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.image) {
-                @Override
-                public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                    super.onResourceReady(bitmap, glideAnimation);
-                }
-            });
-            holder.name.setText(collectionImages.get(position).resName);
-            holder.checkBox.setChecked(collectionImages.get(position).isSelected);
+            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            Glide.with(requireActivity())
+                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName)
+                    .asBitmap()
+                    .centerCrop()
+                    .error(R.drawable.ic_remove_grey600_24dp)
+                    .into(new BitmapImageViewTarget(holder.image));
+            holder.name.setText(image.resName);
+            holder.checkBox.setChecked(image.isSelected);
         }
 
         @Override
