@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -41,7 +43,7 @@ public class fu extends qA implements View.OnClickListener {
 
     public void e() {
         this.h = Op.g().f();
-        this.i.c();
+        this.i.notifyDataSetChanged();
         g();
     }
 
@@ -79,7 +81,7 @@ public class fu extends qA implements View.OnClickListener {
             startActivityForResult(intent, 232);
         }
         f();
-        this.i.c();
+        this.i.notifyDataSetChanged();
     }
 
     public final void i() {
@@ -128,7 +130,7 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        ((GridLayoutManager) this.f.getLayoutManager()).d(c());
+        ((GridLayoutManager) this.f.getLayoutManager()).setSpanCount(c());
         this.f.requestLayout();
     }
 
@@ -155,21 +157,21 @@ public class fu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(bundle);
     }
 
-    class a extends RecyclerView.a<a> {
+    class a extends RecyclerView.Adapter<a.a> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class a extends RecyclerView.ViewHolder {
             public CheckBox t;
             public TextView u;
             public ImageView v;
             public ImageView w;
 
-            public a(View view) {
-                super(view);
-                this.t = (CheckBox) view.findViewById(2131230893);
-                this.u = (TextView) view.findViewById(2131232003);
-                this.v = (ImageView) view.findViewById(2131231102);
-                this.w = (ImageView) view.findViewById(2131231161);
+            public a(@NonNull View itemView) {
+                super(itemView);
+                this.t = (CheckBox) itemView.findViewById(2131230893);
+                this.u = (TextView) itemView.findViewById(2131232003);
+                this.v = (ImageView) itemView.findViewById(2131231102);
+                this.w = (ImageView) itemView.findViewById(2131231161);
                 this.t.setVisibility(0);
                 this.v.setOnClickListener(new eu(this, a.this));
             }
@@ -179,27 +181,28 @@ public class fu extends qA implements View.OnClickListener {
         }
 
         @Override
-        public void b(a aVar, int i) {
-            ProjectResourceBean projectResourceBean = (ProjectResourceBean) fu.this.h.get(i);
+        public void onBindViewHolder(@NonNull a holder, int position) {
+            ProjectResourceBean projectResourceBean = (ProjectResourceBean) fu.this.h.get(position);
             String str = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
-            aVar.t.setVisibility(0);
+            holder.t.setVisibility(0);
             if (projectResourceBean.isNinePatch()) {
-                aVar.w.setVisibility(0);
+                holder.w.setVisibility(0);
             } else {
-                aVar.w.setVisibility(8);
+                holder.w.setVisibility(8);
             }
-            Glide.with(fu.this.getActivity()).load(str).asBitmap().centerCrop().error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new du(this, aVar.v));
-            aVar.u.setText(((ProjectResourceBean) fu.this.h.get(i)).resName);
-            aVar.t.setChecked(((ProjectResourceBean) fu.this.h.get(i)).isSelected);
+            Glide.with(fu.this.getActivity()).load(str).asBitmap().centerCrop().error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new du(this, holder.v));
+            holder.u.setText(((ProjectResourceBean) fu.this.h.get(position)).resName);
+            holder.t.setChecked(((ProjectResourceBean) fu.this.h.get(position)).isSelected);
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427529, viewGroup, false));
+        @NonNull
+        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return fu.this.h.size();
         }
     }
