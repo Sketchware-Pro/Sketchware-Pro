@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/ic_edit_white_48dp" android:id="@id/menu_image_edit" android:visible="false" android:orderInCategory="1" android:title="edit" app:showAsAction="always" />
-    <item android:icon="@drawable/ic_import_white_24dp" android:id="@id/menu_image_import" android:orderInCategory="1" android:title="import" app:showAsAction="always" />
-    <item android:icon="@drawable/ic_delete_white_24dp" android:id="@id/menu_image_delete" android:orderInCategory="1" android:title="remove" app:showAsAction="always" />
-    <item android:icon="@drawable/ic_add_circle_white_24dp" android:id="@id/menu_image_add" android:visible="false" android:orderInCategory="1" android:title="add" app:showAsAction="always" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_image_import"
+        android:icon="@drawable/ic_import_white_24dp"
+        android:orderInCategory="1"
+        android:title="@string/common_word_import"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_image_delete"
+        android:icon="@drawable/ic_delete_white_24dp"
+        android:orderInCategory="1"
+        android:title="@string/common_word_delete"
+        app:showAsAction="ifRoom" />
 </menu>

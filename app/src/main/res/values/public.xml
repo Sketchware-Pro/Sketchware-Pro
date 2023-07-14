@@ -3125,10 +3125,6 @@
     <public name="menu_font_add" id="0x7f080315" type="id" />
     <public name="menu_font_delete" id="0x7f080316" type="id" />
     <public name="menu_font_edit" id="0x7f080317" type="id" />
-    <public name="menu_image_add" id="0x7f080318" type="id" />
-    <public name="menu_image_delete" id="0x7f080319" type="id" />
-    <public name="menu_image_edit" id="0x7f08031a" type="id" />
-    <public name="menu_image_import" id="0x7f08031b" type="id" />
     <public name="menu_library_add" id="0x7f08031c" type="id" />
     <public name="menu_library_delete" id="0x7f08031d" type="id" />
     <public name="menu_like" id="0x7f08031e" type="id" />
