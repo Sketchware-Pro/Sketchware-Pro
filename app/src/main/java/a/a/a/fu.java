@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import com.besome.sketch.editor.manage.image.ManageImageImportActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,12 +60,12 @@ public class fu extends qA implements View.OnClickListener {
 
     public void g() {
         if (this.h.size() == 0) {
-            this.j.setVisibility(0);
-            this.f.setVisibility(8);
+            this.j.setVisibility(View.VISIBLE);
+            this.f.setVisibility(View.GONE);
             return;
         }
-        this.f.setVisibility(0);
-        this.j.setVisibility(8);
+        this.f.setVisibility(View.VISIBLE);
+        this.j.setVisibility(View.GONE);
     }
 
     public void h() {
@@ -95,11 +97,11 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
         if (i > 0) {
-            this.k.setText(xB.b().a(getContext(), 2131625003, Integer.valueOf(i)).toUpperCase());
-            this.k.setVisibility(0);
+            this.k.setText(xB.b().a(getContext(), R.string.common_word_import_count, i).toUpperCase());
+            this.k.setVisibility(View.VISIBLE);
             return;
         }
-        this.k.setVisibility(8);
+        this.k.setVisibility(View.GONE);
     }
 
     @Override
@@ -116,15 +118,15 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public void onActivityResult(int i, int i2, Intent intent) {
         super.onActivityResult(i, i2, intent);
-        if (i == 232 && i2 == -1 && intent != null) {
+        if (i == 232 && i2 == Activity.RESULT_OK && intent != null) {
             a(intent.getParcelableArrayListExtra("results"));
         }
     }
 
     @Override
     public void onClick(View view) {
-        if (!mB.a() && view.getId() == 2131230832) {
-            this.k.setVisibility(8);
+        if (!mB.a() && view.getId() == R.id.btn_import) {
+            this.k.setVisibility(View.GONE);
             h();
         }
     }
@@ -138,18 +140,18 @@ public class fu extends qA implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(2131427440, viewGroup, false);
-        this.f = (RecyclerView) viewGroup2.findViewById(2131231101);
+        ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.fr_manage_image_list, viewGroup, false);
+        this.f = (RecyclerView) viewGroup2.findViewById(R.id.image_list);
         this.f.setHasFixedSize(true);
         this.f.setLayoutManager(new GridLayoutManager(getActivity(), c()));
         this.i = new a();
         this.f.setAdapter(this.i);
-        this.j = (TextView) viewGroup2.findViewById(2131231997);
-        this.j.setText(xB.b().a(getContext(), 2131625267));
-        this.k = (Button) viewGroup2.findViewById(2131230832);
-        this.k.setText(xB.b().a(getContext(), 2131625002).toUpperCase());
+        this.j = (TextView) viewGroup2.findViewById(R.id.tv_guide);
+        this.j.setText(xB.b().a(getContext(), R.string.design_manager_image_description_guide_add_image));
+        this.k = (Button) viewGroup2.findViewById(R.id.btn_import);
+        this.k.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
         this.k.setOnClickListener(this);
-        this.k.setVisibility(8);
+        this.k.setVisibility(View.GONE);
         return viewGroup2;
     }
 
@@ -170,11 +172,11 @@ public class fu extends qA implements View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                this.t = (CheckBox) itemView.findViewById(2131230893);
-                this.u = (TextView) itemView.findViewById(2131232003);
-                this.v = (ImageView) itemView.findViewById(2131231102);
-                this.w = (ImageView) itemView.findViewById(2131231161);
-                this.t.setVisibility(0);
+                this.t = (CheckBox) itemView.findViewById(R.id.chk_select);
+                this.u = (TextView) itemView.findViewById(R.id.tv_image_name);
+                this.v = (ImageView) itemView.findViewById(R.id.img);
+                this.w = (ImageView) itemView.findViewById(R.id.img_nine_patch);
+                this.t.setVisibility(View.VISIBLE);
                 this.v.setOnClickListener(v -> {
                     t.setChecked(!t.isChecked());
                     c = getLayoutPosition();
@@ -192,13 +194,13 @@ public class fu extends qA implements View.OnClickListener {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean projectResourceBean = (ProjectResourceBean) fu.this.h.get(position);
             String str = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
-            holder.t.setVisibility(0);
+            holder.t.setVisibility(View.VISIBLE);
             if (projectResourceBean.isNinePatch()) {
-                holder.w.setVisibility(0);
+                holder.w.setVisibility(View.VISIBLE);
             } else {
-                holder.w.setVisibility(8);
+                holder.w.setVisibility(View.GONE);
             }
-            Glide.with(fu.this.getActivity()).load(str).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(holder.v) {
+            Glide.with(fu.this.getActivity()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(holder.v) {
                 @Override
                 public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                     super.onResourceReady(bitmap, glideAnimation);
@@ -211,7 +213,7 @@ public class fu extends qA implements View.OnClickListener {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427529, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
         }
 
         @Override
