@@ -43,10 +43,6 @@
             android:name="com.besome.sketch.common.ImportIconActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.besome.sketch.common.FullscreenImageActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name="com.besome.sketch.help.LicenseActivity" />
         <activity android:name="com.besome.sketch.help.ProgramInfoActivity" />
         <activity

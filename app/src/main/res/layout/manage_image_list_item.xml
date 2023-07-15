@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     android:background="@drawable/bg_outline"
-    android:gravity="center">
+    android:gravity="center"
+    tools:layout_height="140dp"
+    tools:layout_width="140dp">
 
     <ImageView
         android:id="@+id/img"
         android:layout_width="100dp"
         android:layout_height="148dp"
         android:layout_centerInParent="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
     <LinearLayout
         android:id="@+id/delete_img_container"
@@ -22,14 +26,16 @@
         android:alpha="0.8"
         android:background="@drawable/circle_bg_dark_grey_alpha"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/img_delete"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_trashcan_white_48dp" />
+            android:src="@drawable/ic_trashcan_white_48dp"
+            tools:src="@drawable/ic_checkmark_green_48dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,7 +55,9 @@
             android:contentDescription="@null"
             android:gravity="center"
             android:theme="@style/AppTheme.Check.White"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:checked="true"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_image_name"
@@ -60,7 +68,8 @@
             android:layout_weight="1"
             android:gravity="center|left"
             android:textColor="#fff5f5f5"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="scenic" />
     </LinearLayout>
 
     <ImageView

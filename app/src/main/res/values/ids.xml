@@ -730,10 +730,6 @@
     <item type="id" name="menu_font_add" />
     <item type="id" name="menu_font_delete" />
     <item type="id" name="menu_font_edit" />
-    <item type="id" name="menu_image_add" />
-    <item type="id" name="menu_image_delete" />
-    <item type="id" name="menu_image_edit" />
-    <item type="id" name="menu_image_import" />
     <item type="id" name="menu_library_add" />
     <item type="id" name="menu_library_delete" />
     <item type="id" name="menu_like" />
