@@ -3,7 +3,6 @@ package com.besome.sketch.editor.manage.library.firebase;
 import a.a.a.GB;
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.ci;
 import a.a.a.dv;
 import a.a.a.ev;
 import a.a.a.fv;
@@ -33,6 +32,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -165,7 +166,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         if (this.L.size() > 0) {
             Collections.sort(this.L, new a());
         }
-        this.M.c();
+        this.M.notifyDataSetChanged();
     }
 
     public final void m() {
@@ -340,7 +341,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.M = new b();
         recyclerView.setAdapter(this.M);
-        recyclerView.setItemAnimator(new ci());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         l();
         aBVar.a(a2);
         aBVar.b(xB.b().a(getApplicationContext(), 2131625035), new gv(this, aBVar));
@@ -358,10 +359,10 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         aBVar.show();
     }
 
-    public class b extends RecyclerView.a<a> {
+    public class b extends RecyclerView.Adapter<b.a> {
         public int c = -1;
 
-        class a extends RecyclerView.v {
+        class a extends RecyclerView.ViewHolder {
             public LinearLayout t;
             public CircleImageView u;
             public TextView v;
@@ -370,15 +371,15 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             public TextView y;
             public ImageView z;
 
-            public a(View view) {
-                super(view);
-                this.t = (LinearLayout) view.findViewById(2131231613);
-                this.v = (TextView) view.findViewById(2131231614);
-                this.u = (CircleImageView) view.findViewById(2131231151);
-                this.w = (TextView) view.findViewById(2131230780);
-                this.x = (TextView) view.findViewById(2131231579);
-                this.y = (TextView) view.findViewById(2131231618);
-                this.z = (ImageView) view.findViewById(2131231181);
+            public a(@NonNull View itemView) {
+                super(itemView);
+                this.t = (LinearLayout) itemView.findViewById(2131231613);
+                this.v = (TextView) itemView.findViewById(2131231614);
+                this.u = (CircleImageView) itemView.findViewById(2131231151);
+                this.w = (TextView) itemView.findViewById(2131230780);
+                this.x = (TextView) itemView.findViewById(2131231579);
+                this.y = (TextView) itemView.findViewById(2131231618);
+                this.z = (ImageView) itemView.findViewById(2131231181);
                 this.t.setOnClickListener(new iv(this, b.this));
             }
 
@@ -391,7 +392,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                     ((HashMap) it.next()).put("selected", false);
                 }
                 ((HashMap) FirebaseActivity.this.L.get(i)).put("selected", true);
-                FirebaseActivity.this.M.c();
+                FirebaseActivity.this.M.notifyDataSetChanged();
             }
         }
 
@@ -399,37 +400,38 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public void b(a aVar, int i) {
+        public void onBindViewHolder(@NonNull a holder, int position) {
             Uri fromFile;
-            HashMap hashMap = (HashMap) FirebaseActivity.this.L.get(i);
+            HashMap hashMap = (HashMap) FirebaseActivity.this.L.get(position);
             String c = yB.c(hashMap, "sc_id");
-            aVar.u.setImageResource(2131165521);
+            holder.u.setImageResource(2131165521);
             if (yB.a(hashMap, "custom_icon")) {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.a(FirebaseActivity.this.getApplicationContext(), FirebaseActivity.this.getPackageName() + ".provider", new File(wq.e() + File.separator + c, "icon.png"));
+                    fromFile = FileProvider.getUriForFile(FirebaseActivity.this.getApplicationContext(), FirebaseActivity.this.getPackageName() + ".provider", new File(wq.e() + File.separator + c, "icon.png"));
                 } else {
                     fromFile = Uri.fromFile(new File(wq.e() + File.separator + c, "icon.png"));
                 }
-                aVar.u.setImageURI(fromFile);
+                holder.u.setImageURI(fromFile);
             }
-            aVar.w.setText(yB.c(hashMap, "my_app_name"));
-            aVar.v.setText(yB.c(hashMap, "my_ws_name"));
-            aVar.x.setText(yB.c(hashMap, "my_sc_pkg_name"));
-            aVar.y.setText(String.format("%s(%s)", yB.c(hashMap, "sc_ver_name"), yB.c(hashMap, "sc_ver_code")));
+            holder.w.setText(yB.c(hashMap, "my_app_name"));
+            holder.v.setText(yB.c(hashMap, "my_ws_name"));
+            holder.x.setText(yB.c(hashMap, "my_sc_pkg_name"));
+            holder.y.setText(String.format("%s(%s)", yB.c(hashMap, "sc_ver_name"), yB.c(hashMap, "sc_ver_code")));
             if (yB.a(hashMap, "selected")) {
-                aVar.z.setVisibility(0);
+                holder.z.setVisibility(0);
             } else {
-                aVar.z.setVisibility(8);
+                holder.z.setVisibility(8);
             }
         }
 
         @Override
-        public a b(ViewGroup viewGroup, int i) {
-            return new a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427549, viewGroup, false));
+        @NonNull
+        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
         }
 
         @Override
-        public int a() {
+        public int getItemCount() {
             return FirebaseActivity.this.L.size();
         }
     }
