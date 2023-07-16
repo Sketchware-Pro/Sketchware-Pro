@@ -32,11 +32,19 @@ public class CodeEditorLanguages {
                 return Unit.INSTANCE;
             });
 
+            Throwable t;
             try {
                 GrammarRegistry.getInstance().loadGrammars(builder);
+                continue;
             } catch (Exception e) {
-                LogUtil.e(TAG, "Failed to load language '" + language + "'", e);
+                t = e;
+                // fall-through
+            } catch (NoSuchMethodError e) {
+                t = e;
+                LogUtil.e(TAG, "Probably running on a low API device");
+                // fall-through
             }
+            LogUtil.e(TAG, "Failed to load language '" + language + "'", t);
         }
     }
 
