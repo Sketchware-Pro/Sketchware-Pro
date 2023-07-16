@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -94,57 +96,57 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             nvVar.a();
         }
         if (i == 2) {
-            this.w.setText(xB.b().a(getApplicationContext(), 2131625029));
-            this.x.setText(xB.b().a(getApplicationContext(), 2131625031));
+            this.w.setText(xB.b().a(getApplicationContext(), R.string.common_word_review));
+            this.x.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
         } else {
-            this.w.setText(xB.b().a(getApplicationContext(), 2131625040, Integer.valueOf(i + 1)));
-            this.x.setText(xB.b().a(getApplicationContext(), 2131625008));
+            this.w.setText(xB.b().a(getApplicationContext(), R.string.common_word_step, Integer.valueOf(i + 1)));
+            this.x.setText(xB.b().a(getApplicationContext(), R.string.common_word_next));
         }
         if (i == 0) {
-            this.C.setVisibility(0);
-            this.v.setVisibility(8);
+            this.C.setVisibility(View.VISIBLE);
+            this.v.setVisibility(View.GONE);
         } else {
-            this.C.setVisibility(8);
-            this.v.setVisibility(0);
+            this.C.setVisibility(View.GONE);
+            this.v.setVisibility(View.VISIBLE);
         }
         this.z.setText(this.G[i]);
         this.A.setText(this.H[i]);
         this.B.removeAllViews();
         if (i == 0) {
-            this.u.setVisibility(0);
+            this.u.setVisibility(View.VISIBLE);
             lv lvVar = new lv(this);
             this.B.addView(lvVar);
             lvVar.setData(this.K);
             this.J = lvVar;
         } else if (i == 1) {
-            this.u.setVisibility(0);
+            this.u.setVisibility(View.VISIBLE);
             mv mvVar = new mv(this);
             this.B.addView(mvVar);
             mvVar.setData(this.K);
             this.J = mvVar;
         } else if (i == 2) {
-            this.u.setVisibility(8);
+            this.u.setVisibility(View.GONE);
             kv kvVar = new kv(this);
             this.B.addView(kvVar);
             kvVar.setData(this.K);
             this.J = kvVar;
         }
         if (this.J.getDocUrl().isEmpty()) {
-            this.E.setVisibility(8);
+            this.E.setVisibility(View.GONE);
         } else {
-            this.E.setVisibility(0);
+            this.E.setVisibility(View.VISIBLE);
         }
         if (i > 0) {
-            this.F.setVisibility(8);
+            this.F.setVisibility(View.GONE);
         } else {
-            this.F.setVisibility(0);
+            this.F.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(2130771982, 2130771983);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
     public final void l() {
@@ -180,7 +182,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             }
             Intent intent = new Intent();
             intent.putExtra("firebase", this.K);
-            setResult(-1, intent);
+            setResult(Activity.RESULT_OK, intent);
             finish();
         }
     }
@@ -193,12 +195,12 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             try {
                 String docUrl = this.J.getDocUrl();
                 Uri parse = Uri.parse("googlechrome://navigate?url=" + docUrl);
-                Intent intent = new Intent("android.intent.action.VIEW");
-                intent.addFlags(268435456);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(parse);
-                intent.addFlags(1);
-                intent.addFlags(2);
-                intent.addFlags(64);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivity(intent);
                 return;
             } catch (Exception e) {
@@ -207,19 +209,19 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 return;
             }
         }
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
     }
 
     public final void o() {
         if (GB.h(getApplicationContext())) {
             try {
                 Uri parse = Uri.parse("googlechrome://navigate?url=https://console.firebase.google.com");
-                Intent intent = new Intent("android.intent.action.VIEW");
-                intent.addFlags(268435456);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(parse);
-                intent.addFlags(1);
-                intent.addFlags(2);
-                intent.addFlags(64);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivity(intent);
                 return;
             } catch (Exception e) {
@@ -228,7 +230,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 return;
             }
         }
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
     }
 
     @Override
@@ -240,7 +242,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             f(i2);
             return;
         }
-        setResult(0);
+        setResult(Activity.RESULT_CANCELED);
         finish();
     }
 
@@ -250,17 +252,17 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             return;
         }
         switch (view.getId()) {
-            case 2131230841:
+            case R.id.btn_open_doc:
                 n();
                 return;
-            case 2131230944:
+            case R.id.cv_console:
                 o();
                 return;
-            case 2131231113:
-            case 2131232081:
+            case R.id.img_backbtn:
+            case R.id.tv_prevbtn:
                 onBackPressed();
                 return;
-            case 2131232059:
+            case R.id.tv_nextbtn:
                 m();
                 return;
             default:
@@ -271,45 +273,45 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        overridePendingTransition(2130771982, 2130771983);
-        setContentView(2131427539);
+        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        setContentView(R.layout.manage_library_firebase);
         if (bundle != null) {
             this.t = bundle.getString("sc_id");
         } else {
             this.t = getIntent().getStringExtra("sc_id");
         }
-        this.n = xB.b().a(getApplicationContext(), 2131625226);
-        this.o = xB.b().a(getApplicationContext(), 2131625228);
-        this.p = xB.b().a(getApplicationContext(), 2131625230);
-        this.q = xB.b().a(getApplicationContext(), 2131625225);
-        this.r = xB.b().a(getApplicationContext(), 2131625227);
-        this.s = xB.b().a(getApplicationContext(), 2131625229);
+        this.n = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step1_title);
+        this.o = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step2_title);
+        this.p = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step3_title);
+        this.q = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step1_desc);
+        this.r = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step2_desc);
+        this.s = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step3_desc);
         this.G = new String[]{this.n, this.o, this.p};
         this.H = new String[]{this.q, this.r, this.s};
-        this.u = (CardView) findViewById(2131230944);
+        this.u = (CardView) findViewById(R.id.cv_console);
         this.u.setOnClickListener(this);
-        this.y = (TextView) findViewById(2131231987);
-        this.y.setText(xB.b().a(getApplicationContext(), 2131625207));
-        this.v = (TextView) findViewById(2131232081);
-        this.v.setText(xB.b().a(getApplicationContext(), 2131625014));
+        this.y = (TextView) findViewById(R.id.tv_goto_console);
+        this.y.setText(xB.b().a(getApplicationContext(), R.string.design_library_firebase_button_goto_firebase_console));
+        this.v = (TextView) findViewById(R.id.tv_prevbtn);
+        this.v.setText(xB.b().a(getApplicationContext(), R.string.common_word_prev));
         this.v.setOnClickListener(this);
-        this.x = (TextView) findViewById(2131232059);
-        this.x.setText(xB.b().a(getApplicationContext(), 2131625008));
+        this.x = (TextView) findViewById(R.id.tv_nextbtn);
+        this.x.setText(xB.b().a(getApplicationContext(), R.string.common_word_next));
         this.x.setOnClickListener(this);
-        this.w = (TextView) findViewById(2131232257);
-        this.z = (TextView) findViewById(2131232179);
-        this.A = (TextView) findViewById(2131232176);
-        this.D = (ImageView) findViewById(2131231090);
-        this.D.setImageResource(2131166245);
-        this.C = (ImageView) findViewById(2131231113);
+        this.w = (TextView) findViewById(R.id.tv_toptitle);
+        this.z = (TextView) findViewById(R.id.tv_step_title);
+        this.A = (TextView) findViewById(R.id.tv_step_desc);
+        this.D = (ImageView) findViewById(R.id.icon);
+        this.D.setImageResource(R.drawable.widget_firebase);
+        this.C = (ImageView) findViewById(R.id.img_backbtn);
         this.C.setOnClickListener(this);
-        this.E = (Button) findViewById(2131230841);
-        this.E.setText(xB.b().a(getApplicationContext(), 2131624999));
+        this.E = (Button) findViewById(R.id.btn_open_doc);
+        this.E.setText(xB.b().a(getApplicationContext(), R.string.common_word_go_to_documentation));
         this.E.setOnClickListener(this);
-        this.F = (Button) findViewById(2131230832);
-        this.F.setText(xB.b().a(getApplicationContext(), 2131625201));
+        this.F = (Button) findViewById(R.id.btn_import);
+        this.F.setText(xB.b().a(getApplicationContext(), R.string.design_library_button_import_from_other_project));
         this.F.setOnClickListener(v -> p());
-        this.B = (LinearLayout) findViewById(2131231331);
+        this.B = (LinearLayout) findViewById(R.id.layout_container);
     }
 
     @Override
@@ -332,10 +334,10 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
 
     public final void p() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625252));
-        aBVar.a(2131166245);
-        View a2 = wB.a((Context) this, 2131427550);
-        RecyclerView recyclerView = (RecyclerView) a2.findViewById(2131231440);
+        aBVar.b(xB.b().a(getApplicationContext(), R.string.design_library_title_select_project));
+        aBVar.a(R.drawable.widget_firebase);
+        View a2 = wB.a((Context) this, R.layout.manage_library_popup_project_selector);
+        RecyclerView recyclerView = (RecyclerView) a2.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.M = new b();
@@ -343,7 +345,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         l();
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), v -> {
+        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
             if (!mB.a()) {
                 if (M.c >= 0) {
                     K = (ProjectLibraryBean) L.get(M.c).get("firebase_setting");
@@ -353,16 +355,16 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 }
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
     public final void q() {
         aB aBVar = new aB(this);
-        aBVar.a(2131165415);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131626412));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131625629));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625010), v -> {
+        aBVar.a(R.drawable.chrome_96);
+        aBVar.b(xB.b().a(getApplicationContext(), R.string.title_compatible_chrome_browser));
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.message_compatible_chrome_brower));
+        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -370,7 +372,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -388,13 +390,13 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
 
             public a(@NonNull View itemView) {
                 super(itemView);
-                this.t = (LinearLayout) itemView.findViewById(2131231613);
-                this.v = (TextView) itemView.findViewById(2131231614);
-                this.u = (CircleImageView) itemView.findViewById(2131231151);
-                this.w = (TextView) itemView.findViewById(2131230780);
-                this.x = (TextView) itemView.findViewById(2131231579);
-                this.y = (TextView) itemView.findViewById(2131231618);
-                this.z = (ImageView) itemView.findViewById(2131231181);
+                this.t = (LinearLayout) itemView.findViewById(R.id.project_layout);
+                this.v = (TextView) itemView.findViewById(R.id.project_name);
+                this.u = (CircleImageView) itemView.findViewById(R.id.img_icon);
+                this.w = (TextView) itemView.findViewById(R.id.app_name);
+                this.x = (TextView) itemView.findViewById(R.id.package_name);
+                this.y = (TextView) itemView.findViewById(R.id.project_version);
+                this.z = (ImageView) itemView.findViewById(R.id.img_selected);
                 this.t.setOnClickListener(v -> {
                     if (!mB.a()) {
                         c = getLayoutPosition();
@@ -424,7 +426,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             Uri fromFile;
             HashMap hashMap = (HashMap) FirebaseActivity.this.L.get(position);
             String c = yB.c(hashMap, "sc_id");
-            holder.u.setImageResource(2131165521);
+            holder.u.setImageResource(R.drawable.default_icon);
             if (yB.a(hashMap, "custom_icon")) {
                 if (Build.VERSION.SDK_INT >= 24) {
                     fromFile = FileProvider.getUriForFile(FirebaseActivity.this.getApplicationContext(), FirebaseActivity.this.getPackageName() + ".provider", new File(wq.e() + File.separator + c, "icon.png"));
@@ -438,16 +440,16 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             holder.x.setText(yB.c(hashMap, "my_sc_pkg_name"));
             holder.y.setText(String.format("%s(%s)", yB.c(hashMap, "sc_ver_name"), yB.c(hashMap, "sc_ver_code")));
             if (yB.a(hashMap, "selected")) {
-                holder.z.setVisibility(0);
+                holder.z.setVisibility(View.VISIBLE);
             } else {
-                holder.z.setVisibility(8);
+                holder.z.setVisibility(View.GONE);
             }
         }
 
         @Override
         @NonNull
         public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
+            return new a(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
         }
 
         @Override
