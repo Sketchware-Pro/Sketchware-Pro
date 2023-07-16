@@ -1,25 +1,5 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
-import a.a.a.GB;
-import a.a.a.aB;
-import a.a.a.bB;
-import a.a.a.dv;
-import a.a.a.ev;
-import a.a.a.fv;
-import a.a.a.gv;
-import a.a.a.hv;
-import a.a.a.iC;
-import a.a.a.iv;
-import a.a.a.kv;
-import a.a.a.lC;
-import a.a.a.lv;
-import a.a.a.mB;
-import a.a.a.mv;
-import a.a.a.nv;
-import a.a.a.wB;
-import a.a.a.wq;
-import a.a.a.xB;
-import a.a.a.yB;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -36,17 +16,36 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import a.a.a.GB;
+import a.a.a.aB;
+import a.a.a.bB;
+import a.a.a.iC;
+import a.a.a.kv;
+import a.a.a.lC;
+import a.a.a.lv;
+import a.a.a.mB;
+import a.a.a.mv;
+import a.a.a.nv;
+import a.a.a.wB;
+import a.a.a.wq;
+import a.a.a.xB;
+import a.a.a.yB;
+import mod.hey.studios.util.Helper;
 
 public class FirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public TextView A;
@@ -309,7 +308,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         this.E.setOnClickListener(this);
         this.F = (Button) findViewById(2131230832);
         this.F.setText(xB.b().a(getApplicationContext(), 2131625201));
-        this.F.setOnClickListener(new dv(this));
+        this.F.setOnClickListener(v -> p());
         this.B = (LinearLayout) findViewById(2131231331);
     }
 
@@ -344,8 +343,17 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         l();
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), new gv(this, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new hv(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625035), v -> {
+            if (!mB.a()) {
+                if (M.c >= 0) {
+                    K = (ProjectLibraryBean) L.get(M.c).get("firebase_setting");
+                    I = 2;
+                    f(I);
+                    aBVar.dismiss();
+                }
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -354,8 +362,15 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         aBVar.a(2131165415);
         aBVar.b(xB.b().a(getApplicationContext(), 2131626412));
         aBVar.a(xB.b().a(getApplicationContext(), 2131625629));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625010), new ev(this, aBVar));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new fv(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), 2131625010), v -> {
+            if (!mB.a()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=com.android.chrome"));
+                startActivity(intent);
+                aBVar.dismiss();
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -380,7 +395,12 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 this.x = (TextView) itemView.findViewById(2131231579);
                 this.y = (TextView) itemView.findViewById(2131231618);
                 this.z = (ImageView) itemView.findViewById(2131231181);
-                this.t.setOnClickListener(new iv(this, b.this));
+                this.t.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        c = getLayoutPosition();
+                        c(c);
+                    }
+                });
             }
 
             public final void c(int i) {
