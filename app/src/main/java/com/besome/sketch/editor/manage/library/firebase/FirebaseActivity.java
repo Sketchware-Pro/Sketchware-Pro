@@ -3,31 +3,19 @@ package com.besome.sketch.editor.manage.library.firebase;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.CircleImageView;
 import com.sketchware.remod.R;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -36,16 +24,14 @@ import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.iC;
 import a.a.a.kv;
-import a.a.a.lC;
 import a.a.a.lv;
 import a.a.a.mB;
 import a.a.a.mv;
 import a.a.a.nv;
-import a.a.a.wB;
-import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
+import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 
 public class FirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private static final int STEP_1 = 0;
@@ -61,7 +47,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     private String[] stepDescriptions;
     private nv step;
     private ProjectLibraryBean firebaseSettings;
-    private b importFromOtherProjectAdapter;
     private String sc_id;
     private CardView openConsole;
     private TextView prev;
@@ -69,17 +54,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     private TextView next;
     private TextView stepTitle;
     private int stepNumber = STEP_1;
-    private ArrayList<HashMap<String, Object>> otherProjects = new ArrayList<>();
-
-    class a implements Comparator<HashMap<String, Object>> {
-        public a() {
-        }
-
-        @Override
-        public int compare(HashMap<String, Object> hashMap, HashMap<String, Object> hashMap2) {
-            return yB.c(hashMap, "sc_id").compareTo(yB.c(hashMap2, "sc_id")) * (-1);
-        }
-    }
 
     private void setStep(int stepNumber) {
         if (step != null) {
@@ -121,25 +95,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
-    }
-
-    private void importFromOtherProjectLoadProjects() {
-        otherProjects = new ArrayList<>();
-        for (HashMap<String, Object> project : lC.a()) {
-            String projectSc_id = yB.c(project, "sc_id");
-            if (!sc_id.equals(projectSc_id)) {
-                iC iCVar = new iC(projectSc_id);
-                iCVar.i();
-                if (iCVar.d().useYn.equals("Y")) {
-                    project.put("firebase_setting", iCVar.d().clone());
-                    otherProjects.add(project);
-                }
-            }
-        }
-        if (otherProjects.size() > 0) {
-            Collections.sort(otherProjects, new a());
-        }
-        importFromOtherProjectAdapter.notifyDataSetChanged();
     }
 
     private void onNextPressed() {
@@ -219,6 +174,14 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 onBackPressed();
             } else if (id == R.id.tv_nextbtn) {
                 onNextPressed();
+            } else if (id == R.id.btn_import) {
+                LibrarySettingsImporter importer = new LibrarySettingsImporter(sc_id, iC::d);
+                importer.addOnProjectSelectedListener(settings -> {
+                    firebaseSettings = settings;
+                    stepNumber = STEP_3;
+                    setStep(stepNumber);
+                });
+                importer.showDialog(this);
             }
         }
     }
@@ -263,7 +226,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         openDocumentation.setOnClickListener(this);
         importFromOtherProject = findViewById(R.id.btn_import);
         importFromOtherProject.setText(xB.b().a(getApplicationContext(), R.string.design_library_button_import_from_other_project));
-        importFromOtherProject.setOnClickListener(v -> showImportFromOtherProjectDialog());
+        importFromOtherProject.setOnClickListener(this);
         stepContainer = findViewById(R.id.layout_container);
     }
 
@@ -285,33 +248,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         super.onSaveInstanceState(outState);
     }
 
-    private void showImportFromOtherProjectDialog() {
-        aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.design_library_title_select_project));
-        dialog.a(R.drawable.widget_firebase);
-        View a2 = wB.a(this, R.layout.manage_library_popup_project_selector);
-        RecyclerView recyclerView = a2.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        importFromOtherProjectAdapter = new b();
-        recyclerView.setAdapter(importFromOtherProjectAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        importFromOtherProjectLoadProjects();
-        dialog.a(a2);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
-            if (!mB.a()) {
-                if (importFromOtherProjectAdapter.c >= 0) {
-                    firebaseSettings = (ProjectLibraryBean) otherProjects.get(importFromOtherProjectAdapter.c).get("firebase_setting");
-                    stepNumber = STEP_3;
-                    setStep(stepNumber);
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.show();
-    }
-
     private void showGetChromeDialog() {
         aB dialog = new aB(this);
         dialog.a(R.drawable.chrome_96);
@@ -327,82 +263,5 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         });
         dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
-    }
-
-    public class b extends RecyclerView.Adapter<b.a> {
-        public int c = -1;
-
-        class a extends RecyclerView.ViewHolder {
-            public LinearLayout t;
-            public CircleImageView u;
-            public TextView v;
-            public TextView w;
-            public TextView x;
-            public TextView y;
-            public ImageView z;
-
-            public a(@NonNull View itemView) {
-                super(itemView);
-                t = itemView.findViewById(R.id.project_layout);
-                v = itemView.findViewById(R.id.project_name);
-                u = itemView.findViewById(R.id.img_icon);
-                w = itemView.findViewById(R.id.app_name);
-                x = itemView.findViewById(R.id.package_name);
-                y = itemView.findViewById(R.id.project_version);
-                z = itemView.findViewById(R.id.img_selected);
-                t.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        c = getLayoutPosition();
-                        c(c);
-                    }
-                });
-            }
-
-            private void c(int i) {
-                if (otherProjects.size() > 0) {
-                    for (HashMap<String, Object> next : otherProjects) {
-                        next.put("selected", false);
-                    }
-                    otherProjects.get(i).put("selected", true);
-                    importFromOtherProjectAdapter.notifyDataSetChanged();
-                }
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull a holder, int position) {
-            Uri fromFile;
-            HashMap<String, Object> hashMap = otherProjects.get(position);
-            String c = yB.c(hashMap, "sc_id");
-            holder.u.setImageResource(R.drawable.default_icon);
-            if (yB.a(hashMap, "custom_icon")) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", new File(wq.e() + File.separator + c, "icon.png"));
-                } else {
-                    fromFile = Uri.fromFile(new File(wq.e() + File.separator + c, "icon.png"));
-                }
-                holder.u.setImageURI(fromFile);
-            }
-            holder.w.setText(yB.c(hashMap, "my_app_name"));
-            holder.v.setText(yB.c(hashMap, "my_ws_name"));
-            holder.x.setText(yB.c(hashMap, "my_sc_pkg_name"));
-            holder.y.setText(String.format("%s(%s)", yB.c(hashMap, "sc_ver_name"), yB.c(hashMap, "sc_ver_code")));
-            if (yB.a(hashMap, "selected")) {
-                holder.z.setVisibility(View.VISIBLE);
-            } else {
-                holder.z.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        @NonNull
-        public a onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new a(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return otherProjects.size();
-        }
     }
 }
