@@ -210,21 +210,15 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            switch (v.getId()) {
-                case R.id.btn_open_doc:
-                    openDocumentation();
-                    break;
-                case R.id.cv_console:
-                    openFirebaseConsole();
-                    break;
-                case R.id.img_backbtn:
-                case R.id.tv_prevbtn:
-                    onBackPressed();
-                    break;
-                case R.id.tv_nextbtn:
-                    onNextPressed();
-                    break;
-                default:
+            int id = v.getId();
+            if (id == R.id.btn_open_doc) {
+                openDocumentation();
+            } else if (id == R.id.cv_console) {
+                openFirebaseConsole();
+            } else if (id == R.id.img_backbtn || id == R.id.tv_prevbtn) {
+                onBackPressed();
+            } else if (id == R.id.tv_nextbtn) {
+                onNextPressed();
             }
         }
     }
