@@ -48,35 +48,28 @@ import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 
 public class FirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    public TextView A;
-    public LinearLayout B;
-    public ImageView C;
-    public ImageView D;
-    public Button E;
-    public Button F;
-    public String[] G;
-    public String[] H;
-    public nv J;
-    public ProjectLibraryBean K;
-    public b M;
-    public String n;
-    public String o;
-    public String p;
-    public String q;
-    public String r;
-    public String s;
-    public String t;
-    public CardView u;
-    public TextView v;
-    public TextView w;
-    public TextView x;
-    public TextView y;
-    public TextView z;
-    public final int k = 0;
-    public final int l = 1;
-    public final int m = 2;
-    public int I = 0;
-    public ArrayList<HashMap<String, Object>> L = new ArrayList<>();
+    private static final int STEP_1 = 0;
+    private static final int STEP_2 = 1;
+    private static final int STEP_3 = 2;
+
+    private TextView stepDescription;
+    private LinearLayout stepContainer;
+    private ImageView back;
+    private Button openDocumentation;
+    private Button importFromOtherProject;
+    private String[] stepTitles;
+    private String[] stepDescriptions;
+    private nv step;
+    private ProjectLibraryBean firebaseSettings;
+    private b importFromOtherProjectAdapter;
+    private String sc_id;
+    private CardView openConsole;
+    private TextView prev;
+    private TextView title;
+    private TextView next;
+    private TextView stepTitle;
+    private int stepNumber = STEP_1;
+    private ArrayList<HashMap<String, Object>> otherProjects = new ArrayList<>();
 
     class a implements Comparator<HashMap<String, Object>> {
         public a() {
@@ -88,40 +81,40 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    public final void f(int i) {
-        if (J != null) {
-            J.a();
+    private void setStep(int stepNumber) {
+        if (step != null) {
+            step.a();
         }
-        w.setText(i == 2 ? xB.b().a(getApplicationContext(), R.string.common_word_review)
-                : xB.b().a(getApplicationContext(), R.string.common_word_step, Integer.valueOf(i + 1)));
-        x.setText(i == 2 ? xB.b().a(getApplicationContext(), R.string.common_word_save)
+        title.setText(stepNumber == STEP_3 ? xB.b().a(getApplicationContext(), R.string.common_word_review)
+                : xB.b().a(getApplicationContext(), R.string.common_word_step, stepNumber + 1));
+        next.setText(stepNumber == STEP_3 ? xB.b().a(getApplicationContext(), R.string.common_word_save)
                 : xB.b().a(getApplicationContext(), R.string.common_word_next));
-        C.setVisibility(i == 0 ? View.VISIBLE : View.GONE);
-        v.setVisibility(i == 0 ? View.GONE : View.VISIBLE);
-        z.setText(G[i]);
-        A.setText(H[i]);
-        B.removeAllViews();
-        if (i == 0) {
-            u.setVisibility(View.VISIBLE);
+        back.setVisibility(stepNumber == STEP_1 ? View.VISIBLE : View.GONE);
+        prev.setVisibility(stepNumber == STEP_1 ? View.GONE : View.VISIBLE);
+        stepTitle.setText(stepTitles[stepNumber]);
+        stepDescription.setText(stepDescriptions[stepNumber]);
+        stepContainer.removeAllViews();
+        if (stepNumber == STEP_1) {
+            openConsole.setVisibility(View.VISIBLE);
             lv lvVar = new lv(this);
-            B.addView(lvVar);
-            lvVar.setData(K);
-            J = lvVar;
-        } else if (i == 1) {
-            u.setVisibility(View.VISIBLE);
+            stepContainer.addView(lvVar);
+            lvVar.setData(firebaseSettings);
+            step = lvVar;
+        } else if (stepNumber == STEP_2) {
+            openConsole.setVisibility(View.VISIBLE);
             mv mvVar = new mv(this);
-            B.addView(mvVar);
-            mvVar.setData(K);
-            J = mvVar;
-        } else if (i == 2) {
-            u.setVisibility(View.GONE);
+            stepContainer.addView(mvVar);
+            mvVar.setData(firebaseSettings);
+            step = mvVar;
+        } else if (stepNumber == STEP_3) {
+            openConsole.setVisibility(View.GONE);
             kv kvVar = new kv(this);
-            B.addView(kvVar);
-            kvVar.setData(K);
-            J = kvVar;
+            stepContainer.addView(kvVar);
+            kvVar.setData(firebaseSettings);
+            step = kvVar;
         }
-        E.setVisibility(J.getDocUrl().isEmpty() ? View.GONE : View.VISIBLE);
-        F.setVisibility(i > 0 ? View.GONE : View.VISIBLE);
+        openDocumentation.setVisibility(step.getDocUrl().isEmpty() ? View.GONE : View.VISIBLE);
+        importFromOtherProject.setVisibility(stepNumber > STEP_1 ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -130,41 +123,41 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
-    public final void l() {
-        L = new ArrayList<>();
+    private void importFromOtherProjectLoadProjects() {
+        otherProjects = new ArrayList<>();
         for (HashMap<String, Object> project : lC.a()) {
             String projectSc_id = yB.c(project, "sc_id");
-            if (!t.equals(projectSc_id)) {
+            if (!sc_id.equals(projectSc_id)) {
                 iC iCVar = new iC(projectSc_id);
                 iCVar.i();
                 if (iCVar.d().useYn.equals("Y")) {
                     project.put("firebase_setting", iCVar.d().clone());
-                    L.add(project);
+                    otherProjects.add(project);
                 }
             }
         }
-        if (L.size() > 0) {
-            Collections.sort(L, new a());
+        if (otherProjects.size() > 0) {
+            Collections.sort(otherProjects, new a());
         }
-        M.notifyDataSetChanged();
+        importFromOtherProjectAdapter.notifyDataSetChanged();
     }
 
-    public final void m() {
-        if (J.isValid()) {
-            J.a(K);
-            if (I < 2) {
-                f(++I);
+    private void onNextPressed() {
+        if (step.isValid()) {
+            step.a(firebaseSettings);
+            if (stepNumber < STEP_3) {
+                setStep(++stepNumber);
             } else {
                 Intent intent = new Intent();
-                intent.putExtra("firebase", K);
+                intent.putExtra("firebase", firebaseSettings);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         }
     }
 
-    public final void n() {
-        String docUrl = J.getDocUrl();
+    private void openDocumentation() {
+        String docUrl = step.getDocUrl();
         if (!docUrl.isEmpty()) {
             if (GB.h(getApplicationContext())) {
                 try {
@@ -177,7 +170,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    q();
+                    showGetChromeDialog();
                 }
             } else {
                 bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
@@ -185,7 +178,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    public final void o() {
+    private void openFirebaseConsole() {
         if (GB.h(getApplicationContext())) {
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -197,7 +190,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
-                q();
+                showGetChromeDialog();
             }
         } else {
             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
@@ -206,8 +199,8 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-        if (I > 0) {
-            f(--I);
+        if (stepNumber > STEP_1) {
+            setStep(--stepNumber);
         } else {
             setResult(Activity.RESULT_CANCELED);
             finish();
@@ -215,77 +208,76 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onClick(View view) {
-        if (mB.a()) {
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.btn_open_doc:
-                n();
-                return;
-            case R.id.cv_console:
-                o();
-                return;
-            case R.id.img_backbtn:
-            case R.id.tv_prevbtn:
-                onBackPressed();
-                return;
-            case R.id.tv_nextbtn:
-                m();
-                return;
-            default:
+    public void onClick(View v) {
+        if (!mB.a()) {
+            switch (v.getId()) {
+                case R.id.btn_open_doc:
+                    openDocumentation();
+                    break;
+                case R.id.cv_console:
+                    openFirebaseConsole();
+                    break;
+                case R.id.img_backbtn:
+                case R.id.tv_prevbtn:
+                    onBackPressed();
+                    break;
+                case R.id.tv_nextbtn:
+                    onNextPressed();
+                    break;
+                default:
+            }
         }
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
         setContentView(R.layout.manage_library_firebase);
-        if (bundle != null) {
-            t = bundle.getString("sc_id");
+        if (savedInstanceState != null) {
+            sc_id = savedInstanceState.getString("sc_id");
         } else {
-            t = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         }
-        n = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step1_title);
-        o = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step2_title);
-        p = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step3_title);
-        q = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step1_desc);
-        r = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step2_desc);
-        s = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step3_desc);
-        G = new String[]{n, o, p};
-        H = new String[]{q, r, s};
-        u = findViewById(R.id.cv_console);
-        u.setOnClickListener(this);
-        y = findViewById(R.id.tv_goto_console);
-        y.setText(xB.b().a(getApplicationContext(), R.string.design_library_firebase_button_goto_firebase_console));
-        v = findViewById(R.id.tv_prevbtn);
-        v.setText(xB.b().a(getApplicationContext(), R.string.common_word_prev));
-        v.setOnClickListener(this);
-        x = findViewById(R.id.tv_nextbtn);
-        x.setText(xB.b().a(getApplicationContext(), R.string.common_word_next));
-        x.setOnClickListener(this);
-        w = findViewById(R.id.tv_toptitle);
-        z = findViewById(R.id.tv_step_title);
-        A = findViewById(R.id.tv_step_desc);
-        D = findViewById(R.id.icon);
-        D.setImageResource(R.drawable.widget_firebase);
-        C = findViewById(R.id.img_backbtn);
-        C.setOnClickListener(this);
-        E = findViewById(R.id.btn_open_doc);
-        E.setText(xB.b().a(getApplicationContext(), R.string.common_word_go_to_documentation));
-        E.setOnClickListener(this);
-        F = findViewById(R.id.btn_import);
-        F.setText(xB.b().a(getApplicationContext(), R.string.design_library_button_import_from_other_project));
-        F.setOnClickListener(v -> p());
-        B = findViewById(R.id.layout_container);
+        String titleStep1 = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step1_title);
+        String titleStep2 = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step2_title);
+        String titleStep3 = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step3_title);
+        String descriptionStep1 = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step1_desc);
+        String descriptionStep2 = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step2_desc);
+        String descriptionStep3 = xB.b().a(getApplicationContext(), R.string.design_library_firebase_setting_step3_desc);
+        stepTitles = new String[]{titleStep1, titleStep2, titleStep3};
+        stepDescriptions = new String[]{descriptionStep1, descriptionStep2, descriptionStep3};
+        openConsole = findViewById(R.id.cv_console);
+        openConsole.setOnClickListener(this);
+        TextView goToConsole = findViewById(R.id.tv_goto_console);
+        goToConsole.setText(xB.b().a(getApplicationContext(), R.string.design_library_firebase_button_goto_firebase_console));
+        prev = findViewById(R.id.tv_prevbtn);
+        prev.setText(xB.b().a(getApplicationContext(), R.string.common_word_prev));
+        prev.setOnClickListener(this);
+        next = findViewById(R.id.tv_nextbtn);
+        next.setText(xB.b().a(getApplicationContext(), R.string.common_word_next));
+        next.setOnClickListener(this);
+        title = findViewById(R.id.tv_toptitle);
+        stepTitle = findViewById(R.id.tv_step_title);
+        stepDescription = findViewById(R.id.tv_step_desc);
+        ImageView icon = findViewById(R.id.icon);
+        icon.setImageResource(R.drawable.widget_firebase);
+        back = findViewById(R.id.img_backbtn);
+        back.setOnClickListener(this);
+        openDocumentation = findViewById(R.id.btn_open_doc);
+        openDocumentation.setText(xB.b().a(getApplicationContext(), R.string.common_word_go_to_documentation));
+        openDocumentation.setOnClickListener(this);
+        importFromOtherProject = findViewById(R.id.btn_import);
+        importFromOtherProject.setText(xB.b().a(getApplicationContext(), R.string.design_library_button_import_from_other_project));
+        importFromOtherProject.setOnClickListener(v -> showImportFromOtherProjectDialog());
+        stepContainer = findViewById(R.id.layout_container);
     }
 
     @Override
-    public void onPostCreate(Bundle bundle) {
-        super.onPostCreate(bundle);
-        K = getIntent().getParcelableExtra("firebase");
-        f(I);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        firebaseSettings = getIntent().getParcelableExtra("firebase");
+        setStep(stepNumber);
     }
 
     @Override
@@ -294,53 +286,53 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", t);
-        super.onSaveInstanceState(bundle);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
-    public final void p() {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.design_library_title_select_project));
-        aBVar.a(R.drawable.widget_firebase);
+    private void showImportFromOtherProjectDialog() {
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.design_library_title_select_project));
+        dialog.a(R.drawable.widget_firebase);
         View a2 = wB.a(this, R.layout.manage_library_popup_project_selector);
         RecyclerView recyclerView = a2.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        M = new b();
-        recyclerView.setAdapter(M);
+        importFromOtherProjectAdapter = new b();
+        recyclerView.setAdapter(importFromOtherProjectAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        l();
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
+        importFromOtherProjectLoadProjects();
+        dialog.a(a2);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_select), v -> {
             if (!mB.a()) {
-                if (M.c >= 0) {
-                    K = (ProjectLibraryBean) L.get(M.c).get("firebase_setting");
-                    I = 2;
-                    f(I);
-                    aBVar.dismiss();
+                if (importFromOtherProjectAdapter.c >= 0) {
+                    firebaseSettings = (ProjectLibraryBean) otherProjects.get(importFromOtherProjectAdapter.c).get("firebase_setting");
+                    stepNumber = STEP_3;
+                    setStep(stepNumber);
+                    dialog.dismiss();
                 }
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
-    public final void q() {
-        aB aBVar = new aB(this);
-        aBVar.a(R.drawable.chrome_96);
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.title_compatible_chrome_browser));
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.message_compatible_chrome_brower));
-        aBVar.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
+    private void showGetChromeDialog() {
+        aB dialog = new aB(this);
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.title_compatible_chrome_browser));
+        dialog.a(xB.b().a(getApplicationContext(), R.string.message_compatible_chrome_brower));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                aBVar.dismiss();
+                dialog.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public class b extends RecyclerView.Adapter<b.a> {
@@ -372,24 +364,21 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 });
             }
 
-            public final void c(int i) {
-                if (L.size() > 0) {
-                    for (HashMap<String, Object> next : L) {
+            private void c(int i) {
+                if (otherProjects.size() > 0) {
+                    for (HashMap<String, Object> next : otherProjects) {
                         next.put("selected", false);
                     }
-                    L.get(i).put("selected", true);
-                    M.notifyDataSetChanged();
+                    otherProjects.get(i).put("selected", true);
+                    importFromOtherProjectAdapter.notifyDataSetChanged();
                 }
             }
-        }
-
-        public b() {
         }
 
         @Override
         public void onBindViewHolder(@NonNull a holder, int position) {
             Uri fromFile;
-            HashMap<String, Object> hashMap = L.get(position);
+            HashMap<String, Object> hashMap = otherProjects.get(position);
             String c = yB.c(hashMap, "sc_id");
             holder.u.setImageResource(R.drawable.default_icon);
             if (yB.a(hashMap, "custom_icon")) {
@@ -419,7 +408,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
 
         @Override
         public int getItemCount() {
-            return L.size();
+            return otherProjects.size();
         }
     }
 }
