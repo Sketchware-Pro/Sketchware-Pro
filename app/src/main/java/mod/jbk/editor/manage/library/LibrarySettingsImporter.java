@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.ui.CircleImageView;
@@ -64,14 +65,23 @@ public class LibrarySettingsImporter {
         aB dialog = new aB(activity);
         dialog.b(xB.b().a(activity, R.string.design_library_title_select_project));
         dialog.a(R.drawable.widget_firebase);
-        View root = wB.a(activity, R.layout.manage_library_popup_project_selector);
+        LinearLayout root = (LinearLayout) wB.a(activity, R.layout.manage_library_popup_project_selector);
+        LottieAnimationView animationView = root.findViewById(R.id.animation_view);
         RecyclerView recyclerView = root.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
-        adapter = new ProjectAdapter();
-        recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        loadProjects();
+        new Thread(() -> {
+            loadProjects();
+            activity.runOnUiThread(() -> {
+                animationView.cancelAnimation();
+                animationView.setVisibility(View.GONE);
+                root.removeView(animationView);
+                recyclerView.setVisibility(View.VISIBLE);
+                adapter = new ProjectAdapter();
+                recyclerView.setAdapter(adapter);
+            });
+        }).start();
         dialog.a(root);
         dialog.b(xB.b().a(activity, R.string.common_word_select), v -> {
             if (!mB.a()) {
