@@ -4317,69 +4317,35 @@
     <public name="main_drawer_item" id="0x7f0b00b0" type="layout" />
     <public name="make_block" id="0x7f0b00b1" type="layout" />
     <public name="make_block_layout" id="0x7f0b00b2" type="layout" />
-    <public name="manage_collection" id="0x7f0b00b3" type="layout" />
-    <public name="manage_collection_block_list_item" id="0x7f0b00b4" type="layout" />
-    <public name="manage_collection_more_block_list_item" id="0x7f0b00b5" type="layout" />
     <public name="manage_collection_popup_import_more_block" id="0x7f0b00b6" type="layout" />
-    <public name="manage_collection_popup_import_more_block_list_item" id="0x7f0b00b7" type="layout" />
-    <public name="manage_collection_show_block" id="0x7f0b00b8" type="layout" />
     <public name="manage_collection_show_widget" id="0x7f0b00b9" type="layout" />
-    <public name="manage_collection_widget_list_item" id="0x7f0b00ba" type="layout" />
     <public name="manage_export_apk_list_item" id="0x7f0b00bb" type="layout" />
     <public name="manage_export_data_list_item" id="0x7f0b00bc" type="layout" />
     <public name="manage_export_list_item_button" id="0x7f0b00bd" type="layout" />
     <public name="manage_export_list_item_button_layout" id="0x7f0b00be" type="layout" />
     <public name="manage_export_url" id="0x7f0b00bf" type="layout" />
-    <public name="manage_font" id="0x7f0b00c0" type="layout" />
     <public name="manage_font_add" id="0x7f0b00c1" type="layout" />
     <public name="manage_font_import" id="0x7f0b00c2" type="layout" />
     <public name="manage_font_import_pager" id="0x7f0b00c3" type="layout" />
     <public name="manage_font_list_item" id="0x7f0b00c4" type="layout" />
-    <public name="manage_image" id="0x7f0b00c5" type="layout" />
     <public name="manage_image_add" id="0x7f0b00c6" type="layout" />
     <public name="manage_image_import" id="0x7f0b00c7" type="layout" />
     <public name="manage_image_import_pager" id="0x7f0b00c8" type="layout" />
-    <public name="manage_image_list_item" id="0x7f0b00c9" type="layout" />
     <public name="manage_import_list_item" id="0x7f0b00ca" type="layout" />
-    <public name="manage_library" id="0x7f0b00cb" type="layout" />
-    <public name="manage_library_admob" id="0x7f0b00cc" type="layout" />
-    <public name="manage_library_admob_listing" id="0x7f0b00cd" type="layout" />
-    <public name="manage_library_admob_preview" id="0x7f0b00ce" type="layout" />
-    <public name="manage_library_admob_set_unit" id="0x7f0b00cf" type="layout" />
-    <public name="manage_library_admob_test_device" id="0x7f0b00d0" type="layout" />
-    <public name="manage_library_base_item" id="0x7f0b00d1" type="layout" />
-    <public name="manage_library_common_item" id="0x7f0b00d2" type="layout" />
-    <public name="manage_library_firebase" id="0x7f0b00d3" type="layout" />
     <public name="manage_library_firebase_preview" id="0x7f0b00d5" type="layout" />
     <public name="manage_library_firebase_project_settings" id="0x7f0b00d6" type="layout" />
     <public name="manage_library_firebase_set_env" id="0x7f0b00d7" type="layout" />
     <public name="manage_library_firebase_storage_url_settings" id="0x7f0b00d8" type="layout" />
-    <public name="manage_library_manage_admob" id="0x7f0b00d9" type="layout" />
-    <public name="manage_library_manage_compat" id="0x7f0b00da" type="layout" />
-    <public name="manage_library_manage_firebase" id="0x7f0b00db" type="layout" />
-    <public name="manage_library_manage_googlemap" id="0x7f0b00dc" type="layout" />
-    <public name="manage_library_popup_project_list_item" id="0x7f0b00dd" type="layout" />
-    <public name="manage_library_popup_project_selector" id="0x7f0b00de" type="layout" />
-    <public name="manage_library_setting_admob_adunit_add" id="0x7f0b00df" type="layout" />
-    <public name="manage_library_setting_admob_adunit_item" id="0x7f0b00e0" type="layout" />
-    <public name="manage_library_setting_admob_test_device_add" id="0x7f0b00e2" type="layout" />
-    <public name="manage_library_setting_admob_test_device_item" id="0x7f0b00e3" type="layout" />
     <public name="manage_screen_activity_add_feature_item" id="0x7f0b00e4" type="layout" />
     <public name="manage_screen_activity_add_temp" id="0x7f0b00e5" type="layout" />
     <public name="manage_screen_activity_add_view" id="0x7f0b00e6" type="layout" />
     <public name="manage_screen_activity_add_view_category_item" id="0x7f0b00e7" type="layout" />
     <public name="manage_screen_activity_add_view_detail_setting" id="0x7f0b00e8" type="layout" />
-    <public name="manage_screen_activity_add_view_preset_setting" id="0x7f0b00e9" type="layout" />
-    <public name="manage_screen_custom_view_add" id="0x7f0b00ea" type="layout" />
     <public name="manage_set_publish_account" id="0x7f0b00eb" type="layout" />
-    <public name="manage_sound" id="0x7f0b00ec" type="layout" />
     <public name="manage_sound_add" id="0x7f0b00ed" type="layout" />
     <public name="manage_sound_import" id="0x7f0b00ee" type="layout" />
     <public name="manage_sound_import_pager" id="0x7f0b00ef" type="layout" />
-    <public name="manage_sound_list_item" id="0x7f0b00f0" type="layout" />
-    <public name="manage_view" id="0x7f0b00f1" type="layout" />
     <public name="manage_view_custom_list_item" id="0x7f0b00f2" type="layout" />
-    <public name="manage_view_list_item" id="0x7f0b00f3" type="layout" />
     <public name="middle_line_header" id="0x7f0b00f4" type="layout" />
     <public name="mtrl_layout_snackbar" id="0x7f0b00f5" type="layout" />
     <public name="mtrl_layout_snackbar_include" id="0x7f0b00f6" type="layout" />
