@@ -3,7 +3,6 @@
 </p>
 
 # Sketchware Pro
-![CI](https://github.com/Sketchware-Pro/Sketchware-Pro/actions/workflows/android.yml/badge.svg)
 ![GitHub contributors](https://img.shields.io/github/contributors/Sketchware-Pro/Sketchware-Pro) 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Sketchware-Pro/Sketchware-Pro) 
 ![Discord server stats](https://img.shields.io/discord/790686719753846785)
