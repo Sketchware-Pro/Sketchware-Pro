@@ -4316,7 +4316,6 @@ com.sketchware.remod:layout/main_drawer_header = 0x7f0b00af
 com.sketchware.remod:layout/main_drawer_item = 0x7f0b00b0
 com.sketchware.remod:layout/make_block = 0x7f0b00b1
 com.sketchware.remod:layout/make_block_layout = 0x7f0b00b2
-com.sketchware.remod:layout/manage_collection_popup_import_more_block = 0x7f0b00b6
 com.sketchware.remod:layout/manage_collection_show_widget = 0x7f0b00b9
 com.sketchware.remod:layout/manage_export_apk_list_item = 0x7f0b00bb
 com.sketchware.remod:layout/manage_export_data_list_item = 0x7f0b00bc

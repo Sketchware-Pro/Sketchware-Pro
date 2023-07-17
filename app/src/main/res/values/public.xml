@@ -4317,7 +4317,6 @@
     <public name="main_drawer_item" id="0x7f0b00b0" type="layout" />
     <public name="make_block" id="0x7f0b00b1" type="layout" />
     <public name="make_block_layout" id="0x7f0b00b2" type="layout" />
-    <public name="manage_collection_popup_import_more_block" id="0x7f0b00b6" type="layout" />
     <public name="manage_collection_show_widget" id="0x7f0b00b9" type="layout" />
     <public name="manage_export_apk_list_item" id="0x7f0b00bb" type="layout" />
     <public name="manage_export_data_list_item" id="0x7f0b00bc" type="layout" />
