@@ -4326,11 +4326,9 @@
     <public name="manage_export_url" id="0x7f0b00bf" type="layout" />
     <public name="manage_font_add" id="0x7f0b00c1" type="layout" />
     <public name="manage_font_import" id="0x7f0b00c2" type="layout" />
-    <public name="manage_font_import_pager" id="0x7f0b00c3" type="layout" />
     <public name="manage_font_list_item" id="0x7f0b00c4" type="layout" />
     <public name="manage_image_add" id="0x7f0b00c6" type="layout" />
     <public name="manage_image_import" id="0x7f0b00c7" type="layout" />
-    <public name="manage_image_import_pager" id="0x7f0b00c8" type="layout" />
     <public name="manage_import_list_item" id="0x7f0b00ca" type="layout" />
     <public name="manage_library_firebase_preview" id="0x7f0b00d5" type="layout" />
     <public name="manage_library_firebase_project_settings" id="0x7f0b00d6" type="layout" />
@@ -4344,7 +4342,6 @@
     <public name="manage_set_publish_account" id="0x7f0b00eb" type="layout" />
     <public name="manage_sound_add" id="0x7f0b00ed" type="layout" />
     <public name="manage_sound_import" id="0x7f0b00ee" type="layout" />
-    <public name="manage_sound_import_pager" id="0x7f0b00ef" type="layout" />
     <public name="manage_view_custom_list_item" id="0x7f0b00f2" type="layout" />
     <public name="middle_line_header" id="0x7f0b00f4" type="layout" />
     <public name="mtrl_layout_snackbar" id="0x7f0b00f5" type="layout" />
