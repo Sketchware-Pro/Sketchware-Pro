@@ -3,46 +3,28 @@ package com.besome.sketch.editor.manage.library.admob;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
-import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.CircleImageView;
 import com.sketchware.remod.R;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 import a.a.a.GB;
 import a.a.a.Uu;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.iC;
-import a.a.a.lC;
 import a.a.a.mB;
-import a.a.a.wB;
-import a.a.a.wq;
 import a.a.a.xB;
-import a.a.a.yB;
 import mod.hey.studios.util.Helper;
+import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 
 public class AdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private TextView nextStep;
@@ -57,8 +39,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private ProjectLibraryBean adMobSettings;
     private Button goToDocumentation;
     private Button importFromOtherProject;
-    private ArrayList<HashMap<String, Object>> projects = new ArrayList<>();
-    private ProjectsAdapter adapter;
     private String sc_id;
     private CardView goToConsole;
     private TextView previousStep;
@@ -138,29 +118,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
-    private void loadProjects() {
-        projects = new ArrayList<>();
-
-        for (HashMap<String, Object> stringObjectHashMap : lC.a()) {
-            String projectSc_id = yB.c(stringObjectHashMap, "sc_id");
-            if (!sc_id.equals(projectSc_id)) {
-                iC iC = new iC(projectSc_id);
-                iC.i();
-                if (iC.b().useYn.equals("Y")) {
-                    stringObjectHashMap.put("admob_setting", iC.b().clone());
-                    projects.add(stringObjectHashMap);
-                }
-            }
-        }
-
-        if (projects.size() > 0) {
-            //noinspection Java8ListSort
-            Collections.sort(projects, new ProjectComparator());
-        }
-
-        adapter.notifyDataSetChanged();
-    }
-
     private void nextStep() {
         if (step.isValid()) {
             step.a(adMobSettings);
@@ -197,6 +154,14 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             nextStep();
         } else if (id == R.id.tv_prevbtn) {
             onBackPressed();
+        } else if (id == R.id.btn_import) {
+            LibrarySettingsImporter importer = new LibrarySettingsImporter(sc_id, iC::b);
+            importer.addOnProjectSelectedListener(settings -> {
+                adMobSettings = settings;
+                stepPosition = 3;
+                showStep(stepPosition);
+            });
+            importer.showDialog(this);
         }
     }
 
@@ -264,7 +229,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         goToDocumentation.setOnClickListener(this);
         importFromOtherProject = findViewById(R.id.btn_import);
         importFromOtherProject.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
-        importFromOtherProject.setOnClickListener(view -> showImportFromOtherProjectDialog());
+        importFromOtherProject.setOnClickListener(this);
         stepContainer = findViewById(R.id.layout_container);
     }
 
@@ -302,34 +267,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
     }
 
-    private void showImportFromOtherProjectDialog() {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.design_library_title_select_project));
-        dialog.a(R.drawable.widget_admob);
-        View rootView = wB.a(this, R.layout.manage_library_popup_project_selector);
-        RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ProjectsAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        loadProjects();
-        dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
-            if (!mB.a()) {
-                if (adapter.selectedProjectIndex >= 0) {
-                    HashMap<String, Object> projectMap = projects.get(adapter.selectedProjectIndex);
-                    adMobSettings = (ProjectLibraryBean) projectMap.get("admob_setting");
-                    stepPosition = 3;
-                    showStep(stepPosition);
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.show();
-    }
-
     private void showGoogleChromeNotice() {
         aB dialog = new aB(this);
         dialog.a(R.drawable.chrome_96);
@@ -345,87 +282,5 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
-    }
-
-    private class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
-
-        private int selectedProjectIndex = -1;
-
-        @Override
-        public int getItemCount() {
-            return projects.size();
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            HashMap<String, Object> projectMap = projects.get(position);
-            String projectSc_id = yB.c(projectMap, "sc_id");
-            String iconDir = wq.e() + File.separator + projectSc_id;
-            viewHolder.icon.setImageResource(R.drawable.default_icon);
-            if (yB.a(projectMap, "custom_icon")) {
-                Uri iconUri;
-                if (VERSION.SDK_INT >= 24) {
-                    iconUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", new File(iconDir, "icon.png"));
-                } else {
-                    iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
-                }
-
-                viewHolder.icon.setImageURI(iconUri);
-            }
-
-            viewHolder.appName.setText(yB.c(projectMap, "my_app_name"));
-            viewHolder.projectName.setText(yB.c(projectMap, "my_ws_name"));
-            viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
-            viewHolder.version.setText(String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code")));
-
-            viewHolder.checkmark.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_popup_project_list_item, parent, false));
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-            private final CircleImageView icon;
-            private final TextView projectName;
-            private final TextView appName;
-            private final TextView packageName;
-            private final TextView version;
-            private final ImageView checkmark;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                LinearLayout projectLayout = itemView.findViewById(R.id.project_layout);
-                projectName = itemView.findViewById(R.id.project_name);
-                icon = itemView.findViewById(R.id.img_icon);
-                appName = itemView.findViewById(R.id.app_name);
-                packageName = itemView.findViewById(R.id.package_name);
-                version = itemView.findViewById(R.id.project_version);
-                checkmark = itemView.findViewById(R.id.img_selected);
-                projectLayout.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View v) {
-                if (!mB.a() && v.getId() == R.id.project_layout) {
-                    selectedProjectIndex = getLayoutPosition();
-                    selectProject(selectedProjectIndex);
-                }
-            }
-
-            private void selectProject(int i) {
-                if (projects.size() > 0) {
-                    for (HashMap<String, Object> stringObjectHashMap : projects) {
-                        stringObjectHashMap.put("selected", false);
-                    }
-
-                    projects.get(i).put("selected", true);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        }
     }
 }

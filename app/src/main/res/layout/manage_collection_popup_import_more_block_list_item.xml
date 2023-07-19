@@ -1,66 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginBottom="2dp"
+    android:elevation="8dp"
+    app:cardBackgroundColor="#fff5f5f5">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/layout_item"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="2dp"
-        android:elevation="8dp"
-        app:cardBackgroundColor="#fff5f5f5">
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center|left"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center|left"
-            android:orientation="horizontal">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_block_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:textColor="#ff404040"
+                android:textSize="16sp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackground"
-                android:orientation="vertical">
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="8dp">
 
-                <TextView
-                    android:id="@+id/tv_block_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="16dp"
-                    android:textColor="#ff404040"
-                    android:textSize="16sp" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="8dp">
-
-                    <FrameLayout
-                        android:id="@+id/block_area"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-                </HorizontalScrollView>
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/img_selected"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:src="@drawable/ic_checkmark_green_48dp"
-                android:visibility="gone" />
+                <FrameLayout
+                    android:id="@+id/block_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </HorizontalScrollView>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_selected"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_checkmark_green_48dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

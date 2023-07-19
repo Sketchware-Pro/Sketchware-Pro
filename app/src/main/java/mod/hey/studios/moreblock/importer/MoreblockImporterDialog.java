@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.sketchware.remod.R;
 
@@ -105,7 +107,7 @@ public class MoreblockImporterDialog {
                     (int) getDip(18)
             );
             lw.setLayoutParams(listViewParams);
-            lw.setDivider(act.getResources().getDrawable(android.R.color.transparent, act.getTheme()));
+            lw.setDivider(ResourcesCompat.getDrawable(act.getResources(), android.R.color.transparent, act.getTheme()));
             lw.setDividerHeight((int) getDip(10));
         }
 
