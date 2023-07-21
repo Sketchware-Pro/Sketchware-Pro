@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ViewBean;
@@ -19,7 +20,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.GB;
 import a.a.a.NB;
@@ -33,101 +33,95 @@ import a.a.a.wq;
 import a.a.a.xB;
 
 public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    public Toolbar k;
-    public String l;
-    public ViewPane m;
-    public ScrollView n;
-    public EditText o;
-    public EasyDeleteEditText p;
-    public Button q;
-    public LinearLayout r;
-    public NB s;
+    private String widgetName;
+    private ViewPane viewPane;
+    private ScrollView scrollView;
+    private EditText widgetNameInput;
+    private LinearLayout actionContainer;
+    private NB widgetNameValidator;
 
-    public sy a(ArrayList<ViewBean> arrayList) {
-        Iterator<ViewBean> it = arrayList.iterator();
+    private sy loadViews(ArrayList<ViewBean> views) {
         sy syVar = null;
-        while (it.hasNext()) {
-            ViewBean next = it.next();
-            if (arrayList.indexOf(next) == 0) {
-                next.parent = "root";
-                next.parentType = 0;
-                next.preParent = null;
-                next.preParentType = -1;
-                syVar = a(next);
+        for (ViewBean view : views) {
+            if (views.indexOf(view) == 0) {
+                view.parent = "root";
+                view.parentType = 0;
+                view.preParent = null;
+                view.preParentType = -1;
+                syVar = loadView(view);
             } else {
-                a(next);
+                loadView(view);
             }
         }
         return syVar;
     }
 
-    public void l() {
-        r.measure(0, 0);
-        n.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                getResources().getDisplayMetrics().heightPixels - GB.a(e) - GB.f(e) - r.getMeasuredHeight()));
-        n.requestLayout();
+    private void setActionContainerHeight() {
+        actionContainer.measure(0, 0);
+        scrollView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                getResources().getDisplayMetrics().heightPixels - GB.a(e) - GB.f(e) - actionContainer.getMeasuredHeight()));
+        scrollView.requestLayout();
     }
 
     @Override
-    public void onClick(View view) {
-        int id2 = view.getId();
-        if (id2 != R.id.img_back) {
-            if (id2 == R.id.save_button && s.b()) {
-                Rp.h().a(l, o.getText().toString(), true);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
-                finish();
-                return;
-            }
-            return;
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.img_back) {
+            onBackPressed();
+        } else if (id == R.id.save_button && widgetNameValidator.b()) {
+            Rp.h().a(widgetName, widgetNameInput.getText().toString(), true);
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+            finish();
         }
-        onBackPressed();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
-        l();
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setActionContainerHeight();
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_collection_show_widget);
-        k = findViewById(R.id.toolbar);
-        setSupportActionBar(k);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_widget_title_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        k.setNavigationOnClickListener(v -> {
+        toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
-        l = getIntent().getStringExtra("widget_name");
-        m = findViewById(R.id.pane);
-        m.setVerticalScrollBarEnabled(true);
+
+        widgetName = getIntent().getStringExtra("widget_name");
+        viewPane = findViewById(R.id.pane);
+        viewPane.setVerticalScrollBarEnabled(true);
         kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
         kCVar.b(Op.g().f());
-        m.setResourceManager(kCVar);
-        p = findViewById(R.id.ed_input);
-        o = p.getEditText();
-        o.setPrivateImeOptions("defaultInputmode=english;");
-        o.setText(l);
-        p.setHint(xB.b().a(this, R.string.design_manager_widget_hint_enter_widget_name));
-        q = findViewById(R.id.save_button);
-        q.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
-        q.setOnClickListener(this);
-        s = new NB(this, p.getTextInputLayout(), Rp.h().g());
-        r = findViewById(R.id.layout_button);
-        n = findViewById(R.id.scroll_view);
+        viewPane.setResourceManager(kCVar);
+        EasyDeleteEditText input = findViewById(R.id.ed_input);
+        widgetNameInput = input.getEditText();
+        widgetNameInput.setPrivateImeOptions("defaultInputmode=english;");
+        widgetNameInput.setText(widgetName);
+        input.setHint(xB.b().a(this, R.string.design_manager_widget_hint_enter_widget_name));
+        Button save = findViewById(R.id.save_button);
+        save.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
+        save.setOnClickListener(this);
+        widgetNameValidator = new NB(this, input.getTextInputLayout(), Rp.h().g());
+        actionContainer = findViewById(R.id.layout_button);
+        scrollView = findViewById(R.id.scroll_view);
     }
 
     @Override
-    public void onPostCreate(Bundle bundle) {
-        super.onPostCreate(bundle);
-        a(Rp.h().a(l).widgets);
-        l();
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        loadViews(Rp.h().a(widgetName).widgets);
+        setActionContainerHeight();
     }
 
     @Override
@@ -137,9 +131,9 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public sy a(ViewBean viewBean) {
-        View b = m.b(viewBean);
-        m.a(b);
-        return (sy) b;
+    private sy loadView(ViewBean view) {
+        View v = viewPane.b(view);
+        viewPane.a(v);
+        return (sy) v;
     }
 }
