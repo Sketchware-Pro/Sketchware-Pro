@@ -1,15 +1,5 @@
 package com.besome.sketch.editor.manage;
 
-import a.a.a.Ft;
-import a.a.a.GB;
-import a.a.a.NB;
-import a.a.a.Op;
-import a.a.a.Rp;
-import a.a.a.bB;
-import a.a.a.kC;
-import a.a.a.sy;
-import a.a.a.wq;
-import a.a.a.xB;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -17,14 +7,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+
 import androidx.appcompat.widget.Toolbar;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.google.android.gms.analytics.HitBuilders;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import a.a.a.GB;
+import a.a.a.NB;
+import a.a.a.Op;
+import a.a.a.Rp;
+import a.a.a.bB;
+import a.a.a.kC;
+import a.a.a.mB;
+import a.a.a.sy;
+import a.a.a.wq;
+import a.a.a.xB;
 
 public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public Toolbar k;
@@ -93,7 +97,11 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625306));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        this.k.setNavigationOnClickListener(new Ft(this));
+        this.k.setNavigationOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        });
         this.l = getIntent().getStringExtra("widget_name");
         this.m = (ViewPane) findViewById(2131231592);
         this.m.setVerticalScrollBarEnabled(true);
