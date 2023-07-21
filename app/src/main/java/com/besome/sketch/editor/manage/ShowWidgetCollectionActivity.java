@@ -16,7 +16,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -122,13 +121,6 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         super.onPostCreate(savedInstanceState);
         loadViews(Rp.h().a(widgetName).widgets);
         setActionContainerHeight();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(ShowWidgetCollectionActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private sy loadView(ViewBean view) {
