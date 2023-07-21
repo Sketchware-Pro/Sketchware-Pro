@@ -13,7 +13,11 @@ public class ViewBlockCollectionEditor extends LogicEditorScrollView {
     public int[] l;
 
     public ViewBlockCollectionEditor(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public ViewBlockCollectionEditor(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         this.k = true;
         this.l = new int[2];
         initialize(context);
@@ -31,20 +35,13 @@ public class ViewBlockCollectionEditor extends LogicEditorScrollView {
     }
 
     @Override
-    public void onLayout(boolean z, int i, int i2, int i3, int i4) {
-        super.onLayout(z, i, i2, i3, i4);
+    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
         if (this.k) {
-            this.j.getLayoutParams().width = i3 - i;
-            this.j.getLayoutParams().height = i4 - i2;
+            this.j.getLayoutParams().width = right - left;
+            this.j.getLayoutParams().height = bottom - top;
             this.j.b();
             this.k = false;
         }
-    }
-
-    public ViewBlockCollectionEditor(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.k = true;
-        this.l = new int[2];
-        initialize(context);
     }
 }
