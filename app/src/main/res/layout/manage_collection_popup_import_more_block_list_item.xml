@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -33,7 +34,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
                 android:textColor="#ff404040"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="gaming Block" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -58,6 +60,7 @@
             android:layout_height="40dp"
             android:padding="8dp"
             android:src="@drawable/ic_checkmark_green_48dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
