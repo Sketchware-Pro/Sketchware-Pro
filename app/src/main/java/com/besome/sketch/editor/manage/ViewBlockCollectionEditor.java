@@ -16,10 +16,10 @@ public class ViewBlockCollectionEditor extends LogicEditorScrollView {
         super(context);
         this.k = true;
         this.l = new int[2];
-        a(context);
+        initialize(context);
     }
 
-    private void a(Context context) {
+    private void initialize(Context context) {
         this.i = context;
         this.j = new BlockPane(this.i);
         this.j.setLayoutParams(new FrameLayout.LayoutParams(-2, -2));
@@ -45,6 +45,6 @@ public class ViewBlockCollectionEditor extends LogicEditorScrollView {
         super(context, attributeSet);
         this.k = true;
         this.l = new int[2];
-        a(context);
+        initialize(context);
     }
 }
