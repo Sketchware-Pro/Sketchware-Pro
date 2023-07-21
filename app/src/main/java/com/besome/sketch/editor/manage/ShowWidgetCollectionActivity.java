@@ -88,11 +88,11 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         super.onCreate(bundle);
         setContentView(2131427513);
         this.k = (Toolbar) findViewById(2131231847);
-        a(this.k);
+        setSupportActionBar(this.k);
         findViewById(2131231370).setVisibility(8);
-        d().a(xB.b().a(getApplicationContext(), 2131625306));
-        d().e(true);
-        d().d(true);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625306));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         this.k.setNavigationOnClickListener(new Ft(this));
         this.l = getIntent().getStringExtra("widget_name");
         this.m = (ViewPane) findViewById(2131231592);
