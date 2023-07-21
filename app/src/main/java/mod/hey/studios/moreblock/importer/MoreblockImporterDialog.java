@@ -3,6 +3,7 @@ package mod.hey.studios.moreblock.importer;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 
 import a.a.a.aB;
 import mod.SketchwareUtil;
-import mod.hey.studios.moreblock.ImportMoreblockHelper;
+import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
 
 public class MoreblockImporterDialog {
@@ -179,6 +180,8 @@ public class MoreblockImporterDialog {
             TextView title = convertView.findViewById(R.id.tv_block_name);
             ImageView selected = convertView.findViewById(R.id.img_selected);
 
+            TextView blockPreview = convertView.findViewById(R.id.spec);
+
             if (position == selectedPos) {
                 selected.setVisibility(View.VISIBLE);
             } else {
@@ -192,10 +195,15 @@ public class MoreblockImporterDialog {
                 selected.setBackground(containerBackground);
             }
 
-            container.removeAllViews();
-            container.addView(
-                    ImportMoreblockHelper.optimizedBlockView(act.getBaseContext(), getItem(position).spec)
-            );
+            String spec = getItem(position).spec;
+            blockPreview.setText(ReturnMoreblockManager.getMbName(spec));
+            blockPreview.setBackgroundResource(switch (ReturnMoreblockManager.getMoreblockChar(spec)) {
+                case "s" -> R.drawable.block_string;
+                case "b" -> R.drawable.block_boolean;
+                case "d" -> R.drawable.block_num;
+                default -> R.drawable.block_ori;
+            });
+            blockPreview.getBackground().setColorFilter(0xff8a55d7, PorterDuff.Mode.MULTIPLY);
 
             View.OnClickListener listener = v -> {
                 selectedPos = position;
