@@ -8,7 +8,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import a.a.a.xB;
@@ -53,12 +52,5 @@ public class ShowFilePickerTypesActivity extends BaseDialogActivity implements V
         ((RadioButton) findViewById(R.id.radio_text)).setText(xB.b().a(this, R.string.component_file_picker_title_select_mime_type_text_files));
         r.setOnClickListener(this);
         s.setOnClickListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(ShowFilePickerTypesActivity.class.getSimpleName().toString());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }
