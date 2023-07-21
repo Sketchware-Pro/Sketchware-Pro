@@ -3,6 +3,7 @@ package com.besome.sketch.editor.manage;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.google.android.gms.analytics.HitBuilders;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,17 +64,17 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     public void l() {
         int i = getResources().getDisplayMetrics().heightPixels;
         this.r.measure(0, 0);
-        this.n.setLayoutParams(new LinearLayout.LayoutParams(-1, ((i - GB.a(this.e)) - GB.f(this.e)) - this.r.getMeasuredHeight()));
+        this.n.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ((i - GB.a(this.e)) - GB.f(this.e)) - this.r.getMeasuredHeight()));
         this.n.requestLayout();
     }
 
     @Override
     public void onClick(View view) {
         int id2 = view.getId();
-        if (id2 != 2131231112) {
-            if (id2 == 2131231681 && this.s.b()) {
+        if (id2 != R.id.img_back) {
+            if (id2 == R.id.save_button && this.s.b()) {
                 Rp.h().a(this.l, this.o.getText().toString(), true);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279), 0).show();
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
                 finish();
                 return;
             }
@@ -90,11 +92,11 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(2131427513);
-        this.k = (Toolbar) findViewById(2131231847);
+        setContentView(R.layout.manage_collection_show_widget);
+        this.k = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(this.k);
-        findViewById(2131231370).setVisibility(8);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), 2131625306));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_widget_title_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         this.k.setNavigationOnClickListener(v -> {
@@ -103,22 +105,22 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
             }
         });
         this.l = getIntent().getStringExtra("widget_name");
-        this.m = (ViewPane) findViewById(2131231592);
+        this.m = (ViewPane) findViewById(R.id.pane);
         this.m.setVerticalScrollBarEnabled(true);
         kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
         kCVar.b(Op.g().f());
         this.m.setResourceManager(kCVar);
-        this.p = (EasyDeleteEditText) findViewById(2131230990);
+        this.p = (EasyDeleteEditText) findViewById(R.id.ed_input);
         this.o = this.p.getEditText();
         this.o.setPrivateImeOptions("defaultInputmode=english;");
         this.o.setText(this.l);
-        this.p.setHint(xB.b().a(this, 2131625305));
-        this.q = (Button) findViewById(2131231681);
-        this.q.setText(xB.b().a(getApplicationContext(), 2131625031));
+        this.p.setHint(xB.b().a(this, R.string.design_manager_widget_hint_enter_widget_name));
+        this.q = (Button) findViewById(R.id.save_button);
+        this.q.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
         this.q.setOnClickListener(this);
         this.s = new NB(this, this.p.getTextInputLayout(), Rp.h().g());
-        this.r = (LinearLayout) findViewById(2131231320);
-        this.n = (ScrollView) findViewById(2131231692);
+        this.r = (LinearLayout) findViewById(R.id.layout_button);
+        this.n = (ScrollView) findViewById(R.id.scroll_view);
     }
 
     @Override
