@@ -2,17 +2,16 @@ package mod.hey.studios.moreblock;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sketchware.remod.R;
 
-public class ImportMoreblockHelper {
+import a.a.a.wB;
 
+public class ImportMoreblockHelper {
     public static TextView optimizedBlockView(Context context, String str) {
-        TextView textView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.block_customview, null).findViewById(R.id.spec);
+        TextView textView = (TextView) wB.a(context, R.layout.block_customview_spec);
 
         textView.setText(ReturnMoreblockManager.getMbName(str));
         String moreblockChar = ReturnMoreblockManager.getMoreblockChar(str);
