@@ -185,7 +185,11 @@ class DependencyResolver(
     }
 
     // copied from source to prevent useless recursive
-    private fun resolve(artifact: Artifact, dependencies: MutableList<Artifact>, callback: DependencyResolverCallback) {
+    private fun resolve(
+        artifact: Artifact,
+        dependencies: MutableList<Artifact>,
+        callback: DependencyResolverCallback
+    ) {
         dependencies.add(artifact)
         callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
         val pom = artifact.getPOM()
@@ -244,14 +248,15 @@ class DependencyResolver(
                 }
             }
             val groupId = dependencyElement.getElementsByTagName("groupId").item(0).textContent
-            val artifactId = dependencyElement.getElementsByTagName("artifactId").item(0).textContent
+            val artifactId =
+                dependencyElement.getElementsByTagName("artifactId").item(0).textContent
 
             if (artifactId.endsWith("bom")) {
                 // TODO: handle versions from BOMs
                 println("Skipping BOM $artifactId")
                 continue
             }
-            val artifact = Artifact(groupId, artifactId, extension=packaging)
+            val artifact = Artifact(groupId, artifactId, extension = packaging)
             initHost(artifact)
             if (artifact.repository == null) {
                 println("No repository for ${artifact.toStr()}")
