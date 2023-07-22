@@ -598,6 +598,9 @@ public class ManageEvent {
     public static String f(String targetId, String eventName, String eventLogic) {
         String code;
         final String resetInterstitialAd = targetId.isEmpty() ? "" : targetId + " = null;\r\n";
+        final String setAdFullScreenContentCallback = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n" +
+                targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
+                eventLogic + "\r\n";
         switch (eventName) {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
@@ -940,9 +943,7 @@ public class ManageEvent {
                         "}";
 
             case "onInterstitialAdLoaded":
-                code = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n" +
-                        targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
-                        eventLogic + "\r\n";
+                code = setAdFullScreenContentCallback;
                 return "@Override\r\n" +
                         "public void onAdLoaded(InterstitialAd _param1) {\r\n" +
                         code +
@@ -1007,8 +1008,7 @@ public class ManageEvent {
                         "}";
 
             case "onRewardAdLoaded":
-                code = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n"
-                        + eventLogic + "\r\n";
+                code = setAdFullScreenContentCallback;
                 return "@Override\r\n" +
                         "public void onAdLoaded(RewardedAd _param1) {\r\n" +
                         code +
