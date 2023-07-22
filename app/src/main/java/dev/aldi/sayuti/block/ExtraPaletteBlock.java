@@ -1096,7 +1096,6 @@ public class ExtraPaletteBlock {
                     logicEditor.a("AdMob Interstitial", 0xff555555);
                     logicEditor.a(" ", "interstitialAdLoad");
                     logicEditor.a(" ", "interstitialAdShow");
-                    logicEditor.a(" ", "interstitialAdRegisterFullScreenContentCallback");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD)) {
                     logicEditor.a("RewardedVideoAd", 0xff555555);

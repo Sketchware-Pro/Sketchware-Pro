@@ -2381,14 +2381,10 @@ public class BlocksHandler {
         hashMap.put("name", "interstitialAdRegisterFullScreenContentCallback");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "if (%1$s != null) {\r\n" +
-                "%1$s.setFullScreenContentCallback(_%1$s_full_screen_content_callback);\r\n" +
-                "} else {\r\n" +
-                "SketchwareUtil.showMessage(getApplicationContext(), \"Error: InterstitialAd %1$s hasn't been loaded yet!\");\r\n" +
-                "}");
+        hashMap.put("code", "");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.interstitialad register fullscreen content callbacks");
+        hashMap.put("spec", "%m.interstitialad register fullscreen content callbacks (This Block isn't needed anymore, please remove it)");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();

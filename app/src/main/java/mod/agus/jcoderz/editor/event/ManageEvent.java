@@ -944,6 +944,7 @@ public class ManageEvent {
                     eventCode = "\r\n";
                 } else {
                     eventCode = targetId + " = _param1;\r\n" +
+                            targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
                             eventLogic + "\r\n";
                 }
 
