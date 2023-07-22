@@ -462,6 +462,9 @@ public class Ix {
                 writePermission(a, s);
             }
         }
+        if (c.isAdMobEnabled) {
+            writePermission(a, "com.google.android.gms.permission.AD_ID");
+        }
         if (c.isAndroidxWorkRuntimeUsed) {
             writePermission(a, "android.permission.WAKE_LOCK");
             writePermission(a, "android.permission.ACCESS_NETWORK_STATE");
@@ -470,6 +473,31 @@ public class Ix {
         }
         ConstVarManifest.handlePermissionComponent(a, c.x);
         AndroidManifestInjector.getP(a, c.sc_id);
+
+        if (c.isAdMobEnabled) {
+            XmlBuilder queries = new XmlBuilder("queries");
+            XmlBuilder forBrowserContent = new XmlBuilder("intent");
+            {
+                XmlBuilder action = new XmlBuilder("action");
+                action.addAttribute("android", "name", "android.intent.action.VIEW");
+                forBrowserContent.a(action);
+                XmlBuilder category = new XmlBuilder("category");
+                category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
+                forBrowserContent.a(category);
+                XmlBuilder data = new XmlBuilder("data");
+                data.addAttribute("android", "scheme", "https");
+                forBrowserContent.a(data);
+            }
+            queries.a(forBrowserContent);
+            XmlBuilder forCustomTabsService = new XmlBuilder("intent");
+            {
+                XmlBuilder action = new XmlBuilder("action");
+                action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
+                forCustomTabsService.a(action);
+            }
+            queries.a(forCustomTabsService);
+            a.a(queries);
+        }
 
         XmlBuilder applicationTag = new XmlBuilder("application");
         applicationTag.addAttribute("android", "allowBackup", "true");
@@ -562,8 +590,28 @@ public class Ix {
             XmlBuilder activityTag = new XmlBuilder("activity");
             activityTag.addAttribute("android", "name", "com.google.android.gms.ads.AdActivity");
             activityTag.addAttribute("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
+            activityTag.addAttribute("android", "exported", "false");
             activityTag.addAttribute("android", "theme", "@android:style/Theme.Translucent");
             applicationTag.a(activityTag);
+
+            XmlBuilder initProvider = new XmlBuilder("provider");
+            initProvider.addAttribute("android", "name", "com.google.android.gms.ads.MobileAdsInitProvider");
+            initProvider.addAttribute("android", "authorities", c.packageName + ".mobileadsinitprovider");
+            initProvider.addAttribute("android", "exported", "false");
+            initProvider.addAttribute("android", "initOrder", "100");
+            applicationTag.a(initProvider);
+
+            XmlBuilder adService = new XmlBuilder("service");
+            adService.addAttribute("android", "name", "com.google.android.gms.ads.AdService");
+            adService.addAttribute("android", "enabled", "true");
+            adService.addAttribute("android", "exported", "false");
+            applicationTag.a(adService);
+
+            XmlBuilder testingActivity = new XmlBuilder("activity");
+            testingActivity.addAttribute("android", "name", "com.google.android.gms.ads.OutOfContextTestingActivity");
+            testingActivity.addAttribute("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
+            testingActivity.addAttribute("android", "exported", "false");
+            applicationTag.a(testingActivity);
         }
         if (c.isAndroidxRoomUsed) {
             writeAndroidxRoomService(applicationTag);
