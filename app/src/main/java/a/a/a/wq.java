@@ -238,7 +238,7 @@ public class wq {
     }
 
     public static String getExtractedIconPackStoreLocation() {
-        return new File(SketchApplication.getContext().getCacheDir(), "iconpack").getAbsolutePath();
+        return new File(SketchApplication.getContext().getFilesDir(), "iconpack").getAbsolutePath();
     }
 
     public static String g() {

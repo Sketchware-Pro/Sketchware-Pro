@@ -64,6 +64,12 @@ We are deeply grateful to these developers for their work and contributions.
 	https://github.com/square/okhttp
 	Apache-2.0 License
 
+* Lottie
+
+    https://github.com/airbnb/lottie
+    Apache-2.0 License
+    No changes made to v3.1.0
+
 * icons8
 	http://icons8.com
 
@@ -84,7 +90,7 @@ Libraries added with Sketchware Pro
 
 	https://r8.googlesource.com
 	Its own license, read the full text further below
-	No changes made to v3.3.75
+	No changes made to v8.0.40
 
 * hdodenhof/CircleImageView
 
@@ -138,7 +144,7 @@ Libraries added with Sketchware Pro
 
     https://github.com/JetBrains/kotlin/compiler
     Apache-2.0 License
-    v1.7.10 modified to work on Android
+    v1.9.0-RC modified to work on Android
     Source: https://github.com/Sketchware-Pro/Sketchware-Pro/tree/main/kotlinc
 
 * libsu:core
