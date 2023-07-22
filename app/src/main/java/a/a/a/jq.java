@@ -171,6 +171,10 @@ public class jq {
      */
     public boolean isHttp3Used = false;
 
+    public boolean isAndroidxEmoji2Used = false;
+
+    public boolean isAndroidxLifecycleProcessUsed = false;
+
     public boolean isAndroidxWorkRuntimeUsed = false;
 
     /**

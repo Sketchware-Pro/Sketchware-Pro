@@ -441,6 +441,8 @@ public class yq {
         }
         if (appCompat.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
+            N.isAndroidxEmoji2Used = true;
+            N.isAndroidxLifecycleProcessUsed = true;
         }
         if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isAdMobEnabled = true;
@@ -465,6 +467,8 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_CAMERA:
                     case 35:
                         N.g = true;
+                        N.isAndroidxEmoji2Used = true;
+                        N.isAndroidxLifecycleProcessUsed = true;
                         N.u = true;
                         N.addPermission(next.getActivityName(), jq.PERMISSION_CAMERA);
                         N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);

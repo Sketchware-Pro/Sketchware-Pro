@@ -16,6 +16,7 @@ import com.sketchware.remod.xml.XmlBuilder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import mod.agus.jcoderz.handle.component.ConstVarManifest;
 import mod.agus.jcoderz.lib.FilePathUtil;
@@ -225,19 +226,29 @@ public class Ix {
         activityTag.a(intentFilterTag);
     }
 
-    private void writeAndroidxWorkRuntimeTags(XmlBuilder application) {
+    private void writeAndroidxStartupInitializationProvider(XmlBuilder application) {
+        var initializers = Set.of(
+                new Pair<>(c.isAndroidxEmoji2Used, "androidx.emoji2.text.EmojiCompatInitializer"),
+                new Pair<>(c.isAndroidxLifecycleProcessUsed, "androidx.lifecycle.ProcessLifecycleInitializer"),
+                new Pair<>(c.isAndroidxWorkRuntimeUsed, "androidx.work.WorkManagerInitializer")
+        );
+
         XmlBuilder initializationProvider = new XmlBuilder("provider");
         initializationProvider.addAttribute("android", "name", "androidx.startup.InitializationProvider");
         initializationProvider.addAttribute("android", "authorities", c.packageName + ".androidx-startup");
         initializationProvider.addAttribute("android", "exported", "false");
-        {
-            XmlBuilder metadata = new XmlBuilder("meta-data");
-            metadata.addAttribute("android", "name", "androidx.work.WorkManagerInitializer");
-            metadata.addAttribute("android", "value", "androidx.startup");
-            initializationProvider.a(metadata);
+        for (var pair : initializers) {
+            if (pair.first) {
+                XmlBuilder metadata = new XmlBuilder("meta-data");
+                metadata.addAttribute("android", "name", pair.second);
+                metadata.addAttribute("android", "value", "androidx.startup");
+                initializationProvider.a(metadata);
+            }
         }
         application.a(initializationProvider);
+    }
 
+    private void writeAndroidxWorkRuntimeTags(XmlBuilder application) {
         XmlBuilder alarmService = new XmlBuilder("service");
         alarmService.addAttribute("android", "name", "androidx.work.impl.background.systemalarm.SystemAlarmService");
         alarmService.addAttribute("android", "directBootAware", "false");
@@ -546,6 +557,7 @@ public class Ix {
             activityTag.addAttribute("android", "theme", "@android:style/Theme.Translucent");
             applicationTag.a(activityTag);
         }
+        writeAndroidxStartupInitializationProvider(applicationTag);
         if (c.isAndroidxWorkRuntimeUsed) {
             writeAndroidxWorkRuntimeTags(applicationTag);
         }
