@@ -553,6 +553,12 @@ public class ManageEvent {
             case "onBannerAdClosed":
                 return "onAdClosed";
 
+            case "onRewardAdLoaded":
+                return "onRewardedAdLoaded";
+
+            case "onRewardAdFailedToLoad":
+                return "onRewardedAdFailedToLoad";
+
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
             case "onDateChanged":
@@ -585,8 +591,6 @@ public class ManageEvent {
             case "onAdDismissedFullScreenContent":
             case "onAdFailedToShowFullScreenContent":
             case "onAdShowedFullScreenContent":
-            case "onRewardAdFailedToLoad":
-            case "onRewardAdLoaded":
             case "onUserEarnedReward":
                 return eventName;
 
