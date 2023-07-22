@@ -80,6 +80,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_VERSIONEDPARCELABLE = "versionedparcelable-1.1.1";
     public static String ANDROIDX_VIEWPAGER2 = "viewpager2-1.0.0";
     public static String ANDROIDX_VIEWPAGER = "viewpager-1.0.0";
+    public static String ANDROIDX_WORK_RUNTIME = "work-runtime-2.7.1";
     public static String FIREBASE_AUTH = "firebase-auth-19.0.0";
     public static String FIREBASE_AUTH_INTEROP = "firebase-auth-interop-18.0.0";
     public static String FIREBASE_COMMON = "firebase-common-19.3.1";

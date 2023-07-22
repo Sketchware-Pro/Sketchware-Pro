@@ -171,6 +171,8 @@ public class jq {
      */
     public boolean isHttp3Used = false;
 
+    public boolean isAndroidxWorkRuntimeUsed = false;
+
     /**
      * Permissions of the whole project, stored as bitfield.
      */
