@@ -170,8 +170,8 @@ public class ManageEvent {
     public static void c(String eventName, ArrayList<String> list) {
         switch (eventName) {
             case "rewardedAdLoadCallback":
-                list.add("onRewardAdFailedToLoad");
                 list.add("onRewardAdLoaded");
+                list.add("onRewardAdFailedToLoad");
                 return;
 
             case "onUserEarnedRewardListener":
@@ -1364,8 +1364,8 @@ public class ManageEvent {
 
     public static void h(Gx gx, ArrayList<String> list) {
         if (gx.a("RewardedVideoAd")) {
-            list.add("onRewardAdFailedToLoad");
             list.add("onRewardAdLoaded");
+            list.add("onRewardAdFailedToLoad");
             list.add("onUserEarnedReward");
             list.add("onAdDismissedFullScreenContent");
             list.add("onAdFailedToShowFullScreenContent");
