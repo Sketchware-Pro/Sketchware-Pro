@@ -62,7 +62,6 @@ public class BuiltInLibraries {
     public static String ANDROIDX_LIFECYCLE_RUNTIME = "lifecycle-runtime-2.4.0";
     public static String ANDROIDX_LIFECYCLE_VIEWMODEL = "lifecycle-viewmodel-2.3.1";
     public static String ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE = "lifecycle-viewmodel-savedstate-2.3.1";
-    public static String ANDROIDX_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String ANDROIDX_LOADER = "loader-1.1.0";
     public static String ANDROIDX_LOCALBROADCASTMANAGER = "localbroadcastmanager-1.0.0";
     public static String ANDROIDX_MEDIA = "media-1.2.1";
@@ -102,6 +101,7 @@ public class BuiltInLibraries {
     public static String GLIDE = "glide-4.11.0";
     public static String GOOGLE_AUTO_VALUE_ANNOTATIONS = "auto-value-annotations-1.6.5";
     public static String GSON = "gson-2.8.7";
+    public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-1.4.30-M1-release-152";
@@ -153,12 +153,12 @@ public class BuiltInLibraries {
                     ANDROIDX_VECTORDRAWABLE_ANIMATED), "androidx.appcompat.resources"),
 
             new BuiltInLibrary(ANDROIDX_ASYNCLAYOUTINFLATER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
-            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR,
-                    ANDROIDX_LEGACY_SUPPORT_CORE_UI), "androidx.browser"),
+            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CONCURRENT_FUTURES, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR,
+                    GUAVA_LISTENABLEFUTURE), "androidx.browser"),
 
             new BuiltInLibrary(ANDROIDX_CARDVIEW, List.of(ANDROIDX_ANNOTATION), "androidx.cardview"),
             new BuiltInLibrary(ANDROIDX_COLLECTION, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, ANDROIDX_LISTENABLEFUTURE)),
+            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, GUAVA_LISTENABLEFUTURE)),
             new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE, ANDROIDX_CONSTRAINTLAYOUT_CORE),
                     "androidx.constraintlayout.widget"),
 
@@ -211,7 +211,6 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_SAVEDSTATE,
                     ANDROIDX_LIFECYCLE_LIVEDATA_CORE, ANDROIDX_LIFECYCLE_VIEWMODEL)),
 
-            new BuiltInLibrary(ANDROIDX_LISTENABLEFUTURE),
             new BuiltInLibrary(ANDROIDX_LOADER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA, ANDROIDX_LIFECYCLE_VIEWMODEL)),
             new BuiltInLibrary(ANDROIDX_LOCALBROADCASTMANAGER, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
@@ -273,6 +272,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(GLIDE_GIFDECODER, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(GOOGLE_AUTO_VALUE_ANNOTATIONS),
             new BuiltInLibrary(GSON),
+            new BuiltInLibrary(GUAVA_LISTENABLEFUTURE),
             new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
