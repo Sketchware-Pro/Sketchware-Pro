@@ -940,19 +940,12 @@ public class ManageEvent {
                         "}";
 
             case "onInterstitialAdLoaded":
-                String eventCode;
-
-                if (targetId.equals("")) {
-                    eventCode = "\r\n";
-                } else {
-                    eventCode = targetId + " = _param1;\r\n" +
-                            targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
-                            eventLogic + "\r\n";
-                }
-
+                code = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n" +
+                        targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
+                        eventLogic + "\r\n";
                 return "@Override\r\n" +
                         "public void onAdLoaded(InterstitialAd _param1) {\r\n" +
-                        eventCode +
+                        code +
                         "}";
 
             case "onBannerAdFailedToLoad":
@@ -1014,16 +1007,11 @@ public class ManageEvent {
                         "}";
 
             case "onRewardAdLoaded":
-                String rewardEventCode;
-                if (targetId.equals("")) {
-                    rewardEventCode = "\r\n";
-                } else {
-                    rewardEventCode = targetId + " = _param1;\r\n" +
-                            eventLogic + "\r\n";
-                }
+                code = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n"
+                        + eventLogic + "\r\n";
                 return "@Override\r\n" +
                         "public void onAdLoaded(RewardedAd _param1) {\r\n" +
-                        rewardEventCode +
+                        code +
                         "}";
 
             case "onUserEarnedReward":
