@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <LinearLayout android:background="@drawable/bg_outline_skyblue" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_margin="8.0dip" android:layout_weight="1.0">
-        <ScrollView android:id="@id/scroll_view" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true">
-            <com.besome.sketch.editor.view.ViewPane android:id="@id/pane" android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="2.0dip" />
-        </ScrollView>
-    </LinearLayout>
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout_button" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="4.0dip" android:layout_marginBottom="4.0dip">
-        <com.besome.sketch.lib.ui.EasyDeleteEditText android:id="@id/ed_input" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:layout_weight="1.0" />
-        <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/save_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_outline_skyblue"
+        android:fillViewport="true">
+
+        <com.besome.sketch.editor.view.ViewPane
+            android:id="@+id/pane"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="#fff6f6f6" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.besome.sketch.lib.ui.EasyDeleteEditText
+            android:id="@+id/ed_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#ffffffff"
+            android:theme="@style/AppTheme.Button.LightBlue"
+            tools:text="@string/common_word_save" />
     </LinearLayout>
 </LinearLayout>
