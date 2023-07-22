@@ -226,6 +226,14 @@ public class Ix {
         activityTag.a(intentFilterTag);
     }
 
+    private void writeAndroidxRoomService(XmlBuilder application) {
+        XmlBuilder invalidationService = new XmlBuilder("service");
+        invalidationService.addAttribute("android", "name", "androidx.room.MultiInstanceInvalidationService");
+        invalidationService.addAttribute("android", "directBootAware", "true");
+        invalidationService.addAttribute("android", "exported", "false");
+        application.a(invalidationService);
+    }
+
     private void writeAndroidxStartupInitializationProvider(XmlBuilder application) {
         var initializers = Set.of(
                 new Pair<>(c.isAndroidxEmoji2Used, "androidx.emoji2.text.EmojiCompatInitializer"),
@@ -556,6 +564,9 @@ public class Ix {
             activityTag.addAttribute("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
             activityTag.addAttribute("android", "theme", "@android:style/Theme.Translucent");
             applicationTag.a(activityTag);
+        }
+        if (c.isAndroidxRoomUsed) {
+            writeAndroidxRoomService(applicationTag);
         }
         writeAndroidxStartupInitializationProvider(applicationTag);
         if (c.isAndroidxWorkRuntimeUsed) {

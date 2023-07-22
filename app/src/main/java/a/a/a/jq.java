@@ -175,6 +175,8 @@ public class jq {
 
     public boolean isAndroidxLifecycleProcessUsed = false;
 
+    public boolean isAndroidxRoomUsed = false;
+
     public boolean isAndroidxWorkRuntimeUsed = false;
 
     /**

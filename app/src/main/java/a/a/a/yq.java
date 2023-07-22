@@ -446,6 +446,7 @@ public class yq {
         }
         if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isAdMobEnabled = true;
+            N.isAndroidxRoomUsed = true;
             N.isAndroidxWorkRuntimeUsed = true;
             N.addPermission(jq.PERMISSION_INTERNET);
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
