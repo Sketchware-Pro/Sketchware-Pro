@@ -64,6 +64,12 @@ We are deeply grateful to these developers for their work and contributions.
 	https://github.com/square/okhttp
 	Apache-2.0 License
 
+* Lottie
+
+    https://github.com/airbnb/lottie
+    Apache-2.0 License
+    No changes made to v3.1.0
+
 * icons8
 	http://icons8.com
 
