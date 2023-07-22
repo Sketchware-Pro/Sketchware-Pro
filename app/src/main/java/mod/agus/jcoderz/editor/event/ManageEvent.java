@@ -596,6 +596,8 @@ public class ManageEvent {
     }
 
     public static String f(String targetId, String eventName, String eventLogic) {
+        String code;
+        final String resetInterstitialAd = targetId.isEmpty() ? "" : targetId + " = null;\r\n";
         switch (eventName) {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
@@ -964,14 +966,18 @@ public class ManageEvent {
                         "}";
 
             case "onAdDismissedFullScreenContent":
+                code = resetInterstitialAd;
                 return "@Override\r\n" +
                         "public void onAdDismissedFullScreenContent() {\r\n" +
+                        code +
                         eventLogic + "\r\n" +
                         "}";
 
             case "onAdFailedToShowFullScreenContent":
+                code = resetInterstitialAd;
                 return "@Override\r\n" +
                         "public void onAdFailedToShowFullScreenContent(AdError _adError) {\r\n" +
+                        code +
                         "final int _errorCode = _adError.getCode();\r\n" +
                         "final String _errorMessage = _adError.getMessage();\r\n" +
                         eventLogic + "\r\n" +

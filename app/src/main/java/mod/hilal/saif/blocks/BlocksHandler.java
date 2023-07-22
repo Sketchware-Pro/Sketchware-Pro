@@ -2378,6 +2378,16 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "interstitialAdIsLoaded");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%1$s != null");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%m.interstitialad is loaded");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "interstitialAdRegisterFullScreenContentCallback");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
