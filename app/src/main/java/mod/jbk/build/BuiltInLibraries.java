@@ -30,7 +30,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_APPCOMPAT = "appcompat-1.4.0";
     public static String ANDROIDX_APPCOMPAT_RESOURCES = "appcompat-resources-1.4.0";
     public static String ANDROIDX_ASYNCLAYOUTINFLATER = "asynclayoutinflater-1.0.0";
-    public static String ANDROIDX_BROWSER = "browser-1.3.0";
+    public static String ANDROIDX_BROWSER = "browser-1.5.0";
     public static String ANDROIDX_CARDVIEW = "cardview-1.0.0";
     public static String ANDROIDX_COLLECTION = "collection-1.2.0";
     public static String ANDROIDX_CONCURRENT_FUTURES = "concurrent-futures-1.1.0";
@@ -60,9 +60,9 @@ public class BuiltInLibraries {
     public static String ANDROIDX_LIFECYCLE_LIVEDATA_CORE = "lifecycle-livedata-core-2.4.0";
     public static String ANDROIDX_LIFECYCLE_PROCESS = "lifecycle-process-2.4.0";
     public static String ANDROIDX_LIFECYCLE_RUNTIME = "lifecycle-runtime-2.4.0";
+    public static String ANDROIDX_LIFECYCLE_SERVICE = "lifecycle-service-2.4.0";
     public static String ANDROIDX_LIFECYCLE_VIEWMODEL = "lifecycle-viewmodel-2.3.1";
     public static String ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE = "lifecycle-viewmodel-savedstate-2.3.1";
-    public static String ANDROIDX_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String ANDROIDX_LOADER = "loader-1.1.0";
     public static String ANDROIDX_LOCALBROADCASTMANAGER = "localbroadcastmanager-1.0.0";
     public static String ANDROIDX_MEDIA = "media-1.2.1";
@@ -70,8 +70,12 @@ public class BuiltInLibraries {
     public static String ANDROIDX_PRINT = "print-1.0.0";
     public static String ANDROIDX_RECYCLERVIEW = "recyclerview-1.2.1";
     public static String ANDROIDX_RESOURCEINSPECTION_ANNOTATION = "resourceinspection-annotation-1.0.0";
+    public static String ANDROIDX_ROOM_COMMON = "room-common-2.2.6";
+    public static String ANDROIDX_ROOM_RUNTIME = "room-runtime-2.2.6";
     public static String ANDROIDX_SAVEDSTATE = "savedstate-1.1.0";
     public static String ANDROIDX_SLIDINGPANELAYOUT = "slidingpanelayout-1.1.0";
+    public static String ANDROIDX_SQLITE = "sqlite-2.2.0";
+    public static String ANDROIDX_SQLITE_FRAMEWORK = "sqlite-framework-2.2.0";
     public static String ANDROIDX_STARTUP_RUNTIME = "startup-runtime-1.1.0";
     public static String ANDROIDX_SWIPEREFRESHLAYOUT = "swiperefreshlayout-1.2.0-alpha01";
     public static String ANDROIDX_TRACING = "tracing-1.0.0";
@@ -81,6 +85,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_VERSIONEDPARCELABLE = "versionedparcelable-1.1.1";
     public static String ANDROIDX_VIEWPAGER2 = "viewpager2-1.0.0";
     public static String ANDROIDX_VIEWPAGER = "viewpager-1.0.0";
+    public static String ANDROIDX_WORK_RUNTIME = "work-runtime-2.7.1";
     public static String FIREBASE_AUTH = "firebase-auth-19.0.0";
     public static String FIREBASE_AUTH_INTEROP = "firebase-auth-interop-18.0.0";
     public static String FIREBASE_COMMON = "firebase-common-19.3.1";
@@ -102,6 +107,7 @@ public class BuiltInLibraries {
     public static String GLIDE = "glide-4.11.0";
     public static String GOOGLE_AUTO_VALUE_ANNOTATIONS = "auto-value-annotations-1.6.5";
     public static String GSON = "gson-2.8.7";
+    public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-1.4.30-M1-release-152";
@@ -113,28 +119,27 @@ public class BuiltInLibraries {
     public static String ONESIGNAL = "OneSignal-3.14.0";
     public static String OTPVIEW = "OTPView-0.1.0";
     public static String PATTERN_LOCK_VIEW = "pattern-lock-view";
-    public static String PLAY_SERVICES_ADS = "play-services-ads-20.1.0";
-    public static String PLAY_SERVICES_ADS_BASE = "play-services-ads-base-20.1.0";
-    public static String PLAY_SERVICES_ADS_IDENTIFIER = "play-services-ads-identifier-17.0.0";
-    public static String PLAY_SERVICES_ADS_LITE = "play-services-ads-lite-20.1.0";
+    public static String PLAY_SERVICES_ADS = "play-services-ads-22.2.0";
+    public static String PLAY_SERVICES_ADS_BASE = "play-services-ads-base-22.2.0";
+    public static String PLAY_SERVICES_ADS_IDENTIFIER = "play-services-ads-identifier-18.0.1";
+    public static String PLAY_SERVICES_ADS_LITE = "play-services-ads-lite-22.2.0";
+    public static String PLAY_SERVICES_APPSET = "play-services-appset-16.0.2";
     public static String PLAY_SERVICES_AUTH = "play-services-auth-19.0.0";
     public static String PLAY_SERVICES_AUTH_API_PHONE = "play-services-auth-api-phone-17.0.5";
     public static String PLAY_SERVICES_AUTH_BASE = "play-services-auth-base-17.1.2";
-    public static String PLAY_SERVICES_BASE = "play-services-base-17.6.0";
-    public static String PLAY_SERVICES_BASEMENT = "play-services-basement-17.6.0";
+    public static String PLAY_SERVICES_BASE = "play-services-base-18.2.0";
+    public static String PLAY_SERVICES_BASEMENT = "play-services-basement-18.2.0";
     public static String PLAY_SERVICES_GASS = "play-services-gass-20.0.0";
     public static String PLAY_SERVICES_GCM = "play-services-gcm-17.0.0";
     public static String PLAY_SERVICES_IID = "play-services-iid-17.0.0";
     public static String PLAY_SERVICES_LOCATION = "play-services-location-18.0.0";
     public static String PLAY_SERVICES_MAPS = "play-services-maps-17.0.1";
-    public static String PLAY_SERVICES_MEASUREMENT = "play-services-measurement-18.0.3";
-    public static String PLAY_SERVICES_MEASUREMENT_BASE = "play-services-measurement-base-18.0.3";
-    public static String PLAY_SERVICES_MEASUREMENT_IMPL = "play-services-measurement-impl-18.0.3";
-    public static String PLAY_SERVICES_MEASUREMENT_SDK = "play-services-measurement-sdk-18.0.3";
-    public static String PLAY_SERVICES_MEASUREMENT_SDK_API = "play-services-measurement-sdk-api-18.0.3";
+    public static String PLAY_SERVICES_MEASUREMENT_BASE = "play-services-measurement-base-20.1.2";
+    public static String PLAY_SERVICES_MEASUREMENT_SDK_API = "play-services-measurement-sdk-api-20.1.2";
     public static String PLAY_SERVICES_PLACES_PLACEREPORT = "play-services-places-placereport-17.0.0";
     public static String PLAY_SERVICES_STATS = "play-services-stats-17.0.0";
-    public static String PLAY_SERVICES_TASKS = "play-services-tasks-17.2.1";
+    public static String PLAY_SERVICES_TASKS = "play-services-tasks-18.0.2";
+    public static String UMP_USER_MESSAGING_PLATFORM = "user-messaging-platform-2.0.0";
     public static String WAVE_SIDE_BAR = "wave-side-bar";
     public static String YOUTUBE_PLAYER = "android-youtube-player-10.0.5";
 
@@ -153,12 +158,12 @@ public class BuiltInLibraries {
                     ANDROIDX_VECTORDRAWABLE_ANIMATED), "androidx.appcompat.resources"),
 
             new BuiltInLibrary(ANDROIDX_ASYNCLAYOUTINFLATER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
-            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR,
-                    ANDROIDX_LEGACY_SUPPORT_CORE_UI), "androidx.browser"),
+            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CONCURRENT_FUTURES, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR,
+                    GUAVA_LISTENABLEFUTURE), "androidx.browser"),
 
             new BuiltInLibrary(ANDROIDX_CARDVIEW, List.of(ANDROIDX_ANNOTATION), "androidx.cardview"),
             new BuiltInLibrary(ANDROIDX_COLLECTION, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, ANDROIDX_LISTENABLEFUTURE)),
+            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, GUAVA_LISTENABLEFUTURE)),
             new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE, ANDROIDX_CONSTRAINTLAYOUT_CORE),
                     "androidx.constraintlayout.widget"),
 
@@ -207,11 +212,11 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_LIFECYCLE_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_COMMON, ANDROIDX_CORE_RUNTIME,
                     ANDROIDX_LIFECYCLE_COMMON), "androidx.lifecycle.runtime"),
 
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_SERVICE, List.of(ANDROIDX_LIFECYCLE_RUNTIME)),
             new BuiltInLibrary(ANDROIDX_LIFECYCLE_VIEWMODEL, List.of(ANDROIDX_ANNOTATION), "androidx.lifecycle.viewmodel"),
             new BuiltInLibrary(ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_SAVEDSTATE,
                     ANDROIDX_LIFECYCLE_LIVEDATA_CORE, ANDROIDX_LIFECYCLE_VIEWMODEL)),
 
-            new BuiltInLibrary(ANDROIDX_LISTENABLEFUTURE),
             new BuiltInLibrary(ANDROIDX_LOADER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA, ANDROIDX_LIFECYCLE_VIEWMODEL)),
             new BuiltInLibrary(ANDROIDX_LOCALBROADCASTMANAGER, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
@@ -221,10 +226,16 @@ public class BuiltInLibraries {
                     "androidx.recyclerview"),
 
             new BuiltInLibrary(ANDROIDX_RESOURCEINSPECTION_ANNOTATION, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_ROOM_COMMON, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_ROOM_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_RUNTIME, ANDROIDX_ROOM_COMMON,
+                    ANDROIDX_SQLITE_FRAMEWORK, ANDROIDX_SQLITE)),
+
             new BuiltInLibrary(ANDROIDX_SAVEDSTATE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_COMMON, ANDROIDX_LIFECYCLE_COMMON),
                     "androidx.savedstate"),
 
             new BuiltInLibrary(ANDROIDX_SLIDINGPANELAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW)),
+            new BuiltInLibrary(ANDROIDX_SQLITE, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_SQLITE_FRAMEWORK, List.of(ANDROIDX_ANNOTATION, ANDROIDX_SQLITE)),
             new BuiltInLibrary(ANDROIDX_STARTUP_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_TRACING), "androidx.startup"),
             new BuiltInLibrary(ANDROIDX_SWIPEREFRESHLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR),
                     "androidx.swiperefreshlayout"),
@@ -238,6 +249,9 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_VIEWPAGER2, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT,
                     ANDROIDX_RECYCLERVIEW), "androidx.viewpager2"),
 
+            new BuiltInLibrary(ANDROIDX_WORK_RUNTIME, List.of(ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA,
+                    ANDROIDX_LIFECYCLE_SERVICE, ANDROIDX_ROOM_RUNTIME, ANDROIDX_SQLITE, ANDROIDX_SQLITE_FRAMEWORK, ANDROIDX_STARTUP_RUNTIME,
+                    GUAVA_LISTENABLEFUTURE), "androidx.work"),
             new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
             new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK),
@@ -273,6 +287,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(GLIDE_GIFDECODER, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(GOOGLE_AUTO_VALUE_ANNOTATIONS),
             new BuiltInLibrary(GSON),
+            new BuiltInLibrary(GUAVA_LISTENABLEFUTURE),
             new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
@@ -292,15 +307,17 @@ public class BuiltInLibraries {
                     "affan.ahmad.otp"),
 
             new BuiltInLibrary(PATTERN_LOCK_VIEW, List.of(ANDROIDX_CORE, JETBRAINS_ANNOTATIONS), "com.andrognito.patternlockview"),
-            new BuiltInLibrary(PLAY_SERVICES_ADS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_ADS_LITE,
-                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_GASS, ANDROIDX_BROWSER, ANDROIDX_COLLECTION, ANDROIDX_CORE),
+            new BuiltInLibrary(PLAY_SERVICES_ADS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_ADS_IDENTIFIER,
+                    PLAY_SERVICES_ADS_LITE, PLAY_SERVICES_APPSET, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS,
+                    ANDROIDX_BROWSER, ANDROIDX_COLLECTION, ANDROIDX_CORE),
                     "com.google.android.gms.ads.impl"),
 
-            new BuiltInLibrary(PLAY_SERVICES_ADS_BASE),
+            new BuiltInLibrary(PLAY_SERVICES_ADS_BASE, List.of(PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(PLAY_SERVICES_ADS_IDENTIFIER, List.of(PLAY_SERVICES_BASEMENT)),
-            new BuiltInLibrary(PLAY_SERVICES_ADS_LITE, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT,
-                    PLAY_SERVICES_MEASUREMENT_SDK, PLAY_SERVICES_MEASUREMENT_SDK_API), "com.google.android.gms.ads"),
+            new BuiltInLibrary(PLAY_SERVICES_ADS_LITE, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_BASEMENT,
+                    PLAY_SERVICES_MEASUREMENT_SDK_API, ANDROIDX_WORK_RUNTIME, UMP_USER_MESSAGING_PLATFORM), "com.google.android.gms.ads"),
 
+            new BuiltInLibrary(PLAY_SERVICES_APPSET, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
             new BuiltInLibrary(PLAY_SERVICES_AUTH, List.of(PLAY_SERVICES_AUTH_API_PHONE, PLAY_SERVICES_AUTH_BASE, PLAY_SERVICES_BASE,
                     PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, ANDROIDX_FRAGMENT, ANDROIDX_LOADER), "com.google.android.gms.auth.api"),
 
@@ -325,22 +342,13 @@ public class BuiltInLibraries {
             new BuiltInLibrary(PLAY_SERVICES_MAPS, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, ANDROIDX_FRAGMENT),
                     "com.google.android.gms.maps"),
 
-            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT_BASE,
-                    PLAY_SERVICES_MEASUREMENT_IMPL, PLAY_SERVICES_STATS, ANDROIDX_COLLECTION, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS)),
-
             new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_BASE, List.of(PLAY_SERVICES_BASEMENT)),
-
-            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_IMPL, List.of(PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_BASEMENT,
-                    PLAY_SERVICES_MEASUREMENT_BASE, PLAY_SERVICES_STATS, ANDROIDX_COLLECTION, ANDROIDX_CORE)),
-
-            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_SDK, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT_BASE,
-                    PLAY_SERVICES_MEASUREMENT_IMPL, PLAY_SERVICES_MEASUREMENT_SDK_API, ANDROIDX_COLLECTION)),
-
             new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_SDK_API, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT_BASE)),
-
             new BuiltInLibrary(PLAY_SERVICES_PLACES_PLACEREPORT, List.of(PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(PLAY_SERVICES_STATS, List.of(PLAY_SERVICES_BASEMENT, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS)),
             new BuiltInLibrary(PLAY_SERVICES_TASKS, List.of(PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(UMP_USER_MESSAGING_PLATFORM, List.of(ANDROIDX_ANNOTATION, PLAY_SERVICES_ADS_IDENTIFIER,
+                    PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(WAVE_SIDE_BAR, List.of(), "com.sayuti.lib"),
             new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW, KOTLIN_STDLIB_JDK7),
                     "com.pierfrancescosoffritti.androidyoutubeplayer"),

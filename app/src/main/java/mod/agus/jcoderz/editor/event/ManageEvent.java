@@ -170,8 +170,8 @@ public class ManageEvent {
     public static void c(String eventName, ArrayList<String> list) {
         switch (eventName) {
             case "rewardedAdLoadCallback":
-                list.add("onRewardAdFailedToLoad");
                 list.add("onRewardAdLoaded");
+                list.add("onRewardAdFailedToLoad");
                 return;
 
             case "onUserEarnedRewardListener":
@@ -553,6 +553,12 @@ public class ManageEvent {
             case "onBannerAdClosed":
                 return "onAdClosed";
 
+            case "onRewardAdLoaded":
+                return "onRewardedAdLoaded";
+
+            case "onRewardAdFailedToLoad":
+                return "onRewardedAdFailedToLoad";
+
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
             case "onDateChanged":
@@ -585,8 +591,6 @@ public class ManageEvent {
             case "onAdDismissedFullScreenContent":
             case "onAdFailedToShowFullScreenContent":
             case "onAdShowedFullScreenContent":
-            case "onRewardAdFailedToLoad":
-            case "onRewardAdLoaded":
             case "onUserEarnedReward":
                 return eventName;
 
@@ -596,6 +600,11 @@ public class ManageEvent {
     }
 
     public static String f(String targetId, String eventName, String eventLogic) {
+        String code;
+        final String resetInterstitialAd = targetId.isEmpty() ? "" : targetId + " = null;\r\n";
+        final String setAdFullScreenContentCallback = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n" +
+                targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
+                eventLogic + "\r\n";
         switch (eventName) {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
@@ -938,18 +947,10 @@ public class ManageEvent {
                         "}";
 
             case "onInterstitialAdLoaded":
-                String eventCode;
-
-                if (targetId.equals("")) {
-                    eventCode = "\r\n";
-                } else {
-                    eventCode = targetId + " = _param1;\r\n" +
-                            eventLogic + "\r\n";
-                }
-
+                code = setAdFullScreenContentCallback;
                 return "@Override\r\n" +
                         "public void onAdLoaded(InterstitialAd _param1) {\r\n" +
-                        eventCode +
+                        code +
                         "}";
 
             case "onBannerAdFailedToLoad":
@@ -963,14 +964,18 @@ public class ManageEvent {
                         "}";
 
             case "onAdDismissedFullScreenContent":
+                code = resetInterstitialAd;
                 return "@Override\r\n" +
                         "public void onAdDismissedFullScreenContent() {\r\n" +
+                        code +
                         eventLogic + "\r\n" +
                         "}";
 
             case "onAdFailedToShowFullScreenContent":
+                code = resetInterstitialAd;
                 return "@Override\r\n" +
                         "public void onAdFailedToShowFullScreenContent(AdError _adError) {\r\n" +
+                        code +
                         "final int _errorCode = _adError.getCode();\r\n" +
                         "final String _errorMessage = _adError.getMessage();\r\n" +
                         eventLogic + "\r\n" +
@@ -1007,16 +1012,10 @@ public class ManageEvent {
                         "}";
 
             case "onRewardAdLoaded":
-                String rewardEventCode;
-                if (targetId.equals("")) {
-                    rewardEventCode = "\r\n";
-                } else {
-                    rewardEventCode = targetId + " = _param1;\r\n" +
-                            eventLogic + "\r\n";
-                }
+                code = setAdFullScreenContentCallback;
                 return "@Override\r\n" +
                         "public void onAdLoaded(RewardedAd _param1) {\r\n" +
-                        rewardEventCode +
+                        code +
                         "}";
 
             case "onUserEarnedReward":
@@ -1369,8 +1368,8 @@ public class ManageEvent {
 
     public static void h(Gx gx, ArrayList<String> list) {
         if (gx.a("RewardedVideoAd")) {
-            list.add("onRewardAdFailedToLoad");
             list.add("onRewardAdLoaded");
+            list.add("onRewardAdFailedToLoad");
             list.add("onUserEarnedReward");
             list.add("onAdDismissedFullScreenContent");
             list.add("onAdFailedToShowFullScreenContent");

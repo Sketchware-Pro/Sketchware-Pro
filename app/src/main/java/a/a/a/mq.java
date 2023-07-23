@@ -128,43 +128,43 @@ public class mq {
             case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
 
-            case 22:
+            case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 return "RewardedVideoAd";
 
-            case 23:
+            case ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG:
                 return "ProgressDialog";
 
-            case 24:
+            case ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG:
                 return "DatePickerDialog";
 
-            case 25:
+            case ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG:
                 return "TimePickerDialog";
 
-            case 26:
+            case ComponentBean.COMPONENT_TYPE_NOTIFICATION:
                 return "Notification";
 
-            case 27:
+            case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 return "FragmentStatePagerAdapter";
 
-            case 28:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
                 return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
 
-            case 29:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 return "DynamicLink";
 
-            case 30:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 return "FirebaseCloudMessage";
 
-            case 31:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 return "GoogleSignInClient";
 
-            case 32:
+            case ComponentBean.COMPONENT_TYPE_ONESIGNAL:
                 return "OSSubscriptionObserver";
 
-            case 33:
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
                 return "com.facebook.ads.AdView";
 
-            case 34:
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 return "com.facebook.ads.InterstitialAd";
 
             default:
@@ -847,6 +847,7 @@ public class mq {
             case "RewardedVideoAd":
                 importList.add("com.google.android.gms.ads.AdError");
                 importList.add("com.google.android.gms.ads.MobileAds");
+                importList.add("com.google.android.gms.ads.OnUserEarnedRewardListener");
                 importList.add("com.google.android.gms.ads.rewarded.RewardItem");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAd");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
