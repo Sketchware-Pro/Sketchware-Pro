@@ -12,39 +12,38 @@ import androidx.viewpager.widget.ViewPager;
 
 public class PagerContainer extends FrameLayout implements ViewPager.OnPageChangeListener {
 
-    public ViewPager a;
-    public boolean b = false;
-    public Point c = new Point();
-    public Point d = new Point();
+    private ViewPager viewPager;
+    private boolean isViewPagerScrolled = false;
+    private Point containerCenter, touchDownPoint = new Point();
 
     public PagerContainer(Context context) {
         super(context);
-        a();
+        initialize();
     }
 
     public PagerContainer(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a();
+        initialize();
     }
 
     public PagerContainer(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
-        a();
+        initialize();
     }
 
-    public final void a() {
+    private void initialize() {
         setClipChildren(false);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        b = state != 0;
+        isViewPagerScrolled = state != ViewPager.SCROLL_STATE_IDLE;
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (b) invalidate();
+        if (isViewPagerScrolled) invalidate();
     }
 
     @Override
@@ -52,7 +51,7 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
     }
 
     public ViewPager getViewPager() {
-        return a;
+        return viewPager;
     }
 
     @Override
@@ -60,8 +59,8 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
         super.onFinishInflate();
 
         try {
-            a = (ViewPager) getChildAt(0);
-            a.setOnPageChangeListener(this);
+            viewPager = (ViewPager) getChildAt(0);
+            viewPager.addOnPageChangeListener(this);
         } catch (Exception var2) {
             throw new IllegalStateException("The root child of PagerContainer must be a ViewPager");
         }
@@ -69,18 +68,17 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
 
     @Override
     public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
-        c = new Point(width / 2, height / 2);
+        containerCenter = new Point(width / 2, height / 2);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            d.x = (int) motionEvent.getX();
-            d.y = (int) motionEvent.getY();
+            touchDownPoint = new Point((int) motionEvent.getX(), (int) motionEvent.getY());
         }
 
-        motionEvent.offsetLocation((float) (c.x - d.x), (float) (c.y - d.y));
-        return a.dispatchTouchEvent(motionEvent);
+        motionEvent.offsetLocation((float) (containerCenter.x - touchDownPoint.x), (float) (containerCenter.y - touchDownPoint.y));
+        return viewPager.dispatchTouchEvent(motionEvent);
     }
 }
