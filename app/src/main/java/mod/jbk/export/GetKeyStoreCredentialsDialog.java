@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -86,6 +87,11 @@ public class GetKeyStoreCredentialsDialog {
             }
         });
 
+        ScrollView scrollView = new ScrollView(activity);
+        scrollView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
         LinearLayout contentView = new LinearLayout(activity);
         contentView.setOrientation(LinearLayout.VERTICAL);
         contentView.setPadding(
@@ -94,6 +100,7 @@ public class GetKeyStoreCredentialsDialog {
                 dpToPx(4),
                 0
         );
+        scrollView.addView(contentView);
 
         String[] dropdownItems;
         {
@@ -175,7 +182,7 @@ public class GetKeyStoreCredentialsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         inputContainer.addView(tilSigningAlgorithm);
 
-        dialog.a(contentView);
+        dialog.a(scrollView);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
