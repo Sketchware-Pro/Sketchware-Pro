@@ -68,6 +68,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
@@ -712,11 +713,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Check built-in libraries */
                 publishProgress("Extracting built-in libraries...");
-                builder.getBuiltInLibrariesReady();
+                BuiltInLibraries.extractCompileAssets(this);
                 if (canceled) {
                     cancel(true);
                     return;
                 }
+
+                builder.buildBuiltInLibraryInformation();
 
                 publishProgress("AAPT2 is running...");
                 builder.compileResources();

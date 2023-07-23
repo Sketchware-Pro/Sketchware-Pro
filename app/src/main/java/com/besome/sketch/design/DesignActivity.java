@@ -105,6 +105,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.build.BuildProgressReceiver;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 import mod.jbk.diagnostic.CompileErrorSaver;
@@ -987,11 +988,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     publishProgress("Extracting built-in libraries...");
-                    builder.getBuiltInLibrariesReady();
+                    BuiltInLibraries.extractCompileAssets(this);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
+
+                    builder.buildBuiltInLibraryInformation();
 
                     publishProgress("AAPT2 is running...");
                     builder.compileResources();

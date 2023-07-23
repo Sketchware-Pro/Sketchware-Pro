@@ -736,8 +736,7 @@ public class ProjectBuilder {
      * Checks if we need to extract any library/dependency from assets to filesDir,
      * and extracts them, if needed. Also initializes used built-in libraries.
      */
-    public void getBuiltInLibrariesReady() {
-        BuiltInLibraries.extractCompileAssets(progressReceiver);
+    public void buildBuiltInLibraryInformation() {
         if (yq.N.g) {
             builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_APPCOMPAT);
             builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
