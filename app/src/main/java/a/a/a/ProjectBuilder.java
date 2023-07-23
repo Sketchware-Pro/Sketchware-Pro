@@ -276,7 +276,7 @@ public class ProjectBuilder {
 
         /* Add used built-in libraries to the classpath */
         for (Jp library : builtInLibraryManager.getLibraries()) {
-            classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(library.a()));
+            classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(library.getName()));
         }
 
         /* Add local libraries to the classpath */
@@ -473,8 +473,8 @@ public class ProjectBuilder {
     public String getLibraryPackageNames() {
         StringBuilder extraPackages = new StringBuilder();
         for (Jp library : builtInLibraryManager.getLibraries()) {
-            if (library.c()) {
-                extraPackages.append(library.b()).append(":");
+            if (library.hasResources()) {
+                extraPackages.append(library.getPackageName()).append(":");
             }
         }
         return extraPackages + mll.getPackageNameLocalLibrary();
@@ -577,7 +577,7 @@ public class ProjectBuilder {
             ApkBuilder apkBuilder = new ApkBuilder(new File(yq.unsignedUnalignedApkPath), new File(yq.resourcesApkPath), new File(firstDexPath), null, null, System.out);
 
             for (Jp library : builtInLibraryManager.getLibraries()) {
-                apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
+                apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.getName()));
             }
 
             for (String jarPath : mll.getJarLocalLibrary().split(":")) {
@@ -654,7 +654,7 @@ public class ProjectBuilder {
 
         /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : builtInLibraryManager.getLibraries()) {
-            dexes.add(BuiltInLibraries.getLibraryDexFile(builtInLibrary.a()));
+            dexes.add(BuiltInLibraries.getLibraryDexFile(builtInLibrary.getName()));
         }
 
         /* Add local libraries' main DEX files */
@@ -778,6 +778,10 @@ public class ProjectBuilder {
         ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
     }
 
+    public BuiltInLibraryManager getBuiltInLibraryManager() {
+        return builtInLibraryManager;
+    }
+
     /**
      * Sign the debug APK file with testkey.
      * <p>
@@ -799,7 +803,7 @@ public class ProjectBuilder {
      */
     private void proguardAddLibConfigs(List<String> args) {
         for (Jp library : builtInLibraryManager.getLibraries()) {
-            File config = BuiltInLibraries.getLibraryProguardConfiguration(library.a());
+            File config = BuiltInLibraries.getLibraryProguardConfiguration(library.getName());
             if (config.exists()) {
                 args.add("-include");
                 args.add(config.getAbsolutePath());
@@ -821,10 +825,10 @@ public class ProjectBuilder {
     private String getRJavaRules() {
         StringBuilder sb = new StringBuilder("# R.java rules");
         for (Jp jp : builtInLibraryManager.getLibraries()) {
-            if (jp.c() && !jp.b().isEmpty()) {
+            if (jp.hasResources() && !jp.getPackageName().isEmpty()) {
                 sb.append("\n");
                 sb.append("-keep class ");
-                sb.append(jp.b());
+                sb.append(jp.getPackageName());
                 sb.append(".** { *; }");
             }
         }
@@ -851,7 +855,7 @@ public class ProjectBuilder {
         config.add(proguard.getCustomProguardRules());
         var rules = new ArrayList<>(Arrays.asList(getRJavaRules().split("\n")));
         for (Jp library : builtInLibraryManager.getLibraries()) {
-            File f = BuiltInLibraries.getLibraryProguardConfiguration(library.a());
+            File f = BuiltInLibraries.getLibraryProguardConfiguration(library.getName());
             if (f.exists()) {
                 config.add(f.getAbsolutePath());
             }

@@ -384,7 +384,7 @@ public class BuiltInLibraries {
     public static File getLibraryAssets(String libraryName) {
         Jp library = new Jp(libraryName);
 
-        if (library.d()) {
+        if (library.hasAssets()) {
             return new File(EXTRACTED_BUILT_IN_LIBRARIES_PATH, libraryName + File.separator + "assets");
         } else {
             throw new IllegalArgumentException("Built-in library '" + libraryName + "' doesn't have any assets.");
@@ -401,7 +401,7 @@ public class BuiltInLibraries {
     public static File getLibraryResources(String libraryName) {
         Jp library = new Jp(libraryName);
 
-        if (library.c()) {
+        if (library.hasResources()) {
             return new File(EXTRACTED_BUILT_IN_LIBRARIES_PATH, libraryName + File.separator + "res");
         } else {
             throw new IllegalArgumentException("Built-in library '" + libraryName + "' doesn't have any resources.");
