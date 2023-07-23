@@ -279,6 +279,10 @@ class DependencyResolver(
                         }
                     }
                 }
+                if (version.equals("+")) {
+                    // fallback to fetching latest version from #resolve(Artifact, MutableList<Artifact>, DependencyResolverCallback)
+                    version = ""
+                }
                 artifact.version = version
             }
 
