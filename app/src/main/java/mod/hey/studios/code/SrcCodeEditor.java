@@ -3,10 +3,12 @@ package mod.hey.studios.code;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,9 @@ import org.xml.sax.InputSource;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -53,6 +58,14 @@ import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 
 public class SrcCodeEditor extends AppCompatActivity {
+    public static final List<Pair<String, Class<? extends EditorColorScheme>>> KNOWN_COLOR_SCHEMES = List.of(
+            new Pair<>("Default", EditorColorScheme.class),
+            new Pair<>("GitHub", SchemeGitHub.class),
+            new Pair<>("Eclipse", SchemeEclipse.class),
+            new Pair<>("Darcula", SchemeDarcula.class),
+            new Pair<>("VS2019", SchemeVS2019.class),
+            new Pair<>("NotepadXX", SchemeNotepadXX.class)
+    );
 
     public static SharedPreferences pref;
     private LinearLayout toolbar;
@@ -321,18 +334,11 @@ public class SrcCodeEditor extends AppCompatActivity {
                 break;
 
             case "Switch theme":
-                String[] themes = {"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
-                new AlertDialog.Builder(this)
-                        .setTitle("Switch theme")
-                        .setSingleChoiceItems(themes, -1,
-                                (dialog, which) -> {
-                                    selectTheme(editor, which);
-                                    pref.edit().putInt("act_theme", which).apply();
-                                    dialog.dismiss();
-                                }
-                        )
-                        .setNegativeButton(R.string.common_word_cancel, null)
-                        .show();
+                showSwitchThemeDialog(this, editor, (dialog, which) -> {
+                    selectTheme(editor, which);
+                    pref.edit().putInt("act_theme", which).apply();
+                    dialog.dismiss();
+                });
                 break;
 
             case "Word wrap":
@@ -369,5 +375,24 @@ public class SrcCodeEditor extends AppCompatActivity {
 
         float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
         pref.edit().putInt("act_ts", (int) (editor.getTextSizePx() / scaledDensity)).apply();
+    }
+
+    public static void showSwitchThemeDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
+        EditorColorScheme currentScheme = codeEditor.getColorScheme();
+        var knownColorSchemesProperlyOrdered = new ArrayList<>(KNOWN_COLOR_SCHEMES);
+        Collections.reverse(knownColorSchemesProperlyOrdered);
+        int selectedThemeIndex = knownColorSchemesProperlyOrdered.stream()
+                .filter(pair -> pair.second.equals(currentScheme.getClass()))
+                .map(KNOWN_COLOR_SCHEMES::indexOf)
+                .findFirst()
+                .orElse(-1);
+        String[] themeItems = KNOWN_COLOR_SCHEMES.stream()
+                .map(pair -> pair.first)
+                .toArray(String[]::new);
+        new AlertDialog.Builder(activity)
+                .setTitle("Switch theme")
+                .setSingleChoiceItems(themeItems, selectedThemeIndex, listener)
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
     }
 }
