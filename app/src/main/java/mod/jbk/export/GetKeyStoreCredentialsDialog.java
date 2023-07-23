@@ -118,19 +118,11 @@ public class GetKeyStoreCredentialsDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 0:
-                        mode = SigningMode.OWN_KEY_STORE;
-                        break;
-
-                    case 1:
-                        mode = SigningMode.TESTKEY;
-                        break;
-
-                    case 2:
-                        mode = SigningMode.DONT_SIGN;
-                        break;
-
-                    default:
+                    case 0 -> mode = SigningMode.OWN_KEY_STORE;
+                    case 1 -> mode = SigningMode.TESTKEY;
+                    case 2 -> mode = SigningMode.DONT_SIGN;
+                    default -> {
+                    }
                 }
 
                 boolean signingWithKeyStore = mode == SigningMode.OWN_KEY_STORE;
@@ -167,7 +159,7 @@ public class GetKeyStoreCredentialsDialog {
         password = new EditText(activity);
         password.setHint("Alias password");
         password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        tilPassword.setPasswordVisibilityToggleEnabled(true);
+        tilPassword.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
         tilPassword.addView(password, 0, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
