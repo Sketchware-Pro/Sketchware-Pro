@@ -1,5 +1,7 @@
 package a.a.a;
 
+import java.util.Objects;
+
 import mod.jbk.build.BuiltInLibraries;
 
 /**
@@ -20,6 +22,19 @@ public class Jp {
         } else {
             packageName = "";
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Jp jp = (Jp) o;
+        return name.equals(jp.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     /**
