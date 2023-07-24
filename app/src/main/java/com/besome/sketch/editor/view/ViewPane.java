@@ -366,17 +366,17 @@ public class ViewPane extends RelativeLayout {
                 {
                     label61:
                     {
-                        int[] var12 = new int[2];
-                        var11.getLocationOnScreen(var12);
+                        int[] position = new int[2];
+                        var11.getLocationOnScreen(position);
                         if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL) {
-                            var13 = ((android.widget.LinearLayout.LayoutParams) var11.getLayoutParams()).leftMargin;
-                            int var14 = ((android.widget.LinearLayout.LayoutParams) var11.getLayoutParams()).rightMargin;
+                            var13 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).leftMargin;
+                            int var14 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).rightMargin;
                             if (var5 == 1) {
                                 if (var10 == 0) {
-                                    gravity = var12[0] - (int) ((float) var13 * getScaleX());
-                                    int var15 = location[1];
+                                    gravity = position[0] - (int) ((float) var13 * getScaleX());
+                                    int posX = location[1];
                                     a(
-                                            new Rect(x, var15, gravity, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + var15),
+                                            new Rect(x, posX, gravity, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + posX),
                                             linearLayout,
                                             0,
                                             b(linearLayout) + 1
@@ -391,7 +391,7 @@ public class ViewPane extends RelativeLayout {
                                 a(var32, linearLayout, padding, b(linearLayout) + 1);
                                 padding = var13;
                             } else if (var5 == 5) {
-                                gravity = var12[0];
+                                gravity = position[0];
                                 int var46 = (int) ((float) var13 * getScaleX());
                                 var13 = location[1];
                                 a(
@@ -400,7 +400,7 @@ public class ViewPane extends RelativeLayout {
                                         padding,
                                         b(linearLayout) + 1
                                 );
-                                gravity = (int) ((float) (var12[0] + var11.getMeasuredWidth() + var14) * getScaleX());
+                                gravity = (int) ((float) (position[0] + var11.getMeasuredWidth() + var14) * getScaleX());
                                 x = padding + 1;
                                 padding = var13;
                             } else {
@@ -429,7 +429,7 @@ public class ViewPane extends RelativeLayout {
                                     break label62;
                                 }
 
-                                int var48 = var12[1];
+                                int var48 = position[1];
                                 var44 = (int) ((float) var44 * getScaleY());
                                 x = location[0];
                                 a(
@@ -438,7 +438,7 @@ public class ViewPane extends RelativeLayout {
                                         padding,
                                         b(linearLayout) + 1
                                 );
-                                var13 = (int) ((float) (var12[1] + var11.getMeasuredHeight() + var13) * getScaleY());
+                                var13 = (int) ((float) (position[1] + var11.getMeasuredHeight() + var13) * getScaleY());
                                 ++padding;
                                 gravity = x;
                                 x = var13;
@@ -447,7 +447,7 @@ public class ViewPane extends RelativeLayout {
                             }
 
                             if (var10 == 0) {
-                                x = var12[1] - (int) ((float) var44 * getScaleY());
+                                x = position[1] - (int) ((float) var44 * getScaleY());
                                 int var47 = location[0];
                                 a(new Rect(var47, gravity, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + var47, x), linearLayout, 0, b(linearLayout) + 1);
                                 gravity = x;
