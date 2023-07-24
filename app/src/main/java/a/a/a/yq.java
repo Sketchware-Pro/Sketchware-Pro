@@ -464,83 +464,57 @@ public class yq {
             }
             for (ComponentBean component : projectDataManager.e(activity.getJavaName())) {
                 switch (component.type) {
-                    case ComponentBean.COMPONENT_TYPE_CAMERA:
-                    case 35:
+                    case ComponentBean.COMPONENT_TYPE_CAMERA, 35 -> {
                         N.g = true;
                         N.u = true;
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_CAMERA);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                        N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                    }
+                    case ComponentBean.COMPONENT_TYPE_FILE_PICKER ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE -> {
                         N.isGsonUsed = true;
                         N.isFirebaseDatabaseUsed = true;
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_INTERNET);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                    }
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE -> {
                         N.isFirebaseStorageUsed = true;
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_VIBRATOR:
-                        N.addPermission(activity.getActivityName(), jq.PERMISSION_VIBRATE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
+                    }
+                    case ComponentBean.COMPONENT_TYPE_VIBRATOR ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_VIBRATE);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH -> {
                         N.isFirebaseAuthUsed = true;
                         N.a(activity.getActivityName()).b = true;
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
+                    }
+                    case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK -> {
                         N.isGsonUsed = true;
                         N.isHttp3Used = true;
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_INTERNET);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
-                        N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
+                    }
+                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                    case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> {
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
-                        N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                        N.isDynamicLinkUsed = true;
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
-                        N.x.isFCMUsed = true;
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
-                        N.x.isFBGoogleUsed = true;
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_ONESIGNAL:
-                        N.x.isOneSignalUsed = true;
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
-                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
-                        N.x.isFBAdsUsed = true;
-                        break;
-
-                    default:
+                    }
+                    case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS ->
+                            N.isDynamicLinkUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE ->
+                            N.x.isFCMUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
+                            N.x.isFBGoogleUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> N.x.isOneSignalUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
+                            N.x.isFBAdsUsed = true;
+                    default -> {
+                    }
                 }
             }
 
