@@ -62,13 +62,13 @@ import mod.agus.jcoderz.editor.view.ViewPanes;
 import mod.hey.studios.util.ProjectFile;
 
 public class ViewPane extends RelativeLayout {
-    public ViewGroup a;
-    public int b;
-    public ArrayList<Object[]> c;
-    public Object[] d;
-    public TextView e;
-    public kC f;
-    public String sc_id;
+    private ViewGroup a;
+    private int b;
+    private ArrayList<Object[]> c;
+    private Object[] d;
+    private TextView e;
+    private kC f;
+    private String sc_id;
 
     public ViewPane(Context context) {
         super(context);
@@ -76,10 +76,10 @@ public class ViewPane extends RelativeLayout {
         this.b = 99;
         this.c = new ArrayList<>();
         this.d = null;
-        a(context);
+        initialize();
     }
 
-    public final void a(Context context) {
+    private void initialize() {
         setBackgroundColor(Color.WHITE);
         a();
         c();
@@ -91,7 +91,7 @@ public class ViewPane extends RelativeLayout {
         ((ty) this.a).setChildScrollEnabled(true);
     }
 
-    public final void c() {
+    private void c() {
         this.e = new TextView(getContext());
         this.e.setBackgroundResource(R.drawable.highlight);
         this.e.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -135,22 +135,6 @@ public class ViewPane extends RelativeLayout {
         return (sy) findViewWithTag;
     }
 
-    public ItemFloatingActionButton getFab() {
-        View findViewWithTag = findViewWithTag("_fab");
-        if (findViewWithTag == null) {
-            return null;
-        }
-        return (ItemFloatingActionButton) findViewWithTag;
-    }
-
-    public kC getResourceManager() {
-        return this.f;
-    }
-
-    public ViewGroup getRoot() {
-        return this.a;
-    }
-
     public void setResourceManager(kC kCVar) {
         this.f = kCVar;
     }
@@ -184,7 +168,7 @@ public class ViewPane extends RelativeLayout {
         ((ty) this.a).setChildScrollEnabled(false);
     }
 
-    public final int b(View view) {
+    private int b(View view) {
         int i = 0;
         while (view != null && view != this.a) {
             i++;
@@ -263,7 +247,7 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
 
-    public void c(ViewBean viewBean) {
+    private void c(ViewBean viewBean) {
         a(viewBean, (ItemLinearLayout) this.a);
     }
 
@@ -273,14 +257,14 @@ public class ViewPane extends RelativeLayout {
         this.b = 99;
         this.c = new ArrayList<>();
         this.d = null;
-        a(context);
+        initialize();
     }
 
     public void setScId(String str) {
         this.sc_id = str;
     }
 
-    public void a() {
+    private void a() {
         ViewBean viewBean = new ViewBean("root", ViewBean.VIEW_TYPE_LAYOUT_LINEAR);
         LayoutBean layoutBean = viewBean.layout;
         layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -294,7 +278,7 @@ public class ViewPane extends RelativeLayout {
         addView(b);
     }
 
-    public final void b(View view, ViewBean viewBean) {
+    private void b(View view, ViewBean viewBean) {
         ImageBean imageBean;
         String str;
         ExtraViewPane.a(view, viewBean, this, this.f);
@@ -551,7 +535,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public Object[] a(int i, int i2) {
+    private Object[] a(int i, int i2) {
         Object[] objArr = null;
         int i3 = -1;
         for (int i4 = 0; i4 < this.c.size(); i4++) {
@@ -565,7 +549,7 @@ public class ViewPane extends RelativeLayout {
         return objArr;
     }
 
-    public final void a(ViewBean var1, ItemLinearLayout var2) {
+    private void a(ViewBean var1, ItemLinearLayout var2) {
         int[] var3 = new int[2];
         var2.getLocationOnScreen(var3);
         int var4 = var2.getLayoutGravity();
@@ -696,7 +680,7 @@ public class ViewPane extends RelativeLayout {
 
     }
 
-    public final void a(ViewBean viewBean, ViewGroup viewGroup) {
+    private void a(ViewBean viewBean, ViewGroup viewGroup) {
         int childCount = viewGroup.getChildCount();
         int i = 0;
         for (int i2 = 0; i2 < childCount; i2++) {
@@ -721,7 +705,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public final void a(Rect rect, View view, int i, int i2) {
+    private void a(Rect rect, View view, int i, int i2) {
         this.c.add(new Object[]{rect, view, Integer.valueOf(i), Integer.valueOf(i2)});
     }
 
@@ -734,7 +718,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public final void a(View view, ViewBean viewBean) {
+    private void a(View view, ViewBean viewBean) {
         LayoutBean layoutBean = viewBean.layout;
         int i = layoutBean.width;
         int i2 = layoutBean.height;
@@ -784,7 +768,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public final void a(TextView textView, ViewBean viewBean) {
+    private void a(TextView textView, ViewBean viewBean) {
         String str = viewBean.text.text;
         if (str != null && str.length() > 0 && str.indexOf("\\n") >= 0) {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
@@ -797,7 +781,7 @@ public class ViewPane extends RelativeLayout {
         textView.setSingleLine(viewBean.text.singleLine != 0);
     }
 
-    public final void a(EditText editText, ViewBean viewBean) {
+    private void a(EditText editText, ViewBean viewBean) {
         editText.setHint(viewBean.text.hint);
         editText.setHintTextColor(viewBean.text.hintColor);
     }
