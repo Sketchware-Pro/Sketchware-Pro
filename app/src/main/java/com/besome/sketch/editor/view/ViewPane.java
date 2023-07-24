@@ -31,7 +31,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
-import android.widget.RelativeLayout.LayoutParams;
 import com.besome.sketch.beans.ImageBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -97,49 +96,46 @@ public class ViewPane extends RelativeLayout {
     }
 
     public View a(ViewBean var1) {
-        View var2 =findViewWithTag("_fab");
-        Object var4;
-        if (var2 != null) {
-            var4 = var2;
+        View fab = findViewWithTag("_fab");
+        if (fab != null) {
+            return fab;
         } else {
-            ItemFloatingActionButton var6 = new ItemFloatingActionButton(this.getContext());
-            var6.setTag("_fab");
-            var6.setLayoutParams(new LayoutParams(-2, -2));
-            var6.setMainColor(ProjectFile.getColor(this.sc_id, "color_accent"));
-            var6.setFixed(true);
+            ItemFloatingActionButton floatingActionButton = new ItemFloatingActionButton(this.getContext());
+            floatingActionButton.setTag("_fab");
+            floatingActionButton.setLayoutParams(new LayoutParams(-2, -2));
+            floatingActionButton.setMainColor(ProjectFile.getColor(this.sc_id, "color_accent"));
+            floatingActionButton.setFixed(true);
             if (var1 == null) {
-                ViewBean var3 = new ViewBean("_fab", 16);
-                LayoutBean var5 = var3.layout;
-                var5.marginLeft = 16;
-                var5.marginTop = 16;
-                var5.marginRight = 16;
-                var5.marginBottom = 16;
-                var5.layoutGravity = 85;
-                var6.setBean(var3);
+                ViewBean bean = new ViewBean("_fab", 16);
+                LayoutBean layoutBean = bean.layout;
+                layoutBean.marginLeft = 16;
+                layoutBean.marginTop = 16;
+                layoutBean.marginRight = 16;
+                layoutBean.marginBottom = 16;
+                layoutBean.layoutGravity = 85;
+                floatingActionButton.setBean(bean);
             } else {
-                var6.setBean(var1);
+                floatingActionButton.setBean(var1);
             }
 
-           addView(var6);
-           b(var6, var6.getBean());
-            var4 = var6;
+           addView(floatingActionButton);
+           b(floatingActionButton, floatingActionButton.getBean());
+            return floatingActionButton;
         }
-
-        return (View)var4;
     }
 
     public void a() {
-        ViewBean var1 = new ViewBean("root", 0);
-        LayoutBean var2 = var1.layout;
-        var2.width = -1;
-        var2.height = -1;
-        var2.orientation = 1;
-        var1.parentType = 0;
-        View var3 =b(var1);
-        ((ItemLinearLayout)var3).setFixed(true);
-       a = (ViewGroup)var3;
+        ViewBean rootBean = new ViewBean("root", 0);
+        LayoutBean layoutBean = rootBean.layout;
+        layoutBean.width = -1;
+        layoutBean.height = -1;
+        layoutBean.orientation = 1;
+        rootBean.parentType = 0;
+        ItemLinearLayout linearLayout = (ItemLinearLayout) b(rootBean);
+        linearLayout.setFixed(true);
+       a = linearLayout;
        a.setBackgroundColor(-1118482);
-       addView(var3);
+       addView(linearLayout);
     }
 
     public void a(int var1, int var2, int var3, int var4) {
@@ -149,11 +145,11 @@ public class ViewPane extends RelativeLayout {
         } else {
             if (this.d != var5) {
                a(true);
-                ViewGroup var6 = (ViewGroup)var5[1];
-                var6.addView(e, (Integer) var5[2]);
-                if (var6 instanceof LinearLayout) {
+                ViewGroup group = (ViewGroup)var5[1];
+                group.addView(e, (Integer) var5[2]);
+                if (group instanceof LinearLayout) {
                     e.setLayoutParams(new android.widget.LinearLayout.LayoutParams(var3, var4));
-                } else if (var6 instanceof FrameLayout) {
+                } else if (group instanceof FrameLayout) {
                    e.setLayoutParams(new android.widget.FrameLayout.LayoutParams(var3, var4));
                 } else {
                    e.setLayoutParams(new LayoutParams(var3, var4));
@@ -503,50 +499,46 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public void a(boolean var1) {
+    public void a(boolean clear) {
        e.setVisibility(View.GONE);
-        ViewParent var2 =e.getParent();
-        if (var2 != null) {
-            ((ViewGroup)var2).removeView(this.e);
+        ViewParent parent =e.getParent();
+        if (parent != null) {
+            ((ViewGroup)parent).removeView(this.e);
         }
 
-        if (var1) {
+        if (clear) {
            d = null;
         }
     }
 
     public Object[] a(int var1, int var2) {
         Object[] var3 = null;
-        int var4 = 0;
+        int index = 0;
 
         int var9;
-        for(int var5 = -1; var4 <c.size(); var5 = var9) {
-            Object[] var6 = (Object[])this.c.get(var4);
-            Rect var7 = (Rect)var6[0];
+        for(int i = -1; index < c.size(); i = var9) {
+            Object[] props = this.c.get(index);
+            Rect rect = (Rect)props[0];
             Object[] var8 = var3;
-            var9 = var5;
-            if (var1 >= var7.left) {
+            var9 = i;
+            if (var1 >= rect.left) {
                 var8 = var3;
-                var9 = var5;
-                if (var1 < var7.right) {
+                if (var1 < rect.right) {
                     var8 = var3;
-                    var9 = var5;
-                    if (var2 >= var7.top) {
+                    if (var2 >= rect.top) {
                         var8 = var3;
-                        var9 = var5;
-                        if (var2 < var7.bottom) {
+                        if (var2 < rect.bottom) {
                             var8 = var3;
-                            var9 = var5;
-                            if (var5 < (int)var6[3]) {
-                                var9 = (int) var6[3];
-                                var8 = var6;
+                            if (i < (int)props[3]) {
+                                var9 = (int) props[3];
+                                var8 = props;
                             }
                         }
                     }
                 }
             }
 
-            ++var4;
+            ++index;
             var3 = var8;
         }
 
@@ -562,11 +554,11 @@ public class ViewPane extends RelativeLayout {
         return var2 * 2;
     }
 
-    public View b(ViewBean var1) {
-        int var2 = var1.type;
-        View var3 = switch (var2) {
+    public View b(ViewBean bean) {
+        int type = bean.type;
+        View view = switch (type) {
             case 0 -> new ItemLinearLayout(this.getContext());
-            default -> ViewPanes.a(var2, getContext());
+            default -> ViewPanes.a(type, getContext());
             case 2 -> new ItemHorizontalScrollView(this.getContext());
             case 3 -> new ItemButton(this.getContext());
             case 4 -> new ItemTextView(this.getContext());
@@ -585,13 +577,14 @@ public class ViewPane extends RelativeLayout {
             case 18 -> new ItemMapView(this.getContext());
         };
 
-        var2 = b + 1;
-       b = var2;
-        var3.setId(var2);
-        var3.setTag(var1.id);
-        ((sy)var3).setBean(var1);
-       b(var3, var1);
-        return var3;
+        type = b + 1;
+       b = type;
+       if (view == null) return null;
+        view.setId(type);
+        view.setTag(bean.id);
+        ((sy)view).setBean(bean);
+       b(view, bean);
+        return view;
     }
 
     public void b() {
@@ -601,196 +594,195 @@ public class ViewPane extends RelativeLayout {
     }
 
     @SuppressLint("DiscouragedApi")
-    public final void b(View var1, ViewBean var2) {
-        ExtraViewPane.a(var1, var2, this,f);
-        int var3 = var2.id.charAt(0);
+    public final void b(View view, ViewBean bean) {
+        ExtraViewPane.a(view, bean, this,f);
+        int c1 = bean.id.charAt(0);
         boolean var4 = true;
-        if (var3 == 95) {
-            LayoutParams var23 = new LayoutParams(-2, -2);
-            var23.leftMargin = (int)wB.a(this.getContext(), (float)var2.layout.marginLeft);
-            var23.topMargin = (int)wB.a(this.getContext(), (float)var2.layout.marginTop);
-            var23.rightMargin = (int)wB.a(this.getContext(), (float)var2.layout.marginRight);
-            var23.bottomMargin = (int)wB.a(this.getContext(), (float)var2.layout.marginBottom);
-            var3 = var2.layout.layoutGravity;
-            if ((var3 & 3) == 3) {
-                var23.addRule(9);
+        if (c1 == 95) {
+            LayoutParams params = new LayoutParams(-2, -2);
+            params.leftMargin = (int)wB.a(this.getContext(), (float)bean.layout.marginLeft);
+            params.topMargin = (int)wB.a(this.getContext(), (float)bean.layout.marginTop);
+            params.rightMargin = (int)wB.a(this.getContext(), (float)bean.layout.marginRight);
+            params.bottomMargin = (int)wB.a(this.getContext(), (float)bean.layout.marginBottom);
+            c1 = bean.layout.layoutGravity;
+            if ((c1 & 3) == 3) {
+                params.addRule(9);
             }
 
-            if ((var3 & 48) == 48) {
-                var23.addRule(10);
+            if ((c1 & 48) == 48) {
+                params.addRule(10);
             }
 
-            if ((var3 & 5) == 5) {
-                var23.addRule(11);
+            if ((c1 & 5) == 5) {
+                params.addRule(11);
             }
 
-            if ((var3 & 80) == 80) {
-                var23.addRule(12);
+            if ((c1 & 80) == 80) {
+                params.addRule(12);
             }
 
-            if ((var3 & 1) == 1) {
-                var23.addRule(14);
+            if ((c1 & 1) == 1) {
+                params.addRule(14);
             }
 
-            if ((var3 & 16) == 16) {
-                var23.addRule(15);
+            if ((c1 & 16) == 16) {
+                params.addRule(15);
             }
 
-            if ((var3 & 17) == 17) {
-                var23.addRule(13);
+            if ((c1 & 17) == 17) {
+                params.addRule(13);
             }
 
-            var1.setLayoutParams(var23);
-            if (var2.getClassInfo().b("FloatingActionButton")) {
-                ImageBean var24 = var2.image;
-                if (var24 != null) {
-                    String var25 = var24.resName;
-                    if (var25 != null && var25.length() > 0) {
+            view.setLayoutParams(params);
+            if (bean.getClassInfo().b("FloatingActionButton")) {
+                ImageBean imageBean = bean.image;
+                if (imageBean != null) {
+                    String resName = imageBean.resName;
+                    if (resName != null && resName.length() > 0) {
                         try {
-                            Bitmap var26 = BitmapFactory.decodeFile(this.f.f(var2.image.resName));
-                            var3 = Math.round(this.getResources().getDisplayMetrics().density / 2.0F);
-                            Bitmap var27 = Bitmap.createScaledBitmap(var26, var26.getWidth() * var3, var26.getHeight() * var3, true);
-                            ((FloatingActionButton)var1).setImageBitmap(var27);
-                        } catch (Exception var10) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(this.f.f(bean.image.resName));
+                            c1 = Math.round(this.getResources().getDisplayMetrics().density / 2.0F);
+                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * c1, bitmap.getHeight() * c1, true);
+                            ((FloatingActionButton)view).setImageBitmap(scaledBitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
             }
 
-            var1.setRotation((float)var2.image.rotate);
-            var1.setAlpha(var2.alpha);
-            var1.setTranslationX(wB.a(this.getContext(), var2.translationX));
-            var1.setTranslationY(wB.a(this.getContext(), var2.translationY));
-            var1.setScaleX(var2.scaleX);
-            var1.setScaleY(var2.scaleY);
-            var1.setVisibility(View.VISIBLE);
+            view.setRotation((float)bean.image.rotate);
+            view.setAlpha(bean.alpha);
+            view.setTranslationX(wB.a(this.getContext(), bean.translationX));
+            view.setTranslationY(wB.a(this.getContext(), bean.translationY));
+            view.setScaleX(bean.scaleX);
+            view.setScaleY(bean.scaleY);
+            view.setVisibility(View.VISIBLE);
         } else {
-           a(var1, var2);
-            var1.setRotation((float)var2.image.rotate);
-            var1.setAlpha(var2.alpha);
-            var1.setTranslationX(wB.a(this.getContext(), var2.translationX));
-            var1.setTranslationY(wB.a(this.getContext(), var2.translationY));
-            var1.setScaleX(var2.scaleX);
-            var1.setScaleY(var2.scaleY);
-            String var5 = var2.layout.backgroundResource;
-            if (var5 != null) {
+           a(view, bean);
+            view.setRotation((float)bean.image.rotate);
+            view.setAlpha(bean.alpha);
+            view.setTranslationX(wB.a(this.getContext(), bean.translationX));
+            view.setTranslationY(wB.a(this.getContext(), bean.translationY));
+            view.setScaleX(bean.scaleX);
+            view.setScaleY(bean.scaleY);
+            String resource = bean.layout.backgroundResource;
+            if (resource != null) {
                 try {
-                    if (this.f.h(var5) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                        var1.setBackgroundResource(
-                               getContext().getResources().getIdentifier(var2.layout.backgroundResource, "drawable",getContext().getPackageName())
+                    if (this.f.h(resource) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                        view.setBackgroundResource(
+                               getContext().getResources().getIdentifier(bean.layout.backgroundResource, "drawable",getContext().getPackageName())
                         );
                     } else {
-                        String var6 =f.f(var2.layout.backgroundResource);
-                        if (var6.endsWith(".9.png")) {
-                            Bitmap var18 = zB.a(var6);
-                            byte[] var7 = var18.getNinePatchChunk();
-                            if (NinePatch.isNinePatchChunk(var7)) {
-                                Resources var28 =getResources();
-                                Rect var9 = new Rect();
-                                NinePatchDrawable var8 = new NinePatchDrawable(var28, var18, var7, var9, null);
-                                var1.setBackground(var8);
+                        String name = f.f(bean.layout.backgroundResource);
+                        if (name.endsWith(".9.png")) {
+                            Bitmap var18 = zB.a(name);
+                            byte[] bytes = var18.getNinePatchChunk();
+                            if (NinePatch.isNinePatchChunk(bytes)) {
+                                NinePatchDrawable ninePatchDrawable = new NinePatchDrawable(getResources(), var18, bytes, new Rect(), null);
+                                view.setBackground(ninePatchDrawable);
                             } else {
-                                BitmapDrawable var19 = new BitmapDrawable(this.getResources(), var6);
-                                var1.setBackground(var19);
+                                view.setBackground(new BitmapDrawable(this.getResources(), name));
                             }
                         } else {
-                            Bitmap var20 = BitmapFactory.decodeFile(var6);
-                            var3 = Math.round(this.getResources().getDisplayMetrics().density / 2.0F);
-                            Bitmap var29 = Bitmap.createScaledBitmap(var20, var20.getWidth() * var3, var20.getHeight() * var3, true);
-                            BitmapDrawable var21 = new BitmapDrawable(this.getResources(), var29);
-                            var1.setBackground(var21);
+                            Bitmap bitmap = BitmapFactory.decodeFile(name);
+                            c1 = Math.round(this.getResources().getDisplayMetrics().density / 2.0F);
+                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * c1, bitmap.getHeight() * c1, true);
+                            BitmapDrawable drawable = new BitmapDrawable(this.getResources(), scaledBitmap);
+                            view.setBackground(drawable);
                         }
                     }
-                } catch (Exception var12) {
-                    Log.e("DEBUG", var12.getMessage(), var12);
+                } catch (Exception e) {
+                    Log.e("DEBUG", e.getMessage(), e);
                 }
             }
 
-            Gx var22 = var2.getClassInfo();
-            if (var22.b("LinearLayout")) {
-                LinearLayout var30 = (LinearLayout)var1;
-                var30.setOrientation(var2.layout.orientation);
-                var30.setWeightSum((float)var2.layout.weightSum);
-                if (var1 instanceof ItemLinearLayout) {
-                    ((ItemLinearLayout)var1).setLayoutGravity(var2.layout.gravity);
+            Gx beanClassInfo = bean.getClassInfo();
+            if (beanClassInfo.b("LinearLayout")) {
+                LinearLayout linearLayout = (LinearLayout)view;
+                linearLayout.setOrientation(bean.layout.orientation);
+                linearLayout.setWeightSum((float)bean.layout.weightSum);
+                if (view instanceof ItemLinearLayout) {
+                    ((ItemLinearLayout)view).setLayoutGravity(bean.layout.gravity);
                 }
             }
 
-            if (var22.a("TextView")) {
-                TextView var31 = (TextView)var1;
-               a(var31, var2);
-                if (!var22.b("Button") && !var22.b("Switch")) {
-                    var31.setGravity(var2.layout.gravity);
+            if (beanClassInfo.a("TextView")) {
+                TextView textView = (TextView)view;
+               a(textView, bean);
+                if (!beanClassInfo.b("Button") && !beanClassInfo.b("Switch")) {
+                    textView.setGravity(bean.layout.gravity);
                 } else {
-                    var3 = var2.layout.gravity;
-                    if (var3 == 0) {
-                        var31.setGravity(17);
+                    c1 = bean.layout.gravity;
+                    if (c1 == 0) {
+                        textView.setGravity(17);
                     } else {
-                        var31.setGravity(var3);
+                        textView.setGravity(c1);
                     }
                 }
             }
 
-            if (var22.b("EditText")) {
-               a((EditText)var1, var2);
+            if (beanClassInfo.b("EditText")) {
+               a((EditText)view, bean);
             }
 
-            if (var22.b("ImageView")) {
-                if (this.f.h(var2.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                    ((ImageView)var1)
-                            .setImageResource(this.getContext().getResources().getIdentifier(var2.image.resName, "drawable",getContext().getPackageName()));
-                } else if (var2.image.resName.equals("default_image")) {
-                    ((ImageView)var1).setImageResource(R.drawable.default_image);
+            if (beanClassInfo.b("ImageView")) {
+                if (f.h(bean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                    ((ImageView)view)
+                            .setImageResource(this.getContext().getResources().getIdentifier(bean.image.resName, "drawable",getContext().getPackageName()));
+                } else if (bean.image.resName.equals("default_image")) {
+                    ((ImageView)view).setImageResource(R.drawable.default_image);
                 } else {
                     try {
-                        Bitmap var32 = BitmapFactory.decodeFile(this.f.f(var2.image.resName));
-                        var3 = Math.round(this.getResources().getDisplayMetrics().density / 2.0F);
-                        var32 = Bitmap.createScaledBitmap(var32, var32.getWidth() * var3, var32.getHeight() * var3, true);
-                        ((ImageView)var1).setImageBitmap(var32);
-                    } catch (Exception var11) {
-                        ((ImageView)var1).setImageResource(R.drawable.default_image);
+                        Bitmap bitmap = BitmapFactory.decodeFile(this.f.f(bean.image.resName));
+                        c1 = Math.round(this.getResources().getDisplayMetrics().density / 2.0F);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * c1, bitmap.getHeight() * c1, true);
+                        ((ImageView)view).setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        ((ImageView)view).setImageResource(R.drawable.default_image);
                     }
                 }
 
-                ((ImageView)var1).setScaleType(ScaleType.valueOf(var2.image.scaleType));
+                ((ImageView)view).setScaleType(ScaleType.valueOf(bean.image.scaleType));
             }
 
-            if (var22.a("CompoundButton")) {
-                CompoundButton var34 = (CompoundButton)var1;
-                if (var2.checked == 0) {
+            if (beanClassInfo.a("CompoundButton")) {
+                CompoundButton button = (CompoundButton)view;
+                if (bean.checked == 0) {
                     var4 = false;
                 }
 
-                var34.setChecked(var4);
+                button.setChecked(var4);
             }
 
-            if (var22.b("SeekBar")) {
-                SeekBar var35 = (SeekBar)var1;
-                var35.setProgress(var2.progress);
-                var35.setMax(var2.max);
+            if (beanClassInfo.b("SeekBar")) {
+                SeekBar seekbar = (SeekBar)view;
+                seekbar.setProgress(bean.progress);
+                seekbar.setMax(bean.max);
             }
 
-            if (var22.b("ProgressBar")) {
-                ((ItemProgressBar)var1).setProgressBarStyle(var2.progressStyle);
+            if (beanClassInfo.b("ProgressBar")) {
+                ((ItemProgressBar)view).setProgressBarStyle(bean.progressStyle);
             }
 
-            if (var22.b("CalendarView")) {
-                ((CalendarView)var1).setFirstDayOfWeek(var2.firstDayOfWeek);
+            if (beanClassInfo.b("CalendarView")) {
+                ((CalendarView)view).setFirstDayOfWeek(bean.firstDayOfWeek);
             }
 
-            if (var22.b("AdView")) {
-                ((ItemAdView)var1).setAdSize(var2.adSize);
+            if (beanClassInfo.b("AdView")) {
+                ((ItemAdView)view).setAdSize(bean.adSize);
             }
 
-            var1.setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
         }
     }
 
     public final void c() {
-       e = new TextView(this.getContext());
+       e = new TextView(getContext());
        e.setBackgroundResource(R.drawable.highlight);
-        android.widget.LinearLayout.LayoutParams var1 = new android.widget.LinearLayout.LayoutParams(-2, -2);
-       e.setLayoutParams(var1);
+       LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
+       e.setLayoutParams(params);
        e.setVisibility(View.GONE);
     }
 
@@ -798,29 +790,29 @@ public class ViewPane extends RelativeLayout {
        a(var1, (ItemLinearLayout)this.a);
     }
 
-    public sy d(ViewBean var1) {
-        View var2 = a.findViewWithTag(var1.id);
-        if (var1.id.charAt(0) == '_') {
-            var2 =findViewWithTag(var1.id);
+    public sy d(ViewBean bean) {
+        View view = a.findViewWithTag(bean.id);
+        if (bean.id.charAt(0) == '_') {
+            view = findViewWithTag(bean.id);
         }
 
-        String var3 = var1.preParent;
-        if (var3 != null && var3.length() > 0 && !var1.parent.equals(var1.preParent)) {
-            ViewGroup var4 = a.findViewWithTag(var1.preParent);
-            var4.removeView(var2);
-            ((ty)var4).a();
-           a(var2);
-        } else if (var1.index != var1.preIndex) {
-            ((ViewGroup) a.findViewWithTag(var1.parent)).removeView(var2);
-           a(var2);
+        String parent = bean.preParent;
+        if (parent != null && parent.length() > 0 && !bean.parent.equals(bean.preParent)) {
+            ViewGroup group = a.findViewWithTag(bean.preParent);
+            group.removeView(view);
+            ((ty)group).a();
+           a(view);
+        } else if (bean.index != bean.preIndex) {
+            ((ViewGroup) a.findViewWithTag(bean.parent)).removeView(view);
+           a(view);
         }
 
-        var1.preId = "";
-        var1.preIndex = -1;
-        var1.preParent = "";
-        var1.preParentType = -1;
-        var2.setVisibility(View.VISIBLE);
-        return (sy)var2;
+        bean.preId = "";
+        bean.preIndex = -1;
+        bean.preParent = "";
+        bean.preParentType = -1;
+        view.setVisibility(View.VISIBLE);
+        return (sy)view;
     }
 
     public void d() {
@@ -828,47 +820,50 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void e() {
-        View var1 =findViewWithTag("_fab");
-        if (var1 != null) {
-           removeView(var1);
+        View fab =findViewWithTag("_fab");
+        if (fab != null) {
+           removeView(fab);
         }
     }
 
-    public void e(ViewBean var1) {
+    public void e(ViewBean bean) {
        d = null;
-       c(var1);
-        ((ty)this.a).setChildScrollEnabled(false);
+       c(bean);
+        ((ty) a).setChildScrollEnabled(false);
     }
 
-    public void f(ViewBean var1) {
-        ViewGroup var2 = this.a.findViewWithTag(var1.parent);
-        var2.removeView(this.a.findViewWithTag(var1.id));
-        if (var2 instanceof ty) {
-            ((ty)var2).a();
+    public void f(ViewBean bean) {
+        ViewGroup group = a.findViewWithTag(bean.parent);
+        group.removeView(a.findViewWithTag(bean.id));
+        if (group instanceof ty) {
+            ((ty)group).a();
         }
     }
 
-    public sy g(ViewBean var1) {
-        String var2 = var1.preId;
-        if (var2 != null && var2.length() > 0 && !var1.preId.equals(var1.id)) {
-           a.findViewWithTag(var1.preId).setTag(var1.id);
-            var1.preId = "";
+    public sy g(ViewBean bean) {
+        String preId = bean.preId;
+        if (preId != null && preId.length() > 0 && !bean.preId.equals(bean.id)) {
+           a.findViewWithTag(bean.preId).setTag(bean.id);
+            bean.preId = "";
         }
 
-        View var3;
-        if (var1.id.charAt(0) == '_') {
-            var3 =findViewWithTag(var1.id);
+        View view;
+        if (bean.id.charAt(0) == '_') {
+            view = findViewWithTag(bean.id);
         } else {
-            var3 =a.findViewWithTag(var1.id);
+            view = a.findViewWithTag(bean.id);
         }
 
-       b(var3, var1);
-        return (sy)var3;
+       b(view, bean);
+        return (sy)view;
     }
 
     public ItemFloatingActionButton getFab() {
-        View var1 =findViewWithTag("_fab");
-        return var1 == null ? null : (ItemFloatingActionButton)var1;
+        View bean = findViewWithTag("_fab");
+        if (!(bean instanceof ItemFloatingActionButton)) {
+            return null;
+        }
+        return (ItemFloatingActionButton) bean;
     }
 
     public kC getResourceManager() {
