@@ -549,8 +549,8 @@ public class ViewPane extends RelativeLayout {
         linearLayout.getLocationOnScreen(linearLayoutLocation);
         int var4;
         int linearLayoutGravity = linearLayout.getLayoutGravity();
-        int var5 = linearLayoutGravity & Gravity.FILL_HORIZONTAL;
-        int var6 = linearLayoutGravity & Gravity.FILL_VERTICAL;
+        int horizontalLinearLayoutGravity = linearLayoutGravity & Gravity.FILL_HORIZONTAL;
+        int verticalLinearLayoutGravity = linearLayoutGravity & Gravity.FILL_VERTICAL;
         int linearLayoutX = linearLayoutLocation[0];
         int var7;
         int linearLayoutY = linearLayoutLocation[1];
@@ -569,11 +569,10 @@ public class ViewPane extends RelativeLayout {
                     {
                         int[] childLocation = new int[2];
                         child.getLocationOnScreen(childLocation);
-                        Rect var16;
                         if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL) {
                             int leftMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).leftMargin;
                             int rightMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).rightMargin;
-                            if (var5 == Gravity.CENTER_HORIZONTAL) {
+                            if (horizontalLinearLayoutGravity == Gravity.CENTER_HORIZONTAL) {
                                 if (i == 0) {
                                     int x = childLocation[0] - (int) ((float) leftMargin * this.getScaleX());
                                     int y = linearLayoutLocation[1];
@@ -583,11 +582,10 @@ public class ViewPane extends RelativeLayout {
 
                                 var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * this.getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
-                                var16 = new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y);
                                 var7 = var8 + 1;
-                                this.a(var16, linearLayout, var8, this.b((View) linearLayout) + 1);
+                                this.a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
                                 var8 = y;
-                            } else if (var5 == Gravity.RIGHT) {
+                            } else if (horizontalLinearLayoutGravity == Gravity.RIGHT) {
                                 int x = childLocation[0];
                                 int y = linearLayoutLocation[1];
                                 this.a(new Rect(var7, y, x - (int) ((float) leftMargin * this.getScaleX()), (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
@@ -597,24 +595,29 @@ public class ViewPane extends RelativeLayout {
                             } else {
                                 var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * this.getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
-                                var16 = new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y);
                                 var7 = var8 + 1;
-                                this.a(var16, linearLayout, var8, this.b((View) linearLayout) + 1);
+                                this.a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
                                 var8 = y;
                             }
                         } else {
                             int topMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).topMargin;
                             int bottomMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).bottomMargin;
-                            if (var6 != Gravity.CENTER_VERTICAL) {
-                                if (var6 != Gravity.BOTTOM) {
-                                    var7 = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
+                            if (verticalLinearLayoutGravity == Gravity.CENTER_VERTICAL) {
+                                if (i == 0) {
                                     int x = linearLayoutLocation[0];
-                                    this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, var7), linearLayout, var8, this.b((View) linearLayout) + 1);
-                                    var4 = x;
-                                    ++var8;
-                                    break label62;
+                                    int y = childLocation[1] - (int) ((float) topMargin * this.getScaleY());
+                                    this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y), linearLayout, 0, this.b((View) linearLayout) + 1);
+                                    var4 = y;
                                 }
 
+                                int bottom = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
+                                int x = linearLayoutLocation[0];
+                                int top = var8 + 1;
+                                this.a(new Rect(x, top, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, bottom), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                var8 = bottom;
+                                var7 = top;
+                                var4 = x;
+                            } else if (verticalLinearLayoutGravity == Gravity.BOTTOM) {
                                 int x = linearLayoutLocation[0];
                                 int y = childLocation[1];
                                 this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y - (int) ((float) topMargin * this.getScaleY())), linearLayout, var8, this.b((View) linearLayout) + 1);
@@ -623,23 +626,15 @@ public class ViewPane extends RelativeLayout {
                                 var7 = (int) ((float) (childLocation[1] + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
                                 var13 = var8;
                                 break label61;
-                            }
-
-                            if (i == 0) {
+                            } else {
+                                var7 = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
                                 int x = linearLayoutLocation[0];
-                                int y = childLocation[1] - (int) ((float) topMargin * this.getScaleY());
-                                this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y), linearLayout, 0, this.b((View) linearLayout) + 1);
-                                var4 = y;
+                                this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, var7), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                var4 = x;
+                                ++var8;
+                                break label62;
                             }
 
-                            var7 = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
-                            int x = linearLayoutLocation[0];
-                            var16 = new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, var7);
-                            var4 = var8 + 1;
-                            this.a(var16, linearLayout, var8, this.b((View) linearLayout) + 1);
-                            var8 = var7;
-                            var7 = var4;
-                            var4 = x;
                         }
 
                         var13 = var7;
