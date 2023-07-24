@@ -241,10 +241,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private void generateProjectDebugFiles() {
-        q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
-    }
-
     /**
      * Opens the debug APK to install.
      */
@@ -975,7 +971,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     kC.c(q.resDirectoryPath + File.separator + "raw");
                     kC = jC.d(sc_id);
                     kC.a(q.assetsPath + File.separator + "fonts");
-                    activity.generateProjectDebugFiles();
+                    q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id), false);
                     q.f();
                     q.e();
 

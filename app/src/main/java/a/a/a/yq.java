@@ -619,15 +619,6 @@ public class yq {
     }
 
     /**
-     * Simply calls {@link yq#b(hC, eC, iC, boolean)} with the same arguments and <code>false</code>.
-     *
-     * @see yq#b(hC, eC, iC, boolean)
-     */
-    public void b(hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
-        b(projectFileManager, projectDataManager, projectLibraryManager, false);
-    }
-
-    /**
      * Generates the project's files, such as layouts, Java files, but also build.gradle and secrets.xml.
      */
     public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean exportingProject) {
@@ -897,12 +888,5 @@ public class yq {
         }
 
         return "";
-    }
-
-    /**
-     * Calls {@link yq#a(hC, eC, iC, boolean)} with the same parameters and <code>false</code>.
-     */
-    public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
-        return a(hCVar, eCVar, iCVar, false);
     }
 }
