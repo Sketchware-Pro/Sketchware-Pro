@@ -463,8 +463,6 @@ public class yq {
                 N.a(activity.getActivityName()).a = true;
             }
             for (ComponentBean component : projectDataManager.e(activity.getJavaName())) {
-                N.x.handleComponent(component.type);
-
                 switch (component.type) {
                     case ComponentBean.COMPONENT_TYPE_CAMERA:
                     case 35:
@@ -525,6 +523,23 @@ public class yq {
                         N.isDynamicLinkUsed = true;
                         break;
 
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
+                        N.x.isFCMUsed = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
+                        N.x.isFBGoogleUsed = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_ONESIGNAL:
+                        N.x.isOneSignalUsed = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
+                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
+                        N.x.isFBAdsUsed = true;
+                        break;
+
                     default:
                 }
             }
@@ -545,8 +560,6 @@ public class yq {
 
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(activity.getJavaName()).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
-                    N.x.setParams(block.parameters, packageName, block.opCode);
-
                     switch (block.opCode) {
                         case "FirebaseDynamicLink setDataHost":
                         case "setDynamicLinkDataHost":
@@ -619,6 +632,17 @@ public class yq {
                         case "webViewLoadUrl":
                             N.addPermission(jq.PERMISSION_INTERNET);
                             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
+                            break;
+
+                        case "OneSignal setAppId":
+                        case "OnResultBillingResponse":
+                        case "Youtube useWebUI":
+                        case "FacebookAds setProvider":
+                            if (block.parameters.size() > 0) {
+                                if (N.x.param == null) N.x.param = new HashMap<>();
+                                N.x.param.clear();
+                                N.x.param.put(block.opCode, block.parameters);
+                            }
                             break;
 
                         default:
