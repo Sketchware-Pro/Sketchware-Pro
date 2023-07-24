@@ -98,7 +98,12 @@ public class SrcViewerActivity extends AppCompatActivity {
         }
 
         new Thread(() -> {
-            srcCodeBean = new yq(getBaseContext(), sc_id).a(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id), false);
+            var yq = new yq(getBaseContext(), sc_id);
+            var fileManager = jC.b(sc_id);
+            var dataManager = jC.a(sc_id);
+            var libraryManager = jC.c(sc_id);
+            yq.a(libraryManager, fileManager, dataManager, false);
+            srcCodeBean = yq.a(fileManager, dataManager);
 
             try {
                 runOnUiThread(() -> {

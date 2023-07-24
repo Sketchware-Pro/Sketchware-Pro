@@ -421,6 +421,9 @@ public class yq {
         }
     }
 
+    /**
+     * Initialize project metadata
+     */
     public void a(iC projectLibraryManager, hC projectFileManager, eC projectDataManager, boolean exportingProject) {
         ProjectLibraryBean adMob = projectLibraryManager.b();
         ProjectLibraryBean appCompat = projectLibraryManager.c();
@@ -621,8 +624,8 @@ public class yq {
     /**
      * Generates the project's files, such as layouts, Java files, but also build.gradle and secrets.xml.
      */
-    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean exportingProject) {
-        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, exportingProject);
+    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager) {
+        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger);
         if (N.u) {
             XmlBuilder pathsTag = new XmlBuilder("paths");
             pathsTag.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -676,8 +679,7 @@ public class yq {
     /**
      * Get source code files that are viewable in SrcCodeViewer
      */
-    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, iC projectLibraryManager, boolean exportingProject) {
-        a(projectLibraryManager, projectFileManager, projectDataManager, exportingProject);
+    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager) {
         a(SketchApplication.getContext());
         CommandBlock.x();
 

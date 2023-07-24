@@ -971,7 +971,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     kC.c(q.resDirectoryPath + File.separator + "raw");
                     kC = jC.d(sc_id);
                     kC.a(q.assetsPath + File.separator + "fonts");
-                    q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id), false);
+
+                    var fileManager = jC.b(sc_id);
+                    var dataManager = jC.a(sc_id);
+                    var libraryManager = jC.c(sc_id);
+                    q.a(libraryManager, fileManager, dataManager, false);
+                    q.b(fileManager, dataManager, libraryManager);
                     q.f();
                     q.e();
 
