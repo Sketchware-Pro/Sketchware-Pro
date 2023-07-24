@@ -55,6 +55,8 @@ import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
+
 import dev.aldi.sayuti.editor.view.ExtraViewPane;
 import java.util.ArrayList;
 import mod.agus.jcoderz.editor.view.ViewPanes;
@@ -738,7 +740,7 @@ public class ViewPane extends RelativeLayout {
                     ((ImageView)var1)
                             .setImageResource(this.getContext().getResources().getIdentifier(var2.image.resName, "drawable",getContext().getPackageName()));
                 } else if (var2.image.resName.equals("default_image")) {
-                    ((ImageView)var1).setImageResource(2131165522);
+                    ((ImageView)var1).setImageResource(R.drawable.default_image);
                 } else {
                     try {
                         Bitmap var32 = BitmapFactory.decodeFile(this.f.f(var2.image.resName));
@@ -746,7 +748,7 @@ public class ViewPane extends RelativeLayout {
                         var32 = Bitmap.createScaledBitmap(var32, var32.getWidth() * var3, var32.getHeight() * var3, true);
                         ((ImageView)var1).setImageBitmap(var32);
                     } catch (Exception var11) {
-                        ((ImageView)var1).setImageResource(2131165522);
+                        ((ImageView)var1).setImageResource(R.drawable.default_image);
                     }
                 }
 
@@ -786,7 +788,7 @@ public class ViewPane extends RelativeLayout {
 
     public final void c() {
        e = new TextView(this.getContext());
-       e.setBackgroundResource(2131165670);
+       e.setBackgroundResource(R.drawable.highlight);
         android.widget.LinearLayout.LayoutParams var1 = new android.widget.LinearLayout.LayoutParams(-2, -2);
        e.setLayoutParams(var1);
        e.setVisibility(View.GONE);
