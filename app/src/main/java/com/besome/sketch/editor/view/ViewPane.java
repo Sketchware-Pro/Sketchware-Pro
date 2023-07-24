@@ -570,40 +570,38 @@ public class ViewPane extends RelativeLayout {
                         int[] childLocation = new int[2];
                         child.getLocationOnScreen(childLocation);
                         int var14;
-                        int var15;
                         Rect var16;
                         if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL) {
                             var13 = ((LinearLayout.LayoutParams) child.getLayoutParams()).leftMargin;
                             var14 = ((LinearLayout.LayoutParams) child.getLayoutParams()).rightMargin;
                             if (var5 == Gravity.CENTER_HORIZONTAL) {
                                 if (i == 0) {
-                                    var4 = childLocation[0] - (int) ((float) var13 * this.getScaleX());
-                                    var15 = linearLayoutLocation[1];
-                                    this.a(new Rect(var7, var15, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + var15), linearLayout, 0, this.b((View) linearLayout) + 1);
-                                    var7 = var4;
+                                    int x = childLocation[0] - (int) ((float) var13 * this.getScaleX());
+                                    int y = linearLayoutLocation[1];
+                                    this.a(new Rect(var7, y, x, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, 0, this.b((View) linearLayout) + 1);
+                                    var7 = x;
                                 }
 
                                 var4 = (int) ((float) (var13 + child.getMeasuredWidth() + var14) * this.getScaleX()) + var7;
-                                var13 = linearLayoutLocation[1];
-                                var16 = new Rect(var7, var13, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + var13);
+                                int y = linearLayoutLocation[1];
+                                var16 = new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y);
                                 var7 = var8 + 1;
                                 this.a(var16, linearLayout, var8, this.b((View) linearLayout) + 1);
-                                var8 = var13;
+                                var8 = y;
                             } else if (var5 == Gravity.RIGHT) {
-                                var4 = childLocation[0];
-                                var15 = (int) ((float) var13 * this.getScaleX());
-                                var13 = linearLayoutLocation[1];
-                                this.a(new Rect(var7, var13, var4 - var15, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + var13), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                int x = childLocation[0];
+                                int y = linearLayoutLocation[1];
+                                this.a(new Rect(var7, y, x - (int) ((float) var13 * this.getScaleX()), (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
                                 var4 = (int) ((float) (childLocation[0] + child.getMeasuredWidth() + var14) * this.getScaleX());
                                 var7 = var8 + 1;
-                                var8 = var13;
+                                var8 = y;
                             } else {
                                 var4 = (int) ((float) (var13 + child.getMeasuredWidth() + var14) * this.getScaleX()) + var7;
-                                var13 = linearLayoutLocation[1];
-                                var16 = new Rect(var7, var13, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + var13);
+                                int y = linearLayoutLocation[1];
+                                var16 = new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y);
                                 var7 = var8 + 1;
                                 this.a(var16, linearLayout, var8, this.b((View) linearLayout) + 1);
-                                var8 = var13;
+                                var8 = y;
                             }
                         } else {
                             var14 = ((LinearLayout.LayoutParams) child.getLayoutParams()).topMargin;
@@ -611,40 +609,38 @@ public class ViewPane extends RelativeLayout {
                             if (var6 != Gravity.CENTER_VERTICAL) {
                                 if (var6 != Gravity.BOTTOM) {
                                     var7 = var4 + (int) ((float) (var14 + child.getMeasuredHeight() + var13) * this.getScaleY());
-                                    var13 = linearLayoutLocation[0];
-                                    this.a(new Rect(var13, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + var13, var7), linearLayout, var8, this.b((View) linearLayout) + 1);
-                                    var4 = var13;
+                                    int x = linearLayoutLocation[0];
+                                    this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, var7), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                    var4 = x;
                                     ++var8;
                                     break label62;
                                 }
 
-                                var15 = childLocation[1];
-                                var14 = (int) ((float) var14 * this.getScaleY());
-                                var7 = linearLayoutLocation[0];
-                                this.a(new Rect(var7, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + var7, var15 - var14), linearLayout, var8, this.b((View) linearLayout) + 1);
-                                var13 = (int) ((float) (childLocation[1] + child.getMeasuredHeight() + var13) * this.getScaleY());
+                                int x = linearLayoutLocation[0];
+                                int y = childLocation[1];
+                                this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y - (int) ((float) var14 * this.getScaleY())), linearLayout, var8, this.b((View) linearLayout) + 1);
                                 ++var8;
-                                var4 = var7;
-                                var7 = var13;
+                                var4 = x;
+                                var7 = (int) ((float) (childLocation[1] + child.getMeasuredHeight() + var13) * this.getScaleY());
                                 var13 = var8;
                                 break label61;
                             }
 
                             if (i == 0) {
-                                var7 = childLocation[1] - (int) ((float) var14 * this.getScaleY());
-                                var15 = linearLayoutLocation[0];
-                                this.a(new Rect(var15, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + var15, var7), linearLayout, 0, this.b((View) linearLayout) + 1);
-                                var4 = var7;
+                                int x = linearLayoutLocation[0];
+                                int y = childLocation[1] - (int) ((float) var14 * this.getScaleY());
+                                this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y), linearLayout, 0, this.b((View) linearLayout) + 1);
+                                var4 = y;
                             }
 
                             var7 = var4 + (int) ((float) (var14 + child.getMeasuredHeight() + var13) * this.getScaleY());
-                            var13 = linearLayoutLocation[0];
-                            var16 = new Rect(var13, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + var13, var7);
+                            int x = linearLayoutLocation[0];
+                            var16 = new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, var7);
                             var4 = var8 + 1;
                             this.a(var16, linearLayout, var8, this.b((View) linearLayout) + 1);
                             var8 = var7;
                             var7 = var4;
-                            var4 = var13;
+                            var4 = x;
                         }
 
                         var13 = var7;
