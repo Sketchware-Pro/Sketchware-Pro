@@ -3,12 +3,14 @@ package com.besome.sketch.editor.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.NinePatch;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -45,6 +47,7 @@ import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -77,7 +80,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public final void a(Context context) {
-        setBackgroundColor(-1);
+        setBackgroundColor(Color.WHITE);
         a();
         c();
     }
@@ -90,9 +93,10 @@ public class ViewPane extends RelativeLayout {
 
     public final void c() {
         this.e = new TextView(getContext());
-        this.e.setBackgroundResource(2131165670);
-        this.e.setLayoutParams(new LinearLayout.LayoutParams(-2, -2));
-        this.e.setVisibility(8);
+        this.e.setBackgroundResource(R.drawable.highlight);
+        this.e.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        this.e.setVisibility(GONE);
     }
 
     public void d() {
@@ -170,7 +174,7 @@ public class ViewPane extends RelativeLayout {
         viewBean.preIndex = -1;
         viewBean.preParent = "";
         viewBean.preParentType = -1;
-        findViewWithTag.setVisibility(0);
+        findViewWithTag.setVisibility(VISIBLE);
         return (sy) findViewWithTag;
     }
 
@@ -193,60 +197,60 @@ public class ViewPane extends RelativeLayout {
         View item;
         int i = viewBean.type;
         switch (i) {
-            case 0:
+            case ViewBean.VIEW_TYPE_LAYOUT_LINEAR:
                 item = new ItemLinearLayout(getContext());
                 break;
-            case 1:
-            case 16:
+            case ViewBean.VIEW_TYPE_LAYOUT_RELATIVE:
+            case ViewBean.VIEW_TYPE_WIDGET_FAB:
             default:
                 item = ViewPanes.a(i, getContext());
                 break;
-            case 2:
+            case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW:
                 item = new ItemHorizontalScrollView(getContext());
                 break;
-            case 3:
+            case ViewBean.VIEW_TYPE_WIDGET_BUTTON:
                 item = new ItemButton(getContext());
                 break;
-            case 4:
+            case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW:
                 item = new ItemTextView(getContext());
                 break;
-            case 5:
+            case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT:
                 item = new ItemEditText(getContext());
                 break;
-            case 6:
+            case ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW:
                 item = new ItemImageView(getContext());
                 break;
-            case 7:
+            case ViewBean.VIEW_TYPE_WIDGET_WEBVIEW:
                 item = new ItemWebView(getContext());
                 break;
-            case 8:
+            case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR:
                 item = new ItemProgressBar(getContext());
                 break;
-            case 9:
+            case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW:
                 item = new ItemListView(getContext());
                 break;
-            case 10:
+            case ViewBean.VIEW_TYPE_WIDGET_SPINNER:
                 item = new ItemSpinner(getContext());
                 break;
-            case 11:
+            case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
                 item = new ItemCheckBox(getContext());
                 break;
-            case 12:
+            case ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW:
                 item = new ItemVerticalScrollView(getContext());
                 break;
-            case 13:
+            case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
                 item = new ItemSwitch(getContext());
                 break;
-            case 14:
+            case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR:
                 item = new ItemSeekBar(getContext());
                 break;
-            case 15:
+            case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW:
                 item = new ItemCalendarView(getContext());
                 break;
-            case 17:
+            case ViewBean.VIEW_TYPE_WIDGET_ADVIEW:
                 item = new ItemAdView(getContext());
                 break;
-            case 18:
+            case ViewBean.VIEW_TYPE_WIDGET_MAPVIEW:
                 item = new ItemMapView(getContext());
                 break;
         }
@@ -277,16 +281,16 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void a() {
-        ViewBean viewBean = new ViewBean("root", 0);
+        ViewBean viewBean = new ViewBean("root", ViewBean.VIEW_TYPE_LAYOUT_LINEAR);
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.width = -1;
-        layoutBean.height = -1;
-        layoutBean.orientation = 1;
-        viewBean.parentType = 0;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutBean.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutBean.orientation = LinearLayout.VERTICAL;
+        viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         View b = b(viewBean);
         ((ItemLinearLayout) b).setFixed(true);
         this.a = (ViewGroup) b;
-        this.a.setBackgroundColor(-1118482);
+        this.a.setBackgroundColor(0xffeeeeee);
         addView(b);
     }
 
@@ -295,32 +299,34 @@ public class ViewPane extends RelativeLayout {
         String str;
         ExtraViewPane.a(view, viewBean, this, this.f);
         if (viewBean.id.charAt(0) == '_') {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(-2, -2);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
             layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
             layoutParams.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
             int i = viewBean.layout.layoutGravity;
-            if ((i & 3) == 3) {
-                layoutParams.addRule(9);
+            if ((i & Gravity.LEFT) == Gravity.LEFT) {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             }
-            if ((i & 48) == 48) {
-                layoutParams.addRule(10);
+            if ((i & Gravity.TOP) == Gravity.TOP) {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             }
-            if ((i & 5) == 5) {
-                layoutParams.addRule(11);
+            if ((i & Gravity.RIGHT) == Gravity.RIGHT) {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             }
-            if ((i & 80) == 80) {
-                layoutParams.addRule(12);
+            if ((i & Gravity.BOTTOM) == Gravity.BOTTOM) {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             }
-            if ((i & 1) == 1) {
-                layoutParams.addRule(14);
+            if ((i & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             }
-            if ((i & 16) == 16) {
-                layoutParams.addRule(15);
+            if ((i & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
+                layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
             }
-            if ((i & 17) == 17) {
-                layoutParams.addRule(13);
+            if ((i & Gravity.CENTER) == Gravity.CENTER) {
+                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             }
             view.setLayoutParams(layoutParams);
             if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && str.length() > 0) {
@@ -337,7 +343,7 @@ public class ViewPane extends RelativeLayout {
             view.setTranslationY(wB.a(getContext(), viewBean.translationY));
             view.setScaleX(viewBean.scaleX);
             view.setScaleY(viewBean.scaleY);
-            view.setVisibility(0);
+            view.setVisibility(View.VISIBLE);
             return;
         }
         a(view, viewBean);
@@ -389,7 +395,7 @@ public class ViewPane extends RelativeLayout {
             } else {
                 int i2 = viewBean.layout.gravity;
                 if (i2 == 0) {
-                    textView.setGravity(17);
+                    textView.setGravity(Gravity.CENTER);
                 } else {
                     textView.setGravity(i2);
                 }
@@ -402,14 +408,14 @@ public class ViewPane extends RelativeLayout {
             if (this.f.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                 ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
             } else if (viewBean.image.resName.equals("default_image")) {
-                ((ImageView) view).setImageResource(2131165522);
+                ((ImageView) view).setImageResource(R.drawable.default_image);
             } else {
                 try {
                     Bitmap decodeFile3 = BitmapFactory.decodeFile(this.f.f(viewBean.image.resName));
                     int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                     ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
                 } catch (Exception unused2) {
-                    ((ImageView) view).setImageResource(2131165522);
+                    ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
             }
             ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
@@ -431,7 +437,7 @@ public class ViewPane extends RelativeLayout {
         if (classInfo.b("AdView")) {
             ((ItemAdView) view).setAdSize(viewBean.adSize);
         }
-        view.setVisibility(0);
+        view.setVisibility(VISIBLE);
     }
 
     public sy a(String str) {
@@ -463,16 +469,16 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = ((Integer) objArr[2]).intValue();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
-                viewBean.parentType = 12;
-                viewBean.layout.height = -2;
+                viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
+                viewBean.layout.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 return;
             } else if (view instanceof ItemHorizontalScrollView) {
                 viewBean.preIndex = viewBean.index;
                 viewBean.index = ((Integer) objArr[2]).intValue();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
-                viewBean.parentType = 2;
-                viewBean.layout.width = -2;
+                viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW;
+                viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 return;
             } else {
                 return;
@@ -481,7 +487,7 @@ public class ViewPane extends RelativeLayout {
         viewBean.preIndex = viewBean.index;
         viewBean.preParent = viewBean.parent;
         viewBean.parent = "root";
-        viewBean.parentType = 0;
+        viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         viewBean.index = -1;
     }
 
@@ -492,17 +498,19 @@ public class ViewPane extends RelativeLayout {
         }
         ItemFloatingActionButton itemFloatingActionButton = new ItemFloatingActionButton(getContext());
         itemFloatingActionButton.setTag("_fab");
-        itemFloatingActionButton.setLayoutParams(new RelativeLayout.LayoutParams(-2, -2));
+        itemFloatingActionButton.setLayoutParams(new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         itemFloatingActionButton.setMainColor(ProjectFile.getColor(this.sc_id, "color_accent"));
         itemFloatingActionButton.setFixed(true);
         if (viewBean == null) {
-            ViewBean viewBean2 = new ViewBean("_fab", 16);
+            ViewBean viewBean2 = new ViewBean("_fab", ViewBean.VIEW_TYPE_WIDGET_FAB);
             LayoutBean layoutBean = viewBean2.layout;
             layoutBean.marginLeft = 16;
             layoutBean.marginTop = 16;
             layoutBean.marginRight = 16;
             layoutBean.marginBottom = 16;
-            layoutBean.layoutGravity = 85;
+            layoutBean.layoutGravity = Gravity.RIGHT | Gravity.BOTTOM;
             itemFloatingActionButton.setBean(viewBean2);
         } else {
             itemFloatingActionButton.setBean(viewBean);
@@ -513,7 +521,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void a(boolean z) {
-        this.e.setVisibility(8);
+        this.e.setVisibility(View.GONE);
         ViewParent parent = this.e.getParent();
         if (parent != null) {
             ((ViewGroup) parent).removeView(this.e);
@@ -538,7 +546,7 @@ public class ViewPane extends RelativeLayout {
             } else {
                 this.e.setLayoutParams(new RelativeLayout.LayoutParams(i3, i4));
             }
-            this.e.setVisibility(0);
+            this.e.setVisibility(View.VISIBLE);
             this.d = a2;
         }
     }
@@ -561,8 +569,8 @@ public class ViewPane extends RelativeLayout {
         int[] var3 = new int[2];
         var2.getLocationOnScreen(var3);
         int var4 = var2.getLayoutGravity();
-        int var5 = var4 & 7;
-        int var6 = var4 & 112;
+        int var5 = var4 & Gravity.FILL_HORIZONTAL;
+        int var6 = var4 & Gravity.FILL_VERTICAL;
         var4 = var3[0];
         int var7 = var3[1];
         this.a(new Rect(var4, var7, (int) ((float) var2.getWidth() * this.getScaleX()) + var4, (int) ((float) var2.getHeight() * this.getScaleY()) + var7), var2, -1, this.b((View) var2));
@@ -576,7 +584,7 @@ public class ViewPane extends RelativeLayout {
         int var13;
         for (var8 = 0; var10 < var9; var7 = var13) {
             View var11 = var2.getChildAt(var10);
-            if (var11 != null && var11.getTag() != null && (var1 == null || var1.id == null || !var11.getTag().equals(var1.id)) && var11.getVisibility() == 0) {
+            if (var11 != null && var11.getTag() != null && (var1 == null || var1.id == null || !var11.getTag().equals(var1.id)) && var11.getVisibility() == View.VISIBLE) {
                 label62:
                 {
                     label61:
@@ -586,10 +594,10 @@ public class ViewPane extends RelativeLayout {
                         int var14;
                         int var15;
                         Rect var16;
-                        if (var2.getOrientation() == 0) {
+                        if (var2.getOrientation() == LinearLayout.HORIZONTAL) {
                             var13 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).leftMargin;
                             var14 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).rightMargin;
-                            if (var5 == 1) {
+                            if (var5 == Gravity.CENTER_HORIZONTAL) {
                                 if (var10 == 0) {
                                     var4 = var12[0] - (int) ((float) var13 * this.getScaleX());
                                     var15 = var3[1];
@@ -603,7 +611,7 @@ public class ViewPane extends RelativeLayout {
                                 var7 = var8 + 1;
                                 this.a(var16, var2, var8, this.b((View) var2) + 1);
                                 var8 = var13;
-                            } else if (var5 == 5) {
+                            } else if (var5 == Gravity.RIGHT) {
                                 var4 = var12[0];
                                 var15 = (int) ((float) var13 * this.getScaleX());
                                 var13 = var3[1];
@@ -622,8 +630,8 @@ public class ViewPane extends RelativeLayout {
                         } else {
                             var14 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).topMargin;
                             var13 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).bottomMargin;
-                            if (var6 != 16) {
-                                if (var6 != 80) {
+                            if (var6 != Gravity.CENTER_VERTICAL) {
+                                if (var6 != Gravity.BOTTOM) {
                                     var7 = var4 + (int) ((float) (var14 + var11.getMeasuredHeight() + var13) * this.getScaleY());
                                     var13 = var3[0];
                                     this.a(new Rect(var13, var4, (int) ((float) var2.getMeasuredWidth() * this.getScaleX()) + var13, var7), var2, var8, this.b((View) var2) + 1);
@@ -693,7 +701,7 @@ public class ViewPane extends RelativeLayout {
         int i = 0;
         for (int i2 = 0; i2 < childCount; i2++) {
             View childAt = viewGroup.getChildAt(i2);
-            if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == 0)) {
+            if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE)) {
                 i++;
                 if (childAt instanceof ItemLinearLayout) {
                     a(viewBean, (ItemLinearLayout) childAt);
@@ -746,7 +754,7 @@ public class ViewPane extends RelativeLayout {
             LayoutBean layoutBean2 = viewBean.layout;
             view.setPadding(layoutBean2.paddingLeft, layoutBean2.paddingTop, layoutBean2.paddingRight, layoutBean2.paddingBottom);
             view.setLayoutParams(layoutParams);
-        } else if (viewBean.parentType == 0) {
+        } else if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(i, i2);
             layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
