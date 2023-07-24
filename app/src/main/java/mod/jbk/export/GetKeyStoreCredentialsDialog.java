@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -86,6 +87,11 @@ public class GetKeyStoreCredentialsDialog {
             }
         });
 
+        ScrollView scrollView = new ScrollView(activity);
+        scrollView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
         LinearLayout contentView = new LinearLayout(activity);
         contentView.setOrientation(LinearLayout.VERTICAL);
         contentView.setPadding(
@@ -94,6 +100,7 @@ public class GetKeyStoreCredentialsDialog {
                 dpToPx(4),
                 0
         );
+        scrollView.addView(contentView);
 
         String[] dropdownItems;
         {
@@ -111,19 +118,11 @@ public class GetKeyStoreCredentialsDialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 0:
-                        mode = SigningMode.OWN_KEY_STORE;
-                        break;
-
-                    case 1:
-                        mode = SigningMode.TESTKEY;
-                        break;
-
-                    case 2:
-                        mode = SigningMode.DONT_SIGN;
-                        break;
-
-                    default:
+                    case 0 -> mode = SigningMode.OWN_KEY_STORE;
+                    case 1 -> mode = SigningMode.TESTKEY;
+                    case 2 -> mode = SigningMode.DONT_SIGN;
+                    default -> {
+                    }
                 }
 
                 boolean signingWithKeyStore = mode == SigningMode.OWN_KEY_STORE;
@@ -160,7 +159,7 @@ public class GetKeyStoreCredentialsDialog {
         password = new EditText(activity);
         password.setHint("Alias password");
         password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        tilPassword.setPasswordVisibilityToggleEnabled(true);
+        tilPassword.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
         tilPassword.addView(password, 0, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -175,7 +174,7 @@ public class GetKeyStoreCredentialsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         inputContainer.addView(tilSigningAlgorithm);
 
-        dialog.a(contentView);
+        dialog.a(scrollView);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
