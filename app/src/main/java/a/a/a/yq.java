@@ -12,8 +12,9 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
-import com.sketchware.remod.xml.XmlBuilder;
+import com.besome.sketch.beans.ViewBean;
 import com.sketchware.remod.R;
+import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -531,6 +532,20 @@ public class yq {
                         break;
 
                     default:
+                }
+            }
+
+            for (ViewBean view : eC.a(projectDataManager.d(next.getXmlName()))) {
+                var classNameParts = view.convert.split("\\.");
+                var className = classNameParts[classNameParts.length - 1];
+                switch (className) {
+                    case "CircleImageView" -> N.x.isCircleImageViewUsed = true;
+                    case "CodeView" -> N.x.isCodeViewUsed = true;
+                    case "LottieAnimationView" -> N.x.isLottieUsed = true;
+                    case "OTPView" -> N.x.isOTPViewUsed = true;
+                    case "PatternLockView" -> N.x.isPatternLockViewUsed = true;
+                    case "WaveSideBar" -> N.x.isWaveSideBarUsed = true;
+                    case "YouTubePlayerView" -> N.x.isYoutubePlayerUsed = true;
                 }
             }
 

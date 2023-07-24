@@ -69,38 +69,6 @@ public class ConstVarComponent {
         }
     }
 
-    public void handleWidget(String widgetId) {
-        switch (widgetId) {
-            case "CircleImageView":
-                isCircleImageViewUsed = true;
-                break;
-
-            case "CodeView":
-                isCodeViewUsed = true;
-                break;
-
-            case "LottieAnimationView":
-                isLottieUsed = true;
-                break;
-
-            case "OTPView":
-                isOTPViewUsed = true;
-                break;
-
-            case "PatternLockView":
-                isPatternLockViewUsed = true;
-                break;
-
-            case "WaveSideBar":
-                isWaveSideBarUsed = true;
-                break;
-
-            case "YouTubePlayerView":
-                isYoutubePlayerUsed = true;
-                break;
-        }
-    }
-
     public void setParams(ArrayList<String> arrayList, String packageName, String blockId) {
         if (!packageName.isEmpty()) {
             pkgName = packageName;
