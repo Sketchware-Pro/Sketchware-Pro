@@ -58,7 +58,32 @@ import a.a.a.ty;
 import a.a.a.wB;
 import a.a.a.zB;
 import dev.aldi.sayuti.editor.view.ExtraViewPane;
-import mod.agus.jcoderz.editor.view.ViewPanes;
+import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
+import dev.aldi.sayuti.editor.view.item.ItemBottomNavigationView;
+import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
+import dev.aldi.sayuti.editor.view.item.ItemCodeView;
+import dev.aldi.sayuti.editor.view.item.ItemGoogleSignInButton;
+import dev.aldi.sayuti.editor.view.item.ItemLottieAnimation;
+import dev.aldi.sayuti.editor.view.item.ItemMaterialButton;
+import dev.aldi.sayuti.editor.view.item.ItemOTPView;
+import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
+import dev.aldi.sayuti.editor.view.item.ItemRecyclerView;
+import dev.aldi.sayuti.editor.view.item.ItemTabLayout;
+import dev.aldi.sayuti.editor.view.item.ItemViewPager;
+import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
+import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
+import mod.agus.jcoderz.beans.ViewBeans;
+import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
+import mod.agus.jcoderz.editor.view.item.ItemAutoCompleteTextView;
+import mod.agus.jcoderz.editor.view.item.ItemDatePicker;
+import mod.agus.jcoderz.editor.view.item.ItemDigitalClock;
+import mod.agus.jcoderz.editor.view.item.ItemGridView;
+import mod.agus.jcoderz.editor.view.item.ItemMultiAutoCompleteTextView;
+import mod.agus.jcoderz.editor.view.item.ItemRadioButton;
+import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
+import mod.agus.jcoderz.editor.view.item.ItemSearchView;
+import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
+import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.hey.studios.util.ProjectFile;
 
 public class ViewPane extends RelativeLayout {
@@ -178,69 +203,65 @@ public class ViewPane extends RelativeLayout {
     }
 
     public View b(ViewBean viewBean) {
-        View item;
-        int i = viewBean.type;
-        switch (i) {
-            case ViewBean.VIEW_TYPE_LAYOUT_LINEAR:
-                item = new ItemLinearLayout(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_LAYOUT_RELATIVE:
-            case ViewBean.VIEW_TYPE_WIDGET_FAB:
-            default:
-                item = ViewPanes.a(i, getContext());
-                break;
-            case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW:
-                item = new ItemHorizontalScrollView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_BUTTON:
-                item = new ItemButton(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW:
-                item = new ItemTextView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT:
-                item = new ItemEditText(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW:
-                item = new ItemImageView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_WEBVIEW:
-                item = new ItemWebView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR:
-                item = new ItemProgressBar(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW:
-                item = new ItemListView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_SPINNER:
-                item = new ItemSpinner(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
-                item = new ItemCheckBox(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW:
-                item = new ItemVerticalScrollView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
-                item = new ItemSwitch(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR:
-                item = new ItemSeekBar(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW:
-                item = new ItemCalendarView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_ADVIEW:
-                item = new ItemAdView(getContext());
-                break;
-            case ViewBean.VIEW_TYPE_WIDGET_MAPVIEW:
-                item = new ItemMapView(getContext());
-                break;
-        }
-        int i2 = this.b + 1;
-        this.b = i2;
-        item.setId(i2);
+        View item = switch (viewBean.type) {
+            case ViewBean.VIEW_TYPE_LAYOUT_LINEAR, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW,
+                    ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
+                    ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
+                    ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
+                    ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(getContext());
+            case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW ->
+                    new ItemHorizontalScrollView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_BUTTON -> new ItemButton(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW -> new ItemTextView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT -> new ItemEditText(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW -> new ItemImageView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_WEBVIEW -> new ItemWebView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR -> new ItemProgressBar(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW -> new ItemListView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_SPINNER -> new ItemSpinner(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX -> new ItemCheckBox(getContext());
+            case ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW -> new ItemVerticalScrollView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_SWITCH -> new ItemSwitch(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR -> new ItemSeekBar(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW -> new ItemCalendarView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_ADVIEW -> new ItemAdView(getContext());
+            case ViewBean.VIEW_TYPE_WIDGET_MAPVIEW -> new ItemMapView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON -> new ItemRadioButton(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_RATINGBAR -> new ItemRatingBar(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_VIDEOVIEW -> new ItemVideoView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW -> new ItemSearchView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW ->
+                    new ItemAutoCompleteTextView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW ->
+                    new ItemMultiAutoCompleteTextView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_GRIDVIEW -> new ItemGridView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_ANALOGCLOCK -> new ItemAnalogClock(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER -> new ItemDatePicker(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER -> new ItemTimePicker(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_DIGITALCLOCK -> new ItemDigitalClock(getContext());
+            case ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT -> new ItemTabLayout(getContext());
+            case ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER -> new ItemViewPager(getContext());
+            case ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW ->
+                    new ItemBottomNavigationView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_BADGEVIEW -> new ItemBadgeView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_PATTERNLOCKVIEW ->
+                    new ItemPatternLockView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR -> new ItemWaveSideBar(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON -> new ItemMaterialButton(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON ->
+                    new ItemGoogleSignInButton(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW ->
+                    new ItemCircleImageView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW ->
+                    new ItemLottieAnimation(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW ->
+                    new ItemYoutubePlayer(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(getContext());
+            default -> null;
+        };
+        item.setId(++b);
         item.setTag(viewBean.id);
         ((sy) item).setBean(viewBean);
         b(item, viewBean);
