@@ -23,6 +23,7 @@ android {
 
 configurations.configureEach {
     exclude group: 'org.jline', module: 'jline'
+    exclude group: 'javax.inject', module: 'javax.inject'
 }
 
 dependencies {
