@@ -21,6 +21,7 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import a.a.a.ProjectBuilder;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.yq;
@@ -103,7 +104,9 @@ public class SrcViewerActivity extends AppCompatActivity {
             var dataManager = jC.a(sc_id);
             var libraryManager = jC.c(sc_id);
             yq.a(libraryManager, fileManager, dataManager, false);
-            srcCodeBean = yq.a(fileManager, dataManager);
+            ProjectBuilder builder = new ProjectBuilder(this, yq);
+            builder.buildBuiltInLibraryInformation();
+            srcCodeBean = yq.a(fileManager, dataManager, builder.getBuiltInLibraryManager());
 
             try {
                 runOnUiThread(() -> {

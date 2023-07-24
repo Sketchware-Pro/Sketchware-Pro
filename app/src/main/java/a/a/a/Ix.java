@@ -26,11 +26,12 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
+import mod.jbk.build.BuiltInLibraries;
 
 public class Ix {
-
     public XmlBuilder a = new XmlBuilder("manifest");
     public ArrayList<ProjectFileBean> b;
+    private final BuiltInLibraryManager builtInLibraryManager;
     public BuildSettings buildSettings;
     public jq c;
     public FilePathUtil fpu = new FilePathUtil();
@@ -39,9 +40,10 @@ public class Ix {
     private boolean targetsSdkVersion31OrHigher = false;
     private String packageName;
 
-    public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans) {
+    public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans, BuiltInLibraryManager builtInLibraryManager) {
         c = jq;
         b = projectFileBeans;
+        this.builtInLibraryManager = builtInLibraryManager;
         buildSettings = new BuildSettings(jq.sc_id);
         frc = new FileResConfig(c.sc_id);
         a.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -236,9 +238,9 @@ public class Ix {
 
     private void writeAndroidxStartupInitializationProvider(XmlBuilder application) {
         var initializers = Set.of(
-                new Pair<>(c.isAndroidxEmoji2Used, "androidx.emoji2.text.EmojiCompatInitializer"),
-                new Pair<>(c.isAndroidxLifecycleProcessUsed, "androidx.lifecycle.ProcessLifecycleInitializer"),
-                new Pair<>(c.isAndroidxWorkRuntimeUsed, "androidx.work.WorkManagerInitializer")
+                new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_EMOJI2), "androidx.emoji2.text.EmojiCompatInitializer"),
+                new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_LIFECYCLE_PROCESS), "androidx.lifecycle.ProcessLifecycleInitializer"),
+                new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME), "androidx.work.WorkManagerInitializer")
         );
 
         XmlBuilder initializationProvider = new XmlBuilder("provider");
@@ -465,7 +467,7 @@ public class Ix {
         if (c.isAdMobEnabled) {
             writePermission(a, "com.google.android.gms.permission.AD_ID");
         }
-        if (c.isAndroidxWorkRuntimeUsed) {
+        if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME)) {
             writePermission(a, "android.permission.WAKE_LOCK");
             writePermission(a, "android.permission.ACCESS_NETWORK_STATE");
             writePermission(a, "android.permission.RECEIVE_BOOT_COMPLETED");
@@ -613,11 +615,11 @@ public class Ix {
             testingActivity.addAttribute("android", "exported", "false");
             applicationTag.a(testingActivity);
         }
-        if (c.isAndroidxRoomUsed) {
+        if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_ROOM_RUNTIME)) {
             writeAndroidxRoomService(applicationTag);
         }
         writeAndroidxStartupInitializationProvider(applicationTag);
-        if (c.isAndroidxWorkRuntimeUsed) {
+        if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME)) {
             writeAndroidxWorkRuntimeTags(applicationTag);
         }
         if (c.isFirebaseEnabled || c.isAdMobEnabled || c.isMapUsed) {

@@ -972,15 +972,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     kC = jC.d(sc_id);
                     kC.a(q.assetsPath + File.separator + "fonts");
 
+                    ProjectBuilder builder = new ProjectBuilder(this, a, q);
+
                     var fileManager = jC.b(sc_id);
                     var dataManager = jC.a(sc_id);
                     var libraryManager = jC.c(sc_id);
                     q.a(libraryManager, fileManager, dataManager, false);
-                    q.b(fileManager, dataManager, libraryManager);
+                    builder.buildBuiltInLibraryInformation();
+                    q.b(fileManager, dataManager, libraryManager, builder.getBuiltInLibraryManager());
                     q.f();
                     q.e();
-
-                    ProjectBuilder builder = new ProjectBuilder(this, a, q);
 
                     builder.maybeExtractAapt2();
                     if (canceled) {
@@ -994,8 +995,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         cancel(true);
                         return;
                     }
-
-                    builder.buildBuiltInLibraryInformation();
 
                     publishProgress("AAPT2 is running...");
                     builder.compileResources();

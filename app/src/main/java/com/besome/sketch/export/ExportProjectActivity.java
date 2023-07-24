@@ -171,8 +171,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata.a(getApplicationContext(), wq.e(xq.a(sc_id) ? "600" : sc_id));
 
             /* Start generating project files */
+            ProjectBuilder builder = new ProjectBuilder(this, project_metadata);
             project_metadata.a(iCVar, hCVar, eCVar, true);
-            project_metadata.b(hCVar, eCVar, iCVar);
+            builder.buildBuiltInLibraryInformation();
+            project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
             if (yB.a(lC.b(sc_id), "custom_icon")) {
                 project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
             }
@@ -696,14 +698,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
                 kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
                 kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
+
+                builder = new ProjectBuilder(this, a, project_metadata);
+                builder.setBuildAppBundle(buildingAppBundle);
+
                 project_metadata.a(iCVar, hCVar, eCVar, true);
-                project_metadata.b(hCVar, eCVar, iCVar);
+                builder.buildBuiltInLibraryInformation();
+                project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
                 if (canceled) {
                     cancel(true);
                     return;
                 }
-                builder = new ProjectBuilder(this, a, project_metadata);
-                builder.setBuildAppBundle(buildingAppBundle);
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");

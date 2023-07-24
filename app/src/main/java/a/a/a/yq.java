@@ -445,13 +445,9 @@ public class yq {
         }
         if (appCompat.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
-            N.isAndroidxEmoji2Used = true;
-            N.isAndroidxLifecycleProcessUsed = true;
         }
         if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isAdMobEnabled = true;
-            N.isAndroidxRoomUsed = true;
-            N.isAndroidxWorkRuntimeUsed = true;
             N.addPermission(jq.PERMISSION_INTERNET);
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.setupAdmob(adMob);
@@ -473,8 +469,6 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_CAMERA:
                     case 35:
                         N.g = true;
-                        N.isAndroidxEmoji2Used = true;
-                        N.isAndroidxLifecycleProcessUsed = true;
                         N.u = true;
                         N.addPermission(next.getActivityName(), jq.PERMISSION_CAMERA);
                         N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
@@ -639,8 +633,8 @@ public class yq {
     /**
      * Generates the project's files, such as layouts, Java files, but also build.gradle and secrets.xml.
      */
-    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager) {
-        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger);
+    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, BuiltInLibraryManager builtInLibraryManager) {
+        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, builtInLibraryManager);
         if (N.u) {
             XmlBuilder pathsTag = new XmlBuilder("paths");
             pathsTag.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -694,7 +688,7 @@ public class yq {
     /**
      * Get source code files that are viewable in SrcCodeViewer
      */
-    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager) {
+    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, BuiltInLibraryManager builtInLibraryManager) {
         a(SketchApplication.getContext());
         CommandBlock.x();
 
@@ -750,7 +744,7 @@ public class yq {
             }
         }
 
-        Ix ix = new Ix(N, projectFileManager.b());
+        Ix ix = new Ix(N, projectFileManager.b(), builtInLibraryManager);
         ix.setYq(this);
 
         // Make generated classes viewable
@@ -887,7 +881,9 @@ public class yq {
         }
 
         if (isManifestFile) {
-            Ix ix = new Ix(N, projectFileManager.b());
+            ProjectBuilder builder = new ProjectBuilder(SketchApplication.getContext(), this);
+            builder.buildBuiltInLibraryInformation();
+            Ix ix = new Ix(N, projectFileManager.b(), builder.getBuiltInLibraryManager());
             ix.setYq(this);
             return CommandBlock.applyCommands("AndroidManifest.xml", ix.a());
         }
