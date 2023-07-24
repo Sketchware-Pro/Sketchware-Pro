@@ -438,41 +438,36 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void a(ViewBean viewBean, int i, int i2) {
-        Object[] objArr = this.d;
-        if (objArr != null) {
-            View view = (View) objArr[1];
+        if (d != null) {
+            View view = (View) d[1];
             if (view instanceof LinearLayout) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = ((Integer) objArr[2]).intValue();
+                viewBean.index = (Integer) d[2];
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = 0;
-                return;
             } else if (view instanceof ItemVerticalScrollView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = ((Integer) objArr[2]).intValue();
+                viewBean.index = (Integer) d[2];
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
                 viewBean.layout.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                return;
             } else if (view instanceof ItemHorizontalScrollView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = ((Integer) objArr[2]).intValue();
+                viewBean.index = (Integer) d[2];
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                return;
-            } else {
-                return;
             }
+        } else {
+            viewBean.preIndex = viewBean.index;
+            viewBean.preParent = viewBean.parent;
+            viewBean.parent = "root";
+            viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
+            viewBean.index = -1;
         }
-        viewBean.preIndex = viewBean.index;
-        viewBean.preParent = viewBean.parent;
-        viewBean.parent = "root";
-        viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
-        viewBean.index = -1;
     }
 
     public View a(ViewBean viewBean) {
@@ -522,7 +517,7 @@ public class ViewPane extends RelativeLayout {
         } else if (this.d != a2) {
             a(true);
             ViewGroup viewGroup = (ViewGroup) a2[1];
-            viewGroup.addView(this.e, ((Integer) a2[2]).intValue());
+            viewGroup.addView(this.e, (Integer) a2[2]);
             if (viewGroup instanceof LinearLayout) {
                 this.e.setLayoutParams(new LinearLayout.LayoutParams(i3, i4));
             } else if (viewGroup instanceof FrameLayout) {
@@ -541,8 +536,8 @@ public class ViewPane extends RelativeLayout {
         for (int i4 = 0; i4 < this.c.size(); i4++) {
             Object[] objArr2 = this.c.get(i4);
             Rect rect = (Rect) objArr2[0];
-            if (i >= rect.left && i < rect.right && i2 >= rect.top && i2 < rect.bottom && i3 < ((Integer) objArr2[3]).intValue()) {
-                i3 = ((Integer) objArr2[3]).intValue();
+            if (i >= rect.left && i < rect.right && i2 >= rect.top && i2 < rect.bottom && i3 < (Integer) objArr2[3]) {
+                i3 = (Integer) objArr2[3];
                 objArr = objArr2;
             }
         }
@@ -706,7 +701,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void a(Rect rect, View view, int i, int i2) {
-        this.c.add(new Object[]{rect, view, Integer.valueOf(i), Integer.valueOf(i2)});
+        this.c.add(new Object[]{rect, view, i, i2});
     }
 
     public void a(View view) {
@@ -770,7 +765,7 @@ public class ViewPane extends RelativeLayout {
 
     private void a(TextView textView, ViewBean viewBean) {
         String str = viewBean.text.text;
-        if (str != null && str.length() > 0 && str.indexOf("\\n") >= 0) {
+        if (str != null && str.length() > 0 && str.contains("\\n")) {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
         }
         textView.setText(str);
