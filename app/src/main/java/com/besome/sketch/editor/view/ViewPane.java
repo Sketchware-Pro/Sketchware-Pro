@@ -264,240 +264,228 @@ public class ViewPane extends RelativeLayout {
         var1.setSingleLine(var5);
     }
 
-    public void a(ViewBean var1, int var2, int var3) {
-        Object[] var4 = d;
-        if (var4 != null) {
-            View var5 = (View) var4[1];
-            if (var5 instanceof LinearLayout) {
-                var1.preIndex = var1.index;
-                var1.index = (int) var4[2];
-                var1.preParent = var1.parent;
-                var1.parent = var5.getTag().toString();
-                var1.parentType = 0;
-            } else if (var5 instanceof ItemVerticalScrollView) {
-                var1.preIndex = var1.index;
-                var1.index = (int) var4[2];
-                var1.preParent = var1.parent;
-                var1.parent = var5.getTag().toString();
-                var1.parentType = 12;
-                var1.layout.height = -2;
-            } else if (var5 instanceof ItemHorizontalScrollView) {
-                var1.preIndex = var1.index;
-                var1.index = (int) var4[2];
-                var1.preParent = var1.parent;
-                var1.parent = var5.getTag().toString();
-                var1.parentType = 2;
-                var1.layout.width = -2;
+    public void a(ViewBean bean, int var2, int var3) {
+        Object[] views = d;
+        if (views != null) {
+            View view = (View) views[1];
+            if (view instanceof LinearLayout) {
+                bean.preIndex = bean.index;
+                bean.index = (int) views[2];
+                bean.preParent = bean.parent;
+                bean.parent = view.getTag().toString();
+                bean.parentType = 0;
+            } else if (view instanceof ItemVerticalScrollView) {
+                bean.preIndex = bean.index;
+                bean.index = (int) views[2];
+                bean.preParent = bean.parent;
+                bean.parent = view.getTag().toString();
+                bean.parentType = 12;
+                bean.layout.height = -2;
+            } else if (view instanceof ItemHorizontalScrollView) {
+                bean.preIndex = bean.index;
+                bean.index = (int) views[2];
+                bean.preParent = bean.parent;
+                bean.parent = view.getTag().toString();
+                bean.parentType = 2;
+                bean.layout.width = -2;
             }
         } else {
-            var1.preIndex = var1.index;
-            var1.preParent = var1.parent;
-            var1.parent = "root";
-            var1.parentType = 0;
-            var1.index = -1;
+            bean.preIndex = bean.index;
+            bean.preParent = bean.parent;
+            bean.parent = "root";
+            bean.parentType = 0;
+            bean.index = -1;
         }
     }
 
-    public final void a(ViewBean var1, ViewGroup var2) {
-        int var3 = var2.getChildCount();
-        int var4 = 0;
+    public final void a(ViewBean bean, ViewGroup group) {
+        int childCount = group.getChildCount();
 
-        int var5;
-        int var7;
-        for (var5 = 0; var4 < var3; var5 = var7) {
-            View var6 = var2.getChildAt(var4);
-            var7 = var5;
-            if (var6 != null) {
-                if (var6.getTag() == null) {
-                    var7 = var5;
-                } else if (var1 != null && var1.id != null && var6.getTag().equals(var1.id)) {
-                    var7 = var5;
-                } else if (var6.getVisibility() != View.VISIBLE) {
-                    var7 = var5;
-                } else {
-                    ++var5;
-                    if (var6 instanceof ItemLinearLayout) {
-                        a(var1, (ItemLinearLayout) var6);
-                        var7 = var5;
-                    } else if (var6 instanceof ItemHorizontalScrollView) {
-                        a(var1, (ViewGroup) var6);
-                        var7 = var5;
+        int i;
+        for (i = 0; i < childCount; i++) {
+            View child = group.getChildAt(i);
+            if (child != null) {
+                if (!(
+                        child.getTag() == null ||
+                                bean != null && bean.id != null && child.getTag().equals(bean.id) ||
+                                child.getVisibility() != View.VISIBLE
+                )) {
+                    ++i;
+                    if (child instanceof ItemLinearLayout) {
+                        a(bean, (ItemLinearLayout) child);
+                    } else if (child instanceof ItemHorizontalScrollView) {
+                        a(bean, (ViewGroup) child);
                     } else {
-                        var7 = var5;
-                        if (var6 instanceof ItemVerticalScrollView) {
-                            a(var1, (ViewGroup) var6);
-                            var7 = var5;
+                        if (child instanceof ItemVerticalScrollView) {
+                            a(bean, (ViewGroup) child);
                         }
                     }
                 }
             }
-
-            ++var4;
         }
 
-        if (var5 < 1) {
+        if (i < 1) {
             int[] var8 = new int[2];
-            var2.getLocationOnScreen(var8);
-            var4 = var8[0];
-            var7 = var8[1];
+            group.getLocationOnScreen(var8);
+            i = var8[0];
             a(
-                    new Rect(var4, var7, (int) ((float) var2.getWidth() * getScaleX()) + var4, (int) ((float) var2.getHeight() * getScaleY()) + var7),
-                    var2,
+                    new Rect(i, var8[1], (int) ((float) group.getWidth() * getScaleX()) + i, (int) ((float) group.getHeight() * getScaleY()) + var8[1]),
+                    group,
                     -1,
-                    b(var2)
+                    b(group)
             );
         }
     }
 
-    public final void a(ViewBean var1, ItemLinearLayout var2) {
-        int[] var3 = new int[2];
-        var2.getLocationOnScreen(var3);
-        int var4 = var2.getLayoutGravity();
-        int var5 = var4 & 7;
-        int var6 = var4 & 112;
-        var4 = var3[0];
-        int var7 = var3[1];
+    public final void a(ViewBean bean, ItemLinearLayout linearLayout) {
+        int[] location = new int[2];
+        linearLayout.getLocationOnScreen(location);
+        int gravity = linearLayout.getLayoutGravity();
+        int var5 = gravity & 7;
+        int var6 = gravity & 112;
+        gravity = location[0];
+        int x = location[1];
         a(
-                new Rect(var4, var7, (int) ((float) var2.getWidth() * getScaleX()) + var4, (int) ((float) var2.getHeight() * getScaleY()) + var7),
-                var2,
+                new Rect(gravity, x, (int) ((float) linearLayout.getWidth() * getScaleX()) + gravity, (int) ((float) linearLayout.getHeight() * getScaleY()) + x),
+                linearLayout,
                 -1,
-                b(var2)
+                b(linearLayout)
         );
-        var7 = var3[0];
-        int var8 = (int) ((float) var2.getPaddingLeft() * getScaleX());
-        var4 = var3[1] + (int) ((float) var2.getPaddingTop() * getScaleY());
-        int var9 = var2.getChildCount();
-        var7 += var8;
+        x = location[0];
+        int padding = (int) ((float) linearLayout.getPaddingLeft() * getScaleX());
+        gravity = location[1] + (int) ((float) linearLayout.getPaddingTop() * getScaleY());
+        int childCount = linearLayout.getChildCount();
+        x += padding;
         int var10 = 0;
 
         int var13;
-        for (var8 = 0; var10 < var9; var7 = var13) {
-            View var11 = var2.getChildAt(var10);
-            if (var11 != null && var11.getTag() != null && (var1 == null || var1.id == null || !var11.getTag().equals(var1.id)) && var11.getVisibility() == View.VISIBLE) {
+        for (padding = 0; var10 < childCount; x = var13) {
+            View var11 = linearLayout.getChildAt(var10);
+            if (var11 != null && var11.getTag() != null && (bean == null || bean.id == null || !var11.getTag().equals(bean.id)) && var11.getVisibility() == View.VISIBLE) {
                 label62:
                 {
                     label61:
                     {
                         int[] var12 = new int[2];
                         var11.getLocationOnScreen(var12);
-                        if (var2.getOrientation() == LinearLayout.HORIZONTAL) {
+                        if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL) {
                             var13 = ((android.widget.LinearLayout.LayoutParams) var11.getLayoutParams()).leftMargin;
                             int var14 = ((android.widget.LinearLayout.LayoutParams) var11.getLayoutParams()).rightMargin;
                             if (var5 == 1) {
                                 if (var10 == 0) {
-                                    var4 = var12[0] - (int) ((float) var13 * getScaleX());
-                                    int var15 = var3[1];
+                                    gravity = var12[0] - (int) ((float) var13 * getScaleX());
+                                    int var15 = location[1];
                                     a(
-                                            new Rect(var7, var15, var4, (int) ((float) var2.getMeasuredHeight() * getScaleY()) + var15),
-                                            var2,
+                                            new Rect(x, var15, gravity, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + var15),
+                                            linearLayout,
                                             0,
-                                            b(var2) + 1
+                                            b(linearLayout) + 1
                                     );
-                                    var7 = var4;
+                                    x = gravity;
                                 }
 
-                                var4 = (int) ((float) (var13 + var11.getMeasuredWidth() + var14) * getScaleX()) + var7;
-                                var13 = var3[1];
-                                Rect var32 = new Rect(var7, var13, var4, (int) ((float) var2.getMeasuredHeight() * getScaleY()) + var13);
-                                var7 = var8 + 1;
-                                a(var32, var2, var8, b(var2) + 1);
-                                var8 = var13;
+                                gravity = (int) ((float) (var13 + var11.getMeasuredWidth() + var14) * getScaleX()) + x;
+                                var13 = location[1];
+                                Rect var32 = new Rect(x, var13, gravity, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + var13);
+                                x = padding + 1;
+                                a(var32, linearLayout, padding, b(linearLayout) + 1);
+                                padding = var13;
                             } else if (var5 == 5) {
-                                var4 = var12[0];
+                                gravity = var12[0];
                                 int var46 = (int) ((float) var13 * getScaleX());
-                                var13 = var3[1];
+                                var13 = location[1];
                                 a(
-                                        new Rect(var7, var13, var4 - var46, (int) ((float) var2.getMeasuredHeight() * getScaleY()) + var13),
-                                        var2,
-                                        var8,
-                                        b(var2) + 1
+                                        new Rect(x, var13, gravity - var46, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + var13),
+                                        linearLayout,
+                                        padding,
+                                        b(linearLayout) + 1
                                 );
-                                var4 = (int) ((float) (var12[0] + var11.getMeasuredWidth() + var14) * getScaleX());
-                                var7 = var8 + 1;
-                                var8 = var13;
+                                gravity = (int) ((float) (var12[0] + var11.getMeasuredWidth() + var14) * getScaleX());
+                                x = padding + 1;
+                                padding = var13;
                             } else {
-                                var4 = (int) ((float) (var13 + var11.getMeasuredWidth() + var14) * getScaleX()) + var7;
-                                var13 = var3[1];
-                                Rect var33 = new Rect(var7, var13, var4, (int) ((float) var2.getMeasuredHeight() * getScaleY()) + var13);
-                                var7 = var8 + 1;
-                                a(var33, var2, var8, b(var2) + 1);
-                                var8 = var13;
+                                gravity = (int) ((float) (var13 + var11.getMeasuredWidth() + var14) * getScaleX()) + x;
+                                var13 = location[1];
+                                Rect var33 = new Rect(x, var13, gravity, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + var13);
+                                x = padding + 1;
+                                a(var33, linearLayout, padding, b(linearLayout) + 1);
+                                padding = var13;
                             }
                         } else {
                             int var44 = ((android.widget.LinearLayout.LayoutParams) var11.getLayoutParams()).topMargin;
                             var13 = ((android.widget.LinearLayout.LayoutParams) var11.getLayoutParams()).bottomMargin;
                             if (var6 != 16) {
                                 if (var6 != 80) {
-                                    var7 = var4 + (int) ((float) (var44 + var11.getMeasuredHeight() + var13) * getScaleY());
-                                    var13 = var3[0];
+                                    x = gravity + (int) ((float) (var44 + var11.getMeasuredHeight() + var13) * getScaleY());
+                                    var13 = location[0];
                                     a(
-                                            new Rect(var13, var4, (int) ((float) var2.getMeasuredWidth() * getScaleX()) + var13, var7),
-                                            var2,
-                                            var8,
-                                            b(var2) + 1
+                                            new Rect(var13, gravity, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + var13, x),
+                                            linearLayout,
+                                            padding,
+                                            b(linearLayout) + 1
                                     );
-                                    var4 = var13;
-                                    ++var8;
+                                    gravity = var13;
+                                    ++padding;
                                     break label62;
                                 }
 
                                 int var48 = var12[1];
                                 var44 = (int) ((float) var44 * getScaleY());
-                                var7 = var3[0];
+                                x = location[0];
                                 a(
-                                        new Rect(var7, var4, (int) ((float) var2.getMeasuredWidth() * getScaleX()) + var7, var48 - var44),
-                                        var2,
-                                        var8,
-                                        b(var2) + 1
+                                        new Rect(x, gravity, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, var48 - var44),
+                                        linearLayout,
+                                        padding,
+                                        b(linearLayout) + 1
                                 );
                                 var13 = (int) ((float) (var12[1] + var11.getMeasuredHeight() + var13) * getScaleY());
-                                ++var8;
-                                var4 = var7;
-                                var7 = var13;
-                                var13 = var8;
+                                ++padding;
+                                gravity = x;
+                                x = var13;
+                                var13 = padding;
                                 break label61;
                             }
 
                             if (var10 == 0) {
-                                var7 = var12[1] - (int) ((float) var44 * getScaleY());
-                                int var47 = var3[0];
-                                a(new Rect(var47, var4, (int) ((float) var2.getMeasuredWidth() * getScaleX()) + var47, var7), var2, 0, b(var2) + 1);
-                                var4 = var7;
+                                x = var12[1] - (int) ((float) var44 * getScaleY());
+                                int var47 = location[0];
+                                a(new Rect(var47, gravity, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + var47, x), linearLayout, 0, b(linearLayout) + 1);
+                                gravity = x;
                             }
 
-                            var7 = var4 + (int) ((float) (var44 + var11.getMeasuredHeight() + var13) * getScaleY());
-                            var13 = var3[0];
-                            Rect var34 = new Rect(var13, var4, (int) ((float) var2.getMeasuredWidth() * getScaleX()) + var13, var7);
-                            var4 = var8 + 1;
-                            a(var34, var2, var8, b(var2) + 1);
-                            var8 = var7;
-                            var7 = var4;
-                            var4 = var13;
+                            x = gravity + (int) ((float) (var44 + var11.getMeasuredHeight() + var13) * getScaleY());
+                            var13 = location[0];
+                            Rect var34 = new Rect(var13, gravity, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + var13, x);
+                            gravity = padding + 1;
+                            a(var34, linearLayout, padding, b(linearLayout) + 1);
+                            padding = x;
+                            x = gravity;
+                            gravity = var13;
                         }
 
-                        var13 = var7;
-                        var7 = var8;
+                        var13 = x;
+                        x = padding;
                     }
 
-                    var8 = var13;
+                    padding = var13;
                 }
 
                 if (var11 instanceof ItemLinearLayout) {
-                    a(var1, (ItemLinearLayout) var11);
+                    a(bean, (ItemLinearLayout) var11);
                 } else if (var11 instanceof ItemHorizontalScrollView) {
-                    a(var1, (ViewGroup) var11);
+                    a(bean, (ViewGroup) var11);
                 } else if (var11 instanceof ItemVerticalScrollView) {
-                    a(var1, (ViewGroup) var11);
+                    a(bean, (ViewGroup) var11);
                 }
 
-                var13 = var4;
+                var13 = gravity;
             } else {
-                var13 = var7;
-                var7 = var4;
+                var13 = x;
+                x = gravity;
             }
 
             ++var10;
-            var4 = var7;
+            gravity = x;
         }
     }
 
@@ -523,21 +511,13 @@ public class ViewPane extends RelativeLayout {
             Rect rect = (Rect) props[0];
             Object[] var8 = var3;
             var9 = i;
-            if (var1 >= rect.left) {
-                var8 = var3;
-                if (var1 < rect.right) {
-                    var8 = var3;
-                    if (var2 >= rect.top) {
-                        var8 = var3;
-                        if (var2 < rect.bottom) {
-                            var8 = var3;
-                            if (i < (int) props[3]) {
-                                var9 = (int) props[3];
-                                var8 = props;
-                            }
-                        }
-                    }
-                }
+            if (
+                    var1 >= rect.left &&
+                    var1 < rect.right &&
+                    var2 >= rect.top && var2 < rect.bottom &&
+                    i < (int) props[3]
+            ) {
+                var9 = (int) props[3];
             }
 
             ++index;
