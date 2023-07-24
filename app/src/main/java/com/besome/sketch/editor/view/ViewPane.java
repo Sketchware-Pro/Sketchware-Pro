@@ -1,11 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.Gx;
-import a.a.a.kC;
-import a.a.a.sy;
-import a.a.a.ty;
-import a.a.a.wB;
-import a.a.a.zB;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.besome.sketch.beans.ImageBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -50,8 +45,16 @@ import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import dev.aldi.sayuti.editor.view.ExtraViewPane;
+
 import java.util.ArrayList;
+
+import a.a.a.Gx;
+import a.a.a.kC;
+import a.a.a.sy;
+import a.a.a.ty;
+import a.a.a.wB;
+import a.a.a.zB;
+import dev.aldi.sayuti.editor.view.ExtraViewPane;
 import mod.agus.jcoderz.editor.view.ViewPanes;
 import mod.hey.studios.util.ProjectFile;
 
@@ -186,93 +189,74 @@ public class ViewPane extends RelativeLayout {
         return i * 2;
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
-    /* JADX WARN: Type inference failed for: r0v10, types: [com.besome.sketch.editor.view.item.ItemSpinner] */
-    /* JADX WARN: Type inference failed for: r0v11, types: [com.besome.sketch.editor.view.item.ItemCheckBox] */
-    /* JADX WARN: Type inference failed for: r0v12, types: [com.besome.sketch.editor.view.item.ItemVerticalScrollView] */
-    /* JADX WARN: Type inference failed for: r0v13, types: [com.besome.sketch.editor.view.item.ItemSwitch] */
-    /* JADX WARN: Type inference failed for: r0v14, types: [com.besome.sketch.editor.view.item.ItemSeekBar] */
-    /* JADX WARN: Type inference failed for: r0v15, types: [com.besome.sketch.editor.view.item.ItemCalendarView] */
-    /* JADX WARN: Type inference failed for: r0v16, types: [com.besome.sketch.editor.view.item.ItemAdView] */
-    /* JADX WARN: Type inference failed for: r0v17, types: [com.besome.sketch.editor.view.item.ItemMapView] */
-    /* JADX WARN: Type inference failed for: r0v19, types: [android.view.View] */
-    /* JADX WARN: Type inference failed for: r0v2, types: [com.besome.sketch.editor.view.item.ItemHorizontalScrollView] */
-    /* JADX WARN: Type inference failed for: r0v3, types: [com.besome.sketch.editor.view.item.ItemButton] */
-    /* JADX WARN: Type inference failed for: r0v4, types: [com.besome.sketch.editor.view.item.ItemTextView] */
-    /* JADX WARN: Type inference failed for: r0v5, types: [com.besome.sketch.editor.view.item.ItemEditText] */
-    /* JADX WARN: Type inference failed for: r0v6, types: [com.besome.sketch.editor.view.item.ItemImageView] */
-    /* JADX WARN: Type inference failed for: r0v7, types: [com.besome.sketch.editor.view.item.ItemWebView] */
-    /* JADX WARN: Type inference failed for: r0v8, types: [com.besome.sketch.editor.view.item.ItemProgressBar] */
-    /* JADX WARN: Type inference failed for: r0v9, types: [com.besome.sketch.editor.view.item.ItemListView] */
-    /* JADX WARN: Type inference failed for: r2v0, types: [android.widget.RelativeLayout, com.besome.sketch.editor.view.ViewPane] */
     public View b(ViewBean viewBean) {
-        ItemLinearLayout itemLinearLayout;
+        View item;
         int i = viewBean.type;
         switch (i) {
             case 0:
-                itemLinearLayout = new ItemLinearLayout(getContext());
+                item = new ItemLinearLayout(getContext());
                 break;
             case 1:
             case 16:
             default:
-                itemLinearLayout = ViewPanes.a(i, getContext());
+                item = ViewPanes.a(i, getContext());
                 break;
             case 2:
-                itemLinearLayout = new ItemHorizontalScrollView(getContext());
+                item = new ItemHorizontalScrollView(getContext());
                 break;
             case 3:
-                itemLinearLayout = new ItemButton(getContext());
+                item = new ItemButton(getContext());
                 break;
             case 4:
-                itemLinearLayout = new ItemTextView(getContext());
+                item = new ItemTextView(getContext());
                 break;
             case 5:
-                itemLinearLayout = new ItemEditText(getContext());
+                item = new ItemEditText(getContext());
                 break;
             case 6:
-                itemLinearLayout = new ItemImageView(getContext());
+                item = new ItemImageView(getContext());
                 break;
             case 7:
-                itemLinearLayout = new ItemWebView(getContext());
+                item = new ItemWebView(getContext());
                 break;
             case 8:
-                itemLinearLayout = new ItemProgressBar(getContext());
+                item = new ItemProgressBar(getContext());
                 break;
             case 9:
-                itemLinearLayout = new ItemListView(getContext());
+                item = new ItemListView(getContext());
                 break;
             case 10:
-                itemLinearLayout = new ItemSpinner(getContext());
+                item = new ItemSpinner(getContext());
                 break;
             case 11:
-                itemLinearLayout = new ItemCheckBox(getContext());
+                item = new ItemCheckBox(getContext());
                 break;
             case 12:
-                itemLinearLayout = new ItemVerticalScrollView(getContext());
+                item = new ItemVerticalScrollView(getContext());
                 break;
             case 13:
-                itemLinearLayout = new ItemSwitch(getContext());
+                item = new ItemSwitch(getContext());
                 break;
             case 14:
-                itemLinearLayout = new ItemSeekBar(getContext());
+                item = new ItemSeekBar(getContext());
                 break;
             case 15:
-                itemLinearLayout = new ItemCalendarView(getContext());
+                item = new ItemCalendarView(getContext());
                 break;
             case 17:
-                itemLinearLayout = new ItemAdView(getContext());
+                item = new ItemAdView(getContext());
                 break;
             case 18:
-                itemLinearLayout = new ItemMapView(getContext());
+                item = new ItemMapView(getContext());
                 break;
         }
         int i2 = this.b + 1;
         this.b = i2;
-        itemLinearLayout.setId(i2);
-        itemLinearLayout.setTag(viewBean.id);
-        itemLinearLayout.setBean(viewBean);
-        b(itemLinearLayout, viewBean);
-        return itemLinearLayout;
+        item.setId(i2);
+        item.setTag(viewBean.id);
+        ((sy) item).setBean(viewBean);
+        b(item, viewBean);
+        return item;
     }
 
     public void c(ViewBean viewBean) {
@@ -312,10 +296,10 @@ public class ViewPane extends RelativeLayout {
         ExtraViewPane.a(view, viewBean, this, this.f);
         if (viewBean.id.charAt(0) == '_') {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(-2, -2);
-            layoutParams.leftMargin = (int) wB.a(getContext(), viewBean.layout.marginLeft);
-            layoutParams.topMargin = (int) wB.a(getContext(), viewBean.layout.marginTop);
-            layoutParams.rightMargin = (int) wB.a(getContext(), viewBean.layout.marginRight);
-            layoutParams.bottomMargin = (int) wB.a(getContext(), viewBean.layout.marginBottom);
+            layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+            layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+            layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+            layoutParams.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
             int i = viewBean.layout.layoutGravity;
             if ((i & 3) == 3) {
                 layoutParams.addRule(9);
@@ -573,131 +557,135 @@ public class ViewPane extends RelativeLayout {
         return objArr;
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:44:0x0282  */
-    /* JADX WARN: Removed duplicated region for block: B:45:0x0288  */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
-    public final void a(ViewBean viewBean, ItemLinearLayout itemLinearLayout) {
-        int i;
-        int measuredHeight;
-        int i2;
-        char c;
-        int i3;
-        int i4;
-        int i5 = 2;
-        int[] iArr = new int[2];
-        itemLinearLayout.getLocationOnScreen(iArr);
-        int layoutGravity = itemLinearLayout.getLayoutGravity();
-        int i6 = layoutGravity & 7;
-        int i7 = layoutGravity & 112;
-        int i8 = iArr[0];
-        int i9 = 1;
-        int i10 = iArr[1];
-        a(new Rect(i8, i10, ((int) (itemLinearLayout.getWidth() * getScaleX())) + i8, ((int) (itemLinearLayout.getHeight() * getScaleY())) + i10), itemLinearLayout, -1, b(itemLinearLayout));
-        int paddingLeft = iArr[0] + ((int) (itemLinearLayout.getPaddingLeft() * getScaleX()));
-        int paddingTop = iArr[1] + ((int) (itemLinearLayout.getPaddingTop() * getScaleY()));
-        int childCount = itemLinearLayout.getChildCount();
-        int i11 = paddingLeft;
-        int i12 = 0;
-        int i13 = 0;
-        while (i12 < childCount) {
-            View childAt = itemLinearLayout.getChildAt(i12);
-            if (childAt == null || childAt.getTag() == null || !((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == 0)) {
-                i = childCount;
+    public final void a(ViewBean var1, ItemLinearLayout var2) {
+        int[] var3 = new int[2];
+        var2.getLocationOnScreen(var3);
+        int var4 = var2.getLayoutGravity();
+        int var5 = var4 & 7;
+        int var6 = var4 & 112;
+        var4 = var3[0];
+        int var7 = var3[1];
+        this.a(new Rect(var4, var7, (int) ((float) var2.getWidth() * this.getScaleX()) + var4, (int) ((float) var2.getHeight() * this.getScaleY()) + var7), var2, -1, this.b((View) var2));
+        var7 = var3[0];
+        int var8 = (int) ((float) var2.getPaddingLeft() * this.getScaleX());
+        var4 = var3[1] + (int) ((float) var2.getPaddingTop() * this.getScaleY());
+        int var9 = var2.getChildCount();
+        var7 += var8;
+        int var10 = 0;
+
+        int var13;
+        for (var8 = 0; var10 < var9; var7 = var13) {
+            View var11 = var2.getChildAt(var10);
+            if (var11 != null && var11.getTag() != null && (var1 == null || var1.id == null || !var11.getTag().equals(var1.id)) && var11.getVisibility() == 0) {
+                label62:
+                {
+                    label61:
+                    {
+                        int[] var12 = new int[2];
+                        var11.getLocationOnScreen(var12);
+                        int var14;
+                        int var15;
+                        Rect var16;
+                        if (var2.getOrientation() == 0) {
+                            var13 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).leftMargin;
+                            var14 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).rightMargin;
+                            if (var5 == 1) {
+                                if (var10 == 0) {
+                                    var4 = var12[0] - (int) ((float) var13 * this.getScaleX());
+                                    var15 = var3[1];
+                                    this.a(new Rect(var7, var15, var4, (int) ((float) var2.getMeasuredHeight() * this.getScaleY()) + var15), var2, 0, this.b((View) var2) + 1);
+                                    var7 = var4;
+                                }
+
+                                var4 = (int) ((float) (var13 + var11.getMeasuredWidth() + var14) * this.getScaleX()) + var7;
+                                var13 = var3[1];
+                                var16 = new Rect(var7, var13, var4, (int) ((float) var2.getMeasuredHeight() * this.getScaleY()) + var13);
+                                var7 = var8 + 1;
+                                this.a(var16, var2, var8, this.b((View) var2) + 1);
+                                var8 = var13;
+                            } else if (var5 == 5) {
+                                var4 = var12[0];
+                                var15 = (int) ((float) var13 * this.getScaleX());
+                                var13 = var3[1];
+                                this.a(new Rect(var7, var13, var4 - var15, (int) ((float) var2.getMeasuredHeight() * this.getScaleY()) + var13), var2, var8, this.b((View) var2) + 1);
+                                var4 = (int) ((float) (var12[0] + var11.getMeasuredWidth() + var14) * this.getScaleX());
+                                var7 = var8 + 1;
+                                var8 = var13;
+                            } else {
+                                var4 = (int) ((float) (var13 + var11.getMeasuredWidth() + var14) * this.getScaleX()) + var7;
+                                var13 = var3[1];
+                                var16 = new Rect(var7, var13, var4, (int) ((float) var2.getMeasuredHeight() * this.getScaleY()) + var13);
+                                var7 = var8 + 1;
+                                this.a(var16, var2, var8, this.b((View) var2) + 1);
+                                var8 = var13;
+                            }
+                        } else {
+                            var14 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).topMargin;
+                            var13 = ((LinearLayout.LayoutParams) var11.getLayoutParams()).bottomMargin;
+                            if (var6 != 16) {
+                                if (var6 != 80) {
+                                    var7 = var4 + (int) ((float) (var14 + var11.getMeasuredHeight() + var13) * this.getScaleY());
+                                    var13 = var3[0];
+                                    this.a(new Rect(var13, var4, (int) ((float) var2.getMeasuredWidth() * this.getScaleX()) + var13, var7), var2, var8, this.b((View) var2) + 1);
+                                    var4 = var13;
+                                    ++var8;
+                                    break label62;
+                                }
+
+                                var15 = var12[1];
+                                var14 = (int) ((float) var14 * this.getScaleY());
+                                var7 = var3[0];
+                                this.a(new Rect(var7, var4, (int) ((float) var2.getMeasuredWidth() * this.getScaleX()) + var7, var15 - var14), var2, var8, this.b((View) var2) + 1);
+                                var13 = (int) ((float) (var12[1] + var11.getMeasuredHeight() + var13) * this.getScaleY());
+                                ++var8;
+                                var4 = var7;
+                                var7 = var13;
+                                var13 = var8;
+                                break label61;
+                            }
+
+                            if (var10 == 0) {
+                                var7 = var12[1] - (int) ((float) var14 * this.getScaleY());
+                                var15 = var3[0];
+                                this.a(new Rect(var15, var4, (int) ((float) var2.getMeasuredWidth() * this.getScaleX()) + var15, var7), var2, 0, this.b((View) var2) + 1);
+                                var4 = var7;
+                            }
+
+                            var7 = var4 + (int) ((float) (var14 + var11.getMeasuredHeight() + var13) * this.getScaleY());
+                            var13 = var3[0];
+                            var16 = new Rect(var13, var4, (int) ((float) var2.getMeasuredWidth() * this.getScaleX()) + var13, var7);
+                            var4 = var8 + 1;
+                            this.a(var16, var2, var8, this.b((View) var2) + 1);
+                            var8 = var7;
+                            var7 = var4;
+                            var4 = var13;
+                        }
+
+                        var13 = var7;
+                        var7 = var8;
+                    }
+
+                    var8 = var13;
+                }
+
+                if (var11 instanceof ItemLinearLayout) {
+                    this.a(var1, (ItemLinearLayout) var11);
+                } else if (var11 instanceof ItemHorizontalScrollView) {
+                    this.a(var1, (ViewGroup) var11);
+                } else if (var11 instanceof ItemVerticalScrollView) {
+                    this.a(var1, (ViewGroup) var11);
+                }
+
+                var13 = var4;
             } else {
-                int[] iArr2 = new int[i5];
-                childAt.getLocationOnScreen(iArr2);
-                if (itemLinearLayout.getOrientation() == 0) {
-                    int i14 = ((LinearLayout.LayoutParams) childAt.getLayoutParams()).leftMargin;
-                    int i15 = ((LinearLayout.LayoutParams) childAt.getLayoutParams()).rightMargin;
-                    if (i6 == i9) {
-                        if (i12 == 0) {
-                            int scaleX = iArr2[0] - ((int) (i14 * getScaleX()));
-                            int i16 = iArr[i9];
-                            i = childCount;
-                            a(new Rect(i11, i16, scaleX, ((int) (itemLinearLayout.getMeasuredHeight() * getScaleY())) + i16), itemLinearLayout, 0, b(itemLinearLayout) + 1);
-                            i11 = scaleX;
-                        } else {
-                            i = childCount;
-                        }
-                        i4 = ((int) ((i14 + childAt.getMeasuredWidth() + i15) * getScaleX())) + i11;
-                        measuredHeight = iArr[1];
-                        i2 = i13 + 1;
-                        a(new Rect(i11, measuredHeight, i4, ((int) (itemLinearLayout.getMeasuredHeight() * getScaleY())) + measuredHeight), itemLinearLayout, i13, b(itemLinearLayout) + 1);
-                    } else {
-                        i = childCount;
-                        if (i6 == 5) {
-                            int scaleX2 = iArr2[0] - ((int) (i14 * getScaleX()));
-                            int i17 = iArr[1];
-                            a(new Rect(i11, i17, scaleX2, ((int) (itemLinearLayout.getMeasuredHeight() * getScaleY())) + i17), itemLinearLayout, i13, b(itemLinearLayout) + 1);
-                            measuredHeight = i17;
-                            i4 = (int) ((iArr2[0] + childAt.getMeasuredWidth() + i15) * getScaleX());
-                            i2 = i13 + 1;
-                        } else {
-                            i4 = ((int) ((i14 + childAt.getMeasuredWidth() + i15) * getScaleX())) + i11;
-                            measuredHeight = iArr[1];
-                            i2 = i13 + 1;
-                            a(new Rect(i11, measuredHeight, i4, ((int) (itemLinearLayout.getMeasuredHeight() * getScaleY())) + measuredHeight), itemLinearLayout, i13, b(itemLinearLayout) + 1);
-                        }
-                    }
-                } else {
-                    i = childCount;
-                    int i18 = ((LinearLayout.LayoutParams) childAt.getLayoutParams()).topMargin;
-                    int i19 = ((LinearLayout.LayoutParams) childAt.getLayoutParams()).bottomMargin;
-                    if (i7 == 16) {
-                        if (i12 == 0) {
-                            i3 = iArr2[1] - ((int) (i18 * getScaleY()));
-                            int i20 = iArr[0];
-                            c = 0;
-                            a(new Rect(i20, paddingTop, ((int) (itemLinearLayout.getMeasuredWidth() * getScaleX())) + i20, i3), itemLinearLayout, 0, b(itemLinearLayout) + 1);
-                        } else {
-                            c = 0;
-                            i3 = paddingTop;
-                        }
-                        measuredHeight = i3 + ((int) ((i18 + childAt.getMeasuredHeight() + i19) * getScaleY()));
-                        i4 = iArr[c];
-                        Rect rect = new Rect(i4, i3, ((int) (itemLinearLayout.getMeasuredWidth() * getScaleX())) + i4, measuredHeight);
-                        i2 = i13 + 1;
-                        a(rect, itemLinearLayout, i13, b(itemLinearLayout) + 1);
-                    } else if (i7 == 80) {
-                        int scaleY = iArr2[1] - ((int) (i18 * getScaleY()));
-                        i11 = iArr[0];
-                        a(new Rect(i11, paddingTop, ((int) (itemLinearLayout.getMeasuredWidth() * getScaleX())) + i11, scaleY), itemLinearLayout, i13, b(itemLinearLayout) + 1);
-                        measuredHeight = (int) ((iArr2[1] + childAt.getMeasuredHeight() + i19) * getScaleY());
-                        i2 = i13 + 1;
-                        if (childAt instanceof ItemLinearLayout) {
-                            a(viewBean, (ItemLinearLayout) childAt);
-                        } else if (childAt instanceof ItemHorizontalScrollView) {
-                            a(viewBean, (ViewGroup) childAt);
-                        } else if (childAt instanceof ItemVerticalScrollView) {
-                            a(viewBean, (ViewGroup) childAt);
-                        }
-                        i13 = i2;
-                        paddingTop = measuredHeight;
-                    } else {
-                        measuredHeight = paddingTop + ((int) ((i18 + childAt.getMeasuredHeight() + i19) * getScaleY()));
-                        int i21 = iArr[0];
-                        a(new Rect(i21, paddingTop, ((int) (itemLinearLayout.getMeasuredWidth() * getScaleX())) + i21, measuredHeight), itemLinearLayout, i13, b(itemLinearLayout) + 1);
-                        i11 = i21;
-                        i2 = i13 + 1;
-                        if (childAt instanceof ItemLinearLayout) {
-                        }
-                        i13 = i2;
-                        paddingTop = measuredHeight;
-                    }
-                }
-                i11 = i4;
-                if (childAt instanceof ItemLinearLayout) {
-                }
-                i13 = i2;
-                paddingTop = measuredHeight;
+                var13 = var7;
+                var7 = var4;
             }
-            i12++;
-            childCount = i;
-            i5 = 2;
-            i9 = 1;
+
+            ++var10;
+            var4 = var7;
         }
+
     }
 
     public final void a(ViewBean viewBean, ViewGroup viewGroup) {
@@ -743,27 +731,27 @@ public class ViewPane extends RelativeLayout {
         int i = layoutBean.width;
         int i2 = layoutBean.height;
         if (i > 0) {
-            i = (int) wB.a(getContext(), viewBean.layout.width);
+            i = (int) wB.a(getContext(), (float) viewBean.layout.width);
         }
         if (i2 > 0) {
-            i2 = (int) wB.a(getContext(), viewBean.layout.height);
+            i2 = (int) wB.a(getContext(), (float) viewBean.layout.height);
         }
         view.setBackgroundColor(viewBean.layout.backgroundColor);
         if (viewBean.id.equals("root")) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(i, i2);
-            layoutParams.leftMargin = (int) wB.a(getContext(), viewBean.layout.marginLeft);
-            layoutParams.topMargin = (int) wB.a(getContext(), viewBean.layout.marginTop);
-            layoutParams.rightMargin = (int) wB.a(getContext(), viewBean.layout.marginRight);
-            layoutParams.bottomMargin = (int) wB.a(getContext(), viewBean.layout.marginBottom);
+            layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+            layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+            layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+            layoutParams.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
             LayoutBean layoutBean2 = viewBean.layout;
             view.setPadding(layoutBean2.paddingLeft, layoutBean2.paddingTop, layoutBean2.paddingRight, layoutBean2.paddingBottom);
             view.setLayoutParams(layoutParams);
         } else if (viewBean.parentType == 0) {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(i, i2);
-            layoutParams2.leftMargin = (int) wB.a(getContext(), viewBean.layout.marginLeft);
-            layoutParams2.topMargin = (int) wB.a(getContext(), viewBean.layout.marginTop);
-            layoutParams2.rightMargin = (int) wB.a(getContext(), viewBean.layout.marginRight);
-            layoutParams2.bottomMargin = (int) wB.a(getContext(), viewBean.layout.marginBottom);
+            layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+            layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+            layoutParams2.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+            layoutParams2.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
             LayoutBean layoutBean3 = viewBean.layout;
             view.setPadding(layoutBean3.paddingLeft, layoutBean3.paddingTop, layoutBean3.paddingRight, layoutBean3.paddingBottom);
             int i3 = viewBean.layout.layoutGravity;
@@ -774,10 +762,10 @@ public class ViewPane extends RelativeLayout {
             view.setLayoutParams(layoutParams2);
         } else {
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(i, i2);
-            layoutParams3.leftMargin = (int) wB.a(getContext(), viewBean.layout.marginLeft);
-            layoutParams3.topMargin = (int) wB.a(getContext(), viewBean.layout.marginTop);
-            layoutParams3.rightMargin = (int) wB.a(getContext(), viewBean.layout.marginRight);
-            layoutParams3.bottomMargin = (int) wB.a(getContext(), viewBean.layout.marginBottom);
+            layoutParams3.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+            layoutParams3.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+            layoutParams3.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+            layoutParams3.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
             LayoutBean layoutBean4 = viewBean.layout;
             view.setPadding(layoutBean4.paddingLeft, layoutBean4.paddingTop, layoutBean4.paddingRight, layoutBean4.paddingBottom);
             int i4 = viewBean.layout.layoutGravity;
