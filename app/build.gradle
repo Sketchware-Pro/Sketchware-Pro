@@ -95,6 +95,10 @@ android {
     }
 }
 
+configurations.configureEach {
+    exclude group: 'javax.inject', module: 'javax.inject'
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
 
