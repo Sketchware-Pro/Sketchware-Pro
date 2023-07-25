@@ -46,7 +46,7 @@ public class ViewEditorFragment extends qA {
         setHasOptionsMenu(true);
         viewEditor = viewGroup.findViewById(R.id.view_editor);
         viewEditor.setScreenType(getResources().getConfiguration().orientation);
-        viewProperty = getActivity().findViewById(R.id.view_property);
+        viewProperty = requireActivity().findViewById(R.id.view_property);
         viewProperty.setOnPropertyListener(new Iw() {
             @Override
             public void a() {
@@ -98,7 +98,7 @@ public class ViewEditorFragment extends qA {
             @Override
             public void b() {
                 q = true;
-                ((DesignActivity) getActivity()).b(false);
+                ((DesignActivity) requireActivity()).b(false);
             }
 
             @Override
@@ -109,7 +109,7 @@ public class ViewEditorFragment extends qA {
             @Override
             public void d() {
                 q = false;
-                ((DesignActivity) getActivity()).b(true);
+                ((DesignActivity) requireActivity()).b(true);
             }
         });
         viewEditor.setOnHistoryChangeListener(this::invalidateOptionsMenu);
@@ -144,14 +144,14 @@ public class ViewEditorFragment extends qA {
     }
 
     private void toLogicEditorActivity(String eventId, String eventName, String eventName2) {
-        Intent intent = new Intent(getContext(), LogicEditorActivity.class);
+        Intent intent = new Intent(requireContext(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("id", eventId);
         intent.putExtra("event", eventName);
         intent.putExtra("project_file", projectFileBean);
         intent.putExtra("event_text", eventName2);
-        getContext().startActivity(intent);
+        requireContext().startActivity(intent);
     }
 
     public void a(ArrayList<ViewBean> viewBeans) {
@@ -174,7 +174,7 @@ public class ViewEditorFragment extends qA {
     }
 
     public void b(ViewBean viewBean) {
-        Intent intent = new Intent(getContext(), PropertyActivity.class);
+        Intent intent = new Intent(requireContext(), PropertyActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("bean", viewBean);
@@ -323,7 +323,7 @@ public class ViewEditorFragment extends qA {
         }
 
         if (o == null) {
-            o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(getActivity(), (float) viewProperty.getHeight()));
+            o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(requireActivity(), (float) viewProperty.getHeight()));
             o.setDuration(300L);
             o.setInterpolator(new DecelerateInterpolator());
         }
@@ -534,7 +534,7 @@ public class ViewEditorFragment extends qA {
         if (bundle != null) {
             sc_id = bundle.getString("sc_id");
         } else {
-            sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         }
 
         return viewGroup;
