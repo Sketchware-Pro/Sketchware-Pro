@@ -195,7 +195,7 @@ public class AppBundleCompiler {
 
             /* Add built-in libraries' JARs */
             for (var library : builder.builtInLibraryManager.getLibraries()) {
-                jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
+                jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.getName()));
             }
 
             for (var jar : jars) {

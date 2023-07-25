@@ -46,14 +46,6 @@ public class Ox {
         aci = new AppCompatInjection(jq, projectFileBean);
     }
 
-    private static String x(String str) {
-        if (!str.contains(".")) {
-            return str;
-        }
-        String[] split = str.split("\\.");
-        return split[split.length - 1];
-    }
-
     /**
      * @return The parameter String escaped properly for XML strings
      */
@@ -304,7 +296,6 @@ public class Ox {
                 writeViewGravity(widgetTag, viewBean);
             }
         }
-        buildConfig.x.handleWidget(x(viewBean.convert));
         if (viewBean.getClassInfo().a("LinearLayout") &&
                 !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
             if (!toNotAdd.contains("android:orientation")) {

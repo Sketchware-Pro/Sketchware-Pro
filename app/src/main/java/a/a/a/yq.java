@@ -12,8 +12,9 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
-import com.sketchware.remod.xml.XmlBuilder;
+import com.besome.sketch.beans.ViewBean;
 import com.sketchware.remod.R;
+import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -421,6 +422,9 @@ public class yq {
         }
     }
 
+    /**
+     * Initialize project metadata
+     */
     public void a(iC projectLibraryManager, hC projectFileManager, eC projectDataManager, boolean exportingProject) {
         ProjectLibraryBean adMob = projectLibraryManager.b();
         ProjectLibraryBean appCompat = projectLibraryManager.c();
@@ -441,13 +445,9 @@ public class yq {
         }
         if (appCompat.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
-            N.isAndroidxEmoji2Used = true;
-            N.isAndroidxLifecycleProcessUsed = true;
         }
         if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isAdMobEnabled = true;
-            N.isAndroidxRoomUsed = true;
-            N.isAndroidxWorkRuntimeUsed = true;
             N.addPermission(jq.PERMISSION_INTERNET);
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.setupAdmob(adMob);
@@ -458,100 +458,98 @@ public class yq {
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.setupGoogleMap(googleMaps);
         }
-        for (ProjectFileBean next : projectFileManager.b()) {
-            if (next.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                N.a(next.getActivityName()).a = true;
+        for (ProjectFileBean activity : projectFileManager.b()) {
+            if (activity.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                N.a(activity.getActivityName()).a = true;
             }
-            for (ComponentBean component : projectDataManager.e(next.getJavaName())) {
-                N.x.handleComponent(component.type);
-
+            for (ComponentBean component : projectDataManager.e(activity.getJavaName())) {
                 switch (component.type) {
-                    case ComponentBean.COMPONENT_TYPE_CAMERA:
-                    case 35:
+                    case ComponentBean.COMPONENT_TYPE_CAMERA, 35 -> {
                         N.g = true;
-                        N.isAndroidxEmoji2Used = true;
-                        N.isAndroidxLifecycleProcessUsed = true;
                         N.u = true;
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_CAMERA);
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_CAMERA);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                    }
+                    case ComponentBean.COMPONENT_TYPE_FILE_PICKER ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE -> {
                         N.isGsonUsed = true;
                         N.isFirebaseDatabaseUsed = true;
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_INTERNET);
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                    }
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE -> {
                         N.isFirebaseStorageUsed = true;
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_VIBRATOR:
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_VIBRATE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                    }
+                    case ComponentBean.COMPONENT_TYPE_VIBRATOR ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_VIBRATE);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH -> {
                         N.isFirebaseAuthUsed = true;
-                        N.a(next.getActivityName()).b = true;
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
+                        N.a(activity.getActivityName()).b = true;
+                    }
+                    case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK -> {
                         N.isGsonUsed = true;
                         N.isHttp3Used = true;
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_INTERNET);
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
-                        N.addPermission(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
-                        break;
-
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                        N.isDynamicLinkUsed = true;
-                        break;
-
-                    default:
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                    }
+                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                    case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> {
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
+                    }
+                    case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER ->
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS ->
+                            N.isDynamicLinkUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE ->
+                            N.x.isFCMUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
+                            N.x.isFBGoogleUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> N.x.isOneSignalUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
+                            N.x.isFBAdsUsed = true;
+                    default -> {
+                    }
                 }
             }
 
-            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(next.getJavaName()).entrySet()) {
-                for (BlockBean bean : entry.getValue()) {
-                    String opCode = bean.opCode;
-                    N.x.setParams(bean.parameters, packageName, opCode);
+            for (ViewBean view : eC.a(projectDataManager.d(activity.getXmlName()))) {
+                var classNameParts = view.convert.split("\\.");
+                var className = classNameParts[classNameParts.length - 1];
+                switch (className) {
+                    case "CircleImageView" -> N.x.isCircleImageViewUsed = true;
+                    case "CodeView" -> N.x.isCodeViewUsed = true;
+                    case "LottieAnimationView" -> N.x.isLottieUsed = true;
+                    case "OTPView" -> N.x.isOTPViewUsed = true;
+                    case "PatternLockView" -> N.x.isPatternLockViewUsed = true;
+                    case "WaveSideBar" -> N.x.isWaveSideBarUsed = true;
+                    case "YouTubePlayerView" -> N.x.isYoutubePlayerUsed = true;
+                }
+            }
 
-                    switch (opCode) {
+            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(activity.getJavaName()).entrySet()) {
+                for (BlockBean block : entry.getValue()) {
+                    switch (block.opCode) {
                         case "FirebaseDynamicLink setDataHost":
                         case "setDynamicLinkDataHost":
-                            if (bean.parameters.size() >= 2) {
-                                N.dlDataList.add(new Pair<>(bean.parameters.get(0), bean.parameters.get(1)));
+                            if (block.parameters.size() >= 2) {
+                                N.dlDataList.add(new Pair<>(block.parameters.get(0), block.parameters.get(1)));
                             }
                             break;
 
                         case "setAdmobAppId":
-                            N.appId = bean.parameters.get(0);
+                            N.appId = block.parameters.get(0);
                             break;
 
                         case "intentSetAction":
                             // If an Intent setAction (ACTION_CALL) block is used
-                            if (bean.parameters.get(1).equals(uq.c[1])) {
-                                N.addPermission(next.getActivityName(), jq.PERMISSION_CALL_PHONE);
+                            if (block.parameters.get(1).equals(uq.c[1])) {
+                                N.addPermission(activity.getActivityName(), jq.PERMISSION_CALL_PHONE);
                             }
                             break;
 
@@ -566,7 +564,7 @@ public class yq {
                         case "getJpegRotate":
                         case "setImageFilePath":
                         case "fileutilGetLastSegmentPath":
-                            N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                             break;
 
                         case "fileutilwrite":
@@ -586,8 +584,8 @@ public class yq {
                         case "setBitmapFileColorFilter":
                         case "setBitmapFileBrightness":
                         case "setBitmapFileContrast":
-                            N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                            N.addPermission(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                            N.addPermission(activity.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                             break;
 
                         case "strToMap":
@@ -610,6 +608,17 @@ public class yq {
                             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
                             break;
 
+                        case "OneSignal setAppId":
+                        case "OnResultBillingResponse":
+                        case "Youtube useWebUI":
+                        case "FacebookAds setProvider":
+                            if (block.parameters.size() > 0) {
+                                if (N.x.param == null) N.x.param = new HashMap<>();
+                                N.x.param.clear();
+                                N.x.param.put(block.opCode, block.parameters);
+                            }
+                            break;
+
                         default:
                     }
                 }
@@ -619,19 +628,10 @@ public class yq {
     }
 
     /**
-     * Simply calls {@link yq#b(hC, eC, iC, boolean)} with the same arguments and <code>false</code>.
-     *
-     * @see yq#b(hC, eC, iC, boolean)
-     */
-    public void b(hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
-        b(projectFileManager, projectDataManager, projectLibraryManager, false);
-    }
-
-    /**
      * Generates the project's files, such as layouts, Java files, but also build.gradle and secrets.xml.
      */
-    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean exportingProject) {
-        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, exportingProject);
+    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, BuiltInLibraryManager builtInLibraryManager) {
+        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, builtInLibraryManager);
         if (N.u) {
             XmlBuilder pathsTag = new XmlBuilder("paths");
             pathsTag.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -685,8 +685,7 @@ public class yq {
     /**
      * Get source code files that are viewable in SrcCodeViewer
      */
-    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, iC projectLibraryManager, boolean exportingProject) {
-        a(projectLibraryManager, projectFileManager, projectDataManager, exportingProject);
+    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, BuiltInLibraryManager builtInLibraryManager) {
         a(SketchApplication.getContext());
         CommandBlock.x();
 
@@ -742,7 +741,7 @@ public class yq {
             }
         }
 
-        Ix ix = new Ix(N, projectFileManager.b());
+        Ix ix = new Ix(N, projectFileManager.b(), builtInLibraryManager);
         ix.setYq(this);
 
         // Make generated classes viewable
@@ -879,7 +878,9 @@ public class yq {
         }
 
         if (isManifestFile) {
-            Ix ix = new Ix(N, projectFileManager.b());
+            ProjectBuilder builder = new ProjectBuilder(SketchApplication.getContext(), this);
+            builder.buildBuiltInLibraryInformation();
+            Ix ix = new Ix(N, projectFileManager.b(), builder.getBuiltInLibraryManager());
             ix.setYq(this);
             return CommandBlock.applyCommands("AndroidManifest.xml", ix.a());
         }
@@ -897,12 +898,5 @@ public class yq {
         }
 
         return "";
-    }
-
-    /**
-     * Calls {@link yq#a(hC, eC, iC, boolean)} with the same parameters and <code>false</code>.
-     */
-    public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
-        return a(hCVar, eCVar, iCVar, false);
     }
 }

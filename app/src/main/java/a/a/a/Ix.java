@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import mod.agus.jcoderz.handle.component.ConstVarManifest;
+import mod.agus.jcoderz.editor.manifest.EditorManifest;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -26,11 +26,12 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
+import mod.jbk.build.BuiltInLibraries;
 
 public class Ix {
-
     public XmlBuilder a = new XmlBuilder("manifest");
     public ArrayList<ProjectFileBean> b;
+    private final BuiltInLibraryManager builtInLibraryManager;
     public BuildSettings buildSettings;
     public jq c;
     public FilePathUtil fpu = new FilePathUtil();
@@ -39,9 +40,10 @@ public class Ix {
     private boolean targetsSdkVersion31OrHigher = false;
     private String packageName;
 
-    public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans) {
+    public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans, BuiltInLibraryManager builtInLibraryManager) {
         c = jq;
         b = projectFileBeans;
+        this.builtInLibraryManager = builtInLibraryManager;
         buildSettings = new BuildSettings(jq.sc_id);
         frc = new FileResConfig(c.sc_id);
         a.addAttribute("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -236,9 +238,9 @@ public class Ix {
 
     private void writeAndroidxStartupInitializationProvider(XmlBuilder application) {
         var initializers = Set.of(
-                new Pair<>(c.isAndroidxEmoji2Used, "androidx.emoji2.text.EmojiCompatInitializer"),
-                new Pair<>(c.isAndroidxLifecycleProcessUsed, "androidx.lifecycle.ProcessLifecycleInitializer"),
-                new Pair<>(c.isAndroidxWorkRuntimeUsed, "androidx.work.WorkManagerInitializer")
+                new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_EMOJI2), "androidx.emoji2.text.EmojiCompatInitializer"),
+                new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_LIFECYCLE_PROCESS), "androidx.lifecycle.ProcessLifecycleInitializer"),
+                new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME), "androidx.work.WorkManagerInitializer")
         );
 
         XmlBuilder initializationProvider = new XmlBuilder("provider");
@@ -465,13 +467,42 @@ public class Ix {
         if (c.isAdMobEnabled) {
             writePermission(a, "com.google.android.gms.permission.AD_ID");
         }
-        if (c.isAndroidxWorkRuntimeUsed) {
+        if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME)) {
             writePermission(a, "android.permission.WAKE_LOCK");
             writePermission(a, "android.permission.ACCESS_NETWORK_STATE");
             writePermission(a, "android.permission.RECEIVE_BOOT_COMPLETED");
             writePermission(a, "android.permission.FOREGROUND_SERVICE");
         }
-        ConstVarManifest.handlePermissionComponent(a, c.x);
+        if (c.x.isFCMUsed) {
+            writePermission(a, Manifest.permission.WAKE_LOCK);
+            writePermission(a, "com.google.android.c2dm.permission.RECEIVE");
+        }
+        if (c.x.isOneSignalUsed) {
+            XmlBuilder permission = new XmlBuilder("permission");
+            permission.addAttribute("android", "name", packageName + ".permission.C2D_MESSAGE");
+            permission.addAttribute("android", "protectionLevel", "signature");
+            a.a(permission);
+            writePermission(a, packageName + ".permission.C2D_MESSAGE");
+            writePermission(a, Manifest.permission.WAKE_LOCK);
+            writePermission(a, Manifest.permission.VIBRATE);
+            writePermission(a, Manifest.permission.RECEIVE_BOOT_COMPLETED);
+            writePermission(a, "com.sec.android.provider.badge.permission.READ");
+            writePermission(a, "com.sec.android.provider.badge.permission.WRITE");
+            writePermission(a, "com.htc.launcher.permission.READ_SETTINGS");
+            writePermission(a, "com.htc.launcher.permission.UPDATE_SHORTCUT");
+            writePermission(a, "com.sonyericsson.home.permission.BROADCAST_BADGE");
+            writePermission(a, "com.sonymobile.home.permission.PROVIDER_INSERT_BADGE");
+            writePermission(a, "com.anddoes.launcher.permission.UPDATE_COUNT");
+            writePermission(a, "com.majeur.launcher.permission.UPDATE_BADGE");
+            writePermission(a, "com.huawei.android.launcher.permission.CHANGE_BADGE");
+            writePermission(a, "com.huawei.android.launcher.permission.READ_SETTINGS");
+            writePermission(a, "com.huawei.android.launcher.permission.WRITE_SETTINGS");
+            writePermission(a, "android.permission.READ_APP_BADGE");
+            writePermission(a, "com.oppo.launcher.permission.READ_SETTINGS");
+            writePermission(a, "com.oppo.launcher.permission.WRITE_SETTINGS");
+            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_READ");
+            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_WRITE");
+        }
         AndroidManifestInjector.getP(a, c.sc_id);
 
         if (c.isAdMobEnabled) {
@@ -613,11 +644,11 @@ public class Ix {
             testingActivity.addAttribute("android", "exported", "false");
             applicationTag.a(testingActivity);
         }
-        if (c.isAndroidxRoomUsed) {
+        if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_ROOM_RUNTIME)) {
             writeAndroidxRoomService(applicationTag);
         }
         writeAndroidxStartupInitializationProvider(applicationTag);
-        if (c.isAndroidxWorkRuntimeUsed) {
+        if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME)) {
             writeAndroidxWorkRuntimeTags(applicationTag);
         }
         if (c.isFirebaseEnabled || c.isAdMobEnabled || c.isMapUsed) {
@@ -635,7 +666,18 @@ public class Ix {
         if (c.isMapUsed) {
             writeGoogleMapMetaData(applicationTag);
         }
-        ConstVarManifest.handleBgTaskComponent(applicationTag, c.x);
+        if (c.x.isFCMUsed) {
+            EditorManifest.writeDefFCM(applicationTag);
+        }
+        if (c.x.isOneSignalUsed) {
+            EditorManifest.manifestOneSignal(applicationTag, packageName, c.x.param);
+        }
+        if (c.x.isFBAdsUsed) {
+            EditorManifest.manifestFBAds(applicationTag, packageName);
+        }
+        if (c.x.isFBGoogleUsed) {
+            EditorManifest.manifestFBGoogleLogin(applicationTag);
+        }
         if (FileUtil.isExistFile(fpu.getManifestJava(c.sc_id))) {
             ArrayList<HashMap<String, Object>> activityAttrs = getActivityAttrs();
             for (String activityName : frc.getJavaManifestList()) {

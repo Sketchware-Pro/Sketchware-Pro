@@ -68,6 +68,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
@@ -170,7 +171,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata.a(getApplicationContext(), wq.e(xq.a(sc_id) ? "600" : sc_id));
 
             /* Start generating project files */
-            project_metadata.b(hCVar, eCVar, iCVar, true);
+            ProjectBuilder builder = new ProjectBuilder(this, project_metadata);
+            project_metadata.a(iCVar, hCVar, eCVar, true);
+            builder.buildBuiltInLibraryInformation();
+            project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
             if (yB.a(lC.b(sc_id), "custom_icon")) {
                 project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
             }
@@ -694,13 +698,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
                 kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
                 kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
-                project_metadata.b(hCVar, eCVar, iCVar, true);
+
+                builder = new ProjectBuilder(this, a, project_metadata);
+                builder.setBuildAppBundle(buildingAppBundle);
+
+                project_metadata.a(iCVar, hCVar, eCVar, true);
+                builder.buildBuiltInLibraryInformation();
+                project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
                 if (canceled) {
                     cancel(true);
                     return;
                 }
-                builder = new ProjectBuilder(this, a, project_metadata);
-                builder.setBuildAppBundle(buildingAppBundle);
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");
@@ -712,11 +720,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Check built-in libraries */
                 publishProgress("Extracting built-in libraries...");
-                builder.getBuiltInLibrariesReady();
+                BuiltInLibraries.extractCompileAssets(this);
                 if (canceled) {
                     cancel(true);
                     return;
                 }
+
+                builder.buildBuiltInLibraryInformation();
 
                 publishProgress("AAPT2 is running...");
                 builder.compileResources();

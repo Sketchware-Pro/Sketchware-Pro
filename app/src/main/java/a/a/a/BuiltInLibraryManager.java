@@ -53,6 +53,15 @@ public class BuiltInLibraryManager {
         }
     }
 
+    public boolean containsLibrary(String libraryName) {
+        Optional<BuiltInLibraries.BuiltInLibrary> library = BuiltInLibraries.BuiltInLibrary.ofName(libraryName);
+        //noinspection SimplifyOptionalCallChains because #isEmpty() isn't available on Android.
+        if (!library.isPresent()) {
+            return false;
+        }
+        return libraries.contains(new Jp(library.get().getName()));
+    }
+
     /**
      * @return {@link BuiltInLibraryManager#libraries}
      */

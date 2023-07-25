@@ -21,6 +21,7 @@ import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 import mod.tyron.compiler.file.JavaFile;
 
@@ -49,7 +50,8 @@ public class IncrementalJavaCompiler extends Compiler {
         this.projectConfig = projectConfig;
         buildSettings = new BuildSettings(projectConfig.sc_id);
         compileHelper = new ProjectBuilder(getContext(), projectConfig);
-        compileHelper.getBuiltInLibrariesReady();
+        BuiltInLibraries.extractCompileAssets();
+        compileHelper.buildBuiltInLibraryInformation();
         manageLocalLibrary = new ManageLocalLibrary(projectConfig.sc_id);
         fileUtil = new oB(false);
         libs = new File(getContext().getFilesDir(), "libs");
