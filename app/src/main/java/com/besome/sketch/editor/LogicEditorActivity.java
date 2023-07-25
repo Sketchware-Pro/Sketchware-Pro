@@ -1218,7 +1218,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return false;
             }
         }
-        return blockBean.opCode.equals("getVar") || !blockBean.opCode.equals("viewOnClick") || D.equals("onBindCustomView");
+        return true;
     }
 
     public Rs b(BlockBean blockBean) {
