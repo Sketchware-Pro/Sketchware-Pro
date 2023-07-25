@@ -55,7 +55,7 @@ public class LogicEditorDrawer extends LinearLayout {
         tools.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Tools.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
+            getContext().startActivity(intent);
         });
     }
 
