@@ -79,7 +79,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ay O;
     public boolean P;
     public Tracker Q;
-    public ProjectFileBean R;
+    private ProjectFileBean projectFileBean;
     public boolean S;
     public boolean T;
     public LinearLayout U;
@@ -194,7 +194,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public ProjectFileBean getProjectFile() {
-        return this.R;
+        return this.projectFileBean;
     }
 
     public void h() {
@@ -366,7 +366,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     if (view3 instanceof sy) {
                         ArrayList<ViewBean> b2 = jC.a(this.a).b(this.b, ((sy) view3).getBean());
                         for (int size = b2.size() - 1; size >= 0; size--) {
-                            jC.a(this.a).a(this.R, b2.get(size));
+                            jC.a(this.a).a(this.projectFileBean, b2.get(size));
                         }
                         b(b2, true);
                     }
@@ -421,7 +421,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         Iterator<ViewBean> it = arrayList.iterator();
                         while (it.hasNext()) {
                             ViewBean next = it.next();
-                            if (jC.a(this.a).h(this.R.getXmlName(), next.id)) {
+                            if (jC.a(this.a).h(this.projectFileBean.getXmlName(), next.id)) {
                                 hashMap.put(next.id, a(next.type));
                             } else {
                                 String str4 = next.id;
@@ -445,8 +445,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     eventBuilder.setAction("widget");
                     eventBuilder.setLabel("Custom");
                     this.Q.send(eventBuilder.build());
-                    if (bean.type == 3 && this.R.fileType == 0) {
-                        jC.a(this.a).a(this.R.getJavaName(), 1, bean.type, bean.id, "onClick");
+                    if (bean.type == 3 && this.projectFileBean.fileType == 0) {
+                        jC.a(this.a).a(this.projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
                     }
                     a(a(bean, true), true);
                 } else if (view5 instanceof sy) {
@@ -585,7 +585,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
-            cC.c(this.a).b(this.R.getXmlName(), arrayList);
+            cC.c(this.a).b(this.projectFileBean.getXmlName(), arrayList);
             ay ayVar = this.O;
             if (ayVar != null) {
                 ayVar.a();
@@ -650,7 +650,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final boolean c(ViewBean viewBean) {
         int i;
-        int i2 = this.R.fileType;
+        int i2 = this.projectFileBean.fileType;
         if (i2 == 1) {
             int i3 = viewBean.type;
             if (i3 != 0 && i3 != 4 && i3 != 5 && i3 != 3 && i3 != 6 && i3 != 11 && i3 != 13 && i3 != 14 && i3 == 8) {
@@ -769,7 +769,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public sy b(ViewBean viewBean, boolean z) {
         if (z) {
-            cC.c(this.a).b(this.R.getXmlName(), viewBean);
+            cC.c(this.a).b(this.projectFileBean.getXmlName(), viewBean);
             ay ayVar = this.O;
             if (ayVar != null) {
                 ayVar.a();
@@ -887,7 +887,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void a(String str, ProjectFileBean projectFileBean) {
         this.a = str;
         setPreviewColors(str);
-        this.R = projectFileBean;
+        this.projectFileBean = projectFileBean;
         this.b = projectFileBean.getXmlName();
         if (projectFileBean.fileType == 2) {
             this.l.setText(projectFileBean.fileName.substring(1));
@@ -1080,7 +1080,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public sy a(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
-            cC.c(this.a).a(this.R.getXmlName(), arrayList);
+            cC.c(this.a).a(this.projectFileBean.getXmlName(), arrayList);
             ay ayVar = this.O;
             if (ayVar != null) {
                 ayVar.a();
@@ -1101,7 +1101,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public sy a(ViewBean viewBean, boolean z) {
         if (z) {
-            cC.c(this.a).a(this.R.getXmlName(), viewBean);
+            cC.c(this.a).a(this.projectFileBean.getXmlName(), viewBean);
             ay ayVar = this.O;
             if (ayVar != null) {
                 ayVar.a();
