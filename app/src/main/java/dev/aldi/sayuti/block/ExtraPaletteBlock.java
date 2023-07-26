@@ -94,79 +94,50 @@ public class ExtraPaletteBlock {
      */
 
     public boolean e(String str, String str2) {
-        switch (str) {
-            case "circleimageview":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW, str2);
-
-            case "onesignal":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_ONESIGNAL, str2);
-
-            case "asynctask":
-                return jC.a(sc_id).d(javaName, 36, str2);
-
-            case "otpview":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW, str2);
-
-            case "lottie":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW, str2);
-
-            case "phoneauth":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE, str2);
-
-            case "fbadbanner":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, str2);
-
-            case "codeview":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW, str2);
-
-            case "recyclerview":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
-
-            case "googlelogin":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN, str2);
-
-            case "dynamiclink":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS, str2);
-
-            case "youtubeview":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW, str2);
-
-            case "signinbutton":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON, str2);
-
-            case "cardview":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW, str2);
-
-            case "radiogroup":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP, str2);
-
-            case "fbadinterstitial":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL, str2);
-
-            case "textinputlayout":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT, str2);
-
-            case "collapsingtoolbar":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT, str2);
-
-            case "cloudmessage":
-                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE, str2);
-
-            case "datepicker":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER, str2);
-
-            case "customVar":
-                return jC.a(sc_id).f(xmlName, 5, str2);
-
-            case "timepicker":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER, str2);
-
-            case "swiperefreshlayout":
-                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT, str2);
-
-            default:
-                return true;
-        }
+        return switch (str) {
+            case "circleimageview" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW, str2);
+            case "onesignal" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_ONESIGNAL, str2);
+            case "asynctask" -> jC.a(sc_id).d(javaName, 36, str2);
+            case "otpview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW, str2);
+            case "lottie" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW, str2);
+            case "phoneauth" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE, str2);
+            case "fbadbanner" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, str2);
+            case "codeview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW, str2);
+            case "recyclerview" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
+            case "googlelogin" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN, str2);
+            case "dynamiclink" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS, str2);
+            case "youtubeview" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW, str2);
+            case "signinbutton" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON, str2);
+            case "cardview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW, str2);
+            case "radiogroup" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP, str2);
+            case "fbadinterstitial" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL, str2);
+            case "textinputlayout" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT, str2);
+            case "collapsingtoolbar" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT, str2);
+            case "cloudmessage" ->
+                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE, str2);
+            case "datepicker" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER, str2);
+            case "customVar" -> jC.a(sc_id).f(xmlName, 5, str2);
+            case "timepicker" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER, str2);
+            case "swiperefreshlayout" ->
+                    jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT, str2);
+            default -> true;
+        };
     }
 
     /**
@@ -330,43 +301,37 @@ public class ExtraPaletteBlock {
 
     private void blockEvents() {
         switch (eventName) {
-            case "onTabAdded":
-            case "onTabLayoutNewTabAdded":
+            case "onTabAdded", "onTabLayoutNewTabAdded" -> {
                 logicEditor.a("Fragment & TabLayout", 0xff555555);
                 logicEditor.a("f", "returnTitle");
-                break;
-
-            case "onFragmentAdded":
+            }
+            case "onFragmentAdded" -> {
                 logicEditor.a("Fragment & TabLayout", 0xff555555);
                 logicEditor.a("f", "returnFragment");
-                break;
-
-            case "onScrollChanged":
+            }
+            case "onScrollChanged" -> {
                 logicEditor.a("ListView", 0xff555555);
                 logicEditor.a("d", "listscrollparam");
                 logicEditor.a("d", "getLastVisiblePosition");
-                break;
-
-            case "onScrollChanged2":
+            }
+            case "onScrollChanged2" -> {
                 logicEditor.a("RecyclerView", 0xff555555);
                 logicEditor.a("d", "recyclerscrollparam");
-                break;
-
-            case "onPageChanged":
+            }
+            case "onPageChanged" -> {
                 logicEditor.a("ViewPager", 0xff555555);
                 logicEditor.a("d", "pagerscrollparam");
-                break;
-
-            case "onCreateOptionsMenu":
+            }
+            case "onCreateOptionsMenu" -> {
                 logicEditor.a("Menu", 0xff555555);
                 logicEditor.a(" ", "menuInflater");
                 logicEditor.a(" ", "menuAddItem");
                 logicEditor.a(" ", "menuAddMenuItem");
                 logicEditor.a("c", "menuAddSubmenu");
                 logicEditor.a(" ", "submenuAddItem");
-                break;
-
-            default:
+            }
+            default -> {
+            }
         }
     }
 
@@ -376,20 +341,15 @@ public class ExtraPaletteBlock {
             String name = list.second;
 
             switch (type) {
-                case 1:
-                case 2:
-                case 3:
-                    logicEditor.a(name, "l", kq.a(type), "getVar").setTag(name);
-                    break;
-
-                default:
+                case 1, 2, 3 -> logicEditor.a(name, "l", kq.a(type), "getVar").setTag(name);
+                default -> {
                     String[] splitName = name.split(" ");
                     if (splitName.length > 1) {
                         logicEditor.a(splitName[1], "l", "List", "getVar").setTag(name);
                     } else {
                         SketchwareUtil.toastError("Found invalid List data, type:" + type + ", name: \"" + name + "\"");
                     }
-                    break;
+                }
             }
         }
 

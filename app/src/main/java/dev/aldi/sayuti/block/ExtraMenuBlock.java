@@ -74,37 +74,33 @@ public class ExtraMenuBlock {
         String drawables_xhdpi = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable-xhdpi/");
         try {
             switch (json.getString("id")) {
-                case "menu":
+                case "menu" -> {
                     dialog.b("Select a menu");
                     listXmlFilenames(selectableItems, menus);
-                    break;
-
-                case "layout":
+                }
+                case "layout" -> {
                     dialog.b("Select a layout");
                     listXmlFilenames(selectableItems, layouts);
                     for (String str4 : jC.b(sc_id).e()) {
                         selectableItems.add(str4.substring(0, str4.indexOf(".xml")));
                     }
-                    break;
-
-                case "anim":
+                }
+                case "anim" -> {
                     dialog.b("Select an animation");
                     listXmlFilenames(selectableItems, animations);
-                    break;
-
-                case "drawable":
+                }
+                case "drawable" -> {
                     dialog.b("Select a drawable");
                     listXmlFilenames(selectableItems, drawables);
-                    break;
-
-                case "image":
+                }
+                case "image" -> {
                     dialog.b("Select an image");
                     for (String drawable_xhdpi : FileUtil.listFiles(drawables_xhdpi, "")) {
                         if (drawable_xhdpi.contains(".png") || drawable_xhdpi.contains(".jpg")) {
                             addFilenameToCollection(selectableItems, drawable_xhdpi, drawable_xhdpi.contains(".png") ? ".png" : ".jpg");
                         }
                     }
-                    break;
+                }
             }
         } catch (JSONException ignored) {
         }
