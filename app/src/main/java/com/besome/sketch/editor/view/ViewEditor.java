@@ -938,47 +938,23 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
 
         this.p.setVisibility(0);
-        this.g = this.getResources().getDisplayMetrics().widthPixels;
-        this.h = this.getResources().getDisplayMetrics().heightPixels;
-        int var1 = (int)(this.f * 56.0F);
-        boolean var2;
-        if (this.g > this.h) {
-            var2 = true;
-        } else {
-            var2 = false;
-        }
-
-        float var3;
-        if (!var2) {
-            var3 = 12.0F;
-        } else {
-            var3 = 24.0F;
-        }
-
-        int var4 = (int)(this.f * var3);
-        if (!var2) {
-            var3 = 20.0F;
-        } else {
-            var3 = 10.0F;
-        }
-
-        int var5 = (int)(this.f * var3);
+        this.g = getResources().getDisplayMetrics().widthPixels;
+        this.h = getResources().getDisplayMetrics().heightPixels;
+        boolean var2 = this.g > this.h;
+        int var4 = (int) (this.f * (!var2 ? 12.0F : 24.0F));
+        int var5 = (int) (this.f * (!var2 ? 20.0F : 10.0F));
         int var6 = GB.f(this.getContext());
         int var7 = GB.a(this.getContext());
-        int var8 = this.g;
-        var3 = this.f;
-        int var9 = var8 - (int)(120.0F * var3);
-        int var10 = this.h - var6 - var7 - (int)(var3 * 48.0F) - (int)(var3 * 48.0F);
-        var8 = var10;
+        int var9 = g - (int) (120.0F * f);
+        int var8 = this.h - var6 - var7 - (int) (f * 48.0F) - (int) (f * 48.0F);
         if (this.ca == 0) {
-            var8 = var10;
             if (this.da) {
-                var8 = var10 - var1;
+                var8 -= (int) (this.f * 56.0F);
             }
         }
 
-        float var11 = Math.min((float)var9 / (float)this.g, (float)var8 / (float)this.h);
-        var3 = Math.min((float)(var9 - var4 * 2) / (float)this.g, (float)(var8 - var5 * 2) / (float)this.h);
+        float var11 = Math.min((float) var9 / (float) this.g, (float) var8 / (float) this.h);
+        float var3 = Math.min((float) (var9 - var4 * 2) / (float) this.g, (float) (var8 - var5 * 2) / (float) this.h);
         if (!var2) {
             this.aa.setBackgroundResource(2131165984);
         } else {
@@ -988,26 +964,19 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         this.aa.setLayoutParams(new FrameLayout.LayoutParams(this.g, this.h));
         this.aa.setScaleX(var11);
         this.aa.setScaleY(var11);
-        int var13 = this.g;
-        var13 = -((int)(((float)var13 - (float)var13 * var11) / 2.0F));
-        var8 = this.h;
-        var8 = -((int)(((float)var8 - (float)var8 * var11) / 2.0F));
-        this.aa.setX((float)var13);
-        this.aa.setY((float)var8);
-        var13 = this.g;
-        var10 = var4 - (int)(((float)var13 - (float)var13 * var3) / 2.0F);
-        var13 = var5;
-        float var12;
+        this.aa.setX((float) -((int) (((float) g - (float) g * var11) / 2.0F)));
+        this.aa.setY((float) -((int) (((float) h - (float) h * var11) / 2.0F)));
+        int var10 = var4 - (int) (((float) g - (float) g * var3) / 2.0F);
+        int var13 = var5;
         if (this.k.getVisibility() == 0) {
             this.k.setLayoutParams(new FrameLayout.LayoutParams(this.g, var6));
             this.k.setScaleX(var3);
             this.k.setScaleY(var3);
-            var11 = (float)var6;
-            var12 = var11 * var3;
-            var13 = (int)((var11 - var12) / 2.0F);
-            this.k.setX((float)var10);
-            this.k.setY((float)(var5 - var13));
-            var13 = var5 + (int)var12;
+            var11 = (float) var6;
+            float var12 = var11 * var3;
+            this.k.setX((float) var10);
+            this.k.setY((float) (var5 - (int) ((var11 - var12) / 2.0F)));
+            var13 = var5 + (int) var12;
         }
 
         var8 = var13;
@@ -1015,18 +984,16 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             this.n.setLayoutParams(new FrameLayout.LayoutParams(this.g, var7));
             this.n.setScaleX(var3);
             this.n.setScaleY(var3);
-            var12 = (float)var7;
+            float var12 = (float) var7;
             var11 = var12 * var3;
-            var8 = (int)((var12 - var11) / 2.0F);
-            this.n.setX((float)var10);
-            this.n.setY((float)(var13 - var8));
-            var8 = var13 + (int)var11;
+            this.n.setX((float) var10);
+            this.n.setY((float) (var13 - (int) ((var12 - var11) / 2.0F)));
+            var8 = var13 + (int) var11;
         }
 
-        var5 = this.h;
-        var13 = var5;
+        var13 = h;
         if (this.k.getVisibility() == 0) {
-            var13 = var5 - var6;
+            var13 = h - var6;
         }
 
         var5 = var13;
@@ -1037,10 +1004,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         this.p.setLayoutParams(new FrameLayout.LayoutParams(this.g, var5));
         this.p.setScaleX(var3);
         this.p.setScaleY(var3);
-        var11 = (float)var5;
-        var13 = (int)((var11 - var3 * var11) / 2.0F);
-        this.p.setX((float)var10);
-        this.p.setY((float)(var8 - var13));
+        var11 = (float) var5;
+        this.p.setX((float) var10);
+        this.p.setY((float) (var8 - (int) ((var11 - var3 * var11) / 2.0F)));
         this.P = false;
     }
 
