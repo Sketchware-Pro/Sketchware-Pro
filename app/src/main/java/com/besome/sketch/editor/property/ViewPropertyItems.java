@@ -226,6 +226,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
+    @Override
     public void a(String var1, Object var2) {
         Cx.a().a(c.getClassInfo().a(), var1);
         if (d != null) {
