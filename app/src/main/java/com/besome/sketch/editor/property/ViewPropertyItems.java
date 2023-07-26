@@ -338,93 +338,83 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         addView(pw);
     }
 
-    public void a(String var1, String var2, boolean var3) {
-        PropertyInputItem var4 = (PropertyInputItem)this.f.get(var1);
-        PropertyInputItem var5;
-        if (var4 == null) {
-            var4 = new PropertyInputItem(this.getContext(), var3 ^ true);
-            var4.setOrientationItem(this.getOrientation());
-            var4.a(this.a, this.e);
-            var4.setKey(var1);
-            var4.setValue(var2);
-            var4.setTag(var1);
-            var4.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var4);
-            var5 = var4;
+    public void a(String key, String value, boolean z) {
+        PropertyInputItem inputItem = (PropertyInputItem)f.get(key);
+        if (inputItem == null) {
+            inputItem = new PropertyInputItem(getContext(), !z);
+            inputItem.setOrientationItem(getOrientation());
+            inputItem.a(sc_id, e);
+            inputItem.setKey(key);
+            inputItem.setValue(value);
+            inputItem.setTag(key);
+            inputItem.setOnPropertyValueChangeListener(this);
+            f.put(key, inputItem);
         } else {
-            var4.a(this.a, this.e);
-            var4.setValue(var2);
-            var5 = var4;
+            inputItem.a(sc_id, e);
+            inputItem.setValue(value);
         }
 
-        this.addView(var5);
+        addView(inputItem);
     }
 
     public void save() {
         Cx.a().b();
     }
 
-    public void b(ViewBean var1) {
-        if (this.getOrientation() == 1) {
-            this.a(var1, "property_id");
+    private void b(ViewBean bean) {
+        if (getOrientation() == LinearLayout.VERTICAL) {
+            a(bean, "property_id");
         }
 
-        this.a(var1);
-        this.c(var1);
-        if (this.getOrientation() == 0) {
-            this.a(var1, "property_id");
+        a(bean);
+        c(bean);
+        if (getOrientation() == LinearLayout.HORIZONTAL) {
+            a(bean, "property_id");
         }
     }
 
-    public void b(String var1, int var2) {
-        PropertyGravityItem var3 = (PropertyGravityItem)this.f.get(var1);
-        PropertyGravityItem var4;
-        if (var3 == null) {
-            var3 = new PropertyGravityItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            var3.setValue(var2);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var4 = var3;
+    private void b(String key, int value) {
+        PropertyGravityItem gravityItem = (PropertyGravityItem)f.get(key);
+        if (gravityItem == null) {
+            gravityItem = new PropertyGravityItem(getContext(), !b);
+            gravityItem.setOrientationItem(getOrientation());
+            gravityItem.setKey(key);
+            gravityItem.setValue(value);
+            gravityItem.setTag(key);
+            gravityItem.setOnPropertyValueChangeListener(this);
+            f.put(key, gravityItem);
         } else {
-            var3.setValue(var2);
-            var4 = var3;
+            gravityItem.setValue(value);
         }
 
-        this.addView(var4);
+        addView(gravityItem);
     }
 
-    public void b(String var1, String var2) {
-        this.a(var1, var2, this.b);
+    private void b(String key, String value) {
+        a(key, value, b);
     }
 
-    public void b(String var1, String var2, boolean var3) {
-        tx var4 = (tx)this.f.get(var1);
-        tx var5;
-        if (var4 == null) {
-            var4 = new tx(this.getContext(), this.b ^ true, this.a, var3);
-            var4.setOrientationItem(this.getOrientation());
-            var4.setKey(var1);
-            var4.setValue(var2);
-            var4.setTag(var1);
-            var4.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var4);
-            var5 = var4;
+    private void b(String key, String value, boolean z) {
+        tx drawableItem = (tx)f.get(key);
+        if (drawableItem == null) {
+            drawableItem = new tx(getContext(), !b, sc_id, z);
+            drawableItem.setOrientationItem(getOrientation());
+            drawableItem.setKey(key);
+            drawableItem.setValue(value);
+            drawableItem.setTag(key);
+            drawableItem.setOnPropertyValueChangeListener(this);
+            f.put(key, drawableItem);
         } else {
-            var4.setValue(var2);
-            var5 = var4;
+            drawableItem.setValue(value);
         }
-
-        this.addView(var5);
+        addView(drawableItem);
     }
 
-    public void c() {
-        Intent var1 = new Intent(this.getContext(), ManageImageActivity.class);
-        var1.setFlags(536870912);
-        var1.putExtra("sc_id", this.a);
-        ((Activity)this.getContext()).startActivityForResult(var1, 209);
+    private void c() {
+        Intent intent = new Intent(getContext(), ManageImageActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
+        ((Activity)getContext()).startActivityForResult(intent, 209);
     }
 
     public void c(ViewBean bean) {
@@ -475,9 +465,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         addView(pairSelectorItem);
     }
 
-    public void d(ViewBean var1) {
-        if (this.getOrientation() == 1) {
-            this.a(xB.b().a(this.getResources(), 2131625828));
+    public void d(ViewBean bean) {
+        if (getOrientation() == LinearLayout.VERTICAL) {
+            a(xB.b().a(getResources(), 2131625828));
         }
 
         Gx classInfo = bean.getClassInfo();
