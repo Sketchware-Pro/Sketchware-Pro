@@ -271,21 +271,27 @@ public class br extends qA implements View.OnClickListener {
                     button = itemView;
                     button.setClickListener(v -> {
                         if (!mB.a()) {
+                            EventBean event;
                             var bindingAdapter = getBindingAdapter();
                             if (bindingAdapter instanceof AddedEventsAdapter) {
-                                var event = addedEventsAdapter.getCurrentList().get(getLayoutPosition());
-                                openEvent(event.targetId, event.eventName, event.eventName);
-                            } else if (bindingAdapter instanceof AvailableEventsAdapter) {
+                                event = addedEventsAdapter.getCurrentList().get(getBindingAdapterPosition());
+                            } else {
                                 var component = components.get(ViewHolder.this.getLayoutPosition());
-                                var availableEventsListIndex = getLayoutPosition() - addedEventsAdapter.getItemCount();
-                                var eventName = availableEventsAdapter.getCurrentList().get(availableEventsListIndex);
-                                EventBean event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, component.type, component.componentId, eventName);
+                                var eventName = availableEventsAdapter.getCurrentList().get(getBindingAdapterPosition());
+                                event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, component.type, component.componentId, eventName);
                                 jC.a(sc_id).a(projectFile.getJavaName(), event);
                                 bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();
                                 button.onEventAdded();
-                                notifyItemChanged(getLayoutPosition());
-                                openEvent(event.targetId, event.eventName, event.eventName);
+
+                                var newAddedEvents = new ArrayList<>(addedEventsAdapter.getCurrentList());
+                                newAddedEvents.add(event);
+                                addedEventsAdapter.submitList(newAddedEvents);
+
+                                var newAvailableEvents = new ArrayList<>(availableEventsAdapter.getCurrentList());
+                                newAvailableEvents.remove(eventName);
+                                availableEventsAdapter.submitList(newAvailableEvents);
                             }
+                            openEvent(event.targetId, event.eventName, event.eventName);
                         }
                     });
                 }

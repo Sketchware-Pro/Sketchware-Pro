@@ -57,8 +57,6 @@ class KotlinCompiler(
             noJdk = true
             noReflect = true
             noStdlib = true
-            // greatly improves build performance
-            useFastJarFileSystem = true
 
             kotlinHome = mKotlinHome.absolutePath
             destination = mClassOutput.absolutePath

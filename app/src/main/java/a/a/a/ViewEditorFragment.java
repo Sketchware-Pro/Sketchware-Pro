@@ -46,7 +46,7 @@ public class ViewEditorFragment extends qA {
         setHasOptionsMenu(true);
         viewEditor = viewGroup.findViewById(R.id.view_editor);
         viewEditor.setScreenType(getResources().getConfiguration().orientation);
-        viewProperty = getActivity().findViewById(R.id.view_property);
+        viewProperty = requireActivity().findViewById(R.id.view_property);
         viewProperty.setOnPropertyListener(new Iw() {
             @Override
             public void a() {
@@ -98,7 +98,7 @@ public class ViewEditorFragment extends qA {
             @Override
             public void b() {
                 q = true;
-                ((DesignActivity) getActivity()).b(false);
+                ((DesignActivity) requireActivity()).b(false);
             }
 
             @Override
@@ -109,7 +109,7 @@ public class ViewEditorFragment extends qA {
             @Override
             public void d() {
                 q = false;
-                ((DesignActivity) getActivity()).b(true);
+                ((DesignActivity) requireActivity()).b(true);
             }
         });
         viewEditor.setOnHistoryChangeListener(this::invalidateOptionsMenu);
@@ -144,14 +144,14 @@ public class ViewEditorFragment extends qA {
     }
 
     private void toLogicEditorActivity(String eventId, String eventName, String eventName2) {
-        Intent intent = new Intent(getContext(), LogicEditorActivity.class);
+        Intent intent = new Intent(requireContext(), LogicEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("id", eventId);
         intent.putExtra("event", eventName);
         intent.putExtra("project_file", projectFileBean);
         intent.putExtra("event_text", eventName2);
-        getContext().startActivity(intent);
+        requireContext().startActivity(intent);
     }
 
     public void a(ArrayList<ViewBean> viewBeans) {
@@ -174,7 +174,7 @@ public class ViewEditorFragment extends qA {
     }
 
     public void b(ViewBean viewBean) {
-        Intent intent = new Intent(getContext(), PropertyActivity.class);
+        Intent intent = new Intent(requireContext(), PropertyActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("bean", viewBean);
@@ -323,7 +323,7 @@ public class ViewEditorFragment extends qA {
         }
 
         if (o == null) {
-            o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(getActivity(), (float) viewProperty.getHeight()));
+            o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(requireActivity(), (float) viewProperty.getHeight()));
             o.setDuration(300L);
             o.setInterpolator(new DecelerateInterpolator());
         }
@@ -333,52 +333,44 @@ public class ViewEditorFragment extends qA {
         return p;
     }
 
-    private void h() {
+    private void onRedo() {
         if (!q) {
             HistoryViewBean historyViewBean = cC.c(sc_id).h(projectFileBean.getXmlName());
-            if (historyViewBean == null) {
-                invalidateOptionsMenu();
-            } else {
+            if (historyViewBean != null) {
                 int actionType = historyViewBean.getActionType();
-                sy widgetItemView;
                 if (actionType == HistoryViewBean.ACTION_TYPE_ADD) {
                     for (ViewBean viewBean : historyViewBean.getAddedData()) {
                         jC.a(sc_id).a(projectFileBean.getXmlName(), viewBean);
                     }
-                    widgetItemView = viewEditor.a(historyViewBean.getAddedData(), false);
-                    viewEditor.a(widgetItemView, false);
-                } else {
-                    if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
-                        ViewBean prevUpdateData = historyViewBean.getPrevUpdateData();
-                        ViewBean currentUpdateData = historyViewBean.getCurrentUpdateData();
-                        if (!prevUpdateData.id.equals(currentUpdateData.id)) {
-                            currentUpdateData.preId = prevUpdateData.id;
-                        }
-
-                        if (currentUpdateData.id.equals("_fab")) {
-                            jC.a(sc_id).h(projectFileBean.getXmlName()).copy(currentUpdateData);
-                        } else {
-                            jC.a(sc_id).c(projectFileBean.getXmlName(), prevUpdateData.id).copy(currentUpdateData);
-                        }
-
-                        widgetItemView = viewEditor.e(currentUpdateData);
-                        viewEditor.a(widgetItemView, false);
-                    } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
-                        for (ViewBean viewBean : historyViewBean.getRemovedData()) {
-                            jC.a(sc_id).a(projectFileBean, viewBean);
-                        }
-                        viewEditor.b(historyViewBean.getRemovedData(), false);
-                        viewEditor.i();
-                    } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
-                        ViewBean movedData = historyViewBean.getMovedData();
-                        ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
-                        viewBean.copy(movedData);
-                        widgetItemView = viewEditor.b(viewBean, false);
-                        viewEditor.a(widgetItemView, false);
+                    viewEditor.a(viewEditor.a(historyViewBean.getAddedData(), false), false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
+                    ViewBean prevUpdateData = historyViewBean.getPrevUpdateData();
+                    ViewBean currentUpdateData = historyViewBean.getCurrentUpdateData();
+                    if (!prevUpdateData.id.equals(currentUpdateData.id)) {
+                        currentUpdateData.preId = prevUpdateData.id;
                     }
+
+                    if (currentUpdateData.id.equals("_fab")) {
+                        jC.a(sc_id).h(projectFileBean.getXmlName()).copy(currentUpdateData);
+                    } else {
+                        jC.a(sc_id).c(projectFileBean.getXmlName(), prevUpdateData.id).copy(currentUpdateData);
+                    }
+
+                    viewEditor.a(viewEditor.e(currentUpdateData), false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
+                    for (ViewBean viewBean : historyViewBean.getRemovedData()) {
+                        jC.a(sc_id).a(projectFileBean, viewBean);
+                    }
+                    viewEditor.b(historyViewBean.getRemovedData(), false);
+                    viewEditor.i();
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
+                    ViewBean movedData = historyViewBean.getMovedData();
+                    ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
+                    viewBean.copy(movedData);
+                    viewEditor.a(viewEditor.b(viewBean, false), false);
                 }
-                invalidateOptionsMenu();
             }
+            invalidateOptionsMenu();
         }
     }
 
@@ -403,53 +395,45 @@ public class ViewEditorFragment extends qA {
         viewEditor.j();
     }
 
-    private void m() {
+    private void onUndo() {
         if (!q) {
             HistoryViewBean historyViewBean = cC.c(sc_id).i(projectFileBean.getXmlName());
-            if (historyViewBean == null) {
-                invalidateOptionsMenu();
-            } else {
+            if (historyViewBean != null) {
                 int actionType = historyViewBean.getActionType();
                 if (actionType == HistoryViewBean.ACTION_TYPE_ADD) {
-                    for (ViewBean viewBean : historyViewBean.getAddedData()) {
-                        jC.a(sc_id).a(projectFileBean, viewBean);
+                    for (ViewBean view : historyViewBean.getAddedData()) {
+                        jC.a(sc_id).a(projectFileBean, view);
                     }
                     viewEditor.b(historyViewBean.getAddedData(), false);
                     viewEditor.i();
-                } else {
-                    sy widgetItemView;
-                    if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
-                        ViewBean prevUpdateData = historyViewBean.getPrevUpdateData();
-                        ViewBean currentUpdateData = historyViewBean.getCurrentUpdateData();
-                        if (!prevUpdateData.id.equals(currentUpdateData.id)) {
-                            prevUpdateData.preId = currentUpdateData.id;
-                        }
-                        if (currentUpdateData.id.equals("_fab")) {
-                            jC.a(sc_id).h(projectFileBean.getXmlName()).copy(prevUpdateData);
-                        } else {
-                            jC.a(sc_id).c(projectFileBean.getXmlName(), currentUpdateData.id).copy(prevUpdateData);
-                        }
-                        widgetItemView = viewEditor.e(prevUpdateData);
-                        viewEditor.a(widgetItemView, false);
-                    } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
-                        for (ViewBean var7 : historyViewBean.getRemovedData()) {
-                            jC.a(sc_id).a(projectFileBean.getXmlName(), var7);
-                        }
-                        widgetItemView = viewEditor.a(historyViewBean.getRemovedData(), false);
-                        viewEditor.a(widgetItemView, false);
-                    } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
-                        ViewBean movedData = historyViewBean.getMovedData();
-                        ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
-                        viewBean.preIndex = movedData.index;
-                        viewBean.index = movedData.preIndex;
-                        viewBean.parent = movedData.preParent;
-                        viewBean.preParent = movedData.parent;
-                        widgetItemView = viewEditor.b(viewBean, false);
-                        viewEditor.a(widgetItemView, false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_UPDATE) {
+                    ViewBean prevUpdateData = historyViewBean.getPrevUpdateData();
+                    ViewBean currentUpdateData = historyViewBean.getCurrentUpdateData();
+                    if (!prevUpdateData.id.equals(currentUpdateData.id)) {
+                        prevUpdateData.preId = currentUpdateData.id;
                     }
+                    if (currentUpdateData.id.equals("_fab")) {
+                        jC.a(sc_id).h(projectFileBean.getXmlName()).copy(prevUpdateData);
+                    } else {
+                        jC.a(sc_id).c(projectFileBean.getXmlName(), currentUpdateData.id).copy(prevUpdateData);
+                    }
+                    viewEditor.a(viewEditor.e(prevUpdateData), false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_REMOVE) {
+                    for (ViewBean view : historyViewBean.getRemovedData()) {
+                        jC.a(sc_id).a(projectFileBean.getXmlName(), view);
+                    }
+                    viewEditor.a(viewEditor.a(historyViewBean.getRemovedData(), false), false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_MOVE) {
+                    ViewBean movedData = historyViewBean.getMovedData();
+                    ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
+                    viewBean.preIndex = movedData.index;
+                    viewBean.index = movedData.preIndex;
+                    viewBean.parent = movedData.preParent;
+                    viewBean.preParent = movedData.parent;
+                    viewEditor.a(viewEditor.b(viewBean, false), false);
                 }
-                invalidateOptionsMenu();
             }
+            invalidateOptionsMenu();
         }
     }
 
@@ -534,7 +518,7 @@ public class ViewEditorFragment extends qA {
         if (bundle != null) {
             sc_id = bundle.getString("sc_id");
         } else {
-            sc_id = getActivity().getIntent().getStringExtra("sc_id");
+            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         }
 
         return viewGroup;
@@ -544,9 +528,9 @@ public class ViewEditorFragment extends qA {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_view_redo) {
-            h();
+            onRedo();
         } else if (itemId == R.id.menu_view_undo) {
-            m();
+            onUndo();
         }
         return true;
     }

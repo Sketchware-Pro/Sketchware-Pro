@@ -1218,7 +1218,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return false;
             }
         }
-        return blockBean.opCode.equals("getVar") || !blockBean.opCode.equals("viewOnClick") || D.equals("onBindCustomView");
+        return true;
     }
 
     public Rs b(BlockBean blockBean) {
@@ -1825,8 +1825,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 c(data.getStringExtra("block_name"), data.getStringExtra("block_spec"));
             } else if (requestCode == 224) {
                 a(7, 0xff2ca5e2);
-            } else if (requestCode == 463 && data.getBooleanExtra("req_update_design_activity", false)) {
-                z();
             }
         }
     }

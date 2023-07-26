@@ -296,19 +296,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case 462:
-                if (resultCode == RESULT_OK && data.getBooleanExtra("req_update_design_activity", false)) {
-                    viewTabAdapter.j();
-                }
-                break;
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
