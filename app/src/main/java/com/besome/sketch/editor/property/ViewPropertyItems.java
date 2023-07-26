@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,22 +51,23 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     }
 
     private void setupViews() {
-        LayoutParams params = new LayoutParams(-1, -1);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.CENTER;
         setLayoutParams(params);
         setGravity(Gravity.CENTER);
         TextView label = new TextView(getContext());
-        label.setTextColor(getResources().getColor(2131034217));
+        label.setTextColor(getResources().getColor(R.color.grey));
         label.setGravity(Gravity.CENTER);
         label.setPadding(8, 8, 8, 8);
-        label.setTextSize(2, 12.0F);
-        label.setText(xB.b().a(getContext(), 2131625308));
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        label.setText(xB.b().a(getContext(), R.string.design_property_recent_message_nodata));
         addView(label);
     }
 
     private void a(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), 2131625828));
+            a(xB.b().a(getResources(), R.string.property_header_layout));
         }
 
         a(bean, "property_margin");
@@ -329,7 +333,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
     private void c(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), 2131625827), this);
+            a(xB.b().a(getResources(), R.string.property_header_image), this);
         }
 
         a(bean, "property_image");
@@ -377,7 +381,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
     public void d(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), 2131625828));
+            a(xB.b().a(getResources(), R.string.property_header_layout));
         }
 
         Gx classInfo = bean.getClassInfo();
@@ -445,7 +449,8 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     public void e(ViewBean bean) {
         c = bean;
         removeAllViews();
-        LayoutParams params = new LayoutParams(-1, -1);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.LEFT;
         setLayoutParams(params);
         setGravity(Gravity.LEFT);
@@ -560,7 +565,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         Gx classInfo = bean.getClassInfo();
         if (classInfo.a("TextView")) {
             if (getOrientation() == LinearLayout.VERTICAL) {
-                a(xB.b().a(getResources(), 2131625830));
+                a(xB.b().a(getResources(), R.string.property_header_text));
             }
 
             a(bean, "property_text");
@@ -593,18 +598,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         Gx classInfo = bean.getClassInfo();
         if (getOrientation() == LinearLayout.VERTICAL) {
             if (classInfo.a("ImageView")) {
-                a(xB.b().a(getResources(), 2131625827), this);
+                a(xB.b().a(getResources(), R.string.property_header_image), this);
                 a(bean, "property_image");
                 a(bean, "property_scale_type");
             } else {
-                a(xB.b().a(getResources(), 2131625827));
+                a(xB.b().a(getResources(), R.string.property_header_image));
             }
         } else if (classInfo.a("ImageView")) {
             a(bean, "property_image");
             a(bean, "property_scale_type");
         }
 
-        if (bean.type != 18) {
+        if (bean.type != ViewBean.VIEW_TYPE_WIDGET_MAPVIEW) {
             a(bean, "property_background_resource");
             a(bean, "property_background_color");
         }
