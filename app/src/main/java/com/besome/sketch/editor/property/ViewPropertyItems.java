@@ -45,16 +45,24 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         Cx.a().a(var1);
     }
 
-    public final void a(ViewBean var1) {
-        var1.getClassInfo();
-        var1.getParentClassInfo();
-        if (this.getOrientation() == 1) {
-            this.a(xB.b().a(this.getResources(), 2131625828));
-        }
-
-        this.a(var1, "property_margin");
-        this.a(var1, "property_layout_gravity");
+    private void setupViews() {
+        LayoutParams params = new LayoutParams(-1, -1);
+        params.gravity = Gravity.CENTER;
+        setLayoutParams(params);
+        setGravity(Gravity.CENTER);
+        TextView label = new TextView(getContext());
+        label.setTextColor(getResources().getColor(2131034217));
+        label.setGravity(Gravity.CENTER);
+        label.setPadding(8, 8, 8, 8);
+        label.setTextSize(2, 12.0F);
+        label.setText(xB.b().a(getContext(), 2131625308));
+        addView(label);
     }
+
+    private void a(ViewBean bean) {
+        if (getOrientation() == LinearLayout.VERTICAL) {
+            a(xB.b().a(getResources(), 2131625828));
+        }
 
     public final void a(ViewBean var1, String var2) {
         boolean var3 = var1.getClassInfo().a("AdView") ^ true;
