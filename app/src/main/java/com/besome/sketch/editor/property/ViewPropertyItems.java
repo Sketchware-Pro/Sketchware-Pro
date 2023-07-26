@@ -594,138 +594,132 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
-    public void e(String var1, int var2) {
-        PropertySwitchSingleLineItem var3 = (PropertySwitchSingleLineItem)this.f.get(var1);
-        boolean var4 = false;
-        boolean var5 = false;
-        PropertySwitchSingleLineItem var6;
-        if (var3 == null) {
-            var3 = new PropertySwitchSingleLineItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            if (var2 == 1) {
-                var5 = true;
+    public void e(String key, int value) {
+        PropertySwitchSingleLineItem switchSingleLineItem = (PropertySwitchSingleLineItem)f.get(key);
+        boolean isEnabled = false;
+        if (switchSingleLineItem == null) {
+            switchSingleLineItem = new PropertySwitchSingleLineItem(getContext(), !b);
+            switchSingleLineItem.setOrientationItem(getOrientation());
+            switchSingleLineItem.setKey(key);
+            if (value == 1) {
+                isEnabled = true;
             }
 
-            var3.setValue(var5);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var6 = var3;
+            switchSingleLineItem.setValue(isEnabled);
+            switchSingleLineItem.setTag(key);
+            switchSingleLineItem.setOnPropertyValueChangeListener(this);
+            f.put(key, switchSingleLineItem);
         } else {
-            var5 = var4;
-            if (var2 == 1) {
-                var5 = true;
+            if (value == 1) {
+                isEnabled = true;
             }
 
-            var3.setValue(var5);
-            var6 = var3;
+            switchSingleLineItem.setValue(isEnabled);
         }
 
-        this.addView(var6);
+        addView(switchSingleLineItem);
     }
 
-    public void f(ViewBean var1) {
-        if (!var1.id.equals("_fab")) {
-            Gx var2 = var1.getClassInfo();
-            var1.getParentClassInfo();
-            this.a(var1, "property_inject");
-            this.a(var1, "property_convert");
-            if (var2.b("Spinner")) {
-                this.a(var1, "property_spinner_mode");
+    public void f(ViewBean bean) {
+        if (!bean.id.equals("_fab")) {
+            Gx classInfo = bean.getClassInfo();
+            a(bean, "property_inject");
+            a(bean, "property_convert");
+            if (classInfo.b("Spinner")) {
+                a(bean, "property_spinner_mode");
             }
 
-            if (var2.b("ListView")) {
-                this.a(var1, "property_divider_height");
-                this.a(var1, "property_custom_view_listview");
+            if (classInfo.b("ListView")) {
+                a(bean, "property_divider_height");
+                a(bean, "property_custom_view_listview");
             }
 
-            if (var2.b("GridView")) {
-                this.a(var1, "property_custom_view_listview");
+            if (classInfo.b("GridView")) {
+                a(bean, "property_custom_view_listview");
             }
 
-            if (var2.b("RecyclerView")) {
-                this.a(var1, "property_custom_view_listview");
+            if (classInfo.b("RecyclerView")) {
+                a(bean, "property_custom_view_listview");
             }
 
-            if (var2.b("ViewPager")) {
-                this.a(var1, "property_custom_view_listview");
+            if (classInfo.b("ViewPager")) {
+                a(bean, "property_custom_view_listview");
             }
 
-            if (var2.b("Spinner")) {
-                this.a(var1, "property_custom_view_listview");
+            if (classInfo.b("Spinner")) {
+                a(bean, "property_custom_view_listview");
             }
 
-            if (var2.b("AutoCompleteTextView")) {
-                this.a(var1, "property_hint");
-                this.a(var1, "property_hint_color");
+            if (classInfo.b("AutoCompleteTextView")) {
+                a(bean, "property_hint");
+                a(bean, "property_hint_color");
             }
 
-            if (var2.b("MultiAutoCompleteTextView")) {
-                this.a(var1, "property_hint");
-                this.a(var1, "property_hint_color");
+            if (classInfo.b("MultiAutoCompleteTextView")) {
+                a(bean, "property_hint");
+                a(bean, "property_hint_color");
             }
 
-            if (var2.b("WaveSideBar")) {
-                this.a(var1, "property_text_size");
-                this.a(var1, "property_text_color");
+            if (classInfo.b("WaveSideBar")) {
+                a(bean, "property_text_size");
+                a(bean, "property_text_color");
             }
 
-            if (var2.a("CompoundButton") && this.getOrientation() == 1) {
-                this.a(var1, "property_checked");
+            if (classInfo.a("CompoundButton") && getOrientation() == LinearLayout.VERTICAL) {
+                a(bean, "property_checked");
             }
 
-            if (var2.b("SeekBar")) {
-                this.a(var1, "property_max");
-                this.a(var1, "property_progress");
+            if (classInfo.b("SeekBar")) {
+                a(bean, "property_max");
+                a(bean, "property_progress");
             }
 
-            if (var2.b("CalendarView")) {
-                this.a(var1, "property_first_day_of_week");
+            if (classInfo.b("CalendarView")) {
+                a(bean, "property_first_day_of_week");
             }
 
-            if (var2.b("AdView")) {
-                this.a(var1, "property_ad_size");
+            if (classInfo.b("AdView")) {
+                a(bean, "property_ad_size");
             }
 
-            if (var2.b("ProgressBar")) {
-                this.a(var1, "property_max");
-                this.a(var1, "property_progress");
-                this.a(var1, "property_progressbar_style");
-                this.a(var1, "property_indeterminate");
+            if (classInfo.b("ProgressBar")) {
+                a(bean, "property_max");
+                a(bean, "property_progress");
+                a(bean, "property_progressbar_style");
+                a(bean, "property_indeterminate");
             }
         }
     }
 
-    public void g(ViewBean var1) {
-        Gx var2 = var1.getClassInfo();
-        if (var2.a("TextView")) {
-            if (this.getOrientation() == 1) {
-                this.a(xB.b().a(this.getResources(), 2131625830));
+    public void g(ViewBean bean) {
+        Gx classInfo = bean.getClassInfo();
+        if (classInfo.a("TextView")) {
+            if (getOrientation() == LinearLayout.VERTICAL) {
+                a(xB.b().a(getResources(), 2131625830));
             }
 
-            this.a(var1, "property_text");
-            this.a(var1, "property_text_size");
-            this.a(var1, "property_text_style");
-            this.a(var1, "property_text_color");
-            if (var2.b("EditText")) {
-                this.a(var1, "property_hint");
-                this.a(var1, "property_hint_color");
-                if (this.getOrientation() == 1) {
-                    this.a(var1, "property_single_line");
+            a(bean, "property_text");
+            a(bean, "property_text_size");
+            a(bean, "property_text_style");
+            a(bean, "property_text_color");
+            if (classInfo.b("EditText")) {
+                a(bean, "property_hint");
+                a(bean, "property_hint_color");
+                if (getOrientation() == LinearLayout.VERTICAL) {
+                    a(bean, "property_single_line");
                 }
 
-                this.a(var1, "property_lines");
-                this.a(var1, "property_input_type");
-                this.a(var1, "property_ime_option");
+                a(bean, "property_lines");
+                a(bean, "property_input_type");
+                a(bean, "property_ime_option");
             }
 
-            if (var2.b("TextView")) {
-                if (this.getOrientation() == 1) {
-                    this.a(var1, "property_single_line");
+            if (classInfo.b("TextView")) {
+                if (getOrientation() == LinearLayout.VERTICAL) {
+                    a(bean, "property_single_line");
                 }
 
-                this.a(var1, "property_lines");
+                a(bean, "property_lines");
             }
         }
     }
@@ -1081,12 +1075,12 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
-    public void setOnPropertyValueChangedListener(Lw var1) {
-        this.d = var1;
+    public void setOnPropertyValueChangedListener(Lw listener) {
+        d = listener;
     }
 
-    public void setProjectFileBean(ProjectFileBean var1) {
-        this.e = var1;
+    public void setProjectFileBean(ProjectFileBean fileBean) {
+        e = fileBean;
     }
 
     private void openManageImageActivityIfNeeded() {
