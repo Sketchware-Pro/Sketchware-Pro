@@ -64,153 +64,68 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
             a(xB.b().a(getResources(), 2131625828));
         }
 
-    public final void a(ViewBean var1, String var2) {
-        boolean var3 = var1.getClassInfo().a("AdView") ^ true;
-        boolean var4;
-        if (var1.id.charAt(0) == '_') {
-            var4 = true;
-        } else {
-            var4 = false;
-        }
+        a(bean, "property_margin");
+        a(bean, "property_layout_gravity");
+    }
 
-        switch(var2) {
-            case "property_id":
-                String var8;
-                if (var4) {
-                    var8 = var1.id.substring(1);
-                } else {
-                    var8 = var1.id;
-                }
+    public final void a(ViewBean bean, String property) {
+        boolean isNotAdview = !bean.getClassInfo().a("AdView");
+        boolean isGeneratedId = bean.id.charAt(0) == '_';
 
-                this.a(var2, var8, var4);
-                break;
-            case "property_layout_width":
-                this.a(var2, var1.layout.width, var3);
-                break;
-            case "property_layout_height":
-                this.a(var2, var1.layout.height, var3);
-                break;
-            case "property_margin":
-                LayoutBean var7 = var1.layout;
-                this.a(var2, var7.marginLeft, var7.marginTop, var7.marginRight, var7.marginBottom);
-                break;
-            case "property_padding":
-                LayoutBean var6 = var1.layout;
-                this.a("property_padding", var6.paddingLeft, var6.paddingTop, var6.paddingRight, var6.paddingBottom);
-                break;
-            case "property_orientation":
-                this.c(var2, var1.layout.orientation);
-                break;
-            case "property_weight_sum":
-                this.b(var2, String.valueOf(var1.layout.weightSum));
-                break;
-            case "property_gravity":
-                this.b(var2, var1.layout.gravity);
-                break;
-            case "property_layout_gravity":
-                this.b(var2, var1.layout.layoutGravity);
-                break;
-            case "property_weight":
-                this.b(var2, String.valueOf(var1.layout.weight));
-                break;
-            case "property_text":
-                this.b(var2, var1.text.text);
-                break;
-            case "property_text_size":
-                this.c(var2, var1.text.textSize);
-                break;
-            case "property_text_style":
-                this.c(var2, var1.text.textType);
-                break;
-            case "property_text_color":
-                this.a(var2, var1.text.textColor);
-                break;
-            case "property_hint":
-                this.b(var2, var1.text.hint);
-                break;
-            case "property_hint_color":
-                this.a(var2, var1.text.hintColor);
-                break;
-            case "property_single_line":
-                this.e(var2, var1.text.singleLine);
-                break;
-            case "property_lines":
-                this.b(var2, String.valueOf(var1.text.line));
-                break;
-            case "property_input_type":
-                this.c(var2, var1.text.inputType);
-                break;
-            case "property_ime_option":
-                this.c(var2, var1.text.imeOption);
-                break;
-            case "property_image":
-                this.b(var2, var1.image.resName, true);
-                break;
-            case "property_scale_type":
-                this.d(var2, var1.image.scaleType);
-                break;
-            case "property_background_resource":
-                this.b(var2, var1.layout.backgroundResource, false);
-                break;
-            case "property_background_color":
-                this.a(var2, var1.layout.backgroundColor);
-                break;
-            case "property_enabled":
-                this.e(var2, var1.enabled);
-                break;
-            case "property_rotate":
-                this.b(var2, String.valueOf(var1.image.rotate));
-                break;
-            case "property_alpha":
-                this.b(var2, String.valueOf(var1.alpha));
-                break;
-            case "property_translation_x":
-                this.b(var2, String.valueOf(var1.translationX));
-                break;
-            case "property_translation_y":
-                this.b(var2, String.valueOf(var1.translationY));
-                break;
-            case "property_scale_x":
-                this.b(var2, String.valueOf(var1.scaleX));
-                break;
-            case "property_scale_y":
-                this.b(var2, String.valueOf(var1.scaleY));
-                break;
-            case "property_spinner_mode":
-                this.c(var2, var1.spinnerMode);
-                break;
-            case "property_divider_height":
-                this.d(var2, var1.dividerHeight);
-                break;
-            case "property_custom_view_listview":
-                this.a(var2, var1.customView);
-                break;
-            case "property_checked":
-                this.e(var2, var1.checked);
-                break;
-            case "property_max":
-                this.b(var2, String.valueOf(var1.max));
-                break;
-            case "property_progress":
-                this.b(var2, String.valueOf(var1.progress));
-                break;
-            case "property_first_day_of_week":
-                this.c(var2, var1.firstDayOfWeek);
-                break;
-            case "property_ad_size":
-                this.d(var2, var1.adSize);
-                break;
-            case "property_progressbar_style":
-                this.c(var2, var1.progressStyle);
-                break;
-            case "property_indeterminate":
-                this.d(var2, var1.indeterminate);
-                break;
-            case "property_inject":
-                this.b(var2, var1.inject);
-                break;
-            case "property_convert":
-                this.b(var2, var1.convert);
+        switch (property) {
+            case "property_id" -> {
+                String id = isGeneratedId ? bean.id.substring(1) : bean.id;
+                a(property, id, isGeneratedId);
+            }
+            case "property_layout_width" -> a(property, bean.layout.width, isNotAdview);
+            case "property_layout_height" -> a(property, bean.layout.height, isNotAdview);
+            case "property_margin" -> {
+                LayoutBean layoutBean = bean.layout;
+                a(property, layoutBean.marginLeft, layoutBean.marginTop, layoutBean.marginRight, layoutBean.marginBottom);
+            }
+            case "property_padding" -> {
+                LayoutBean layoutBean = bean.layout;
+                a("property_padding", layoutBean.paddingLeft, layoutBean.paddingTop, layoutBean.paddingRight, layoutBean.paddingBottom);
+            }
+            case "property_orientation" -> c(property, bean.layout.orientation);
+            case "property_weight_sum" -> b(property, String.valueOf(bean.layout.weightSum));
+            case "property_gravity" -> b(property, bean.layout.gravity);
+            case "property_layout_gravity" -> b(property, bean.layout.layoutGravity);
+            case "property_weight" -> b(property, String.valueOf(bean.layout.weight));
+            case "property_text" -> b(property, bean.text.text);
+            case "property_text_size" -> c(property, bean.text.textSize);
+            case "property_text_style" -> c(property, bean.text.textType);
+            case "property_text_color" -> a(property, bean.text.textColor);
+            case "property_hint" -> b(property, bean.text.hint);
+            case "property_hint_color" -> a(property, bean.text.hintColor);
+            case "property_single_line" -> e(property, bean.text.singleLine);
+            case "property_lines" -> b(property, String.valueOf(bean.text.line));
+            case "property_input_type" -> c(property, bean.text.inputType);
+            case "property_ime_option" -> c(property, bean.text.imeOption);
+            case "property_image" -> b(property, bean.image.resName, true);
+            case "property_scale_type" -> d(property, bean.image.scaleType);
+            case "property_background_resource" ->
+                    b(property, bean.layout.backgroundResource, false);
+            case "property_background_color" -> a(property, bean.layout.backgroundColor);
+            case "property_enabled" -> e(property, bean.enabled);
+            case "property_rotate" -> b(property, String.valueOf(bean.image.rotate));
+            case "property_alpha" -> b(property, String.valueOf(bean.alpha));
+            case "property_translation_x" -> b(property, String.valueOf(bean.translationX));
+            case "property_translation_y" -> b(property, String.valueOf(bean.translationY));
+            case "property_scale_x" -> b(property, String.valueOf(bean.scaleX));
+            case "property_scale_y" -> b(property, String.valueOf(bean.scaleY));
+            case "property_spinner_mode" -> c(property, bean.spinnerMode);
+            case "property_divider_height" -> d(property, bean.dividerHeight);
+            case "property_custom_view_listview" -> a(property, bean.customView);
+            case "property_checked" -> e(property, bean.checked);
+            case "property_max" -> b(property, String.valueOf(bean.max));
+            case "property_progress" -> b(property, String.valueOf(bean.progress));
+            case "property_first_day_of_week" -> c(property, bean.firstDayOfWeek);
+            case "property_ad_size" -> d(property, bean.adSize);
+            case "property_progressbar_style" -> c(property, bean.progressStyle);
+            case "property_indeterminate" -> d(property, bean.indeterminate);
+            case "property_inject" -> b(property, bean.inject);
+            case "property_convert" -> b(property, bean.convert);
         }
     }
 
