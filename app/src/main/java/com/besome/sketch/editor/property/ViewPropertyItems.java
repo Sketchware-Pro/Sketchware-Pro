@@ -1,8 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import a.a.a.Cx;
-import a.a.a.Dx;
-import a.a.a.Ex;
 import a.a.a.Gx;
 import a.a.a.Kw;
 import a.a.a.Lw;
@@ -10,6 +8,7 @@ import a.a.a.Pw;
 import a.a.a.Vw;
 import a.a.a.cC;
 import a.a.a.jC;
+import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.tx;
 import a.a.a.xB;
@@ -451,7 +450,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         var1.getClassInfo();
         var1.getParentClassInfo();
         if (this.getOrientation() == 1) {
-            this.a(xB.b().a(this.getResources(), 2131625827), (OnClickListener)(new Ex(this)));
+            this.a(xB.b().a(this.getResources(), 2131625827), (v) -> openManageImageActivityIfNeeded());
         }
 
         this.a(var1, "property_image");
@@ -736,7 +735,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         var1.getParentClassInfo();
         if (this.getOrientation() == 1) {
             if (var2.a("ImageView")) {
-                this.a(xB.b().a(this.getResources(), 2131625827), (OnClickListener)(new Dx(this)));
+                this.a(xB.b().a(this.getResources(), 2131625827), (v) -> openManageImageActivityIfNeeded());
                 this.a(var1, "property_image");
                 this.a(var1, "property_scale_type");
             } else {
@@ -1088,5 +1087,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
 
     public void setProjectFileBean(ProjectFileBean var1) {
         this.e = var1;
+    }
+
+    private void openManageImageActivityIfNeeded() {
+        if (mB.a() || b) return;
+        c();
     }
 }
