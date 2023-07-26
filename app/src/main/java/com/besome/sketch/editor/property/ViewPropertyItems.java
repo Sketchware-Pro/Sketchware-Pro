@@ -446,60 +446,52 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         ((Activity)this.getContext()).startActivityForResult(var1, 209);
     }
 
-    public final void c(ViewBean var1) {
-        var1.getClassInfo();
-        var1.getParentClassInfo();
-        if (this.getOrientation() == 1) {
-            this.a(xB.b().a(this.getResources(), 2131625827), (v) -> openManageImageActivityIfNeeded());
+    public void c(ViewBean bean) {
+        if (getOrientation() == LinearLayout.VERTICAL) {
+            a(xB.b().a(getResources(), 2131625827), view -> openManageImageActivityIfNeeded());
         }
 
-        this.a(var1, "property_image");
-        this.a(var1, "property_rotate");
-        this.a(var1, "property_alpha");
-        this.a(var1, "property_translation_x");
-        this.a(var1, "property_translation_y");
-        this.a(var1, "property_scale_x");
-        this.a(var1, "property_scale_y");
+        a(bean, "property_image");
+        a(bean, "property_rotate");
+        a(bean, "property_alpha");
+        a(bean, "property_translation_x");
+        a(bean, "property_translation_y");
+        a(bean, "property_scale_x");
+        a(bean, "property_scale_y");
     }
 
-    public void c(String var1, int var2) {
-        PropertySelectorItem var3 = (PropertySelectorItem)this.f.get(var1);
-        PropertySelectorItem var4;
-        if (var3 == null) {
-            var3 = new PropertySelectorItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            var3.setValue(var2);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var4 = var3;
+    private void c(String key, int value) {
+        PropertySelectorItem selectorItem = (PropertySelectorItem)f.get(key);
+        if (selectorItem == null) {
+            selectorItem = new PropertySelectorItem(getContext(), !b);
+            selectorItem.setOrientationItem(getOrientation());
+            selectorItem.setKey(key);
+            selectorItem.setValue(value);
+            selectorItem.setTag(key);
+            selectorItem.setOnPropertyValueChangeListener(this);
+            f.put(key, selectorItem);
         } else {
-            var3.setValue(var2);
-            var4 = var3;
+            selectorItem.setValue(value);
         }
 
-        this.addView(var4);
+        addView(selectorItem);
     }
 
-    public void c(String var1, String var2) {
-        PropertyStringPairSelectorItem var3 = (PropertyStringPairSelectorItem)this.f.get(var1);
-        PropertyStringPairSelectorItem var4;
-        if (var3 == null) {
-            var3 = new PropertyStringPairSelectorItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            var3.setValue(var2);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var4 = var3;
+    private void c(String key, String value) {
+        PropertyStringPairSelectorItem pairSelectorItem = (PropertyStringPairSelectorItem)f.get(key);
+        if (pairSelectorItem == null) {
+            pairSelectorItem = new PropertyStringPairSelectorItem(getContext(), !b);
+            pairSelectorItem.setOrientationItem(getOrientation());
+            pairSelectorItem.setKey(key);
+            pairSelectorItem.setValue(value);
+            pairSelectorItem.setTag(key);
+            pairSelectorItem.setOnPropertyValueChangeListener(this);
+            f.put(key, pairSelectorItem);
         } else {
-            var3.setValue(var2);
-            var4 = var3;
+            pairSelectorItem.setValue(value);
         }
 
-        this.addView(var4);
+        addView(pairSelectorItem);
     }
 
     public void d(ViewBean var1) {
@@ -507,84 +499,78 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
             this.a(xB.b().a(this.getResources(), 2131625828));
         }
 
-        Gx var2 = var1.getClassInfo();
-        Gx var3 = var1.getParentClassInfo();
-        this.a(var1, "property_layout_width");
-        this.a(var1, "property_layout_height");
-        this.a(var1, "property_padding");
-        this.a(var1, "property_margin");
-        if (var2.a("LinearLayout")) {
-            this.a(var1, "property_orientation");
-            this.a(var1, "property_weight_sum");
-            this.a(var1, "property_gravity");
+        Gx classInfo = bean.getClassInfo();
+        Gx parentClassInfo = bean.getParentClassInfo();
+        a(bean, "property_layout_width");
+        a(bean, "property_layout_height");
+        a(bean, "property_padding");
+        a(bean, "property_margin");
+        if (classInfo.a("LinearLayout")) {
+            a(bean, "property_orientation");
+            a(bean, "property_weight_sum");
+            a(bean, "property_gravity");
         }
 
-        if (var2.a("TextView")) {
-            this.a(var1, "property_gravity");
+        if (classInfo.a("TextView")) {
+            a(bean, "property_gravity");
         }
 
-        if (var3 != null) {
-            if (var3.a("LinearLayout")) {
-                this.a(var1, "property_layout_gravity");
-                this.a(var1, "property_weight");
+        if (parentClassInfo != null) {
+            if (parentClassInfo.a("LinearLayout")) {
+                a(bean, "property_layout_gravity");
+                a(bean, "property_weight");
             }
 
-            if (var3.a("ScrollView") || var3.a("HorizontalScrollView")) {
-                this.a(var1, "property_layout_gravity");
+            if (parentClassInfo.a("ScrollView") || parentClassInfo.a("HorizontalScrollView")) {
+                a(bean, "property_layout_gravity");
             }
         }
     }
 
-    public void d(String var1, int var2) {
-        PropertySizeItem var3 = (PropertySizeItem)this.f.get(var1);
-        PropertySizeItem var4;
-        if (var3 == null) {
-            var3 = new PropertySizeItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            var3.setValue(var2);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var4 = var3;
+    private void d(String key, int value) {
+        PropertySizeItem propertySizeItem = (PropertySizeItem)f.get(key);
+        if (propertySizeItem == null) {
+            propertySizeItem = new PropertySizeItem(getContext(), !b);
+            propertySizeItem.setOrientationItem(getOrientation());
+            propertySizeItem.setKey(key);
+            propertySizeItem.setValue(value);
+            propertySizeItem.setTag(key);
+            propertySizeItem.setOnPropertyValueChangeListener(this);
+            f.put(key, propertySizeItem);
         } else {
-            var3.setValue(var2);
-            var4 = var3;
+            propertySizeItem.setValue(value);
         }
 
-        this.addView(var4);
+        addView(propertySizeItem);
     }
 
-    public void d(String var1, String var2) {
-        PropertyStringSelectorItem var3 = (PropertyStringSelectorItem)this.f.get(var1);
-        PropertyStringSelectorItem var4;
-        if (var3 == null) {
-            var3 = new PropertyStringSelectorItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            var3.setValue(var2);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var4 = var3;
+    private void d(String key, String value) {
+        PropertyStringSelectorItem stringSelectorItem = (PropertyStringSelectorItem)f.get(key);
+        if (stringSelectorItem == null) {
+            stringSelectorItem = new PropertyStringSelectorItem(getContext(), !b);
+            stringSelectorItem.setOrientationItem(getOrientation());
+            stringSelectorItem.setKey(key);
+            stringSelectorItem.setValue(value);
+            stringSelectorItem.setTag(key);
+            stringSelectorItem.setOnPropertyValueChangeListener(this);
+            f.put(key, stringSelectorItem);
         } else {
-            var3.setValue(var2);
-            var4 = var3;
+            stringSelectorItem.setValue(value);
         }
 
-        this.addView(var4);
+        addView(stringSelectorItem);
     }
 
-    public void e(ViewBean var1) {
-        this.c = var1;
-        this.removeAllViews();
-        LayoutParams var2 = new LayoutParams(-1, -1);
-        var2.gravity = 3;
-        this.setLayoutParams(var2);
-        this.setGravity(3);
-        ArrayList var3 = Cx.a().a(var1.getClassInfo().a());
-        if (var3 == null) {
-            this.a();
+    public void e(ViewBean bean) {
+        c = bean;
+        removeAllViews();
+        LayoutParams params = new LayoutParams(-1, -1);
+        params.gravity = Gravity.LEFT;
+        setLayoutParams(params);
+        setGravity(Gravity.LEFT);
+        ArrayList<String> items = Cx.a().a(bean.getClassInfo().a());
+        if (items == null) {
+            setupViews();
         } else {
             Iterator var4 = var3.iterator();
 
@@ -724,42 +710,41 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
-    public void h(ViewBean var1) {
-        Gx var2 = var1.getClassInfo();
-        var1.getParentClassInfo();
-        if (this.getOrientation() == 1) {
-            if (var2.a("ImageView")) {
-                this.a(xB.b().a(this.getResources(), 2131625827), (v) -> openManageImageActivityIfNeeded());
-                this.a(var1, "property_image");
-                this.a(var1, "property_scale_type");
+    public void h(ViewBean bean) {
+        Gx classInfo = bean.getClassInfo();
+        if (getOrientation() == LinearLayout.VERTICAL) {
+            if (classInfo.a("ImageView")) {
+                a(xB.b().a(getResources(), 2131625827), v -> openManageImageActivityIfNeeded());
+                a(bean, "property_image");
+                a(bean, "property_scale_type");
             } else {
-                this.a(xB.b().a(this.getResources(), 2131625827));
+                a(xB.b().a(getResources(), 2131625827));
             }
-        } else if (var2.a("ImageView")) {
-            this.a(var1, "property_image");
-            this.a(var1, "property_scale_type");
+        } else if (classInfo.a("ImageView")) {
+            a(bean, "property_image");
+            a(bean, "property_scale_type");
         }
 
-        if (var1.type != 18) {
-            this.a(var1, "property_background_resource");
-            this.a(var1, "property_background_color");
+        if (bean.type != 18) {
+            a(bean, "property_background_resource");
+            a(bean, "property_background_color");
         }
 
-        if (this.getOrientation() == 1
-                && !var2.b("LinearLayout")
-                && !var2.b("ScrollView")
-                && !var2.b("HorizontalScrollView")
-                && !var2.b("ListView")
-                && !var2.b("FloatingActionButton")) {
-            this.a(var1, "property_enabled");
+        if (getOrientation() == LinearLayout.VERTICAL
+                && !classInfo.b("LinearLayout")
+                && !classInfo.b("ScrollView")
+                && !classInfo.b("HorizontalScrollView")
+                && !classInfo.b("ListView")
+                && !classInfo.b("FloatingActionButton")) {
+            a(bean, "property_enabled");
         }
 
-        this.a(var1, "property_rotate");
-        this.a(var1, "property_alpha");
-        this.a(var1, "property_translation_x");
-        this.a(var1, "property_translation_y");
-        this.a(var1, "property_scale_x");
-        this.a(var1, "property_scale_y");
+        a(bean, "property_rotate");
+        a(bean, "property_alpha");
+        a(bean, "property_translation_x");
+        a(bean, "property_translation_y");
+        a(bean, "property_scale_x");
+        a(bean, "property_scale_y");
     }
 
     public void i(ViewBean var1) {
