@@ -237,8 +237,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (!(holder instanceof EmptyViewHolder)) {
-                if (holder instanceof MenuItemHolder) {
-                    MenuItemHolder menuItemHolder = (MenuItemHolder) holder;
+                if (holder instanceof MenuItemHolder menuItemHolder) {
                     menuItemHolder.name.setImageResource(DrawerItem.values()[position > 0 ? position - 1 : position].getIcon());
                     DrawerItem[] values = DrawerItem.values();
                     if (position > 0) position--;

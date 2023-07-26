@@ -1207,21 +1207,18 @@ public class ExtraPaletteBlock {
                     HashMap<String, Object> map = extraBlockData.get(i);
 
                     Object palette = map.get("palette");
-                    if (palette instanceof String) {
-                        String paletteString = (String) palette;
+                    if (palette instanceof String paletteString) {
 
                         if (paletteString.equals(String.valueOf(paletteId))) {
                             if (paletteIndex == -1) paletteIndex = Integer.parseInt(paletteString);
                             paletteBlocks++;
 
                             Object type = map.get("type");
-                            if (type instanceof String) {
-                                String typeString = (String) type;
+                            if (type instanceof String typeString) {
 
                                 if (typeString.equals("h")) {
                                     Object spec = map.get("spec");
-                                    if (spec instanceof String) {
-                                        String specString = (String) spec;
+                                    if (spec instanceof String specString) {
 
                                         logicEditor.a(specString, 0xff555555);
                                     } else {
@@ -1230,12 +1227,10 @@ public class ExtraPaletteBlock {
                                     }
                                 } else {
                                     Object name = map.get("name");
-                                    if (name instanceof String) {
-                                        String nameString = (String) name;
+                                    if (name instanceof String nameString) {
 
                                         Object typeName = map.get("typeName");
-                                        if (typeName instanceof String) {
-                                            String typeNameString = (String) typeName;
+                                        if (typeName instanceof String typeNameString) {
 
                                             logicEditor.a("", typeString, typeNameString, nameString);
                                         } else {
