@@ -195,7 +195,6 @@ public class ExtraPaletteBlock {
             String variable = customVariables2.get(i);
             String temp = variable.replaceAll("\\b(?:public|private|protected|static|final)\\s\\b", "");
             String[] split = temp.split(" ");
-            logicEditor.a(String.valueOf(split.length), 0xff008dcd);
             if (split.length == 2 || split.length == 4) {
                 logicEditor.a(split[1], "v", split[0], "getVar").setTag(variable);
             } else {
