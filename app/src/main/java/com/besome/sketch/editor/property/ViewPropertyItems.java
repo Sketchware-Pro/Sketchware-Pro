@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.LayoutBean;
@@ -57,7 +59,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         setLayoutParams(params);
         setGravity(Gravity.CENTER);
         TextView label = new TextView(getContext());
-        label.setTextColor(getResources().getColor(R.color.grey));
+        label.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
         label.setGravity(Gravity.CENTER);
         label.setPadding(8, 8, 8, 8);
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
