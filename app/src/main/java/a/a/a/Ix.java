@@ -243,19 +243,21 @@ public class Ix {
                 new Pair<>(builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME), "androidx.work.WorkManagerInitializer")
         );
 
-        XmlBuilder initializationProvider = new XmlBuilder("provider");
-        initializationProvider.addAttribute("android", "name", "androidx.startup.InitializationProvider");
-        initializationProvider.addAttribute("android", "authorities", c.packageName + ".androidx-startup");
-        initializationProvider.addAttribute("android", "exported", "false");
-        for (var pair : initializers) {
-            if (pair.first) {
-                XmlBuilder metadata = new XmlBuilder("meta-data");
-                metadata.addAttribute("android", "name", pair.second);
-                metadata.addAttribute("android", "value", "androidx.startup");
-                initializationProvider.a(metadata);
+        if (initializers.stream().anyMatch(initializer -> initializer.first)) {
+            XmlBuilder initializationProvider = new XmlBuilder("provider");
+            initializationProvider.addAttribute("android", "name", "androidx.startup.InitializationProvider");
+            initializationProvider.addAttribute("android", "authorities", c.packageName + ".androidx-startup");
+            initializationProvider.addAttribute("android", "exported", "false");
+            for (var pair : initializers) {
+                if (pair.first) {
+                    XmlBuilder metadata = new XmlBuilder("meta-data");
+                    metadata.addAttribute("android", "name", pair.second);
+                    metadata.addAttribute("android", "value", "androidx.startup");
+                    initializationProvider.a(metadata);
+                }
             }
+            application.a(initializationProvider);
         }
-        application.a(initializationProvider);
     }
 
     private void writeAndroidxWorkRuntimeTags(XmlBuilder application) {
