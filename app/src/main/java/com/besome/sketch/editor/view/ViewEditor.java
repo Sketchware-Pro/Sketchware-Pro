@@ -1,27 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.DB;
-import a.a.a.GB;
-import a.a.a.Iw;
-import a.a.a.Op;
-import a.a.a._x;
-import a.a.a.aB;
-import a.a.a.ay;
-import a.a.a.bB;
-import a.a.a.cC;
-import a.a.a.cy;
-import a.a.a.ey;
-import a.a.a.fy;
-import a.a.a.gy;
-import a.a.a.hy;
-import a.a.a.iy;
-import a.a.a.jC;
-import a.a.a.oB;
-import a.a.a.sy;
-import a.a.a.uy;
-import a.a.a.wB;
-import a.a.a.wq;
-import a.a.a.xB;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -38,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -54,11 +33,32 @@ import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import a.a.a.DB;
+import a.a.a.GB;
+import a.a.a.Iw;
+import a.a.a.Op;
+import a.a.a.Rp;
+import a.a.a._x;
+import a.a.a.aB;
+import a.a.a.ay;
+import a.a.a.bB;
+import a.a.a.cC;
+import a.a.a.cy;
+import a.a.a.jC;
+import a.a.a.oB;
+import a.a.a.sy;
+import a.a.a.uy;
+import a.a.a.wB;
+import a.a.a.wq;
+import a.a.a.xB;
 import mod.hey.studios.editor.view.IdGenerator;
+import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
@@ -117,9 +117,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ImageView y;
     public ObjectAnimator z;
 
-    enum a {
-        a,
-        b
+    enum PaletteGroup {
+        BASIC,
+        FAVORITE
     }
 
     public ViewEditor(Context context) {
@@ -146,7 +146,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         this.T = false;
         this.ba = 0;
         this.da = true;
-        this.ea = new gy(this);
+        this.ea = this::e;
         a(context);
     }
 
@@ -166,17 +166,29 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, -1);
         layoutParams.weight = 1.0f;
         this.V.setLayoutParams(layoutParams);
-        this.V.a(a.a);
+        this.V.a(PaletteGroup.BASIC);
         this.V.setSelected(true);
-        this.V.setOnClickListener(new ey(this));
+        this.V.setOnClickListener(v -> {
+            o();
+            V.animate().scaleX(1).scaleY(1).alpha(1).start();
+            W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
+            V.setSelected(true);
+            W.setSelected(false);
+        });
         this.W = new b(getContext());
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(0, -1);
         layoutParams2.weight = 1.0f;
         this.W.setLayoutParams(layoutParams2);
-        this.W.a(a.b);
+        this.W.a(PaletteGroup.FAVORITE);
         this.W.setSelected(false);
         this.W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
-        this.W.setOnClickListener(new fy(this));
+        this.W.setOnClickListener(v -> {
+            n();
+            V.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
+            W.animate().scaleX(1).scaleY(1).alpha(1).start();
+            V.setSelected(false);
+            W.setSelected(true);
+        });
         this.U.addView(this.V);
         this.U.addView(this.W);
     }
@@ -606,7 +618,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     class b extends LinearLayout implements View.OnClickListener {
-        public a a;
+        public PaletteGroup group;
         public View b;
         public ImageView c;
 
@@ -625,9 +637,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         public void onClick(View view) {
         }
 
-        public void a(a aVar) {
-            this.a = aVar;
-            if (aVar == a.a) {
+        public void a(PaletteGroup group) {
+            this.group = group;
+            if (group == this.group.BASIC) {
                 this.c.setImageResource(2131166113);
             } else {
                 this.c.setImageResource(2131166112);
@@ -822,7 +834,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         this.T = false;
         this.ba = 0;
         this.da = true;
-        this.ea = new gy(this);
+        this.ea = this::e;
         a(context);
     }
 
@@ -831,8 +843,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         aBVar.b(xB.b().a(getContext(), 2131626470));
         aBVar.a(2131165669);
         aBVar.a(xB.b().a(getContext(), 2131626469));
-        aBVar.b(xB.b().a(getContext(), 2131624986), new hy(this, str, aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new iy(this, aBVar));
+        aBVar.b(xB.b().a(getContext(), 2131624986), v -> {
+            Rp.h().a(str, true);
+            setFavoriteData(Rp.h().f());
+            aBVar.dismiss();
+        });
+        aBVar.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -909,81 +925,122 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void a() {
-        float f;
-        float f2;
-        float f3;
-        float f4;
         if (this.S) {
             this.n.setVisibility(0);
         } else {
             this.n.setVisibility(8);
         }
+
         if (this.T) {
             this.k.setVisibility(8);
         } else {
             this.k.setVisibility(0);
         }
+
         this.p.setVisibility(0);
-        this.g = getResources().getDisplayMetrics().widthPixels;
-        this.h = getResources().getDisplayMetrics().heightPixels;
-        int i = (int) (this.f * 56.0f);
-        boolean z = this.g > this.h;
-        int i2 = (int) (this.f * (!z ? 12.0f : 24.0f));
-        int i3 = (int) (this.f * (!z ? 20.0f : 10.0f));
-        int f5 = GB.f(getContext());
-        int a2 = GB.a(getContext());
-        int i4 = this.g;
-        float f6 = this.f;
-        int i5 = i4 - ((int) (120.0f * f6));
-        int i6 = (((this.h - f5) - a2) - ((int) (f6 * 48.0f))) - ((int) (f6 * 48.0f));
-        if (this.ca == 0 && this.da) {
-            i6 -= i;
+        this.g = this.getResources().getDisplayMetrics().widthPixels;
+        this.h = this.getResources().getDisplayMetrics().heightPixels;
+        int var1 = (int)(this.f * 56.0F);
+        boolean var2;
+        if (this.g > this.h) {
+            var2 = true;
+        } else {
+            var2 = false;
         }
-        float min = Math.min(i5 / this.g, i6 / this.h);
-        float min2 = Math.min((i5 - (i2 * 2)) / this.g, (i6 - (i3 * 2)) / this.h);
-        if (!z) {
+
+        float var3;
+        if (!var2) {
+            var3 = 12.0F;
+        } else {
+            var3 = 24.0F;
+        }
+
+        int var4 = (int)(this.f * var3);
+        if (!var2) {
+            var3 = 20.0F;
+        } else {
+            var3 = 10.0F;
+        }
+
+        int var5 = (int)(this.f * var3);
+        int var6 = GB.f(this.getContext());
+        int var7 = GB.a(this.getContext());
+        int var8 = this.g;
+        var3 = this.f;
+        int var9 = var8 - (int)(120.0F * var3);
+        int var10 = this.h - var6 - var7 - (int)(var3 * 48.0F) - (int)(var3 * 48.0F);
+        var8 = var10;
+        if (this.ca == 0) {
+            var8 = var10;
+            if (this.da) {
+                var8 = var10 - var1;
+            }
+        }
+
+        float var11 = Math.min((float)var9 / (float)this.g, (float)var8 / (float)this.h);
+        var3 = Math.min((float)(var9 - var4 * 2) / (float)this.g, (float)(var8 - var5 * 2) / (float)this.h);
+        if (!var2) {
             this.aa.setBackgroundResource(2131165984);
         } else {
             this.aa.setBackgroundResource(2131165983);
         }
+
         this.aa.setLayoutParams(new FrameLayout.LayoutParams(this.g, this.h));
-        this.aa.setScaleX(min);
-        this.aa.setScaleY(min);
-        int i7 = this.g;
-        int i8 = this.h;
-        this.aa.setX(-((int) ((i7 - (i7 * min)) / 2.0f)));
-        this.aa.setY(-((int) ((i8 - (i8 * min)) / 2.0f)));
-        int i9 = this.g;
-        int i10 = i2 - ((int) ((i9 - (i9 * min2)) / 2.0f));
+        this.aa.setScaleX(var11);
+        this.aa.setScaleY(var11);
+        int var13 = this.g;
+        var13 = -((int)(((float)var13 - (float)var13 * var11) / 2.0F));
+        var8 = this.h;
+        var8 = -((int)(((float)var8 - (float)var8 * var11) / 2.0F));
+        this.aa.setX((float)var13);
+        this.aa.setY((float)var8);
+        var13 = this.g;
+        var10 = var4 - (int)(((float)var13 - (float)var13 * var3) / 2.0F);
+        var13 = var5;
+        float var12;
         if (this.k.getVisibility() == 0) {
-            this.k.setLayoutParams(new FrameLayout.LayoutParams(this.g, f5));
-            this.k.setScaleX(min2);
-            this.k.setScaleY(min2);
-            this.k.setX(i10);
-            this.k.setY(i3 - ((int) ((f3 - f4) / 2.0f)));
-            i3 += (int) (f5 * min2);
+            this.k.setLayoutParams(new FrameLayout.LayoutParams(this.g, var6));
+            this.k.setScaleX(var3);
+            this.k.setScaleY(var3);
+            var11 = (float)var6;
+            var12 = var11 * var3;
+            var13 = (int)((var11 - var12) / 2.0F);
+            this.k.setX((float)var10);
+            this.k.setY((float)(var5 - var13));
+            var13 = var5 + (int)var12;
         }
+
+        var8 = var13;
         if (this.n.getVisibility() == 0) {
-            this.n.setLayoutParams(new FrameLayout.LayoutParams(this.g, a2));
-            this.n.setScaleX(min2);
-            this.n.setScaleY(min2);
-            this.n.setX(i10);
-            this.n.setY(i3 - ((int) ((f - f2) / 2.0f)));
-            i3 += (int) (a2 * min2);
+            this.n.setLayoutParams(new FrameLayout.LayoutParams(this.g, var7));
+            this.n.setScaleX(var3);
+            this.n.setScaleY(var3);
+            var12 = (float)var7;
+            var11 = var12 * var3;
+            var8 = (int)((var12 - var11) / 2.0F);
+            this.n.setX((float)var10);
+            this.n.setY((float)(var13 - var8));
+            var8 = var13 + (int)var11;
         }
-        int i11 = this.h;
+
+        var5 = this.h;
+        var13 = var5;
         if (this.k.getVisibility() == 0) {
-            i11 -= f5;
+            var13 = var5 - var6;
         }
+
+        var5 = var13;
         if (this.n.getVisibility() == 0) {
-            i11 -= a2;
+            var5 = var13 - var7;
         }
-        this.p.setLayoutParams(new FrameLayout.LayoutParams(this.g, i11));
-        this.p.setScaleX(min2);
-        this.p.setScaleY(min2);
-        float f7 = i11;
-        this.p.setX(i10);
-        this.p.setY(i3 - ((int) ((f7 - (min2 * f7)) / 2.0f)));
+
+        this.p.setLayoutParams(new FrameLayout.LayoutParams(this.g, var5));
+        this.p.setScaleX(var3);
+        this.p.setScaleY(var3);
+        var11 = (float)var5;
+        var13 = (int)((var11 - var3 * var11) / 2.0F);
+        this.p.setX((float)var10);
+        this.p.setY((float)(var8 - var13));
         this.P = false;
     }
 
