@@ -206,86 +206,77 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
-    public void a(String var1) {
-        PropertySubheader var2 = new PropertySubheader(this.getContext());
-        var2.setHeaderName(var1);
-        this.addView(var2);
+    private void a(String header) {
+        var sub = new PropertySubheader(getContext());
+        sub.setHeaderName(header);
+        addView(sub);
     }
 
-    public void a(String var1, int var2) {
-        PropertyColorItem var3 = (PropertyColorItem)this.f.get(var1);
-        PropertyColorItem var4;
-        if (var3 == null) {
-            var3 = new PropertyColorItem(this.getContext(), this.b ^ true);
-            var3.setOrientationItem(this.getOrientation());
-            var3.setKey(var1);
-            var3.setValue(var2);
-            var3.setTag(var1);
-            var3.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var3);
-            var4 = var3;
+    private void a(String name, int value) {
+        PropertyColorItem colorItem = (PropertyColorItem)f.get(name);
+        if (colorItem == null) {
+            colorItem = new PropertyColorItem(getContext(), !b);
+            colorItem.setOrientationItem(getOrientation());
+            colorItem.setKey(name);
+            colorItem.setValue(value);
+            colorItem.setTag(name);
+            colorItem.setOnPropertyValueChangeListener(this);
+            f.put(name, colorItem);
         } else {
-            var3.setValue(var2);
-            var4 = var3;
+            colorItem.setValue(value);
         }
 
-        this.addView(var4);
+        addView(colorItem);
     }
 
-    public void a(String var1, int var2, int var3, int var4, int var5) {
-        PropertyIndentItem var6 = (PropertyIndentItem)this.f.get(var1);
-        PropertyIndentItem var7;
-        if (var6 == null) {
-            var6 = new PropertyIndentItem(this.getContext(), this.b ^ true);
-            var6.setOrientationItem(this.getOrientation());
-            var6.setKey(var1);
-            var6.a(var2, var3, var4, var5);
-            var6.setTag(var1);
-            var6.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var6);
-            var7 = var6;
+    private void a(String key, int left, int top, int right, int bottom) {
+        PropertyIndentItem indentItem = (PropertyIndentItem)f.get(key);
+        if (indentItem == null) {
+            indentItem = new PropertyIndentItem(getContext(), !b);
+            indentItem.setOrientationItem(getOrientation());
+            indentItem.setKey(key);
+            indentItem.a(left, top, right, bottom);
+            indentItem.setTag(key);
+            indentItem.setOnPropertyValueChangeListener(this);
+            f.put(key, indentItem);
         } else {
-            var6.a(var2, var3, var4, var5);
-            var7 = var6;
+            indentItem.a(left, top, right, bottom);
         }
 
-        this.addView(var7);
+        addView(indentItem);
     }
 
-    public void a(String var1, int var2, boolean var3) {
-        PropertyMeasureItem var4 = (PropertyMeasureItem)this.f.get(var1);
-        byte var5;
-        if (var3) {
-            var5 = 7;
+    private void a(String key, int value, boolean isEnable) {
+        PropertyMeasureItem measureItem = (PropertyMeasureItem)f.get(key);
+        int isEnabled;
+        if (isEnable) {
+            isEnabled = 7;
         } else {
-            var5 = 3;
+            isEnabled = 3;
         }
 
-        PropertyMeasureItem var6;
-        if (var4 == null) {
-            var4 = new PropertyMeasureItem(this.getContext(), this.b ^ true);
-            var4.setOrientationItem(this.getOrientation());
-            var4.setItemEnabled(var5);
-            var4.setKey(var1);
-            var4.setValue(var2);
-            var4.setTag(var1);
-            var4.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var4);
-            var6 = var4;
+        if (measureItem == null) {
+            measureItem = new PropertyMeasureItem(getContext(), !b);
+            measureItem.setOrientationItem(getOrientation());
+            measureItem.setItemEnabled(isEnabled);
+            measureItem.setKey(key);
+            measureItem.setValue(value);
+            measureItem.setTag(key);
+            measureItem.setOnPropertyValueChangeListener(this);
+            f.put(key, measureItem);
         } else {
-            var4.setItemEnabled(var5);
-            var4.setValue(var2);
-            var6 = var4;
+            measureItem.setItemEnabled(isEnabled);
+            measureItem.setValue(value);
         }
 
-        this.addView(var6);
+        addView(measureItem);
     }
 
-    public void a(String var1, OnClickListener var2) {
-        PropertySubheader var3 = new PropertySubheader(this.getContext());
-        var3.setHeaderName(var1);
-        var3.setOnClickListener(var2);
-        this.addView(var3);
+    private void a(String header, OnClickListener listener) {
+        PropertySubheader propertySubheader = new PropertySubheader(getContext());
+        propertySubheader.setHeaderName(header);
+        propertySubheader.setOnClickListener(listener);
+        addView(propertySubheader);
     }
 
     public void a(String scId, ViewBean bean) {
