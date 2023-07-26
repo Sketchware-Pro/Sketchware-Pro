@@ -16,24 +16,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
 public class ViewPropertyItems extends LinearLayout implements Kw {
-    public String a;
+    private String sc_id;
     public boolean b = false;
     public ViewBean c;
     public Lw d;
@@ -42,24 +42,6 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
 
     public ViewPropertyItems(Context var1) {
         super(var1);
-        this.a(var1);
-    }
-
-    public final void a() {
-        LayoutParams var1 = new LayoutParams(-1, -1);
-        var1.gravity = 17;
-        this.setLayoutParams(var1);
-        this.setGravity(17);
-        TextView var2 = new TextView(this.getContext());
-        var2.setTextColor(this.getResources().getColor(2131034217));
-        var2.setGravity(17);
-        var2.setPadding(8, 8, 8, 8);
-        var2.setTextSize(2, 12.0F);
-        var2.setText(xB.b().a(this.getContext(), 2131625308));
-        this.addView(var2);
-    }
-
-    public final void a(Context var1) {
         Cx.a().a(var1);
     }
 
@@ -306,55 +288,54 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         this.addView(var3);
     }
 
-    public void a(String var1, ViewBean var2) {
-        this.a = var1;
-        this.c = var2;
-        Cx.a().b(this.c.getClassInfo().a());
-        this.removeAllViews();
-        if (var2.id.equals("_fab")) {
-            this.b(var2);
+    public void a(String scId, ViewBean bean) {
+        sc_id = scId;
+        c = bean;
+        Cx.a().b(c.getClassInfo().a());
+        removeAllViews();
+        if (bean.id.equals("_fab")) {
+            b(bean);
         } else {
-            if (this.getOrientation() == 1) {
-                this.b("property_id", var2.id);
+            if (getOrientation() == LinearLayout.VERTICAL) {
+                b("property_id", bean.id);
             }
 
-            this.f(var2);
-            this.d(var2);
-            this.g(var2);
-            this.h(var2);
-            if (this.getOrientation() == 0) {
-                this.b("property_id", var2.id);
+            f(bean);
+            d(bean);
+            g(bean);
+            h(bean);
+            if (getOrientation() == LinearLayout.HORIZONTAL) {
+                b("property_id", bean.id);
             }
         }
     }
 
     public void a(String var1, Object var2) {
-        Cx.a().a(this.c.getClassInfo().a(), var1);
-        if (this.d != null) {
-            ViewBean var3 = this.c.clone();
-            this.i(this.c);
-            if (!this.b) {
-                cC.c(this.a).a(this.e.getXmlName(), var3, this.c.clone());
-                this.d.a(this.c);
+        Cx.a().a(c.getClassInfo().a(), var1);
+        if (d != null) {
+            ViewBean cloned = c.clone();
+            i(c);
+            if (!b) {
+                cC.c(sc_id).a(e.getXmlName(), cloned, c.clone());
+                d.a(c);
             }
         }
     }
 
-    public void a(String var1, String var2) {
-        Pw var3 = (Pw)this.f.get(var1);
-        Pw var4 = var3;
-        if (var3 == null) {
-            var4 = new Pw(this.getContext(), this.b ^ true);
-            var4.setOrientationItem(this.getOrientation());
-            var4.setKey(var1);
-            var4.setTag(var1);
-            var4.setOnPropertyValueChangeListener(this);
-            this.f.put(var1, var4);
+    public void a(String key, String value) {
+        Pw pw = (Pw)f.get(key);
+        if (pw == null) {
+            pw = new Pw(getContext(), !b);
+            pw.setOrientationItem(getOrientation());
+            pw.setKey(key);
+            pw.setTag(key);
+            pw.setOnPropertyValueChangeListener(this);
+            f.put(key, pw);
         }
 
-        var4.setCustomView(jC.b(this.a).c());
-        var4.setValue(var2);
-        this.addView(var4);
+        pw.setCustomView(jC.b(sc_id).c());
+        pw.setValue(value);
+        addView(pw);
     }
 
     public void a(String var1, String var2, boolean var3) {
@@ -896,35 +877,35 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
             }
         }
 
-        if (!var1.id.equals(var1.preId)) {
-            for(ViewBean var30 : jC.a(this.a).d(this.e.getXmlName())) {
-                if (var30.parent.equals(var1.preId)) {
-                    var30.parent = var1.id;
+        if (!bean.id.equals(bean.preId)) {
+            for(ViewBean viewBean : jC.a(sc_id).d(e.getXmlName())) {
+                if (viewBean.parent.equals(bean.preId)) {
+                    viewBean.parent = bean.id;
                 }
             }
 
-            if (this.e.fileType == 0) {
-                for(EventBean var31 : jC.a(this.a).g(this.e.getJavaName())) {
-                    if (var31.targetId.equals(var1.preId)) {
-                        var31.targetId = var1.id;
+            if (e.fileType == 0) {
+                for(EventBean eventBean : jC.a(sc_id).g(e.getJavaName())) {
+                    if (eventBean.targetId.equals(bean.preId)) {
+                        eventBean.targetId = bean.id;
                     }
                 }
 
-                HashMap var32 = jC.a(this.a).b(this.e.getJavaName());
+                HashMap<String, ArrayList<BlockBean>> beanMap = jC.a(sc_id).b(e.getJavaName());
 
-                for(String var6 : oq.c(var1.getClassInfo())) {
-                    StringBuilder var7 = new StringBuilder();
-                    var7.append(var1.preId);
-                    var7.append("_");
-                    var7.append(var6);
-                    String var8 = var7.toString();
-                    if (var32.containsKey(var8)) {
-                        var7 = new StringBuilder();
-                        var7.append(var1.id);
-                        var7.append("_");
-                        var7.append(var6);
-                        var32.put(var7.toString(), var32.get(var8));
-                        var32.remove(var8);
+                for(String events : oq.c(bean.getClassInfo())) {
+                    StringBuilder eventBodyBuilder = new StringBuilder();
+                    eventBodyBuilder.append(bean.preId);
+                    eventBodyBuilder.append("_");
+                    eventBodyBuilder.append(events);
+                    String body = eventBodyBuilder.toString();
+                    if (beanMap.containsKey(body)) {
+                        eventBodyBuilder = new StringBuilder();
+                        eventBodyBuilder.append(bean.id);
+                        eventBodyBuilder.append("_");
+                        eventBodyBuilder.append(events);
+                        beanMap.put(eventBodyBuilder.toString(), beanMap.get(body));
+                        beanMap.remove(body);
                     }
                 }
 
@@ -972,34 +953,33 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                     }
                 }
             } else {
-                ArrayList var73 = new ArrayList();
+                ArrayList<Pair<String, String>> viewBeanItems = new ArrayList<>();
 
-                for(ProjectFileBean var33 : jC.b(this.a).b()) {
-                    for(ViewBean var45 : jC.a(this.a).f(var33.getXmlName())) {
-                        if (var45.customView.equals(this.e.fileName)) {
-                            String var67 = var33.getJavaName();
-                            StringBuilder var10 = new StringBuilder();
-                            var10.append(var45.id);
-                            var10.append("_");
-                            var10.append("onBindCustomView");
-                            var73.add(new Pair(var67, var10.toString()));
+                for (ProjectFileBean projectFileBean : jC.b(sc_id).b()) {
+                    for(ViewBean viewBean : jC.a(sc_id).f(projectFileBean.getXmlName())) {
+                        if (viewBean.customView.equals(e.fileName)) {
+                            String javaName = projectFileBean.getJavaName();
+                            String key = viewBean.id +
+                                    "_" +
+                                    "onBindCustomView";
+                            viewBeanItems.add(new Pair<>(javaName, key));
                         }
                     }
                 }
 
-                for(Pair var46 : var73) {
-                    ArrayList var47 = (ArrayList)jC.a(this.a).b((String)var46.first).get(var46.second);
-                    if (var47 != null) {
-                        for(BlockBean var48 : var47) {
-                            Gx var68 = var48.getClassInfo();
-                            if (var68 != null && var68.d() && var48.spec.equals(var1.preId)) {
-                                var48.spec = var1.id;
+                for(Pair<String, String> viewBean : viewBeanItems) {
+                    ArrayList<BlockBean> blockBeans = jC.a(sc_id).b(viewBean.first).get(viewBean.second);
+                    if (blockBeans != null) {
+                        for( BlockBean blockBean : blockBeans) {
+                            Gx classInfo = blockBean.getClassInfo();
+                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(bean.preId)) {
+                                blockBean.spec = bean.id;
                             } else {
-                                ArrayList var69 = var48.getParamClassInfo();
-                                if (var69 != null && var69.size() > 0) {
-                                    for(int var15 = 0; var15 < var69.size(); ++var15) {
-                                        if (((Gx)var69.get(var15)).d() && ((String)var48.parameters.get(var15)).equals(var1.preId)) {
-                                            var48.parameters.set(var15, var1.id);
+                                ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
+                                if (paramClassInfo != null && paramClassInfo.size() > 0) {
+                                    for(int i = 0; i < paramClassInfo.size(); ++i) {
+                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
+                                            blockBean.parameters.set(i, bean.id);
                                         }
                                     }
                                 }
