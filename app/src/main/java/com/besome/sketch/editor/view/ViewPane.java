@@ -384,7 +384,7 @@ public class ViewPane extends RelativeLayout {
             }
         }
         Gx classInfo = viewBean.getClassInfo();
-        if (classInfo.b("LinearLayout")) {
+        if (classInfo.a("LinearLayout")) {
             LinearLayout linearLayout = (LinearLayout) view;
             linearLayout.setOrientation(viewBean.layout.orientation);
             linearLayout.setWeightSum(viewBean.layout.weightSum);
