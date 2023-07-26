@@ -36,11 +36,11 @@ import a.a.a.xB;
 
 public class ViewPropertyItems extends LinearLayout implements Kw {
     private String sc_id;
-    public boolean b = false;
-    public ViewBean c;
-    public Lw d;
-    public ProjectFileBean e;
-    public HashMap<String, View> f = new HashMap<>();
+    private final boolean b = false;
+    private ViewBean c;
+    private Lw d;
+    private ProjectFileBean e;
+    private final HashMap<String, View> f = new HashMap<>();
 
     public ViewPropertyItems(Context var1) {
         super(var1);
@@ -70,7 +70,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         a(bean, "property_layout_gravity");
     }
 
-    public final void a(ViewBean bean, String property) {
+    private void a(ViewBean bean, String property) {
         boolean isNotAdview = !bean.getClassInfo().a("AdView");
         boolean isGeneratedId = bean.id.charAt(0) == '_';
 
@@ -239,7 +239,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
-    public void a(String key, String value) {
+    private void a(String key, String value) {
         Pw pw = (Pw) f.get(key);
         if (pw == null) {
             pw = new Pw(getContext(), !b);
@@ -255,7 +255,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         addView(pw);
     }
 
-    public void a(String key, String value, boolean z) {
+    private void a(String key, String value, boolean z) {
         PropertyInputItem inputItem = (PropertyInputItem) f.get(key);
         if (inputItem == null) {
             inputItem = new PropertyInputItem(getContext(), !z);
@@ -334,7 +334,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         ((Activity) getContext()).startActivityForResult(intent, 209);
     }
 
-    public void c(ViewBean bean) {
+    private void c(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
             a(xB.b().a(getResources(), 2131625827), view -> openManageImageActivityIfNeeded());
         }
@@ -466,7 +466,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
     }
 
-    public void e(String key, int value) {
+    private void e(String key, int value) {
         PropertySwitchSingleLineItem switchSingleLineItem = (PropertySwitchSingleLineItem) f.get(key);
         boolean isEnabled = false;
         if (switchSingleLineItem == null) {
