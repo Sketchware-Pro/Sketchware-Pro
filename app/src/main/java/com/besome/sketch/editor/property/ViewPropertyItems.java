@@ -38,7 +38,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     public ViewBean c;
     public Lw d;
     public ProjectFileBean e;
-    public HashMap<String, View> f = new HashMap();
+    public HashMap<String, View> f = new HashMap<>();
 
     public ViewPropertyItems(Context var1) {
         super(var1);
@@ -553,10 +553,8 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         if (items == null) {
             setupViews();
         } else {
-            Iterator var4 = var3.iterator();
-
-            while(var4.hasNext()) {
-                this.a(var1, (String)var4.next());
+            for (String s : items) {
+                a(bean, s);
             }
         }
     }
@@ -728,151 +726,120 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         a(bean, "property_scale_y");
     }
 
-    public void i(ViewBean var1) {
-        int var2 = this.getChildCount();
+    public void i(ViewBean bean) {
+        int childCount = getChildCount();
 
-        for(int var3 = 0; var3 < var2; ++var3) {
-            View var4 = this.getChildAt(var3);
-            if (var4 instanceof PropertyInputItem) {
-                PropertyInputItem var17 = (PropertyInputItem)var4;
-                if (var17.getKey().equals("property_id")) {
-                    String var5 = var1.id;
-                    var1.preId = var5;
-                    if (var5.charAt(0) != '_') {
-                        var1.id = var17.getValue();
+        for(int i = 0; i < childCount; ++i) {
+            View view = getChildAt(i);
+            if (view instanceof PropertyInputItem inputItem) {
+                switch (inputItem.getKey()) {
+                    case "property_id" -> {
+                        String var5 = bean.id;
+                        bean.preId = var5;
+                        if (var5.charAt(0) != '_') {
+                            bean.id = inputItem.getValue();
+                        }
                     }
-                } else if (var17.getKey().equals("property_convert")) {
-                    var1.convert = var17.getValue();
-                } else if (var17.getKey().equals("property_inject")) {
-                    var1.inject = var17.getValue();
-                } else if (var17.getKey().equals("property_text")) {
-                    var1.text.text = var17.getValue();
-                } else if (var17.getKey().equals("property_hint")) {
-                    var1.text.hint = var17.getValue();
-                } else if (var17.getKey().equals("property_weight")) {
-                    var1.layout.weight = Integer.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_weight_sum")) {
-                    var1.layout.weightSum = Integer.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_rotate")) {
-                    var1.image.rotate = Integer.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_alpha")) {
-                    var1.alpha = Float.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_translation_x")) {
-                    var1.translationX = Float.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_translation_y")) {
-                    var1.translationY = Float.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_scale_x")) {
-                    var1.scaleX = Float.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_scale_y")) {
-                    var1.scaleY = Float.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_lines")) {
-                    var1.text.line = Integer.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_max")) {
-                    var1.max = Integer.valueOf(var17.getValue());
-                } else if (var17.getKey().equals("property_progress")) {
-                    var1.progress = Integer.valueOf(var17.getValue());
+                    case "property_convert" -> bean.convert = inputItem.getValue();
+                    case "property_inject" -> bean.inject = inputItem.getValue();
+                    case "property_text" -> bean.text.text = inputItem.getValue();
+                    case "property_hint" -> bean.text.hint = inputItem.getValue();
+                    case "property_weight" ->
+                            bean.layout.weight = Integer.parseInt(inputItem.getValue());
+                    case "property_weight_sum" ->
+                            bean.layout.weightSum = Integer.parseInt(inputItem.getValue());
+                    case "property_rotate" ->
+                            bean.image.rotate = Integer.parseInt(inputItem.getValue());
+                    case "property_alpha" -> bean.alpha = Float.parseFloat(inputItem.getValue());
+                    case "property_translation_x" ->
+                            bean.translationX = Float.parseFloat(inputItem.getValue());
+                    case "property_translation_y" ->
+                            bean.translationY = Float.parseFloat(inputItem.getValue());
+                    case "property_scale_x" -> bean.scaleX = Float.parseFloat(inputItem.getValue());
+                    case "property_scale_y" -> bean.scaleY = Float.parseFloat(inputItem.getValue());
+                    case "property_lines" -> bean.text.line = Integer.parseInt(inputItem.getValue());
+                    case "property_max" -> bean.max = Integer.parseInt(inputItem.getValue());
+                    case "property_progress" ->
+                            bean.progress = Integer.parseInt(inputItem.getValue());
                 }
-            } else if (var4 instanceof PropertyMeasureItem) {
-                PropertyMeasureItem var18 = (PropertyMeasureItem)var4;
-                if (var18.getKey().equals("property_layout_width")) {
-                    var1.layout.width = var18.getValue();
-                } else if (var18.getKey().equals("property_layout_height")) {
-                    var1.layout.height = var18.getValue();
+            } else if (view instanceof PropertyMeasureItem measureItem) {
+                if (measureItem.getKey().equals("property_layout_width")) {
+                    bean.layout.width = measureItem.getValue();
+                } else if (measureItem.getKey().equals("property_layout_height")) {
+                    bean.layout.height = measureItem.getValue();
                 }
-            } else if (var4 instanceof PropertySelectorItem) {
-                PropertySelectorItem var19 = (PropertySelectorItem)var4;
-                if (var19.getKey().equals("property_orientation")) {
-                    var1.layout.orientation = var19.getValue();
-                } else if (var19.getKey().equals("property_text_style")) {
-                    var1.text.textType = var19.getValue();
-                } else if (var19.getKey().equals("property_text_size")) {
-                    var1.text.textSize = var19.getValue();
-                } else if (var19.getKey().equals("property_input_type")) {
-                    var1.text.inputType = var19.getValue();
-                } else if (var19.getKey().equals("property_ime_option")) {
-                    var1.text.imeOption = var19.getValue();
-                } else if (var19.getKey().equals("property_spinner_mode")) {
-                    var1.spinnerMode = var19.getValue();
-                } else if (var19.getKey().equals("property_first_day_of_week")) {
-                    var1.firstDayOfWeek = var19.getValue();
+            } else if (view instanceof PropertySelectorItem selectorItem) {
+                switch (selectorItem.getKey()) {
+                    case "property_orientation" -> bean.layout.orientation = selectorItem.getValue();
+                    case "property_text_style" -> bean.text.textType = selectorItem.getValue();
+                    case "property_text_size" -> bean.text.textSize = selectorItem.getValue();
+                    case "property_input_type" -> bean.text.inputType = selectorItem.getValue();
+                    case "property_ime_option" -> bean.text.imeOption = selectorItem.getValue();
+                    case "property_spinner_mode" -> bean.spinnerMode = selectorItem.getValue();
+                    case "property_first_day_of_week" -> bean.firstDayOfWeek = selectorItem.getValue();
                 }
-            } else if (var4 instanceof PropertyStringSelectorItem) {
-                PropertyStringSelectorItem var20 = (PropertyStringSelectorItem)var4;
-                if (var20.getKey().equals("property_scale_type")) {
-                    var1.image.scaleType = var20.getValue();
-                } else if (var20.getKey().equals("property_ad_size")) {
-                    var1.adSize = var20.getValue();
-                } else if (var20.getKey().equals("property_indeterminate")) {
-                    var1.indeterminate = var20.getValue();
+            } else if (view instanceof PropertyStringSelectorItem stringSelectorItem) {
+                switch (stringSelectorItem.getKey()) {
+                    case "property_scale_type" -> bean.image.scaleType = stringSelectorItem.getValue();
+                    case "property_ad_size" -> bean.adSize = stringSelectorItem.getValue();
+                    case "property_indeterminate" -> bean.indeterminate = stringSelectorItem.getValue();
                 }
-            } else if (var4 instanceof PropertyStringPairSelectorItem) {
-                PropertyStringPairSelectorItem var21 = (PropertyStringPairSelectorItem)var4;
-                if (var21.getKey().equals("property_progressbar_style")) {
-                    var1.progressStyle = var21.getValue();
+            } else if (view instanceof PropertyStringPairSelectorItem stringPairSelectorItem) {
+                if (stringPairSelectorItem.getKey().equals("property_progressbar_style")) {
+                    bean.progressStyle = stringPairSelectorItem.getValue();
                 }
-            } else if (var4 instanceof Pw) {
-                Pw var22 = (Pw)var4;
-                if (var22.getKey().equals("property_custom_view_listview")) {
-                    var1.customView = var22.getValue();
+            } else if (view instanceof Pw listview_item) {
+                if (listview_item.getKey().equals("property_custom_view_listview")) {
+                    bean.customView = listview_item.getValue();
                 }
-            } else if (var4 instanceof PropertySwitchSingleLineItem) {
-                PropertySwitchSingleLineItem var23 = (PropertySwitchSingleLineItem)var4;
-                if (var23.getKey().equals("property_single_line")) {
-                    var1.text.singleLine = var23.getValue();
-                } else if (var23.getKey().equals("property_enabled")) {
-                    var1.enabled = var23.getValue();
-                } else if (var23.getKey().equals("property_clickable")) {
-                    var1.clickable = var23.getValue();
-                } else if (var23.getKey().equals("property_checked")) {
-                    var1.checked = var23.getValue();
+            } else if (view instanceof PropertySwitchSingleLineItem switchSingleLineItem) {
+                switch (switchSingleLineItem.getKey()) {
+                    case "property_single_line" ->
+                            bean.text.singleLine = switchSingleLineItem.getValue() ? 1 : 0;
+                    case "property_enabled" -> bean.enabled = switchSingleLineItem.getValue() ? 1 : 0;
+                    case "property_clickable" -> bean.clickable = switchSingleLineItem.getValue() ? 1 : 0;
+                    case "property_checked" -> bean.checked = switchSingleLineItem.getValue() ? 1 : 0;
                 }
-            } else if (var4 instanceof PropertyColorItem) {
-                PropertyColorItem var24 = (PropertyColorItem)var4;
-                if (var24.getKey().equals("property_text_color")) {
-                    var1.text.textColor = var24.getValue();
-                } else if (var24.getKey().equals("property_hint_color")) {
-                    var1.text.hintColor = var24.getValue();
-                } else if (var24.getKey().equals("property_background_color")) {
-                    var1.layout.backgroundColor = var24.getValue();
+            } else if (view instanceof PropertyColorItem colorItem) {
+                switch (colorItem.getKey()) {
+                    case "property_text_color" -> bean.text.textColor = colorItem.getValue();
+                    case "property_hint_color" -> bean.text.hintColor = colorItem.getValue();
+                    case "property_background_color" ->
+                            bean.layout.backgroundColor = colorItem.getValue();
                 }
-            } else if (var4 instanceof PropertyIndentItem) {
-                PropertyIndentItem var25 = (PropertyIndentItem)var4;
-                if (var25.getKey().equals("property_margin")) {
-                    LayoutBean var38 = var1.layout;
-                    var38.marginLeft = var25.j;
-                    var38.marginTop = var25.k;
-                    var38.marginRight = var25.l;
-                    var38.marginBottom = var25.m;
-                } else if (var25.getKey().equals("property_padding")) {
-                    LayoutBean var39 = var1.layout;
-                    var39.paddingLeft = var25.j;
-                    var39.paddingTop = var25.k;
-                    var39.paddingRight = var25.l;
-                    var39.paddingBottom = var25.m;
+            } else if (view instanceof PropertyIndentItem indentItem) {
+                if (indentItem.getKey().equals("property_margin")) {
+                    LayoutBean layout = bean.layout;
+                    layout.marginLeft = indentItem.j;
+                    layout.marginTop = indentItem.k;
+                    layout.marginRight = indentItem.l;
+                    layout.marginBottom = indentItem.m;
+                } else if (indentItem.getKey().equals("property_padding")) {
+                    LayoutBean layout = bean.layout;
+                    layout.paddingLeft = indentItem.j;
+                    layout.paddingTop = indentItem.k;
+                    layout.paddingRight = indentItem.l;
+                    layout.paddingBottom = indentItem.m;
                 }
-            } else if (var4 instanceof PropertyGravityItem) {
-                PropertyGravityItem var26 = (PropertyGravityItem)var4;
-                if (var26.getKey().equals("property_gravity")) {
-                    var1.layout.gravity = var26.getValue();
-                } else if (var26.getKey().equals("property_layout_gravity")) {
-                    var1.layout.layoutGravity = var26.getValue();
+            } else if (view instanceof PropertyGravityItem gravityItem) {
+                if (gravityItem.getKey().equals("property_gravity")) {
+                    bean.layout.gravity = gravityItem.getValue();
+                } else if (gravityItem.getKey().equals("property_layout_gravity")) {
+                    bean.layout.layoutGravity = gravityItem.getValue();
                 }
-            } else if (var4 instanceof tx) {
-                tx var27 = (tx)var4;
-                if (var27.getKey().equals("property_image")) {
-                    var1.image.resName = var27.getValue();
-                } else if (var27.getKey().equals("property_background_resource")) {
-                    var1.layout.backgroundResource = var27.getValue();
+            } else if (view instanceof tx image_item) {
+                if (image_item.getKey().equals("property_image")) {
+                    bean.image.resName = image_item.getValue();
+                } else if (image_item.getKey().equals("property_background_resource")) {
+                    bean.layout.backgroundResource = image_item.getValue();
                 }
-            } else if (var4 instanceof PropertySizeItem) {
-                PropertySizeItem var28 = (PropertySizeItem)var4;
-                if (var28.getKey().equals("property_divider_height")) {
-                    var1.dividerHeight = var28.getValue();
+            } else if (view instanceof PropertySizeItem sizeItem) {
+                if (sizeItem.getKey().equals("property_divider_height")) {
+                    bean.dividerHeight = sizeItem.getValue();
                 }
-            } else if (var4 instanceof Vw) {
-                Vw var29 = (Vw)var4;
-                if (var29.getKey().equals("property_text_font")) {
-                    var1.text.textFont = var29.getValue();
+            } else if (view instanceof Vw vw) {
+                if (vw.getKey().equals("property_text_font")) {
+                    bean.text.textFont = vw.getValue();
                 }
             }
         }
