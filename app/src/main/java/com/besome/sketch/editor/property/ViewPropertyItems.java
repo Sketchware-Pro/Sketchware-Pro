@@ -928,46 +928,42 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                     }
                 }
 
-                ArrayList var43 = new ArrayList();
-                if (var32.containsKey("onCreate_initializeLogic")) {
-                    var43.add("onCreate_initializeLogic");
+                ArrayList<String> events = new ArrayList<>();
+                if (beanMap.containsKey("onCreate_initializeLogic")) {
+                    events.add("onCreate_initializeLogic");
                 }
 
-                for(Pair var62 : jC.a(this.a).i(this.e.getJavaName())) {
-                    StringBuilder var70 = new StringBuilder();
-                    var70.append((String)var62.first);
-                    var70.append("_");
-                    var70.append("moreBlock");
-                    String var63 = var70.toString();
-                    if (var32.containsKey(var63)) {
-                        var43.add(var63);
+                for (Pair<String, String> moreblocks : jC.a(sc_id).i(e.getJavaName())) {
+                    String key = moreblocks.first +
+                            "_" +
+                            "moreBlock";
+                    if (beanMap.containsKey(key)) {
+                        events.add(key);
                     }
                 }
 
-                for(EventBean var64 : jC.a(this.a).g(this.e.getJavaName())) {
-                    if (!var64.eventName.equals("onBindCustomView")) {
-                        String var65 = var64.getEventKey();
-                        if (var32.containsKey(var65)) {
-                            var43.add(var65);
+                for (EventBean eventBean : jC.a(sc_id).g(e.getJavaName())) {
+                    if (!eventBean.eventName.equals("onBindCustomView")) {
+                        String eventKey = eventBean.getEventKey();
+                        if (beanMap.containsKey(eventKey)) {
+                            events.add(eventKey);
                         }
                     }
                 }
 
-                Iterator var44 = var43.iterator();
-
-                while(var44.hasNext()) {
-                    ArrayList var55 = (ArrayList)var32.get((String)var44.next());
-                    if (var55 != null) {
-                        for(BlockBean var66 : var55) {
-                            Gx var71 = var66.getClassInfo();
-                            if (var71 != null && var71.d() && var66.spec.equals(var1.preId)) {
-                                var66.spec = var1.id;
+                for (String event : events) {
+                    ArrayList<BlockBean> blockBeans = beanMap.get(event);
+                    if (blockBeans != null) {
+                        for (BlockBean blockBean : blockBeans) {
+                            Gx classInfo = blockBean.getClassInfo();
+                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(bean.preId)) {
+                                blockBean.spec = bean.id;
                             } else {
-                                ArrayList var72 = var66.getParamClassInfo();
-                                if (var72 != null && var72.size() > 0) {
-                                    for(int var14 = 0; var14 < var72.size(); ++var14) {
-                                        if (((Gx)var72.get(var14)).d() && ((String)var66.parameters.get(var14)).equals(var1.preId)) {
-                                            var66.parameters.set(var14, var1.id);
+                                ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
+                                if (paramClassInfo != null && paramClassInfo.size() > 0) {
+                                    for (int i = 0; i < paramClassInfo.size(); ++i) {
+                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
+                                            blockBean.parameters.set(i, bean.id);
                                         }
                                     }
                                 }
@@ -1014,25 +1010,25 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
             }
         }
 
-        if (var1.type == 9) {
-            ViewBean var49 = jC.a(this.a).c(this.e.getXmlName(), var1.preId);
-            String var35 = var1.customView;
-            if (var35 != null && var49 != null) {
-                String var50 = var49.customView;
-                if (var50 != null && !var50.equals(var35)) {
-                    ArrayList var51 = jC.a(this.a).g(this.e.getJavaName());
-                    int var16 = var51.size();
+        if (bean.type == ViewBean.VIEW_TYPE_WIDGET_LISTVIEW) {
+            ViewBean viewBean = jC.a(sc_id).c(e.getXmlName(), bean.preId);
+            String custom = bean.customView;
+            if (custom != null && viewBean != null) {
+                String customView = viewBean.customView;
+                if (customView != null && !customView.equals(custom)) {
+                    ArrayList<EventBean> eventBeans = jC.a(sc_id).g(e.getJavaName());
+                    int size = eventBeans.size();
 
                     while(true) {
-                        var2 = var16 - 1;
-                        if (var2 < 0) {
-                            if (var1.customView.equals("") || var1.customView.equals("none")) {
-                                Iterator var60 = jC.a(this.a).b(this.e.getJavaName()).entrySet().iterator();
+                        childCount = size - 1;
+                        if (childCount < 0) {
+                            if (bean.customView.equals("") || bean.customView.equals("none")) {
+                                Iterator<Entry<String, ArrayList<BlockBean>>> blocks = jC.a(sc_id).b(e.getJavaName()).entrySet().iterator();
 
-                                while(var60.hasNext()) {
-                                    for(BlockBean var37 : (ArrayList)((Entry)var60.next()).getValue()) {
-                                        if ("listSetCustomViewData".equals(var37.opCode) && var1.id.equals(var37.parameters.get(0))) {
-                                            var37.parameters.set(0, "");
+                                while(blocks.hasNext()) {
+                                    for (BlockBean blockBean : blocks.next().getValue()) {
+                                        if ("listSetCustomViewData".equals(blockBean.opCode) && bean.id.equals(blockBean.parameters.get(0))) {
+                                            blockBean.parameters.set(0, "");
                                         }
                                     }
                                 }
@@ -1040,18 +1036,13 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                             break;
                         }
 
-                        EventBean var59 = (EventBean)var51.get(var2);
-                        var16 = var2;
-                        if (var59.targetId.equals(var1.id)) {
-                            var16 = var2;
-                            if (var59.eventName.equals("onBindCustomView")) {
-                                var51.remove(var59);
-                                HashMap var36 = jC.a(this.a).b(this.e.getJavaName());
-                                var16 = var2;
-                                if (var36.containsKey(var59.getEventKey())) {
-                                    var36.remove(var59.getEventKey());
-                                    var16 = var2;
-                                }
+                        EventBean eventBean = eventBeans.get(childCount);
+                        size = childCount;
+                        if (eventBean.targetId.equals(bean.id)) {
+                            if (eventBean.eventName.equals("onBindCustomView")) {
+                                eventBeans.remove(eventBean);
+                                HashMap<String, ArrayList<BlockBean>> blocks = jC.a(sc_id).b(e.getJavaName());
+                                blocks.remove(eventBean.getEventKey());
                             }
                         }
                     }
