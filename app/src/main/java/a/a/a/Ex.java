@@ -4,23 +4,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 
-/* loaded from: a/a/a/Ex */
 public class Ex implements OnClickListener {
+    // still used in some non-decompiled classes
     public final ViewPropertyItems a;
 
     public Ex(ViewPropertyItems viewPropertyItems) {
-        this.a = viewPropertyItems;
+        a = viewPropertyItems;
     }
 
     public void onClick(View view) {
-        boolean z;
-        if (mB.a()) {
+        if (mB.a() || a.b) {
             return;
         }
-        z = this.a.b;
-        if (z) {
-            return;
-        }
-        this.a.c();
+        a.c();
     }
 }
