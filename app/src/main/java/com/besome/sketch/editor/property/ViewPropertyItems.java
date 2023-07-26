@@ -34,7 +34,7 @@ import a.a.a.oq;
 import a.a.a.tx;
 import a.a.a.xB;
 
-public class ViewPropertyItems extends LinearLayout implements Kw {
+public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickListener {
     private String sc_id;
     private final boolean b = false;
     private ViewBean c;
@@ -327,16 +327,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         addView(drawableItem);
     }
 
-    private void c() {
-        Intent intent = new Intent(getContext(), ManageImageActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        ((Activity) getContext()).startActivityForResult(intent, 209);
-    }
-
     private void c(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), 2131625827), view -> openManageImageActivityIfNeeded());
+            a(xB.b().a(getResources(), 2131625827), this);
         }
 
         a(bean, "property_image");
@@ -600,7 +593,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         Gx classInfo = bean.getClassInfo();
         if (getOrientation() == LinearLayout.VERTICAL) {
             if (classInfo.a("ImageView")) {
-                a(xB.b().a(getResources(), 2131625827), v -> openManageImageActivityIfNeeded());
+                a(xB.b().a(getResources(), 2131625827), this);
                 a(bean, "property_image");
                 a(bean, "property_scale_type");
             } else {
@@ -921,8 +914,13 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         e = fileBean;
     }
 
-    private void openManageImageActivityIfNeeded() {
-        if (mB.a() || b) return;
-        c();
+    @Override
+    public void onClick(View v) {
+        if (!mB.a() && !b) {
+            Intent intent = new Intent(getContext(), ManageImageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("sc_id", sc_id);
+            ((Activity) getContext()).startActivityForResult(intent, 209);
+        }
     }
 }
