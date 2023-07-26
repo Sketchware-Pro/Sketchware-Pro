@@ -1,5 +1,26 @@
 package com.besome.sketch.editor.property;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Pair;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.beans.EventBean;
+import com.besome.sketch.beans.LayoutBean;
+import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.image.ManageImageActivity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import a.a.a.Cx;
 import a.a.a.Gx;
 import a.a.a.Kw;
@@ -12,25 +33,6 @@ import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.tx;
 import a.a.a.xB;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Pair;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import com.besome.sketch.beans.BlockBean;
-import com.besome.sketch.beans.EventBean;
-import com.besome.sketch.beans.LayoutBean;
-import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.editor.manage.image.ManageImageActivity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 public class ViewPropertyItems extends LinearLayout implements Kw {
     private String sc_id;
@@ -136,7 +138,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void a(String name, int value) {
-        PropertyColorItem colorItem = (PropertyColorItem)f.get(name);
+        PropertyColorItem colorItem = (PropertyColorItem) f.get(name);
         if (colorItem == null) {
             colorItem = new PropertyColorItem(getContext(), !b);
             colorItem.setOrientationItem(getOrientation());
@@ -153,7 +155,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void a(String key, int left, int top, int right, int bottom) {
-        PropertyIndentItem indentItem = (PropertyIndentItem)f.get(key);
+        PropertyIndentItem indentItem = (PropertyIndentItem) f.get(key);
         if (indentItem == null) {
             indentItem = new PropertyIndentItem(getContext(), !b);
             indentItem.setOrientationItem(getOrientation());
@@ -170,7 +172,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void a(String key, int value, boolean isEnable) {
-        PropertyMeasureItem measureItem = (PropertyMeasureItem)f.get(key);
+        PropertyMeasureItem measureItem = (PropertyMeasureItem) f.get(key);
         int isEnabled;
         if (isEnable) {
             isEnabled = 7;
@@ -237,7 +239,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     public void a(String key, String value) {
-        Pw pw = (Pw)f.get(key);
+        Pw pw = (Pw) f.get(key);
         if (pw == null) {
             pw = new Pw(getContext(), !b);
             pw.setOrientationItem(getOrientation());
@@ -253,7 +255,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     public void a(String key, String value, boolean z) {
-        PropertyInputItem inputItem = (PropertyInputItem)f.get(key);
+        PropertyInputItem inputItem = (PropertyInputItem) f.get(key);
         if (inputItem == null) {
             inputItem = new PropertyInputItem(getContext(), !z);
             inputItem.setOrientationItem(getOrientation());
@@ -288,7 +290,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void b(String key, int value) {
-        PropertyGravityItem gravityItem = (PropertyGravityItem)f.get(key);
+        PropertyGravityItem gravityItem = (PropertyGravityItem) f.get(key);
         if (gravityItem == null) {
             gravityItem = new PropertyGravityItem(getContext(), !b);
             gravityItem.setOrientationItem(getOrientation());
@@ -309,7 +311,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void b(String key, String value, boolean z) {
-        tx drawableItem = (tx)f.get(key);
+        tx drawableItem = (tx) f.get(key);
         if (drawableItem == null) {
             drawableItem = new tx(getContext(), !b, sc_id, z);
             drawableItem.setOrientationItem(getOrientation());
@@ -328,7 +330,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         Intent intent = new Intent(getContext(), ManageImageActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
-        ((Activity)getContext()).startActivityForResult(intent, 209);
+        ((Activity) getContext()).startActivityForResult(intent, 209);
     }
 
     public void c(ViewBean bean) {
@@ -346,7 +348,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void c(String key, int value) {
-        PropertySelectorItem selectorItem = (PropertySelectorItem)f.get(key);
+        PropertySelectorItem selectorItem = (PropertySelectorItem) f.get(key);
         if (selectorItem == null) {
             selectorItem = new PropertySelectorItem(getContext(), !b);
             selectorItem.setOrientationItem(getOrientation());
@@ -363,7 +365,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void c(String key, String value) {
-        PropertyStringPairSelectorItem pairSelectorItem = (PropertyStringPairSelectorItem)f.get(key);
+        PropertyStringPairSelectorItem pairSelectorItem = (PropertyStringPairSelectorItem) f.get(key);
         if (pairSelectorItem == null) {
             pairSelectorItem = new PropertyStringPairSelectorItem(getContext(), !b);
             pairSelectorItem.setOrientationItem(getOrientation());
@@ -413,7 +415,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void d(String key, int value) {
-        PropertySizeItem propertySizeItem = (PropertySizeItem)f.get(key);
+        PropertySizeItem propertySizeItem = (PropertySizeItem) f.get(key);
         if (propertySizeItem == null) {
             propertySizeItem = new PropertySizeItem(getContext(), !b);
             propertySizeItem.setOrientationItem(getOrientation());
@@ -430,7 +432,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     private void d(String key, String value) {
-        PropertyStringSelectorItem stringSelectorItem = (PropertyStringSelectorItem)f.get(key);
+        PropertyStringSelectorItem stringSelectorItem = (PropertyStringSelectorItem) f.get(key);
         if (stringSelectorItem == null) {
             stringSelectorItem = new PropertyStringSelectorItem(getContext(), !b);
             stringSelectorItem.setOrientationItem(getOrientation());
@@ -464,7 +466,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     }
 
     public void e(String key, int value) {
-        PropertySwitchSingleLineItem switchSingleLineItem = (PropertySwitchSingleLineItem)f.get(key);
+        PropertySwitchSingleLineItem switchSingleLineItem = (PropertySwitchSingleLineItem) f.get(key);
         boolean isEnabled = false;
         if (switchSingleLineItem == null) {
             switchSingleLineItem = new PropertySwitchSingleLineItem(getContext(), !b);
@@ -633,7 +635,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
     public void i(ViewBean bean) {
         int childCount = getChildCount();
 
-        for(int i = 0; i < childCount; ++i) {
+        for (int i = 0; i < childCount; ++i) {
             View view = getChildAt(i);
             if (view instanceof PropertyInputItem inputItem) {
                 switch (inputItem.getKey()) {
@@ -661,7 +663,8 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                             bean.translationY = Float.parseFloat(inputItem.getValue());
                     case "property_scale_x" -> bean.scaleX = Float.parseFloat(inputItem.getValue());
                     case "property_scale_y" -> bean.scaleY = Float.parseFloat(inputItem.getValue());
-                    case "property_lines" -> bean.text.line = Integer.parseInt(inputItem.getValue());
+                    case "property_lines" ->
+                            bean.text.line = Integer.parseInt(inputItem.getValue());
                     case "property_max" -> bean.max = Integer.parseInt(inputItem.getValue());
                     case "property_progress" ->
                             bean.progress = Integer.parseInt(inputItem.getValue());
@@ -674,19 +677,23 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                 }
             } else if (view instanceof PropertySelectorItem selectorItem) {
                 switch (selectorItem.getKey()) {
-                    case "property_orientation" -> bean.layout.orientation = selectorItem.getValue();
+                    case "property_orientation" ->
+                            bean.layout.orientation = selectorItem.getValue();
                     case "property_text_style" -> bean.text.textType = selectorItem.getValue();
                     case "property_text_size" -> bean.text.textSize = selectorItem.getValue();
                     case "property_input_type" -> bean.text.inputType = selectorItem.getValue();
                     case "property_ime_option" -> bean.text.imeOption = selectorItem.getValue();
                     case "property_spinner_mode" -> bean.spinnerMode = selectorItem.getValue();
-                    case "property_first_day_of_week" -> bean.firstDayOfWeek = selectorItem.getValue();
+                    case "property_first_day_of_week" ->
+                            bean.firstDayOfWeek = selectorItem.getValue();
                 }
             } else if (view instanceof PropertyStringSelectorItem stringSelectorItem) {
                 switch (stringSelectorItem.getKey()) {
-                    case "property_scale_type" -> bean.image.scaleType = stringSelectorItem.getValue();
+                    case "property_scale_type" ->
+                            bean.image.scaleType = stringSelectorItem.getValue();
                     case "property_ad_size" -> bean.adSize = stringSelectorItem.getValue();
-                    case "property_indeterminate" -> bean.indeterminate = stringSelectorItem.getValue();
+                    case "property_indeterminate" ->
+                            bean.indeterminate = stringSelectorItem.getValue();
                 }
             } else if (view instanceof PropertyStringPairSelectorItem stringPairSelectorItem) {
                 if (stringPairSelectorItem.getKey().equals("property_progressbar_style")) {
@@ -700,9 +707,12 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                 switch (switchSingleLineItem.getKey()) {
                     case "property_single_line" ->
                             bean.text.singleLine = switchSingleLineItem.getValue() ? 1 : 0;
-                    case "property_enabled" -> bean.enabled = switchSingleLineItem.getValue() ? 1 : 0;
-                    case "property_clickable" -> bean.clickable = switchSingleLineItem.getValue() ? 1 : 0;
-                    case "property_checked" -> bean.checked = switchSingleLineItem.getValue() ? 1 : 0;
+                    case "property_enabled" ->
+                            bean.enabled = switchSingleLineItem.getValue() ? 1 : 0;
+                    case "property_clickable" ->
+                            bean.clickable = switchSingleLineItem.getValue() ? 1 : 0;
+                    case "property_checked" ->
+                            bean.checked = switchSingleLineItem.getValue() ? 1 : 0;
                 }
             } else if (view instanceof PropertyColorItem colorItem) {
                 switch (colorItem.getKey()) {
@@ -749,14 +759,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
         }
 
         if (!bean.id.equals(bean.preId)) {
-            for(ViewBean viewBean : jC.a(sc_id).d(e.getXmlName())) {
+            for (ViewBean viewBean : jC.a(sc_id).d(e.getXmlName())) {
                 if (viewBean.parent.equals(bean.preId)) {
                     viewBean.parent = bean.id;
                 }
             }
 
             if (e.fileType == 0) {
-                for(EventBean eventBean : jC.a(sc_id).g(e.getJavaName())) {
+                for (EventBean eventBean : jC.a(sc_id).g(e.getJavaName())) {
                     if (eventBean.targetId.equals(bean.preId)) {
                         eventBean.targetId = bean.id;
                     }
@@ -764,7 +774,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
 
                 HashMap<String, ArrayList<BlockBean>> beanMap = jC.a(sc_id).b(e.getJavaName());
 
-                for(String events : oq.c(bean.getClassInfo())) {
+                for (String events : oq.c(bean.getClassInfo())) {
                     StringBuilder eventBodyBuilder = new StringBuilder();
                     eventBodyBuilder.append(bean.preId);
                     eventBodyBuilder.append("_");
@@ -827,7 +837,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                 ArrayList<Pair<String, String>> viewBeanItems = new ArrayList<>();
 
                 for (ProjectFileBean projectFileBean : jC.b(sc_id).b()) {
-                    for(ViewBean viewBean : jC.a(sc_id).f(projectFileBean.getXmlName())) {
+                    for (ViewBean viewBean : jC.a(sc_id).f(projectFileBean.getXmlName())) {
                         if (viewBean.customView.equals(e.fileName)) {
                             String javaName = projectFileBean.getJavaName();
                             String key = viewBean.id +
@@ -838,17 +848,17 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                     }
                 }
 
-                for(Pair<String, String> viewBean : viewBeanItems) {
+                for (Pair<String, String> viewBean : viewBeanItems) {
                     ArrayList<BlockBean> blockBeans = jC.a(sc_id).b(viewBean.first).get(viewBean.second);
                     if (blockBeans != null) {
-                        for( BlockBean blockBean : blockBeans) {
+                        for (BlockBean blockBean : blockBeans) {
                             Gx classInfo = blockBean.getClassInfo();
                             if (classInfo != null && classInfo.d() && blockBean.spec.equals(bean.preId)) {
                                 blockBean.spec = bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
                                 if (paramClassInfo != null && paramClassInfo.size() > 0) {
-                                    for(int i = 0; i < paramClassInfo.size(); ++i) {
+                                    for (int i = 0; i < paramClassInfo.size(); ++i) {
                                         if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
                                             blockBean.parameters.set(i, bean.id);
                                         }
@@ -870,13 +880,13 @@ public class ViewPropertyItems extends LinearLayout implements Kw {
                     ArrayList<EventBean> eventBeans = jC.a(sc_id).g(e.getJavaName());
                     int size = eventBeans.size();
 
-                    while(true) {
+                    while (true) {
                         childCount = size - 1;
                         if (childCount < 0) {
                             if (bean.customView.equals("") || bean.customView.equals("none")) {
                                 Iterator<Entry<String, ArrayList<BlockBean>>> blocks = jC.a(sc_id).b(e.getJavaName()).entrySet().iterator();
 
-                                while(blocks.hasNext()) {
+                                while (blocks.hasNext()) {
                                     for (BlockBean blockBean : blocks.next().getValue()) {
                                         if ("listSetCustomViewData".equals(blockBean.opCode) && bean.id.equals(blockBean.parameters.get(0))) {
                                             blockBean.parameters.set(0, "");
