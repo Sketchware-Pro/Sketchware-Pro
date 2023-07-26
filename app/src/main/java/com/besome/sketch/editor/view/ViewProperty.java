@@ -123,7 +123,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     public void d() {
         if (viewPropertyItems != null) {
-            viewPropertyItems.b();
+            viewPropertyItems.save();
         }
     }
 
