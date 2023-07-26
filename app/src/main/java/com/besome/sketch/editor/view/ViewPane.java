@@ -339,7 +339,7 @@ public class ViewPane extends RelativeLayout {
                     Bitmap decodeFile = BitmapFactory.decodeFile(this.f.f(viewBean.image.resName));
                     int round = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                     ((FloatingActionButton) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, decodeFile.getHeight() * round, true));
-                } catch (Exception unused) {
+                } catch (Exception ignored) {
                 }
             }
             view.setRotation(viewBean.image.rotate);
