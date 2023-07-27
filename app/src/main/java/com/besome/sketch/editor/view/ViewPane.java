@@ -97,10 +97,10 @@ public class ViewPane extends RelativeLayout {
 
     public ViewPane(Context context) {
         super(context);
-        this.a = null;
-        this.b = 99;
-        this.c = new ArrayList<>();
-        this.d = null;
+        a = null;
+        b = 99;
+        c = new ArrayList<>();
+        d = null;
         initialize();
     }
 
@@ -112,20 +112,20 @@ public class ViewPane extends RelativeLayout {
 
     public void b() {
         a(true);
-        this.c = new ArrayList<>();
-        ((ty) this.a).setChildScrollEnabled(true);
+        c = new ArrayList<>();
+        ((ty) a).setChildScrollEnabled(true);
     }
 
     private void c() {
-        this.e = new TextView(getContext());
-        this.e.setBackgroundResource(R.drawable.highlight);
-        this.e.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        e = new TextView(getContext());
+        e.setBackgroundResource(R.drawable.highlight);
+        e.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        this.e.setVisibility(GONE);
+        e.setVisibility(GONE);
     }
 
     public void d() {
-        this.a.removeAllViews();
+        a.removeAllViews();
     }
 
     public void e() {
@@ -137,8 +137,8 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void f(ViewBean viewBean) {
-        ViewGroup viewGroup = (ViewGroup) this.a.findViewWithTag(viewBean.parent);
-        viewGroup.removeView(this.a.findViewWithTag(viewBean.id));
+        ViewGroup viewGroup = a.findViewWithTag(viewBean.parent);
+        viewGroup.removeView(a.findViewWithTag(viewBean.id));
         if (viewGroup instanceof ty) {
             ((ty) viewGroup).a();
         }
@@ -148,35 +148,35 @@ public class ViewPane extends RelativeLayout {
         View findViewWithTag;
         String str = viewBean.preId;
         if (str != null && str.length() > 0 && !viewBean.preId.equals(viewBean.id)) {
-            this.a.findViewWithTag(viewBean.preId).setTag(viewBean.id);
+            a.findViewWithTag(viewBean.preId).setTag(viewBean.id);
             viewBean.preId = "";
         }
         if (viewBean.id.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(viewBean.id);
         } else {
-            findViewWithTag = this.a.findViewWithTag(viewBean.id);
+            findViewWithTag = a.findViewWithTag(viewBean.id);
         }
         b(findViewWithTag, viewBean);
         return (sy) findViewWithTag;
     }
 
     public void setResourceManager(kC kCVar) {
-        this.f = kCVar;
+        f = kCVar;
     }
 
     public sy d(ViewBean viewBean) {
-        View findViewWithTag = this.a.findViewWithTag(viewBean.id);
+        View findViewWithTag = a.findViewWithTag(viewBean.id);
         if (viewBean.id.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(viewBean.id);
         }
         String str = viewBean.preParent;
         if (str != null && str.length() > 0 && !viewBean.parent.equals(viewBean.preParent)) {
-            ViewGroup viewGroup = (ViewGroup) this.a.findViewWithTag(viewBean.preParent);
+            ViewGroup viewGroup = a.findViewWithTag(viewBean.preParent);
             viewGroup.removeView(findViewWithTag);
             ((ty) viewGroup).a();
             a(findViewWithTag);
         } else if (viewBean.index != viewBean.preIndex) {
-            ((ViewGroup) this.a.findViewWithTag(viewBean.parent)).removeView(findViewWithTag);
+            ((ViewGroup) a.findViewWithTag(viewBean.parent)).removeView(findViewWithTag);
             a(findViewWithTag);
         }
         viewBean.preId = "";
@@ -188,14 +188,14 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void e(ViewBean viewBean) {
-        this.d = null;
+        d = null;
         c(viewBean);
-        ((ty) this.a).setChildScrollEnabled(false);
+        ((ty) a).setChildScrollEnabled(false);
     }
 
     private int b(View view) {
         int i = 0;
-        while (view != null && view != this.a) {
+        while (view != null && view != a) {
             i++;
             view = (View) view.getParent();
         }
@@ -269,20 +269,20 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void c(ViewBean viewBean) {
-        a(viewBean, (ItemLinearLayout) this.a);
+        a(viewBean, (ItemLinearLayout) a);
     }
 
     public ViewPane(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        this.a = null;
-        this.b = 99;
-        this.c = new ArrayList<>();
-        this.d = null;
+        a = null;
+        b = 99;
+        c = new ArrayList<>();
+        d = null;
         initialize();
     }
 
     public void setScId(String str) {
-        this.sc_id = str;
+        sc_id = str;
     }
 
     private void a() {
@@ -294,15 +294,15 @@ public class ViewPane extends RelativeLayout {
         viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         View b = b(viewBean);
         ((ItemLinearLayout) b).setFixed(true);
-        this.a = (ViewGroup) b;
-        this.a.setBackgroundColor(0xffeeeeee);
+        a = (ViewGroup) b;
+        a.setBackgroundColor(0xffeeeeee);
         addView(b);
     }
 
     private void b(View view, ViewBean viewBean) {
         ImageBean imageBean;
         String str;
-        ExtraViewPane.a(view, viewBean, this, this.f);
+        ExtraViewPane.a(view, viewBean, this, f);
         if (viewBean.id.charAt(0) == '_') {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -336,10 +336,10 @@ public class ViewPane extends RelativeLayout {
             view.setLayoutParams(layoutParams);
             if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && str.length() > 0) {
                 try {
-                    Bitmap decodeFile = BitmapFactory.decodeFile(this.f.f(viewBean.image.resName));
+                    Bitmap decodeFile = BitmapFactory.decodeFile(f.f(viewBean.image.resName));
                     int round = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                     ((FloatingActionButton) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, decodeFile.getHeight() * round, true));
-                } catch (Exception unused) {
+                } catch (Exception ignored) {
                 }
             }
             view.setRotation(viewBean.image.rotate);
@@ -361,7 +361,7 @@ public class ViewPane extends RelativeLayout {
         String str2 = viewBean.layout.backgroundResource;
         if (str2 != null) {
             try {
-                if (this.f.h(str2) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                if (f.h(str2) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                     view.setBackgroundResource(getContext().getResources().getIdentifier(viewBean.layout.backgroundResource, "drawable", getContext().getPackageName()));
                 } else {
                     String f = this.f.f(viewBean.layout.backgroundResource);
@@ -384,7 +384,7 @@ public class ViewPane extends RelativeLayout {
             }
         }
         Gx classInfo = viewBean.getClassInfo();
-        if (classInfo.b("LinearLayout")) {
+        if (classInfo.a("LinearLayout")) {
             LinearLayout linearLayout = (LinearLayout) view;
             linearLayout.setOrientation(viewBean.layout.orientation);
             linearLayout.setWeightSum(viewBean.layout.weightSum);
@@ -410,13 +410,13 @@ public class ViewPane extends RelativeLayout {
             a((EditText) view, viewBean);
         }
         if (classInfo.b("ImageView")) {
-            if (this.f.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+            if (f.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                 ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
             } else if (viewBean.image.resName.equals("default_image")) {
                 ((ImageView) view).setImageResource(R.drawable.default_image);
             } else {
                 try {
-                    Bitmap decodeFile3 = BitmapFactory.decodeFile(this.f.f(viewBean.image.resName));
+                    Bitmap decodeFile3 = BitmapFactory.decodeFile(f.f(viewBean.image.resName));
                     int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                     ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
                 } catch (Exception unused2) {
@@ -450,7 +450,7 @@ public class ViewPane extends RelativeLayout {
         if (str.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(str);
         } else {
-            findViewWithTag = this.a.findViewWithTag(str);
+            findViewWithTag = a.findViewWithTag(str);
         }
         if (findViewWithTag != null && (findViewWithTag instanceof sy)) {
             return (sy) findViewWithTag;
@@ -501,7 +501,7 @@ public class ViewPane extends RelativeLayout {
         itemFloatingActionButton.setLayoutParams(new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        itemFloatingActionButton.setMainColor(ProjectFile.getColor(this.sc_id, "color_accent"));
+        itemFloatingActionButton.setMainColor(ProjectFile.getColor(sc_id, "color_accent"));
         itemFloatingActionButton.setFixed(true);
         if (viewBean == null) {
             ViewBean viewBean2 = new ViewBean("_fab", ViewBean.VIEW_TYPE_WIDGET_FAB);
@@ -521,13 +521,13 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void a(boolean z) {
-        this.e.setVisibility(View.GONE);
-        ViewParent parent = this.e.getParent();
+        e.setVisibility(View.GONE);
+        ViewParent parent = e.getParent();
         if (parent != null) {
-            ((ViewGroup) parent).removeView(this.e);
+            ((ViewGroup) parent).removeView(e);
         }
         if (z) {
-            this.d = null;
+            d = null;
         }
     }
 
@@ -535,27 +535,27 @@ public class ViewPane extends RelativeLayout {
         Object[] a2 = a(i, i2);
         if (a2 == null) {
             a(true);
-        } else if (this.d != a2) {
+        } else if (d != a2) {
             a(true);
             ViewGroup viewGroup = (ViewGroup) a2[1];
-            viewGroup.addView(this.e, (Integer) a2[2]);
+            viewGroup.addView(e, (Integer) a2[2]);
             if (viewGroup instanceof LinearLayout) {
-                this.e.setLayoutParams(new LinearLayout.LayoutParams(i3, i4));
+                e.setLayoutParams(new LinearLayout.LayoutParams(i3, i4));
             } else if (viewGroup instanceof FrameLayout) {
-                this.e.setLayoutParams(new FrameLayout.LayoutParams(i3, i4));
+                e.setLayoutParams(new FrameLayout.LayoutParams(i3, i4));
             } else {
-                this.e.setLayoutParams(new RelativeLayout.LayoutParams(i3, i4));
+                e.setLayoutParams(new RelativeLayout.LayoutParams(i3, i4));
             }
-            this.e.setVisibility(View.VISIBLE);
-            this.d = a2;
+            e.setVisibility(View.VISIBLE);
+            d = a2;
         }
     }
 
     private Object[] a(int i, int i2) {
         Object[] objArr = null;
         int i3 = -1;
-        for (int i4 = 0; i4 < this.c.size(); i4++) {
-            Object[] objArr2 = this.c.get(i4);
+        for (int i4 = 0; i4 < c.size(); i4++) {
+            Object[] objArr2 = c.get(i4);
             Rect rect = (Rect) objArr2[0];
             if (i >= rect.left && i < rect.right && i2 >= rect.top && i2 < rect.bottom && i3 < (Integer) objArr2[3]) {
                 i3 = (Integer) objArr2[3];
@@ -575,9 +575,9 @@ public class ViewPane extends RelativeLayout {
         int linearLayoutX = linearLayoutLocation[0];
         int var7;
         int linearLayoutY = linearLayoutLocation[1];
-        this.a(new Rect(linearLayoutX, linearLayoutY, (int) ((float) linearLayout.getWidth() * this.getScaleX()) + linearLayoutX, (int) ((float) linearLayout.getHeight() * this.getScaleY()) + linearLayoutY), linearLayout, -1, this.b((View) linearLayout));
-        var4 = linearLayoutY + (int) ((float) linearLayout.getPaddingTop() * this.getScaleY());
-        var7 = linearLayoutX + (int) ((float) linearLayout.getPaddingLeft() * this.getScaleX());
+        a(new Rect(linearLayoutX, linearLayoutY, (int) ((float) linearLayout.getWidth() * getScaleX()) + linearLayoutX, (int) ((float) linearLayout.getHeight() * getScaleY()) + linearLayoutY), linearLayout, -1, b(linearLayout));
+        var4 = linearLayoutY + (int) ((float) linearLayout.getPaddingTop() * getScaleY());
+        var7 = linearLayoutX + (int) ((float) linearLayout.getPaddingLeft() * getScaleX());
         int var8 = 0;
 
         int var13;
@@ -595,29 +595,29 @@ public class ViewPane extends RelativeLayout {
                             int rightMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).rightMargin;
                             if (horizontalLinearLayoutGravity == Gravity.CENTER_HORIZONTAL) {
                                 if (i == 0) {
-                                    int x = childLocation[0] - (int) ((float) leftMargin * this.getScaleX());
+                                    int x = childLocation[0] - (int) ((float) leftMargin * getScaleX());
                                     int y = linearLayoutLocation[1];
-                                    this.a(new Rect(var7, y, x, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, 0, this.b((View) linearLayout) + 1);
+                                    a(new Rect(var7, y, x, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, 0, b(linearLayout) + 1);
                                     var7 = x;
                                 }
 
-                                var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * this.getScaleX()) + var7;
+                                var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
                                 var7 = var8 + 1;
-                                this.a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
                                 var8 = y;
                             } else if (horizontalLinearLayoutGravity == Gravity.RIGHT) {
                                 int x = childLocation[0];
                                 int y = linearLayoutLocation[1];
-                                this.a(new Rect(var7, y, x - (int) ((float) leftMargin * this.getScaleX()), (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
-                                var4 = (int) ((float) (childLocation[0] + child.getMeasuredWidth() + rightMargin) * this.getScaleX());
+                                a(new Rect(var7, y, x - (int) ((float) leftMargin * getScaleX()), (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                var4 = (int) ((float) (childLocation[0] + child.getMeasuredWidth() + rightMargin) * getScaleX());
                                 var7 = var8 + 1;
                                 var8 = y;
                             } else {
-                                var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * this.getScaleX()) + var7;
+                                var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
                                 var7 = var8 + 1;
-                                this.a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * this.getScaleY()) + y), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
                                 var8 = y;
                             }
                         } else {
@@ -626,31 +626,31 @@ public class ViewPane extends RelativeLayout {
                             if (verticalLinearLayoutGravity == Gravity.CENTER_VERTICAL) {
                                 if (i == 0) {
                                     int x = linearLayoutLocation[0];
-                                    int y = childLocation[1] - (int) ((float) topMargin * this.getScaleY());
-                                    this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y), linearLayout, 0, this.b((View) linearLayout) + 1);
+                                    int y = childLocation[1] - (int) ((float) topMargin * getScaleY());
+                                    a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, y), linearLayout, 0, b(linearLayout) + 1);
                                     var4 = y;
                                 }
 
-                                int bottom = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
+                                int bottom = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 int x = linearLayoutLocation[0];
                                 int top = var8 + 1;
-                                this.a(new Rect(x, top, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, bottom), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                a(new Rect(x, top, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, bottom), linearLayout, var8, b(linearLayout) + 1);
                                 var8 = bottom;
                                 var7 = top;
                                 var4 = x;
                             } else if (verticalLinearLayoutGravity == Gravity.BOTTOM) {
                                 int x = linearLayoutLocation[0];
                                 int y = childLocation[1];
-                                this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, y - (int) ((float) topMargin * this.getScaleY())), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, y - (int) ((float) topMargin * getScaleY())), linearLayout, var8, b(linearLayout) + 1);
                                 ++var8;
                                 var4 = x;
-                                var7 = (int) ((float) (childLocation[1] + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
+                                var7 = (int) ((float) (childLocation[1] + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 var13 = var8;
                                 break label61;
                             } else {
-                                var7 = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * this.getScaleY());
+                                var7 = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 int x = linearLayoutLocation[0];
-                                this.a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * this.getScaleX()) + x, var7), linearLayout, var8, this.b((View) linearLayout) + 1);
+                                a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, var7), linearLayout, var8, b(linearLayout) + 1);
                                 var4 = x;
                                 ++var8;
                                 break label62;
@@ -666,11 +666,11 @@ public class ViewPane extends RelativeLayout {
                 }
 
                 if (child instanceof ItemLinearLayout) {
-                    this.a(view, (ItemLinearLayout) child);
+                    a(view, (ItemLinearLayout) child);
                 } else if (child instanceof ItemHorizontalScrollView) {
-                    this.a(view, (ViewGroup) child);
+                    a(view, (ViewGroup) child);
                 } else if (child instanceof ItemVerticalScrollView) {
-                    this.a(view, (ViewGroup) child);
+                    a(view, (ViewGroup) child);
                 }
 
                 var13 = var4;
@@ -711,12 +711,12 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void a(Rect rect, View view, int i, int i2) {
-        this.c.add(new Object[]{rect, view, i, i2});
+        c.add(new Object[]{rect, view, i, i2});
     }
 
     public void a(View view) {
         ViewBean bean = ((sy) view).getBean();
-        ViewGroup viewGroup = (ViewGroup) this.a.findViewWithTag(bean.parent);
+        ViewGroup viewGroup = a.findViewWithTag(bean.parent);
         viewGroup.addView(view, bean.index);
         if (viewGroup instanceof ty) {
             ((ty) viewGroup).a();

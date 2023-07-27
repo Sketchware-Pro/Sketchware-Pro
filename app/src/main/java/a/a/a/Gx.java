@@ -126,7 +126,7 @@ public class Gx {
                 break;
 
             case "CalendarView":
-                classInfos = "View.FrameLayout.CalendarView";
+                classInfos = "View.ViewGroup.FrameLayout.CalendarView";
                 break;
 
             case "AdView":
@@ -282,11 +282,11 @@ public class Gx {
                 break;
 
             case "TabLayout":
-                classInfos = "View.TabLayout";
+                classInfos = "View.ViewGroup.FrameLayout.HorizontalScrollView.TabLayout";
                 break;
 
             case "ViewPager":
-                classInfos = "View.ViewGroup.AdapterView.ViewPager";
+                classInfos = "View.ViewGroup.ViewPager";
                 break;
 
             case "BottomNavigationView":
@@ -322,7 +322,7 @@ public class Gx {
                 break;
 
             case "SwipeRefreshLayout":
-                classInfos = "View.ViewGroup.LinearLayout.SwipeRefreshLayout";
+                classInfos = "View.ViewGroup.SwipeRefreshLayout";
                 break;
 
             case "TextInputLayout":
@@ -334,7 +334,7 @@ public class Gx {
                 break;
 
             case "CardView":
-                classInfos = "View.Clickable.ViewGroup.LinearLayout.CardView";
+                classInfos = "View.Clickable.ViewGroup.FrameLayout.CardView";
                 break;
 
             case "LottieAnimationView":
@@ -350,7 +350,7 @@ public class Gx {
                 break;
 
             case "RecyclerView":
-                classInfos = "View.RecyclerView";
+                classInfos = "View.ViewGroup.RecyclerView";
                 break;
 
             case "FBAdsInterstitial":

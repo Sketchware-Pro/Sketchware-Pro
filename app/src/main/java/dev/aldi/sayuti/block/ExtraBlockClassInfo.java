@@ -70,111 +70,45 @@ public class ExtraBlockClassInfo {
     }
 
     private static String getDefaultName(String str) {
-        switch (str) {
-            case "circleimageview":
-                return "CircleImageView";
-
-            case "onesignal":
-                return "OneSignal";
-
-            case "customViews":
-                return "CustomView";
-
-            case "asynctask":
-                return "AsyncTask";
-
-            case "activity":
-                return "Context";
-
-            case "otpview":
-                return "OTPView";
-
-            case "lottie":
-                return "LottieAnimation";
-
-            case "phoneauth":
-                return "FirebasePhoneAuth";
-
-            case "fbadbanner":
-                return "FBAdsBanner";
-
-            case "codeview":
-                return "CodeView";
-
-            case "recyclerview":
-                return "RecyclerView";
-
-            case "resource":
-                return "Image";
-
-            case "googlelogin":
-                return "FirebaseGoogleSignIn";
-
-            case "dynamiclink":
-                return "FirebaseDynamicLink";
-
-            case "youtubeview":
-                return "YoutubePlayer";
-
-            case "cardview":
-                return "CardView";
-
-            case "radiogroup":
-                return "RadioGroup";
-
-            case "color":
-                return "Color";
-
-            case "fbadinterstitial":
-                return "FBAdsInterstitial";
-
-            case "textinputlayout":
-                return "TextInputLayout";
-
-            case "collapsingtoolbar":
-                return "CollapsingToolbarLayout";
-
-            case "cloudmessage":
-                return "FirebaseCloudMessage";
-
-            case "resource_bg":
-                return "BackgroundImage";
-
-            case "datepicker":
-                return "DatePicker";
-
-            case "timepicker":
-                return "TimePicker";
-
-            case "swiperefreshlayout":
-                return "SwipeRefreshLayout";
-
-            case "signinbutton":
-                return "SignInButton";
-
-            case "materialButton":
-                return "MaterialButton";
-
-            case "fragmentAdapter":
-                return "FragmentAdapter";
-
-            default:
-                return str;
-        }
+        return switch (str) {
+            case "circleimageview" -> "CircleImageView";
+            case "onesignal" -> "OneSignal";
+            case "customViews" -> "CustomView";
+            case "asynctask" -> "AsyncTask";
+            case "activity" -> "Context";
+            case "otpview" -> "OTPView";
+            case "lottie" -> "LottieAnimation";
+            case "phoneauth" -> "FirebasePhoneAuth";
+            case "fbadbanner" -> "FBAdsBanner";
+            case "codeview" -> "CodeView";
+            case "recyclerview" -> "RecyclerView";
+            case "resource" -> "Image";
+            case "googlelogin" -> "FirebaseGoogleSignIn";
+            case "dynamiclink" -> "FirebaseDynamicLink";
+            case "youtubeview" -> "YoutubePlayer";
+            case "cardview" -> "CardView";
+            case "radiogroup" -> "RadioGroup";
+            case "color" -> "Color";
+            case "fbadinterstitial" -> "FBAdsInterstitial";
+            case "textinputlayout" -> "TextInputLayout";
+            case "collapsingtoolbar" -> "CollapsingToolbarLayout";
+            case "cloudmessage" -> "FirebaseCloudMessage";
+            case "resource_bg" -> "BackgroundImage";
+            case "datepicker" -> "DatePicker";
+            case "timepicker" -> "TimePicker";
+            case "swiperefreshlayout" -> "SwipeRefreshLayout";
+            case "signinbutton" -> "SignInButton";
+            case "materialButton" -> "MaterialButton";
+            case "fragmentAdapter" -> "FragmentAdapter";
+            default -> str;
+        };
     }
 
     private static String getDefaultType(String str) {
-        switch (str) {
-            case "onesignal":
-            case "phoneauth":
-            case "fbadbanner":
-            case "googlelogin":
-            case "dynamiclink":
-            case "fbadinterstitial":
-            case "cloudmessage":
-                return "p";
-            default:
-                return "v";
-        }
+        return switch (str) {
+            case "onesignal", "phoneauth", "fbadbanner", "googlelogin", "dynamiclink", "fbadinterstitial", "cloudmessage" ->
+                    "p";
+            default -> "v";
+        };
     }
 }

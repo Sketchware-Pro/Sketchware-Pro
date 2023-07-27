@@ -22,23 +22,16 @@ import mod.agus.jcoderz.beans.ViewBeans;
 public class ExtraViewPane {
     public static void a(View view, ViewBean viewBean, ViewPane viewPane, kC kCVar) {
         switch (getLastPath(viewBean.convert)) {
-            case "SearchView":
-                handleSearchView((EditText) view, viewBean);
-                break;
-
-            case "AutoCompleteTextView":
-                handleAutoCompleteTextView((AutoCompleteTextView) view, viewBean);
-                break;
-
-            case "MultiAutoCompleteTextView":
-                handleMultiAutoCompleteTextView((MultiAutoCompleteTextView) view, viewBean);
-                break;
-
-            case "CircleImageView":
+            case "SearchView" -> handleSearchView((EditText) view, viewBean);
+            case "AutoCompleteTextView" ->
+                    handleAutoCompleteTextView((AutoCompleteTextView) view, viewBean);
+            case "MultiAutoCompleteTextView" ->
+                    handleMultiAutoCompleteTextView((MultiAutoCompleteTextView) view, viewBean);
+            case "CircleImageView" -> {
                 if (viewBean.type == ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW) {
                     handleCircleImageView((ItemCircleImageView) view, viewBean, viewPane, kCVar);
                 }
-                break;
+            }
         }
     }
 
