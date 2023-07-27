@@ -133,99 +133,95 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public final void f() {
-        this.z = ObjectAnimator.ofFloat(this.y, "TranslationY", 0.0f);
-        this.z.setDuration(500L);
-        this.z.setInterpolator(new DecelerateInterpolator());
-        ImageView imageView = this.y;
-        this.A = ObjectAnimator.ofFloat(imageView, "TranslationY", imageView.getHeight());
-        this.A.setDuration(300L);
-        this.A.setInterpolator(new DecelerateInterpolator());
-        this.B = true;
+        z = ObjectAnimator.ofFloat(y, "TranslationY", 0.0f);
+        z.setDuration(500L);
+        z.setInterpolator(new DecelerateInterpolator());
+        A = ObjectAnimator.ofFloat(y, "TranslationY", y.getHeight());
+        A.setDuration(300L);
+        A.setInterpolator(new DecelerateInterpolator());
+        B = true;
     }
 
     public final void g() {
-        this.V = new b(getContext());
+        V = new b(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.weight = 1.0f;
-        this.V.setLayoutParams(layoutParams);
-        this.V.a(PaletteGroup.BASIC);
-        this.V.setSelected(true);
-        this.V.setOnClickListener(v -> {
+        V.setLayoutParams(layoutParams);
+        V.a(PaletteGroup.BASIC);
+        V.setSelected(true);
+        V.setOnClickListener(v -> {
             o();
             V.animate().scaleX(1).scaleY(1).alpha(1).start();
             W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
             V.setSelected(true);
             W.setSelected(false);
         });
-        this.W = new b(getContext());
+        W = new b(getContext());
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams2.weight = 1.0f;
-        this.W.setLayoutParams(layoutParams2);
-        this.W.a(PaletteGroup.FAVORITE);
-        this.W.setSelected(false);
-        this.W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
-        this.W.setOnClickListener(v -> {
+        W.setLayoutParams(layoutParams2);
+        W.a(PaletteGroup.FAVORITE);
+        W.setSelected(false);
+        W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
+        W.setOnClickListener(v -> {
             n();
             V.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
             W.animate().scaleX(1).scaleY(1).alpha(1).start();
             V.setSelected(false);
             W.setSelected(true);
         });
-        this.U.addView(this.V);
-        this.U.addView(this.W);
+        U.addView(V);
+        U.addView(W);
     }
 
     public ProjectFileBean getProjectFile() {
-        return this.projectFileBean;
+        return projectFileBean;
     }
 
     public void h() {
-        this.p.setResourceManager(jC.d(this.a));
+        p.setResourceManager(jC.d(a));
     }
 
     public void i() {
-        sy syVar = this.H;
-        if (syVar != null) {
-            syVar.setSelection(false);
-            this.H = null;
+        if (H != null) {
+            H.setSelection(false);
+            H = null;
         }
-        cy cyVar = this.L;
-        if (cyVar != null) {
-            cyVar.a(false, "");
+        if (L != null) {
+            L.a(false, "");
         }
     }
 
     public void j() {
-        this.p.d();
+        p.d();
         l();
         i();
     }
 
     public void k() {
-        this.p.e();
+        p.e();
     }
 
     public void l() {
-        this.e = new int[99];
+        e = new int[99];
     }
 
     public final void m() {
-        Iw iw = this.M;
-        if (iw != null) {
-            iw.a(this.b, this.H.getBean());
+        if (M != null) {
+            M.a(b, H.getBean());
         }
     }
 
     public final void n() {
-        this.i.setVisibility(View.GONE);
-        this.j.setVisibility(View.VISIBLE);
+        i.setVisibility(View.GONE);
+        j.setVisibility(View.VISIBLE);
     }
 
     public final void o() {
-        this.i.setVisibility(View.VISIBLE);
-        this.j.setVisibility(View.GONE);
+        i.setVisibility(View.VISIBLE);
+        j.setVisibility(View.GONE);
     }
 
     @Override
@@ -240,7 +236,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     @Override
     public void onLayout(boolean z, int i, int i2, int i3, int i4) {
         super.onLayout(z, i, i2, i3, i4);
-        if (this.P) {
+        if (P) {
             a();
         }
     }
@@ -253,118 +249,104 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (motionEvent.getPointerId(motionEvent.getActionIndex()) > 0) {
             return true;
         }
-        if (view == this.p) {
+        if (view == p) {
             if (actionMasked == MotionEvent.ACTION_DOWN) {
                 i();
-                this.r = null;
+                r = null;
             }
             return true;
         } else if (actionMasked == MotionEvent.ACTION_DOWN) {
-            this.t = false;
-            this.u = motionEvent.getRawX();
-            this.v = motionEvent.getRawY();
-            this.r = view;
+            t = false;
+            u = motionEvent.getRawX();
+            v = motionEvent.getRawY();
+            r = view;
             if ((view instanceof sy) && ((sy) view).getFixed()) {
                 return true;
             }
-            if (b(view) && (_xVar = this.N) != null) {
+            if (b(view) && (_xVar = N) != null) {
                 _xVar.b();
             }
-            this.s.postDelayed(this.ea, ViewConfiguration.getLongPressTimeout() / 2);
+            s.postDelayed(ea, ViewConfiguration.getLongPressTimeout() / 2);
             return true;
         } else if (actionMasked != MotionEvent.ACTION_UP) {
             if (actionMasked != MotionEvent.ACTION_MOVE) {
                 if (actionMasked == MotionEvent.ACTION_CANCEL || actionMasked == MotionEvent.ACTION_SCROLL) {
-                    this.i.setScrollEnabled(true);
-                    this.j.setScrollEnabled(true);
-                    _x _xVar2 = this.N;
+                    i.setScrollEnabled(true);
+                    j.setScrollEnabled(true);
+                    _x _xVar2 = N;
                     if (_xVar2 != null) {
                         _xVar2.d();
                     }
                     b(false);
-                    this.x.setDummyVisibility(View.GONE);
-                    this.p.b();
-                    this.s.removeCallbacks(this.ea);
-                    this.t = false;
+                    x.setDummyVisibility(View.GONE);
+                    p.b();
+                    s.removeCallbacks(ea);
+                    t = false;
                     return true;
                 }
                 return true;
-            } else if (!this.t) {
-                if (Math.abs(this.u - motionEvent.getRawX()) >= this.w || Math.abs(this.v - motionEvent.getRawY()) >= this.w) {
-                    this.r = null;
-                    this.s.removeCallbacks(this.ea);
+            } else if (!t) {
+                if (Math.abs(u - motionEvent.getRawX()) >= w || Math.abs(v - motionEvent.getRawY()) >= w) {
+                    r = null;
+                    s.removeCallbacks(ea);
                     return true;
                 }
                 return true;
             } else {
-                this.s.removeCallbacks(this.ea);
-                this.x.a(view, motionEvent.getRawX(), motionEvent.getRawY(), this.u, this.v);
+                s.removeCallbacks(ea);
+                x.a(view, motionEvent.getRawX(), motionEvent.getRawY(), u, v);
                 if (a(motionEvent.getRawX(), motionEvent.getRawY())) {
-                    this.x.setAllow(true);
+                    x.setAllow(true);
                     a(true);
                     return true;
                 }
-                if (this.D) {
+                if (D) {
                     a(false);
                 }
                 if (b(motionEvent.getRawX(), motionEvent.getRawY())) {
-                    this.x.setAllow(true);
-                    int i = this.I;
-                    int i2 = this.J;
-                    if (!a(this.r)) {
-                        i = this.r.getWidth();
-                        i2 = this.r.getHeight();
-                    } else {
-                        if (this.r instanceof IconLinearHorizontal) {
-                            i = ViewGroup.LayoutParams.MATCH_PARENT;
-                        }
-                        if (this.r instanceof IconLinearVertical) {
-                            i2 = ViewGroup.LayoutParams.MATCH_PARENT;
-                        }
-                    }
-                    this.p.a((int) motionEvent.getRawX(), (int) motionEvent.getRawY(), i, i2);
+                    x.setAllow(true);
+                    boolean isNotIcon = !a(r);
+                    int i = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
+                            ViewGroup.LayoutParams.MATCH_PARENT : I);
+                    int i2 = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
+                            ViewGroup.LayoutParams.MATCH_PARENT : J);
+                    p.a((int) motionEvent.getRawX(), (int) motionEvent.getRawY(), i, i2);
                 } else {
-                    this.x.setAllow(false);
-                    this.p.a(true);
+                    x.setAllow(false);
+                    p.a(true);
                 }
                 return true;
             }
-        } else if (!this.t) {
-            View view2 = this.r;
-            if (view2 instanceof sy) {
-                a((sy) view2, true);
+        } else if (!t) {
+            if (r instanceof sy sy) {
+                a(sy, true);
             }
-            _x _xVar3 = this.N;
-            if (_xVar3 != null) {
-                _xVar3.d();
+            if (N != null) {
+                N.d();
             }
-            this.x.setDummyVisibility(View.GONE);
-            this.r = null;
-            this.p.b();
-            this.s.removeCallbacks(this.ea);
+            x.setDummyVisibility(View.GONE);
+            r = null;
+            p.b();
+            s.removeCallbacks(ea);
             return true;
         } else {
-            if (this.x.getAllow()) {
-                if (this.D) {
-                    View view3 = this.r;
-                    if (view3 instanceof sy) {
-                        ArrayList<ViewBean> b2 = jC.a(this.a).b(this.b, ((sy) view3).getBean());
+            if (x.getAllow()) {
+                if (D) {
+                    if (r instanceof sy sy) {
+                        ArrayList<ViewBean> b2 = jC.a(a).b(b, sy.getBean());
                         for (int size = b2.size() - 1; size >= 0; size--) {
-                            jC.a(this.a).a(this.projectFileBean, b2.get(size));
+                            jC.a(a).a(projectFileBean, b2.get(size));
                         }
                         b(b2, true);
                     }
                 }
-                if (this.D) {
-                    View view4 = this.r;
-                    if (view4 instanceof uy) {
-                        b(((uy) view4).getName());
+                if (D) {
+                    if (r instanceof uy uy) {
+                        b(uy.getName());
                     }
                 }
-                this.p.a(false);
-                View view5 = this.r;
-                if (view5 instanceof uy) {
-                    uy uyVar = (uy) view5;
+                p.a(false);
+                if (r instanceof uy uyVar) {
                     ArrayList<ViewBean> arrayList = new ArrayList<>();
                     oB oBVar = new oB();
                     boolean z = false;
@@ -374,24 +356,24 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                             arrayList.add(viewBean.clone());
                             String str2 = viewBean.layout.backgroundResource;
                             String str3 = viewBean.image.resName;
-                            if (!jC.d(this.a).l(str2) && Op.g().b(str2)) {
+                            if (!jC.d(a).l(str2) && Op.g().b(str2)) {
                                 ProjectResourceBean a2 = Op.g().a(str2);
                                 try {
-                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + this.a + File.separator + a2.resFullName);
+                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + a + File.separator + a2.resFullName);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                jC.d(this.a).b.add(a2);
+                                jC.d(a).b.add(a2);
                                 z = true;
                             }
-                            if (!jC.d(this.a).l(str3) && Op.g().b(str3)) {
+                            if (!jC.d(a).l(str3) && Op.g().b(str3)) {
                                 ProjectResourceBean a3 = Op.g().a(str3);
                                 try {
-                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + this.a + File.separator + a3.resFullName);
+                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + a + File.separator + a3.resFullName);
                                 } catch (Exception e2) {
                                     e2.printStackTrace();
                                 }
-                                jC.d(this.a).b.add(a3);
+                                jC.d(a).b.add(a3);
                                 z = true;
                             }
                         }
@@ -401,11 +383,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                     if (arrayList.size() > 0) {
                         HashMap hashMap = new HashMap();
-                        this.p.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                        p.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         Iterator<ViewBean> it = arrayList.iterator();
                         while (it.hasNext()) {
                             ViewBean next = it.next();
-                            if (jC.a(this.a).h(this.projectFileBean.getXmlName(), next.id)) {
+                            if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
                                 hashMap.put(next.id, a(next.type));
                             } else {
                                 String str4 = next.id;
@@ -415,47 +397,45 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                             if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && str.length() > 0) {
                                 next.parent = (String) hashMap.get(next.parent);
                             }
-                            jC.a(this.a).a(this.b, next);
+                            jC.a(a).a(b, next);
                         }
                         a(a(arrayList, true), true);
                     }
-                } else if (view5 instanceof IconBase) {
-                    ViewBean bean = ((IconBase) view5).getBean();
+                } else if (r instanceof IconBase icon) {
+                    ViewBean bean = icon.getBean();
                     bean.id = IdGenerator.getId(this, bean.type, bean);
-                    this.p.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
-                    jC.a(this.a).a(this.b, bean);
+                    p.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                    jC.a(a).a(b, bean);
                     HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
                     eventBuilder.setCategory("editor");
                     eventBuilder.setAction("widget");
                     eventBuilder.setLabel("Custom");
-                    this.Q.send(eventBuilder.build());
-                    if (bean.type == 3 && this.projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                        jC.a(this.a).a(this.projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
+                    Q.send(eventBuilder.build());
+                    if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                        jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
                     }
                     a(a(bean, true), true);
-                } else if (view5 instanceof sy) {
-                    ViewBean bean2 = ((sy) view5).getBean();
-                    this.p.a(bean2, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
-                    a(b(bean2, true), true);
+                } else if (r instanceof sy sy) {
+                    ViewBean bean = sy.getBean();
+                    p.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                    a(b(bean, true), true);
                 }
             } else {
-                View view6 = this.r;
-                if (view6 instanceof sy) {
-                    view6.setVisibility(View.VISIBLE);
+                if (r instanceof sy) {
+                    r.setVisibility(View.VISIBLE);
                 }
             }
-            this.i.setScrollEnabled(true);
-            this.j.setScrollEnabled(true);
-            _x _xVar4 = this.N;
-            if (_xVar4 != null) {
-                _xVar4.d();
+            i.setScrollEnabled(true);
+            j.setScrollEnabled(true);
+            if (N != null) {
+                N.d();
             }
             b(false);
-            this.x.setDummyVisibility(View.GONE);
-            this.r = null;
-            this.p.b();
-            this.s.removeCallbacks(this.ea);
-            this.t = false;
+            x.setDummyVisibility(View.GONE);
+            r = null;
+            p.b();
+            s.removeCallbacks(ea);
+            t = false;
             return true;
         }
     }
@@ -470,23 +450,23 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void setIsAdLoaded(boolean z) {
-        this.da = z;
+        da = z;
     }
 
     public void setOnDraggingListener(_x _xVar) {
-        this.N = _xVar;
+        N = _xVar;
     }
 
     public void setOnHistoryChangeListener(ay ayVar) {
-        this.O = ayVar;
+        O = ayVar;
     }
 
     public void setOnPropertyClickListener(Iw iw) {
-        this.M = iw;
+        M = iw;
     }
 
     public void setOnWidgetSelectedListener(cy cyVar) {
-        this.L = cyVar;
+        L = cyVar;
     }
 
     public void setPaletteLayoutVisible(int i) {
@@ -495,87 +475,85 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public void setScreenType(int i) {
         if (i == 1) {
-            this.ca = 0;
+            ca = 0;
         } else {
-            this.ca = 1;
+            ca = 1;
         }
     }
 
     public final void a(Context context) {
         wB.a(context, this, R.layout.view_editor);
-        this.Q = ((SketchApplication) context.getApplicationContext()).a();
-        this.Q.enableAdvertisingIdCollection(true);
-        this.Q.enableExceptionReporting(true);
-        this.i = (PaletteWidget) findViewById(R.id.palette_widget);
-        this.j = (PaletteFavorite) findViewById(R.id.palette_favorite);
-        this.x = (ViewDummy) findViewById(R.id.dummy);
-        this.y = (ImageView) findViewById(R.id.icon_delete);
-        this.F = (FrameLayout) findViewById(R.id.shape);
-        this.U = (LinearLayout) findViewById(R.id.palette_group);
+        Q = ((SketchApplication) context.getApplicationContext()).a();
+        Q.enableAdvertisingIdCollection(true);
+        Q.enableExceptionReporting(true);
+        i = findViewById(R.id.palette_widget);
+        j = findViewById(R.id.palette_favorite);
+        x = findViewById(R.id.dummy);
+        y = findViewById(R.id.icon_delete);
+        F = findViewById(R.id.shape);
+        U = findViewById(R.id.palette_group);
         g();
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
-        this.f = wB.a(context, 1.0f);
-        float f = this.f;
-        this.I = (int) (this.I * f);
-        this.J = (int) (this.J * f);
-        this.g = getResources().getDisplayMetrics().widthPixels;
-        this.h = getResources().getDisplayMetrics().heightPixels;
-        this.aa = new LinearLayout(context);
-        this.aa.setOrientation(LinearLayout.VERTICAL);
-        this.aa.setGravity(Gravity.CENTER);
-        this.aa.setLayoutParams(new FrameLayout.LayoutParams(this.g, this.h));
-        this.F.addView(this.aa);
-        this.k = new LinearLayout(context);
-        this.k.setBackgroundColor(0xff0084c2);
-        this.k.setOrientation(LinearLayout.HORIZONTAL);
-        this.k.setGravity(Gravity.CENTER_VERTICAL);
-        this.k.setLayoutParams(new FrameLayout.LayoutParams(this.g, (int) (this.f * 25.0f)));
-        this.l = new TextView(context);
-        this.l.setTextColor(Color.WHITE);
-        this.l.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        f = wB.a(context, 1.0f);
+        I = (int) (I * f);
+        J = (int) (J * f);
+        g = getResources().getDisplayMetrics().widthPixels;
+        h = getResources().getDisplayMetrics().heightPixels;
+        aa = new LinearLayout(context);
+        aa.setOrientation(LinearLayout.VERTICAL);
+        aa.setGravity(Gravity.CENTER);
+        aa.setLayoutParams(new FrameLayout.LayoutParams(g, h));
+        F.addView(aa);
+        k = new LinearLayout(context);
+        k.setBackgroundColor(0xff0084c2);
+        k.setOrientation(LinearLayout.HORIZONTAL);
+        k.setGravity(Gravity.CENTER_VERTICAL);
+        k.setLayoutParams(new FrameLayout.LayoutParams(g, (int) (f * 25.0f)));
+        l = new TextView(context);
+        l.setTextColor(Color.WHITE);
+        l.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        this.l.setPadding((int) (this.f * 8.0f), 0, 0, 0);
-        this.l.setGravity(Gravity.CENTER_VERTICAL);
-        this.k.addView(this.l);
-        this.m = new ImageView(context);
-        this.m.setImageResource(R.drawable.phone_bg_top);
-        this.m.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        l.setPadding((int) (f * 8.0f), 0, 0, 0);
+        l.setGravity(Gravity.CENTER_VERTICAL);
+        k.addView(l);
+        m = new ImageView(context);
+        m.setImageResource(R.drawable.phone_bg_top);
+        m.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-        this.m.setScaleType(ImageView.ScaleType.FIT_END);
-        this.k.addView(this.m);
-        this.F.addView(this.k);
-        this.n = new LinearLayout(context);
-        this.n.setBackgroundColor(0xff008dcd);
-        this.n.setOrientation(LinearLayout.HORIZONTAL);
-        this.n.setGravity(Gravity.CENTER_VERTICAL);
-        this.n.setLayoutParams(new FrameLayout.LayoutParams(this.g, (int) (this.f * 48.0f)));
-        this.o = new TextView(context);
-        this.o.setTextColor(Color.WHITE);
-        this.o.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        m.setScaleType(ImageView.ScaleType.FIT_END);
+        k.addView(m);
+        F.addView(k);
+        n = new LinearLayout(context);
+        n.setBackgroundColor(0xff008dcd);
+        n.setOrientation(LinearLayout.HORIZONTAL);
+        n.setGravity(Gravity.CENTER_VERTICAL);
+        n.setLayoutParams(new FrameLayout.LayoutParams(g, (int) (f * 48.0f)));
+        o = new TextView(context);
+        o.setTextColor(Color.WHITE);
+        o.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        this.o.setPadding((int) (this.f * 16.0f), 0, 0, 0);
-        this.o.setGravity(Gravity.CENTER_VERTICAL);
-        this.o.setTextSize(15.0f);
-        this.o.setText("Toolbar");
-        this.o.setTypeface(null, Typeface.BOLD);
-        this.n.addView(this.o);
-        this.F.addView(this.n);
-        this.p = new ViewPane(getContext());
-        this.p.setLayoutParams(new FrameLayout.LayoutParams(this.g, this.h));
-        this.F.addView(this.p);
-        this.p.setOnTouchListener(this);
-        this.q = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        this.K = new DB(context, "P12").a("P12I0", true);
-        this.w = ViewConfiguration.get(context).getScaledTouchSlop();
+        o.setPadding((int) (f * 16.0f), 0, 0, 0);
+        o.setGravity(Gravity.CENTER_VERTICAL);
+        o.setTextSize(15.0f);
+        o.setText("Toolbar");
+        o.setTypeface(null, Typeface.BOLD);
+        n.addView(o);
+        F.addView(n);
+        p = new ViewPane(getContext());
+        p.setLayoutParams(new FrameLayout.LayoutParams(g, h));
+        F.addView(p);
+        p.setOnTouchListener(this);
+        q = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        K = new DB(context, "P12").a("P12I0", true);
+        w = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
-            cC.c(this.a).b(this.projectFileBean.getXmlName(), arrayList);
-            ay ayVar = this.O;
-            if (ayVar != null) {
-                ayVar.a();
+            cC.c(a).b(projectFileBean.getXmlName(), arrayList);
+            if (O != null) {
+                O.a();
             }
         }
         int size = arrayList.size();
@@ -589,18 +567,18 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public final void c() {
-        this.j.a();
+        j.a();
     }
 
     public void d() {
-        this.i.a();
-        this.i.b();
+        i.a();
+        i.b();
     }
 
     public sy e(ViewBean viewBean) {
-        sy g = this.p.g(viewBean);
-        this.L.a();
-        this.L.a(viewBean.id);
+        sy g = p.g(viewBean);
+        L.a();
+        L.a(viewBean.id);
         return g;
     }
 
@@ -616,8 +594,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
         public final void a(Context context) {
             wB.a(context, this, R.layout.palette_group_item);
-            this.b = findViewById(R.id.group_item);
-            this.c = (ImageView) findViewById(R.id.img_group);
+            b = findViewById(R.id.group_item);
+            c = findViewById(R.id.img_group);
         }
 
         @Override
@@ -626,10 +604,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
         public void a(PaletteGroup group) {
             this.group = group;
-            if (group == this.group.BASIC) {
-                this.c.setImageResource(R.drawable.selector_palette_tab_ic_sketchware);
+            if (group == PaletteGroup.BASIC) {
+                c.setImageResource(R.drawable.selector_palette_tab_ic_sketchware);
             } else {
-                this.c.setImageResource(R.drawable.selector_palette_tab_ic_bookmark);
+                c.setImageResource(R.drawable.selector_palette_tab_ic_bookmark);
             }
             setOnClickListener(this);
         }
@@ -637,7 +615,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final boolean c(ViewBean viewBean) {
         int i;
-        int i2 = this.projectFileBean.fileType;
+        int i2 = projectFileBean.fileType;
         if (i2 == 1) {
             int i3 = viewBean.type;
             if (i3 != 0 && i3 != 4 && i3 != 5 && i3 != 3 && i3 != 6 && i3 != 11 && i3 != 13 && i3 != 14 && i3 == 8) {
@@ -650,20 +628,17 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void d(ViewBean viewBean) {
-        this.p.f(viewBean);
+        p.f(viewBean);
     }
 
     public final void e() {
         boolean z;
         boolean z2;
-        View view = this.r;
-        if (view == null) {
+        if (r == null) {
             return;
         }
-        if (a(view)) {
-            View view2 = this.r;
-            if (view2 instanceof uy) {
-                uy uyVar = (uy) view2;
+        if (a(r)) {
+            if (r instanceof uy uyVar) {
                 Iterator<ViewBean> it = uyVar.getData().iterator();
                 while (true) {
                     if (!it.hasNext()) {
@@ -674,7 +649,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         break;
                     }
                 }
-                if (z && !this.N.a()) {
+                if (z && !N.a()) {
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
@@ -688,92 +663,78 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         break;
                     }
                 }
-                if (z2 && !this.N.c()) {
+                if (z2 && !N.c()) {
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
-            } else if ((view2 instanceof IconAdView) && !this.N.a()) {
+            } else if ((r instanceof IconAdView) && !N.a()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if ((this.r instanceof IconMapView) && !this.N.c()) {
+            } else if ((r instanceof IconMapView) && !N.c()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
         }
-        this.i.setScrollEnabled(false);
-        this.j.setScrollEnabled(false);
-        _x _xVar = this.N;
-        if (_xVar != null) {
-            _xVar.b();
+        i.setScrollEnabled(false);
+        j.setScrollEnabled(false);
+        if (N != null) {
+            N.b();
         }
-        if (this.K) {
-            this.q.vibrate(100L);
+        if (K) {
+            q.vibrate(100L);
         }
-        this.t = true;
-        this.x.b(this.r);
-        this.x.bringToFront();
+        t = true;
+        x.b(r);
+        x.bringToFront();
         i();
-        ViewDummy viewDummy = this.x;
-        View view3 = this.r;
-        float f = this.u;
-        float f2 = this.v;
-        viewDummy.a(view3, f, f2, f, f2);
-        this.x.a(this.G);
-        if (a(this.r)) {
-            if (this.r instanceof uy) {
+        x.a(r, u, v, u, v);
+        x.a(G);
+        if (a(r)) {
+            if (r instanceof uy) {
                 b(true);
-                this.p.e(null);
+                p.e(null);
             } else {
                 b(false);
-                this.p.e(null);
+                p.e(null);
             }
         } else {
-            this.r.setVisibility(View.GONE);
+            r.setVisibility(View.GONE);
             b(true);
-            this.p.e(((sy) this.r).getBean());
+            p.e(((sy) r).getBean());
         }
-        if (b(this.u, this.v)) {
-            this.x.setAllow(true);
-            int i = this.I;
-            int i2 = this.J;
-            if (!a(this.r)) {
-                i = this.r.getWidth();
-                i2 = this.r.getHeight();
-            } else {
-                if (this.r instanceof IconLinearHorizontal) {
-                    i = -1;
-                }
-                if (this.r instanceof IconLinearVertical) {
-                    i2 = -1;
-                }
-            }
-            this.p.a((int) this.u, (int) this.v, i, i2);
+        if (b(u, v)) {
+            x.setAllow(true);
+            boolean isNotIcon = !a(r);
+            int i = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
+                    ViewGroup.LayoutParams.MATCH_PARENT : I);
+            int i2 = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
+                    ViewGroup.LayoutParams.MATCH_PARENT : J);
+            p.a((int) u, (int) v, i, i2);
             return;
         }
-        this.x.setAllow(false);
-        this.p.a(true);
+        x.setAllow(false);
+        p.a(true);
     }
 
     public sy b(ViewBean viewBean, boolean z) {
         if (z) {
-            cC.c(this.a).b(this.projectFileBean.getXmlName(), viewBean);
-            ay ayVar = this.O;
-            if (ayVar != null) {
-                ayVar.a();
+            cC.c(a).b(projectFileBean.getXmlName(), viewBean);
+            if (O != null) {
+                O.a();
             }
         }
-        return this.p.d(viewBean);
+        return p.d(viewBean);
     }
 
     public sy b(ViewBean viewBean) {
-        View b2 = this.p.b(viewBean);
-        this.p.a(b2);
+        View b2 = p.b(viewBean);
+        p.a(b2);
         String b3 = wq.b(viewBean.type);
         if (viewBean.id.indexOf(b3) == 0 && viewBean.id.length() > b3.length()) {
             try {
                 int intValue = Integer.valueOf(viewBean.id.substring(b3.length())).intValue();
-                if (this.e[viewBean.type] < intValue) {
-                    this.e[viewBean.type] = intValue;
+                if (e[viewBean.type] < intValue) {
+                    e[viewBean.type] = intValue;
                 }
             } catch (NumberFormatException unused) {
             }
@@ -793,8 +754,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final boolean b(float f, float f2) {
         int[] iArr = new int[2];
-        this.p.getLocationOnScreen(iArr);
-        return f > ((float) iArr[0]) && f < ((float) iArr[0]) + (((float) this.p.getWidth()) * this.p.getScaleX()) && f2 > ((float) iArr[1]) && f2 < ((float) iArr[1]) + (((float) this.p.getHeight()) * this.p.getScaleY());
+        p.getLocationOnScreen(iArr);
+        return f > ((float) iArr[0]) && f < ((float) iArr[0]) + (((float) p.getWidth()) * p.getScaleX()) && f2 > ((float) iArr[1]) && f2 < ((float) iArr[1]) + (((float) p.getHeight()) * p.getScaleY());
     }
 
     public ViewEditor(Context context, AttributeSet attributeSet) {
@@ -817,183 +778,183 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public final void b() {
-        if (this.z.isRunning()) {
-            this.z.cancel();
+        if (z.isRunning()) {
+            z.cancel();
         }
-        if (this.A.isRunning()) {
-            this.A.cancel();
+        if (A.isRunning()) {
+            A.cancel();
         }
     }
 
     public void setPreviewColors(String str) {
-        this.k.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
-        this.m.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
-        this.n.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
+        k.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
+        m.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
+        n.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
     }
 
     public final void b(boolean z) {
-        this.y.bringToFront();
-        if (!this.B) {
+        y.bringToFront();
+        if (!B) {
             f();
         }
-        if (this.C == z) {
+        if (C == z) {
             return;
         }
-        this.C = z;
+        C = z;
         b();
         if (z) {
             this.z.start();
         } else {
-            this.A.start();
+            A.start();
         }
     }
 
     public void a(String str, ProjectFileBean projectFileBean) {
-        this.a = str;
+        a = str;
         setPreviewColors(str);
         this.projectFileBean = projectFileBean;
-        this.b = projectFileBean.getXmlName();
+        b = projectFileBean.getXmlName();
         if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
-            this.l.setText(projectFileBean.fileName.substring(1));
+            l.setText(projectFileBean.fileName.substring(1));
         } else {
-            this.l.setText(projectFileBean.getXmlName());
+            l.setText(projectFileBean.getXmlName());
         }
         k();
         if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-            this.S = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
-            this.T = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
+            S = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
+            T = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                 a(jC.a(str).h(projectFileBean.getXmlName()));
             }
         } else {
-            this.S = false;
-            this.T = false;
+            S = false;
+            T = false;
         }
-        this.P = true;
-        if (this.p != null) {
-            this.p.setScId(str);
+        P = true;
+        if (p != null) {
+            p.setScId(str);
         }
     }
 
     public void a(String str) {
         sy syVar;
-        sy a2 = this.p.a(str);
-        if (a2 == null || (syVar = this.H) == a2) {
+        sy a2 = p.a(str);
+        if (a2 == null || (syVar = H) == a2) {
             return;
         }
         if (syVar != null) {
             syVar.setSelection(false);
         }
         a2.setSelection(true);
-        this.H = a2;
+        H = a2;
     }
 
     public void a() {
-        if (this.S) {
-            this.n.setVisibility(View.VISIBLE);
+        if (S) {
+            n.setVisibility(View.VISIBLE);
         } else {
-            this.n.setVisibility(View.GONE);
+            n.setVisibility(View.GONE);
         }
 
-        if (this.T) {
-            this.k.setVisibility(View.GONE);
+        if (T) {
+            k.setVisibility(View.GONE);
         } else {
-            this.k.setVisibility(View.VISIBLE);
+            k.setVisibility(View.VISIBLE);
         }
 
-        this.p.setVisibility(View.VISIBLE);
-        this.g = getResources().getDisplayMetrics().widthPixels;
-        this.h = getResources().getDisplayMetrics().heightPixels;
-        boolean var2 = this.g > this.h;
-        int var4 = (int) (this.f * (!var2 ? 12.0F : 24.0F));
-        int var5 = (int) (this.f * (!var2 ? 20.0F : 10.0F));
-        int var6 = GB.f(this.getContext());
-        int var7 = GB.a(this.getContext());
+        p.setVisibility(View.VISIBLE);
+        g = getResources().getDisplayMetrics().widthPixels;
+        h = getResources().getDisplayMetrics().heightPixels;
+        boolean var2 = g > h;
+        int var4 = (int) (f * (!var2 ? 12.0F : 24.0F));
+        int var5 = (int) (f * (!var2 ? 20.0F : 10.0F));
+        int var6 = GB.f(getContext());
+        int var7 = GB.a(getContext());
         int var9 = g - (int) (120.0F * f);
-        int var8 = this.h - var6 - var7 - (int) (f * 48.0F) - (int) (f * 48.0F);
-        if (this.ca == 0) {
-            if (this.da) {
-                var8 -= (int) (this.f * 56.0F);
+        int var8 = h - var6 - var7 - (int) (f * 48.0F) - (int) (f * 48.0F);
+        if (ca == 0) {
+            if (da) {
+                var8 -= (int) (f * 56.0F);
             }
         }
 
-        float var11 = Math.min((float) var9 / (float) this.g, (float) var8 / (float) this.h);
-        float var3 = Math.min((float) (var9 - var4 * 2) / (float) this.g, (float) (var8 - var5 * 2) / (float) this.h);
+        float var11 = Math.min((float) var9 / (float) g, (float) var8 / (float) h);
+        float var3 = Math.min((float) (var9 - var4 * 2) / (float) g, (float) (var8 - var5 * 2) / (float) h);
         if (!var2) {
-            this.aa.setBackgroundResource(R.drawable.new_view_pane_background_port);
+            aa.setBackgroundResource(R.drawable.new_view_pane_background_port);
         } else {
-            this.aa.setBackgroundResource(R.drawable.new_view_pane_background_land);
+            aa.setBackgroundResource(R.drawable.new_view_pane_background_land);
         }
 
-        this.aa.setLayoutParams(new FrameLayout.LayoutParams(this.g, this.h));
-        this.aa.setScaleX(var11);
-        this.aa.setScaleY(var11);
-        this.aa.setX((float) -((int) (((float) g - (float) g * var11) / 2.0F)));
-        this.aa.setY((float) -((int) (((float) h - (float) h * var11) / 2.0F)));
+        aa.setLayoutParams(new FrameLayout.LayoutParams(g, h));
+        aa.setScaleX(var11);
+        aa.setScaleY(var11);
+        aa.setX((float) -((int) (((float) g - (float) g * var11) / 2.0F)));
+        aa.setY((float) -((int) (((float) h - (float) h * var11) / 2.0F)));
         int var10 = var4 - (int) (((float) g - (float) g * var3) / 2.0F);
         int var13 = var5;
-        if (this.k.getVisibility() == View.VISIBLE) {
-            this.k.setLayoutParams(new FrameLayout.LayoutParams(this.g, var6));
-            this.k.setScaleX(var3);
-            this.k.setScaleY(var3);
+        if (k.getVisibility() == View.VISIBLE) {
+            k.setLayoutParams(new FrameLayout.LayoutParams(g, var6));
+            k.setScaleX(var3);
+            k.setScaleY(var3);
             var11 = (float) var6;
             float var12 = var11 * var3;
-            this.k.setX((float) var10);
-            this.k.setY((float) (var5 - (int) ((var11 - var12) / 2.0F)));
+            k.setX((float) var10);
+            k.setY((float) (var5 - (int) ((var11 - var12) / 2.0F)));
             var13 = var5 + (int) var12;
         }
 
         var8 = var13;
-        if (this.n.getVisibility() == View.VISIBLE) {
-            this.n.setLayoutParams(new FrameLayout.LayoutParams(this.g, var7));
-            this.n.setScaleX(var3);
-            this.n.setScaleY(var3);
+        if (n.getVisibility() == View.VISIBLE) {
+            n.setLayoutParams(new FrameLayout.LayoutParams(g, var7));
+            n.setScaleX(var3);
+            n.setScaleY(var3);
             float var12 = (float) var7;
             var11 = var12 * var3;
-            this.n.setX((float) var10);
-            this.n.setY((float) (var13 - (int) ((var12 - var11) / 2.0F)));
+            n.setX((float) var10);
+            n.setY((float) (var13 - (int) ((var12 - var11) / 2.0F)));
             var8 = var13 + (int) var11;
         }
 
         var13 = h;
-        if (this.k.getVisibility() == View.VISIBLE) {
+        if (k.getVisibility() == View.VISIBLE) {
             var13 = h - var6;
         }
 
         var5 = var13;
-        if (this.n.getVisibility() == View.VISIBLE) {
+        if (n.getVisibility() == View.VISIBLE) {
             var5 = var13 - var7;
         }
 
-        this.p.setLayoutParams(new FrameLayout.LayoutParams(this.g, var5));
-        this.p.setScaleX(var3);
-        this.p.setScaleY(var3);
+        p.setLayoutParams(new FrameLayout.LayoutParams(g, var5));
+        p.setScaleX(var3);
+        p.setScaleY(var3);
         var11 = (float) var5;
-        this.p.setX((float) var10);
-        this.p.setY((float) (var8 - (int) ((var11 - var3 * var11) / 2.0F)));
-        this.P = false;
+        p.setX((float) var10);
+        p.setY((float) (var8 - (int) ((var11 - var3 * var11) / 2.0F)));
+        P = false;
     }
 
     public void a(PaletteWidget.a aVar, String str) {
-        View a2 = this.i.a(aVar, str);
+        View a2 = i.a(aVar, str);
         a2.setClickable(true);
         a2.setOnTouchListener(this);
     }
 
     public void extraWidgetLayout(String str, String str2) {
-        View extraWidgetLayout = this.i.extraWidgetLayout(str, str2);
+        View extraWidgetLayout = i.extraWidgetLayout(str, str2);
         extraWidgetLayout.setClickable(true);
         extraWidgetLayout.setOnTouchListener(this);
     }
 
     public void a(PaletteWidget.b bVar, String str, String str2, String str3) {
-        View a2 = this.i.a(bVar, str, str2, str3);
+        View a2 = i.a(bVar, str, str2, str3);
         a2.setClickable(true);
         a2.setOnTouchListener(this);
     }
 
     public void extraWidget(String str, String str2, String str3) {
-        View extraWidget = this.i.extraWidget(str, str2, str3);
+        View extraWidget = i.extraWidget(str, str2, str3);
         extraWidget.setClickable(true);
         extraWidget.setOnTouchListener(this);
     }
@@ -1003,7 +964,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public final void a(String str, ArrayList<ViewBean> arrayList) {
-        View a2 = this.j.a(str, arrayList);
+        View a2 = j.a(str, arrayList);
         a2.setClickable(true);
         a2.setOnTouchListener(this);
     }
@@ -1012,12 +973,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         String b2 = wq.b(i);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
-        int[] iArr = this.e;
-        int i2 = iArr[i] + 1;
-        iArr[i] = i2;
+        int i2 = e[i] + 1;
+        e[i] = i2;
         sb.append(i2);
         String sb2 = sb.toString();
-        ArrayList<ViewBean> d = jC.a(this.a).d(this.b);
+        ArrayList<ViewBean> d = jC.a(a).d(b);
         while (true) {
             boolean z = false;
             Iterator<ViewBean> it = d.iterator();
@@ -1034,9 +994,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
             StringBuilder sb3 = new StringBuilder();
             sb3.append(b2);
-            int[] iArr2 = this.e;
-            int i3 = iArr2[i] + 1;
-            iArr2[i] = i3;
+            int i3 = e[i] + 1;
+            e[i] = i3;
             sb3.append(i3);
             sb2 = sb3.toString();
         }
@@ -1044,10 +1003,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public sy a(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
-            cC.c(this.a).a(this.projectFileBean.getXmlName(), arrayList);
-            ay ayVar = this.O;
-            if (ayVar != null) {
-                ayVar.a();
+            cC.c(a).a(projectFileBean.getXmlName(), arrayList);
+            if (O != null) {
+                O.a();
             }
         }
         sy syVar = null;
@@ -1065,10 +1023,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public sy a(ViewBean viewBean, boolean z) {
         if (z) {
-            cC.c(this.a).a(this.projectFileBean.getXmlName(), viewBean);
-            ay ayVar = this.O;
-            if (ayVar != null) {
-                ayVar.a();
+            cC.c(a).a(projectFileBean.getXmlName(), viewBean);
+            if (O != null) {
+                O.a();
             }
         }
         return b(viewBean);
@@ -1085,37 +1042,35 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void a(ViewBean viewBean) {
-        this.p.a(viewBean).setOnTouchListener(this);
+        p.a(viewBean).setOnTouchListener(this);
     }
 
     public void a(sy syVar, boolean z) {
-        sy syVar2 = this.H;
-        if (syVar2 != null) {
-            syVar2.setSelection(false);
+        if (H != null) {
+            H.setSelection(false);
         }
-        this.H = syVar;
-        this.H.setSelection(true);
-        cy cyVar = this.L;
-        if (cyVar != null) {
-            cyVar.a(z, this.H.getBean().id);
+        H = syVar;
+        H.setSelection(true);
+        if (L != null) {
+            L.a(z, H.getBean().id);
         }
     }
 
     public final boolean a(float f, float f2) {
         int[] iArr = new int[2];
-        this.y.getLocationOnScreen(iArr);
-        return f > ((float) iArr[0]) && f < ((float) (iArr[0] + this.y.getWidth())) && f2 > ((float) iArr[1]) && f2 < ((float) (iArr[1] + this.y.getHeight()));
+        y.getLocationOnScreen(iArr);
+        return f > ((float) iArr[0]) && f < ((float) (iArr[0] + y.getWidth())) && f2 > ((float) iArr[1]) && f2 < ((float) (iArr[1] + y.getHeight()));
     }
 
     public final void a(boolean z) {
-        if (this.D == z) {
+        if (D == z) {
             return;
         }
-        this.D = z;
-        if (this.D) {
-            this.y.setImageResource(R.drawable.icon_delete_active);
+        D = z;
+        if (D) {
+            y.setImageResource(R.drawable.icon_delete_active);
         } else {
-            this.y.setImageResource(R.drawable.icon_delete);
+            y.setImageResource(R.drawable.icon_delete);
         }
     }
 }
