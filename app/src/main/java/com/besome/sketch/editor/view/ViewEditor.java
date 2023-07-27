@@ -68,39 +68,39 @@ import mod.hey.studios.util.ProjectFile;
 
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
     public ObjectAnimator A;
-    public boolean B;
-    public boolean C;
-    public boolean D;
-    public boolean E;
+    public boolean B = false;
+    public boolean C = false;
+    public boolean D = false;
+    public boolean E = true;
     public FrameLayout F;
-    public int[] G;
+    public int[] G = new int[2];
     public sy H;
-    public int I;
-    public int J;
+    public int I = 50;
+    public int J = 30;
     public boolean K;
     public cy L;
     public Iw M;
     public _x N;
     public ay O;
-    public boolean P;
+    public boolean P = true;
     public Tracker Q;
     private ProjectFileBean projectFileBean;
-    public boolean S;
-    public boolean T;
+    public boolean S = true;
+    public boolean T = false;
     public LinearLayout U;
     public b V;
     public b W;
     public String a;
     public LinearLayout aa;
     public String b;
-    public int ba;
-    public final int c;
+    public int ba = 0;
+    public final int c = 99;
     public int ca;
-    public int d;
-    public boolean da;
-    public int[] e;
-    public Runnable ea;
-    public float f;
+    public int d = 99;
+    public boolean da = true;
+    public int[] e = new int[20];
+    public Runnable ea = this::e;
+    public float f = 0;
     public int g;
     public int h;
     public PaletteWidget i;
@@ -112,12 +112,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public TextView o;
     public ViewPane p;
     public Vibrator q;
-    public View r;
-    public final Handler s;
-    public boolean t;
-    public float u;
-    public float v;
-    public int w;
+    public View r = null;
+    public final Handler s = new Handler();
+    public boolean t = false;
+    public float u = 0;
+    public float v = 0;
+    public int w = 0;
     public ViewDummy x;
     public ImageView y;
     public ObjectAnimator z;
@@ -129,29 +129,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public ViewEditor(Context context) {
         super(context);
-        this.c = 99;
-        this.d = 99;
-        this.e = new int[20];
-        this.f = 0.0f;
-        this.r = null;
-        this.s = new Handler();
-        this.t = false;
-        this.u = 0.0f;
-        this.v = 0.0f;
-        this.w = 0;
-        this.B = false;
-        this.C = false;
-        this.D = false;
-        this.E = true;
-        this.G = new int[2];
-        this.I = 50;
-        this.J = 30;
-        this.P = true;
-        this.S = true;
-        this.T = false;
-        this.ba = 0;
-        this.da = true;
-        this.ea = this::e;
         a(context);
     }
 
@@ -822,29 +799,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public ViewEditor(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        this.c = 99;
-        this.d = 99;
-        this.e = new int[20];
-        this.f = 0.0f;
-        this.r = null;
-        this.s = new Handler();
-        this.t = false;
-        this.u = 0.0f;
-        this.v = 0.0f;
-        this.w = 0;
-        this.B = false;
-        this.C = false;
-        this.D = false;
-        this.E = true;
-        this.G = new int[2];
-        this.I = 50;
-        this.J = 30;
-        this.P = true;
-        this.S = true;
-        this.T = false;
-        this.ba = 0;
-        this.da = true;
-        this.ea = this::e;
         a(context);
     }
 
