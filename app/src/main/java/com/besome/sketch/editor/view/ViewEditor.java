@@ -330,6 +330,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             s.removeCallbacks(ea);
             return true;
         } else {
+            lol:
             if (x.getAllow()) {
                 if (D) {
                     if (r instanceof sy sy) {
@@ -338,11 +339,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                             jC.a(a).a(projectFileBean, b2.get(size));
                         }
                         b(b2, true);
+                        break lol;
                     }
                 }
                 if (D) {
                     if (r instanceof uy uy) {
                         b(uy.getName());
+                        break lol;
                     }
                 }
                 p.a(false);
