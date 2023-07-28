@@ -19,6 +19,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
     private boolean isSelected = false;
     private boolean isFixed = false;
     private Paint paint;
+
+    private Rect rect;
     private int layoutGravity = 0;
 
     public ItemLinearLayout(Context context) {
@@ -51,6 +53,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         setMinimumHeight((int) wB.a(context, 32.0F));
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0F));
+        rect = new Rect();
     }
 
     @Override
@@ -108,7 +111,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         if (!isFixed) {
             if (isSelected) {
                 paint.setColor(0x9599d5d0);
-                canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+                rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+                canvas.drawRect(rect, paint);
             }
             paint.setColor(0x60000000);
 
