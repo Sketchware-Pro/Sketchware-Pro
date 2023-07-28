@@ -23,29 +23,25 @@ public class mq {
                 return new Gx("double");
 
             case "s":
-                switch (typeName) {
-                    case "inputOnly":
-                    case "inputCode":
-                    case "import":
-                        return new Gx("Input");
-
-                    default:
-                        return new Gx("String");
-                }
+                return switch (typeName) {
+                    case "inputOnly", "inputCode", "import" -> new Gx("Input");
+                    default -> new Gx("String");
+                };
 
             case "a":
                 return new Gx("Map");
 
             case "l":
                 switch (typeName) {
-                    case "List Map":
+                    case "List Map" -> {
                         return new Gx("ListMap");
-
-                    case "List String":
+                    }
+                    case "List String" -> {
                         return new Gx("ListString");
-
-                    case "List Number":
+                    }
+                    case "List Number" -> {
                         return new Gx("ListInt");
+                    }
                 }
 
             case "v":
@@ -64,112 +60,45 @@ public class mq {
      * @return The Type name of a Component
      */
     public static String a(int componentId) {
-        switch (componentId) {
-            case ComponentBean.COMPONENT_TYPE_INTENT:
-                return "Intent";
-
-            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
-                return "SharedPreferences";
-
-            case ComponentBean.COMPONENT_TYPE_CALENDAR:
-                return "Calendar";
-
-            case ComponentBean.COMPONENT_TYPE_VIBRATOR:
-                return "Vibrator";
-
-            case ComponentBean.COMPONENT_TYPE_TIMERTASK:
-                return "Timer";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                return "FirebaseDB";
-
-            case ComponentBean.COMPONENT_TYPE_DIALOG:
-                return "Dialog";
-
-            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER:
-                return "MediaPlayer";
-
-            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL:
-                return "SoundPool";
-
-            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR:
-                return "ObjectAnimator";
-
-            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
-                return "Gyroscope";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
-                return "FirebaseAuth";
-
-            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
-                return "InterstitialAd";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                return "FirebaseStorage";
-
-            case ComponentBean.COMPONENT_TYPE_CAMERA:
-                return "Camera";
-
-            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                return "FilePicker";
-
-            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
-                return "RequestNetwork";
-
-            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH:
-                return "TextToSpeech";
-
-            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
-                return "SpeechToText";
-
-            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                return "BluetoothConnect";
-
-            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
-                return "LocationManager";
-
-            case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                return "RewardedVideoAd";
-
-            case ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG:
-                return "ProgressDialog";
-
-            case ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG:
-                return "DatePickerDialog";
-
-            case ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG:
-                return "TimePickerDialog";
-
-            case ComponentBean.COMPONENT_TYPE_NOTIFICATION:
-                return "Notification";
-
-            case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER:
-                return "FragmentStatePagerAdapter";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
-                return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                return "DynamicLink";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
-                return "FirebaseCloudMessage";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
-                return "GoogleSignInClient";
-
-            case ComponentBean.COMPONENT_TYPE_ONESIGNAL:
-                return "OSSubscriptionObserver";
-
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
-                return "com.facebook.ads.AdView";
-
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
-                return "com.facebook.ads.InterstitialAd";
-
-            default:
-                return ComponentsHandler.var(componentId);
-        }
+        return switch (componentId) {
+            case ComponentBean.COMPONENT_TYPE_INTENT -> "Intent";
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF -> "SharedPreferences";
+            case ComponentBean.COMPONENT_TYPE_CALENDAR -> "Calendar";
+            case ComponentBean.COMPONENT_TYPE_VIBRATOR -> "Vibrator";
+            case ComponentBean.COMPONENT_TYPE_TIMERTASK -> "Timer";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE -> "FirebaseDB";
+            case ComponentBean.COMPONENT_TYPE_DIALOG -> "Dialog";
+            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER -> "MediaPlayer";
+            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL -> "SoundPool";
+            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR -> "ObjectAnimator";
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE -> "Gyroscope";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH -> "FirebaseAuth";
+            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD -> "InterstitialAd";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE -> "FirebaseStorage";
+            case ComponentBean.COMPONENT_TYPE_CAMERA -> "Camera";
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER -> "FilePicker";
+            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK -> "RequestNetwork";
+            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH -> "TextToSpeech";
+            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT -> "SpeechToText";
+            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> "BluetoothConnect";
+            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER -> "LocationManager";
+            case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD -> "RewardedVideoAd";
+            case ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG -> "ProgressDialog";
+            case ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG -> "DatePickerDialog";
+            case ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG -> "TimePickerDialog";
+            case ComponentBean.COMPONENT_TYPE_NOTIFICATION -> "Notification";
+            case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentStatePagerAdapter";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE ->
+                    "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "DynamicLink";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
+            case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> "OSSubscriptionObserver";
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "com.facebook.ads.AdView";
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
+                    "com.facebook.ads.InterstitialAd";
+            default -> ComponentsHandler.var(componentId);
+        };
     }
 
     /**
@@ -197,247 +126,94 @@ public class mq {
      * @return The internal type name of a List taken from its number
      */
     public static String b(int type) {
-        switch (type) {
-            case 1:
-                return "ListInt";
-
-            case 2:
-                return "ListString";
-
-            case 3:
-                return "ListMap";
-
-            default:
-                return "";
-        }
+        return switch (type) {
+            case 1 -> "ListInt";
+            case 2 -> "ListString";
+            case 3 -> "ListMap";
+            default -> "";
+        };
     }
 
     public static String b(String name) {
-        switch (name) {
-            case "intent":
-            case "Intent":
-                return "Intent";
-
-            case "file":
-            case "File":
-            case "File (Shared Preferences)":
-                return "SharedPreferences";
-
-            case "calendar":
-            case "Calendar":
-                return "Calendar";
-
-            case "vibrator":
-            case "Vibrator":
-                return "Vibrator";
-
-            case "Timer":
-                return "Timer";
-
-            case "dialog":
-            case "Dialog":
-                return "Dialog";
-
-            case "MediaPlayer":
-                return "MediaPlayer";
-
-            case "SoundPool":
-                return "SoundPool";
-
-            case "ObjectAnimator":
-                return "ObjectAnimator";
-
-            case "firebase":
-            case "Firebase":
-            case "Firebase DB":
-                return "FirebaseDB";
-
-            case "firebaseauth":
-            case "Firebase Auth":
-                return "FirebaseAuth";
-
-            case "gyroscope":
-            case "Gyroscope":
-                return "Gyroscope";
-
-            case "InterstitialAd":
-                return "InterstitialAd";
-
-            case "varBool":
-                return "boolean.SelectBoolean";
-
-            case "varInt":
-                return "double.SelectDouble";
-
-            case "varStr":
-                return "String.SelectString";
-
-            case "varMap":
-                return "Map";
-
-            case "listInt":
-                return "ListInt";
-
-            case "listStr":
-                return "ListString";
-
-            case "listMap":
-                return "ListMap";
-
-            case "list":
-                return "List";
-
-            case "view":
-                return "View";
-
-            case "textview":
-                return "TextView";
-
-            case "edittext":
-                return "EditText";
-
-            case "imageview":
-                return "ImageView";
-
-            case "compoundButton":
-                return "CompoundButton";
-
-            case "checkbox":
-                return "CheckBox";
-
-            case "switch":
-                return "Switch";
-
-            case "listSpn":
-                return "AdapterView";
-
-            case "listview":
-                return "ListView";
-
-            case "spinner":
-                return "Spinner";
-
-            case "webview":
-                return "WebView";
-
-            case "calendarview":
-                return "CalendarView";
-
-            case "adview":
-                return "AdView";
-
-            case "mapview":
-                return "MapView";
-
-            case "timer":
-                return "Timer";
-
-            case "mediaplayer":
-                return "MediaPlayer";
-
-            case "soundpool":
-                return "SoundPool";
-
-            case "objectanimator":
-                return "ObjectAnimator";
-
-            case "seekbar":
-                return "SeekBar";
-
-            case "interstitialad":
-                return "InterstitialAd";
-
-            case "firebasestorage":
-                return "FirebaseStorage";
-
-            case "camera":
-                return "Camera";
-
-            case "filepicker":
-                return "FilePicker";
-
-            case "requestnetwork":
-                return "RequestNetwork";
-
-            case "progressbar":
-                return "ProgressBar";
-
-            case "texttospeech":
-                return "TextToSpeech";
-
-            case "speechtotext":
-                return "SpeechToText";
-
-            case "bluetoothconnect":
-                return "BluetoothConnect";
-
-            case "locationmanager":
-                return "LocationManager";
-
-            case "radiobutton":
-                return "RadioButton";
-
-            case "ratingbar":
-                return "RatingBar";
-
-            case "videoview":
-                return "VideoView";
-
-            case "searchview":
-                return "SearchView";
-
-            case "gridview":
-                return "GridView";
-
-            case "actv":
-                return "AutoCompleteTextView";
-
-            case "mactv":
-                return "MultiAutoCompleteTextView";
-
-            case "tablayout":
-                return "TabLayout";
-
-            case "viewpager":
-                return "ViewPager";
-
-            case "badgeview":
-                return "BadgeView";
-
-            case "bottomnavigation":
-                return "BottomNavigationView";
-
-            case "patternview":
-                return "PatternLockView";
-
-            case "sidebar":
-                return "WaveSideBar";
-
-            default:
-                return ExtraBlockClassInfo.getName(name);
-        }
+        return switch (name) {
+            case "intent", "Intent" -> "Intent";
+            case "file", "File", "File (Shared Preferences)" -> "SharedPreferences";
+            case "calendar", "Calendar" -> "Calendar";
+            case "vibrator", "Vibrator" -> "Vibrator";
+            case "Timer" -> "Timer";
+            case "dialog", "Dialog" -> "Dialog";
+            case "MediaPlayer" -> "MediaPlayer";
+            case "SoundPool" -> "SoundPool";
+            case "ObjectAnimator" -> "ObjectAnimator";
+            case "firebase", "Firebase", "Firebase DB" -> "FirebaseDB";
+            case "firebaseauth", "Firebase Auth" -> "FirebaseAuth";
+            case "gyroscope", "Gyroscope" -> "Gyroscope";
+            case "InterstitialAd" -> "InterstitialAd";
+            case "varBool" -> "boolean.SelectBoolean";
+            case "varInt" -> "double.SelectDouble";
+            case "varStr" -> "String.SelectString";
+            case "varMap" -> "Map";
+            case "listInt" -> "ListInt";
+            case "listStr" -> "ListString";
+            case "listMap" -> "ListMap";
+            case "list" -> "List";
+            case "view" -> "View";
+            case "textview" -> "TextView";
+            case "edittext" -> "EditText";
+            case "imageview" -> "ImageView";
+            case "compoundButton" -> "CompoundButton";
+            case "checkbox" -> "CheckBox";
+            case "switch" -> "Switch";
+            case "listSpn" -> "AdapterView";
+            case "listview" -> "ListView";
+            case "spinner" -> "Spinner";
+            case "webview" -> "WebView";
+            case "calendarview" -> "CalendarView";
+            case "adview" -> "AdView";
+            case "mapview" -> "MapView";
+            case "timer" -> "Timer";
+            case "mediaplayer" -> "MediaPlayer";
+            case "soundpool" -> "SoundPool";
+            case "objectanimator" -> "ObjectAnimator";
+            case "seekbar" -> "SeekBar";
+            case "interstitialad" -> "InterstitialAd";
+            case "firebasestorage" -> "FirebaseStorage";
+            case "camera" -> "Camera";
+            case "filepicker" -> "FilePicker";
+            case "requestnetwork" -> "RequestNetwork";
+            case "progressbar" -> "ProgressBar";
+            case "texttospeech" -> "TextToSpeech";
+            case "speechtotext" -> "SpeechToText";
+            case "bluetoothconnect" -> "BluetoothConnect";
+            case "locationmanager" -> "LocationManager";
+            case "radiobutton" -> "RadioButton";
+            case "ratingbar" -> "RatingBar";
+            case "videoview" -> "VideoView";
+            case "searchview" -> "SearchView";
+            case "gridview" -> "GridView";
+            case "actv" -> "AutoCompleteTextView";
+            case "mactv" -> "MultiAutoCompleteTextView";
+            case "tablayout" -> "TabLayout";
+            case "viewpager" -> "ViewPager";
+            case "badgeview" -> "BadgeView";
+            case "bottomnavigation" -> "BottomNavigationView";
+            case "patternview" -> "PatternLockView";
+            case "sidebar" -> "WaveSideBar";
+            default -> ExtraBlockClassInfo.getName(name);
+        };
     }
 
     /**
      * @return The Type name of the Variable taken from its ID
      */
     public static String c(int type) {
-        switch (type) {
-            case 0:
-                return "boolean";
-
-            case 1:
-                return "double";
-
-            case 2:
-                return "String";
-
-            case 3:
-                return "Map";
-
-            default:
-                return "";
-        }
+        return switch (type) {
+            case 0 -> "boolean";
+            case 1 -> "double";
+            case 2 -> "String";
+            case 3 -> "Map";
+            default -> "";
+        };
     }
 
     /**
@@ -448,140 +224,139 @@ public class mq {
         ComponentsHandler.getImports(name, importList);
 
         switch (name) {
-            case "Map":
+            case "Map" -> {
                 importList.add("java.util.HashMap");
                 return importList;
-
-            case "ListInt":
-            case "ListString":
+            }
+            case "ListInt", "ListString" -> {
                 importList.add("java.util.ArrayList");
                 return importList;
-
-            case "ListMap":
+            }
+            case "ListMap" -> {
                 importList.add("java.util.ArrayList");
                 importList.add("java.util.HashMap");
                 return importList;
-
-            case "LinearLayout":
+            }
+            case "LinearLayout" -> {
                 importList.add("android.widget.LinearLayout");
                 return importList;
-
-            case "ScrollView":
+            }
+            case "ScrollView" -> {
                 importList.add("android.widget.ScrollView");
                 return importList;
-
-            case "HorizontalScrollView":
+            }
+            case "HorizontalScrollView" -> {
                 importList.add("android.widget.HorizontalScrollView");
                 return importList;
-
-            case "TextView":
+            }
+            case "TextView" -> {
                 importList.add("android.widget.TextView");
                 return importList;
-
-            case "Button":
+            }
+            case "Button" -> {
                 importList.add("android.widget.Button");
                 return importList;
-
-            case "ImageView":
+            }
+            case "ImageView" -> {
                 importList.add("android.widget.ImageView");
                 return importList;
-
-            case "EditText":
+            }
+            case "EditText" -> {
                 importList.add("android.widget.EditText");
                 return importList;
-
-            case "CompoundButton":
+            }
+            case "CompoundButton" -> {
                 importList.add("android.widget.CompoundButton");
                 return importList;
-
-            case "CheckBox":
+            }
+            case "CheckBox" -> {
                 importList.add("android.widget.CheckBox");
                 return importList;
-
-            case "Spinner":
+            }
+            case "Spinner" -> {
                 importList.add("android.widget.Spinner");
                 importList.add("android.widget.ArrayAdapter");
                 return importList;
-
-            case "ListView":
+            }
+            case "ListView" -> {
                 importList.add("android.widget.ListView");
                 importList.add("android.widget.ArrayAdapter");
                 importList.add("android.widget.BaseAdapter");
                 return importList;
-
-            case "WebView":
+            }
+            case "WebView" -> {
                 importList.add("android.webkit.WebView");
                 importList.add("android.webkit.WebSettings");
                 return importList;
-
-            case "Switch":
+            }
+            case "Switch" -> {
                 importList.add("android.widget.Switch");
                 return importList;
-
-            case "SeekBar":
+            }
+            case "SeekBar" -> {
                 importList.add("android.widget.SeekBar");
                 return importList;
-
-            case "CalendarView":
+            }
+            case "CalendarView" -> {
                 importList.add("android.widget.CalendarView");
                 return importList;
-
-            case "AdView":
+            }
+            case "AdView" -> {
                 importList.add("com.google.android.gms.ads.AdView");
                 importList.add("com.google.android.gms.ads.AdRequest");
                 return importList;
-
-            case "ProgressBar":
+            }
+            case "ProgressBar" -> {
                 importList.add("android.widget.ProgressBar");
                 return importList;
-
-            case "MapView":
+            }
+            case "MapView" -> {
                 importList.add("com.google.android.gms.maps.MapView");
                 importList.add("com.google.android.gms.maps.GoogleMap");
                 importList.add("com.google.android.gms.maps.OnMapReadyCallback");
                 importList.add("com.google.android.gms.maps.model.Marker");
                 importList.add("com.google.android.gms.maps.model.BitmapDescriptorFactory");
                 return importList;
-
-            case "Intent":
+            }
+            case "Intent" -> {
                 importList.add("android.content.Intent");
                 importList.add("android.net.Uri");
                 return importList;
-
-            case "SharedPreferences":
+            }
+            case "SharedPreferences" -> {
                 importList.add("android.app.Activity");
                 importList.add("android.content.SharedPreferences");
                 return importList;
-
-            case "Calendar":
+            }
+            case "Calendar" -> {
                 importList.add("java.util.Calendar");
                 importList.add("java.text.SimpleDateFormat");
                 return importList;
-
-            case "Vibrator":
+            }
+            case "Vibrator" -> {
                 importList.add("android.content.Context");
                 importList.add("android.os.Vibrator");
                 return importList;
-
-            case "Timer":
+            }
+            case "Timer" -> {
                 importList.add("java.util.Timer");
                 importList.add("java.util.TimerTask");
                 return importList;
-
-            case "Dialog":
+            }
+            case "Dialog" -> {
                 importList.add("android.app.AlertDialog");
                 importList.add("android.content.DialogInterface");
                 return importList;
-
-            case "MediaPlayer":
+            }
+            case "MediaPlayer" -> {
                 importList.add("android.media.MediaPlayer");
                 return importList;
-
-            case "SoundPool":
+            }
+            case "SoundPool" -> {
                 importList.add("android.media.SoundPool");
                 return importList;
-
-            case "ObjectAnimator":
+            }
+            case "ObjectAnimator" -> {
                 importList.add("android.animation.ObjectAnimator");
                 importList.add("android.view.animation.LinearInterpolator");
                 importList.add("android.view.animation.AccelerateInterpolator");
@@ -589,8 +364,8 @@ public class mq {
                 importList.add("android.view.animation.AccelerateDecelerateInterpolator");
                 importList.add("android.view.animation.BounceInterpolator");
                 return importList;
-
-            case "FirebaseDB":
+            }
+            case "FirebaseDB" -> {
                 importList.add("com.google.firebase.database.FirebaseDatabase");
                 importList.add("com.google.firebase.database.DatabaseReference");
                 importList.add("com.google.firebase.database.ValueEventListener");
@@ -600,39 +375,39 @@ public class mq {
                 importList.add("com.google.firebase.database.ChildEventListener");
                 importList.add("java.util.HashMap");
                 return importList;
-
-            case "FirebaseAuth":
+            }
+            case "FirebaseAuth" -> {
                 importList.add("com.google.firebase.auth.AuthResult");
                 importList.add("com.google.firebase.auth.FirebaseUser");
                 importList.add("com.google.firebase.auth.FirebaseAuth");
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
                 return importList;
-
-            case "Gyroscope":
+            }
+            case "Gyroscope" -> {
                 importList.add("android.content.Context");
                 importList.add("android.hardware.Sensor");
                 importList.add("android.hardware.SensorManager");
                 importList.add("android.hardware.SensorEvent");
                 importList.add("android.hardware.SensorEventListener");
                 return importList;
-
-            case "FloatingActionButton":
+            }
+            case "FloatingActionButton" -> {
                 importList.add("com.google.android.material.floatingactionbutton.FloatingActionButton");
                 return importList;
-
-            case "Toolbar":
+            }
+            case "Toolbar" -> {
                 importList.add("androidx.appcompat.widget.Toolbar");
                 importList.add("androidx.annotation.NonNull");
                 return importList;
-
-            case "DrawerLayout":
+            }
+            case "DrawerLayout" -> {
                 importList.add("androidx.core.view.GravityCompat");
                 importList.add("androidx.drawerlayout.widget.DrawerLayout");
                 importList.add("androidx.appcompat.app.ActionBarDrawerToggle");
                 return importList;
-
-            case "InterstitialAd":
+            }
+            case "InterstitialAd" -> {
                 importList.add("com.google.android.gms.ads.AdRequest");
                 importList.add("com.google.android.gms.ads.interstitial.InterstitialAd");
                 importList.add("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
@@ -640,8 +415,8 @@ public class mq {
                 importList.add("com.google.android.gms.ads.FullScreenContentCallback");
                 importList.add("com.google.android.gms.ads.LoadAdError");
                 return importList;
-
-            case "FirebaseStorage":
+            }
+            case "FirebaseStorage" -> {
                 importList.add("com.google.firebase.storage.FileDownloadTask");
                 importList.add("com.google.firebase.storage.FirebaseStorage");
                 importList.add("com.google.firebase.storage.StorageReference");
@@ -656,8 +431,8 @@ public class mq {
                 importList.add("android.net.Uri");
                 importList.add("java.io.File");
                 return importList;
-
-            case "Camera":
+            }
+            case "Camera" -> {
                 importList.add("android.content.Intent");
                 importList.add("android.net.Uri");
                 importList.add("android.provider.MediaStore");
@@ -665,75 +440,75 @@ public class mq {
                 importList.add("androidx.core.content.FileProvider");
                 importList.add("java.io.File");
                 return importList;
-
-            case "FilePicker":
+            }
+            case "FilePicker" -> {
                 importList.add("android.content.Intent");
                 importList.add("android.content.ClipData");
                 return importList;
-
-            case "TextToSpeech":
+            }
+            case "TextToSpeech" -> {
                 importList.add("android.speech.tts.TextToSpeech");
                 return importList;
-
-            case "SpeechToText":
+            }
+            case "SpeechToText" -> {
                 importList.add("android.speech.SpeechRecognizer");
                 importList.add("android.speech.RecognizerIntent");
                 importList.add("android.speech.RecognitionListener");
                 return importList;
-
-            case "LocationManager":
+            }
+            case "LocationManager" -> {
                 importList.add("android.location.Location");
                 importList.add("android.location.LocationManager");
                 importList.add("android.location.LocationListener");
                 return importList;
-
-            case "ViewPager":
+            }
+            case "ViewPager" -> {
                 importList.add("androidx.viewpager.widget.ViewPager");
                 importList.add("androidx.viewpager.widget.PagerAdapter");
                 importList.add("androidx.viewpager.widget.ViewPager.OnPageChangeListener");
                 importList.add("androidx.viewpager.widget.ViewPager.OnAdapterChangeListener");
                 return importList;
-
-            case "CollapsingToolbarLayout":
+            }
+            case "CollapsingToolbarLayout" -> {
                 importList.add("com.google.android.material.appbar.CollapsingToolbarLayout");
                 return importList;
-
-            case "SwipeRefreshLayout":
+            }
+            case "SwipeRefreshLayout" -> {
                 importList.add("androidx.swiperefreshlayout.widget.SwipeRefreshLayout");
                 importList.add("androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener");
                 return importList;
-
-            case "PatternLockView":
+            }
+            case "PatternLockView" -> {
                 importList.add("com.andrognito.patternlockview.PatternLockView");
                 importList.add("com.andrognito.patternlockview.utils.*");
                 importList.add("com.andrognito.patternlockview.listener.*");
                 return importList;
-
-            case "WaveSideBar":
+            }
+            case "WaveSideBar" -> {
                 importList.add("com.sayuti.lib.WaveSideBar");
                 importList.add("com.sayuti.lib.WaveSideBar.OnLetterSelectedListener");
                 return importList;
-
-            case "CodeView":
+            }
+            case "CodeView" -> {
                 importList.add("br.tiagohm.codeview.CodeView");
                 importList.add("br.tiagohm.codeview.Theme");
                 importList.add("br.tiagohm.codeview.Language");
                 importList.add("br.tiagohm.codeview.CodeView.OnHighlightListener");
                 return importList;
-
-            case "BottomSheetDialog":
+            }
+            case "BottomSheetDialog" -> {
                 importList.add("com.google.android.material.bottomsheet.BottomSheetDialog");
                 return importList;
-
-            case "LottieAnimationView":
+            }
+            case "LottieAnimationView" -> {
                 importList.add("com.airbnb.lottie.*");
                 return importList;
-
-            case "CircleImageView":
+            }
+            case "CircleImageView" -> {
                 importList.add("de.hdodenhof.circleimageview.*");
                 return importList;
-
-            case "YouTubePlayerView":
+            }
+            case "YouTubePlayerView" -> {
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.*");
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener");
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils");
@@ -741,73 +516,72 @@ public class mq {
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer");
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener");
                 return importList;
-
-            case "OTPView":
+            }
+            case "OTPView" -> {
                 importList.add("affan.ahmad.otp.*");
                 return importList;
-
-            case "MaterialButton":
+            }
+            case "MaterialButton" -> {
                 importList.add("com.google.android.material.button.*");
                 return importList;
-
-            case "MaterialCardView":
+            }
+            case "MaterialCardView" -> {
                 importList.add("com.google.android.material.card.*");
                 return importList;
-
-            case "Chip":
+            }
+            case "Chip" -> {
                 importList.add("com.google.android.material.chip.*");
                 return importList;
-
-            case "NavigationView":
+            }
+            case "NavigationView" -> {
                 importList.add("com.google.android.material.navigation.NavigationView");
                 importList.add("com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener");
                 return importList;
-
-            case "TabLayout":
+            }
+            case "TabLayout" -> {
                 importList.add("com.google.android.material.tabs.TabLayout");
                 importList.add("com.google.android.material.tabs.TabLayout.OnTabSelectedListener");
                 return importList;
-
-            case "CardView":
+            }
+            case "CardView" -> {
                 importList.add("androidx.cardview.widget.CardView");
                 return importList;
-
-            case "TextInputLayout":
-            case "TextInputEditText":
+            }
+            case "TextInputLayout", "TextInputEditText" -> {
                 importList.add("com.google.android.material.textfield.*");
                 return importList;
-
-            case "SignInButton":
+            }
+            case "SignInButton" -> {
                 importList.add("com.google.android.gms.common.SignInButton");
                 return importList;
-
-            case "RecyclerView":
+            }
+            case "RecyclerView" -> {
                 importList.add("androidx.recyclerview.widget.*");
                 importList.add("androidx.recyclerview.widget.RecyclerView");
                 importList.add("androidx.recyclerview.widget.RecyclerView.Adapter");
                 importList.add("androidx.recyclerview.widget.RecyclerView.ViewHolder");
                 return importList;
-
-            case "BottomNavigationView":
+            }
+            case "BottomNavigationView" -> {
                 importList.add("com.google.android.material.bottomnavigation.BottomNavigationView");
                 importList.add("com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener");
                 return importList;
-
-            case "FirebaseCloudMessage":
+            }
+            case "FirebaseCloudMessage" -> {
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
                 importList.add("com.google.firebase.iid.FirebaseInstanceId");
                 importList.add("com.google.firebase.iid.InstanceIdResult");
                 importList.add("com.google.firebase.messaging.FirebaseMessaging");
                 return importList;
-
-            case "OSSubscriptionObserver":
+            }
+            case "OSSubscriptionObserver" -> {
                 importList.add("com.onesignal.OSSubscriptionObserver");
                 importList.add("com.onesignal.OneSignal");
                 importList.add("org.json.JSONObject");
                 return importList;
-
-            case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
+            }
+            case "PhoneAuthProvider.OnVerificationStateChangedCallbacks" -> {
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
                 importList.add("com.google.firebase.FirebaseException");
@@ -820,8 +594,8 @@ public class mq {
                 importList.add("com.google.firebase.auth.PhoneAuthProvider");
                 importList.add("java.util.concurrent.TimeUnit");
                 return importList;
-
-            case "GoogleSignInClient":
+            }
+            case "GoogleSignInClient" -> {
                 importList.add("com.google.android.gms.auth.api.signin.GoogleSignIn");
                 importList.add("com.google.android.gms.auth.api.signin.GoogleSignInAccount");
                 importList.add("com.google.android.gms.auth.api.signin.GoogleSignInClient");
@@ -834,8 +608,8 @@ public class mq {
                 importList.add("com.google.firebase.auth.FirebaseUser");
                 importList.add("com.google.firebase.auth.GoogleAuthProvider");
                 return importList;
-
-            case "DynamicLink":
+            }
+            case "DynamicLink" -> {
                 importList.add("com.google.android.gms.tasks.OnSuccessListener");
                 importList.add("com.google.android.gms.tasks.OnFailureListener");
                 importList.add("com.google.firebase.dynamiclinks.DynamicLink");
@@ -843,8 +617,8 @@ public class mq {
                 importList.add("com.google.firebase.dynamiclinks.PendingDynamicLinkData");
                 importList.add("com.google.firebase.dynamiclinks.ShortDynamicLink");
                 return importList;
-
-            case "RewardedVideoAd":
+            }
+            case "RewardedVideoAd" -> {
                 importList.add("com.google.android.gms.ads.AdError");
                 importList.add("com.google.android.gms.ads.MobileAds");
                 importList.add("com.google.android.gms.ads.OnUserEarnedRewardListener");
@@ -852,14 +626,14 @@ public class mq {
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAd");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
                 return importList;
-
-            case "com.facebook.ads.AdView":
-            case "com.facebook.ads.InterstitialAd":
+            }
+            case "com.facebook.ads.AdView", "com.facebook.ads.InterstitialAd" -> {
                 importList.add("com.facebook.ads.*");
                 return importList;
-
-            default:
+            }
+            default -> {
                 return importList;
+            }
         }
     }
 
@@ -870,166 +644,66 @@ public class mq {
         ArrayList<String> importList = new ArrayList<>();
 
         switch (listener) {
-            case "onClickListener":
-                importList.add("android.view.View");
-                return importList;
-
-            case "onTextChangedListener":
+            case "onClickListener" -> importList.add("android.view.View");
+            case "onTextChangedListener" -> {
                 importList.add("android.text.Editable");
                 importList.add("android.text.TextWatcher");
-                return importList;
-
-            case "onCheckChangedListener":
-                importList.add("android.widget.CompoundButton");
-                return importList;
-
-            case "onItemSelectedListener":
-            case "onItemClickListener":
-            case "onItemLongClickListener":
-                importList.add("android.widget.AdapterView");
-                return importList;
-
-            case "webViewClient":
-                importList.add("android.webkit.WebViewClient");
-                return importList;
-
-            case "animatorListener":
-                importList.add("android.animation.Animator");
-                return importList;
-
-            case "onUploadSuccessListener":
-            case "onDownloadSuccessListener":
-            case "onDeleteSuccessListener":
-            case "OnSuccessListener":
-                importList.add("com.google.android.gms.tasks.OnSuccessListener");
-                return importList;
-
-            case "onFailureListener":
-            case "OnFailureListener":
-                importList.add("com.google.android.gms.tasks.OnFailureListener");
-                return importList;
-
-            case "onUploadProgressListener":
-            case "onDownloadProgressListener":
-                importList.add("com.google.firebase.storage.OnProgressListener");
-                return importList;
-
-            case "recognitionListener":
-                importList.add("android.speech.RecognitionListener");
-                return importList;
-
-            case "onMapReadyCallback":
-                importList.add("com.google.android.gms.maps.OnMapReadyCallback");
-                return importList;
-
-            case "onMapMarkerClickListener":
-                importList.add("com.google.android.gms.maps.GoogleMap");
-                return importList;
-
-            case "locationListener":
-                importList.add("android.location.LocationListener");
-                return importList;
-
-            case "FragmentStatePagerAdapter":
+            }
+            case "onCheckChangedListener" -> importList.add("android.widget.CompoundButton");
+            case "onItemSelectedListener", "onItemClickListener", "onItemLongClickListener" ->
+                    importList.add("android.widget.AdapterView");
+            case "webViewClient" -> importList.add("android.webkit.WebViewClient");
+            case "animatorListener" -> importList.add("android.animation.Animator");
+            case "onUploadSuccessListener", "onDownloadSuccessListener", "onDeleteSuccessListener", "OnSuccessListener" ->
+                    importList.add("com.google.android.gms.tasks.OnSuccessListener");
+            case "onFailureListener", "OnFailureListener" -> importList.add("com.google.android.gms.tasks.OnFailureListener");
+            case "onUploadProgressListener", "onDownloadProgressListener" -> importList.add("com.google.firebase.storage.OnProgressListener");
+            case "recognitionListener" -> importList.add("android.speech.RecognitionListener");
+            case "onMapReadyCallback" -> importList.add("com.google.android.gms.maps.OnMapReadyCallback");
+            case "onMapMarkerClickListener" -> importList.add("com.google.android.gms.maps.GoogleMap");
+            case "locationListener" -> importList.add("android.location.LocationListener");
+            case "FragmentStatePagerAdapter" -> {
                 importList.add("androidx.fragment.app.Fragment");
                 importList.add("androidx.fragment.app.FragmentManager");
                 importList.add("androidx.fragment.app.FragmentStatePagerAdapter");
-                return importList;
-
-            case "OTPListener":
-                importList.add("affan.ahmad.otp.OTPListener");
-                return importList;
-
-            case "OnCompleteListenerFCM":
+            }
+            case "OTPListener" -> importList.add("affan.ahmad.otp.OTPListener");
+            case "OnCompleteListenerFCM" -> {
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
-                return importList;
-
-            case "bannerAdViewListener":
+            }
+            case "bannerAdViewListener" -> {
                 importList.add("com.google.android.gms.ads.AdListener");
                 importList.add("com.google.android.gms.ads.LoadAdError");
-                return importList;
-
-            case "fullScreenContentCallback":
-                importList.add("com.google.android.gms.ads.FullScreenContentCallback");
-                return importList;
-
-            case "onUserEarnedRewardListener":
-                importList.add("com.google.android.gms.ads.OnUserEarnedRewardListener");
-                return importList;
-
-            case "rewardedAdLoadCallback":
-                importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
-                return importList;
-
-            case "onSeekBarChangeListener":
-            case "onDateChangeListener":
-            default:
-                EventsHandler.getImports(importList, listener);
-                return importList;
+            }
+            case "fullScreenContentCallback" -> importList.add("com.google.android.gms.ads.FullScreenContentCallback");
+            case "onUserEarnedRewardListener" -> importList.add("com.google.android.gms.ads.OnUserEarnedRewardListener");
+            case "rewardedAdLoadCallback" ->
+                    importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
+            default -> EventsHandler.getImports(importList, listener);
         }
+        return importList;
     }
 
     public static String e(String typeName) {
-        switch (typeName) {
-            case "double":
-            case "double.SelectDouble":
-                return "double";
-
-            case "Map":
-                return "HashMap<String, Object>";
-
-            case "ListInt":
-                return "ArrayList<Double>";
-
-            case "ListString":
-                return "ArrayList<String>";
-
-            case "ListMap":
-                return "ArrayList<HashMap<String, Object>>";
-
-            case "Timer":
-                return "TimerTask";
-
-            case "Gyroscope":
-                return "SensorManager";
-
-            case "Dialog":
-                return "AlertDialog.Builder";
-
-            case "FirebaseDB":
-                return "DatabaseReference";
-
-            case "FirebaseStorage":
-                return "StorageReference";
-
-            case "Camera":
-            case "FilePicker":
-                return "Intent";
-
-            case "SpeechToText":
-                return "SpeechRecognizer";
-
-            case "FragmentAdapter":
-                return "FragmentStatePagerAdapter";
-
-            case "Context":
-                return "Activity";
-
-            case "ResString":
-            case "ResStyle":
-            case "ResColor":
-            case "ResArray":
-            case "ResDimen":
-            case "ResBool":
-            case "ResInteger":
-            case "ResAttr":
-            case "ResXml":
-            case "Color":
-                return "int";
-
-            default:
-                return typeName;
-        }
+        return switch (typeName) {
+            case "double", "double.SelectDouble" -> "double";
+            case "Map" -> "HashMap<String, Object>";
+            case "ListInt" -> "ArrayList<Double>";
+            case "ListString" -> "ArrayList<String>";
+            case "ListMap" -> "ArrayList<HashMap<String, Object>>";
+            case "Timer" -> "TimerTask";
+            case "Gyroscope" -> "SensorManager";
+            case "Dialog" -> "AlertDialog.Builder";
+            case "FirebaseDB" -> "DatabaseReference";
+            case "FirebaseStorage" -> "StorageReference";
+            case "Camera", "FilePicker" -> "Intent";
+            case "SpeechToText" -> "SpeechRecognizer";
+            case "FragmentAdapter" -> "FragmentStatePagerAdapter";
+            case "Context" -> "Activity";
+            case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool", "ResInteger", "ResAttr", "ResXml", "Color" ->
+                    "int";
+            default -> typeName;
+        };
     }
 }
