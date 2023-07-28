@@ -45,11 +45,11 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
     }
 
     private void initialize(Context context) {
-        setOrientation(0);
+        setOrientation(LinearLayout.HORIZONTAL);
         setDrawingCacheEnabled(true);
         setMinimumWidth((int) wB.a(context, 32.0F));
         setMinimumHeight((int) wB.a(context, 32.0F));
-        paint = new Paint(1);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0F));
     }
 
@@ -69,7 +69,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
                     break;
                 }
 
-                if (getChildAt(var5).getVisibility() == 8) {
+                if (getChildAt(var5).getVisibility() == View.GONE) {
                     var6 = var5;
                     break;
                 }
@@ -107,10 +107,10 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
     public void onDraw(Canvas canvas) {
         if (!isFixed) {
             if (isSelected) {
-                paint.setColor(-1785080368);
+                paint.setColor(0x9599d5d0);
                 canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
             }
-            paint.setColor(1610612736);
+            paint.setColor(0x60000000);
 
             int measuredWidth = getMeasuredWidth();
             int measuredHeight = getMeasuredHeight();
