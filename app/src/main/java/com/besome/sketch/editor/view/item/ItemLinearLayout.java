@@ -15,15 +15,15 @@ import com.besome.sketch.beans.ViewBean;
 
 public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
-    public ViewBean a = null;
-    public boolean b = false;
-    public boolean c = false;
-    public Paint d;
-    public int e = 0;
+    private ViewBean viewBean = null;
+    private boolean isSelected = false;
+    private boolean isFixed = false;
+    private Paint paint;
+    private int layoutGravity = 0;
 
-    public ItemLinearLayout(Context var1) {
-        super(var1);
-        this.a(var1);
+    public ItemLinearLayout(Context context) {
+        super(context);
+        this.initialize(context);
     }
 
     @Override
@@ -31,12 +31,12 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         int var1 = 0;
 
         int var4;
-        for (int var2 = 0; var1 < this.getChildCount(); var2 = var4) {
-            View var3 = this.getChildAt(var1);
-            var4 = var2;
-            if (var3 instanceof sy) {
-                ((sy) var3).getBean().index = var2;
-                var4 = var2 + 1;
+        for (int i = 0; var1 < this.getChildCount(); i = var4) {
+            View child = this.getChildAt(var1);
+            var4 = i;
+            if (child instanceof sy) {
+                ((sy) child).getBean().index = i;
+                var4 = i + 1;
             }
 
             ++var1;
@@ -44,20 +44,20 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
     }
 
-    public final void a(Context var1) {
+    private void initialize(Context context) {
         this.setOrientation(0);
         this.setDrawingCacheEnabled(true);
-        this.setMinimumWidth((int) wB.a(var1, 32.0F));
-        this.setMinimumHeight((int) wB.a(var1, 32.0F));
-        this.d = new Paint(1);
-        this.d.setStrokeWidth(wB.a(this.getContext(), 2.0F));
+        this.setMinimumWidth((int) wB.a(context, 32.0F));
+        this.setMinimumHeight((int) wB.a(context, 32.0F));
+        this.paint = new Paint(1);
+        this.paint.setStrokeWidth(wB.a(this.getContext(), 2.0F));
     }
 
     @Override
-    public void addView(View var1, int var2) {
-        int var3 = this.getChildCount();
-        if (var2 > var3) {
-            super.addView(var1);
+    public void addView(View child, int index) {
+        int childCount = this.getChildCount();
+        if (index > childCount) {
+            super.addView(child);
         } else {
             byte var4 = -1;
             int var5 = 0;
@@ -65,7 +65,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
             int var6;
             while (true) {
                 var6 = var4;
-                if (var5 >= var3) {
+                if (var5 >= childCount) {
                     break;
                 }
 
@@ -77,95 +77,93 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
                 ++var5;
             }
 
-            if (var6 >= 0 && var2 >= var6) {
-                super.addView(var1, var2 + 1);
+            if (var6 >= 0 && index >= var6) {
+                super.addView(child, index + 1);
             } else {
-                super.addView(var1, var2);
+                super.addView(child, index);
             }
         }
     }
 
     @Override
     public ViewBean getBean() {
-        return this.a;
+        return this.viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.c;
+        return this.isFixed;
     }
 
     public int getLayoutGravity() {
-        return this.e;
+        return this.layoutGravity;
     }
 
     public boolean getSelection() {
-        return this.b;
+        return this.isSelected;
     }
 
     @Override
-    public void onDraw(Canvas var1) {
-        if (!this.c) {
-            if (this.b) {
-                this.d.setColor(-1785080368);
-                var1.drawRect(new Rect(0, 0, this.getMeasuredWidth(), this.getMeasuredHeight()), this.d);
+    public void onDraw(Canvas canvas) {
+        if (!this.isFixed) {
+            if (this.isSelected) {
+                this.paint.setColor(-1785080368);
+                canvas.drawRect(new Rect(0, 0, this.getMeasuredWidth(), this.getMeasuredHeight()), this.paint);
             }
+            this.paint.setColor(1610612736);
 
-            this.d.setColor(1610612736);
-            int var2 = this.getMeasuredWidth();
-            int var3 = this.getMeasuredHeight();
-            float var4 = (float) var2;
-            var1.drawLine(0.0F, 0.0F, var4, 0.0F, this.d);
-            float var5 = (float) var3;
-            var1.drawLine(0.0F, 0.0F, 0.0F, var5, this.d);
-            var1.drawLine(var4, 0.0F, var4, var5, this.d);
-            var1.drawLine(0.0F, var5, var4, var5, this.d);
+            int measuredWidth = this.getMeasuredWidth();
+            int measuredHeight = this.getMeasuredHeight();
+
+            canvas.drawLine(0.0F, 0.0F, (float) measuredWidth, 0.0F, this.paint);
+            canvas.drawLine(0.0F, 0.0F, 0.0F, (float) measuredHeight, this.paint);
+            canvas.drawLine((float) measuredWidth, 0.0F, (float) measuredWidth, (float) measuredHeight, this.paint);
+            canvas.drawLine(0.0F, (float) measuredHeight, (float) measuredWidth, (float) measuredHeight, this.paint);
         }
 
-        super.onDraw(var1);
+        super.onDraw(canvas);
     }
 
     @Override
-    public void setBean(ViewBean var1) {
-        this.a = var1;
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
     }
 
     @Override
-    public void setChildScrollEnabled(boolean var1) {
-        for (int var2 = 0; var2 < this.getChildCount(); ++var2) {
-            View var3 = this.getChildAt(var2);
-            if (var3 instanceof ty) {
-                ((ty) var3).setChildScrollEnabled(var1);
+    public void setChildScrollEnabled(boolean childScrollEnabled) {
+        for (int i = 0; i < this.getChildCount(); ++i) {
+            View child = this.getChildAt(i);
+            if (child instanceof ty) {
+                ((ty) child).setChildScrollEnabled(childScrollEnabled);
             }
 
-            if (var3 instanceof ItemHorizontalScrollView) {
-                ((ItemHorizontalScrollView) var3).setScrollEnabled(var1);
+            if (child instanceof ItemHorizontalScrollView) {
+                ((ItemHorizontalScrollView) child).setScrollEnabled(childScrollEnabled);
             }
 
-            if (var3 instanceof ItemVerticalScrollView) {
-                ((ItemVerticalScrollView) var3).setScrollEnabled(var1);
+            if (child instanceof ItemVerticalScrollView) {
+                ((ItemVerticalScrollView) child).setScrollEnabled(childScrollEnabled);
             }
         }
-
     }
 
-    public void setFixed(boolean var1) {
-        this.c = var1;
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
-    public void setLayoutGravity(int var1) {
-        this.e = var1;
-        super.setGravity(var1);
-    }
-
-    @Override
-    public void setPadding(int var1, int var2, int var3, int var4) {
-        super.setPadding((int) wB.a(this.getContext(), (float) var1), (int) wB.a(this.getContext(), (float) var2), (int) wB.a(this.getContext(), (float) var3), (int) wB.a(this.getContext(), (float) var4));
+    public void setLayoutGravity(int layoutGravity) {
+        this.layoutGravity = layoutGravity;
+        super.setGravity(layoutGravity);
     }
 
     @Override
-    public void setSelection(boolean var1) {
-        this.b = var1;
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) wB.a(this.getContext(), (float) left), (int) wB.a(this.getContext(), (float) top), (int) wB.a(this.getContext(), (float) right), (int) wB.a(this.getContext(), (float) bottom));
+    }
+
+    @Override
+    public void setSelection(boolean selected) {
+        this.isSelected = selected;
         this.invalidate();
     }
 }
