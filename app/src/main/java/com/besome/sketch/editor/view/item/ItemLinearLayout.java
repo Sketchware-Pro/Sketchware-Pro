@@ -26,6 +26,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         this.a(var1);
     }
 
+    @Override
     public void a() {
         int var1 = 0;
 
@@ -52,6 +53,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         this.d.setStrokeWidth(wB.a(this.getContext(), 2.0F));
     }
 
+    @Override
     public void addView(View var1, int var2) {
         int var3 = this.getChildCount();
         if (var2 > var3) {
@@ -83,10 +85,12 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         }
     }
 
+    @Override
     public ViewBean getBean() {
         return this.a;
     }
 
+    @Override
     public boolean getFixed() {
         return this.c;
     }
@@ -99,6 +103,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         return this.b;
     }
 
+    @Override
     public void onDraw(Canvas var1) {
         if (!this.c) {
             if (this.b) {
@@ -120,10 +125,12 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         super.onDraw(var1);
     }
 
+    @Override
     public void setBean(ViewBean var1) {
         this.a = var1;
     }
 
+    @Override
     public void setChildScrollEnabled(boolean var1) {
         for (int var2 = 0; var2 < this.getChildCount(); ++var2) {
             View var3 = this.getChildAt(var2);
@@ -151,10 +158,12 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         super.setGravity(var1);
     }
 
+    @Override
     public void setPadding(int var1, int var2, int var3, int var4) {
         super.setPadding((int) wB.a(this.getContext(), (float) var1), (int) wB.a(this.getContext(), (float) var2), (int) wB.a(this.getContext(), (float) var3), (int) wB.a(this.getContext(), (float) var4));
     }
 
+    @Override
     public void setSelection(boolean var1) {
         this.b = var1;
         this.invalidate();
