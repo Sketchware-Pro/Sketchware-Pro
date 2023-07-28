@@ -245,7 +245,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.UNSPECIFIED) {
             if (getChildCount() > 0) {
                 View child = getChildAt(0);
-                FrameLayout.LayoutParams var4 = (FrameLayout.LayoutParams) child.getLayoutParams();
+                ViewGroup.LayoutParams var4 = child.getLayoutParams();
                 heightMeasureSpec = getPaddingLeft();
                 int measuringSize = getMeasuredHeight() - (getPaddingTop() + getPaddingBottom());
                 if (child.getMeasuredHeight() < measuringSize) {
