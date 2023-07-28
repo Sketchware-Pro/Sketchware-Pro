@@ -318,7 +318,7 @@ public class Gx {
                 break;
 
             case "CollapsingToolbarLayout":
-                classInfos = "View.ViewGroup.LinearLayout.CollapsingToolbarLayout";
+                classInfos = "View.ViewGroup.FrameLayout.CollapsingToolbarLayout";
                 break;
 
             case "SwipeRefreshLayout":
@@ -326,7 +326,7 @@ public class Gx {
                 break;
 
             case "TextInputLayout":
-                classInfos = "View.ViewGroup.LinearLayout.TextInputLayout";
+                classInfos = "View.ViewGroup.TextInputLayout";
                 break;
 
             case "RadioGroup":
