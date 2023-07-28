@@ -70,7 +70,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         EditText editText = view.findViewById(R.id.ed_input);
         var linear = view.findViewById(R.id.btn_download);
         TextView text = view.findViewById(R.id.tv_progress);
-        linear.setOnClickListener( __ -> {
+        linear.setOnClickListener(v1 -> {
             linear.setVisibility(View.GONE);
             String url = editText.getText().toString();
             if (url.isEmpty()) {

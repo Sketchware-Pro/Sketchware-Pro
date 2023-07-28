@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <TextView
@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:focusable="false"
-        android:text="@string/enter_dependency"
+        android:text="@string/library_manager_enter_dependency"
         android:textColor="#ff296cf7"
         android:textSize="18sp" />
 
@@ -31,7 +31,7 @@
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dependency_example"
+            android:hint="@string/library_manager_dependency_example"
             android:singleLine="true"
             android:textSize="14sp"
             android:inputType="textNoSuggestions" />
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingVertical="8dp"
-            android:text="@string/dependency_info"
+            android:text="@string/library_manager_dependency_info"
             android:textColor="#ff757575"
             android:textSize="14sp" />
     </LinearLayout>
@@ -61,6 +61,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="2dp"
         android:background="#ff296cf7"
-        android:text="@string/download"
+        android:text="@string/common_word_download"
         android:textSize="14sp" />
 </LinearLayout>
