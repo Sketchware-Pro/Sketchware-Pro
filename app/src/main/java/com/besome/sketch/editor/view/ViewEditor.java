@@ -42,7 +42,6 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import a.a.a.DB;
 import a.a.a.GB;
@@ -385,20 +384,17 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         bB.a(getContext(), xB.b().a(getContext(), R.string.view_widget_favorites_image_auto_added), bB.TOAST_NORMAL).show();
                     }
                     if (arrayList.size() > 0) {
-                        HashMap hashMap = new HashMap();
+                        HashMap<String, String> hashMap = new HashMap<>();
                         p.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
-                        Iterator<ViewBean> it = arrayList.iterator();
-                        while (it.hasNext()) {
-                            ViewBean next = it.next();
+                        for (ViewBean next : arrayList) {
                             if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
                                 hashMap.put(next.id, a(next.type));
                             } else {
-                                String str4 = next.id;
-                                hashMap.put(str4, str4);
+                                hashMap.put(next.id, next.id);
                             }
-                            next.id = (String) hashMap.get(next.id);
+                            next.id = hashMap.get(next.id);
                             if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && str.length() > 0) {
-                                next.parent = (String) hashMap.get(next.parent);
+                                next.parent = hashMap.get(next.parent);
                             }
                             jC.a(a).a(b, next);
                         }
@@ -445,9 +441,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public void setFavoriteData(ArrayList<WidgetCollectionBean> arrayList) {
         c();
-        Iterator<WidgetCollectionBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            WidgetCollectionBean next = it.next();
+        for (WidgetCollectionBean next : arrayList) {
             a(next.name, next.widgets);
         }
     }
@@ -635,38 +629,31 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public final void e() {
-        boolean z;
-        boolean z2;
         if (r == null) {
             return;
         }
         if (a(r)) {
             if (r instanceof uy uyVar) {
-                Iterator<ViewBean> it = uyVar.getData().iterator();
-                while (true) {
-                    if (!it.hasNext()) {
-                        z = false;
-                        break;
-                    } else if (it.next().type == ViewBean.VIEW_TYPE_WIDGET_ADVIEW) {
-                        z = true;
+                boolean isAdViewUsed = false;
+                for (ViewBean view : uyVar.getData()) {
+                    if (view.type == ViewBean.VIEW_TYPE_WIDGET_ADVIEW) {
+                        isAdViewUsed = true;
                         break;
                     }
                 }
-                if (z && !N.a()) {
+                if (isAdViewUsed && !N.a()) {
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
-                Iterator<ViewBean> it2 = uyVar.getData().iterator();
-                while (true) {
-                    if (!it2.hasNext()) {
-                        z2 = false;
-                        break;
-                    } else if (it2.next().type == ViewBean.VIEW_TYPE_WIDGET_MAPVIEW) {
-                        z2 = true;
+
+                boolean isMapViewUsed = false;
+                for (ViewBean view : uyVar.getData()) {
+                    if (view.type == ViewBean.VIEW_TYPE_WIDGET_MAPVIEW) {
+                        isMapViewUsed = true;
                         break;
                     }
                 }
-                if (z2 && !N.c()) {
+                if (isMapViewUsed && !N.c()) {
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
@@ -982,17 +969,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         String sb2 = sb.toString();
         ArrayList<ViewBean> d = jC.a(a).d(b);
         while (true) {
-            boolean z = false;
-            Iterator<ViewBean> it = d.iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    break;
-                } else if (sb2.equals(it.next().id)) {
-                    z = true;
+            boolean isIdUsed = false;
+            for (ViewBean view : d) {
+                if (sb2.equals(view.id)) {
+                    isIdUsed = true;
                     break;
                 }
             }
-            if (!z) {
+            if (!isIdUsed) {
                 return sb2;
             }
             StringBuilder sb3 = new StringBuilder();
@@ -1012,13 +996,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
         }
         sy syVar = null;
-        Iterator<ViewBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            ViewBean next = it.next();
-            if (arrayList.indexOf(next) == 0) {
-                syVar = b(next);
+        for (ViewBean view : arrayList) {
+            if (arrayList.indexOf(view) == 0) {
+                syVar = b(view);
             } else {
-                b(next);
+                b(view);
             }
         }
         return syVar;
@@ -1035,12 +1017,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void a(ArrayList<ViewBean> arrayList) {
-        if (arrayList == null || arrayList.size() <= 0) {
+        if (arrayList == null || arrayList.size() == 0) {
             return;
         }
-        Iterator<ViewBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            b(it.next());
+        for (ViewBean view : arrayList) {
+            b(view);
         }
     }
 
