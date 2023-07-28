@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
     private void initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Local library Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText(getString(R.string.library_manager));
         ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back_icon);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
@@ -69,7 +70,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         EditText editText = view.findViewById(R.id.ed_input);
         var linear = view.findViewById(R.id.btn_download);
         TextView text = view.findViewById(R.id.tv_progress);
-        linear.setOnClickListener(v1 -> {
+        linear.setOnClickListener( __ -> {
             linear.setVisibility(View.GONE);
             String url = editText.getText().toString();
             if (url.isEmpty()) {
@@ -163,7 +164,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         initToolbar();
 
         if (getIntent().hasExtra("sc_id")) {
-            String sc_id = getIntent().getStringExtra("sc_id");
+            String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
             notAssociatedWithProject = sc_id.equals("system");
             local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         }

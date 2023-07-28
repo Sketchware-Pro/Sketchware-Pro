@@ -2587,4 +2587,8 @@ Please check the URL again."</string>
     <string name="code_shrinker_full_mode_def">Using this, you can configure specific local libs to be included in R8/ProGuarding process. (Note: Enabling this will ignore DEX files of the local libs you select and it will force Sketchware to compile them to dex, making compilation noticeably slower.)</string>
     <string name="code_shrinker_generate_debug_files">Generate debug files</string>
     <string name="dependency_example">Example: org.ow2.asm:asm:9.5</string>
+    <string name="library_manager">Library Manager</string>
+    <string name="enter_dependency">Enter dependency</string>
+    <string name="dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+    <string name="download">Download</string>
 </resources>

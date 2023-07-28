@@ -2,18 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:orientation="vertical"
-    android:paddingTop="4dp"
-    android:paddingBottom="8dp">
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:focusable="false"
-        android:text="Write dependency"
+        android:text="@string/enter_dependency"
         android:textColor="#ff296cf7"
         android:textSize="18sp" />
 
@@ -36,14 +33,14 @@
             android:layout_height="wrap_content"
             android:hint="@string/dependency_example"
             android:singleLine="true"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:inputType="textNoSuggestions" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginHorizontal="2dp"
         android:gravity="top"
         android:orientation="horizontal">
 
@@ -52,8 +49,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingVertical="4dp"
-            android:text="You can find the dependency of a library in Github, typically in the README file."
+            android:paddingVertical="8dp"
+            android:text="@string/dependency_info"
             android:textColor="#ff757575"
             android:textSize="14sp" />
     </LinearLayout>
@@ -64,6 +61,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="2dp"
         android:background="#ff296cf7"
-        android:text="Download"
+        android:text="@string/download"
         android:textSize="14sp" />
 </LinearLayout>
