@@ -57,16 +57,15 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
                     var2 = var1.bottom - var5;
                 }
 
-                var2 = Math.min(var2 + 0, getChildAt(0).getBottom() - var5);
+                var2 = Math.min(var2, getChildAt(0).getBottom() - var5);
             } else {
                 var2 = var3;
                 if (var1.top < var7) {
-                    var2 = var3;
                     if (var1.bottom < var5) {
                         if (var1.height() > var4) {
-                            var2 = 0 - (var5 - var1.bottom);
+                            var2 = -(var5 - var1.bottom);
                         } else {
-                            var2 = 0 - (var7 - var1.top);
+                            var2 = -(var7 - var1.top);
                         }
 
                         var2 = Math.max(var2, -getScrollY());
@@ -114,11 +113,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         var1.getDrawingRect(g);
         offsetDescendantRectToMyCoords(var1, g);
         boolean var4;
-        if (g.bottom + var2 >= getScrollY() && g.top - var2 <= getScrollY() + var3) {
-            var4 = true;
-        } else {
-            var4 = false;
-        }
+        var4 = g.bottom + var2 >= getScrollY() && g.top - var2 <= getScrollY() + var3;
 
         return var4;
     }
@@ -232,7 +227,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
                                 var3 = 0;
                             }
 
-                            var3 = Math.max(0 - getScrollY(), var3);
+                            var3 = Math.max(-getScrollY(), var3);
                         } else {
                             int var5 = var2.getBottom() - getScrollY() - getHeight() + getPaddingRight();
                             if (var5 > 0) {
