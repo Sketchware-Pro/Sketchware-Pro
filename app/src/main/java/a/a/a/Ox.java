@@ -55,37 +55,14 @@ public class Ox {
         while (buffer.hasRemaining()) {
             char got = buffer.get();
             switch (got) {
-                case '?':
-                    result.append("\\?");
-                    break;
-
-                case '@':
-                    result.append("\\@");
-                    break;
-
-                case '\"':
-                    result.append("&quot;");
-                    break;
-
-                case '&':
-                    result.append("&amp;");
-                    break;
-
-                case '<':
-                    result.append("&lt;");
-                    break;
-
-                case '>':
-                    result.append("&gt;");
-                    break;
-
-                case '\n':
-                    result.append("\\n");
-                    break;
-
-                default:
-                    result.append(got);
-                    break;
+                case '?' -> result.append("\\?");
+                case '@' -> result.append("\\@");
+                case '\"' -> result.append("&quot;");
+                case '&' -> result.append("&amp;");
+                case '<' -> result.append("&lt;");
+                case '>' -> result.append("&gt;");
+                case '\n' -> result.append("\\n");
+                default -> result.append(got);
             }
         }
         return result.toString();
@@ -98,7 +75,7 @@ public class Ox {
         nx.addAttribute("android", "orientation", "vertical");
         for (ViewBean viewBean : views) {
             String parent = viewBean.parent;
-            if (parent == null || parent.length() <= 0 || parent.equals("root")) {
+            if (parent == null || parent.isEmpty() || parent.equals("root")) {
                 writeWidget(nx, viewBean);
             }
         }
@@ -244,26 +221,25 @@ public class Ox {
             int type = viewBean.type;
             if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW) {
                 switch (type) {
-                    case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW:
-                    case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT:
-                    case ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW:
-                    case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR:
-                    case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
-                    case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
-                    case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR:
-                    case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW:
-                    case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON:
-                    case ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW:
-                    case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
-                    case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
-                    case ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW:
+                    case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW,
+                            ViewBean.VIEW_TYPE_WIDGET_EDITTEXT,
+                            ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW,
+                            ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR,
+                            ViewBean.VIEW_TYPE_WIDGET_CHECKBOX,
+                            ViewBean.VIEW_TYPE_WIDGET_SWITCH,
+                            ViewBean.VIEW_TYPE_WIDGET_SEEKBAR,
+                            ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW,
+                            ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON,
+                            ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW,
+                            ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW,
+                            ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW,
+                            ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW -> {
                         if (!hasAttr("focusable", viewBean) && !toNotAdd.contains("android:focusable")) {
                             widgetTag.addAttribute("android", "focusable", "false");
                         }
-                        break;
-
-                    default:
-                        break;
+                    }
+                    default -> {
+                    }
                 }
             }
 
@@ -773,17 +749,12 @@ public class Ox {
 
                 if (!toNotAdd.contains("android:choiceMode")) {
                     switch (viewBean.choiceMode) {
-                        case ViewBean.CHOICE_MODE_NONE:
-                            nx.addAttribute("android", "choiceMode", "none");
-                            break;
-
-                        case ViewBean.CHOICE_MODE_SINGLE:
-                            nx.addAttribute("android", "choiceMode", "singleChoice");
-                            break;
-
-                        case ViewBean.CHOICE_MODE_MULTI:
-                            nx.addAttribute("android", "choiceMode", "multipleChoice");
-                            break;
+                        case ViewBean.CHOICE_MODE_NONE ->
+                                nx.addAttribute("android", "choiceMode", "none");
+                        case ViewBean.CHOICE_MODE_SINGLE ->
+                                nx.addAttribute("android", "choiceMode", "singleChoice");
+                        case ViewBean.CHOICE_MODE_MULTI ->
+                                nx.addAttribute("android", "choiceMode", "multipleChoice");
                     }
                 }
                 break;
