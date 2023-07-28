@@ -1,9 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.ty;
-import a.a.a.wB;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,10 +7,13 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.MeasureSpec;
 import android.widget.FrameLayout;
 
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.ty;
+import a.a.a.wB;
 
 public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
 
@@ -139,7 +138,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
                     break;
                 }
 
-                if (getChildAt(var5).getVisibility() == 8) {
+                if (getChildAt(var5).getVisibility() == View.GONE) {
                     var6 = var5;
                     break;
                 }
@@ -172,7 +171,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         var2 = FrameLayout.getChildMeasureSpec(var2, getPaddingLeft() + getPaddingRight(), var4.width);
         int var5 = getPaddingTop();
         int var6 = getPaddingBottom();
-        var1.measure(var2, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(var3) - (var5 + var6)), 0));
+        var1.measure(var2, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(var3) - (var5 + var6)), MeasureSpec.UNSPECIFIED));
     }
 
     public void measureChildWithMargins(View var1, int var2, int var3, int var4, int var5) {
@@ -182,7 +181,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         var3 = getPaddingBottom();
         int var8 = var6.topMargin;
         int var9 = var6.bottomMargin;
-        var1.measure(var7, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(var4) - (var2 + var3 + var8 + var9 + var5)), 0));
+        var1.measure(var7, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(var4) - (var2 + var3 + var8 + var9 + var5)), MeasureSpec.UNSPECIFIED));
     }
 
     public void onDraw(Canvas var1) {
@@ -260,7 +259,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
 
     public void onMeasure(int var1, int var2) {
         super.onMeasure(var1, var2);
-        if (MeasureSpec.getMode(var2) != 0) {
+        if (MeasureSpec.getMode(var2) != MeasureSpec.UNSPECIFIED) {
             if (getChildCount() > 0) {
                 View var3 = getChildAt(0);
                 FrameLayout.LayoutParams var4 = (FrameLayout.LayoutParams) var3.getLayoutParams();
@@ -270,7 +269,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
                 int var7 = getPaddingBottom();
                 var7 = getMeasuredHeight() - (var6 + var7);
                 if (var3.getMeasuredHeight() < var7) {
-                    var3.measure(FrameLayout.getChildMeasureSpec(var1, var2 + var5, var4.width), MeasureSpec.makeMeasureSpec(var7, 1073741824));
+                    var3.measure(FrameLayout.getChildMeasureSpec(var1, var2 + var5, var4.width), MeasureSpec.makeMeasureSpec(var7, MeasureSpec.EXACTLY));
                 }
             }
 
