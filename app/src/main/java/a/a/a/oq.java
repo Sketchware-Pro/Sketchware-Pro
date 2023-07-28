@@ -21,371 +21,132 @@ public class oq {
      * @return The resource ID for an Event's icon
      */
     public static int a(String eventName) {
-        switch (eventName) {
-            case "initializeLogic":
-            case "onBackPressed":
-            case "onPostCreate":
-            case "onStart":
-            case "onStop":
-            case "onDestroy":
-            case "onResume":
-            case "onPause":
-            case "moreBlock":
-                return R.drawable.bg_event_type_activity;
-
-            case "onBannerAdClicked":
-            case "onClick":
-                return R.drawable.event_on_click_48dp;
-
-            case "onCheckedChange":
-                return R.drawable.event_on_check_changed_48dp;
-
-            case "onItemSelected":
-                return R.drawable.event_on_item_selected_48dp;
-
-            case "onItemClicked":
-                return R.drawable.event_on_item_clicked_48dp;
-
-            case "onItemLongClicked":
-                return R.drawable.event_on_item_long_clicked_48dp;
-
-            case "onTextChanged":
-                return R.drawable.event_on_text_changed_48dp;
-
-            case "onPageStarted":
-                return R.drawable.event_on_page_started_48dp;
-
-            case "onPageFinished":
-                return R.drawable.event_on_page_finished_48dp;
-
-            case "onProgressChanged":
-                return R.drawable.event_on_progress_changed_48dp;
-
-            case "onStartTrackingTouch":
-                return R.drawable.event_on_start_tracking_touch_48dp;
-
-            case "onStopTrackingTouch":
-                return R.drawable.event_on_stop_tracking_touch_48dp;
-
-            case "onAnimationStart":
-                return R.drawable.event_on_animation_start_48dp;
-
-            case "onAnimationEnd":
-                return R.drawable.event_on_animation_end_48dp;
-
-            case "onAnimationCancel":
-                return R.drawable.event_on_animation_cancel_48dp;
-
-            case "onAnimationRepeat":
-                return R.drawable.event_animation_repeat_48dp;
-
-            case "onBindCustomView":
-                return R.drawable.event_on_bind_custom_view_48dp;
-
-            case "onDateChange":
-                return R.drawable.event_on_date_changed_48dp;
-
-            case "onChildAdded":
-                return R.drawable.event_on_child_added_48dp;
-
-            case "onChildChanged":
-                return R.drawable.event_on_child_changed_48dp;
-
-            case "onChildMoved":
-                return R.drawable.event_on_child_moved_48dp;
-
-            case "onChildRemoved":
-            case "onDeleteSuccess":
-                return R.drawable.event_on_child_removed_48dp;
-
-            case "onCancelled":
-                return R.drawable.event_on_cancelled_48dp;
-
-            case "onCreateUserComplete":
-                return R.drawable.event_on_create_user_complete_48dp;
-
-            case "onSignInUserComplete":
-                return R.drawable.event_on_signin_complete_48dp;
-
-            case "onResetPasswordEmailSent":
-                return R.drawable.event_on_reset_password_email_sent_48dp;
-
-            case "onSensorChanged":
-                return R.drawable.event_on_sensor_changed_48dp;
-
-            case "onAccuracyChanged":
-                return R.drawable.event_on_accuracy_changed_48dp;
-
-            case "onInterstitialAdLoaded":
-            case "onBannerAdLoaded":
-            case "onRewardAdLoaded":
-                return R.drawable.event_on_ad_loaded;
-
-            case "onBannerAdFailedToLoad":
-            case "onInterstitialAdFailedToLoad":
-            case "onAdFailedToShowFullScreenContent":
-            case "onRewardAdFailedToLoad":
-            case "onFailure":
-                return R.drawable.event_on_ad_failed_to_load;
-
-            case "onAdShowedFullScreenContent":
-            case "onBannerAdOpened":
-                return R.drawable.event_on_ad_opened;
-
-            case "onAdDismissedFullScreenContent":
-            case "onBannerAdClosed":
-                return R.drawable.event_on_ad_closed;
-
-            case "onUploadProgress":
-                return R.drawable.event_on_upload_progress_48dp;
-
-            case "onDownloadProgress":
-                return R.drawable.event_on_download_progress_48dp;
-
-            case "onUploadSuccess":
-                return R.drawable.event_on_upload_success_48dp;
-
-            case "onDownloadSuccess":
-                return R.drawable.event_on_download_success_48dp;
-
-            case "onPictureTaken":
-                return R.drawable.event_on_picture_taken_48dp;
-
-            case "onPictureTakenCancel":
-                return R.drawable.event_on_picture_taken_cancel_48dp;
-
-            case "onFilesPicked":
-                return R.drawable.event_on_file_picked_48dp;
-
-            case "onFilesPickedCancel":
-                return R.drawable.event_on_file_picked_cancel_48dp;
-
-            case "onResponse":
-                return R.drawable.event_on_response_48dp;
-
-            case "onErrorResponse":
-                return R.drawable.event_on_error_response_48dp;
-
-            case "onSpeechResult":
-                return R.drawable.event_on_speech_result;
-
-            case "onSpeechError":
-                return R.drawable.event_on_speech_error;
-
-            case "onConnected":
-                return R.drawable.event_on_connected_96;
-
-            case "onDataReceived":
-                return R.drawable.event_on_data_received_96;
-
-            case "onDataSent":
-                return R.drawable.event_on_data_sent_96;
-
-            case "onConnectionError":
-                return R.drawable.event_on_connection_error_96;
-
-            case "onConnectionStopped":
-                return R.drawable.event_on_connection_stopped_96;
-
-            case "onLocationChanged":
-                return R.drawable.event_on_location_changed_96;
-
-            case "onMapReady":
-                return R.drawable.event_on_map_ready_96;
-
-            case "onMarkerClicked":
-                return R.drawable.event_on_marker_clicked_96;
-
-            case "onNothingSelected":
-            case "beforeTextChanged":
-            case "afterTextChanged":
-            default:
-                return ManageEvent.d(eventName);
-        }
+        return switch (eventName) {
+            case "initializeLogic", "onBackPressed", "onPostCreate", "onStart", "onStop", "onDestroy", "onResume", "onPause", "moreBlock" ->
+                    R.drawable.bg_event_type_activity;
+            case "onBannerAdClicked", "onClick" -> R.drawable.event_on_click_48dp;
+            case "onCheckedChange" -> R.drawable.event_on_check_changed_48dp;
+            case "onItemSelected" -> R.drawable.event_on_item_selected_48dp;
+            case "onItemClicked" -> R.drawable.event_on_item_clicked_48dp;
+            case "onItemLongClicked" -> R.drawable.event_on_item_long_clicked_48dp;
+            case "onTextChanged" -> R.drawable.event_on_text_changed_48dp;
+            case "onPageStarted" -> R.drawable.event_on_page_started_48dp;
+            case "onPageFinished" -> R.drawable.event_on_page_finished_48dp;
+            case "onProgressChanged" -> R.drawable.event_on_progress_changed_48dp;
+            case "onStartTrackingTouch" -> R.drawable.event_on_start_tracking_touch_48dp;
+            case "onStopTrackingTouch" -> R.drawable.event_on_stop_tracking_touch_48dp;
+            case "onAnimationStart" -> R.drawable.event_on_animation_start_48dp;
+            case "onAnimationEnd" -> R.drawable.event_on_animation_end_48dp;
+            case "onAnimationCancel" -> R.drawable.event_on_animation_cancel_48dp;
+            case "onAnimationRepeat" -> R.drawable.event_animation_repeat_48dp;
+            case "onBindCustomView" -> R.drawable.event_on_bind_custom_view_48dp;
+            case "onDateChange" -> R.drawable.event_on_date_changed_48dp;
+            case "onChildAdded" -> R.drawable.event_on_child_added_48dp;
+            case "onChildChanged" -> R.drawable.event_on_child_changed_48dp;
+            case "onChildMoved" -> R.drawable.event_on_child_moved_48dp;
+            case "onChildRemoved", "onDeleteSuccess" -> R.drawable.event_on_child_removed_48dp;
+            case "onCancelled" -> R.drawable.event_on_cancelled_48dp;
+            case "onCreateUserComplete" -> R.drawable.event_on_create_user_complete_48dp;
+            case "onSignInUserComplete" -> R.drawable.event_on_signin_complete_48dp;
+            case "onResetPasswordEmailSent" -> R.drawable.event_on_reset_password_email_sent_48dp;
+            case "onSensorChanged" -> R.drawable.event_on_sensor_changed_48dp;
+            case "onAccuracyChanged" -> R.drawable.event_on_accuracy_changed_48dp;
+            case "onInterstitialAdLoaded", "onBannerAdLoaded", "onRewardAdLoaded" ->
+                    R.drawable.event_on_ad_loaded;
+            case "onBannerAdFailedToLoad", "onInterstitialAdFailedToLoad", "onAdFailedToShowFullScreenContent", "onRewardAdFailedToLoad", "onFailure" ->
+                    R.drawable.event_on_ad_failed_to_load;
+            case "onAdShowedFullScreenContent", "onBannerAdOpened" -> R.drawable.event_on_ad_opened;
+            case "onAdDismissedFullScreenContent", "onBannerAdClosed" ->
+                    R.drawable.event_on_ad_closed;
+            case "onUploadProgress" -> R.drawable.event_on_upload_progress_48dp;
+            case "onDownloadProgress" -> R.drawable.event_on_download_progress_48dp;
+            case "onUploadSuccess" -> R.drawable.event_on_upload_success_48dp;
+            case "onDownloadSuccess" -> R.drawable.event_on_download_success_48dp;
+            case "onPictureTaken" -> R.drawable.event_on_picture_taken_48dp;
+            case "onPictureTakenCancel" -> R.drawable.event_on_picture_taken_cancel_48dp;
+            case "onFilesPicked" -> R.drawable.event_on_file_picked_48dp;
+            case "onFilesPickedCancel" -> R.drawable.event_on_file_picked_cancel_48dp;
+            case "onResponse" -> R.drawable.event_on_response_48dp;
+            case "onErrorResponse" -> R.drawable.event_on_error_response_48dp;
+            case "onSpeechResult" -> R.drawable.event_on_speech_result;
+            case "onSpeechError" -> R.drawable.event_on_speech_error;
+            case "onConnected" -> R.drawable.event_on_connected_96;
+            case "onDataReceived" -> R.drawable.event_on_data_received_96;
+            case "onDataSent" -> R.drawable.event_on_data_sent_96;
+            case "onConnectionError" -> R.drawable.event_on_connection_error_96;
+            case "onConnectionStopped" -> R.drawable.event_on_connection_stopped_96;
+            case "onLocationChanged" -> R.drawable.event_on_location_changed_96;
+            case "onMapReady" -> R.drawable.event_on_map_ready_96;
+            case "onMarkerClicked" -> R.drawable.event_on_marker_clicked_96;
+            default -> ManageEvent.d(eventName);
+        };
     }
 
     public static String a(String eventName, Context context) {
-        switch (eventName) {
-            case "initializeLogic":
-                return Helper.getResString(R.string.event_initialize);
-
-            case "onBackPressed":
-                return Helper.getResString(R.string.event_onbackpressed);
-
-            case "onPostCreate":
-                return Helper.getResString(R.string.event_onpostcreated);
-
-            case "onStart":
-                return Helper.getResString(R.string.event_onstart);
-
-            case "onStop":
-                return Helper.getResString(R.string.event_onstop);
-
-            case "onDestroy":
-                return Helper.getResString(R.string.event_ondestroy);
-
-            case "onResume":
-                return Helper.getResString(R.string.event_onresume);
-
-            case "onPause":
-                return Helper.getResString(R.string.event_onpause);
-
-            case "onPageStarted":
-                return Helper.getResString(R.string.event_onpagestarted);
-
-            case "onPageFinished":
-                return Helper.getResString(R.string.event_onpagefinished);
-
-            case "moreBlock":
-                return Helper.getResString(R.string.event_definefunc);
-
-            case "onClick":
-                return Helper.getResString(R.string.event_onclick);
-
-            case "onCheckedChange":
-                return Helper.getResString(R.string.event_oncheckchanged);
-
-            case "onItemSelected":
-                return Helper.getResString(R.string.event_onitemselected);
-
-            case "onItemClicked":
-                return Helper.getResString(R.string.event_onitemclicked);
-
-            case "onItemLongClicked":
-                return Helper.getResString(R.string.event_onitemlongclicked);
-
-            case "onTextChanged":
-                return Helper.getResString(R.string.event_ontextchanged);
-
-            case "onProgressChanged":
-                return Helper.getResString(R.string.event_onprogresschanged);
-
-            case "onStartTrackingTouch":
-                return Helper.getResString(R.string.event_onstarttrackingtouch);
-
-            case "onStopTrackingTouch":
-                return Helper.getResString(R.string.event_onstoptrackingtouch);
-
-            case "onAnimationStart":
-                return Helper.getResString(R.string.event_onanimationstart);
-
-            case "onAnimationEnd":
-                return Helper.getResString(R.string.event_onanimationend);
-
-            case "onAnimationCancel":
-                return Helper.getResString(R.string.event_onanimationcancel);
-
-            case "onBindCustomView":
-                return Helper.getResString(R.string.event_onbindcustomview);
-
-            case "onDateChange":
-                return Helper.getResString(R.string.event_ondatechange);
-
-            case "onChildAdded":
-                return Helper.getResString(R.string.event_onchildadded);
-
-            case "onChildChanged":
-                return Helper.getResString(R.string.event_onchildchanged);
-
-            case "onChildRemoved":
-                return Helper.getResString(R.string.event_onchildremoved);
-
-            case "onCancelled":
-                return Helper.getResString(R.string.event_oncancelled);
-
-            case "onSensorChanged":
-                return Helper.getResString(R.string.event_onsensorchanged);
-
-            case "onCreateUserComplete":
-                return Helper.getResString(R.string.event_oncreateusercomplete);
-
-            case "onSignInUserComplete":
-                return Helper.getResString(R.string.event_onsigninusercomplete);
-
-            case "onResetPasswordEmailSent":
-                return Helper.getResString(R.string.event_onresetpasswordemailsent);
-
-            case "onInterstitialAdLoaded":
-                return Helper.getResString(R.string.event_onadloaded);
-
-            case "onInterstitialAdFailedToLoad":
-                return Helper.getResString(R.string.event_onadfailedtoload);
-
-            case "onBannerAdOpened":
-                return Helper.getResString(R.string.event_onadopened);
-
-            case "onBannerAdClosed":
-                return Helper.getResString(R.string.event_onadclosed);
-
-            case "onUploadProgress":
-                return Helper.getResString(R.string.event_onuploadprogress);
-
-            case "onDownloadProgress":
-                return Helper.getResString(R.string.event_ondownloadprogress);
-
-            case "onUploadSuccess":
-                return Helper.getResString(R.string.event_onuploadsuccess);
-
-            case "onDownloadSuccess":
-                return Helper.getResString(R.string.event_ondownloadsuccess);
-
-            case "onDeleteSuccess":
-                return Helper.getResString(R.string.event_ondeletesuccess);
-
-            case "onFailure":
-                return Helper.getResString(R.string.event_onfailure);
-
-            case "onPictureTaken":
-                return Helper.getResString(R.string.event_onpicturetaken);
-
-            case "onPictureTakenCancel":
-                return Helper.getResString(R.string.event_onpicturetakencancel);
-
-            case "onFilesPicked":
-                return Helper.getResString(R.string.event_onfilespicked);
-
-            case "onFilesPickedCancel":
-                return Helper.getResString(R.string.event_onfilespickedcancel);
-
-            case "onResponse":
-                return Helper.getResString(R.string.event_on_response);
-
-            case "onErrorResponse":
-                return Helper.getResString(R.string.event_on_error_response);
-
-            case "onSpeechResult":
-                return Helper.getResString(R.string.event_on_speech_result);
-
-            case "onSpeechError":
-                return Helper.getResString(R.string.event_on_speech_error);
-
-            case "onConnected":
-                return Helper.getResString(R.string.event_on_connected);
-
-            case "onDataReceived":
-                return Helper.getResString(R.string.event_on_data_received);
-
-            case "onDataSent":
-                return Helper.getResString(R.string.event_on_data_sent);
-
-            case "onConnectionError":
-                return Helper.getResString(R.string.event_on_connection_error);
-
-            case "onConnectionStopped":
-                return Helper.getResString(R.string.event_on_connection_stopped);
-
-            case "onMapReady":
-                return Helper.getResString(R.string.event_on_map_ready);
-
-            case "onMarkerClicked":
-                return Helper.getResString(R.string.event_on_marker_clicked);
-
-            case "onLocationChanged":
-                return Helper.getResString(R.string.event_on_location_changed);
-
-            default:
-                return ManageEvent.e(eventName);
-        }
+        return switch (eventName) {
+            case "initializeLogic" -> Helper.getResString(R.string.event_initialize);
+            case "onBackPressed" -> Helper.getResString(R.string.event_onbackpressed);
+            case "onPostCreate" -> Helper.getResString(R.string.event_onpostcreated);
+            case "onStart" -> Helper.getResString(R.string.event_onstart);
+            case "onStop" -> Helper.getResString(R.string.event_onstop);
+            case "onDestroy" -> Helper.getResString(R.string.event_ondestroy);
+            case "onResume" -> Helper.getResString(R.string.event_onresume);
+            case "onPause" -> Helper.getResString(R.string.event_onpause);
+            case "onPageStarted" -> Helper.getResString(R.string.event_onpagestarted);
+            case "onPageFinished" -> Helper.getResString(R.string.event_onpagefinished);
+            case "moreBlock" -> Helper.getResString(R.string.event_definefunc);
+            case "onClick" -> Helper.getResString(R.string.event_onclick);
+            case "onCheckedChange" -> Helper.getResString(R.string.event_oncheckchanged);
+            case "onItemSelected" -> Helper.getResString(R.string.event_onitemselected);
+            case "onItemClicked" -> Helper.getResString(R.string.event_onitemclicked);
+            case "onItemLongClicked" -> Helper.getResString(R.string.event_onitemlongclicked);
+            case "onTextChanged" -> Helper.getResString(R.string.event_ontextchanged);
+            case "onProgressChanged" -> Helper.getResString(R.string.event_onprogresschanged);
+            case "onStartTrackingTouch" -> Helper.getResString(R.string.event_onstarttrackingtouch);
+            case "onStopTrackingTouch" -> Helper.getResString(R.string.event_onstoptrackingtouch);
+            case "onAnimationStart" -> Helper.getResString(R.string.event_onanimationstart);
+            case "onAnimationEnd" -> Helper.getResString(R.string.event_onanimationend);
+            case "onAnimationCancel" -> Helper.getResString(R.string.event_onanimationcancel);
+            case "onBindCustomView" -> Helper.getResString(R.string.event_onbindcustomview);
+            case "onDateChange" -> Helper.getResString(R.string.event_ondatechange);
+            case "onChildAdded" -> Helper.getResString(R.string.event_onchildadded);
+            case "onChildChanged" -> Helper.getResString(R.string.event_onchildchanged);
+            case "onChildRemoved" -> Helper.getResString(R.string.event_onchildremoved);
+            case "onCancelled" -> Helper.getResString(R.string.event_oncancelled);
+            case "onSensorChanged" -> Helper.getResString(R.string.event_onsensorchanged);
+            case "onCreateUserComplete" -> Helper.getResString(R.string.event_oncreateusercomplete);
+            case "onSignInUserComplete" -> Helper.getResString(R.string.event_onsigninusercomplete);
+            case "onResetPasswordEmailSent" ->
+                    Helper.getResString(R.string.event_onresetpasswordemailsent);
+            case "onInterstitialAdLoaded" -> Helper.getResString(R.string.event_onadloaded);
+            case "onInterstitialAdFailedToLoad" ->
+                    Helper.getResString(R.string.event_onadfailedtoload);
+            case "onBannerAdOpened" -> Helper.getResString(R.string.event_onadopened);
+            case "onBannerAdClosed" -> Helper.getResString(R.string.event_onadclosed);
+            case "onUploadProgress" -> Helper.getResString(R.string.event_onuploadprogress);
+            case "onDownloadProgress" -> Helper.getResString(R.string.event_ondownloadprogress);
+            case "onUploadSuccess" -> Helper.getResString(R.string.event_onuploadsuccess);
+            case "onDownloadSuccess" -> Helper.getResString(R.string.event_ondownloadsuccess);
+            case "onDeleteSuccess" -> Helper.getResString(R.string.event_ondeletesuccess);
+            case "onFailure" -> Helper.getResString(R.string.event_onfailure);
+            case "onPictureTaken" -> Helper.getResString(R.string.event_onpicturetaken);
+            case "onPictureTakenCancel" -> Helper.getResString(R.string.event_onpicturetakencancel);
+            case "onFilesPicked" -> Helper.getResString(R.string.event_onfilespicked);
+            case "onFilesPickedCancel" -> Helper.getResString(R.string.event_onfilespickedcancel);
+            case "onResponse" -> Helper.getResString(R.string.event_on_response);
+            case "onErrorResponse" -> Helper.getResString(R.string.event_on_error_response);
+            case "onSpeechResult" -> Helper.getResString(R.string.event_on_speech_result);
+            case "onSpeechError" -> Helper.getResString(R.string.event_on_speech_error);
+            case "onConnected" -> Helper.getResString(R.string.event_on_connected);
+            case "onDataReceived" -> Helper.getResString(R.string.event_on_data_received);
+            case "onDataSent" -> Helper.getResString(R.string.event_on_data_sent);
+            case "onConnectionError" -> Helper.getResString(R.string.event_on_connection_error);
+            case "onConnectionStopped" -> Helper.getResString(R.string.event_on_connection_stopped);
+            case "onMapReady" -> Helper.getResString(R.string.event_on_map_ready);
+            case "onMarkerClicked" -> Helper.getResString(R.string.event_on_marker_clicked);
+            case "onLocationChanged" -> Helper.getResString(R.string.event_on_location_changed);
+            default -> ManageEvent.e(eventName);
+        };
     }
 
     public static String[] a() {
@@ -572,151 +333,89 @@ public class oq {
         ManageEvent.c(listenerName, eventList);
 
         switch (listenerName) {
-            case "onClickListener":
-                eventList.add("onClick");
-                break;
-
-            case "onTextChangedListener":
+            case "onClickListener" -> eventList.add("onClick");
+            case "onTextChangedListener" -> {
                 eventList.add("onTextChanged");
                 eventList.add("beforeTextChanged");
                 eventList.add("afterTextChanged");
-                break;
-
-            case "onCheckChangedListener":
-                eventList.add("onCheckedChange");
-                break;
-
-            case "onSeekBarChangeListener":
+            }
+            case "onCheckChangedListener" -> eventList.add("onCheckedChange");
+            case "onSeekBarChangeListener" -> {
                 eventList.add("onProgressChanged");
                 eventList.add("onStartTrackingTouch");
                 eventList.add("onStopTrackingTouch");
-                break;
-
-            case "onItemSelectedListener":
+            }
+            case "onItemSelectedListener" -> {
                 eventList.add("onItemSelected");
                 eventList.add("onNothingSelected");
-                break;
-
-            case "onItemClickListener":
-                eventList.add("onItemClicked");
-                break;
-
-            case "onItemLongClickListener":
-                eventList.add("onItemLongClicked");
-                break;
-
-            case "webViewClient":
+            }
+            case "onItemClickListener" -> eventList.add("onItemClicked");
+            case "onItemLongClickListener" -> eventList.add("onItemLongClicked");
+            case "webViewClient" -> {
                 eventList.add("onPageStarted");
                 eventList.add("onPageFinished");
-                break;
-
-            case "onDateChangeListener":
-                eventList.add("onDateChange");
-                break;
-
-            case "animatorListener":
+            }
+            case "onDateChangeListener" -> eventList.add("onDateChange");
+            case "animatorListener" -> {
                 eventList.add("onAnimationStart");
                 eventList.add("onAnimationEnd");
                 eventList.add("onAnimationCancel");
                 eventList.add("onAnimationRepeat");
-                break;
-
-            case "childEventListener":
+            }
+            case "childEventListener" -> {
                 eventList.add("onChildAdded");
                 eventList.add("onChildChanged");
                 eventList.add("onChildMoved");
                 eventList.add("onChildRemoved");
                 eventList.add("onCancelled");
-                break;
-
-            case "sensorEventListener":
+            }
+            case "sensorEventListener" -> {
                 eventList.add("onSensorChanged");
                 eventList.add("onAccuracyChanged");
-                break;
-
-            case "authCreateUserComplete":
-                eventList.add("onCreateUserComplete");
-                break;
-
-            case "authSignInUserComplete":
-                eventList.add("onSignInUserComplete");
-                break;
-
-            case "authResetEmailSent":
-                eventList.add("onResetPasswordEmailSent");
-                break;
-
-            case "interstitialAdLoadCallback":
+            }
+            case "authCreateUserComplete" -> eventList.add("onCreateUserComplete");
+            case "authSignInUserComplete" -> eventList.add("onSignInUserComplete");
+            case "authResetEmailSent" -> eventList.add("onResetPasswordEmailSent");
+            case "interstitialAdLoadCallback" -> {
                 eventList.add("onInterstitialAdLoaded");
                 eventList.add("onInterstitialAdFailedToLoad");
-                break;
-
-            case "fullScreenContentCallback":
+            }
+            case "fullScreenContentCallback" -> {
                 eventList.add("onAdDismissedFullScreenContent");
                 eventList.add("onAdFailedToShowFullScreenContent");
                 eventList.add("onAdShowedFullScreenContent");
-                break;
-
-            case "bannerAdViewListener":
+            }
+            case "bannerAdViewListener" -> {
                 eventList.add("onBannerAdLoaded");
                 eventList.add("onBannerAdFailedToLoad");
                 eventList.add("onBannerAdOpened");
                 eventList.add("onBannerAdClicked");
                 eventList.add("onBannerAdClosed");
-                break;
-
-            case "onUploadProgressListener":
-                eventList.add("onUploadProgress");
-                break;
-
-            case "onDownloadProgressListener":
-                eventList.add("onDownloadProgress");
-                break;
-
-            case "onUploadSuccessListener":
-                eventList.add("onUploadSuccess");
-                break;
-
-            case "onDownloadSuccessListener":
-                eventList.add("onDownloadSuccess");
-                break;
-
-            case "onDeleteSuccessListener":
-                eventList.add("onDeleteSuccess");
-                break;
-
-            case "onFailureListener":
-                eventList.add("onFailure");
-                break;
-
-            case "requestListener":
+            }
+            case "onUploadProgressListener" -> eventList.add("onUploadProgress");
+            case "onDownloadProgressListener" -> eventList.add("onDownloadProgress");
+            case "onUploadSuccessListener" -> eventList.add("onUploadSuccess");
+            case "onDownloadSuccessListener" -> eventList.add("onDownloadSuccess");
+            case "onDeleteSuccessListener" -> eventList.add("onDeleteSuccess");
+            case "onFailureListener" -> eventList.add("onFailure");
+            case "requestListener" -> {
                 eventList.add("onResponse");
                 eventList.add("onErrorResponse");
-                break;
-
-            case "recognitionListener":
+            }
+            case "recognitionListener" -> {
                 eventList.add("onSpeechResult");
                 eventList.add("onSpeechError");
-                break;
-
-            case "bluetoothConnectionListener":
+            }
+            case "bluetoothConnectionListener" -> {
                 eventList.add("onConnected");
                 eventList.add("onDataReceived");
                 eventList.add("onDataSent");
                 eventList.add("onConnectionError");
                 eventList.add("onConnectionStopped");
-                break;
-
-            case "onMapReadyCallback":
-                eventList.add("onMapReady");
-                break;
-
-            case "onMapMarkerClickListener":
-                eventList.add("onMarkerClicked");
-                break;
-
-            case "locationListener":
-                eventList.add("onLocationChanged");
+            }
+            case "onMapReadyCallback" -> eventList.add("onMapReady");
+            case "onMapMarkerClickListener" -> eventList.add("onMarkerClicked");
+            case "locationListener" -> eventList.add("onLocationChanged");
         }
 
         return eventList.toArray(new String[0]);
