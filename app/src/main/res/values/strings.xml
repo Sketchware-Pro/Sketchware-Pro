@@ -2586,4 +2586,5 @@ Please check the URL again."</string>
     <string name="code_shrinker_configure_shrinker">Configure R8/ProGuard by editing the rules file. This step is necessary because without a proper configuration, ProGuard might break your project.</string>
     <string name="code_shrinker_full_mode_def">Using this, you can configure specific local libs to be included in R8/ProGuarding process. (Note: Enabling this will ignore DEX files of the local libs you select and it will force Sketchware to compile them to dex, making compilation noticeably slower.)</string>
     <string name="code_shrinker_generate_debug_files">Generate debug files</string>
+    <string name="dependency_example">Example: org.ow2.asm:asm:9.5</string>
 </resources>
