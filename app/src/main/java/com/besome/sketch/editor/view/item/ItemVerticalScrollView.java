@@ -24,6 +24,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
     public float e = -1.0F;
     public boolean f = true;
     public final Rect g = new Rect();
+    private final Rect rect = new Rect();
 
     public ItemVerticalScrollView(Context var1) {
         super(var1);
@@ -187,7 +188,8 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
             int var5 = getScrollY() + getMeasuredHeight();
             if (b) {
                 d.setColor(-1785080368);
-                var1.drawRect(new Rect(var2, var4, var3, var5), d);
+                rect.set(var2, var4, var3, var5);
+                var1.drawRect(rect, d);
             }
 
             d.setColor(-1428881408);
