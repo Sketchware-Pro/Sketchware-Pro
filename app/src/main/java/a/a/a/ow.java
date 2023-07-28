@@ -38,7 +38,6 @@ import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
 
 public class ow extends qA implements View.OnClickListener {
-    private oB fileUtil;
     private ArrayList<ProjectResourceBean> sounds;
     private FloatingActionButton add;
     private String sc_id;
@@ -81,7 +80,7 @@ public class ow extends qA implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        fileUtil = new oB();
+        oB fileUtil = new oB();
         fileUtil.f(A);
         sounds = new ArrayList<>();
         if (savedInstanceState == null) {
@@ -451,12 +450,12 @@ public class ow extends qA implements View.OnClickListener {
             }
         }
         if (arrayList3.size() > 0) {
-            String str2 = "";
+            StringBuilder str2 = new StringBuilder();
             for (String str3 : arrayList3) {
                 if (str2.length() > 0) {
-                    str2 = str2 + ", ";
+                    str2.append(", ");
                 }
-                str2 = str2 + str3;
+                str2.append(str3);
             }
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", 1).show();
         } else {
