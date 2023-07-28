@@ -23,7 +23,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
     public ItemLinearLayout(Context context) {
         super(context);
-        this.initialize(context);
+        initialize(context);
     }
 
     @Override
@@ -31,8 +31,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         int var1 = 0;
 
         int var4;
-        for (int i = 0; var1 < this.getChildCount(); i = var4) {
-            View child = this.getChildAt(var1);
+        for (int i = 0; var1 < getChildCount(); i = var4) {
+            View child = getChildAt(var1);
             var4 = i;
             if (child instanceof sy) {
                 ((sy) child).getBean().index = i;
@@ -45,17 +45,17 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
     }
 
     private void initialize(Context context) {
-        this.setOrientation(0);
-        this.setDrawingCacheEnabled(true);
-        this.setMinimumWidth((int) wB.a(context, 32.0F));
-        this.setMinimumHeight((int) wB.a(context, 32.0F));
-        this.paint = new Paint(1);
-        this.paint.setStrokeWidth(wB.a(this.getContext(), 2.0F));
+        setOrientation(0);
+        setDrawingCacheEnabled(true);
+        setMinimumWidth((int) wB.a(context, 32.0F));
+        setMinimumHeight((int) wB.a(context, 32.0F));
+        paint = new Paint(1);
+        paint.setStrokeWidth(wB.a(getContext(), 2.0F));
     }
 
     @Override
     public void addView(View child, int index) {
-        int childCount = this.getChildCount();
+        int childCount = getChildCount();
         if (index > childCount) {
             super.addView(child);
         } else {
@@ -69,7 +69,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
                     break;
                 }
 
-                if (this.getChildAt(var5).getVisibility() == 8) {
+                if (getChildAt(var5).getVisibility() == 8) {
                     var6 = var5;
                     break;
                 }
@@ -87,38 +87,38 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
     @Override
     public ViewBean getBean() {
-        return this.viewBean;
+        return viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.isFixed;
+        return isFixed;
     }
 
     public int getLayoutGravity() {
-        return this.layoutGravity;
+        return layoutGravity;
     }
 
     public boolean getSelection() {
-        return this.isSelected;
+        return isSelected;
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (!this.isFixed) {
-            if (this.isSelected) {
-                this.paint.setColor(-1785080368);
-                canvas.drawRect(new Rect(0, 0, this.getMeasuredWidth(), this.getMeasuredHeight()), this.paint);
+        if (!isFixed) {
+            if (isSelected) {
+                paint.setColor(-1785080368);
+                canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
             }
-            this.paint.setColor(1610612736);
+            paint.setColor(1610612736);
 
-            int measuredWidth = this.getMeasuredWidth();
-            int measuredHeight = this.getMeasuredHeight();
+            int measuredWidth = getMeasuredWidth();
+            int measuredHeight = getMeasuredHeight();
 
-            canvas.drawLine(0.0F, 0.0F, (float) measuredWidth, 0.0F, this.paint);
-            canvas.drawLine(0.0F, 0.0F, 0.0F, (float) measuredHeight, this.paint);
-            canvas.drawLine((float) measuredWidth, 0.0F, (float) measuredWidth, (float) measuredHeight, this.paint);
-            canvas.drawLine(0.0F, (float) measuredHeight, (float) measuredWidth, (float) measuredHeight, this.paint);
+            canvas.drawLine(0.0F, 0.0F, (float) measuredWidth, 0.0F, paint);
+            canvas.drawLine(0.0F, 0.0F, 0.0F, (float) measuredHeight, paint);
+            canvas.drawLine((float) measuredWidth, 0.0F, (float) measuredWidth, (float) measuredHeight, paint);
+            canvas.drawLine(0.0F, (float) measuredHeight, (float) measuredWidth, (float) measuredHeight, paint);
         }
 
         super.onDraw(canvas);
@@ -131,8 +131,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
     @Override
     public void setChildScrollEnabled(boolean childScrollEnabled) {
-        for (int i = 0; i < this.getChildCount(); ++i) {
-            View child = this.getChildAt(i);
+        for (int i = 0; i < getChildCount(); ++i) {
+            View child = getChildAt(i);
             if (child instanceof ty) {
                 ((ty) child).setChildScrollEnabled(childScrollEnabled);
             }
@@ -158,12 +158,12 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) wB.a(this.getContext(), (float) left), (int) wB.a(this.getContext(), (float) top), (int) wB.a(this.getContext(), (float) right), (int) wB.a(this.getContext(), (float) bottom));
+        super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
     }
 
     @Override
     public void setSelection(boolean selected) {
-        this.isSelected = selected;
-        this.invalidate();
+        isSelected = selected;
+        invalidate();
     }
 }
