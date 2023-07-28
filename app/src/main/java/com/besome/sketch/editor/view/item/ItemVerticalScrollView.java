@@ -17,21 +17,21 @@ import a.a.a.wB;
 
 public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
 
-    public ViewBean a = null;
-    public boolean b = false;
-    public boolean c = false;
-    public Paint d;
-    public float e = -1.0F;
-    public boolean f = true;
-    public final Rect g = new Rect();
+    private ViewBean viewBean;
+    private boolean isSelected = false;
+    private boolean isFixed = false;
+    private Paint paint;
+    private float e = -1.0F;
+    private boolean f = true;
+    private final Rect g = new Rect();
     private final Rect rect = new Rect();
 
-    public ItemVerticalScrollView(Context var1) {
-        super(var1);
-        a(var1);
+    public ItemVerticalScrollView(Context context) {
+        super(context);
+        initialize(context);
     }
 
-    public int a(Rect var1) {
+    private int a(Rect rect) {
         int var2 = getChildCount();
         byte var3 = 0;
         if (var2 == 0) {
@@ -42,31 +42,31 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
             var2 = var5 + var4;
             int var6 = getVerticalFadingEdgeLength();
             int var7 = var5;
-            if (var1.top > 0) {
+            if (rect.top > 0) {
                 var7 = var5 + var6;
             }
 
             var5 = var2;
-            if (var1.bottom < getChildAt(0).getHeight()) {
+            if (rect.bottom < getChildAt(0).getHeight()) {
                 var5 = var2 - var6;
             }
 
-            if (var1.bottom > var5 && var1.top > var7) {
-                if (var1.height() > var4) {
-                    var2 = var1.top - var7;
+            if (rect.bottom > var5 && rect.top > var7) {
+                if (rect.height() > var4) {
+                    var2 = rect.top - var7;
                 } else {
-                    var2 = var1.bottom - var5;
+                    var2 = rect.bottom - var5;
                 }
 
                 var2 = Math.min(var2, getChildAt(0).getBottom() - var5);
             } else {
                 var2 = var3;
-                if (var1.top < var7) {
-                    if (var1.bottom < var5) {
-                        if (var1.height() > var4) {
-                            var2 = -(var5 - var1.bottom);
+                if (rect.top < var7) {
+                    if (rect.bottom < var5) {
+                        if (rect.height() > var4) {
+                            var2 = -(var5 - rect.bottom);
                         } else {
-                            var2 = -(var7 - var1.top);
+                            var2 = -(var7 - rect.top);
                         }
 
                         var2 = Math.max(var2, -getScrollY());
@@ -95,34 +95,30 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
 
     }
 
-    public final void a(int var1) {
-        if (var1 != 0) {
-            scrollBy(0, var1);
+    private void a(int position) {
+        if (position != 0) {
+            scrollBy(0, position);
         }
-
     }
 
-    public final void a(Context var1) {
+    private void initialize(Context var1) {
         setDrawingCacheEnabled(true);
         setMinimumWidth((int) wB.a(var1, 32.0F));
         setMinimumHeight((int) wB.a(var1, 32.0F));
-        d = new Paint(1);
-        d.setStrokeWidth(wB.a(getContext(), 2.0F));
+        paint = new Paint(1);
+        paint.setStrokeWidth(wB.a(getContext(), 2.0F));
     }
 
-    public final boolean a(View var1, int var2, int var3) {
-        var1.getDrawingRect(g);
-        offsetDescendantRectToMyCoords(var1, g);
-        boolean var4;
-        var4 = g.bottom + var2 >= getScrollY() && g.top - var2 <= getScrollY() + var3;
-
-        return var4;
+    private boolean a(View view, int var2, int var3) {
+        view.getDrawingRect(g);
+        offsetDescendantRectToMyCoords(view, g);
+        return g.bottom + var2 >= getScrollY() && g.top - var2 <= getScrollY() + var3;
     }
 
-    public void addView(View var1, int var2) {
-        int var3 = getChildCount();
-        if (var2 > var3) {
-            super.addView(var1);
+    public void addView(View view, int index) {
+        int childCount = getChildCount();
+        if (index > childCount) {
+            super.addView(view);
         } else {
             byte var4 = -1;
             int var5 = 0;
@@ -130,7 +126,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
             int var6;
             while (true) {
                 var6 = var4;
-                if (var5 >= var3) {
+                if (var5 >= childCount) {
                     break;
                 }
 
@@ -142,88 +138,78 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
                 ++var5;
             }
 
-            if (var6 >= 0 && var2 >= var6) {
-                super.addView(var1, var2 + 1);
+            if (var6 >= 0 && index >= var6) {
+                super.addView(view, index + 1);
             } else {
-                super.addView(var1, var2);
+                super.addView(view, index);
             }
         }
     }
 
     public ViewBean getBean() {
-        return a;
+        return viewBean;
     }
 
     public boolean getFixed() {
-        return c;
+        return isFixed;
     }
 
     public boolean getSelection() {
-        return b;
+        return isSelected;
     }
 
-    public void measureChild(View var1, int var2, int var3) {
-        ViewGroup.LayoutParams var4 = var1.getLayoutParams();
-        var2 = FrameLayout.getChildMeasureSpec(var2, getPaddingLeft() + getPaddingRight(), var4.width);
-        int var5 = getPaddingTop();
-        int var6 = getPaddingBottom();
-        var1.measure(var2, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(var3) - (var5 + var6)), MeasureSpec.UNSPECIFIED));
+    public void measureChild(View view, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        parentWidthMeasureSpec = FrameLayout.getChildMeasureSpec(parentWidthMeasureSpec, getPaddingLeft() + getPaddingRight(), layoutParams.width);
+        view.measure(parentWidthMeasureSpec, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(parentHeightMeasureSpec) - (getPaddingTop() + getPaddingBottom())), MeasureSpec.UNSPECIFIED));
     }
 
-    public void measureChildWithMargins(View var1, int var2, int var3, int var4, int var5) {
-        ViewGroup.MarginLayoutParams var6 = (ViewGroup.MarginLayoutParams) var1.getLayoutParams();
-        int var7 = FrameLayout.getChildMeasureSpec(var2, getPaddingLeft() + getPaddingRight() + var6.leftMargin + var6.rightMargin + var3, var6.width);
-        var2 = getPaddingTop();
-        var3 = getPaddingBottom();
-        int var8 = var6.topMargin;
-        int var9 = var6.bottomMargin;
-        var1.measure(var7, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(var4) - (var2 + var3 + var8 + var9 + var5)), MeasureSpec.UNSPECIFIED));
+    public void measureChildWithMargins(View view, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        int childMeasureSpec = FrameLayout.getChildMeasureSpec(parentWidthMeasureSpec, getPaddingLeft() + getPaddingRight() + layoutParams.leftMargin + layoutParams.rightMargin + widthUsed, layoutParams.width);
+        parentWidthMeasureSpec = getPaddingTop();
+        widthUsed = getPaddingBottom();
+        view.measure(childMeasureSpec, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(parentHeightMeasureSpec) - (parentWidthMeasureSpec + widthUsed + layoutParams.topMargin + layoutParams.bottomMargin + heightUsed)), MeasureSpec.UNSPECIFIED));
     }
 
-    public void onDraw(Canvas var1) {
-        if (!c) {
-            int var2 = getScrollX();
-            int var3 = getScrollX() + getMeasuredWidth();
-            int var4 = getScrollY();
-            int var5 = getScrollY() + getMeasuredHeight();
-            if (b) {
-                d.setColor(-1785080368);
-                rect.set(var2, var4, var3, var5);
-                var1.drawRect(rect, d);
+    public void onDraw(Canvas canvas) {
+        if (!isFixed) {
+            int scrollX = getScrollX();
+            int measuredWidthX = getScrollX() + getMeasuredWidth();
+            int scrollY = getScrollY();
+            int measuredHeightY = getScrollY() + getMeasuredHeight();
+            if (isSelected) {
+                paint.setColor(0x9599d5d0);
+                rect.set(scrollX, scrollY, measuredWidthX, measuredHeightY);
+                canvas.drawRect(rect, paint);
             }
-
-            d.setColor(-1428881408);
-            float var6 = (float) var2;
-            float var7 = (float) var4;
-            float var8 = (float) var3;
-            var1.drawLine(var6, var7, var8, var7, d);
-            float var9 = (float) var5;
-            var1.drawLine(var6, var7, var6, var9, d);
-            var1.drawLine(var8, var7, var8, var9, d);
-            var1.drawLine(var6, var9, var8, var9, d);
+            paint.setColor(0xaad50000);
+            canvas.drawLine((float) scrollX, (float) scrollY, (float) measuredWidthX, (float) scrollY, paint);
+            canvas.drawLine((float) scrollX, (float) scrollY, (float) scrollX, (float) measuredHeightY, paint);
+            canvas.drawLine((float) measuredWidthX, (float) scrollY, (float) measuredWidthX, (float) measuredHeightY, paint);
+            canvas.drawLine((float) scrollX, (float) measuredHeightY, (float) measuredWidthX, (float) measuredHeightY, paint);
         }
-
-        super.onDraw(var1);
+        super.onDraw(canvas);
     }
 
-    public boolean onInterceptTouchEvent(MotionEvent var1) {
+    public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
         if (!f) {
             return false;
         } else if (getChildCount() <= 0) {
             return false;
         } else {
             View var2 = getChildAt(0);
-            int var3 = var1.getAction();
-            float var4 = var1.getY();
+            int var3 = motionEvent.getAction();
+            float motionEventY = motionEvent.getY();
             if (var3 != 0) {
                 if (var3 != 1) {
                     if (var3 == 2) {
                         if (e < 0.0F) {
-                            e = var4;
+                            e = motionEventY;
                         }
 
-                        var3 = (int) (e - var4);
-                        e = var4;
+                        var3 = (int) (e - motionEventY);
+                        e = motionEventY;
                         if (var3 <= 0) {
                             if (getScrollY() <= 0) {
                                 var3 = 0;
@@ -247,84 +233,78 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
                     e = -1.0F;
                 }
             } else {
-                e = var4;
+                e = motionEventY;
             }
 
             return false;
         }
     }
 
-    public void onMeasure(int var1, int var2) {
-        super.onMeasure(var1, var2);
-        if (MeasureSpec.getMode(var2) != MeasureSpec.UNSPECIFIED) {
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.UNSPECIFIED) {
             if (getChildCount() > 0) {
-                View var3 = getChildAt(0);
-                FrameLayout.LayoutParams var4 = (FrameLayout.LayoutParams) var3.getLayoutParams();
-                var2 = getPaddingLeft();
-                int var5 = getPaddingRight();
-                int var6 = getPaddingTop();
-                int var7 = getPaddingBottom();
-                var7 = getMeasuredHeight() - (var6 + var7);
-                if (var3.getMeasuredHeight() < var7) {
-                    var3.measure(FrameLayout.getChildMeasureSpec(var1, var2 + var5, var4.width), MeasureSpec.makeMeasureSpec(var7, MeasureSpec.EXACTLY));
+                View child = getChildAt(0);
+                FrameLayout.LayoutParams var4 = (FrameLayout.LayoutParams) child.getLayoutParams();
+                heightMeasureSpec = getPaddingLeft();
+                int measuringSize = getMeasuredHeight() - (getPaddingTop() + getPaddingBottom());
+                if (child.getMeasuredHeight() < measuringSize) {
+                    child.measure(FrameLayout.getChildMeasureSpec(widthMeasureSpec, heightMeasureSpec + getPaddingRight(), var4.width), MeasureSpec.makeMeasureSpec(measuringSize, MeasureSpec.EXACTLY));
                 }
             }
-
         }
     }
 
-    public void onSizeChanged(int var1, int var2, int var3, int var4) {
-        super.onSizeChanged(var1, var2, var3, var4);
-        View var5 = findFocus();
-        if (var5 != null && this != var5 && a(var5, 0, var4)) {
-            var5.getDrawingRect(g);
-            offsetDescendantRectToMyCoords(var5, g);
+    public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
+        View focusedView = findFocus();
+        if (focusedView != null && this != focusedView && a(focusedView, 0, oldHeight)) {
+            focusedView.getDrawingRect(g);
+            offsetDescendantRectToMyCoords(focusedView, g);
             a(a(g));
         }
-
     }
 
-    public void removeView(View var1) {
-        super.removeView(var1);
+    public void removeView(View view) {
+        super.removeView(view);
         setScrollY(0);
     }
 
-    public void setBean(ViewBean var1) {
-        a = var1;
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
     }
 
-    public void setChildScrollEnabled(boolean var1) {
-        for (int var2 = 0; var2 < getChildCount(); ++var2) {
-            View var3 = getChildAt(var2);
-            if (var3 instanceof ty) {
-                ((ty) var3).setChildScrollEnabled(var1);
+    public void setChildScrollEnabled(boolean childScrollEnabled) {
+        for (int i = 0; i < getChildCount(); ++i) {
+            View child = getChildAt(i);
+            if (child instanceof ty) {
+                ((ty) child).setChildScrollEnabled(childScrollEnabled);
             }
 
-            if (var3 instanceof ItemHorizontalScrollView) {
-                ((ItemHorizontalScrollView) var3).setScrollEnabled(var1);
+            if (child instanceof ItemHorizontalScrollView) {
+                ((ItemHorizontalScrollView) child).setScrollEnabled(childScrollEnabled);
             }
 
-            if (var3 instanceof ItemVerticalScrollView) {
-                ((ItemVerticalScrollView) var3).setScrollEnabled(var1);
+            if (child instanceof ItemVerticalScrollView) {
+                ((ItemVerticalScrollView) child).setScrollEnabled(childScrollEnabled);
             }
         }
-
     }
 
-    public void setFixed(boolean var1) {
-        c = var1;
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
-    public void setPadding(int var1, int var2, int var3, int var4) {
-        super.setPadding((int) wB.a(getContext(), (float) var1), (int) wB.a(getContext(), (float) var2), (int) wB.a(getContext(), (float) var3), (int) wB.a(getContext(), (float) var4));
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
     }
 
-    public void setScrollEnabled(boolean var1) {
-        f = var1;
+    public void setScrollEnabled(boolean isScrollEnabled) {
+        f = isScrollEnabled;
     }
 
-    public void setSelection(boolean var1) {
-        b = var1;
+    public void setSelection(boolean hasSelection) {
+        isSelected = hasSelection;
         invalidate();
     }
 }
