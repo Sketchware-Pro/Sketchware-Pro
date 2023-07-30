@@ -181,6 +181,10 @@ public class Ox {
                         if (!toNotAdd.contains("app:backgroundTint")) {
                             nx.addAttribute("app", "backgroundTint", String.format("#%06X", color));
                         }
+                    } else if (nx.c().equals("CardView")) {
+                        if (!toNotAdd.contains("app:cardBackgroundColor")) {
+                            nx.addAttribute("app", "cardBackgroundColor", String.format("#%06X", color));
+                        }
                     } else if (nx.c().equals("CollapsingToolbarLayout")) {
                         if (!toNotAdd.contains("app:contentScrim")) {
                             nx.addAttribute("app", "contentScrim", String.format("#%06X", color));
