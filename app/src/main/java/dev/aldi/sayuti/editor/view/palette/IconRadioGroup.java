@@ -21,7 +21,7 @@ public class IconRadioGroup extends IconBase {
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP;
-        viewBean.layout.orientation = VERTICAL;
+        viewBean.layout.orientation = HORIZONTAL;
         viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
         viewBean.layout.paddingLeft = 8;
         viewBean.layout.paddingTop = 8;
