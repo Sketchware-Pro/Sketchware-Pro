@@ -153,88 +153,8 @@ public class Gx {
                 classInfos = "View.ViewGroup.FrameLayout.HorizontalScrollView";
                 break;
 
-            case "Intent":
-                classInfos = "Component.Intent";
-                break;
-
-            case "SharedPreferences":
-                classInfos = "Component.SharedPreferences";
-                break;
-
-            case "Calendar":
-                classInfos = "Component.Calendar";
-                break;
-
-            case "Vibrator":
-                classInfos = "Component.Vibrator";
-                break;
-
-            case "Timer":
-                classInfos = "Component.Timer";
-                break;
-
-            case "Dialog":
-                classInfos = "Component.Dialog";
-                break;
-
-            case "MediaPlayer":
-                classInfos = "Component.MediaPlayer";
-                break;
-
-            case "SoundPool":
-                classInfos = "Component.SoundPool";
-                break;
-
-            case "ObjectAnimator":
-                classInfos = "Component.ObjectAnimator";
-                break;
-
-            case "FirebaseDB":
-                classInfos = "Component.FirebaseDB";
-                break;
-
-            case "FirebaseAuth":
-                classInfos = "Component.FirebaseAuth";
-                break;
-
-            case "Gyroscope":
-                classInfos = "Component.Gyroscope";
-                break;
-
-            case "FirebaseStorage":
-                classInfos = "Component.FirebaseStorage";
-                break;
-
-            case "Camera":
-                classInfos = "Component.Camera";
-                break;
-
-            case "FilePicker":
-                classInfos = "Component.FilePicker";
-                break;
-
-            case "RequestNetwork":
-                classInfos = "Component.RequestNetwork";
-                break;
-
             case "ProgressBar":
                 classInfos = "View.SeekBar.ProgressBar";
-                break;
-
-            case "TextToSpeech":
-                classInfos = "Component.TextToSpeech";
-                break;
-
-            case "SpeechToText":
-                classInfos = "Component.SpeechToText";
-                break;
-
-            case "BluetoothConnect":
-                classInfos = "Component.BluetoothConnect";
-                break;
-
-            case "LocationManager":
-                classInfos = "Component.LocationManager";
                 break;
 
             case "RadioButton":
@@ -318,7 +238,7 @@ public class Gx {
                 break;
 
             case "CollapsingToolbarLayout":
-                classInfos = "View.ViewGroup.LinearLayout.CollapsingToolbarLayout";
+                classInfos = "View.ViewGroup.FrameLayout.CollapsingToolbarLayout";
                 break;
 
             case "SwipeRefreshLayout":
@@ -326,7 +246,7 @@ public class Gx {
                 break;
 
             case "TextInputLayout":
-                classInfos = "View.ViewGroup.LinearLayout.TextInputLayout";
+                classInfos = "View.ViewGroup.TextInputLayout";
                 break;
 
             case "RadioGroup":
@@ -351,6 +271,22 @@ public class Gx {
 
             case "RecyclerView":
                 classInfos = "View.ViewGroup.RecyclerView";
+                break;
+
+            case "TextToSpeech":
+                classInfos = "Component.TextToSpeech";
+                break;
+
+            case "SpeechToText":
+                classInfos = "Component.SpeechToText";
+                break;
+
+            case "BluetoothConnect":
+                classInfos = "Component.BluetoothConnect";
+                break;
+
+            case "LocationManager":
+                classInfos = "Component.LocationManager";
                 break;
 
             case "FBAdsInterstitial":
@@ -407,6 +343,70 @@ public class Gx {
 
             case "MediaController":
                 classInfos = "Component.MediaController";
+                break;
+
+            case "Intent":
+                classInfos = "Component.Intent";
+                break;
+
+            case "SharedPreferences":
+                classInfos = "Component.SharedPreferences";
+                break;
+
+            case "Calendar":
+                classInfos = "Component.Calendar";
+                break;
+
+            case "Vibrator":
+                classInfos = "Component.Vibrator";
+                break;
+
+            case "Timer":
+                classInfos = "Component.Timer";
+                break;
+
+            case "Dialog":
+                classInfos = "Component.Dialog";
+                break;
+
+            case "MediaPlayer":
+                classInfos = "Component.MediaPlayer";
+                break;
+
+            case "SoundPool":
+                classInfos = "Component.SoundPool";
+                break;
+
+            case "ObjectAnimator":
+                classInfos = "Component.ObjectAnimator";
+                break;
+
+            case "FirebaseDB":
+                classInfos = "Component.FirebaseDB";
+                break;
+
+            case "FirebaseAuth":
+                classInfos = "Component.FirebaseAuth";
+                break;
+
+            case "Gyroscope":
+                classInfos = "Component.Gyroscope";
+                break;
+
+            case "FirebaseStorage":
+                classInfos = "Component.FirebaseStorage";
+                break;
+
+            case "Camera":
+                classInfos = "Component.Camera";
+                break;
+
+            case "FilePicker":
+                classInfos = "Component.FilePicker";
+                break;
+
+            case "RequestNetwork":
+                classInfos = "Component.RequestNetwork";
                 break;
 
             default:

@@ -215,104 +215,62 @@ public class ViewEditorFragment extends qA {
         viewEditor.a(PaletteWidget.a.a, "");
         viewEditor.a(PaletteWidget.a.b, "");
         viewEditor.a(PaletteWidget.b.b, "", "TextView", "TextView");
-        if (projectFileBean != null && projectFileBean.fileType == 7) {
-            viewEditor.a(PaletteWidget.a.c, "");
-            viewEditor.a(PaletteWidget.a.d, "");
-            viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-            viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-            viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-            viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
-            viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-            viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-            viewEditor.extraWidget("", "RadioButton", "RadioButton");
-            viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
-            viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-            viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-            viewEditor.extraWidget("", "RatingBar", "RatingBar");
-            viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
-            viewEditor.extraWidget("", "TimePicker", "TimePicker");
-            viewEditor.extraWidget("", "DatePicker", "DatePicker");
-            viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-            viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
-            viewEditor.extraWidget("", "VideoView", "VideoView");
-            viewEditor.extraWidget("", "BadgeView", "BadgeView");
-            viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
-        } else {
-            if (projectFileBean != null && projectFileBean.fileType == 6) {
-                viewEditor.a(PaletteWidget.a.c, "");
-                viewEditor.a(PaletteWidget.a.d, "");
-                viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-                viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-                viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
-                viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-                viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-                viewEditor.extraWidget("", "RadioButton", "RadioButton");
-                viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
-                viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-                viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-                viewEditor.extraWidget("", "RatingBar", "RatingBar");
-                viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
-                viewEditor.extraWidget("", "TimePicker", "TimePicker");
-                viewEditor.extraWidget("", "DatePicker", "DatePicker");
-                viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-                viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
-                viewEditor.extraWidget("", "VideoView", "VideoView");
-                viewEditor.extraWidget("", "BadgeView", "BadgeView");
-                viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
-            } else {
-                viewEditor.a(PaletteWidget.a.c, "");
-                viewEditor.a(PaletteWidget.a.d, "");
-                viewEditor.extraWidgetLayout("", "RadioGroup");
-                viewEditor.i.extraTitle("AndroidX", 0);
-                viewEditor.extraWidgetLayout("", "TabLayout");
-                viewEditor.extraWidgetLayout("", "BottomNavigationView");
-                viewEditor.extraWidgetLayout("", "CollapsingToolbarLayout");
-                viewEditor.extraWidgetLayout("", "CardView");
-                viewEditor.extraWidgetLayout("", "TextInputLayout");
-                viewEditor.extraWidgetLayout("", "SwipeRefreshLayout");
-                viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
-                viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
-                viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
-                viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
-                viewEditor.extraWidget("", "MaterialButton", "MaterialButton");
-                viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
-                viewEditor.extraWidget("", "CircleImageView", "default_image");
-                viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
-                viewEditor.extraWidget("", "RadioButton", "RadioButton");
-                viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
-                viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
-                viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
-                viewEditor.extraWidget("", "RatingBar", "RatingBar");
-                viewEditor.extraWidget("", "SearchView", "SearchView");
-                viewEditor.extraWidget("", "VideoView", "VideoView");
-                viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
-                viewEditor.i.extraTitle("List", 1);
-                viewEditor.a(PaletteWidget.b.e, "", "ListView", "ListView");
-                viewEditor.extraWidget("", "GridView", "GridView");
-                viewEditor.extraWidget("", "RecyclerView", "RecyclerView");
-                viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
-                viewEditor.extraWidget("", "ViewPager", "ViewPager");
-                viewEditor.i.extraTitle("Library", 1);
-                viewEditor.extraWidget("", "BadgeView", "BadgeView");
-                viewEditor.extraWidget("", "WaveSideBar", "WaveSideBar");
-                viewEditor.extraWidget("", "PatternLockView", "PatternLockView");
-                viewEditor.extraWidget("", "CodeView", "CodeView");
-                viewEditor.extraWidget("", "LottieAnimation", "LottieAnimation");
-                viewEditor.extraWidget("", "OTPView", "OTPView");
-                viewEditor.i.extraTitle("Google", 1);
-                viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
-                viewEditor.a(PaletteWidget.b.n, "", "MapView", "MapView");
-                viewEditor.extraWidget("", "SignInButton", "SignInButton");
-                viewEditor.extraWidget("", "YoutubePlayer", "YoutubePlayer");
-                viewEditor.i.extraTitle("Date & Time", 1);
-                viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
-                viewEditor.extraWidget("", "DigitalClock", "DigitalClock");
-                viewEditor.extraWidget("", "TimePicker", "TimePicker");
-                viewEditor.extraWidget("", "DatePicker", "DatePicker");
-                viewEditor.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
-            }
-        }
+        viewEditor.a(PaletteWidget.a.c, "");
+        viewEditor.a(PaletteWidget.a.d, "");
+        viewEditor.extraWidgetLayout("", "RadioGroup");
+
+        viewEditor.i.extraTitle("AndroidX", 0);
+        viewEditor.extraWidgetLayout("", "TabLayout");
+        viewEditor.extraWidgetLayout("", "BottomNavigationView");
+        viewEditor.extraWidgetLayout("", "CollapsingToolbarLayout");
+        viewEditor.extraWidgetLayout("", "CardView");
+        viewEditor.extraWidgetLayout("", "TextInputLayout");
+        viewEditor.extraWidgetLayout("", "SwipeRefreshLayout");
+
+        viewEditor.a(PaletteWidget.b.c, "", "EditText", "Edit Text");
+        viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
+        viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
+        viewEditor.a(PaletteWidget.b.a, "", "Button", "Button");
+        viewEditor.extraWidget("", "MaterialButton", "MaterialButton");
+        viewEditor.a(PaletteWidget.b.d, "", "ImageView", "default_image");
+        viewEditor.extraWidget("", "CircleImageView", "default_image");
+        viewEditor.a(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
+        viewEditor.extraWidget("", "RadioButton", "RadioButton");
+        viewEditor.a(PaletteWidget.b.i, "", "Switch", "Switch");
+        viewEditor.a(PaletteWidget.b.j, "", "SeekBar", "SeekBar");
+        viewEditor.a(PaletteWidget.b.m, "", "ProgressBar", "ProgressBar");
+        viewEditor.extraWidget("", "RatingBar", "RatingBar");
+        viewEditor.extraWidget("", "SearchView", "SearchView");
+        viewEditor.extraWidget("", "VideoView", "VideoView");
+        viewEditor.a(PaletteWidget.b.h, "", "WebView", "WebView");
+
+        viewEditor.i.extraTitle("List", 1);
+        viewEditor.a(PaletteWidget.b.e, "", "ListView", "ListView");
+        viewEditor.extraWidget("", "GridView", "GridView");
+        viewEditor.extraWidget("", "RecyclerView", "RecyclerView");
+        viewEditor.a(PaletteWidget.b.f, "", "Spinner", "Spinner");
+        viewEditor.extraWidget("", "ViewPager", "ViewPager");
+
+        viewEditor.i.extraTitle("Library", 1);
+        viewEditor.extraWidget("", "BadgeView", "BadgeView");
+        viewEditor.extraWidget("", "WaveSideBar", "WaveSideBar");
+        viewEditor.extraWidget("", "PatternLockView", "PatternLockView");
+        viewEditor.extraWidget("", "CodeView", "CodeView");
+        viewEditor.extraWidget("", "LottieAnimation", "LottieAnimation");
+        viewEditor.extraWidget("", "OTPView", "OTPView");
+
+        viewEditor.i.extraTitle("Google", 1);
+        viewEditor.a(PaletteWidget.b.l, "", "AdView", "AdView");
+        viewEditor.a(PaletteWidget.b.n, "", "MapView", "MapView");
+        viewEditor.extraWidget("", "SignInButton", "SignInButton");
+        viewEditor.extraWidget("", "YoutubePlayer", "YoutubePlayer");
+
+        viewEditor.i.extraTitle("Date & Time", 1);
+        viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
+        viewEditor.extraWidget("", "DigitalClock", "DigitalClock");
+        viewEditor.extraWidget("", "TimePicker", "TimePicker");
+        viewEditor.extraWidget("", "DatePicker", "DatePicker");
+        viewEditor.a(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
     }
 
     private void f() {
