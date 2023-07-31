@@ -252,7 +252,6 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "ViewPager", "ViewPager");
 
         viewEditor.i.extraTitle("Library", 1);
-        viewEditor.extraWidget("", "BadgeView", "BadgeView");
         viewEditor.extraWidget("", "WaveSideBar", "WaveSideBar");
         viewEditor.extraWidget("", "PatternLockView", "PatternLockView");
         viewEditor.extraWidget("", "CodeView", "CodeView");

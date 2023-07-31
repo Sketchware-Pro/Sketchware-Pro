@@ -27,7 +27,7 @@ public class IconWaveSideBar extends IconBase {
         viewBean.text.textSize = 16;
         viewBean.text.textColor = 0xff008dcd;
         viewBean.convert = "com.sayuti.lib.WaveSideBar";
-        viewBean.inject = "app:sidebar_text_alignment=\"center\"\napp:sidebar_position=\"right\"\napp:sidebar_max_offset=\"80dp\"";
+        viewBean.inject = "app:sidebar_text_alignment=\"center\"\napp:sidebar_position=\"left\"\napp:sidebar_max_offset=\"80dp\"";
         return viewBean;
     }
 }
