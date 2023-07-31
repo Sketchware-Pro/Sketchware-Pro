@@ -5,10 +5,10 @@
       "modder_username": "Jbk0",
       "modder_description": "Main modder",
       "modder_img": "https://avatars.githubusercontent.com/u/40118124",
-      "isTitled": false,
+      "isTitled": true,
       "isMainModder": true,
       "isActive": true,
-      "title": null
+      "title": "Main modders"
     },
     {
       "modder_username": "Hasrat",
@@ -23,10 +23,10 @@
       "modder_username": "Agus JCoderz",
       "modder_description": "Main modder",
       "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
-      "isTitled": true,
+      "isTitled": false,
       "isMainModder": true,
       "isActive": false,
-      "title": "Main modders"
+      "title": null
     },
     {
       "modder_username": "Hilal Saif",
@@ -61,7 +61,7 @@
       "modder_img": "https://i.imgur.com/mthq123.jpg",
       "isTitled": true,
       "isMainModder": false,
-      "title": "Special Thanks"
+      "title": "Special Thaks"
     },
     {
       "modder_username": "Rayen Sbai",
