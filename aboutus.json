@@ -2,43 +2,12 @@
   "discordInviteLink": "https://discord.gg/kq39yhT4rX",
   "moddersteam": [
     {
-      "modder_username": "Agus JCoderz",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
-      "isTitled": true,
-      "isMainModder": true,
-      "title": "Main modders"
-    },
-    {
-      "modder_username": "Hilal Saif",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/uAudAvd.jpg",
-      "isTitled": false,
-      "isMainModder": true,
-      "title": null
-    },
-    {
-      "modder_username": "Aldi Sayuti",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/08zcyKH.png",
-      "isTitled": false,
-      "isMainModder": true,
-      "title": null
-    },
-    {
-      "modder_username": "Mike Anderson",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/c5Vetpo.jpg",
-      "isTitled": false,
-      "isMainModder": true,
-      "title": null
-    },
-    {
       "modder_username": "Jbk0",
       "modder_description": "Main modder",
       "modder_img": "https://avatars.githubusercontent.com/u/40118124",
       "isTitled": false,
       "isMainModder": true,
+      "isActive": true,
       "title": null
     },
     {
@@ -47,6 +16,43 @@
       "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
       "isTitled": false,
       "isMainModder": true,
+      "isActive": true,
+      "title": null
+    },
+    {
+      "modder_username": "Agus JCoderz",
+      "modder_description": "Main modder",
+      "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
+      "isTitled": true,
+      "isMainModder": true,
+      "isActive": false,
+      "title": "Main modders"
+    },
+    {
+      "modder_username": "Hilal Saif",
+      "modder_description": "Main modder",
+      "modder_img": "https://i.imgur.com/uAudAvd.jpg",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": false,
+      "title": null
+    },
+    {
+      "modder_username": "Aldi Sayuti",
+      "modder_description": "Main modder",
+      "modder_img": "https://i.imgur.com/08zcyKH.png",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": false,
+      "title": null
+    },
+    {
+      "modder_username": "Mike Anderson",
+      "modder_description": "Main modder",
+      "modder_img": "https://i.imgur.com/c5Vetpo.jpg",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": false,
       "title": null
     },
     {
@@ -75,7 +81,7 @@
     },
     {
       "modder_username": "Ilyasse",
-      "modder_description": "New \"About Sketchware Pro\" activity",
+      "modder_description": "Hello hello hello...",
       "modder_img": "https://i.imgur.com/i8PHDA7.png",
       "isTitled": false,
       "isMainModder": false,
