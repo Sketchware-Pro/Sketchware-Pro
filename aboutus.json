@@ -55,13 +55,21 @@
       "isActive": false,
       "title": null
     },
+      {
+      "modder_username": "Elfilibusterismo",
+      "modder_description": "Implemented search in the Import Icon activity",
+      "modder_img": "https://avatars.githubusercontent.com/u/113604229",
+      "isTitled": true,
+      "isMainModder": false,
+      "title": "Special Thanks"
+    }
     {
       "modder_username": "IndoSW",
       "modder_description": "Direct Source Code Editor",
       "modder_img": "https://i.imgur.com/mthq123.jpg",
-      "isTitled": true,
+      "isTitled": false,
       "isMainModder": false,
-      "title": "Special Thaks"
+      "title": null
     },
     {
       "modder_username": "Rayen Sbai",
@@ -147,14 +155,6 @@
       "modder_username": "HAKANKOKCU",
       "modder_description": "Fixed image issue for old Android versions in the \"About Sketchware Pro\" screen. Also please visit: https://tbudgie.netlify.app",
       "modder_img": "https://avatars.githubusercontent.com/u/103432992",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Elfilibusterismo",
-      "modder_description": "Implemented search in the Import Icon activity",
-      "modder_img": "https://avatars.githubusercontent.com/u/113604229",
       "isTitled": false,
       "isMainModder": false,
       "title": null
