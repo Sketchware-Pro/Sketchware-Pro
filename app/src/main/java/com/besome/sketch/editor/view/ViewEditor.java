@@ -125,10 +125,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public ViewEditor(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
-    public final void f() {
+    private void animateUpDown() {
         z = ObjectAnimator.ofFloat(y, "TranslationY", 0.0f);
         z.setDuration(500L);
         z.setInterpolator(new DecelerateInterpolator());
@@ -138,7 +138,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         B = true;
     }
 
-    public final void g() {
+    private void g() {
         V = new b(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -147,7 +147,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         V.a(PaletteGroup.BASIC);
         V.setSelected(true);
         V.setOnClickListener(v -> {
-            o();
+            showPaletteWidget();
             V.animate().scaleX(1).scaleY(1).alpha(1).start();
             W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
             V.setSelected(true);
@@ -162,7 +162,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         W.setSelected(false);
         W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
         W.setOnClickListener(v -> {
-            n();
+            showPaletteFavorite();
             V.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
             W.animate().scaleX(1).scaleY(1).alpha(1).start();
             V.setSelected(false);
@@ -185,9 +185,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             H.setSelection(false);
             H = null;
         }
-        if (L != null) {
-            L.a(false, "");
-        }
+        if (L != null) L.a(false, "");
     }
 
     public void j() {
@@ -204,18 +202,16 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         e = new int[99];
     }
 
-    public final void m() {
-        if (M != null) {
-            M.a(b, H.getBean());
-        }
+    private void m() {
+        if (M != null) M.a(b, H.getBean());
     }
 
-    public final void n() {
+    private void showPaletteFavorite() {
         i.setVisibility(View.GONE);
         j.setVisibility(View.VISIBLE);
     }
 
-    public final void o() {
+    private void showPaletteWidget() {
         i.setVisibility(View.VISIBLE);
         j.setVisibility(View.GONE);
     }
@@ -225,16 +221,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int id2 = view.getId();
         if (id2 == R.id.btn_editproperties) {
             m();
-        } else if (id2 != R.id.img_close) {
         }
     }
 
     @Override
-    public void onLayout(boolean z, int i, int i2, int i3, int i4) {
-        super.onLayout(z, i, i2, i3, i4);
-        if (P) {
-            a();
-        }
+    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (P) a();
     }
 
     @Override
@@ -269,9 +262,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 if (actionMasked == MotionEvent.ACTION_CANCEL || actionMasked == MotionEvent.ACTION_SCROLL) {
                     i.setScrollEnabled(true);
                     j.setScrollEnabled(true);
-                    _x _xVar2 = N;
-                    if (_xVar2 != null) {
-                        _xVar2.d();
+                    if (N != null) {
+                        N.d();
                     }
                     b(false);
                     x.setDummyVisibility(View.GONE);
@@ -293,12 +285,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 x.a(view, motionEvent.getRawX(), motionEvent.getRawY(), u, v);
                 if (a(motionEvent.getRawX(), motionEvent.getRawY())) {
                     x.setAllow(true);
-                    a(true);
+                    updateDeleteIcon(true);
                     return true;
                 }
-                if (D) {
-                    a(false);
-                }
+                if (D) updateDeleteIcon(false);
                 if (b(motionEvent.getRawX(), motionEvent.getRawY())) {
                     x.setAllow(true);
                     boolean isNotIcon = !a(r);
@@ -340,7 +330,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 }
                 if (D) {
                     if (r instanceof uy uy) {
-                        b(uy.getName());
+                        deleteWidgetFromCollection(uy.getName());
                         break lol;
                     }
                 }
@@ -432,9 +422,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void setFavoriteData(ArrayList<WidgetCollectionBean> arrayList) {
-        c();
+        clearCollectionWidget();
         for (WidgetCollectionBean next : arrayList) {
-            a(next.name, next.widgets);
+            addFavoriteViews(next.name, next.widgets);
         }
     }
 
@@ -470,7 +460,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, R.layout.view_editor);
         i = findViewById(R.id.palette_widget);
         j = findViewById(R.id.palette_favorite);
@@ -552,7 +542,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public final void c() {
+    private void clearCollectionWidget() {
         j.a();
     }
 
@@ -569,18 +559,16 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     class b extends LinearLayout implements View.OnClickListener {
-        public PaletteGroup group;
-        public View b;
-        public ImageView c;
+
+        private ImageView c;
 
         public b(Context context) {
             super(context);
-            a(context);
+            initialize(context);
         }
 
-        public final void a(Context context) {
+        private void initialize(Context context) {
             wB.a(context, this, R.layout.palette_group_item);
-            b = findViewById(R.id.group_item);
             c = findViewById(R.id.img_group);
         }
 
@@ -589,17 +577,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
 
         public void a(PaletteGroup group) {
-            this.group = group;
-            if (group == PaletteGroup.BASIC) {
-                c.setImageResource(R.drawable.selector_palette_tab_ic_sketchware);
-            } else {
-                c.setImageResource(R.drawable.selector_palette_tab_ic_bookmark);
-            }
+            c.setImageResource(group == PaletteGroup.BASIC ?
+                    R.drawable.selector_palette_tab_ic_sketchware :
+                    R.drawable.selector_palette_tab_ic_bookmark);
             setOnClickListener(this);
         }
     }
 
-    public final boolean c(ViewBean viewBean) {
+    private boolean c(ViewBean viewBean) {
         int i;
         int i2 = projectFileBean.fileType;
         if (i2 == 1) {
@@ -617,7 +602,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         p.f(viewBean);
     }
 
-    public final void e() {
+    private void e() {
         if (r == null) {
             return;
         }
@@ -656,12 +641,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
         i.setScrollEnabled(false);
         j.setScrollEnabled(false);
-        if (N != null) {
-            N.b();
-        }
-        if (K) {
-            q.vibrate(100L);
-        }
+        if (N != null) N.b();
+        if (K) q.vibrate(100L);
         t = true;
         x.b(r);
         x.bringToFront();
@@ -722,7 +703,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return (sy) b2;
     }
 
-    public final boolean b(View view) {
+    private boolean b(View view) {
         for (ViewParent parent = view.getParent(); parent != null && parent != this; parent = parent.getParent()) {
             if ((parent instanceof ItemVerticalScrollView) || (parent instanceof ItemHorizontalScrollView)) {
                 return true;
@@ -731,7 +712,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return false;
     }
 
-    public final boolean b(float f, float f2) {
+    private boolean b(float f, float f2) {
         int[] iArr = new int[2];
         p.getLocationOnScreen(iArr);
         return f > ((float) iArr[0]) && f < ((float) iArr[0]) + (((float) p.getWidth()) * p.getScaleX()) && f2 > ((float) iArr[1]) && f2 < ((float) iArr[1]) + (((float) p.getHeight()) * p.getScaleY());
@@ -739,10 +720,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public ViewEditor(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
-    public final void b(String str) {
+    private void deleteWidgetFromCollection(String str) {
         aB aBVar = new aB((Activity) getContext());
         aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
         aBVar.a(R.drawable.high_priority_96_red);
@@ -756,31 +737,27 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         aBVar.show();
     }
 
-    public final void b() {
-        if (z.isRunning()) {
-            z.cancel();
-        }
-        if (A.isRunning()) {
-            A.cancel();
-        }
+    private void cancelAnimation() {
+        if (z.isRunning()) z.cancel();
+        if (A.isRunning()) A.cancel();
     }
 
-    public void setPreviewColors(String str) {
+    private void setPreviewColors(String str) {
         k.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
         m.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
         n.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
     }
 
-    public final void b(boolean z) {
+    private void b(boolean z) {
         y.bringToFront();
         if (!B) {
-            f();
+            animateUpDown();
         }
         if (C == z) {
             return;
         }
         C = z;
-        b();
+        cancelAnimation();
         if (z) {
             this.z.start();
         } else {
@@ -828,18 +805,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         H = a2;
     }
 
-    public void a() {
-        if (S) {
-            n.setVisibility(View.VISIBLE);
-        } else {
-            n.setVisibility(View.GONE);
-        }
-
-        if (T) {
-            k.setVisibility(View.GONE);
-        } else {
-            k.setVisibility(View.VISIBLE);
-        }
+    private void a() {
+        n.setVisibility(S ? View.VISIBLE : View.GONE);
+        k.setVisibility(T ? View.GONE : View.VISIBLE);
 
         p.setVisibility(View.VISIBLE);
         g = getResources().getDisplayMetrics().widthPixels;
@@ -938,11 +906,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         extraWidget.setOnTouchListener(this);
     }
 
-    public boolean a(View view) {
+    private boolean a(View view) {
         return view instanceof IconBase;
     }
 
-    public final void a(String str, ArrayList<ViewBean> arrayList) {
+    private void addFavoriteViews(String str, ArrayList<ViewBean> arrayList) {
         View a2 = j.a(str, arrayList);
         a2.setClickable(true);
         a2.setOnTouchListener(this);
@@ -1029,21 +997,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public final boolean a(float f, float f2) {
-        int[] iArr = new int[2];
-        y.getLocationOnScreen(iArr);
-        return f > ((float) iArr[0]) && f < ((float) (iArr[0] + y.getWidth())) && f2 > ((float) iArr[1]) && f2 < ((float) (iArr[1] + y.getHeight()));
+    private boolean a(float x, float y) {
+        int[] locationOnScreen = new int[2];
+        this.y.getLocationOnScreen(locationOnScreen);
+        return x > ((float) locationOnScreen[0]) && x < ((float) (locationOnScreen[0] + this.y.getWidth())) && y > ((float) locationOnScreen[1]) && y < ((float) (locationOnScreen[1] + this.y.getHeight()));
     }
 
-    public final void a(boolean z) {
-        if (D == z) {
-            return;
-        }
+    private void updateDeleteIcon(boolean z) {
+        if (D == z) return;
         D = z;
-        if (D) {
-            y.setImageResource(R.drawable.icon_delete_active);
-        } else {
-            y.setImageResource(R.drawable.icon_delete);
-        }
+        y.setImageResource(D ? R.drawable.icon_delete_active : R.drawable.icon_delete);
     }
 }
