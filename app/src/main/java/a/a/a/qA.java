@@ -14,9 +14,6 @@ public class qA extends Fragment {
     public Activity a;
     @Deprecated
     public Context b;
-    public Tracker c;
-    public EA d;
-    public Zo e;
 
     public qA() {
     }
@@ -44,9 +41,6 @@ public class qA extends Fragment {
         super.onCreate(savedInstanceState);
         a = getActivity();
         b = a.getApplicationContext();
-        d = new EA(b);
-        e = new Zo(b);
-        c = new Tracker();
     }
 
 }
