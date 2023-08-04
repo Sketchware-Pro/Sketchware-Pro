@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
@@ -35,8 +34,6 @@ import com.besome.sketch.editor.view.palette.IconLinearVertical;
 import com.besome.sketch.editor.view.palette.IconMapView;
 import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -83,7 +80,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private _x N;
     private ay O;
     public boolean P = true;
-    private Tracker Q;
     private ProjectFileBean projectFileBean;
     private boolean S = true;
     private boolean T = false;
@@ -406,11 +402,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     bean.id = IdGenerator.getId(this, bean.type, bean);
                     p.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     jC.a(a).a(b, bean);
-                    HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
-                    eventBuilder.setCategory("editor");
-                    eventBuilder.setAction("widget");
-                    eventBuilder.setLabel("Custom");
-                    Q.send(eventBuilder.build());
                     if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                         jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
                     }
@@ -481,9 +472,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final void a(Context context) {
         wB.a(context, this, R.layout.view_editor);
-        Q = ((SketchApplication) context.getApplicationContext()).a();
-        Q.enableAdvertisingIdCollection(true);
-        Q.enableExceptionReporting(true);
         i = findViewById(R.id.palette_widget);
         j = findViewById(R.id.palette_favorite);
         x = findViewById(R.id.dummy);
