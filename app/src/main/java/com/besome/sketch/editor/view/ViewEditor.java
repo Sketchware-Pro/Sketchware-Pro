@@ -68,9 +68,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean B = false;
     private boolean C = false;
     private boolean D = false;
-    private boolean E = true;
-    private FrameLayout F;
-    private int[] G = new int[2];
+    private final int[] G = new int[2];
     private sy H;
     private int I = 50;
     private int J = 30;
@@ -89,13 +87,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private String a;
     private LinearLayout aa;
     private String b;
-    private int ba = 0;
-    private final int c = 99;
     private int ca;
-    private int d = 99;
     private boolean da = true;
     private int[] e = new int[20];
-    private Runnable ea = this::e;
+    private final Runnable ea = this::e;
     private float f = 0;
     private int g;
     private int h;
@@ -105,7 +100,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private TextView l;
     private ImageView m;
     private LinearLayout n;
-    private TextView o;
     private ViewPane p;
     private Vibrator q;
     private View r = null;
@@ -466,7 +460,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         j = findViewById(R.id.palette_favorite);
         x = findViewById(R.id.dummy);
         y = findViewById(R.id.icon_delete);
-        F = findViewById(R.id.shape);
+        FrameLayout f1 = findViewById(R.id.shape);
         U = findViewById(R.id.palette_group);
         g();
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
@@ -480,7 +474,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         aa.setOrientation(LinearLayout.VERTICAL);
         aa.setGravity(Gravity.CENTER);
         aa.setLayoutParams(new FrameLayout.LayoutParams(g, h));
-        F.addView(aa);
+        f1.addView(aa);
         k = new LinearLayout(context);
         k.setBackgroundColor(0xff0084c2);
         k.setOrientation(LinearLayout.HORIZONTAL);
@@ -499,13 +493,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 ViewGroup.LayoutParams.MATCH_PARENT));
         m.setScaleType(ImageView.ScaleType.FIT_END);
         k.addView(m);
-        F.addView(k);
+        f1.addView(k);
         n = new LinearLayout(context);
         n.setBackgroundColor(0xff008dcd);
         n.setOrientation(LinearLayout.HORIZONTAL);
         n.setGravity(Gravity.CENTER_VERTICAL);
         n.setLayoutParams(new FrameLayout.LayoutParams(g, (int) (f * 48.0f)));
-        o = new TextView(context);
+        TextView o = new TextView(context);
         o.setTextColor(Color.WHITE);
         o.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -515,10 +509,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         o.setText("Toolbar");
         o.setTypeface(null, Typeface.BOLD);
         n.addView(o);
-        F.addView(n);
+        f1.addView(n);
         p = new ViewPane(getContext());
         p.setLayoutParams(new FrameLayout.LayoutParams(g, h));
-        F.addView(p);
+        f1.addView(p);
         p.setOnTouchListener(this);
         q = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         K = new DB(context, "P12").a("P12I0", true);
@@ -696,7 +690,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 if (e[viewBean.type] < intValue) {
                     e[viewBean.type] = intValue;
                 }
-            } catch (NumberFormatException unused) {
+            } catch (NumberFormatException ignored) {
             }
         }
         b2.setOnTouchListener(this);
