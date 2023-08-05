@@ -18,13 +18,10 @@ public class wq {
     public static final String[] G = {"subs_year_01", "subs_50_year_01", "subs_30_year_01", "subs_20_year_01", "subs_month_06", "subs_month_03", "subs_month_01", "subs_50_month_01", "subs_30_month_01", "subs_20_month_01"};
     public static final long[] H = {32140800000L, 32140800000L, 32140800000L, 32140800000L, 16070400000L, 8035200000L, 2678400000L, 2678400000L, 2678400000L, 2678400000L};
     public static final String[] I = {"subs_month_01", "subs_year_01"};
-    public static final String[] J = {"subs_50_month_01", "subs_50_year_01"};
-    public static final String[] K = {"subs_30_month_01", "subs_30_year_01"};
     public static final String[] L = {"subs_20_month_01", "subs_20_year_01"};
     public static final String[] M = {"F83085529A75E7A8CEDD64013B1A374B", "90C443DFAB7F23424DE7E079787466CD", "F83085529A75E7A8CEDD64013B1A374B", "C99E5B3F179203AE2749F8F9B5A7493A", "100EFD7391FF1BEE4A1E2F960A1B8AF2"};
     public static final String[] N = {"1486507718310013_1788685811425534", "1486507718310013_1804931006467681", "1486507718310013_1805009746459807", "1486507718310013_1805001526460629", "1486507718310013_1805273579766757", "1486507718310013_1805397669754348", "1486507718310013_1805436593083789", "1486507718310013_1805666736394108", "1486507718310013_1805724186388363", "1486507718310013_1809233042704144"};
     public static final String[] O = {"255022168522663_266931247331755", "255022168522663_268282677196612", "255022168522663_268283823863164", "255022168522663_266575314034015", "255022168522663_279474749410738"};
-    public static final String[] P = {"Activity", "CustomView"};
     public static final String a = ".sketchware" + File.separator + "libs";
     public static final String b = ".sketchware" + File.separator + "mysc";
     public static final String c = ".sketchware" + File.separator + "mysc" + File.separator + "list";
@@ -59,22 +56,13 @@ public class wq {
     }
 
     public static String a(int type) {
-        switch (type) {
-            case 1:
-                return "SL-01";
-
-            case 2:
-                return "SL-02";
-
-            case 3:
-                return "SL-03";
-
-            case 4:
-                return "SL-04";
-
-            default:
-                return "";
-        }
+        return switch (type) {
+            case 1 -> "SL-01";
+            case 2 -> "SL-02";
+            case 3 -> "SL-03";
+            case 4 -> "SL-04";
+            default -> "";
+        };
     }
 
     public static String a(String sc_id) {
@@ -105,108 +93,58 @@ public class wq {
     }
 
     public static String b(int type) {
-        switch (type) {
-            case 0:
-                return "linear";
-            case 1:
-                return "relativelayout";
-            case 2:
-                return "hscroll";
-            case 3:
-                return "button";
-            case 4:
-                return "textview";
-            case 5:
-                return "edittext";
-            case 6:
-                return "imageview";
-            case 7:
-                return "webview";
-            case 8:
-                return "progressbar";
-            case 9:
-                return "listview";
-            case 10:
-                return "spinner";
-            case 11:
-                return "checkbox";
-            case 12:
-                return "vscroll";
-            case 13:
-                return "switch";
-            case 14:
-                return "seekbar";
-            case 15:
-                return "calendarview";
-            case 16:
-                return "fab";
-            case 17:
-                return "adview";
-            case 18:
-                return "mapview";
-            case 19:
-                return "radiobutton";
-            case 20:
-                return "ratingbar";
-            case 21:
-                return "videoview";
-            case 22:
-                return "searchview";
-            case 23:
-                return "autocomplete";
-            case 24:
-                return "multiautocomplete";
-            case 25:
-                return "gridview";
-            case 26:
-                return "analogclock";
-            case 27:
-                return "datepicker";
-            case 28:
-                return "timepicker";
-            case 29:
-                return "digitalclock";
-            case 30:
-                return "tablayout";
-            case 31:
-                return "viewpager";
-            case 32:
-                return "bottomnavigation";
-            case 33:
-                return "badgeview";
-            case 34:
-                return "patternlockview";
-            case 35:
-                return "wavesidebar";
-            case 36:
-                return "cardview";
-            case 37:
-                return "collapsingtoolbar";
-            case 38:
-                return "textinputlayout";
-            case 39:
-                return "swiperefreshlayout";
-            case 40:
-                return "radiogroup";
-            case 41:
-                return "materialbutton";
-            case 42:
-                return "signinbutton";
-            case 43:
-                return "circleimageview";
-            case 44:
-                return "lottie";
-            case 45:
-                return "youtube";
-            case 46:
-                return "otpview";
-            case 47:
-                return "codeview";
-            case 48:
-                return "recyclerview";
-            default:
-                return "widget";
-        }
+        return switch (type) {
+            case 0 -> "linear";
+            case 1 -> "relativelayout";
+            case 2 -> "hscroll";
+            case 3 -> "button";
+            case 4 -> "textview";
+            case 5 -> "edittext";
+            case 6 -> "imageview";
+            case 7 -> "webview";
+            case 8 -> "progressbar";
+            case 9 -> "listview";
+            case 10 -> "spinner";
+            case 11 -> "checkbox";
+            case 12 -> "vscroll";
+            case 13 -> "switch";
+            case 14 -> "seekbar";
+            case 15 -> "calendarview";
+            case 16 -> "fab";
+            case 17 -> "adview";
+            case 18 -> "mapview";
+            case 19 -> "radiobutton";
+            case 20 -> "ratingbar";
+            case 21 -> "videoview";
+            case 22 -> "searchview";
+            case 23 -> "autocomplete";
+            case 24 -> "multiautocomplete";
+            case 25 -> "gridview";
+            case 26 -> "analogclock";
+            case 27 -> "datepicker";
+            case 28 -> "timepicker";
+            case 29 -> "digitalclock";
+            case 30 -> "tablayout";
+            case 31 -> "viewpager";
+            case 32 -> "bottomnavigation";
+            case 33 -> "badgeview";
+            case 34 -> "patternlockview";
+            case 35 -> "wavesidebar";
+            case 36 -> "cardview";
+            case 37 -> "collapsingtoolbar";
+            case 38 -> "textinputlayout";
+            case 39 -> "swiperefreshlayout";
+            case 40 -> "radiogroup";
+            case 41 -> "materialbutton";
+            case 42 -> "signinbutton";
+            case 43 -> "circleimageview";
+            case 44 -> "lottie";
+            case 45 -> "youtube";
+            case 46 -> "otpview";
+            case 47 -> "codeview";
+            case 48 -> "recyclerview";
+            default -> "widget";
+        };
     }
 
     public static String b(String sc_id) {

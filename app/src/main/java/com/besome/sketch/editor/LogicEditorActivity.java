@@ -1952,7 +1952,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         L.setOnClickListener(v -> e(!X));
         N = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
-        j.h();
         extraPaletteBlock = new ExtraPaletteBlock(this);
     }
 
