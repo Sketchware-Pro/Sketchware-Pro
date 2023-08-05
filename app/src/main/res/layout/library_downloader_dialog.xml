@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:focusable="false"
-        android:text="@string/library_manager_enter_dependency"
+        android:text="@string/local_library_manager_enter_dependency"
         android:textColor="#ff296cf7"
         android:textSize="18sp" />
 
@@ -31,10 +31,10 @@
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/library_manager_dependency_example"
+            android:hint="@string/local_library_manager_dependency_example"
+            android:inputType="textNoSuggestions"
             android:singleLine="true"
-            android:textSize="14sp"
-            android:inputType="textNoSuggestions" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingVertical="8dp"
-            android:text="@string/library_manager_dependency_info"
+            android:text="@string/local_library_manager_dependency_info"
             android:textColor="#ff757575"
             android:textSize="14sp" />
     </LinearLayout>
@@ -62,5 +62,5 @@
         android:layout_marginHorizontal="2dp"
         android:background="#ff296cf7"
         android:text="@string/common_word_download"
-        android:textSize="14sp" />
+        android:textAppearance="@style/TextAppearance.Material3.LabelMedium" />
 </LinearLayout>
