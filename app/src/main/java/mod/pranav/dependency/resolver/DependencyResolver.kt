@@ -26,6 +26,7 @@ import java.util.zip.ZipFile
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion
 
 class DependencyResolver(
     private val groupId: String,
@@ -208,31 +209,33 @@ class DependencyResolver(
             }
         }
         callback.log("Resolved ${dep.groupId}:${dep.artifactId}")
-        if (artifact.version.isEmpty() || artifact.repository == null) {
-            callback.onDependencyNotFound(artifact.toStr())
-            callback.log("Cannot resolve ${artifact.toStr()}")
-            return@forEach
+
+        // Compare version with existing dependencies
+        val existingDep = dependencies.firstOrNull { it.groupId == dep.groupId && it.artifactId == dep.artifactId }
+        if (existingDep != null) {
+            val existingVersion = DefaultArtifactVersion(existingDep.version)
+            val depVersion = DefaultArtifactVersion(dep.version)
+            if (existingVersion >= depVersion) {
+                callback.log("Skipping ${dep.toStr()} as the existing version ${existingDep.version} is newer or equal.")
+                return@forEach
+            }
+            dependencies.remove(existingDep)
         }
-        val artifactKey = "${dep.groupId}:${dep.artifactId}:${dep.version}"
-        // Check if the dependency has already been resolved
-        if (dependencies.any { it.toStr() == artifactKey }) {
-            callback.log("Dependency ${artifactKey} already resolved, skipping...")
-            return@forEach
-        }
+
         val local_repository =
             Paths.get(
                 downloadPath,
                 "${dep.artifactId}-v${dep.version}"
-                //"classes.${dep.extension}"
+                // "classes.${dep.extension}"
             )
         if (Files.exists(local_repository)) {
-            callback.log("Dependency ${artifactKey} already downloaded, skipping...")
-            dependencies.add(dep)
+            callback.log("Dependency ${dep.toStr()} already downloaded, skipping...")
             return@forEach
         }
         resolve(dep, dependencies, callback)
     }
 }
+
 
     private fun InputStream.resolvePOM(deps: List<Artifact>): List<Artifact> {
         val artifacts = mutableListOf<Artifact>()
