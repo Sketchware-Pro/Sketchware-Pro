@@ -111,6 +111,8 @@ dependencies {
     implementation "com.android.tools:annotations:31.0.2"
     implementation "com.google.guava:guava:32.0.1-jre"
 
+    implementation "org.apache.maven:maven-artifact:3.8.1"
+    
     def editorGroupId = "io.github.Rosemoe.sora-editor"
     implementation platform("$editorGroupId:bom:0.21.1-f243159-SNAPSHOT")
     implementation "$editorGroupId:editor"
