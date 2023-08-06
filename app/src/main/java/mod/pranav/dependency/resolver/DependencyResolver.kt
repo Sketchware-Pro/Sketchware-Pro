@@ -74,7 +74,6 @@ class DependencyResolver(
         Environment.getExternalStorageDirectory().absolutePath,
         ".sketchware", "libs", "repositories.json"
     )
-
     init {
         if (Files.notExists(repositoriesJson)) {
             Files.createDirectories(repositoriesJson.parent)
@@ -156,9 +155,6 @@ class DependencyResolver(
                     "${artifact.artifactId}-v${artifact.version}",
                     "classes.${artifact.extension}"
                 )
-            if (Files.exists(path)) {
-                callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
-            }
             Files.createDirectories(path.parent)
             callback.downloading(artifact.toStr())
             try {
@@ -186,40 +182,57 @@ class DependencyResolver(
 
     // copied from source to prevent useless recursive
     private fun resolve(
-        artifact: Artifact,
-        dependencies: MutableList<Artifact>,
-        callback: DependencyResolverCallback
-    ) {
-        dependencies.add(artifact)
-        callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
-        val pom = artifact.getPOM()
-        if (pom == null) {
-            callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
-            return
-        }
-        val deps = pom.resolvePOM(dependencies)
-        deps.forEach { dep ->
-            callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
-            if (dep.version.isEmpty()) {
-                callback.log("Fetching latest version of ${dep.artifactId}")
-                val factory = DocumentBuilderFactory.newInstance()
-                val builder = factory.newDocumentBuilder()
-                val doc = builder.parse(dep.getMavenMetadata())
-                val v = doc.getElementsByTagName("release").item(0)
-                if (v != null) {
-                    dep.version = v.textContent
-                    callback.log("Latest version of ${dep.groupId}:${dep.artifactId} is ${dep.version}")
-                }
-            }
-            callback.log("Resolved ${dep.groupId}:${dep.artifactId}")
-            if (artifact.version.isEmpty() || artifact.repository == null) {
-                callback.onDependencyNotFound(artifact.toStr())
-                callback.log("Cannot resolve ${artifact.toStr()}")
-                return
-            }
-            resolve(dep, dependencies, callback)
-        }
+    artifact: Artifact,
+    dependencies: MutableList<Artifact>,
+    callback: DependencyResolverCallback
+) {
+    dependencies.add(artifact)
+    callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
+    val pom = artifact.getPOM()
+    if (pom == null) {
+        callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
+        return
     }
+    val deps = pom.resolvePOM(dependencies)
+    deps.forEach { dep ->
+        callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
+        if (dep.version.isEmpty()) {
+            callback.log("Fetching latest version of ${dep.artifactId}")
+            val factory = DocumentBuilderFactory.newInstance()
+            val builder = factory.newDocumentBuilder()
+            val doc = builder.parse(dep.getMavenMetadata())
+            val v = doc.getElementsByTagName("release").item(0)
+            if (v != null) {
+                dep.version = v.textContent
+                callback.log("Latest version of ${dep.groupId}:${dep.artifactId} is ${dep.version}")
+            }
+        }
+        callback.log("Resolved ${dep.groupId}:${dep.artifactId}")
+        if (artifact.version.isEmpty() || artifact.repository == null) {
+            callback.onDependencyNotFound(artifact.toStr())
+            callback.log("Cannot resolve ${artifact.toStr()}")
+            return@forEach
+        }
+        val artifactKey = "${dep.groupId}:${dep.artifactId}:${dep.version}"
+        // Check if the dependency has already been resolved
+        if (dependencies.any { it.toStr() == artifactKey }) {
+            callback.log("Dependency ${artifactKey} already resolved, skipping...")
+            return@forEach
+        }
+        val local_repository =
+            Paths.get(
+                downloadPath,
+                "${dep.artifactId}-v${dep.version}"
+                //"classes.${dep.extension}"
+            )
+        if (Files.exists(local_repository)) {
+            callback.log("Dependency ${artifactKey} already downloaded, skipping...")
+            dependencies.add(dep)
+            return@forEach
+        }
+        resolve(dep, dependencies, callback)
+    }
+}
 
     private fun InputStream.resolvePOM(deps: List<Artifact>): List<Artifact> {
         val artifacts = mutableListOf<Artifact>()
