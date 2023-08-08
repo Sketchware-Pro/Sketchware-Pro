@@ -435,7 +435,7 @@ public class ViewEditorFragment extends qA {
     public void onConfigurationChanged(@NonNull Configuration newConfiguration) {
         super.onConfigurationChanged(newConfiguration);
         viewEditor.setScreenType(newConfiguration.orientation);
-        viewEditor.P = true;
+        viewEditor.isLayoutChanged = true;
     }
 
     @Override
