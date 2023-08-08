@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.view;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -62,6 +63,7 @@ import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 
+@SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
 
     private ObjectAnimator animatorTranslateX;
