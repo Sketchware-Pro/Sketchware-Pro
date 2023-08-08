@@ -688,7 +688,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         String b3 = wq.b(viewBean.type);
         if (viewBean.id.indexOf(b3) == 0 && viewBean.id.length() > b3.length()) {
             try {
-                int intValue = Integer.valueOf(viewBean.id.substring(b3.length())).intValue();
+                int intValue = Integer.parseInt(viewBean.id.substring(b3.length()));
                 if (e[viewBean.type] < intValue) {
                     e[viewBean.type] = intValue;
                 }
