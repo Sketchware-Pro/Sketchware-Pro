@@ -98,7 +98,7 @@ public class ViewEditorFragment extends qA {
             @Override
             public void b() {
                 q = true;
-                ((DesignActivity) requireActivity()).b(false);
+                ((DesignActivity) requireActivity()).setTouchEventEnabled(false);
             }
 
             @Override
@@ -109,7 +109,7 @@ public class ViewEditorFragment extends qA {
             @Override
             public void d() {
                 q = false;
-                ((DesignActivity) requireActivity()).b(true);
+                ((DesignActivity) requireActivity()).setTouchEventEnabled(true);
             }
         });
         viewEditor.setOnHistoryChangeListener(this::invalidateOptionsMenu);
@@ -402,7 +402,7 @@ public class ViewEditorFragment extends qA {
         } else {
             viewBean = null;
         }
-        viewProperty.a(viewBeanArrayList, viewBean);
+        viewProperty.addActivityViews(viewBeanArrayList, viewBean);
     }
 
     @Override

@@ -14,11 +14,11 @@ public class CustomViewPager extends ViewPager {
         super(context, attributeSet);
     }
 
-    public void k() {
+    public void disableTouchEvent() {
         isTouchEnabled = false;
     }
 
-    public void l() {
+    public void enableTouchEvent() {
         isTouchEnabled = true;
     }
 

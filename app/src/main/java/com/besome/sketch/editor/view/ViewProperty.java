@@ -289,7 +289,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         }
     }
 
-    public void a(ArrayList<ViewBean> activityViews, ViewBean fab) {
+    public void addActivityViews(ArrayList<ViewBean> activityViews, ViewBean fab) {
         projectActivityViews.clear();
         projectActivityViews.addAll(activityViews);
         if (fab != null) {
