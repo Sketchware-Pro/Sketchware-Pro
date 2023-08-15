@@ -2,6 +2,7 @@ package dev.aldi.sayuti.editor.manage;
 
 import static mod.SketchwareUtil.getDip;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -48,7 +50,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
     private void initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Local library Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText(getString(R.string.local_library_manager));
         ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back_icon);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
@@ -61,12 +63,12 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     }
 
     @Override
+    @SuppressLint("SetTextI18n")
     public void onClick(View v) {
         var view = getLayoutInflater().inflate(R.layout.library_downloader_dialog, null);
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
-                .setCancelable(false)
                 .create();
         EditText editText = view.findViewById(R.id.ed_input);
         var linear = view.findViewById(R.id.btn_download);
@@ -89,7 +91,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             var version = parts[2];
             var resolver = new DependencyResolver(group, artifact, version);
             var handler = new Handler(Looper.getMainLooper());
-            Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
+                    Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
                 @Override
                 public void invalidPackaging(@NonNull String dep) {
                     handler.post(() -> text.setText("Invalid packaging for dependency " + dep));
@@ -134,7 +136,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                             log("Enabling downloaded dependencies");
                             var fileContent = FileUtil.readFile(local_lib_file);
                             var enabledLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
-                            enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toList()));
+                            enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toUnmodifiableList()));
                             FileUtil.writeFile(local_lib_file, new Gson().toJson(enabledLibs));
                         }
                         loadFiles();
@@ -174,7 +176,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         initToolbar();
 
         if (getIntent().hasExtra("sc_id")) {
-            String sc_id = getIntent().getStringExtra("sc_id");
+            String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
             notAssociatedWithProject = sc_id.equals("system");
             local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         }
@@ -290,7 +292,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     project_used_libs.remove(i);
                 } else {
                     for (HashMap<String, Object> usedLibrary : project_used_libs) {
-                        if (usedLibrary.get("name").toString().equals(name)) {
+                        if (Objects.requireNonNull(usedLibrary.get("name")).toString().equals(name)) {
                             project_used_libs.remove(usedLibrary);
                             break;
                         }
@@ -304,7 +306,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             if (!notAssociatedWithProject) {
                 lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
                 for (HashMap<String, Object> localLibrary : lookup_list) {
-                    if (enabled.getText().toString().equals(localLibrary.get("name").toString())) {
+                    if (enabled.getText().toString().equals(Objects.requireNonNull(localLibrary.get("name")).toString())) {
                         enabled.setChecked(true);
                     }
                 }

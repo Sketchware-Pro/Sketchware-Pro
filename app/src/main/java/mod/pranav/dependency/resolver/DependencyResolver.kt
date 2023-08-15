@@ -203,7 +203,7 @@ class DependencyResolver(
             callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
             return
         }
-        val deps = pom.resolvePOM(dependencies)
+        val deps = pom.resolvePOM(dependencies, callback)
         deps.forEach { dep ->
             callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
             if (dep.version.isEmpty()) {
@@ -227,7 +227,7 @@ class DependencyResolver(
         }
     }
 
-    private fun InputStream.resolvePOM(deps: List<Artifact>): List<Artifact> {
+    private fun InputStream.resolvePOM(deps: List<Artifact>, callback: DependencyResolverCallback): List<Artifact> {
         val artifacts = mutableListOf<Artifact>()
         val factory = DocumentBuilderFactory.newInstance()
         val builder = factory.newDocumentBuilder()
@@ -235,7 +235,7 @@ class DependencyResolver(
 
         val elem = doc.getElementsByTagName("dependencies")
         if (elem.length == 0) {
-            println("No dependencies found")
+            callback.log("No dependencies found")
             return artifacts
         }
         val dependencies = elem.item(elem.length - 1) as Element
@@ -249,7 +249,7 @@ class DependencyResolver(
                 val scope = scopeItem.textContent
                 // if scope is test/provided, there is no need to download them
                 if (scope.isNotEmpty() && (scope == "test" || scope == "provided")) {
-                    println("Skipping dependency with scope $scope")
+                    callback.log("Skipping dependency with scope $scope")
                     continue
                 }
             }
@@ -259,13 +259,13 @@ class DependencyResolver(
 
             if (artifactId.endsWith("bom")) {
                 // TODO: handle versions from BOMs
-                println("Skipping BOM $artifactId")
+                callback.log("Skipping possibly BOM $artifactId")
                 continue
             }
             val artifact = Artifact(groupId, artifactId, extension = packaging)
             initHost(artifact)
             if (artifact.repository == null) {
-                println("No repository for ${artifact.toStr()}")
+                callback.log("No repository for ${artifact.toStr()}")
                 continue
             }
             val item = dependencyElement.getElementsByTagName("version").item(0)
@@ -288,6 +288,15 @@ class DependencyResolver(
                 if (version.equals("+")) {
                     // fallback to fetching latest version from #resolve(Artifact, MutableList<Artifact>, DependencyResolverCallback)
                     version = ""
+                }
+                if (version.startsWith("\${")) {
+                    val tagName = version.substring(2, version.length - 1)
+                    val tag = doc.getElementsByTagName(tagName).item(0)
+                    if (tag == null) {
+                        callback.log("$artifactId has no version tag $tagName")
+                        continue
+                    }
+                    version = tag.textContent
                 }
                 artifact.version = version
             }
