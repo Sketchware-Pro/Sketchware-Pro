@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -57,10 +58,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_download"
+        style="@style/Widget.AppCompat.ButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="2dp"
-        android:background="#ff296cf7"
+        android:backgroundTint="#ff296cf7"
         android:text="@string/common_word_download"
-        android:textAppearance="@style/TextAppearance.Material3.LabelMedium" />
+        app:rippleColor="@null" />
 </LinearLayout>
