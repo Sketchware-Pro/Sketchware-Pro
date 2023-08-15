@@ -23,14 +23,11 @@ public class mq {
                 return new Gx("double");
 
             case "s":
-                switch (typeName) {
-                    case "inputOnly":
-                    case "inputCode":
-                    case "import":
-                        return new Gx("Input");
-
-                    default:
-                        return new Gx("String");
+                if (typeName != null && (typeName.equalsIgnoreCase("inputOnly") ||
+                        typeName.equals("inputCode") || typeName.equals("import"))) {
+                    return new Gx("Input");
+                } else {
+                    return new Gx("String");
                 }
 
             case "a":
