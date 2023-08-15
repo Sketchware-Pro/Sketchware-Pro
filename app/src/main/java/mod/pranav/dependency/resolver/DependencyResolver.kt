@@ -28,9 +28,9 @@ import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 class DependencyResolver(
-    private val groupId: String,
-    private val artifactId: String,
-    private val version: String
+        private val groupId: String,
+        private val artifactId: String,
+        private val version: String
 ) {
     companion object {
         private val DEFAULT_REPOS = """
@@ -68,11 +68,11 @@ class DependencyResolver(
     }
 
     private val downloadPath: String =
-        FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
+            FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
 
     private val repositoriesJson = Paths.get(
-        Environment.getExternalStorageDirectory().absolutePath,
-        ".sketchware", "libs", "repositories.json"
+            Environment.getExternalStorageDirectory().absolutePath,
+            ".sketchware", "libs", "repositories.json"
     )
 
     init {
@@ -132,7 +132,7 @@ class DependencyResolver(
 
         // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
-            dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
+                dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
 
         latestDeps.forEach { artifact ->
             callback.startResolving(artifact.toStr())
@@ -141,7 +141,7 @@ class DependencyResolver(
                 it.forEachLine { line ->
                     if (line.contains("<packaging>")) {
                         artifact.extension =
-                            line.substringAfter("<packaging>").substringBefore("</packaging>")
+                                line.substringAfter("<packaging>").substringBefore("</packaging>")
                     }
                 }
             }
@@ -151,11 +151,11 @@ class DependencyResolver(
                 return@forEach
             }
             val path =
-                Paths.get(
-                    downloadPath,
-                    "${artifact.artifactId}-v${artifact.version}",
-                    "classes.${artifact.extension}"
-                )
+                    Paths.get(
+                            downloadPath,
+                            "${artifact.artifactId}-v${artifact.version}",
+                            "classes.${artifact.extension}"
+                    )
             if (Files.exists(path)) {
                 callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
             }
@@ -174,7 +174,7 @@ class DependencyResolver(
                 unzip(path)
                 Files.delete(path)
                 val packageName =
-                    findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
+                        findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
                 path.parent.resolve("config").writeText(packageName)
             }
             callback.dexing(artifact.toStr())
@@ -186,9 +186,9 @@ class DependencyResolver(
 
     // copied from source to prevent useless recursive
     private fun resolve(
-        artifact: Artifact,
-        dependencies: MutableList<Artifact>,
-        callback: DependencyResolverCallback
+            artifact: Artifact,
+            dependencies: MutableList<Artifact>,
+            callback: DependencyResolverCallback
     ) {
         dependencies.add(artifact)
         callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
@@ -249,7 +249,7 @@ class DependencyResolver(
             }
             val groupId = dependencyElement.getElementsByTagName("groupId").item(0).textContent
             val artifactId =
-                dependencyElement.getElementsByTagName("artifactId").item(0).textContent
+                    dependencyElement.getElementsByTagName("artifactId").item(0).textContent
 
             if (artifactId.endsWith("bom")) {
                 // TODO: handle versions from BOMs
@@ -336,25 +336,28 @@ class DependencyResolver(
     private fun compileJar(jarFile: Path) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             D8.run(
-                D8Command.builder()
-                    .setIntermediate(true)
-                    .setMode(CompilationMode.RELEASE)
-                    .addProgramFiles(jarFile)
-                    .setOutput(jarFile.parent, OutputMode.DexIndexed)
-                    .build()
+                    D8Command.builder()
+                            .setIntermediate(true)
+                            .setMode(CompilationMode.RELEASE)
+                            .addProgramFiles(jarFile)
+                            .setOutput(jarFile.parent, OutputMode.DexIndexed)
+                            .build()
             )
             return
         }
         Main.clearInternTables()
+        val arguments = Main.Arguments()
 
-        Main.main(
-            arrayOf(
+        val parseMethod = Main.Arguments::class.java.getDeclaredMethod("parse", Array<String>::class.java)
+        parseMethod.isAccessible = true
+        parseMethod.invoke(arguments, arrayOf(
                 "--debug",
                 "--verbose",
                 "--multi-dex",
                 "--output=${jarFile.parent}",
                 jarFile.toString()
-            )
-        )
+        ))
+
+        Main.run(arguments)
     }
 }
