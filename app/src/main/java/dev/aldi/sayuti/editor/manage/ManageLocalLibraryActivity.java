@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,15 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 @Override
                 public void dexing(@NonNull String dep) {
                     handler.post(() -> text.setText("Dexing dependency " + dep));
+                }
+
+                @Override
+                public void dexingFailed(@NonNull String dependency, @NonNull Exception e) {
+                    handler.post(() -> {
+                        dialog.dismiss();
+                        SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this,
+                                "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
+                    });
                 }
 
                 @Override

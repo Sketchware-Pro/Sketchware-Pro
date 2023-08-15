@@ -14,7 +14,7 @@
         android:layout_marginRight="10dp"
         android:focusable="false"
         android:padding="8dp"
-        android:text="Main Modders"
+        android:text="@string/about_team_title"
         android:textColor="#424242"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -32,7 +32,7 @@
             android:layout_width="6dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="#008DCD"
             android:orientation="horizontal" />
@@ -53,7 +53,7 @@
                 android:src="@drawable/ic_user" />
         </androidx.cardview.widget.CardView>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -72,20 +72,38 @@
                 android:textColor="#424242"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                tools:text="A Modder" />
+                tools:text="A contributor" />
 
             <TextView
                 android:id="@+id/tv_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_name"
                 android:focusable="false"
                 android:paddingLeft="8dp"
                 android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
+                android:autoLink="all"
                 android:textColor="#212121"
                 android:textSize="12sp"
                 tools:text="Their description" />
-        </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_user_name"
+                android:paddingHorizontal="5dp"
+                android:layout_marginBottom="3dp"
+                android:paddingVertical="2dp"
+                android:layout_toEndOf="@+id/tv_user_name"
+                android:background="#676767"
+                android:focusable="false"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                tools:text="status" />
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

@@ -79,7 +79,6 @@ public class yq {
 
     private final oB fileUtil;
     public jq N;
-    public final Zo O;
 
     /**
      * Example content: /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned.aligned
@@ -229,7 +228,6 @@ public class yq {
         projectSettings = new ProjectSettings(sc_id);
 
         fileUtil = new oB(true);
-        O = new Zo(context);
         packageNameAsFolders = packageName.replaceAll("\\.", File.separator);
         binDirectoryPath = projectMyscPath + "bin";
         compiledClassesPath = binDirectoryPath + File.separator + "classes";
@@ -436,7 +434,6 @@ public class yq {
         N.versionCode = versionCode;
         N.versionName = versionName;
         N.sc_id = sc_id;
-        N.e = O.h();
         N.isDebugBuild = !exportingProject;
         if (firebase.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isFirebaseEnabled = true;

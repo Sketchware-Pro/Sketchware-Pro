@@ -170,7 +170,7 @@ public class PaletteWidget extends LinearLayout {
         return iconBase;
     }
 
-    public void a() {
+    public void removeWidgetLayouts() {
         layoutContainer.removeAllViews();
     }
 
@@ -186,7 +186,7 @@ public class PaletteWidget extends LinearLayout {
         scrollView = findViewById(R.id.scv);
     }
 
-    public void b() {
+    public void removeWidgets() {
         widgetsContainer.removeAllViews();
     }
 

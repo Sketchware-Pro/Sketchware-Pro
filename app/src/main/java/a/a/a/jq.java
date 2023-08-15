@@ -113,8 +113,6 @@ public class jq {
      */
     public String versionName;
 
-    public boolean e = false;
-
     /**
      * If we're building a debug APK, meaning that e.g. test ads should be used.
      */

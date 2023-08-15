@@ -2590,4 +2590,14 @@ Please check the URL again."</string>
     <string name="local_library_manager">Local library Manager</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
     <string name="local_library_manager_dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+
+    <!--  about the team screen  -->
+    <string name="about_title">About Sketchware Pro</string>
+    <string name="about_team_title">The team</string>
+    <string name="about_specialthanks_title">Special Thanks</string>
+    <string name="about_changelog_title">Changelog</string>
+    <string name="about_majorchanges_title">Major changes</string>
+    <string name="about_loading_title">Getting data…</string>
+    <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
+    <string name="about_joindiscord">Join our Discord server</string>
 </resources>
