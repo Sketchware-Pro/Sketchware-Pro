@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
         android:focusable="false"
         android:text="@string/local_library_manager_enter_dependency"
         android:textColor="#ff296cf7"
@@ -18,6 +19,7 @@
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:background="@color/light_grey" />
@@ -25,6 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -41,7 +44,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="2dp"
+        android:layout_marginHorizontal="12dp"
         android:gravity="top"
         android:orientation="horizontal">
 
@@ -61,7 +64,8 @@
         style="@style/Widget.AppCompat.ButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="2dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="#ff296cf7"
         android:text="@string/common_word_download"
         app:rippleColor="@null" />
