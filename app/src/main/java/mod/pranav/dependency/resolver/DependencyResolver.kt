@@ -108,6 +108,7 @@ class DependencyResolver(
         fun startResolving(dep: String) {}
         fun downloading(dep: String) {}
         fun dexing(dep: String) {}
+        fun dexingFailed(dependency: String, e: Exception) {}
         fun invalidPackaging(dep: String) {}
 
         fun log(msg: String) {}
@@ -178,8 +179,13 @@ class DependencyResolver(
                 path.parent.resolve("config").writeText(packageName)
             }
             callback.dexing(artifact.toStr())
-            compileJar(path.parent.resolve("classes.jar"))
-            callback.onDependencyResolved(artifact.toStr())
+            try {
+                compileJar(path.parent.resolve("classes.jar"))
+                callback.onDependencyResolved(artifact.toStr())
+            } catch (e: Exception) {
+                callback.dexingFailed(artifact.toStr(), e)
+                return@resolveDependency
+            }
         }
         callback.onTaskCompleted(latestDeps.map { "${it.artifactId}-v${it.version}" })
     }
