@@ -204,7 +204,7 @@ class DependencyResolver(
                 callback.log("Fetching latest version of ${dep.artifactId}")
                 val factory = DocumentBuilderFactory.newInstance()
                 val builder = factory.newDocumentBuilder()
-                val doc = builder.parse(dep.getMavenMetadata())
+                val doc = builder.parse(dep.getMavenMetadata().byteInputStream())
                 val v = doc.getElementsByTagName("release").item(0)
                 if (v != null) {
                     dep.version = v.textContent
