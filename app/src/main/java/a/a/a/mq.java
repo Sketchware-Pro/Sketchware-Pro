@@ -9,7 +9,6 @@ import mod.hilal.saif.components.ComponentsHandler;
 import mod.hilal.saif.events.EventsHandler;
 
 public class mq {
-
     /**
      * @return A built class info ({@link Gx} object)
      */
@@ -34,16 +33,12 @@ public class mq {
                 return new Gx("Map");
 
             case "l":
-                switch (typeName) {
-                    case "List Map":
-                        return new Gx("ListMap");
-
-                    case "List String":
-                        return new Gx("ListString");
-
-                    case "List Number":
-                        return new Gx("ListInt");
-                }
+                return new Gx(switch (typeName) {
+                    case "List Map" -> "ListMap";
+                    case "List String" -> "ListString";
+                    case "List Number" -> "ListInt";
+                    default -> typeName;
+                });
 
             case "v":
                 return new Gx(typeName);
@@ -61,112 +56,45 @@ public class mq {
      * @return The Type name of a Component
      */
     public static String a(int componentId) {
-        switch (componentId) {
-            case ComponentBean.COMPONENT_TYPE_INTENT:
-                return "Intent";
-
-            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
-                return "SharedPreferences";
-
-            case ComponentBean.COMPONENT_TYPE_CALENDAR:
-                return "Calendar";
-
-            case ComponentBean.COMPONENT_TYPE_VIBRATOR:
-                return "Vibrator";
-
-            case ComponentBean.COMPONENT_TYPE_TIMERTASK:
-                return "Timer";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                return "FirebaseDB";
-
-            case ComponentBean.COMPONENT_TYPE_DIALOG:
-                return "Dialog";
-
-            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER:
-                return "MediaPlayer";
-
-            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL:
-                return "SoundPool";
-
-            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR:
-                return "ObjectAnimator";
-
-            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
-                return "Gyroscope";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
-                return "FirebaseAuth";
-
-            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
-                return "InterstitialAd";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                return "FirebaseStorage";
-
-            case ComponentBean.COMPONENT_TYPE_CAMERA:
-                return "Camera";
-
-            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                return "FilePicker";
-
-            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
-                return "RequestNetwork";
-
-            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH:
-                return "TextToSpeech";
-
-            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
-                return "SpeechToText";
-
-            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                return "BluetoothConnect";
-
-            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
-                return "LocationManager";
-
-            case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                return "RewardedVideoAd";
-
-            case ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG:
-                return "ProgressDialog";
-
-            case ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG:
-                return "DatePickerDialog";
-
-            case ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG:
-                return "TimePickerDialog";
-
-            case ComponentBean.COMPONENT_TYPE_NOTIFICATION:
-                return "Notification";
-
-            case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER:
-                return "FragmentStatePagerAdapter";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
-                return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                return "DynamicLink";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
-                return "FirebaseCloudMessage";
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
-                return "GoogleSignInClient";
-
-            case ComponentBean.COMPONENT_TYPE_ONESIGNAL:
-                return "OSSubscriptionObserver";
-
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
-                return "com.facebook.ads.AdView";
-
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
-                return "com.facebook.ads.InterstitialAd";
-
-            default:
-                return ComponentsHandler.var(componentId);
-        }
+        return switch (componentId) {
+            case ComponentBean.COMPONENT_TYPE_INTENT -> "Intent";
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF -> "SharedPreferences";
+            case ComponentBean.COMPONENT_TYPE_CALENDAR -> "Calendar";
+            case ComponentBean.COMPONENT_TYPE_VIBRATOR -> "Vibrator";
+            case ComponentBean.COMPONENT_TYPE_TIMERTASK -> "Timer";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE -> "FirebaseDB";
+            case ComponentBean.COMPONENT_TYPE_DIALOG -> "Dialog";
+            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER -> "MediaPlayer";
+            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL -> "SoundPool";
+            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR -> "ObjectAnimator";
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE -> "Gyroscope";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH -> "FirebaseAuth";
+            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD -> "InterstitialAd";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE -> "FirebaseStorage";
+            case ComponentBean.COMPONENT_TYPE_CAMERA -> "Camera";
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER -> "FilePicker";
+            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK -> "RequestNetwork";
+            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH -> "TextToSpeech";
+            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT -> "SpeechToText";
+            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> "BluetoothConnect";
+            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER -> "LocationManager";
+            case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD -> "RewardedVideoAd";
+            case ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG -> "ProgressDialog";
+            case ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG -> "DatePickerDialog";
+            case ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG -> "TimePickerDialog";
+            case ComponentBean.COMPONENT_TYPE_NOTIFICATION -> "Notification";
+            case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentStatePagerAdapter";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE ->
+                    "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "DynamicLink";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
+            case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> "OSSubscriptionObserver";
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "com.facebook.ads.AdView";
+            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
+                    "com.facebook.ads.InterstitialAd";
+            default -> ComponentsHandler.var(componentId);
+        };
     }
 
     /**
@@ -194,247 +122,94 @@ public class mq {
      * @return The internal type name of a List taken from its number
      */
     public static String b(int type) {
-        switch (type) {
-            case 1:
-                return "ListInt";
-
-            case 2:
-                return "ListString";
-
-            case 3:
-                return "ListMap";
-
-            default:
-                return "";
-        }
+        return switch (type) {
+            case 1 -> "ListInt";
+            case 2 -> "ListString";
+            case 3 -> "ListMap";
+            default -> "";
+        };
     }
 
     public static String b(String name) {
-        switch (name) {
-            case "intent":
-            case "Intent":
-                return "Intent";
-
-            case "file":
-            case "File":
-            case "File (Shared Preferences)":
-                return "SharedPreferences";
-
-            case "calendar":
-            case "Calendar":
-                return "Calendar";
-
-            case "vibrator":
-            case "Vibrator":
-                return "Vibrator";
-
-            case "Timer":
-                return "Timer";
-
-            case "dialog":
-            case "Dialog":
-                return "Dialog";
-
-            case "MediaPlayer":
-                return "MediaPlayer";
-
-            case "SoundPool":
-                return "SoundPool";
-
-            case "ObjectAnimator":
-                return "ObjectAnimator";
-
-            case "firebase":
-            case "Firebase":
-            case "Firebase DB":
-                return "FirebaseDB";
-
-            case "firebaseauth":
-            case "Firebase Auth":
-                return "FirebaseAuth";
-
-            case "gyroscope":
-            case "Gyroscope":
-                return "Gyroscope";
-
-            case "InterstitialAd":
-                return "InterstitialAd";
-
-            case "varBool":
-                return "boolean.SelectBoolean";
-
-            case "varInt":
-                return "double.SelectDouble";
-
-            case "varStr":
-                return "String.SelectString";
-
-            case "varMap":
-                return "Map";
-
-            case "listInt":
-                return "ListInt";
-
-            case "listStr":
-                return "ListString";
-
-            case "listMap":
-                return "ListMap";
-
-            case "list":
-                return "List";
-
-            case "view":
-                return "View";
-
-            case "textview":
-                return "TextView";
-
-            case "edittext":
-                return "EditText";
-
-            case "imageview":
-                return "ImageView";
-
-            case "compoundButton":
-                return "CompoundButton";
-
-            case "checkbox":
-                return "CheckBox";
-
-            case "switch":
-                return "Switch";
-
-            case "listSpn":
-                return "AdapterView";
-
-            case "listview":
-                return "ListView";
-
-            case "spinner":
-                return "Spinner";
-
-            case "webview":
-                return "WebView";
-
-            case "calendarview":
-                return "CalendarView";
-
-            case "adview":
-                return "AdView";
-
-            case "mapview":
-                return "MapView";
-
-            case "timer":
-                return "Timer";
-
-            case "mediaplayer":
-                return "MediaPlayer";
-
-            case "soundpool":
-                return "SoundPool";
-
-            case "objectanimator":
-                return "ObjectAnimator";
-
-            case "seekbar":
-                return "SeekBar";
-
-            case "interstitialad":
-                return "InterstitialAd";
-
-            case "firebasestorage":
-                return "FirebaseStorage";
-
-            case "camera":
-                return "Camera";
-
-            case "filepicker":
-                return "FilePicker";
-
-            case "requestnetwork":
-                return "RequestNetwork";
-
-            case "progressbar":
-                return "ProgressBar";
-
-            case "texttospeech":
-                return "TextToSpeech";
-
-            case "speechtotext":
-                return "SpeechToText";
-
-            case "bluetoothconnect":
-                return "BluetoothConnect";
-
-            case "locationmanager":
-                return "LocationManager";
-
-            case "radiobutton":
-                return "RadioButton";
-
-            case "ratingbar":
-                return "RatingBar";
-
-            case "videoview":
-                return "VideoView";
-
-            case "searchview":
-                return "SearchView";
-
-            case "gridview":
-                return "GridView";
-
-            case "actv":
-                return "AutoCompleteTextView";
-
-            case "mactv":
-                return "MultiAutoCompleteTextView";
-
-            case "tablayout":
-                return "TabLayout";
-
-            case "viewpager":
-                return "ViewPager";
-
-            case "badgeview":
-                return "BadgeView";
-
-            case "bottomnavigation":
-                return "BottomNavigationView";
-
-            case "patternview":
-                return "PatternLockView";
-
-            case "sidebar":
-                return "WaveSideBar";
-
-            default:
-                return ExtraBlockClassInfo.getName(name);
-        }
+        return switch (name) {
+            case "intent", "Intent" -> "Intent";
+            case "file", "File", "File (Shared Preferences)" -> "SharedPreferences";
+            case "calendar", "Calendar" -> "Calendar";
+            case "vibrator", "Vibrator" -> "Vibrator";
+            case "Timer" -> "Timer";
+            case "dialog", "Dialog" -> "Dialog";
+            case "MediaPlayer" -> "MediaPlayer";
+            case "SoundPool" -> "SoundPool";
+            case "ObjectAnimator" -> "ObjectAnimator";
+            case "firebase", "Firebase", "Firebase DB" -> "FirebaseDB";
+            case "firebaseauth", "Firebase Auth" -> "FirebaseAuth";
+            case "gyroscope", "Gyroscope" -> "Gyroscope";
+            case "InterstitialAd" -> "InterstitialAd";
+            case "varBool" -> "boolean.SelectBoolean";
+            case "varInt" -> "double.SelectDouble";
+            case "varStr" -> "String.SelectString";
+            case "varMap" -> "Map";
+            case "listInt" -> "ListInt";
+            case "listStr" -> "ListString";
+            case "listMap" -> "ListMap";
+            case "list" -> "List";
+            case "view" -> "View";
+            case "textview" -> "TextView";
+            case "edittext" -> "EditText";
+            case "imageview" -> "ImageView";
+            case "compoundButton" -> "CompoundButton";
+            case "checkbox" -> "CheckBox";
+            case "switch" -> "Switch";
+            case "listSpn" -> "AdapterView";
+            case "listview" -> "ListView";
+            case "spinner" -> "Spinner";
+            case "webview" -> "WebView";
+            case "calendarview" -> "CalendarView";
+            case "adview" -> "AdView";
+            case "mapview" -> "MapView";
+            case "timer" -> "Timer";
+            case "mediaplayer" -> "MediaPlayer";
+            case "soundpool" -> "SoundPool";
+            case "objectanimator" -> "ObjectAnimator";
+            case "seekbar" -> "SeekBar";
+            case "interstitialad" -> "InterstitialAd";
+            case "firebasestorage" -> "FirebaseStorage";
+            case "camera" -> "Camera";
+            case "filepicker" -> "FilePicker";
+            case "requestnetwork" -> "RequestNetwork";
+            case "progressbar" -> "ProgressBar";
+            case "texttospeech" -> "TextToSpeech";
+            case "speechtotext" -> "SpeechToText";
+            case "bluetoothconnect" -> "BluetoothConnect";
+            case "locationmanager" -> "LocationManager";
+            case "radiobutton" -> "RadioButton";
+            case "ratingbar" -> "RatingBar";
+            case "videoview" -> "VideoView";
+            case "searchview" -> "SearchView";
+            case "gridview" -> "GridView";
+            case "actv" -> "AutoCompleteTextView";
+            case "mactv" -> "MultiAutoCompleteTextView";
+            case "tablayout" -> "TabLayout";
+            case "viewpager" -> "ViewPager";
+            case "badgeview" -> "BadgeView";
+            case "bottomnavigation" -> "BottomNavigationView";
+            case "patternview" -> "PatternLockView";
+            case "sidebar" -> "WaveSideBar";
+            default -> ExtraBlockClassInfo.getName(name);
+        };
     }
 
     /**
      * @return The Type name of the Variable taken from its ID
      */
     public static String c(int type) {
-        switch (type) {
-            case 0:
-                return "boolean";
-
-            case 1:
-                return "double";
-
-            case 2:
-                return "String";
-
-            case 3:
-                return "Map";
-
-            default:
-                return "";
-        }
+        return switch (type) {
+            case 0 -> "boolean";
+            case 1 -> "double";
+            case 2 -> "String";
+            case 3 -> "Map";
+            default -> "";
+        };
     }
 
     /**
@@ -968,65 +743,24 @@ public class mq {
     }
 
     public static String e(String typeName) {
-        switch (typeName) {
-            case "double":
-            case "double.SelectDouble":
-                return "double";
-
-            case "Map":
-                return "HashMap<String, Object>";
-
-            case "ListInt":
-                return "ArrayList<Double>";
-
-            case "ListString":
-                return "ArrayList<String>";
-
-            case "ListMap":
-                return "ArrayList<HashMap<String, Object>>";
-
-            case "Timer":
-                return "TimerTask";
-
-            case "Gyroscope":
-                return "SensorManager";
-
-            case "Dialog":
-                return "AlertDialog.Builder";
-
-            case "FirebaseDB":
-                return "DatabaseReference";
-
-            case "FirebaseStorage":
-                return "StorageReference";
-
-            case "Camera":
-            case "FilePicker":
-                return "Intent";
-
-            case "SpeechToText":
-                return "SpeechRecognizer";
-
-            case "FragmentAdapter":
-                return "FragmentStatePagerAdapter";
-
-            case "Context":
-                return "Activity";
-
-            case "ResString":
-            case "ResStyle":
-            case "ResColor":
-            case "ResArray":
-            case "ResDimen":
-            case "ResBool":
-            case "ResInteger":
-            case "ResAttr":
-            case "ResXml":
-            case "Color":
-                return "int";
-
-            default:
-                return typeName;
-        }
+        return switch (typeName) {
+            case "double", "double.SelectDouble" -> "double";
+            case "Map" -> "HashMap<String, Object>";
+            case "ListInt" -> "ArrayList<Double>";
+            case "ListString" -> "ArrayList<String>";
+            case "ListMap" -> "ArrayList<HashMap<String, Object>>";
+            case "Timer" -> "TimerTask";
+            case "Gyroscope" -> "SensorManager";
+            case "Dialog" -> "AlertDialog.Builder";
+            case "FirebaseDB" -> "DatabaseReference";
+            case "FirebaseStorage" -> "StorageReference";
+            case "Camera", "FilePicker" -> "Intent";
+            case "SpeechToText" -> "SpeechRecognizer";
+            case "FragmentAdapter" -> "FragmentStatePagerAdapter";
+            case "Context" -> "Activity";
+            case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool", "ResInteger", "ResAttr", "ResXml", "Color" ->
+                    "int";
+            default -> typeName;
+        };
     }
 }
