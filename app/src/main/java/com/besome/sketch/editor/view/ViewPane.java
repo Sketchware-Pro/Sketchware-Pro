@@ -454,7 +454,7 @@ public class ViewPane extends RelativeLayout {
         } else {
             findViewWithTag = a.findViewWithTag(str);
         }
-        if (findViewWithTag != null && (findViewWithTag instanceof sy)) {
+        if (findViewWithTag instanceof sy) {
             return (sy) findViewWithTag;
         }
         return null;
