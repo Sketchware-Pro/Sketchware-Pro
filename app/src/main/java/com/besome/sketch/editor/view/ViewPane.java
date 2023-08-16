@@ -31,6 +31,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.item.ItemAdView;
 import com.besome.sketch.editor.view.item.ItemButton;
 import com.besome.sketch.editor.view.item.ItemCalendarView;
+import com.besome.sketch.editor.view.item.ItemCardView;
 import com.besome.sketch.editor.view.item.ItemCheckBox;
 import com.besome.sketch.editor.view.item.ItemEditText;
 import com.besome.sketch.editor.view.item.ItemFloatingActionButton;
@@ -204,11 +205,12 @@ public class ViewPane extends RelativeLayout {
 
     public View b(ViewBean viewBean) {
         View item = switch (viewBean.type) {
-            case ViewBean.VIEW_TYPE_LAYOUT_LINEAR, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW,
+            case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
                     ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
                     ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
                     ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
                     ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(getContext());
+            case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> new ItemCardView(getContext());
             case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW ->
                     new ItemHorizontalScrollView(getContext());
             case ViewBean.VIEW_TYPE_WIDGET_BUTTON -> new ItemButton(getContext());
@@ -481,6 +483,13 @@ public class ViewPane extends RelativeLayout {
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            } else if (view instanceof ItemCardView) {
+                viewBean.preIndex = viewBean.index;
+                viewBean.index = (Integer) d[2];
+                viewBean.preParent = viewBean.parent;
+                viewBean.parent = view.getTag().toString();
+                viewBean.parentType = ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
+                viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
             }
         } else {
             viewBean.preIndex = viewBean.index;
@@ -671,6 +680,8 @@ public class ViewPane extends RelativeLayout {
                     a(view, (ViewGroup) child);
                 } else if (child instanceof ItemVerticalScrollView) {
                     a(view, (ViewGroup) child);
+                } else if (child instanceof  ItemCardView) {
+                    a(view, (ViewGroup) child);
                 }
 
                 var13 = var4;
@@ -697,6 +708,8 @@ public class ViewPane extends RelativeLayout {
                 } else if (childAt instanceof ItemHorizontalScrollView) {
                     a(viewBean, (ViewGroup) childAt);
                 } else if (childAt instanceof ItemVerticalScrollView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof  ItemCardView) {
                     a(viewBean, (ViewGroup) childAt);
                 }
             }
