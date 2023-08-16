@@ -584,9 +584,9 @@ public class ViewPane extends RelativeLayout {
         int linearLayoutX = linearLayoutLocation[0];
         int var7;
         int linearLayoutY = linearLayoutLocation[1];
-        a(new Rect(linearLayoutX, linearLayoutY, (int) ((float) linearLayout.getWidth() * getScaleX()) + linearLayoutX, (int) ((float) linearLayout.getHeight() * getScaleY()) + linearLayoutY), linearLayout, -1, b(linearLayout));
-        var4 = linearLayoutY + (int) ((float) linearLayout.getPaddingTop() * getScaleY());
-        var7 = linearLayoutX + (int) ((float) linearLayout.getPaddingLeft() * getScaleX());
+        a(new Rect(linearLayoutX, linearLayoutY, (int) (linearLayout.getWidth() * getScaleX()) + linearLayoutX, (int) (linearLayout.getHeight() * getScaleY()) + linearLayoutY), linearLayout, -1, b(linearLayout));
+        var4 = linearLayoutY + (int) (linearLayout.getPaddingTop() * getScaleY());
+        var7 = linearLayoutX + (int) (linearLayout.getPaddingLeft() * getScaleX());
         int var8 = 0;
 
         int var13;
@@ -604,29 +604,29 @@ public class ViewPane extends RelativeLayout {
                             int rightMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).rightMargin;
                             if (horizontalLinearLayoutGravity == Gravity.CENTER_HORIZONTAL) {
                                 if (i == 0) {
-                                    int x = childLocation[0] - (int) ((float) leftMargin * getScaleX());
+                                    int x = childLocation[0] - (int) (leftMargin * getScaleX());
                                     int y = linearLayoutLocation[1];
-                                    a(new Rect(var7, y, x, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, 0, b(linearLayout) + 1);
+                                    a(new Rect(var7, y, x, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, 0, b(linearLayout) + 1);
                                     var7 = x;
                                 }
 
-                                var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
+                                var4 = (int) ((leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
                                 var7 = var8 + 1;
-                                a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                a(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
                                 var8 = y;
                             } else if (horizontalLinearLayoutGravity == Gravity.RIGHT) {
                                 int x = childLocation[0];
                                 int y = linearLayoutLocation[1];
-                                a(new Rect(var7, y, x - (int) ((float) leftMargin * getScaleX()), (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
-                                var4 = (int) ((float) (childLocation[0] + child.getMeasuredWidth() + rightMargin) * getScaleX());
+                                a(new Rect(var7, y, x - (int) (leftMargin * getScaleX()), (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                var4 = (int) ((childLocation[0] + child.getMeasuredWidth() + rightMargin) * getScaleX());
                                 var7 = var8 + 1;
                                 var8 = y;
                             } else {
-                                var4 = (int) ((float) (leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
+                                var4 = (int) ((leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
                                 var7 = var8 + 1;
-                                a(new Rect(var7, y, var4, (int) ((float) linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                a(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
                                 var8 = y;
                             }
                         } else {
@@ -635,31 +635,31 @@ public class ViewPane extends RelativeLayout {
                             if (verticalLinearLayoutGravity == Gravity.CENTER_VERTICAL) {
                                 if (i == 0) {
                                     int x = linearLayoutLocation[0];
-                                    int y = childLocation[1] - (int) ((float) topMargin * getScaleY());
-                                    a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, y), linearLayout, 0, b(linearLayout) + 1);
+                                    int y = childLocation[1] - (int) (topMargin * getScaleY());
+                                    a(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y), linearLayout, 0, b(linearLayout) + 1);
                                     var4 = y;
                                 }
 
-                                int bottom = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
+                                int bottom = var4 + (int) ((topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 int x = linearLayoutLocation[0];
                                 int top = var8 + 1;
-                                a(new Rect(x, top, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, bottom), linearLayout, var8, b(linearLayout) + 1);
+                                a(new Rect(x, top, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, bottom), linearLayout, var8, b(linearLayout) + 1);
                                 var8 = bottom;
                                 var7 = top;
                                 var4 = x;
                             } else if (verticalLinearLayoutGravity == Gravity.BOTTOM) {
                                 int x = linearLayoutLocation[0];
                                 int y = childLocation[1];
-                                a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, y - (int) ((float) topMargin * getScaleY())), linearLayout, var8, b(linearLayout) + 1);
+                                a(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y - (int) (topMargin * getScaleY())), linearLayout, var8, b(linearLayout) + 1);
                                 ++var8;
                                 var4 = x;
-                                var7 = (int) ((float) (childLocation[1] + child.getMeasuredHeight() + bottomMargin) * getScaleY());
+                                var7 = (int) ((childLocation[1] + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 var13 = var8;
                                 break label61;
                             } else {
-                                var7 = var4 + (int) ((float) (topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
+                                var7 = var4 + (int) ((topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 int x = linearLayoutLocation[0];
-                                a(new Rect(x, var4, (int) ((float) linearLayout.getMeasuredWidth() * getScaleX()) + x, var7), linearLayout, var8, b(linearLayout) + 1);
+                                a(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, var7), linearLayout, var8, b(linearLayout) + 1);
                                 var4 = x;
                                 ++var8;
                                 break label62;
