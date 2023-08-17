@@ -195,11 +195,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public void b(boolean var1) {
-        if (var1) {
-            viewPager.l();
+    public void setTouchEventEnabled(boolean touchEventEnabled) {
+        if (touchEventEnabled) {
+            viewPager.enableTouchEvent();
         } else {
-            viewPager.k();
+            viewPager.disableTouchEvent();
         }
     }
 

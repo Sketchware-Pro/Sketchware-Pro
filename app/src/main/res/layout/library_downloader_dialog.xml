@@ -1,56 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#ffffffff"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingTop="4dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:focusable="false"
+        android:text="@string/local_library_manager_enter_dependency"
+        android:textColor="#ff296cf7"
+        android:textSize="18sp" />
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusable="false"
-            android:singleLine="true"
-            android:text="Write dependency"
-            android:textColor="#ff296cf7"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ProgressBar
-            style="?android:progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_weight="1"
-            android:focusable="false"
-            android:indeterminate="false" />
-    </LinearLayout>
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/light_grey" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -58,7 +35,8 @@
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Example: com.anjlab.android.iab.v3:library:1.0.44"
+            android:hint="@string/local_library_manager_dependency_example"
+            android:inputType="textNoSuggestions"
             android:singleLine="true"
             android:textSize="14sp" />
     </LinearLayout>
@@ -66,8 +44,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginHorizontal="12dp"
         android:gravity="top"
         android:orientation="horizontal">
 
@@ -76,40 +53,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:focusable="false"
-            android:paddingTop="2dp"
-            android:paddingBottom="10dp"
-            android:text="You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately."
+            android:paddingVertical="8dp"
+            android:text="@string/local_library_manager_dependency_info"
             android:textColor="#ff757575"
             android:textSize="14sp" />
     </LinearLayout>
 
-    <LinearLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_download"
+        style="@style/Widget.AppCompat.ButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:baselineAligned="false">
-
-        <LinearLayout
-            android:id="@+id/btn_download"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginHorizontal="2dp"
-            android:layout_weight="1"
-            android:background="#ff296cf7"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:singleLine="true"
-                android:text="Start"
-                android:textColor="#ffffffff"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#ff296cf7"
+        android:text="@string/common_word_download"
+        app:rippleColor="@null" />
 </LinearLayout>

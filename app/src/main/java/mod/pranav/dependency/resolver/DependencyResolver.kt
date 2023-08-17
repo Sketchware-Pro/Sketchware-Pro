@@ -28,9 +28,9 @@ import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 class DependencyResolver(
-    private val groupId: String,
-    private val artifactId: String,
-    private val version: String
+        private val groupId: String,
+        private val artifactId: String,
+        private val version: String
 ) {
     companion object {
         private val DEFAULT_REPOS = """
@@ -68,11 +68,11 @@ class DependencyResolver(
     }
 
     private val downloadPath: String =
-        FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
+            FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
 
     private val repositoriesJson = Paths.get(
-        Environment.getExternalStorageDirectory().absolutePath,
-        ".sketchware", "libs", "repositories.json"
+            Environment.getExternalStorageDirectory().absolutePath,
+            ".sketchware", "libs", "repositories.json"
     )
 
     init {
@@ -108,6 +108,7 @@ class DependencyResolver(
         fun startResolving(dep: String) {}
         fun downloading(dep: String) {}
         fun dexing(dep: String) {}
+        fun dexingFailed(dependency: String, e: Exception) {}
         fun invalidPackaging(dep: String) {}
 
         fun log(msg: String) {}
@@ -132,7 +133,7 @@ class DependencyResolver(
 
         // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
-            dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
+                dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
 
         latestDeps.forEach { artifact ->
             callback.startResolving(artifact.toStr())
@@ -141,7 +142,7 @@ class DependencyResolver(
                 it.forEachLine { line ->
                     if (line.contains("<packaging>")) {
                         artifact.extension =
-                            line.substringAfter("<packaging>").substringBefore("</packaging>")
+                                line.substringAfter("<packaging>").substringBefore("</packaging>")
                     }
                 }
             }
@@ -151,11 +152,11 @@ class DependencyResolver(
                 return@forEach
             }
             val path =
-                Paths.get(
-                    downloadPath,
-                    "${artifact.artifactId}-v${artifact.version}",
-                    "classes.${artifact.extension}"
-                )
+                    Paths.get(
+                            downloadPath,
+                            "${artifact.artifactId}-v${artifact.version}",
+                            "classes.${artifact.extension}"
+                    )
             if (Files.exists(path)) {
                 callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
             }
@@ -174,21 +175,26 @@ class DependencyResolver(
                 unzip(path)
                 Files.delete(path)
                 val packageName =
-                    findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
+                        findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
                 path.parent.resolve("config").writeText(packageName)
             }
             callback.dexing(artifact.toStr())
-            compileJar(path.parent.resolve("classes.jar"))
-            callback.onDependencyResolved(artifact.toStr())
+            try {
+                compileJar(path.parent.resolve("classes.jar"))
+                callback.onDependencyResolved(artifact.toStr())
+            } catch (e: Exception) {
+                callback.dexingFailed(artifact.toStr(), e)
+                return@resolveDependency
+            }
         }
         callback.onTaskCompleted(latestDeps.map { "${it.artifactId}-v${it.version}" })
     }
 
     // copied from source to prevent useless recursive
     private fun resolve(
-        artifact: Artifact,
-        dependencies: MutableList<Artifact>,
-        callback: DependencyResolverCallback
+            artifact: Artifact,
+            dependencies: MutableList<Artifact>,
+            callback: DependencyResolverCallback
     ) {
         dependencies.add(artifact)
         callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
@@ -197,14 +203,14 @@ class DependencyResolver(
             callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
             return
         }
-        val deps = pom.resolvePOM(dependencies)
+        val deps = pom.resolvePOM(dependencies, callback)
         deps.forEach { dep ->
             callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
             if (dep.version.isEmpty()) {
                 callback.log("Fetching latest version of ${dep.artifactId}")
                 val factory = DocumentBuilderFactory.newInstance()
                 val builder = factory.newDocumentBuilder()
-                val doc = builder.parse(dep.getMavenMetadata())
+                val doc = builder.parse(dep.getMavenMetadata().byteInputStream())
                 val v = doc.getElementsByTagName("release").item(0)
                 if (v != null) {
                     dep.version = v.textContent
@@ -221,7 +227,7 @@ class DependencyResolver(
         }
     }
 
-    private fun InputStream.resolvePOM(deps: List<Artifact>): List<Artifact> {
+    private fun InputStream.resolvePOM(deps: List<Artifact>, callback: DependencyResolverCallback): List<Artifact> {
         val artifacts = mutableListOf<Artifact>()
         val factory = DocumentBuilderFactory.newInstance()
         val builder = factory.newDocumentBuilder()
@@ -229,7 +235,7 @@ class DependencyResolver(
 
         val elem = doc.getElementsByTagName("dependencies")
         if (elem.length == 0) {
-            println("No dependencies found")
+            callback.log("No dependencies found")
             return artifacts
         }
         val dependencies = elem.item(elem.length - 1) as Element
@@ -243,23 +249,23 @@ class DependencyResolver(
                 val scope = scopeItem.textContent
                 // if scope is test/provided, there is no need to download them
                 if (scope.isNotEmpty() && (scope == "test" || scope == "provided")) {
-                    println("Skipping dependency with scope $scope")
+                    callback.log("Skipping dependency with scope $scope")
                     continue
                 }
             }
             val groupId = dependencyElement.getElementsByTagName("groupId").item(0).textContent
             val artifactId =
-                dependencyElement.getElementsByTagName("artifactId").item(0).textContent
+                    dependencyElement.getElementsByTagName("artifactId").item(0).textContent
 
             if (artifactId.endsWith("bom")) {
                 // TODO: handle versions from BOMs
-                println("Skipping BOM $artifactId")
+                callback.log("Skipping possibly BOM $artifactId")
                 continue
             }
             val artifact = Artifact(groupId, artifactId, extension = packaging)
             initHost(artifact)
             if (artifact.repository == null) {
-                println("No repository for ${artifact.toStr()}")
+                callback.log("No repository for ${artifact.toStr()}")
                 continue
             }
             val item = dependencyElement.getElementsByTagName("version").item(0)
@@ -282,6 +288,15 @@ class DependencyResolver(
                 if (version.equals("+")) {
                     // fallback to fetching latest version from #resolve(Artifact, MutableList<Artifact>, DependencyResolverCallback)
                     version = ""
+                }
+                if (version.startsWith("\${")) {
+                    val tagName = version.substring(2, version.length - 1)
+                    val tag = doc.getElementsByTagName(tagName).item(0)
+                    if (tag == null) {
+                        callback.log("$artifactId has no version tag $tagName")
+                        continue
+                    }
+                    version = tag.textContent
                 }
                 artifact.version = version
             }
@@ -336,25 +351,28 @@ class DependencyResolver(
     private fun compileJar(jarFile: Path) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             D8.run(
-                D8Command.builder()
-                    .setIntermediate(true)
-                    .setMode(CompilationMode.RELEASE)
-                    .addProgramFiles(jarFile)
-                    .setOutput(jarFile.parent, OutputMode.DexIndexed)
-                    .build()
+                    D8Command.builder()
+                            .setIntermediate(true)
+                            .setMode(CompilationMode.RELEASE)
+                            .addProgramFiles(jarFile)
+                            .setOutput(jarFile.parent, OutputMode.DexIndexed)
+                            .build()
             )
             return
         }
         Main.clearInternTables()
+        val arguments = Main.Arguments()
 
-        Main.main(
-            arrayOf(
+        val parseMethod = Main.Arguments::class.java.getDeclaredMethod("parse", Array<String>::class.java)
+        parseMethod.isAccessible = true
+        parseMethod.invoke(arguments, arrayOf(
                 "--debug",
                 "--verbose",
                 "--multi-dex",
                 "--output=${jarFile.parent}",
                 jarFile.toString()
-            )
-        )
+        ))
+
+        Main.run(arguments)
     }
 }
