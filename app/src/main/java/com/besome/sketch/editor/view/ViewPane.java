@@ -90,17 +90,17 @@ import mod.hey.studios.util.ProjectFile;
 
 @SuppressLint({"RtlHardcoded", "DiscouragedApi"})
 public class ViewPane extends RelativeLayout {
-    private ViewGroup a;
+    private ViewGroup rootLayout;
     private int b;
     private ArrayList<Object[]> c;
     private Object[] d;
     private TextView e;
-    private kC f;
+    private kC resourcesManager;
     private String sc_id;
 
     public ViewPane(Context context) {
         super(context);
-        a = null;
+        rootLayout = null;
         b = 99;
         c = new ArrayList<>();
         d = null;
@@ -109,14 +109,14 @@ public class ViewPane extends RelativeLayout {
 
     private void initialize() {
         setBackgroundColor(Color.WHITE);
-        a();
+        addRootLayout();
         c();
     }
 
     public void b() {
         a(true);
         c = new ArrayList<>();
-        ((ty) a).setChildScrollEnabled(true);
+        ((ty) rootLayout).setChildScrollEnabled(true);
     }
 
     private void c() {
@@ -128,7 +128,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void d() {
-        a.removeAllViews();
+        rootLayout.removeAllViews();
     }
 
     public void e() {
@@ -140,8 +140,8 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void f(ViewBean viewBean) {
-        ViewGroup viewGroup = a.findViewWithTag(viewBean.parent);
-        viewGroup.removeView(a.findViewWithTag(viewBean.id));
+        ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.parent);
+        viewGroup.removeView(rootLayout.findViewWithTag(viewBean.id));
         if (viewGroup instanceof ty) {
             ((ty) viewGroup).a();
         }
@@ -151,35 +151,35 @@ public class ViewPane extends RelativeLayout {
         View findViewWithTag;
         String str = viewBean.preId;
         if (str != null && str.length() > 0 && !viewBean.preId.equals(viewBean.id)) {
-            a.findViewWithTag(viewBean.preId).setTag(viewBean.id);
+            rootLayout.findViewWithTag(viewBean.preId).setTag(viewBean.id);
             viewBean.preId = "";
         }
         if (viewBean.id.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(viewBean.id);
         } else {
-            findViewWithTag = a.findViewWithTag(viewBean.id);
+            findViewWithTag = rootLayout.findViewWithTag(viewBean.id);
         }
         b(findViewWithTag, viewBean);
         return (sy) findViewWithTag;
     }
 
     public void setResourceManager(kC kCVar) {
-        f = kCVar;
+        resourcesManager = kCVar;
     }
 
     public sy d(ViewBean viewBean) {
-        View findViewWithTag = a.findViewWithTag(viewBean.id);
+        View findViewWithTag = rootLayout.findViewWithTag(viewBean.id);
         if (viewBean.id.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(viewBean.id);
         }
         String str = viewBean.preParent;
         if (str != null && str.length() > 0 && !viewBean.parent.equals(viewBean.preParent)) {
-            ViewGroup viewGroup = a.findViewWithTag(viewBean.preParent);
+            ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.preParent);
             viewGroup.removeView(findViewWithTag);
             ((ty) viewGroup).a();
             a(findViewWithTag);
         } else if (viewBean.index != viewBean.preIndex) {
-            ((ViewGroup) a.findViewWithTag(viewBean.parent)).removeView(findViewWithTag);
+            ((ViewGroup) rootLayout.findViewWithTag(viewBean.parent)).removeView(findViewWithTag);
             a(findViewWithTag);
         }
         viewBean.preId = "";
@@ -193,12 +193,12 @@ public class ViewPane extends RelativeLayout {
     public void e(ViewBean viewBean) {
         d = null;
         c(viewBean);
-        ((ty) a).setChildScrollEnabled(false);
+        ((ty) rootLayout).setChildScrollEnabled(false);
     }
 
     private int b(View view) {
         int i = 0;
-        while (view != null && view != a) {
+        while (view != null && view != rootLayout) {
             i++;
             view = (View) view.getParent();
         }
@@ -273,12 +273,12 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void c(ViewBean viewBean) {
-        a(viewBean, (ItemLinearLayout) a);
+        a(viewBean, (ItemLinearLayout) rootLayout);
     }
 
     public ViewPane(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a = null;
+        rootLayout = null;
         b = 99;
         c = new ArrayList<>();
         d = null;
@@ -289,7 +289,7 @@ public class ViewPane extends RelativeLayout {
         sc_id = str;
     }
 
-    private void a() {
+    private void addRootLayout() {
         ViewBean viewBean = new ViewBean("root", ViewBean.VIEW_TYPE_LAYOUT_LINEAR);
         LayoutBean layoutBean = viewBean.layout;
         layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -298,15 +298,15 @@ public class ViewPane extends RelativeLayout {
         viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         View b = b(viewBean);
         ((ItemLinearLayout) b).setFixed(true);
-        a = (ViewGroup) b;
-        a.setBackgroundColor(0xffeeeeee);
+        rootLayout = (ViewGroup) b;
+        rootLayout.setBackgroundColor(0xffeeeeee);
         addView(b);
     }
 
     private void b(View view, ViewBean viewBean) {
         ImageBean imageBean;
         String str;
-        ExtraViewPane.a(view, viewBean, this, f);
+        ExtraViewPane.a(view, viewBean, this, resourcesManager);
         if (viewBean.id.charAt(0) == '_') {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -315,32 +315,32 @@ public class ViewPane extends RelativeLayout {
             layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
             layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
             layoutParams.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
-            int i = viewBean.layout.layoutGravity;
-            if ((i & Gravity.LEFT) == Gravity.LEFT) {
+            int layoutGravity = viewBean.layout.layoutGravity;
+            if ((layoutGravity & Gravity.LEFT) == Gravity.LEFT) {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             }
-            if ((i & Gravity.TOP) == Gravity.TOP) {
+            if ((layoutGravity & Gravity.TOP) == Gravity.TOP) {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             }
-            if ((i & Gravity.RIGHT) == Gravity.RIGHT) {
+            if ((layoutGravity & Gravity.RIGHT) == Gravity.RIGHT) {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             }
-            if ((i & Gravity.BOTTOM) == Gravity.BOTTOM) {
+            if ((layoutGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             }
-            if ((i & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
+            if ((layoutGravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             }
-            if ((i & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
+            if ((layoutGravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
                 layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
             }
-            if ((i & Gravity.CENTER) == Gravity.CENTER) {
+            if ((layoutGravity & Gravity.CENTER) == Gravity.CENTER) {
                 layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             }
             view.setLayoutParams(layoutParams);
             if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && str.length() > 0) {
                 try {
-                    Bitmap decodeFile = BitmapFactory.decodeFile(f.f(viewBean.image.resName));
+                    Bitmap decodeFile = BitmapFactory.decodeFile(resourcesManager.f(viewBean.image.resName));
                     int round = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                     ((FloatingActionButton) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, decodeFile.getHeight() * round, true));
                 } catch (Exception ignored) {
@@ -355,30 +355,30 @@ public class ViewPane extends RelativeLayout {
             view.setVisibility(View.VISIBLE);
             return;
         }
-        a(view, viewBean);
+        updateLayout(view, viewBean);
         view.setRotation(viewBean.image.rotate);
         view.setAlpha(viewBean.alpha);
         view.setTranslationX(wB.a(getContext(), viewBean.translationX));
         view.setTranslationY(wB.a(getContext(), viewBean.translationY));
         view.setScaleX(viewBean.scaleX);
         view.setScaleY(viewBean.scaleY);
-        String str2 = viewBean.layout.backgroundResource;
-        if (str2 != null) {
+        String backgroundResource = viewBean.layout.backgroundResource;
+        if (backgroundResource != null) {
             try {
-                if (f.h(str2) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                if (resourcesManager.h(backgroundResource) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                     view.setBackgroundResource(getContext().getResources().getIdentifier(viewBean.layout.backgroundResource, "drawable", getContext().getPackageName()));
                 } else {
-                    String f = this.f.f(viewBean.layout.backgroundResource);
-                    if (f.endsWith(".9.png")) {
-                        Bitmap a2 = zB.a(f);
-                        byte[] ninePatchChunk = a2.getNinePatchChunk();
+                    String backgroundRes = resourcesManager.f(viewBean.layout.backgroundResource);
+                    if (backgroundRes.endsWith(".9.png")) {
+                        Bitmap decodedBitmap = zB.a(backgroundRes);
+                        byte[] ninePatchChunk = decodedBitmap.getNinePatchChunk();
                         if (NinePatch.isNinePatchChunk(ninePatchChunk)) {
-                            view.setBackground(new NinePatchDrawable(getResources(), a2, ninePatchChunk, new Rect(), null));
+                            view.setBackground(new NinePatchDrawable(getResources(), decodedBitmap, ninePatchChunk, new Rect(), null));
                         } else {
-                            view.setBackground(new BitmapDrawable(getResources(), f));
+                            view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
                         }
                     } else {
-                        Bitmap decodeFile2 = BitmapFactory.decodeFile(f);
+                        Bitmap decodeFile2 = BitmapFactory.decodeFile(backgroundRes);
                         int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                         view.setBackground(new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodeFile2, decodeFile2.getWidth() * round2, decodeFile2.getHeight() * round2, true)));
                     }
@@ -398,29 +398,29 @@ public class ViewPane extends RelativeLayout {
         }
         if (classInfo.a("TextView")) {
             TextView textView = (TextView) view;
-            a(textView, viewBean);
+            updateTextView(textView, viewBean);
             if (!classInfo.b("Button") && !classInfo.b("Switch")) {
                 textView.setGravity(viewBean.layout.gravity);
             } else {
-                int i2 = viewBean.layout.gravity;
-                if (i2 == 0) {
+                int gravity = viewBean.layout.gravity;
+                if (gravity == LayoutBean.GRAVITY_NONE) {
                     textView.setGravity(Gravity.CENTER);
                 } else {
-                    textView.setGravity(i2);
+                    textView.setGravity(gravity);
                 }
             }
         }
         if (classInfo.b("EditText")) {
-            a((EditText) view, viewBean);
+            updateEditText((EditText) view, viewBean);
         }
         if (classInfo.b("ImageView")) {
-            if (f.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+            if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                 ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
             } else if (viewBean.image.resName.equals("default_image")) {
                 ((ImageView) view).setImageResource(R.drawable.default_image);
             } else {
                 try {
-                    Bitmap decodeFile3 = BitmapFactory.decodeFile(f.f(viewBean.image.resName));
+                    Bitmap decodeFile3 = BitmapFactory.decodeFile(resourcesManager.f(viewBean.image.resName));
                     int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                     ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
                 } catch (Exception unused2) {
@@ -454,7 +454,7 @@ public class ViewPane extends RelativeLayout {
         if (str.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(str);
         } else {
-            findViewWithTag = a.findViewWithTag(str);
+            findViewWithTag = rootLayout.findViewWithTag(str);
         }
         if (findViewWithTag instanceof sy) {
             return (sy) findViewWithTag;
@@ -542,7 +542,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public void a(int i, int i2, int i3, int i4) {
+    public void a(int i, int i2, int width, int height) {
         Object[] a2 = a(i, i2);
         if (a2 == null) {
             a(true);
@@ -551,11 +551,11 @@ public class ViewPane extends RelativeLayout {
             ViewGroup viewGroup = (ViewGroup) a2[1];
             viewGroup.addView(e, (Integer) a2[2]);
             if (viewGroup instanceof LinearLayout) {
-                e.setLayoutParams(new LinearLayout.LayoutParams(i3, i4));
+                e.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             } else if (viewGroup instanceof FrameLayout) {
-                e.setLayoutParams(new FrameLayout.LayoutParams(i3, i4));
+                e.setLayoutParams(new FrameLayout.LayoutParams(width, height));
             } else {
-                e.setLayoutParams(new RelativeLayout.LayoutParams(i3, i4));
+                e.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
             }
             e.setVisibility(View.VISIBLE);
             d = a2;
@@ -682,7 +682,7 @@ public class ViewPane extends RelativeLayout {
                     a(view, (ViewGroup) child);
                 } else if (child instanceof ItemVerticalScrollView) {
                     a(view, (ViewGroup) child);
-                } else if (child instanceof  ItemCardView) {
+                } else if (child instanceof ItemCardView) {
                     a(view, (ViewGroup) child);
                 }
 
@@ -700,28 +700,28 @@ public class ViewPane extends RelativeLayout {
 
     private void a(ViewBean viewBean, ViewGroup viewGroup) {
         int childCount = viewGroup.getChildCount();
-        int i = 0;
-        for (int i2 = 0; i2 < childCount; i2++) {
-            View childAt = viewGroup.getChildAt(i2);
+        int index = 0;
+        for (int i = 0; i < childCount; i++) {
+            View childAt = viewGroup.getChildAt(i);
             if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE)) {
-                i++;
+                index++;
                 if (childAt instanceof ItemLinearLayout) {
                     a(viewBean, (ItemLinearLayout) childAt);
                 } else if (childAt instanceof ItemHorizontalScrollView) {
                     a(viewBean, (ViewGroup) childAt);
                 } else if (childAt instanceof ItemVerticalScrollView) {
                     a(viewBean, (ViewGroup) childAt);
-                } else if (childAt instanceof  ItemCardView) {
+                } else if (childAt instanceof ItemCardView) {
                     a(viewBean, (ViewGroup) childAt);
                 }
             }
         }
-        if (i < 1) {
-            int[] iArr = new int[2];
-            viewGroup.getLocationOnScreen(iArr);
-            int i3 = iArr[0];
-            int i4 = iArr[1];
-            a(new Rect(i3, i4, ((int) (viewGroup.getWidth() * getScaleX())) + i3, ((int) (viewGroup.getHeight() * getScaleY())) + i4), viewGroup, -1, b(viewGroup));
+        if (index < 1) {
+            int[] viewLocationOnScreen = new int[2];
+            viewGroup.getLocationOnScreen(viewLocationOnScreen);
+            int xCoordinate = viewLocationOnScreen[0];
+            int yCoordinate = viewLocationOnScreen[1];
+            a(new Rect(xCoordinate, yCoordinate, ((int) (viewGroup.getWidth() * getScaleX())) + xCoordinate, ((int) (viewGroup.getHeight() * getScaleY())) + yCoordinate), viewGroup, -1, b(viewGroup));
         }
     }
 
@@ -731,26 +731,26 @@ public class ViewPane extends RelativeLayout {
 
     public void a(View view) {
         ViewBean bean = ((sy) view).getBean();
-        ViewGroup viewGroup = a.findViewWithTag(bean.parent);
+        ViewGroup viewGroup = rootLayout.findViewWithTag(bean.parent);
         viewGroup.addView(view, bean.index);
         if (viewGroup instanceof ty) {
             ((ty) viewGroup).a();
         }
     }
 
-    private void a(View view, ViewBean viewBean) {
+    private void updateLayout(View view, ViewBean viewBean) {
         LayoutBean layoutBean = viewBean.layout;
-        int i = layoutBean.width;
-        int i2 = layoutBean.height;
-        if (i > 0) {
-            i = (int) wB.a(getContext(), (float) viewBean.layout.width);
+        int width = layoutBean.width;
+        int height = layoutBean.height;
+        if (width > 0) {
+            width = (int) wB.a(getContext(), (float) viewBean.layout.width);
         }
-        if (i2 > 0) {
-            i2 = (int) wB.a(getContext(), (float) viewBean.layout.height);
+        if (height > 0) {
+            height = (int) wB.a(getContext(), (float) viewBean.layout.height);
         }
         view.setBackgroundColor(viewBean.layout.backgroundColor);
         if (viewBean.id.equals("root")) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(i, i2);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
             layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
             layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
@@ -759,7 +759,7 @@ public class ViewPane extends RelativeLayout {
             view.setPadding(layoutBean2.paddingLeft, layoutBean2.paddingTop, layoutBean2.paddingRight, layoutBean2.paddingBottom);
             view.setLayoutParams(layoutParams);
         } else if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
-            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(i, i2);
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(width, height);
             layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
             layoutParams2.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
@@ -773,22 +773,22 @@ public class ViewPane extends RelativeLayout {
             layoutParams2.weight = viewBean.layout.weight;
             view.setLayoutParams(layoutParams2);
         } else {
-            FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(i, i2);
+            FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(width, height);
             layoutParams3.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams3.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
             layoutParams3.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
             layoutParams3.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
             LayoutBean layoutBean4 = viewBean.layout;
             view.setPadding(layoutBean4.paddingLeft, layoutBean4.paddingTop, layoutBean4.paddingRight, layoutBean4.paddingBottom);
-            int i4 = viewBean.layout.layoutGravity;
-            if (i4 != 0) {
-                layoutParams3.gravity = i4;
+            int layoutGravity = viewBean.layout.layoutGravity;
+            if (layoutGravity != LayoutBean.GRAVITY_NONE) {
+                layoutParams3.gravity = layoutGravity;
             }
             view.setLayoutParams(layoutParams3);
         }
     }
 
-    private void a(TextView textView, ViewBean viewBean) {
+    private void updateTextView(TextView textView, ViewBean viewBean) {
         String str = viewBean.text.text;
         if (str != null && str.length() > 0 && str.contains("\\n")) {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
@@ -801,7 +801,7 @@ public class ViewPane extends RelativeLayout {
         textView.setSingleLine(viewBean.text.singleLine != 0);
     }
 
-    private void a(EditText editText, ViewBean viewBean) {
+    private void updateEditText(EditText editText, ViewBean viewBean) {
         editText.setHint(viewBean.text.hint);
         editText.setHintTextColor(viewBean.text.hintColor);
     }
