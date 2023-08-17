@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -87,6 +88,7 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.hey.studios.util.ProjectFile;
 
+@SuppressLint({"RtlHardcoded", "DiscouragedApi"})
 public class ViewPane extends RelativeLayout {
     private ViewGroup a;
     private int b;
