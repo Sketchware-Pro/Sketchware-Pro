@@ -31,6 +31,8 @@ public class ItemTabLayout extends TabLayout implements sy {
         rect = new Rect();
 
         setDrawingCacheEnabled(true);
+        setClickable(false);
+        setFocusable(false);
         addTab(newTab().setText("Tab 1"), true);
         addTab(newTab().setText("Tab 2"));
         addTab(newTab().setText("Tab 3"));
