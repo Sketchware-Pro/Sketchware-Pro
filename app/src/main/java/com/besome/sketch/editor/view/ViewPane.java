@@ -43,6 +43,7 @@ import com.besome.sketch.editor.view.item.ItemListView;
 import com.besome.sketch.editor.view.item.ItemMapView;
 import com.besome.sketch.editor.view.item.ItemProgressBar;
 import com.besome.sketch.editor.view.item.ItemSeekBar;
+import com.besome.sketch.editor.view.item.ItemSignInButton;
 import com.besome.sketch.editor.view.item.ItemSpinner;
 import com.besome.sketch.editor.view.item.ItemSwitch;
 import com.besome.sketch.editor.view.item.ItemTabLayout;
@@ -65,7 +66,6 @@ import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemBottomNavigationView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 import dev.aldi.sayuti.editor.view.item.ItemCodeView;
-import dev.aldi.sayuti.editor.view.item.ItemGoogleSignInButton;
 import dev.aldi.sayuti.editor.view.item.ItemLottieAnimation;
 import dev.aldi.sayuti.editor.view.item.ItemMaterialButton;
 import dev.aldi.sayuti.editor.view.item.ItemOTPView;
@@ -253,7 +253,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR -> new ItemWaveSideBar(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON -> new ItemMaterialButton(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON ->
-                    new ItemGoogleSignInButton(getContext());
+                    new ItemSignInButton(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW ->
                     new ItemCircleImageView(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW ->
@@ -452,6 +452,47 @@ public class ViewPane extends RelativeLayout {
                     viewBean.layout.paddingTop,
                     viewBean.layout.paddingRight,
                     viewBean.layout.paddingBottom);
+        }
+        if (classInfo.b("SignInButton")) {
+            ItemSignInButton button = (ItemSignInButton) view;
+            for (String line : viewBean.inject.split("\n")) {
+                if (line.contains("buttonSize")) {
+                    String buttonSize = extractAttrValue(line, "app:buttonSize");
+                    if (!buttonSize.startsWith("@")) {
+                        switch (buttonSize) {
+                        case "icon_only":
+                            button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
+                            break;
+                        case "wide":
+                            button.setSize(ItemSignInButton.ButtonSize.WIDE);
+                            break;
+                        case "standard":
+                        default:
+                            button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                            break;
+                        }
+                    }
+                } else {
+                    button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                }
+                if (line.contains("colorScheme")) {
+                    String colorScheme = extractAttrValue(line, "app:colorScheme");
+                    if (!colorScheme.startsWith("@")) {
+                        switch (colorScheme) {
+                        case "dark":
+                            button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
+                            break;
+                        case "auto":
+                        case "light":
+                        default:
+                            button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
+                            break;
+                        }
+                    }
+                } else {
+                    button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
+                }
+            }
         }
         view.setVisibility(VISIBLE);
     }
