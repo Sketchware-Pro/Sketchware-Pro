@@ -4,12 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -74,6 +74,11 @@ public class ItemTabLayout extends TabLayout implements sy {
             canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return true;
     }
 
     @Override
