@@ -446,6 +446,13 @@ public class ViewPane extends RelativeLayout {
         if (classInfo.b("AdView")) {
             ((ItemAdView) view).setAdSize(viewBean.adSize);
         }
+        if (classInfo.b("CardView")) {
+            ((ItemCardView) view).setContentPadding(
+                    viewBean.layout.paddingLeft,
+                    viewBean.layout.paddingTop,
+                    viewBean.layout.paddingRight,
+                    viewBean.layout.paddingBottom);
+        }
         view.setVisibility(VISIBLE);
     }
 
