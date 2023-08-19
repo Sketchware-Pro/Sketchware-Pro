@@ -24,7 +24,7 @@ public class ItemTabLayout extends TabLayout implements sy {
     private boolean hasFixed;
 
     public ItemTabLayout(Context context) {
-        super(context, null, R.style.DesignTabLayout);
+        super(context);
         paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
