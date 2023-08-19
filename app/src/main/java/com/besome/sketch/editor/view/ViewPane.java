@@ -54,6 +54,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import a.a.a.Gx;
 import a.a.a.kC;
@@ -455,10 +457,13 @@ public class ViewPane extends RelativeLayout {
         }
         if (classInfo.b("SignInButton")) {
             ItemSignInButton button = (ItemSignInButton) view;
+            boolean hasButtonSize = false;
+            boolean hasColorScheme = false;
             for (String line : viewBean.inject.split("\n")) {
                 if (line.contains("buttonSize")) {
                     String buttonSize = extractAttrValue(line, "app:buttonSize");
                     if (!buttonSize.startsWith("@")) {
+                        hasButtonSize = true;
                         switch (buttonSize) {
                         case "icon_only":
                             button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
@@ -472,12 +477,11 @@ public class ViewPane extends RelativeLayout {
                             break;
                         }
                     }
-                } else {
-                    button.setSize(ItemSignInButton.ButtonSize.STANDARD);
                 }
                 if (line.contains("colorScheme")) {
                     String colorScheme = extractAttrValue(line, "app:colorScheme");
                     if (!colorScheme.startsWith("@")) {
+                        hasColorScheme = true;
                         switch (colorScheme) {
                         case "dark":
                             button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
@@ -489,9 +493,9 @@ public class ViewPane extends RelativeLayout {
                             break;
                         }
                     }
-                } else {
-                    button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
                 }
+                if (!hasButtonSize) button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
             }
         }
         view.setVisibility(VISIBLE);
@@ -852,5 +856,10 @@ public class ViewPane extends RelativeLayout {
     private void updateEditText(EditText editText, ViewBean viewBean) {
         editText.setHint(viewBean.text.hint);
         editText.setHintTextColor(viewBean.text.hintColor);
+    }
+
+    private String extractAttrValue(String line, String attrbute) {
+        Matcher matcher = Pattern.compile("=\"([^\"]*)\"").matcher(line);
+        return matcher.find() ? matcher.group(1) : "";
     }
 }
