@@ -153,6 +153,12 @@ Libraries added with Sketchware Pro
     Apache-2.0 License
     No changes made to v5.0.4
 
+* aapt2 buildscripts
+
+    https://github.com/lzhiyong/android-sdk-tools
+    Apache-2.0 License
+    No changes made to v33.0.3
+
 
 Full license texts
 

@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.StrictMode;
 import android.system.Os;
 import android.text.TextUtils;
@@ -716,14 +717,9 @@ public class ProjectBuilder {
      * @throws By If anything goes wrong while extracting
      */
     public void maybeExtractAapt2() throws By {
-        String aapt2PathInAssets = "aapt/";
-        if (GB.a().toLowerCase().contains("x86")) {
-            aapt2PathInAssets += "aapt2-x86";
-        } else {
-            aapt2PathInAssets += "aapt2-arm";
-        }
+        var abi = Build.SUPPORTED_ABIS[0];
         try {
-            if (hasFileChanged(aapt2PathInAssets, aapt2Binary.getAbsolutePath())) {
+            if (hasFileChanged("aapt/aapt2-" + abi, aapt2Binary.getAbsolutePath())) {
                 Os.chmod(aapt2Binary.getAbsolutePath(), S_IRUSR | S_IWUSR | S_IXUSR);
             }
         } catch (Exception e) {
