@@ -29,6 +29,7 @@ import com.iyxan23.zipalignjava.ZipAlign;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -724,7 +725,13 @@ public class ProjectBuilder {
             }
         } catch (Exception e) {
             LogUtil.e(TAG, "Failed to extract AAPT2 binaries", e);
-            throw new By("Couldn't extract AAPT2 binaries! Message: " + e.getMessage());
+            // noinspection ConstantValue: the bytecode's lying
+            throw new By(
+                    e instanceof FileNotFoundException fileNotFoundException ?
+                            "Looks like the device's architecture (" + abi + ") isn't supported.\n"
+                                    + Log.getStackTraceString(fileNotFoundException)
+                            : "Couldn't extract AAPT2 binaries! Message: " + e.getMessage()
+            );
         }
     }
 
