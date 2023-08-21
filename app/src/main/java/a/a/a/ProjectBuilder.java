@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.StrictMode;
 import android.system.Os;
 import android.text.TextUtils;
@@ -28,6 +29,7 @@ import com.iyxan23.zipalignjava.ZipAlign;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -716,19 +718,20 @@ public class ProjectBuilder {
      * @throws By If anything goes wrong while extracting
      */
     public void maybeExtractAapt2() throws By {
-        String aapt2PathInAssets = "aapt/";
-        if (GB.a().toLowerCase().contains("x86")) {
-            aapt2PathInAssets += "aapt2-x86";
-        } else {
-            aapt2PathInAssets += "aapt2-arm";
-        }
+        var abi = Build.SUPPORTED_ABIS[0];
         try {
-            if (hasFileChanged(aapt2PathInAssets, aapt2Binary.getAbsolutePath())) {
+            if (hasFileChanged("aapt/aapt2-" + abi, aapt2Binary.getAbsolutePath())) {
                 Os.chmod(aapt2Binary.getAbsolutePath(), S_IRUSR | S_IWUSR | S_IXUSR);
             }
         } catch (Exception e) {
             LogUtil.e(TAG, "Failed to extract AAPT2 binaries", e);
-            throw new By("Couldn't extract AAPT2 binaries! Message: " + e.getMessage());
+            // noinspection ConstantValue: the bytecode's lying
+            throw new By(
+                    e instanceof FileNotFoundException fileNotFoundException ?
+                            "Looks like the device's architecture (" + abi + ") isn't supported.\n"
+                                    + Log.getStackTraceString(fileNotFoundException)
+                            : "Couldn't extract AAPT2 binaries! Message: " + e.getMessage()
+            );
         }
     }
 
