@@ -20,7 +20,7 @@ public class uy extends IconBase {
     }
 
     public final void a() {
-        b.setTextSize(2, 11.0f);
+        tv_widget.setTextSize(2, 11.0f);
         setWidgetName(f);
         setWidgetImage(ViewBean.getViewTypeResId(g.get(0).type));
     }
