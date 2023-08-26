@@ -11,7 +11,7 @@ public class IconBase extends BaseWidget {
 
     public IconBase(Context context) {
         super(context);
-        this.setBackgroundResource(R.drawable.icon_bg);
+        setBackgroundResource(R.drawable.icon_bg);
     }
 
     public ViewBean getBean() {
@@ -19,16 +19,16 @@ public class IconBase extends BaseWidget {
     }
 
     public String getName() {
-        return this.e;
+        return e;
     }
 
     public void setName(String string) {
-        this.e = string;
+        e = string;
     }
 
     public void setText(String string) {
-        this.b.setTextSize(2, 11.0f);
-        this.setWidgetName(string);
+        b.setTextSize(2, 11.0f);
+        setWidgetName(string);
     }
 }
 
