@@ -26,7 +26,7 @@
                     android:id="@+id/tab_layout"
                     style="@style/DesignTabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/action_bar_height" />
+                    android:layout_height="wrap_content" />
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/layout_coordinator"
@@ -37,20 +37,19 @@
                     <com.besome.sketch.lib.ui.CustomViewPager
                         android:id="@+id/viewpager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/white" />
+                        android:layout_height="match_parent" />
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#ffececec" />
+                    android:background="?attr/colorOutline" />
 
                 <LinearLayout
                     android:id="@+id/layout_btn_group"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:background="#ffffffff"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingLeft="8dp"
