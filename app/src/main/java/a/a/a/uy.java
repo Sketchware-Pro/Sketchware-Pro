@@ -12,29 +12,29 @@ public class uy extends IconBase {
     public String f;
     public ArrayList<ViewBean> g;
 
-    public uy(Context context, String string, ArrayList<ViewBean> arrayList) {
+    public uy(Context context, String widgetName, ArrayList<ViewBean> viewBeans) {
         super(context);
-        this.f = string;
-        this.g = arrayList;
-        this.a();
+        f = widgetName;
+        g = viewBeans;
+        a();
     }
 
     public final void a() {
-        ((BaseWidget)this).b.setTextSize(2, 11.0f);
-        this.setWidgetName(this.f);
-        this.setWidgetImage(ViewBean.getViewTypeResId((int)this.g.get((int)0).type));
+        b.setTextSize(2, 11.0f);
+        setWidgetName(f);
+        setWidgetImage(ViewBean.getViewTypeResId(g.get(0).type));
     }
 
     public ViewBean getBean() {
-        return this.g.get(0);
+        return g.get(0);
     }
 
     public ArrayList<ViewBean> getData() {
-        return this.g;
+        return g;
     }
 
     public String getName() {
-        return this.f;
+        return f;
     }
 }
 
