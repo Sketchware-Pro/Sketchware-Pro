@@ -19,16 +19,14 @@
                 android:id="@+id/empty_message"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#fff5f5f5"
                 android:gravity="center"
-                android:textSize="12sp" />
+                android:textAppearance="?attr/textAppearanceBodySmall" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/component_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="#fff5f5f5"
                 android:scrollbars="vertical"
                 android:splitMotionEvents="false" />
 
@@ -43,7 +41,8 @@
         android:src="@drawable/ic_add_white_36dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="@color/color_btn_ltpink_normal"
-        app:borderWidth="0dp" />
+        android:backgroundTint="?attr/colorPink"
+        app:borderWidth="0dp"
+        app:tint="?attr/colorOnPink" />
 
 </RelativeLayout>
