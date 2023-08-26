@@ -3,17 +3,29 @@
 
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorPrimaryFixed">@color/md_theme_light_primaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_light_primaryFixedDim</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_light_onPrimaryFixed</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_light_onPrimaryFixedVariant</item>
         <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorSecondaryFixed">@color/md_theme_light_secondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_light_secondaryFixedDim</item>
         <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
         <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_light_onSecondaryFixed</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_light_onSecondaryFixedVariant</item>
         <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorTertiaryFixed">@color/md_theme_light_tertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_light_tertiaryFixedDim</item>
         <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
         <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_light_onTertiaryFixed</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_light_onTertiaryFixedVariant</item>
         <item name="colorError">@color/md_theme_light_error</item>
         <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
         <item name="colorOnError">@color/md_theme_light_onError</item>

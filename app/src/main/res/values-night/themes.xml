@@ -2,17 +2,29 @@
 <resources>
     <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="colorPrimaryFixed">@color/md_theme_dark_primaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_dark_primaryFixedDim</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_dark_onPrimaryFixed</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_dark_onPrimaryFixedVariant</item>
         <item name="colorSecondary">@color/md_theme_dark_secondary</item>
+        <item name="colorSecondaryFixed">@color/md_theme_dark_secondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_dark_secondaryFixedDim</item>
         <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>
         <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_dark_onSecondaryFixed</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_dark_onSecondaryFixedVariant</item>
         <item name="colorTertiary">@color/md_theme_dark_tertiary</item>
+        <item name="colorTertiaryFixed">@color/md_theme_dark_tertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_dark_tertiaryFixedDim</item>
         <item name="colorOnTertiary">@color/md_theme_dark_onTertiary</item>
         <item name="colorTertiaryContainer">@color/md_theme_dark_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/md_theme_dark_onTertiaryContainer</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_dark_onTertiaryFixed</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_dark_onTertiaryFixedVariant</item>
         <item name="colorError">@color/md_theme_dark_error</item>
         <item name="colorErrorContainer">@color/md_theme_dark_errorContainer</item>
         <item name="colorOnError">@color/md_theme_dark_onError</item>
