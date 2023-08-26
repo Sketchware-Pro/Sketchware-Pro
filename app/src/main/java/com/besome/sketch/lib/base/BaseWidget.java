@@ -1,7 +1,7 @@
 package com.besome.sketch.lib.base;
 
 import android.content.Context;
-import android.view.ViewGroup;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,10 +11,10 @@ import com.sketchware.remod.R;
 import a.a.a.wB;
 
 public class BaseWidget extends LinearLayout {
-    public ImageView img_widget;
+    private ImageView img_widget;
     public TextView tv_widget;
-    public int widgetImgResId;
-    public int widgetType;
+    private int widgetImgResId;
+    private int widgetType;
 
     public BaseWidget(Context context) {
         super(context);
@@ -25,9 +25,9 @@ public class BaseWidget extends LinearLayout {
         wB.a(context, this, R.layout.widget_layout);
         img_widget = findViewById(R.id.img_widget);
         tv_widget = findViewById(R.id.tv_widget);
-        tv_widget.setTextSize(12.0f);
-        tv_widget.setGravity(3);
-        tv_widget.setPadding((int)wB.a(getContext(), 2.0f), 0, 0, 0);
+        tv_widget.setTextSize(12);
+        tv_widget.setGravity(Gravity.LEFT);
+        tv_widget.setPadding((int) wB.a(getContext(), 2.0f), 0, 0, 0);
         setDrawingCacheEnabled(true);
     }
 
@@ -57,9 +57,8 @@ public class BaseWidget extends LinearLayout {
         this.widgetType = widgetType.ordinal();
     }
 
-    public static enum a {
+    public enum a {
         a,
-        b;
+        b
     }
 }
-
