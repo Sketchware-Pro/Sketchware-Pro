@@ -8,7 +8,7 @@
         android:id="@+id/layout_palette"
         android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:background="@drawable/palette_bg"
+        android:background="?attr/colorSurfaceContainerHighest"
         android:orientation="vertical">
 
         <LinearLayout
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/layout_palette"
-        android:background="#fff0f0ff"
+        android:background="?attr/colorSurface"
         android:forceDarkAllowed="false"
         tools:ignore="UnusedAttribute"/>
 
