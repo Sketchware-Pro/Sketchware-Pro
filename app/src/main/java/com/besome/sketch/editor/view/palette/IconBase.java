@@ -7,7 +7,7 @@ import com.besome.sketch.lib.base.BaseWidget;
 import com.sketchware.remod.R;
 
 public class IconBase extends BaseWidget {
-    public String e;
+    private String name;
 
     public IconBase(Context context) {
         super(context);
@@ -19,11 +19,11 @@ public class IconBase extends BaseWidget {
     }
 
     public String getName() {
-        return e;
+        return name;
     }
 
     public void setName(String name) {
-        e = name;
+        this.name = name;
     }
 
     public void setText(String widgetName) {
@@ -31,4 +31,3 @@ public class IconBase extends BaseWidget {
         setWidgetName(widgetName);
     }
 }
-
