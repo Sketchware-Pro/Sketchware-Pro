@@ -12,7 +12,7 @@ import a.a.a.wB;
 
 public class BaseWidget extends LinearLayout {
     private ImageView img_widget;
-    public TextView tv_widget;
+    private TextView tv_widget;
     private int widgetImgResId;
     private int widgetType;
 
@@ -50,6 +50,10 @@ public class BaseWidget extends LinearLayout {
 
     public void setWidgetName(String widgetName) {
         tv_widget.setText(widgetName);
+    }
+
+    public void setWidgetNameTextSize(float sizeSp) {
+        tv_widget.setTextSize(sizeSp);
     }
 
     public void setWidgetType(a widgetType) {
