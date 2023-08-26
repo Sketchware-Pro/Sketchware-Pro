@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.R;
+
 import a.a.a.wB;
 
 public class BaseWidget extends LinearLayout {
@@ -20,9 +22,9 @@ public class BaseWidget extends LinearLayout {
     }
 
     public void a(Context context) {
-        wB.a((Context)context, (ViewGroup)this, (int)2131427778);
-        this.a = (ImageView)this.findViewById(2131231205);
-        this.b = (TextView)this.findViewById(2131232288);
+        wB.a((Context)context, (ViewGroup)this, (int)R.layout.widget_layout);
+        this.a = (ImageView)this.findViewById(R.id.img_widget);
+        this.b = (TextView)this.findViewById(R.id.tv_widget);
         this.b.setTextSize(12.0f);
         this.b.setGravity(3);
         this.b.setPadding((int)wB.a((Context)this.getContext(), (float)2.0f), 0, 0, 0);
@@ -51,7 +53,7 @@ public class BaseWidget extends LinearLayout {
     }
 
     public void setWidgetType(a a2) {
-        this.setBackgroundResource(2131165891);
+        this.setBackgroundResource(R.drawable.icon_bg);
         this.d = a2.ordinal();
     }
 
