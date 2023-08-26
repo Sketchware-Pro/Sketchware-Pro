@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+
 import com.sketchware.remod.R;
 
 import a.a.a.wB;
@@ -13,6 +15,7 @@ import a.a.a.wB;
 public class BaseWidget extends LinearLayout {
     private ImageView img_widget;
     private TextView tv_widget;
+    @DrawableRes
     private int widgetImgResId;
     private int widgetType;
 
@@ -43,9 +46,9 @@ public class BaseWidget extends LinearLayout {
         return widgetType;
     }
 
-    public void setWidgetImage(int widgetImgResId) {
-        this.widgetImgResId = widgetImgResId;
-        img_widget.setImageResource(widgetImgResId);
+    public void setWidgetImage(@DrawableRes int image) {
+        this.widgetImgResId = image;
+        img_widget.setImageResource(image);
     }
 
     public void setWidgetName(String widgetName) {
