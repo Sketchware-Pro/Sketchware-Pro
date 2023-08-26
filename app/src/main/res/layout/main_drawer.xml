@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- If I change the background color, the drawer header will look weird -->
+<!-- because the it has a blue hardcoded background color -->
+<!-- Check @drawable/side_menu_bg_puzzle -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/layout_main"
     android:layout_width="260dp"
