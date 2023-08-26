@@ -33,7 +33,7 @@
         android:paddingBottom="6dp"
         android:text="Title"
         android:textColor="?attr/colorOnSurface"
-        android:textSize="15sp" />
+        android:textAppearance="?attr/textAppearanceHeadline6" />
 
     <ImageView
         android:id="@+id/ig_toolbar_load_file"

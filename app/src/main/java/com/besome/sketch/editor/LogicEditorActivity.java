@@ -1924,7 +1924,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 onBackPressed();
             }
         });
-        k.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
         G = new DB(getContext(), "P12").a("P12I0", true);
         A = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

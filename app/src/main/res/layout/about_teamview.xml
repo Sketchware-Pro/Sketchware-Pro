@@ -80,7 +80,6 @@
                 android:alpha="0.87"
                 android:focusable="false"
                 android:paddingLeft="8dp"
-                android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:autoLink="all"

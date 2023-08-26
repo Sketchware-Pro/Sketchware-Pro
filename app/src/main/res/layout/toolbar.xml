@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:contentInsetStart="0dp"
-    app:contentInsetStart="0dp"
-    app:titleTextAppearance="@style/ToolbarTextAppearance">
+    app:contentInsetStart="0dp">
 
     <ImageView
         android:id="@+id/layout_main_logo"
@@ -15,5 +14,6 @@
         android:layout_gravity="center"
         android:contentDescription="@string/title_sketchware"
         android:scaleType="fitCenter"
-        android:src="@drawable/top_title_logo" />
+        android:src="@drawable/top_title_logo"
+        app:tint="?attr/colorOnSurface" />
 </androidx.appcompat.widget.Toolbar>
