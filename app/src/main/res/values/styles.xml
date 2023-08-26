@@ -79,77 +79,67 @@
         <item name="colorPinkContainer">#ffdad7</item>
         <item name="colorOnPinkContainer">#410004</item>
         <item name="harmonizePink">true</item>
+        <item name="colorOrange">#895200</item>
+        <item name="colorOnOrange">#ffffff</item>
+        <item name="colorOrangeContainer">#ffdcbc</item>
+        <item name="colorOnOrangeContainer">#2c1700</item>
+        <item name="harmonizeOrange">true</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
-    <style name="AppTheme.Button.Amber" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ffffc107</item>
-        <item name="colorControlHighlight">#ffffb300</item>
+    <style name="AppTheme.Button.Amber" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Amber</item>
     </style>
 
-    <style name="AppTheme.Button.Blue" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_blue_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_blue_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Blue" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Blue</item>
     </style>
 
-    <style name="AppTheme.Button.CoolGreen" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ff34bc7e</item>
-        <item name="colorControlHighlight">@color/scolor_green_normal</item>
+    <style name="AppTheme.Button.CoolGreen" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.CoolGreen</item>
     </style>
 
-    <style name="AppTheme.Button.Green" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/scolor_green_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_green_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Green" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Green</item>
     </style>
 
-    <style name="AppTheme.Button.Indigo" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ff3f51b5</item>
-        <item name="colorControlHighlight">#ff3949ab</item>
+    <style name="AppTheme.Button.Indigo" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Indigo</item>
     </style>
 
-    <style name="AppTheme.Button.LightBlue" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltblue_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltblue_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.LightBlue" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.LightBlue</item>
     </style>
 
-    <style name="AppTheme.Button.LightPink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltpink_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltpink_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Pink" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Pink</item>
     </style>
 
-    <style name="AppTheme.Button.Orange" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltorange_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltorange_dark</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Orange" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Orange</item>
     </style>
 
-    <style name="AppTheme.Button.Pink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ffff5955</item>
-        <item name="colorControlHighlight">#ffff8784</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Transparent" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Transparent</item>
     </style>
 
-    <style name="AppTheme.Button.Transparent" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="colorButtonNormal">@color/transparent</item>
-        <item name="colorControlHighlight">@color/transparent</item>
+    <style name="AppTheme.Button.WhiteBlue" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.WhiteBlue</item>
     </style>
 
-    <style name="AppTheme.Button.WhiteBlue" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">@color/color_primary</item>
-        <item name="colorButtonNormal">#ffffffff</item>
-        <item name="colorControlHighlight">#ffdddddd</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="AppTheme.Button.WhitePink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">@color/color_btn_ltpink_normal</item>
-        <item name="colorButtonNormal">#ffffffff</item>
-        <item name="colorControlHighlight">#ffdddddd</item>
+    <style name="AppTheme.Button.WhitePink" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.WhitePink</item>
     </style>
 
     <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">

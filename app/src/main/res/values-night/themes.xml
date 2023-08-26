@@ -78,6 +78,11 @@
         <item name="colorPinkContainer">#930013</item>
         <item name="colorOnPinkContainer">#ffdad7</item>
         <item name="harmonizePink">true</item>
+        <item name="colorOrange">#ffb86a</item>
+        <item name="colorOnOrange">#492900</item>
+        <item name="colorOrangeContainer">#683d00</item>
+        <item name="colorOnOrangeContainer">#ffdcbc</item>
+        <item name="harmonizeOrange">true</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
     </style>
 </resources>
