@@ -4,7 +4,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimaryFixed"
     android:contentInsetStart="0dp"
     app:contentInsetStart="0dp"
     app:titleTextAppearance="@style/ToolbarTextAppearance">
@@ -16,6 +15,5 @@
         android:layout_gravity="center"
         android:contentDescription="@string/title_sketchware"
         android:scaleType="fitCenter"
-        android:src="@drawable/top_title_logo"
-        app:tint="?attr/colorOnPrimaryFixed" />
+        android:src="@drawable/top_title_logo" />
 </androidx.appcompat.widget.Toolbar>

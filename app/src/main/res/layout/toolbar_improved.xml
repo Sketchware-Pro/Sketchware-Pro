@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimaryFixed"
+    android:background="?attr/colorSurface"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="10dp"
@@ -18,7 +18,7 @@
         android:padding="8dp"
         android:scaleType="centerInside"
         android:src="@drawable/arrow_back_white_48dp"
-        app:tint="?attr/colorOnPrimaryFixed" />
+        app:tint="?attr/colorControlNormal" />
 
     <TextView
         android:id="@+id/tx_toolbar_title"
@@ -32,7 +32,7 @@
         android:paddingEnd="8dp"
         android:paddingBottom="6dp"
         android:text="Title"
-        android:textColor="?attr/colorOnPrimaryFixed"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="15sp" />
 
     <ImageView
@@ -43,5 +43,5 @@
         android:scaleType="centerInside"
         android:src="@drawable/add_file_48"
         android:visibility="gone"
-        app:tint="?attr/colorOnPrimaryFixed" />
+        app:tint="?attr/colorControlNormal" />
 </LinearLayout>
