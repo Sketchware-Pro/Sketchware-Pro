@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffffff"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -38,8 +37,8 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="@string/title_sketchware"
-                    android:textColor="#ff008dcd"
-                    android:textSize="24sp" />
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textColor="?attr/colorPrimary" />
 
                 <TextView
                     android:id="@+id/tv_sketch_ver"
@@ -49,7 +48,7 @@
                     android:layout_marginBottom="8dp"
                     android:textIsSelectable="true"
                     android:gravity="center"
-                    android:textColor="#ff26a59a"
+                    android:textColor="?attr/colorGreen"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -58,9 +57,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="8dp"
+                    android:alpha="0.87"
                     android:gravity="center"
                     android:text="Copyright ⓒ Sketchware. All Rights Reserved."
-                    android:textColor="#ff757575"
                     android:textSize="13sp" />
 
                 <View
@@ -68,7 +67,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="#ffc7c7c7" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,7 +81,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="8dp"
-                        android:textColor="#ffffffff"
                         android:textSize="@dimen/text_size_button_material"
                         android:theme="@style/AppTheme.Button.Blue" />
 
@@ -94,7 +92,6 @@
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:padding="8dp"
-                        android:textColor="#ffffffff"
                         android:textSize="@dimen/text_size_button_material"
                         android:theme="@style/AppTheme.Button.LightBlue" />
                 </LinearLayout>
@@ -103,7 +100,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#ffc7c7c7" />
+                android:background="?attr/colorOutlineVariant" />
 
             <LinearLayout
                 android:id="@+id/content"
