@@ -1,15 +1,17 @@
 package com.besome.sketch.editor.view.palette;
 
 import android.content.Context;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseWidget;
+import com.sketchware.remod.R;
 
 public class IconBase extends BaseWidget {
     public String e;
 
     public IconBase(Context context) {
         super(context);
-        this.setBackgroundResource(2131165891);
+        this.setBackgroundResource(R.drawable.icon_bg);
     }
 
     public ViewBean getBean() {
