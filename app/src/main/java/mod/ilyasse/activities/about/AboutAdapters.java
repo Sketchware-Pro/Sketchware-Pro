@@ -111,13 +111,19 @@ public class AboutAdapters {
                 } else if (isActive instanceof Boolean) {
                     isActiveBool = (boolean) isActive;
                 }
+                int activeBackgroundColor;
+                int activeBackgroundTextColor;
                 if (isActiveBool) {
                     holder.status.setText("Active");
-                    //rippleRound(holder.status, "#13cc9d", "#13cc9d", 100);
+                    activeBackgroundColor = MaterialColors.getColor(holder.status, R.attr.colorCoolGreenContainer);
+                    activeBackgroundTextColor = MaterialColors.getColor(holder.status, R.attr.colorOnCoolGreenContainer);
                 } else {
                     holder.status.setText("Inactive");
-                    //rippleRound(holder.status, "#676767", "#676767", 100);
+                    activeBackgroundColor = MaterialColors.getColor(holder.status, com.google.android.material.R.attr.colorSurfaceInverse);
+                    activeBackgroundTextColor = MaterialColors.getColor(holder.status, com.google.android.material.R.attr.colorOnSurfaceInverse);
                 }
+                rippleRound(holder.status, activeBackgroundColor, activeBackgroundColor, 100);
+                holder.status.setTextColor(activeBackgroundTextColor);
             } else {
                 holder.status.setVisibility(View.GONE);
             }
@@ -256,9 +262,6 @@ public class AboutAdapters {
 
             holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
-
-            // rippleRound(holder.logBackground, "#ffffff", "#1F000000", 0);
-            // rippleRound(holder.arrow, "#ffffff", "#1F000000", 90);
             holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
             holder.logBackground.setOnClickListener(v -> {
@@ -341,11 +344,11 @@ public class AboutAdapters {
         TransitionManager.beginDelayedTransition(view, autoTransition);
     }
 
-    private static void rippleRound(View view, String focus, String pressed, double round) {
+    private static void rippleRound(View view, int focus, int pressed, double round) {
         GradientDrawable GG = new GradientDrawable();
-        GG.setColor(Color.parseColor(focus));
+        GG.setColor(focus);
         GG.setCornerRadius((float) round);
-        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{pressed}), GG, null);
         view.setBackground(RE);
     }
 }
