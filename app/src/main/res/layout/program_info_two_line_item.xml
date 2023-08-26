@@ -13,23 +13,23 @@
         android:layout_marginTop="8dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="#ff757575"
-        android:textSize="14sp" />
+        android:alpha="0.87"
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
 
     <TextView
-        android:id="@id/tv_desc"
+        android:id="@+id/tv_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:layout_below="@id/tv_name"
-        android:textColor="#ffcccccc"
-        android:textSize="12sp" />
+        android:alpha="0.6"
+        android:textAppearance="?attr/textAppearanceBodySmall" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
-        android:background="#ffc7c7c7" />
+        android:background="?attr/colorOutlineVariant" />
 
 </RelativeLayout>
