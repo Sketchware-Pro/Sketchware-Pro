@@ -428,12 +428,10 @@ public class BuiltInLibraries {
         }
 
         String dexsArchiveName = "dexs.zip";
-        String coreLambdaStubsJarName = "core-lambda-stubs.jar";
         String libsArchiveName = "libs.zip";
         String testkeyArchiveName = "testkey.zip";
 
         String dexsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, dexsArchiveName).getAbsolutePath();
-        String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
         String libsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, libsArchiveName).getAbsolutePath();
         String testkeyArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, testkeyArchiveName).getAbsolutePath();
         String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
@@ -467,7 +465,7 @@ public class BuiltInLibraries {
             /* Extract libs.zip to libs/ */
             new KB().a(libsArchivePath, libsDirectoryPath);
         }
-        ProjectBuilder.hasFileChanged(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
+        maybeExtractCoreLambdaStubsJar();
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
                 receiver.onProgress("Extracting built-in signing keys...");
@@ -493,6 +491,12 @@ public class BuiltInLibraries {
             /* Extract android.jar.zip to android.jar */
             new KB().a(androidJarPath, EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
+    }
+
+    public static void maybeExtractCoreLambdaStubsJar() {
+        String coreLambdaStubsJarName = "core-lambda-stubs.jar";
+        String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
+        ProjectBuilder.hasFileChanged("libs" + File.separator + coreLambdaStubsJarName, coreLambdaStubsJarPath);
     }
 
     public static class BuiltInLibrary implements Parcelable {
