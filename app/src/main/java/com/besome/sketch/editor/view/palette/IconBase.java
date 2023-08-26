@@ -22,13 +22,13 @@ public class IconBase extends BaseWidget {
         return e;
     }
 
-    public void setName(String string) {
-        e = string;
+    public void setName(String name) {
+        e = name;
     }
 
-    public void setText(String string) {
+    public void setText(String widgetName) {
         b.setTextSize(2, 11.0f);
-        setWidgetName(string);
+        setWidgetName(widgetName);
     }
 }
 
