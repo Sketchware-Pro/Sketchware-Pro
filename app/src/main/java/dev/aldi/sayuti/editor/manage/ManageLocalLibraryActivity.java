@@ -91,15 +91,29 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             var version = parts[2];
             var resolver = new DependencyResolver(group, artifact, version);
             var handler = new Handler(Looper.getMainLooper());
-                    Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
+
+            class SetTextRunnable implements Runnable {
+                private final String message;
+
+                SetTextRunnable(String message) {
+                    this.message = message;
+                }
+
+                @Override
+                public void run() {
+                    text.setText(message);
+                }
+            }
+
+            Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
                 @Override
                 public void invalidPackaging(@NonNull String dep) {
-                    handler.post(() -> text.setText("Invalid packaging for dependency " + dep));
+                    handler.post(new SetTextRunnable("Invalid packaging for dependency " + dep));
                 }
 
                 @Override
                 public void dexing(@NonNull String dep) {
-                    handler.post(() -> text.setText("Dexing dependency " + dep));
+                    handler.post(new SetTextRunnable("Dexing dependency " + dep));
                 }
 
                 @Override
@@ -113,17 +127,17 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
                 @Override
                 public void log(@NonNull String msg) {
-                    handler.post(() -> text.setText(msg));
+                    handler.post(new SetTextRunnable(msg));
                 }
 
                 @Override
                 public void downloading(@NonNull String dep) {
-                    handler.post(() -> text.setText("Downloading dependency " + dep));
+                    handler.post(new SetTextRunnable("Downloading dependency " + dep));
                 }
 
                 @Override
                 public void startResolving(@NonNull String dep) {
-                    handler.post(() -> text.setText("Resolving dependency " + dep));
+                    handler.post(new SetTextRunnable("Resolving dependency " + dep));
                 }
 
                 @Override
@@ -153,12 +167,12 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
                 @Override
                 public void onDependencyResolveFailed(@NonNull Exception e) {
-                    handler.post(() -> text.setText(e.getMessage()));
+                    handler.post(new SetTextRunnable(e.getMessage()));
                 }
 
                 @Override
                 public void onDependencyResolved(@NonNull String dep) {
-                    handler.post(() -> text.setText("Dependency " + dep + " resolved"));
+                    handler.post(new SetTextRunnable("Dependency " + dep + " resolved"));
                 }
             }));
         });
