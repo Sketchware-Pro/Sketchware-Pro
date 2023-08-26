@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
 import java.text.SimpleDateFormat;
@@ -96,9 +97,9 @@ public class AboutAdapters {
             }
 
             if (isPartofTeamBool) {
-                advancedCorners(holder.sidebar, "#008DCD");
+                advancedCorners(holder.sidebar, MaterialColors.getColor(holder.sidebar, com.google.android.material.R.attr.colorPrimary));
             } else {
-                advancedCorners(holder.sidebar, "#00CDAB");
+                advancedCorners(holder.sidebar, MaterialColors.getColor(holder.sidebar, R.attr.colorGreen));
             }
 
             if (isPartofTeamBool) {
@@ -112,10 +113,10 @@ public class AboutAdapters {
                 }
                 if (isActiveBool) {
                     holder.status.setText("Active");
-                    rippleRound(holder.status, "#13cc9d", "#13cc9d", 100);
+                    //rippleRound(holder.status, "#13cc9d", "#13cc9d", 100);
                 } else {
                     holder.status.setText("Inactive");
-                    rippleRound(holder.status, "#676767", "#676767", 100);
+                    //rippleRound(holder.status, "#676767", "#676767", 100);
                 }
             } else {
                 holder.status.setVisibility(View.GONE);
@@ -256,8 +257,8 @@ public class AboutAdapters {
             holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
 
-            rippleRound(holder.logBackground, "#ffffff", "#1F000000", 0);
-            rippleRound(holder.arrow, "#ffffff", "#1F000000", 90);
+            // rippleRound(holder.logBackground, "#ffffff", "#1F000000", 0);
+            // rippleRound(holder.arrow, "#ffffff", "#1F000000", 90);
             holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
             holder.logBackground.setOnClickListener(v -> {
@@ -275,7 +276,7 @@ public class AboutAdapters {
                 notifyItemChanged(position);
             });
             if (0 == position) {
-                advancedCorners(holder.leftLine, "#2f55ed");
+                advancedCorners(holder.leftLine, Color.parseColor("#2f55ed"));
             } else {
                 holder.leftLine.setBackground(null);
             }
@@ -317,9 +318,9 @@ public class AboutAdapters {
                 .into(image);
     }
 
-    private static void advancedCorners(View view, String color) {
+    private static void advancedCorners(View view, int color) {
         GradientDrawable gd = new GradientDrawable();
-        gd.setColor(Color.parseColor(color));
+        gd.setColor(color);
         gd.setCornerRadii(new float[]{0, 0, 30, 30, 30, 30, 0, 0});
         view.setBackground(gd);
     }

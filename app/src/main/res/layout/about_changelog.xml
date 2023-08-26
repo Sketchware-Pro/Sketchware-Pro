@@ -14,9 +14,7 @@
         android:focusable="false"
         android:padding="8dp"
         android:tag="tv_variant"
-        android:textColor="#424242"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
         tools:text="Official / Beta" />
 
     <LinearLayout
@@ -25,6 +23,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:animateLayoutChanges="true"
+        android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:tag="log_background">
@@ -75,6 +74,7 @@
                     android:fadingEdgeLength="20dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:fontFamily="sans-serif-medium"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:paddingLeft="8dp"
                     android:paddingTop="8dp"
@@ -83,33 +83,33 @@
                     android:requiresFadingEdge="horizontal"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     tools:text="Sketchware Pro v6.4.0" />
 
                 <TextView
                     android:id="@+id/tv_release_note"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:alpha="0.87"
                     android:focusable="false"
                     android:paddingLeft="8dp"
                     android:paddingTop="2dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp"
-                    android:textColor="#212121"
-                    android:textSize="12sp"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
                     tools:text="Released on: ----- (= never ¯\\_(ツ)_/¯)" />
             </LinearLayout>
 
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_expand_less_grey600_24dp"
                 android:tag="ic_arrow"
-                app:tint="#000000" />
+                app:tint="?attr/colorControlNormal" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +126,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="5dp"
-                android:background="#EEEEEE" />
+                android:background="?attr/colorOutline" />
 
             <TextView
                 android:id="@+id/tv_sub_title"
@@ -138,8 +138,7 @@
                 android:autoLink="all"
                 android:clickable="true"
                 android:focusable="true"
-                android:textColor="@color/primary_text_default_material_light"
-                android:textSize="14sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 tools:text="A version that's newer than v6.3.0. That's it." />
         </LinearLayout>
     </LinearLayout>
