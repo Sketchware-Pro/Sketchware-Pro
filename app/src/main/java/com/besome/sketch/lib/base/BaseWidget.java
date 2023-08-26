@@ -43,18 +43,18 @@ public class BaseWidget extends LinearLayout {
         return d;
     }
 
-    public void setWidgetImage(int n) {
-        c = n;
-        a.setImageResource(n);
+    public void setWidgetImage(int widget_img_res_id) {
+        c = widget_img_res_id;
+        a.setImageResource(widget_img_res_id);
     }
 
-    public void setWidgetName(String string) {
-        b.setText(string);
+    public void setWidgetName(String widgetName) {
+        b.setText(widgetName);
     }
 
-    public void setWidgetType(a a2) {
+    public void setWidgetType(a widgetType) {
         setBackgroundResource(R.drawable.icon_bg);
-        d = a2.ordinal();
+        d = widgetType.ordinal();
     }
 
     public static enum a {
