@@ -156,6 +156,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();
