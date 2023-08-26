@@ -43,11 +43,10 @@
 
         <Button
             android:id="@+id/save_button"
+            style="@style/AppTheme.Button.LightBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textColor="#ffffffff"
-            android:theme="@style/AppTheme.Button.LightBlue"
             tools:text="@string/common_word_save" />
     </LinearLayout>
 </LinearLayout>

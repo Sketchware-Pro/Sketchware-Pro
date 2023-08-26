@@ -28,6 +28,6 @@
         </LinearLayout>
     </ScrollView>
     <LinearLayout android:orientation="horizontal" android:background="#ffffffff" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <Button android:theme="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:gravity="center" android:id="@id/btn_accept" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <Button style="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:gravity="center" android:id="@id/btn_accept" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
     </LinearLayout>
 </LinearLayout>

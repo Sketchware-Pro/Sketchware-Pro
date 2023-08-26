@@ -17,6 +17,6 @@
         <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:gravity="center" android:id="@id/tv_step_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" />
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:id="@id/layout_container" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
-    <Button android:theme="@style/AppTheme.Button.LightBlue" android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/btn_complete" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip" />
-    <Button android:theme="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_doc" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="16.0dip" />
+    <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_complete" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip" />
+    <Button style="@style/AppTheme.Button.Green" android:id="@id/btn_doc" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="16.0dip" />
 </LinearLayout>

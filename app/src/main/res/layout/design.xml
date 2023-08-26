@@ -78,23 +78,21 @@
 
                     <ImageButton
                         android:id="@+id/btn_compiler_opt"
+                        style="@style/AppTheme.Button.LightBlue"
                         android:layout_width="44dp"
                         android:layout_height="44dp"
                         android:layout_marginStart="8dp"
                         android:elevation="4dp"
                         android:padding="4dp"
-                        android:src="@drawable/sorting_options_48"
-                        android:theme="@style/AppTheme.Button.LightBlue" />
+                        android:src="@drawable/sorting_options_48" />
 
                     <Button
                         android:id="@+id/btn_execute"
+                        style="@style/AppTheme.Button.LightBlue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:textColor="#ffffffff"
-                        android:textSize="@dimen/text_size_button_material"
-                        android:textStyle="bold"
-                        android:theme="@style/AppTheme.Button.LightBlue" />
+                        android:textSize="@dimen/text_size_button_material" />
                 </LinearLayout>
             </LinearLayout>
 

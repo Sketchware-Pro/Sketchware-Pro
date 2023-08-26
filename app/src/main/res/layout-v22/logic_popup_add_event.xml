@@ -13,8 +13,8 @@
             <View android:background="@color/color_secondary" android:layout_width="fill_parent" android:layout_height="2.0dip" />
             <androidx.recyclerview.widget.RecyclerView android:id="@id/events_preview" android:paddingLeft="16.0dip" android:paddingTop="8.0dip" android:paddingRight="16.0dip" android:paddingBottom="8.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingHorizontal="16.0dip" android:paddingVertical="8.0dip" />
             <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="56.0dip">
-                <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/cancel_button" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <Button android:theme="@style/AppTheme.Button.Blue" android:textColor="#ffffffff" android:id="@id/add_button" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/cancel_button" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <Button style="@style/AppTheme.Button.Blue" android:id="@id/add_button" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

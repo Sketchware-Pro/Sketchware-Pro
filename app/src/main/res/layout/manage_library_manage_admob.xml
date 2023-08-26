@@ -371,11 +371,10 @@
 
         <Button
             android:id="@+id/btn_console"
+            style="@style/AppTheme.Button.LightBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightBlue"
             tools:text="@string/design_library_admob_button_goto_console" />
     </LinearLayout>
 </LinearLayout>

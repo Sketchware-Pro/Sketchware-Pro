@@ -59,23 +59,21 @@
 
             <Button
                 android:id="@+id/btn_cancel"
+                style="@style/AppTheme.Button.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:background="?attr/colorBlue"
-                android:textColor="?attr/colorOnBlue"
                 android:textSize="@dimen/text_size_button_material" />
 
             <Button
                 android:id="@+id/btn_delete"
+                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:background="?attr/colorLightBlue"
-                android:textColor="?attr/colorOnLightBlue"
                 android:textSize="@dimen/text_size_button_material" />
         </LinearLayout>
     </LinearLayout>

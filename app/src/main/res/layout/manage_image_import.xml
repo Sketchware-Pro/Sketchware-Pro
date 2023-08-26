@@ -22,7 +22,7 @@
                     <TextView android:textSize="12.0sp" android:id="@id/tv_samename" android:layout_width="fill_parent" android:layout_height="wrap_content" />
                 </LinearLayout>
                 <com.besome.sketch.lib.ui.EasyDeleteEditText android:id="@id/ed_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
-                <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/btn_decide" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
+                <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_decide" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

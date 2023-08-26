@@ -28,8 +28,8 @@
                 <TextView android:textColor="@color/scolor_red_02" android:id="@id/tv_my_coupon" android:padding="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout android:gravity="center" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="56.0dip">
-                <Button android:theme="@style/AppTheme.Button.LightPink" android:textColor="#ffffffff" android:id="@id/btn_use_coupon" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
-                <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/btn_check_in" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+                <Button style="@style/AppTheme.Button.Pink" android:id="@id/btn_use_coupon" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+                <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_check_in" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView android:id="@id/list_ads" android:paddingLeft="2.0dip" android:paddingRight="2.0dip" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="4.0dip" android:splitMotionEvents="false" android:paddingHorizontal="2.0dip" />
         </LinearLayout>

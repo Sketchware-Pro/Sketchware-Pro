@@ -7183,7 +7183,6 @@
     <public name="AppTheme.Button.Green" id="0x7f0f000b" type="style" />
     <public name="AppTheme.Button.Indigo" id="0x7f0f000c" type="style" />
     <public name="AppTheme.Button.LightBlue" id="0x7f0f000d" type="style" />
-    <public name="AppTheme.Button.LightPink" id="0x7f0f000e" type="style" />
     <public name="AppTheme.Button.Orange" id="0x7f0f000f" type="style" />
     <public name="AppTheme.Button.Pink" id="0x7f0f0010" type="style" />
     <public name="AppTheme.Button.Transparent" id="0x7f0f0011" type="style" />

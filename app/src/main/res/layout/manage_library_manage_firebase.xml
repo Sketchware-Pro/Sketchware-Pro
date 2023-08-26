@@ -227,21 +227,18 @@
 
         <Button
             android:id="@+id/btn_import"
+            style="@style/AppTheme.Button.CoolGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Import from google-services.json"
-            android:textAllCaps="false"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.CoolGreen" />
+            android:textSize="@dimen/text_size_button_material" />
 
         <Button
             android:id="@+id/btn_console"
+            style="@style/AppTheme.Button.LightBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightBlue"
             tools:text="@string/design_library_firebase_button_goto_firebase_console" />
     </LinearLayout>
 </LinearLayout>

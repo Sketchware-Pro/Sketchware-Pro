@@ -24,6 +24,6 @@
             <LinearLayout android:orientation="vertical" android:id="@id/layout_container" android:layout_width="fill_parent" android:layout_height="fill_parent" />
         </LinearLayout>
     </ScrollView>
-    <Button android:theme="@style/AppTheme.Button.LightPink" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_import" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip" />
-    <Button android:theme="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_open_doc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip" android:layout_marginBottom="8.0dip" />
+    <Button style="@style/AppTheme.Button.Pink" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_import" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip" />
+    <Button style="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_open_doc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip" android:layout_marginBottom="8.0dip" />
 </LinearLayout>

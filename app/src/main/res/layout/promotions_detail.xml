@@ -17,7 +17,7 @@
             <include layout="@layout/loading_3balls" />
             <include layout="@layout/no_connection" />
             <LinearLayout android:gravity="center" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="56.0dip">
-                <Button android:theme="@style/AppTheme.Button.Blue" android:textColor="#ffffffff" android:id="@id/btn_enroll" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <Button style="@style/AppTheme.Button.Blue" android:id="@id/btn_enroll" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout android:orientation="vertical" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
                 <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/layout_rounded_border_lightblue" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">

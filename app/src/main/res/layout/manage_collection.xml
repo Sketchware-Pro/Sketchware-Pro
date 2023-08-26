@@ -88,25 +88,22 @@
 
             <Button
                 android:id="@+id/btn_cancel"
+                style="@style/AppTheme.Button.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:theme="@style/AppTheme.Button.Blue" />
+                android:textSize="@dimen/text_size_button_material" />
 
             <Button
                 android:id="@+id/btn_delete"
+                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:textStyle="bold"
-                android:theme="@style/AppTheme.Button.LightBlue" />
+                android:textSize="@dimen/text_size_button_material" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

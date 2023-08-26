@@ -8,8 +8,8 @@
             <LinearLayout android:orientation="vertical" android:id="@id/contents" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
             <View android:background="@color/color_secondary" android:layout_width="fill_parent" android:layout_height="2.0dip" />
             <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="56.0dip">
-                <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/btn_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <Button android:theme="@style/AppTheme.Button.Blue" android:textColor="#ffffffff" android:id="@id/btn_add" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <Button style="@style/AppTheme.Button.Blue" android:id="@id/btn_add" android:layout_width="wrap_content" android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

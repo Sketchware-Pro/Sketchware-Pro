@@ -218,13 +218,12 @@
 
                         <Button
                             android:id="@+id/add_variable"
+                            style="@style/AppTheme.Button.Blue"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:gravity="center"
                             android:padding="8dp"
-                            android:textColor="#ffffffff"
-                            android:textSize="12sp"
-                            android:theme="@style/AppTheme.Button.Blue" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -269,13 +268,12 @@
 
                     <Button
                         android:id="@+id/add_label"
+                        style="@style/AppTheme.Button.Blue"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:textColor="#ffffffff"
-                        android:textSize="12sp"
-                        android:theme="@style/AppTheme.Button.Blue" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -348,14 +346,13 @@
 
                     <Button
                         android:id="@+id/add"
+                        style="@style/AppTheme.Button.Blue"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="ADD"
-                        android:textColor="#ffffffff"
-                        android:textSize="12sp"
-                        android:theme="@style/AppTheme.Button.Blue" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

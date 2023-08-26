@@ -19,7 +19,7 @@
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout android:orientation="vertical" android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="16.0dip" android:layout_marginRight="16.0dip">
-            <Button android:theme="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_logout" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <Button style="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_logout" android:layout_width="fill_parent" android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:id="@id/layout_ads" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
