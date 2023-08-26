@@ -28,7 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/border_bottom_corner_white_no_stroke"
+            android:background="@drawable/bottom_corner_surface"
             android:orientation="vertical">
 
             <TextView
@@ -38,9 +38,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/color_primary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorPrimary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,14 +66,9 @@
                     android:id="@+id/event_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:splitMotionEvents="false"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    android:splitMotionEvents="false" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/color_secondary" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/events_preview"
@@ -88,20 +83,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:background="@drawable/bottom_corner_surface_variant"
                 android:orientation="horizontal"
                 android:gravity="center">
 
                 <Button
                     android:id="@id/cancel_button"
-                    style="@style/AppTheme.Button.LightBlue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    style="@style/AppTheme.Button.Blue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp" />
 
                 <Button
                     android:id="@id/add_button"
                     style="@style/AppTheme.Button.Blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp" />
 
             </LinearLayout>
         </LinearLayout>
