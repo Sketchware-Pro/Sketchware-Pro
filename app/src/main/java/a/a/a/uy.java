@@ -25,6 +25,7 @@ public class uy extends IconBase {
         setWidgetImage(ViewBean.getViewTypeResId(viewBeans.get(0).type));
     }
 
+    @Override
     public ViewBean getBean() {
         return viewBeans.get(0);
     }
@@ -33,6 +34,7 @@ public class uy extends IconBase {
         return viewBeans;
     }
 
+    @Override
     public String getName() {
         return widgetName;
     }
