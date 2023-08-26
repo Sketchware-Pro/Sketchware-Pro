@@ -18,7 +18,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="2dp"
         android:layout_marginEnd="2dp"
-        android:gravity="center"
-        android:textColor="#ff535353" />
+        android:alpha="0.87"
+        android:gravity="center" />
 
 </LinearLayout>
