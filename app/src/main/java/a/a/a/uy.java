@@ -1,26 +1,26 @@
 package a.a.a;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.besome.sketch.lib.base.BaseWidget;
 
 import java.util.ArrayList;
 
 public class uy extends IconBase {
-    public String widgetName;
-    public ArrayList<ViewBean> viewBeans;
+    private final String widgetName;
+    private final ArrayList<ViewBean> viewBeans;
 
     public uy(Context context, String widgetName, ArrayList<ViewBean> viewBeans) {
         super(context);
         this.widgetName = widgetName;
         this.viewBeans = viewBeans;
-        a();
+        initialize();
     }
 
-    public final void a() {
-        tv_widget.setTextSize(2, 11.0f);
+    private void initialize() {
+        tv_widget.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         setWidgetName(widgetName);
         setWidgetImage(ViewBean.getViewTypeResId(viewBeans.get(0).type));
     }
@@ -37,4 +37,3 @@ public class uy extends IconBase {
         return widgetName;
     }
 }
-
