@@ -43,7 +43,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?attr/colorOutline" />
+            android:background="?attr/colorOutlineVariant" />
 
         <LinearLayout
             android:layout_width="match_parent"
