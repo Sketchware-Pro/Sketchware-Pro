@@ -75,6 +75,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:textSize="@dimen/text_size_button_material" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
