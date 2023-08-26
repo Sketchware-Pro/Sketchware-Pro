@@ -13,10 +13,10 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            style="@style/ManageImageTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:tabTextAppearance="@style/DesignTabTextAppearance" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
