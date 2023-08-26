@@ -13,7 +13,7 @@ import a.a.a.wB;
 public class BaseWidget extends LinearLayout {
     public ImageView img_widget;
     public TextView tv_widget;
-    public int widget_img_res_id;
+    public int widgetImgResId;
     public int widgetType;
 
     public BaseWidget(Context context) {
@@ -32,7 +32,7 @@ public class BaseWidget extends LinearLayout {
     }
 
     public int getWidgetImageResId() {
-        return widget_img_res_id;
+        return widgetImgResId;
     }
 
     public String getWidgetName() {
@@ -43,9 +43,9 @@ public class BaseWidget extends LinearLayout {
         return widgetType;
     }
 
-    public void setWidgetImage(int widget_img_res_id) {
-        this.widget_img_res_id = widget_img_res_id;
-        img_widget.setImageResource(widget_img_res_id);
+    public void setWidgetImage(int widgetImgResId) {
+        this.widgetImgResId = widgetImgResId;
+        img_widget.setImageResource(widgetImgResId);
     }
 
     public void setWidgetName(String widgetName) {
