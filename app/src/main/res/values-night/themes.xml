@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorPrimaryFixed">@color/md_theme_dark_primaryFixed</item>
         <item name="colorPrimaryFixedDim">@color/md_theme_dark_primaryFixedDim</item>

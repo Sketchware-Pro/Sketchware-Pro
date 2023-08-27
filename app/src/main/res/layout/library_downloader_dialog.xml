@@ -13,7 +13,7 @@
         android:layout_marginHorizontal="10dp"
         android:focusable="false"
         android:text="@string/local_library_manager_enter_dependency"
-        android:textColor="#ff296cf7"
+        android:textColor="?attr/colorPrimary"
         android:textSize="18sp" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -59,14 +59,12 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_download"
-        style="@style/Widget.AppCompat.ButtonBar"
+        style="@style/AppTheme.Button.Blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="#ff296cf7"
-        android:text="@string/common_word_download"
-        app:rippleColor="@null" />
+        android:text="@string/common_word_download" />
 </LinearLayout>

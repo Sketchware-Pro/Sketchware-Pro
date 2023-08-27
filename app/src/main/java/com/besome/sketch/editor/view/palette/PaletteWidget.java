@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
 import a.a.a.wB;
@@ -196,7 +197,7 @@ public class PaletteWidget extends LinearLayout {
         LinearLayout divider = new LinearLayout(getContext());
         divider.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(1)));
         divider.setOrientation(LinearLayout.HORIZONTAL);
-        divider.setBackgroundColor(Color.parseColor("#12000000"));
+        divider.setBackgroundColor(Color.parseColor("#00000000"));
         target.addView(divider);
 
         TextView titleView = new TextView(getContext());
@@ -205,7 +206,7 @@ public class PaletteWidget extends LinearLayout {
         titleView.setLayoutParams(layoutParams);
         titleView.setText(title);
         titleView.setTextSize(12);
-        titleView.setTextColor(Color.parseColor("#FF009688"));
+        titleView.setTextColor(MaterialColors.getColor(titleView, com.google.android.material.R.attr.colorPrimary));
         target.addView(titleView);
     }
 
