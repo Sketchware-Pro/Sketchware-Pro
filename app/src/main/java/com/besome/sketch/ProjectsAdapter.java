@@ -127,7 +127,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         return false;
                     }
                 }
-                return true;
+                boolean hasCustomIcon = yB.a(newMap, "custom_icon");
+                boolean hadCustomIcon = yB.a(oldMap, "custom_icon");
+                boolean hasChanged = hadCustomIcon != hasCustomIcon;
+                if (hadCustomIcon && hasCustomIcon) {
+                    // custom icon could've been changed, the project map doesn't tell us
+                    hasChanged = true;
+                }
+                return !hasChanged;
             }
         }, true /* sort behavior can be changed */);
         shownProjects = newProjects;
