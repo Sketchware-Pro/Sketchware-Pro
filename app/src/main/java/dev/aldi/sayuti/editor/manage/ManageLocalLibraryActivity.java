@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
 
 public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener {
@@ -91,76 +92,95 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             var version = parts[2];
             var resolver = new DependencyResolver(group, artifact, version);
             var handler = new Handler(Looper.getMainLooper());
-                    Executors.newSingleThreadExecutor().execute(() -> resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
-                @Override
-                public void invalidPackaging(@NonNull String dep) {
-                    handler.post(() -> text.setText("Invalid packaging for dependency " + dep));
+
+            class SetTextRunnable implements Runnable {
+                private final String message;
+
+                SetTextRunnable(String message) {
+                    this.message = message;
                 }
 
                 @Override
-                public void dexing(@NonNull String dep) {
-                    handler.post(() -> text.setText("Dexing dependency " + dep));
+                public void run() {
+                    text.setText(message);
                 }
+            }
 
-                @Override
-                public void dexingFailed(@NonNull String dependency, @NonNull Exception e) {
-                    handler.post(() -> {
-                        dialog.dismiss();
-                        SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this,
-                                "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
-                    });
-                }
+            Executors.newSingleThreadExecutor().execute(() -> {
+                BuiltInLibraries.maybeExtractAndroidJar(progress -> handler.post(new SetTextRunnable(progress)));
+                BuiltInLibraries.maybeExtractCoreLambdaStubsJar();
 
-                @Override
-                public void log(@NonNull String msg) {
-                    handler.post(() -> text.setText(msg));
-                }
+                resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
+                    @Override
+                    public void invalidPackaging(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Invalid packaging for dependency " + dep));
+                    }
 
-                @Override
-                public void downloading(@NonNull String dep) {
-                    handler.post(() -> text.setText("Downloading dependency " + dep));
-                }
+                    @Override
+                    public void dexing(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Dexing dependency " + dep));
+                    }
 
-                @Override
-                public void startResolving(@NonNull String dep) {
-                    handler.post(() -> text.setText("Resolving dependency " + dep));
-                }
+                    @Override
+                    public void dexingFailed(@NonNull String dependency, @NonNull Exception e) {
+                        handler.post(() -> {
+                            dialog.dismiss();
+                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this,
+                                    "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
+                        });
+                    }
 
-                @Override
-                public void onTaskCompleted(@NonNull List<String> dependencies) {
-                    handler.post(() -> {
-                        linear.setVisibility(View.VISIBLE);
+                    @Override
+                    public void log(@NonNull String msg) {
+                        handler.post(new SetTextRunnable(msg));
+                    }
 
-                        dialog.dismiss();
-                        if (!notAssociatedWithProject) {
-                            log("Enabling downloaded dependencies");
-                            var fileContent = FileUtil.readFile(local_lib_file);
-                            var enabledLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
-                            enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toUnmodifiableList()));
-                            FileUtil.writeFile(local_lib_file, new Gson().toJson(enabledLibs));
-                        }
-                        loadFiles();
-                    });
-                }
+                    @Override
+                    public void downloading(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Downloading dependency " + dep));
+                    }
 
-                @Override
-                public void onDependencyNotFound(@NonNull String dep) {
-                    handler.post(() -> {
-                        linear.setVisibility(View.VISIBLE);
-                        text.setText("Dependency " + dep + " not found");
-                    });
-                }
+                    @Override
+                    public void startResolving(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Resolving dependency " + dep));
+                    }
 
-                @Override
-                public void onDependencyResolveFailed(@NonNull Exception e) {
-                    handler.post(() -> text.setText(e.getMessage()));
-                }
+                    @Override
+                    public void onTaskCompleted(@NonNull List<String> dependencies) {
+                        handler.post(() -> {
+                            linear.setVisibility(View.VISIBLE);
 
-                @Override
-                public void onDependencyResolved(@NonNull String dep) {
-                    handler.post(() -> text.setText("Dependency " + dep + " resolved"));
-                }
-            }));
+                            dialog.dismiss();
+                            if (!notAssociatedWithProject) {
+                                log("Enabling downloaded dependencies");
+                                var fileContent = FileUtil.readFile(local_lib_file);
+                                var enabledLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
+                                enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toUnmodifiableList()));
+                                FileUtil.writeFile(local_lib_file, new Gson().toJson(enabledLibs));
+                            }
+                            loadFiles();
+                        });
+                    }
+
+                    @Override
+                    public void onDependencyNotFound(@NonNull String dep) {
+                        handler.post(() -> {
+                            linear.setVisibility(View.VISIBLE);
+                            text.setText("Dependency " + dep + " not found");
+                        });
+                    }
+
+                    @Override
+                    public void onDependencyResolveFailed(@NonNull Exception e) {
+                        handler.post(new SetTextRunnable(e.getMessage()));
+                    }
+
+                    @Override
+                    public void onDependencyResolved(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Dependency " + dep + " resolved"));
+                    }
+                });
+            });
         });
         dialog.show();
     }

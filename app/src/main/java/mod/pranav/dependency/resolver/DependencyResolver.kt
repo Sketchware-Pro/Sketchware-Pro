@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import mod.agus.jcoderz.dx.command.dexer.Main
 import mod.agus.jcoderz.lib.FileUtil
 import mod.hey.studios.util.Helper
+import mod.jbk.build.BuiltInLibraries
 import org.cosmic.ide.dependency.resolver.api.Artifact
 import org.cosmic.ide.dependency.resolver.api.Repository
 import org.cosmic.ide.dependency.resolver.getArtifact
@@ -133,8 +134,14 @@ class DependencyResolver(
 
         // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
-                dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
+                dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }.toMutableList()
 
+        val dependencyClasspath = mutableListOf(
+            BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath().resolve("android.jar"),
+            BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath().resolve("core-lambda-stubs.jar"),
+        )
+
+        // download all the dependencies
         latestDeps.forEach { artifact ->
             callback.startResolving(artifact.toStr())
             // set the packaging type
@@ -164,6 +171,16 @@ class DependencyResolver(
             callback.downloading(artifact.toStr())
             try {
                 artifact.downloadTo(path.toFile())
+                if (path.toFile().exists().not()) {
+                    latestDeps.remove(artifact)
+                    callback.onDependencyResolveFailed(Exception("Cannot download ${artifact.toStr()}"))
+                    return@forEach
+                }
+                dependencyClasspath.add(Paths.get(
+                    downloadPath,
+                    "${artifact.artifactId}-v${artifact.version}",
+                    "classes.jar"
+                ))
             } catch (e: Exception) {
                 callback.onDependencyResolveFailed(e)
             }
@@ -178,9 +195,21 @@ class DependencyResolver(
                         findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
                 path.parent.resolve("config").writeText(packageName)
             }
+        }
+        println(dependencyClasspath)
+        latestDeps.forEach { artifact ->
+            val jar =
+                Paths.get(
+                    downloadPath,
+                    "${artifact.artifactId}-v${artifact.version}",
+                    "classes.jar"
+                )
+            if (Files.notExists(jar)) {
+                return@forEach
+            }
             callback.dexing(artifact.toStr())
             try {
-                compileJar(path.parent.resolve("classes.jar"))
+                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) })
                 callback.onDependencyResolved(artifact.toStr())
             } catch (e: Exception) {
                 callback.dexingFailed(artifact.toStr(), e)
@@ -348,13 +377,14 @@ class DependencyResolver(
         }
     }
 
-    private fun compileJar(jarFile: Path) {
+    private fun compileJar(jarFile: Path, jars: List<Path>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             D8.run(
                     D8Command.builder()
                             .setIntermediate(true)
                             .setMode(CompilationMode.RELEASE)
                             .addProgramFiles(jarFile)
+                            .addClasspathFiles(jars)
                             .setOutput(jarFile.parent, OutputMode.DexIndexed)
                             .build()
             )
