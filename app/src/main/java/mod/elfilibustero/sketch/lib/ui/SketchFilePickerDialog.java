@@ -1,19 +1,18 @@
 package mod.elfilibustero.sketch.lib.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,12 +20,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import a.a.a.aB;
-import com.sketchware.remod.R;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 public class SketchFilePickerDialog extends aB {
-    private Activity activity;
+    private final Activity activity;
     private String currentPath;
     private OnFileSelectedListener onFileSelectedListener;
     private OnBackCallback onBackCallback;
@@ -34,8 +32,8 @@ public class SketchFilePickerDialog extends aB {
 
     private FileAdapter adapter;
 
-    private List<File> fileList = new ArrayList<>();
-    private List<String> extensions = new ArrayList<>();
+    private final List<File> fileList = new ArrayList<>();
+    private final List<String> extensions = new ArrayList<>();
 
     public interface OnFileSelectedListener {
         void onFileSelected(SketchFilePickerDialog dialog, File file);
@@ -183,8 +181,8 @@ public class SketchFilePickerDialog extends aB {
         return false;
     }
 
-    private class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder> {
-        private List<File> fileList;
+    private static class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder> {
+        private final List<File> fileList;
         private OnItemClickListener itemClickListener;
         private int lastCheckedPosition = -1;
 
@@ -231,7 +229,7 @@ public class SketchFilePickerDialog extends aB {
                 name = itemView.findViewById(R.id.tv_file_name);
                 fileArea = itemView.findViewById(R.id.file_area);
                 imageSelected = itemView.findViewById(R.id.img_selected);
-                fileIconImageView = new ImageView(activity);
+                fileIconImageView = new ImageView(itemView.getContext());
                 fileArea.addView(fileIconImageView);
                 itemView.setOnClickListener(this);
             }
