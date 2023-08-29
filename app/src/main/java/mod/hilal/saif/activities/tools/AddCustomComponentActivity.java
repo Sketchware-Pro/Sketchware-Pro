@@ -60,9 +60,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(view -> {
-            onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         if (getIntent().hasExtra("pos")) {
             isEditMode = true;
             position = getIntent().getIntExtra("pos", 0);

@@ -66,12 +66,13 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         tv_guide = findViewById(R.id.tv_guide);
         componentView = findViewById(R.id.componentView);
 
-        findViewById(R.id._fab).setOnClickListener(_view -> startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
+        findViewById(R.id._fab).setOnClickListener(_view ->
+                startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
     }
 
     @Override
@@ -196,7 +197,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                 readSettings();
                 dialog.dismiss();
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
             dialog.show();
         } else {
             HashMap<String, Object> map = list.get(0);
