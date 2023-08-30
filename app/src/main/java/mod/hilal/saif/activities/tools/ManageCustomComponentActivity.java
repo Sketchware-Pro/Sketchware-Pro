@@ -35,7 +35,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
-public class ComponentsMaker extends Activity {
+public class ManageCustomComponentActivity extends Activity {
 
     private static final String PATH_COMPONENTS_FILE = ".sketchware/data/system/component.json";
     private static final String PATH_COMPONENT_EXPORT = ".sketchware/data/system/export/components/";
@@ -69,7 +69,7 @@ public class ComponentsMaker extends Activity {
     private void setupViews() {
         FloatingActionButton fab = findViewById(R.id.add_attr_fab);
         fab.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), ComponentsMakerCreator.class)));
+                startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
         listView = findViewById(R.id.add_attr_listview);
         refreshList();
     }
@@ -218,13 +218,13 @@ public class ComponentsMaker extends Activity {
             ((TextView) convertView.findViewById(R.id.custom_view_pro_title)).setText(_data.get(position).get("name").toString());
             ((TextView) convertView.findViewById(R.id.custom_view_pro_subtitle)).setText(_data.get(position).get("description").toString());
             root.setOnClickListener(v -> {
-                Intent intent = new Intent(getApplicationContext(), ComponentsMakerCreator.class);
+                Intent intent = new Intent(getApplicationContext(), AddCustomComponentActivity.class);
                 intent.putExtra("pos", String.valueOf(position));
                 intent.putExtra("name", _data.get(position).get("name").toString());
                 startActivity(intent);
             });
             root.setOnLongClickListener(v -> {
-                new AlertDialog.Builder(ComponentsMaker.this)
+                new AlertDialog.Builder(ManageCustomComponentActivity.this)
                         .setTitle(_data.get(position).get("name").toString())
                         .setItems(new String[]{"Export", "Delete"}, (dialog, which) -> {
                             if (which == 0) {

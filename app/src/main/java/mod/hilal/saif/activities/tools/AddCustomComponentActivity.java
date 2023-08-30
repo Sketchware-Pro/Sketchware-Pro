@@ -21,7 +21,7 @@ import mod.hasrat.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class ComponentsMakerCreator extends Activity implements View.OnClickListener {
+public class AddCustomComponentActivity extends Activity implements View.OnClickListener {
 
     private MaterialButton cancel;
     private EditText coAddiVar;
@@ -46,7 +46,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.components_creator);
+        setContentView(R.layout.manage_custom_component_add);
         if (getIntent().hasExtra("pos")) {
             isEdit = true;
             pos = Integer.parseInt(getIntent().getStringExtra("pos"));
