@@ -13,6 +13,8 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import a.a.a.Lx;
 import a.a.a.xB;
@@ -573,5 +575,29 @@ public class ComponentsHandler {
 
     public static void refreshCachedCustomComponents() {
         cachedCustomComponents = readCustomComponents();
+    }
+
+    public static boolean isValidComponent(Map<String, Object> map) {
+        return map.containsKey("name")
+        && map.containsKey("id")
+        && map.containsKey("icon")
+        && map.containsKey("varName")
+        && map.containsKey("typeName")
+        && map.containsKey("buildClass")
+        && map.containsKey("class")
+        && map.containsKey("description")
+        && map.containsKey("url")
+        && map.containsKey("additionalVar")
+        && map.containsKey("defineAdditionalVar")
+        && map.containsKey("imports");
+    }
+    
+    public static boolean isValidComponentList(List<? extends Map<String, Object>> list) {
+        for (Map<String, Object> map : list) {
+            if (!isValidComponent(map)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
