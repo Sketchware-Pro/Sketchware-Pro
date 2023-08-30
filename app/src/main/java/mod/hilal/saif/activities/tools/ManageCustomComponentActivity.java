@@ -1,242 +1,390 @@
 package mod.hilal.saif.activities.tools;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-
+import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-
+import java.util.List;
+import java.util.Set;
+import com.google.android.material.appbar.MaterialToolbar;
+import mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout;
+import a.a.a.aB;
+import a.a.a.gB;
+import a.a.a.wq;
+import com.besome.sketch.lib.base.CollapsibleViewHolder;
+import com.besome.sketch.lib.ui.CollapsibleButton;
+import com.sketchware.remod.R;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
-public class ManageCustomComponentActivity extends Activity {
+public class ManageCustomComponentActivity extends AppCompatActivity {
 
-    private static final String PATH_COMPONENTS_FILE = ".sketchware/data/system/component.json";
-    private static final String PATH_COMPONENT_EXPORT = ".sketchware/data/system/export/components/";
-    private static final String PATH_EXPORT_ALL_COMPONENTS_FILE_NAME = "All_Components.json";
-    private static final String COMPONENTS_FILE_PATH = new File(FileUtil.getExternalStorageDir(), PATH_COMPONENTS_FILE).getAbsolutePath();
-    private static final String COMPONENT_EXPORT_PATH = new File(FileUtil.getExternalStorageDir(), PATH_COMPONENT_EXPORT).getAbsolutePath();
+    private ArrayList<HashMap<String, Object>> componentsList = new ArrayList<>();
 
-    private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
-    private ListView listView;
+    private static final String COMPONENT_EXPORT_DIR = wq.getExtraDataExport() + "/components/";
+    private static final String COMPONENT_DIR = wq.getCustomComponent();
+
+    private ComponentsAdapter adapter;
+
+    private TextView tv_guide;
+    private RecyclerView componentView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_custom_attribute);
-        setToolbar();
-        setupViews();
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
+        setContentView(R.layout.manage_custom_component);
+        init();
+    }
+
+    private void init() {
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+
+        tv_guide = findViewById(R.id.tv_guide);
+        componentView = findViewById(R.id.componentView);
+
+        findViewById(R.id._fab).setOnClickListener(_view -> startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        refreshList();
+        readSettings();
     }
 
     @Override
-    protected void onStop() {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0, 0, "Import");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                showFilePickerDialog();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStop() {
         super.onStop();
         ComponentsHandler.refreshCachedCustomComponents();
     }
 
-    private void setupViews() {
-        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
-        fab.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
-        listView = findViewById(R.id.add_attr_listview);
-        refreshList();
-    }
-
-    private void a(View view, int i, int i2, boolean z) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setCornerRadii(new float[]{(float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f, (float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setElevation((float) i2);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
-    }
-
-    private void refreshList() {
-        File componentsFile = new File(COMPONENTS_FILE_PATH);
-        if (componentsFile.exists()) {
-            listMap = new Gson().fromJson(FileUtil.readFile(componentsFile.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+    private void readSettings() {
+        if (FileUtil.isExistFile(COMPONENT_DIR)) {
+            readComponents(COMPONENT_DIR);
+        } else {
+            tv_guide.setVisibility(View.VISIBLE);
+            componentView.setVisibility(View.GONE);
         }
-        Parcelable savedState = listView.onSaveInstanceState();
-        listView.setAdapter(new ListAdapter(listMap));
-        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-        listView.onRestoreInstanceState(savedState);
     }
 
-    private void deleteItem(int position) {
-        listMap.remove(position);
-        FileUtil.writeFile(COMPONENTS_FILE_PATH, new Gson().toJson(listMap));
-        refreshList();
+    private void readComponents(final String _path) {
+        componentsList = new Gson().fromJson(FileUtil.readFile(_path), Helper.TYPE_MAP_LIST);
+        if (componentsList != null && componentsList.size() > 0) {
+            adapter = new ComponentsAdapter(componentsList);
+            Parcelable state = componentView.getLayoutManager().onSaveInstanceState();
+            componentView.setAdapter(adapter);
+            componentView.getLayoutManager().onRestoreInstanceState(state);
+            adapter.notifyDataSetChanged();
+            componentView.setVisibility(View.VISIBLE);
+            tv_guide.setVisibility(View.GONE);
+            return;
+        }
+        tv_guide.setVisibility(View.VISIBLE);
+        componentView.setVisibility(View.GONE);
     }
 
-    private void openFileExplorerImport() {
-        DialogProperties dialogProperties = new DialogProperties();
-        dialogProperties.selection_mode = 0;
-        dialogProperties.selection_type = 0;
-        File externalStorageDir = new File(FileUtil.getExternalStorageDir());
-        dialogProperties.root = externalStorageDir;
-        dialogProperties.error_dir = externalStorageDir;
-        dialogProperties.offset = externalStorageDir;
-        dialogProperties.extensions = new String[]{"json"};
-        FilePickerDialog filePickerDialog = new FilePickerDialog(this, dialogProperties);
-        filePickerDialog.setTitle("Select a JSON file");
-        filePickerDialog.setDialogSelectionListener(selections -> {
-            if (FileUtil.readFile(selections[0]).equals("")) {
-                SketchwareUtil.toastError("The selected file is empty!");
-            } else if (FileUtil.readFile(selections[0]).equals("[]")) {
-                SketchwareUtil.toastError("The selected file is empty!");
-            } else {
+    private void showFilePickerDialog() {
+        SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(this)
+            .addExtension("json")
+            .setFilePath(FileUtil.getExternalStorageDir())
+            .addOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
                 try {
-                    ArrayList<HashMap<String, Object>> components = new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST);
-                    _importComponents(components);
+                    selectComponentToImport(file.getAbsolutePath());
                 } catch (Exception e) {
-                    SketchwareUtil.toastError("Invalid JSON file");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
                 }
-            }
-        });
+                dialog.dismiss();
+            })
+            .addOnDismissListener((SketchFilePickerDialog dialog) -> dialog.dismiss());
+        filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
+        filePickerDialog.setIcon(R.drawable.file_48_blue);
         filePickerDialog.show();
     }
 
-    private void _importComponents(ArrayList<HashMap<String, Object>> arrayList) {
-        listMap.addAll(arrayList);
-        FileUtil.writeFile(COMPONENTS_FILE_PATH, new Gson().toJson(listMap));
-        refreshList();
-        SketchwareUtil.toast("Successfully imported components");
-    }
+    private void selectComponentToImport(String path) {
+        String text = FileUtil.readFile(path);
+        if (text.isEmpty() || text.equals("[]")) {
+            SketchwareUtil.toastError(Helper.getResString(R.string.common_message_selected_file_empty));
+            return;
+        }
 
-    private void exportComponent(int position) {
-        String fileName = listMap.get(position).get("name").toString() + ".json";
-        ArrayList<HashMap<String, Object>> componentList = new ArrayList<>();
-        componentList.add(listMap.get(position));
-        FileUtil.writeFile(new File(COMPONENT_EXPORT_PATH, fileName).getAbsolutePath(), new Gson().toJson(componentList));
-        SketchwareUtil.toast("Successfully exported component to:\n/Internal storage/" + PATH_COMPONENT_EXPORT + fileName, Toast.LENGTH_LONG);
-    }
+        ArrayList<HashMap<String, Object>> list = new Gson().fromJson(text, Helper.TYPE_MAP_LIST);
+        if (list.isEmpty() || !ComponentsHandler.isValidComponentList(list)) {
+            SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
+            return;
+        }
 
-    private void setToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Component manager");
-        final ImageView back_icon = findViewById(R.id.ig_toolbar_back);
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
-        final ImageView more_icon = findViewById(R.id.ig_toolbar_load_file);
-        more_icon.setVisibility(View.VISIBLE);
-        more_icon.setImageResource(R.drawable.ic_more_vert_white_24dp);
-        more_icon.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(this, more_icon);
-            Menu menu = popupMenu.getMenu();
-            menu.add("Import components");
-            menu.add("Export components");
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getTitle().toString()) {
-                    case "Export components":
-                        FileUtil.writeFile(new File(COMPONENT_EXPORT_PATH, PATH_EXPORT_ALL_COMPONENTS_FILE_NAME).getAbsolutePath(), new Gson().toJson(listMap));
-                        SketchwareUtil.toast("Successfully exported components to:\n/Internal storage/" +
-                                        COMPONENT_EXPORT_PATH + PATH_EXPORT_ALL_COMPONENTS_FILE_NAME,
-                                Toast.LENGTH_LONG);
-                        break;
+        ArrayList<String> componentNames = new ArrayList<>();
+        for (int j = 0; j < list.size(); j++) {
+            componentNames.add((String) list.get(j).get("name"));
+        }
 
-                    case "Import components":
-                        openFileExplorerImport();
-                        break;
-
-                    default:
-                        return false;
+        if (componentNames.size() > 1) {
+            var dialog = new aB(this);
+            dialog.b(Helper.getResString(R.string.logic_editor_title_select_component));
+            ArrayList<Integer> selectedPositions = new ArrayList<>();
+            var listView = new ListView(this);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, componentNames);
+            listView.setAdapter(arrayAdapter);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            listView.setDivider(null);
+            listView.setDividerHeight(0);
+            listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
+                SparseBooleanArray checkedPositions = listView.getCheckedItemPositions();
+                boolean isChecked = checkedPositions.get(position);
+                if (isChecked) {
+                    selectedPositions.add(position);
+                } else {
+                    selectedPositions.remove(Integer.valueOf(position));
                 }
-                return true;
             });
-            popupMenu.show();
-        });
-        Helper.applyRippleToToolbarView(more_icon);
+            dialog.a(listView);
+            dialog.b(Helper.getResString(R.string.common_word_import), view -> {
+                for (int position : selectedPositions) {
+                    HashMap<String, Object> map = list.get(position);
+                    if (position != -1 && ComponentsHandler.isValidComponent(map)) {
+                        componentsList.add(map);
+                    } else {
+                        SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
+                    }
+                }
+                FileUtil.writeFile(COMPONENT_DIR, new Gson().toJson(componentsList));
+                readSettings();
+                dialog.dismiss();
+            });
+            dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
+            dialog.show();
+        } else {
+            HashMap<String, Object> map = list.get(0);
+            if (ComponentsHandler.isValidComponent(map)) {
+                componentsList.add(map);
+                FileUtil.writeFile(COMPONENT_DIR, new Gson().toJson(componentsList));
+                readSettings();
+            } else {
+                SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
+            }
+        }
     }
 
-    private class ListAdapter extends BaseAdapter {
+    private void save(final HashMap<String, Object> _item) {
+        componentsList.remove(_item);
+        FileUtil.writeFile(COMPONENT_DIR, new Gson().toJson(componentsList));
+    }
 
-        private final ArrayList<HashMap<String, Object>> _data;
+    private void export(int position) {
+        String componentName = componentsList.get(position).get("name").toString();
+        var dialog = new aB(this);
+        dialog.b(Helper.getResString(R.string.common_word_export));
+        dialog.a(Helper.getResString(R.string.developer_tools_component_message_export, componentName));
+        dialog.a(R.drawable.export_96);
+        dialog.b(Helper.getResString(R.string.common_word_yes), view -> {
+            String fileName = componentName + ".json";
+            String filePath = new File(COMPONENT_EXPORT_DIR, fileName).getAbsolutePath();
+            ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+            list.add(componentsList.get(position));
+            FileUtil.writeFile(filePath, new Gson().toJson(list));
+            SketchwareUtil.toast(Helper.getResString(R.string.developer_tools_component_success_message_export, filePath));
+            dialog.dismiss();
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
+    }
 
-        public ListAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            _data = arrayList;
+    public class ComponentsAdapter extends RecyclerView.Adapter<ComponentsAdapter.ViewHolder> {
+        private ArrayList<HashMap<String, Object>> components;
+        private List<Boolean> collapse;
+        private List<Boolean> confirmation;
+
+        public ComponentsAdapter(ArrayList<HashMap<String, Object>> itemList) {
+            this.components = itemList;
+            this.collapse = new ArrayList<>(Collections.nCopies(itemList.size(), true));
+            this.confirmation = new ArrayList<>(Collections.nCopies(itemList.size(), false));
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.manage_custom_component_list_item, parent, false);
+            return new ViewHolder(view);
         }
 
         @Override
-        public int getCount() {
-            return _data.size();
-        }
-
-        @Override
-        public HashMap<String, Object> getItem(int i) {
-            return _data.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, parent, false);
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.bind(components.get(position));
+            if (holder.isCollapsed()) {
+                holder.optionLayout.setVisibility(View.GONE);
+                holder.menu.setRotation(0.0f);
+            } else {
+                holder.optionLayout.setVisibility(View.VISIBLE);
+                holder.menu.setRotation(-180.0f);
+                if (confirmation.get(position)) {
+                    if (holder.shouldAnimateNextTransformation()) {
+                        holder.collapsibleComponentLayout.showConfirmation();
+                        holder.setAnimateNextTransformation(false);
+                    } else {
+                        holder.collapsibleComponentLayout.showConfirmationWithoutAnimation();
+                    }
+                } else {
+                    if (holder.shouldAnimateNextTransformation()) {
+                        holder.collapsibleComponentLayout.hideConfirmation();
+                        holder.setAnimateNextTransformation(false);
+                    } else {
+                        holder.collapsibleComponentLayout.hideConfirmationWithoutAnimation();
+                    }
+                }
             }
-            LinearLayout root = convertView.findViewById(R.id.custom_view_pro_background);
-            a(root, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView icon = convertView.findViewById(R.id.custom_view_pro_img);
-            icon.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
-            ((LinearLayout) icon.getParent()).setGravity(17);
-            ((TextView) convertView.findViewById(R.id.custom_view_pro_title)).setText(_data.get(position).get("name").toString());
-            ((TextView) convertView.findViewById(R.id.custom_view_pro_subtitle)).setText(_data.get(position).get("description").toString());
-            root.setOnClickListener(v -> {
-                Intent intent = new Intent(getApplicationContext(), AddCustomComponentActivity.class);
-                intent.putExtra("pos", String.valueOf(position));
-                intent.putExtra("name", _data.get(position).get("name").toString());
-                startActivity(intent);
-            });
-            root.setOnLongClickListener(v -> {
-                new AlertDialog.Builder(ManageCustomComponentActivity.this)
-                        .setTitle(_data.get(position).get("name").toString())
-                        .setItems(new String[]{"Export", "Delete"}, (dialog, which) -> {
-                            if (which == 0) {
-                                exportComponent(position);
-                            } else if (which == 1) {
-                                deleteItem(position);
-                            }
-                        })
-                        .show();
-                return true;
-            });
-            return convertView;
+            holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+
+        @Override
+        public int getItemCount() {
+            return components.size();
+        }
+
+        public class ViewHolder extends CollapsibleViewHolder {
+            public final LinearLayout root;
+            public final LinearLayout optionLayout;
+            public final ImageView icon;
+            public final TextView type;
+            public final TextView id;
+            public final ImageView menu;
+            public final CollapsibleCustomComponentLayout collapsibleComponentLayout;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView, 200);
+                root = (LinearLayout) itemView;
+                icon = itemView.findViewById(R.id.img_icon);
+                type = itemView.findViewById(R.id.tv_component_type);
+                id = itemView.findViewById(R.id.tv_component_id);
+                menu = itemView.findViewById(R.id.img_menu);
+                optionLayout = itemView.findViewById(R.id.component_option_layout);
+                collapsibleComponentLayout = itemView.findViewById(R.id.component_option);
+                collapsibleComponentLayout.setButtonOnClickListener(v -> {
+                    int lastSelectedItem = getLayoutPosition();
+                    if (v instanceof CollapsibleButton) {
+                        switch (((CollapsibleButton) v).getButtonId()) {
+                            case 0:
+                                export(lastSelectedItem);
+                                confirmation.set(lastSelectedItem, false);
+                                setAnimateNextTransformation(true);
+                                notifyItemChanged(lastSelectedItem);
+                                break;
+
+                            case 1:
+                                confirmation.set(lastSelectedItem, true);
+                                setAnimateNextTransformation(true);
+                                notifyItemChanged(lastSelectedItem);
+                                break;
+                        }
+                        return;
+                    }
+                    int id = v.getId();
+                    if (id == R.id.confirm_yes) {
+                        save(components.get(lastSelectedItem));
+                        confirmation.set(lastSelectedItem, false);
+                        notifyItemRemoved(lastSelectedItem);
+                        notifyItemRangeChanged(lastSelectedItem, getItemCount());
+                    } else if (id == R.id.confirm_no) {
+                        confirmation.set(lastSelectedItem, false);
+                        setAnimateNextTransformation(true);
+                        notifyItemChanged(lastSelectedItem);
+                    }
+                });
+                onDoneInitializingViews();
+                root.setOnClickListener(v -> {
+                    Intent intent = new Intent(getApplicationContext(), AddCustomComponentActivity.class);
+                    intent.putExtra("pos", (int) getLayoutPosition());
+                    startActivity(intent);
+                });
+                setOnClickCollapseConfig(v -> v != root);
+            }
+
+            public void bind(HashMap<String, Object> item) {
+                type.setText((String) item.get("name"));
+                id.setText((String) item.get("id"));
+                icon.setImageResource(Integer.parseInt((String) item.get("icon")));
+            }
+
+            @Override
+            protected boolean isCollapsed() {
+                return collapse.get(getLayoutPosition());
+            }
+
+            @Override
+            protected void setIsCollapsed(boolean isCollapsed) {
+                collapse.set(getLayoutPosition(), isCollapsed);
+            }
+
+            @NonNull
+            @Override
+            protected ViewGroup getOptionsLayout() {
+                return optionLayout;
+            }
+
+            @NonNull
+            @Override
+            protected Set<? extends View> getOnClickCollapseTriggerViews() {
+                return Set.of(menu, root);
+            }
+
+            @NonNull
+            @Override
+            protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
+                return Set.of(root);
+            }
+
+            @Override
+            public void collapse() {
+                super.collapse();
+            }
+
+            @Override
+            public void expand() {
+                super.expand();
+            }
         }
     }
 }

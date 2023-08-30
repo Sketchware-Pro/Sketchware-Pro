@@ -1,193 +1,258 @@
 package mod.hilal.saif.activities.tools;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
+import android.widget.ListView;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-
+import com.google.gson.reflect.TypeToken;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 
+import a.a.a.aB;
+import a.a.a.wq;
+import com.sketchware.remod.R;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import mod.hasrat.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class AddCustomComponentActivity extends Activity implements View.OnClickListener {
+public class AddCustomComponentActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private MaterialButton cancel;
-    private EditText coAddiVar;
-    private EditText coBuildClass;
-    private EditText coCustomImport;
-    private EditText coDeAddiVar;
-    private EditText coDesc;
-    private EditText coIcon;
-    private EditText coId;
-    private TextInputLayout coIconTil;
-    private EditText coName;
-    private EditText coTypeClass;
-    private EditText coTypeName;
-    private EditText coUrl;
-    private EditText coVarName;
-    private boolean isEdit = false;
-    private String na = "";
-    private int pos = 0;
-    private MaterialButton save;
-    private ImageView selectIcon;
+    private EditText componentName;
+    private EditText componentId;
+    private EditText componentIcon;
+    private EditText componentVarTypeName;
+    private EditText componentTypeName;
+    private EditText componentBuildClass;
+    private EditText componentTypeClass;
+    private EditText componentDesc;
+    private EditText componentDocUrl;
+    private EditText componentAddVar;
+    private EditText componentDefineAddVar;
+    private EditText componentImports;
+
+    private boolean isEditMode = false;
+    private int position = 0;
+
+    private String path = wq.getCustomComponent();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component_add);
+        init();
+    }
+
+    private void init() {
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(view -> {
+            onBackPressed();
+        });
         if (getIntent().hasExtra("pos")) {
-            isEdit = true;
-            pos = Integer.parseInt(getIntent().getStringExtra("pos"));
-            na = getIntent().getStringExtra("name");
+            isEditMode = true;
+            position = getIntent().getIntExtra("pos", 0);
         }
-        setToolbar();
         getViewsById();
-        setupViews();
-        if (isEdit) {
+        if (isEditMode) {
+            setTitle(Helper.getResString(R.string.event_title_edit_component));
             fillUp();
         } else {
+            setTitle(Helper.getResString(R.string.event_title_add_new_component));
             initializeHelper();
         }
     }
 
     private void fillUp() {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/component.json");
-        if (FileUtil.isExistFile(concat)) {
-            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
-            coName.setText((String) arrayList.get(pos).get("name"));
-            coId.setText((String) arrayList.get(pos).get("id"));
-            coTypeName.setText((String) arrayList.get(pos).get("typeName"));
-            coIcon.setText((String) arrayList.get(pos).get("icon"));
-            coDesc.setText((String) arrayList.get(pos).get("description"));
-            coVarName.setText((String) arrayList.get(pos).get("varName"));
-            coTypeClass.setText((String) arrayList.get(pos).get("class"));
-            coBuildClass.setText((String) arrayList.get(pos).get("buildClass"));
-            coUrl.setText((String) arrayList.get(pos).get("url"));
-            coAddiVar.setText((String) arrayList.get(pos).get("additionalVar"));
-            coDeAddiVar.setText((String) arrayList.get(pos).get("defineAdditionalVar"));
-            coCustomImport.setText((String) arrayList.get(pos).get("imports"));
+        if (FileUtil.isExistFile(path)) {
+            ArrayList<HashMap<String, Object>> list = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            HashMap<String, Object> map = list.get(position);
+            setupViews(map);
         }
     }
 
     private void getViewsById() {
-        coName = findViewById(R.id.components_creator_name);
-        coId = findViewById(R.id.components_creator_id);
-        coIconTil = findViewById(R.id.components_creator_icon_til);
-        coTypeName = findViewById(R.id.components_creator_typename);
-        coIcon = findViewById(R.id.components_creator_icon);
-        selectIcon = findViewById(R.id.components_creator_iconselector);
-        selectIcon.setImageResource(R.drawable.add_96_blue);
-        coDesc = findViewById(R.id.components_creator_description);
-        coVarName = findViewById(R.id.components_creator_varname);
-        coTypeClass = findViewById(R.id.components_creator_typeclass);
-        coBuildClass = findViewById(R.id.components_creator_buildclass);
-        coUrl = findViewById(R.id.components_creator_url);
-        coAddiVar = findViewById(R.id.components_creator_addirional);
-        coDeAddiVar = findViewById(R.id.components_creator_deadditional);
-        coCustomImport = findViewById(R.id.components_creator_custom);
-        cancel = findViewById(R.id.components_creator_cancel);
-        save = findViewById(R.id.components_creator_save);
-        Helper.addClearErrorOnTextChangeTextWatcher(coIconTil);
+        componentName = findViewById(R.id.component_name);
+        componentId = findViewById(R.id.component_id);
+        componentIcon = findViewById(R.id.component_icon);
+        componentVarTypeName = findViewById(R.id.component_var_type_name);
+        componentTypeName = findViewById(R.id.component_type_name);
+        componentBuildClass = findViewById(R.id.component_build_class);
+        componentTypeClass = findViewById(R.id.component_type_class);
+        componentDesc = findViewById(R.id.component_description);
+        componentDocUrl = findViewById(R.id.component_doc_url);
+        componentAddVar = findViewById(R.id.component_add_var);
+        componentDefineAddVar = findViewById(R.id.component_def_add_var);
+        componentImports = findViewById(R.id.component_imports);
+        findViewById(R.id.import_btn).setOnClickListener(this);
+        findViewById(R.id.save_btn).setOnClickListener(this);
+        findViewById(R.id.pick).setOnClickListener(this);
     }
 
     private void initializeHelper() {
-        coName.addTextChangedListener(new ComponentHelper(new EditText[]{coBuildClass, coVarName, coTypeName, coTypeClass}, coTypeClass));
+        componentName.addTextChangedListener(new ComponentHelper(new EditText[]{componentBuildClass, componentVarTypeName, componentTypeName, componentTypeClass}, componentTypeClass));
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ig_toolbar_back || id == R.id.components_creator_cancel) {
-            finish();
-        } else if (id == R.id.components_creator_save) {
-            if (filledIn()) {
-                if (OldResourceIdMapper.isValidIconId(coIcon.getText().toString())) {
+        if (id == R.id.save_btn) {
+            if (!isImportantFieldsEmpty()) {
+                if (OldResourceIdMapper.isValidIconId(componentIcon.getText().toString())) {
                     save();
                 } else {
-                    coIconTil.setError("Invalid icon ID");
-                    coIcon.requestFocus();
+                    SketchwareUtil.toastError(Helper.getResString(R.string.invalid_icon_id));
+                    componentIcon.requestFocus();
                 }
             } else {
-                SketchwareUtil.toast("Some required fields are empty");
+                SketchwareUtil.toastError(Helper.getResString(R.string.invalid_required_fields));
             }
-        } else if (id == R.id.components_creator_iconselector) {
+        } else if (id == R.id.import_btn) {
+            showFilePickerDialog();
+        } else if (id == R.id.pick) {
             showIconSelectorDialog();
         }
     }
 
-    private void setupViews() {
-        cancel.setOnClickListener(this);
-        save.setOnClickListener(this);
-        selectIcon.setOnClickListener(this);
+    private void setupViews(HashMap<String, Object> map) {
+        componentName.setText((String) map.get("name"));
+        componentId.setText((String) map.get("id"));
+        componentIcon.setText((String) map.get("icon"));
+        componentVarTypeName.setText((String) map.get("varName"));
+        componentTypeName.setText((String) map.get("typeName"));
+        componentBuildClass.setText((String) map.get("class"));
+        componentTypeClass.setText((String) map.get("buildClass"));
+        componentDesc.setText((String) map.get("description"));
+        componentDocUrl.setText((String) map.get("url"));
+        componentAddVar.setText((String) map.get("additionalVar"));
+        componentDefineAddVar.setText((String) map.get("defineAdditionalVar"));
+        componentImports.setText((String) map.get("imports"));
     }
 
     private void showIconSelectorDialog() {
-        new IconSelectorDialog(this, coIcon).show();
+        new IconSelectorDialog(this, componentIcon).show();
     }
 
-    private boolean filledIn() {
-        return !coName.getText().toString().equals("")
-                && !coId.getText().toString().equals("")
-                && !coTypeName.getText().toString().equals("")
-                && !coIcon.getText().toString().equals("")
-                && !coVarName.getText().toString().equals("")
-                && !coTypeClass.getText().toString().equals("")
-                && !coBuildClass.getText().toString().equals("");
+    private boolean isImportantFieldsEmpty() {
+        return componentName.getText().toString().isEmpty()
+            || componentId.getText().toString().isEmpty()
+            || componentIcon.getText().toString().isEmpty()
+            || componentTypeName.getText().toString().isEmpty()
+            || componentVarTypeName.getText().toString().isEmpty()
+            || componentTypeClass.getText().toString().isEmpty()
+            || componentBuildClass.getText().toString().isEmpty();
     }
 
     private void save() {
-        ArrayList<HashMap<String, Object>> arrayList;
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/component.json");
-        if (FileUtil.isExistFile(concat)) {
-            arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
-        } else {
-            arrayList = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+        if (FileUtil.isExistFile(path)) {
+            list = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         }
-        HashMap<String, Object> hashMap = new HashMap<>();
-        if (isEdit) {
-            hashMap = arrayList.get(pos);
+        HashMap<String, Object> map = new HashMap<>();
+        if (isEditMode) {
+            map = list.get(position);
         }
-        hashMap.put("name", coName.getText().toString());
-        hashMap.put("id", coId.getText().toString());
-        hashMap.put("typeName", coTypeName.getText().toString());
-        hashMap.put("icon", coIcon.getText().toString());
-        hashMap.put("description", coDesc.getText().toString());
-        hashMap.put("varName", coVarName.getText().toString());
-        hashMap.put("class", coTypeClass.getText().toString());
-        hashMap.put("buildClass", coBuildClass.getText().toString());
-        hashMap.put("url", coUrl.getText().toString());
-        hashMap.put("additionalVar", coAddiVar.getText().toString());
-        hashMap.put("defineAdditionalVar", coDeAddiVar.getText().toString());
-        hashMap.put("imports", coCustomImport.getText().toString());
-        if (!isEdit) {
-            arrayList.add(hashMap);
+        map.put("name", componentName.getText().toString());
+        map.put("id", componentId.getText().toString());
+        map.put("icon", componentIcon.getText().toString());
+        map.put("varName", componentVarTypeName.getText().toString());
+        map.put("typeName", componentTypeName.getText().toString());
+        map.put("buildClass", componentBuildClass.getText().toString());
+        map.put("class", componentTypeClass.getText().toString());
+        map.put("description", componentDesc.getText().toString());
+        map.put("url", componentDocUrl.getText().toString());
+        map.put("additionalVar", componentAddVar.getText().toString());
+        map.put("defineAdditionalVar", componentDefineAddVar.getText().toString());
+        map.put("imports", componentImports.getText().toString());
+        if (!isEditMode) {
+            list.add(map);
         }
-        FileUtil.writeFile(concat, new Gson().toJson(arrayList));
-        SketchwareUtil.toast("Saved");
+        FileUtil.writeFile(path, new Gson().toJson(list));
+        SketchwareUtil.toast(Helper.getResString(R.string.common_word_saved));
         finish();
     }
 
-    private void setToolbar() {
-        TextView title = findViewById(R.id.tx_toolbar_title);
-        if (isEdit) {
-            title.setText(na);
-        } else {
-            title.setText("Create a new component");
+    private void showFilePickerDialog() {
+        SketchFilePickerDialog dialog = new SketchFilePickerDialog(this)
+            .addExtension("json")
+            .setFilePath(FileUtil.getExternalStorageDir())
+            .addOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
+                try {
+                    selectComponentToImport(file.getAbsolutePath());
+                } catch (Exception e) {
+                    SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
+                }
+                _dialog.dismiss();
+            })
+            .addOnDismissListener((SketchFilePickerDialog _dialog) -> _dialog.dismiss());
+        dialog.setTitle(Helper.getResString(R.string.common_word_import));
+        dialog.setIcon(R.drawable.file_48_blue);
+        dialog.show();
+    }
+
+    private void selectComponentToImport(String path) {
+        String text = FileUtil.readFile(path);
+        if (text.isEmpty() || text.equals("[]")) {
+            SketchwareUtil.toastError(Helper.getResString(R.string.common_message_selected_file_empty));
+            return;
         }
-        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
-        back_icon.setOnClickListener(this);
-        Helper.applyRippleToToolbarView(back_icon);
+
+        ArrayList<HashMap<String, Object>> list = new Gson().fromJson(text, Helper.TYPE_MAP_LIST);
+        if (list.isEmpty() || !ComponentsHandler.isValidComponentList(list)) {
+            SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
+            return;
+        }
+
+        ArrayList<String> componentNames = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            componentNames.add((String) list.get(i).get("name"));
+        }
+
+        if (componentNames.size() > 1) {
+            var dialog = new aB(this);
+            dialog.b(Helper.getResString(R.string.logic_editor_title_select_component));
+            var choiceToImport = new AtomicInteger(-1);
+            var listView = new ListView(this);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, componentNames);
+            listView.setAdapter(arrayAdapter);
+            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            listView.setDivider(null);
+            listView.setDividerHeight(0);
+            listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
+                choiceToImport.set(position);
+            });
+            dialog.a(listView);
+            dialog.b(Helper.getResString(R.string.common_word_import), view -> {
+                int position = choiceToImport.get();
+                HashMap<String, Object> selectedMap = list.get(position);
+                if (position != -1 && ComponentsHandler.isValidComponent(selectedMap)) {
+                    setupViews(selectedMap);
+                } else {
+                    SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
+                }
+                dialog.dismiss();
+            });
+            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.show();
+        } else {
+            HashMap<String, Object> map = list.get(0);
+            if (ComponentsHandler.isValidComponent(map)) {
+                setupViews(map);
+            } else {
+                SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
+            }
+        }
     }
 }
