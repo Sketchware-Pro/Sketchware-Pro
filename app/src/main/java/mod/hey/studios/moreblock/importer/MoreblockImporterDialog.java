@@ -3,11 +3,10 @@ package mod.hey.studios.moreblock.importer;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,8 +19,13 @@ import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import a.a.a.aB;
+import a.a.a.FB;
+import a.a.a.kq;
+import a.a.a.Rs;
+import a.a.a.Ts;
 import mod.SketchwareUtil;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
@@ -176,7 +180,7 @@ public class MoreblockImporterDialog extends aB {
                 convertView = act.getLayoutInflater().inflate(R.layout.manage_collection_popup_import_more_block_list_item, parent, false);
             }
 
-            ViewGroup container = convertView.findViewById(R.id.block_area);
+            FrameLayout blockArea = convertView.findViewById(R.id.block_area);
             TextView title = convertView.findViewById(R.id.tv_block_name);
             ImageView selected = convertView.findViewById(R.id.img_selected);
 
@@ -189,29 +193,52 @@ public class MoreblockImporterDialog extends aB {
             }
 
             title.setText(getItem(position).name);
-
-            Drawable containerBackground = container.getBackground();
-            if (containerBackground != null) {
-                selected.setBackground(containerBackground);
-            }
+            blockArea.removeAllViews();
 
             String spec = getItem(position).spec;
-            blockPreview.setText(ReturnMoreblockManager.getMbName(spec));
-            blockPreview.setBackgroundResource(switch (ReturnMoreblockManager.getMoreblockChar(spec)) {
-                case "s" -> R.drawable.block_string;
-                case "b" -> R.drawable.block_boolean;
-                case "d" -> R.drawable.block_num;
-                default -> R.drawable.block_ori;
-            });
-            blockPreview.getBackground().setColorFilter(0xff8a55d7, PorterDuff.Mode.MULTIPLY);
+            int blockId = 0;
+            var block = new Rs(act, 0, ReturnMoreblockManager.getMbName(spec), ReturnMoreblockManager.getMoreblockType(spec), "definedFunc");
+            blockArea.addView(block);
+            Iterator<String> specs = FB.c(spec).iterator();
 
+            while (specs.hasNext()) {
+                Rs specBlock;
+                String specPart = specs.next();
+
+                if (specPart.charAt(0) != '%') {
+                    continue;
+                }
+
+                char type = specPart.charAt(1);
+
+                switch (type) {
+                    case 'b':
+                    case 'd':
+                    case 's':
+                        specBlock = new Rs(act, blockId + 1, specPart.substring(3), Character.toString(type), "getVar");
+                        break;
+                    case 'm':
+                        String specLast = specPart.substring(specPart.lastIndexOf(".") + 1);
+                        String specFirst = specPart.substring(specPart.indexOf(".") + 1, specPart.lastIndexOf("."));
+                        specBlock = new Rs(act, blockId + 1, specLast, kq.a(specFirst), kq.b(specFirst), "getVar");
+                        break;
+                    default:
+                        continue;
+                }
+
+                blockArea.addView(specBlock);
+                block.a((Ts) block.V.get(blockId), specBlock);
+                blockId++;
+            }
+            block.k();
+            
             View.OnClickListener listener = v -> {
                 selectedPos = position;
                 notifyDataSetChanged();
             };
 
             convertView.findViewById(R.id.layout_item).setOnClickListener(listener);
-            container.setOnClickListener(listener);
+            blockArea.setOnClickListener(listener);
             title.setOnClickListener(listener);
 
             return convertView;
