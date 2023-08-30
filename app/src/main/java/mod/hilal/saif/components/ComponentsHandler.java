@@ -372,7 +372,7 @@ public class ComponentsHandler {
         }
     }
 
-    //√√√ give id and return variable name
+    //√√√ give id and return type name
     public static String var(int id) {
         if (id == 36) {
             return "#";
@@ -388,12 +388,12 @@ public class ComponentsHandler {
                         int componentIdInteger = Integer.parseInt((String) componentId);
 
                         if (componentIdInteger == id) {
-                            Object componentVarName = component.get("varName");
+                            Object componentTypeName = component.get("typeName");
 
-                            if (componentVarName instanceof String) {
-                                return (String) componentVarName;
+                            if (componentTypeName instanceof String) {
+                                return (String) componentTypeName;
                             } else {
-                                SketchwareUtil.toastError("Invalid variable name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError("Invalid type name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
@@ -457,10 +457,10 @@ public class ComponentsHandler {
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
             HashMap<String, Object> component = cachedCustomComponents.get(i);
             if (component != null) {
-                Object componentName = component.get("name");
+                Object componentTypeName = component.get("typeName");
 
-                if (componentName instanceof String) {
-                    if (name.equals(componentName)) {
+                if (componentTypeName instanceof String) {
+                    if (name.equals(componentTypeName)) {
                         Object componentAdditionalVar = component.get("additionalVar");
 
                         if (componentAdditionalVar instanceof String) {
@@ -475,7 +475,7 @@ public class ComponentsHandler {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError("Invalid type name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
             } else {
                 SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
@@ -490,10 +490,10 @@ public class ComponentsHandler {
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
             HashMap<String, Object> component = cachedCustomComponents.get(i);
             if (component != null) {
-                Object componentName = component.get("name");
+                Object componentTypeName = component.get("typeName");
 
-                if (componentName instanceof String) {
-                    if (name.equals(componentName)) {
+                if (componentTypeName instanceof String) {
+                    if (name.equals(componentTypeName)) {
                         Object componentDefineAdditionalVar = component.get("defineAdditionalVar");
 
                         if (componentDefineAdditionalVar instanceof String) {
@@ -507,7 +507,7 @@ public class ComponentsHandler {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid name entry in Custom Component #" + (i + 1));
+                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1));
                 }
             } else {
                 SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
@@ -521,10 +521,10 @@ public class ComponentsHandler {
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
             HashMap<String, Object> component = cachedCustomComponents.get(i);
             if (component != null) {
-                Object componentVarName = component.get("varName");
+                Object componentTypeName = component.get("typeName");
 
-                if (componentVarName instanceof String) {
-                    if (name.equals(componentVarName)) {
+                if (componentTypeName instanceof String) {
+                    if (name.equals(componentTypeName)) {
                         Object componentImports = component.get("imports");
 
                         if (componentImports instanceof String) {
@@ -537,7 +537,7 @@ public class ComponentsHandler {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
             } else {
                 SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
