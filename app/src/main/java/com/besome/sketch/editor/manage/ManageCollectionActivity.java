@@ -67,6 +67,7 @@ import a.a.a.bB;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
+import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
@@ -882,7 +883,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             holder.blockArea.removeAllViews();
 
             int blockId = 0;
-            Rs block = new Rs(getBaseContext(), 0, bean.spec, " ", "definedFunc");
+            String specs = bean.spec;
+            Rs block = new Rs(getBaseContext(), 0, ReturnMoreblockManager.getMbName(specs), ReturnMoreblockManager.getMoreblockType(specs), "definedFunc");
             holder.blockArea.addView(block);
             Iterator<String> spec = FB.c(bean.spec).iterator();
 
