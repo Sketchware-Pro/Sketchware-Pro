@@ -26,7 +26,7 @@ import mod.SketchwareUtil;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
 
-public class MoreblockImporterDialog {
+public class MoreblockImporterDialog extends aB {
 
     private final ArrayList<MoreBlockCollectionBean> internalList;
     private final CallBack callback;
@@ -36,6 +36,7 @@ public class MoreblockImporterDialog {
     private Adapter la;
 
     public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
+        super(act);
         this.act = act;
         internalList = beanList;
         list = new ArrayList<>(beanList);
@@ -43,9 +44,8 @@ public class MoreblockImporterDialog {
     }
 
     public void show() {
-        final aB dialog = new aB(act);
-        dialog.b("Select a More Block");
-        dialog.a(R.drawable.more_block_96dp);
+        super.b("Select a More Block");
+        super.a(R.drawable.more_block_96dp);
 
         SearchView searchView = new SearchView(act);
 
@@ -123,8 +123,8 @@ public class MoreblockImporterDialog {
         ln.addView(searchView);
         ln.addView(lw);
 
-        dialog.a(ln);
-        dialog.b(act.getString(R.string.common_word_select), v -> {
+        super.a(ln);
+        super.b(act.getString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
@@ -132,11 +132,11 @@ public class MoreblockImporterDialog {
             } else {
                 callback.onSelected(selectedBean);
 
-                dialog.dismiss();
+                dismiss();
             }
         });
-        dialog.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.show();
+        super.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
+        super.show();
     }
 
     public interface CallBack {
