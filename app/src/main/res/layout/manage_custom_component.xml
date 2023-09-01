@@ -1,56 +1,61 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
-		<com.google.android.material.appbar.AppBarLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fitsSystemWindows="true">
-			<com.google.android.material.appbar.MaterialToolbar
-				android:id="@+id/toolbar"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:title="@string/developer_tools_component_manager"
-				app:titleTextColor="@android:color/white"
-				android:background="?colorPrimary"
-				android:popupTheme="@style/ThemeOverlay.ToolbarMenu"
-				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-				app:layout_collapseMode="parallax"
-				app:titleTextAppearance="@style/ToolbarTextAppearance" />
-		</com.google.android.material.appbar.AppBarLayout>
-		<TextView
-			android:id="@+id/tv_guide"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:padding="8dp"
-			android:background="#F6F6F6"
-			android:text="@string/developer_tools_component_description_guide_add_component"
-			android:textSize="14sp"
-			android:textColor="#9E9E9E"
-			android:layout_weight="1"
-			android:gravity="center"
-			android:visibility="gone" />
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/componentView"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:background="#F5F5F5"
-			android:layout_weight="1"
-			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-			tools:listitem="@layout/manage_custom_component_list_item" />
-	</LinearLayout>
-	<com.google.android.material.floatingactionbutton.FloatingActionButton
-		android:id="@+id/_fab"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_margin="16dp"
-		android:layout_gravity="right|bottom"
-		app:backgroundTint="#FE5955"
-		app:srcCompat="@drawable/ic_add_white_24dp" />
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorPrimary"
+                android:popupTheme="@style/ThemeOverlay.ToolbarMenu"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_collapseMode="parallax"
+                app:title="@string/developer_tools_component_manager"
+                app:titleTextAppearance="@style/ToolbarTextAppearance"
+                app:titleTextColor="@android:color/white" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:id="@+id/tv_guide"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#F6F6F6"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/developer_tools_component_description_guide_add_component"
+            android:textColor="#9E9E9E"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/componentView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#F5F5F5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/manage_custom_component_list_item" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        app:backgroundTint="#FE5955"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
