@@ -67,9 +67,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         tv_guide = findViewById(R.id.tv_guide);
-        componentView = findViewById(R.id.componentView);
+        componentView = findViewById(R.id.list);
 
-        findViewById(R.id._fab).setOnClickListener(_view ->
+        findViewById(R.id.fab).setOnClickListener(_view ->
                 startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
     }
 

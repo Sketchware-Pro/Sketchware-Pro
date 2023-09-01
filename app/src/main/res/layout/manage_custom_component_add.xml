@@ -359,7 +359,6 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/linear23"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_gravity="center_vertical"
@@ -514,7 +513,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/import_btn"
+                android:id="@+id/btn_import"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -528,7 +527,7 @@
                 android:theme="@style/AppTheme.Button.Green" />
 
             <Button
-                android:id="@+id/save_btn"
+                android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"

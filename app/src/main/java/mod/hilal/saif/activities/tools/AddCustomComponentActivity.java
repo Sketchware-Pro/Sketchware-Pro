@@ -96,8 +96,8 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
         componentAddVar = findViewById(R.id.component_add_var);
         componentDefineAddVar = findViewById(R.id.component_def_add_var);
         componentImports = findViewById(R.id.component_imports);
-        findViewById(R.id.import_btn).setOnClickListener(this);
-        findViewById(R.id.save_btn).setOnClickListener(this);
+        findViewById(R.id.btn_import).setOnClickListener(this);
+        findViewById(R.id.btn_save).setOnClickListener(this);
         findViewById(R.id.pick).setOnClickListener(this);
     }
 
@@ -108,7 +108,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.save_btn) {
+        if (id == R.id.btn_save) {
             if (!isImportantFieldsEmpty()) {
                 if (OldResourceIdMapper.isValidIconId(componentIcon.getText().toString())) {
                     save();
@@ -119,7 +119,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
             } else {
                 SketchwareUtil.toastError(Helper.getResString(R.string.invalid_required_fields));
             }
-        } else if (id == R.id.import_btn) {
+        } else if (id == R.id.btn_import) {
             showFilePickerDialog();
         } else if (id == R.id.pick) {
             showIconSelectorDialog();
