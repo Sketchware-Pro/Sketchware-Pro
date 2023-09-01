@@ -6,18 +6,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.sketchware.remod.R;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.aB;
 import a.a.a.wq;
-import com.sketchware.remod.R;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
@@ -147,12 +149,12 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
 
     private boolean isImportantFieldsEmpty() {
         return componentName.getText().toString().isEmpty()
-            || componentId.getText().toString().isEmpty()
-            || componentIcon.getText().toString().isEmpty()
-            || componentTypeName.getText().toString().isEmpty()
-            || componentVarTypeName.getText().toString().isEmpty()
-            || componentTypeClass.getText().toString().isEmpty()
-            || componentBuildClass.getText().toString().isEmpty();
+                || componentId.getText().toString().isEmpty()
+                || componentIcon.getText().toString().isEmpty()
+                || componentTypeName.getText().toString().isEmpty()
+                || componentVarTypeName.getText().toString().isEmpty()
+                || componentTypeClass.getText().toString().isEmpty()
+                || componentBuildClass.getText().toString().isEmpty();
     }
 
     private void save() {
@@ -186,17 +188,17 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
 
     private void showFilePickerDialog() {
         SketchFilePickerDialog dialog = new SketchFilePickerDialog(this)
-            .addExtension("json")
-            .setFilePath(FileUtil.getExternalStorageDir())
-            .addOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
-                try {
-                    selectComponentToImport(file.getAbsolutePath());
-                } catch (Exception e) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
-                }
-                _dialog.dismiss();
-            })
-            .addOnDismissListener((SketchFilePickerDialog _dialog) -> _dialog.dismiss());
+                .addExtension("json")
+                .setFilePath(FileUtil.getExternalStorageDir())
+                .addOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
+                    try {
+                        selectComponentToImport(file.getAbsolutePath());
+                    } catch (Exception e) {
+                        SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
+                    }
+                    _dialog.dismiss();
+                })
+                .addOnDismissListener((SketchFilePickerDialog _dialog) -> _dialog.dismiss());
         dialog.setTitle(Helper.getResString(R.string.common_word_import));
         dialog.setIcon(R.drawable.file_48_blue);
         dialog.show();

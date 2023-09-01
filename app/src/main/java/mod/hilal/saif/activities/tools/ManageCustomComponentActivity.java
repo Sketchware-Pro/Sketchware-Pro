@@ -9,33 +9,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.besome.sketch.lib.base.CollapsibleViewHolder;
+import com.besome.sketch.lib.ui.CollapsibleButton;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.sketchware.remod.R;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import com.google.android.material.appbar.MaterialToolbar;
-import mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout;
+
 import a.a.a.aB;
-import a.a.a.gB;
 import a.a.a.wq;
-import com.besome.sketch.lib.base.CollapsibleViewHolder;
-import com.besome.sketch.lib.ui.CollapsibleButton;
-import com.sketchware.remod.R;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout;
 import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
@@ -127,17 +129,17 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
 
     private void showFilePickerDialog() {
         SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(this)
-            .addExtension("json")
-            .setFilePath(FileUtil.getExternalStorageDir())
-            .addOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
-                try {
-                    selectComponentToImport(file.getAbsolutePath());
-                } catch (Exception e) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
-                }
-                dialog.dismiss();
-            })
-            .addOnDismissListener((SketchFilePickerDialog dialog) -> dialog.dismiss());
+                .addExtension("json")
+                .setFilePath(FileUtil.getExternalStorageDir())
+                .addOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
+                    try {
+                        selectComponentToImport(file.getAbsolutePath());
+                    } catch (Exception e) {
+                        SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
+                    }
+                    dialog.dismiss();
+                })
+                .addOnDismissListener((SketchFilePickerDialog dialog) -> dialog.dismiss());
         filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
         filePickerDialog.setIcon(R.drawable.file_48_blue);
         filePickerDialog.show();
@@ -247,7 +249,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.manage_custom_component_list_item, parent, false);
+                    .inflate(R.layout.manage_custom_component_list_item, parent, false);
             return new ViewHolder(view);
         }
 

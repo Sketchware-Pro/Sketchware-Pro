@@ -579,19 +579,19 @@ public class ComponentsHandler {
 
     public static boolean isValidComponent(Map<String, Object> map) {
         return map.containsKey("name")
-        && map.containsKey("id")
-        && map.containsKey("icon")
-        && map.containsKey("varName")
-        && map.containsKey("typeName")
-        && map.containsKey("buildClass")
-        && map.containsKey("class")
-        && map.containsKey("description")
-        && map.containsKey("url")
-        && map.containsKey("additionalVar")
-        && map.containsKey("defineAdditionalVar")
-        && map.containsKey("imports");
+                && map.containsKey("id")
+                && map.containsKey("icon")
+                && map.containsKey("varName")
+                && map.containsKey("typeName")
+                && map.containsKey("buildClass")
+                && map.containsKey("class")
+                && map.containsKey("description")
+                && map.containsKey("url")
+                && map.containsKey("additionalVar")
+                && map.containsKey("defineAdditionalVar")
+                && map.containsKey("imports");
     }
-    
+
     public static boolean isValidComponentList(List<? extends Map<String, Object>> list) {
         for (Map<String, Object> map : list) {
             if (!isValidComponent(map)) {
