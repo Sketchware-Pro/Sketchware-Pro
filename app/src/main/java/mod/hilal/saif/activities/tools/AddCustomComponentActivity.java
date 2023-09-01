@@ -46,7 +46,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
     private boolean isEditMode = false;
     private int position = 0;
 
-    private String path = wq.getCustomComponent();
+    private final String path = wq.getCustomComponent();
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {

@@ -49,8 +49,6 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     private static final String COMPONENT_EXPORT_DIR = wq.getExtraDataExport() + "/components/";
     private static final String COMPONENT_DIR = wq.getCustomComponent();
 
-    private ComponentsAdapter adapter;
-
     private TextView tv_guide;
     private RecyclerView componentView;
 
@@ -89,10 +87,8 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 0:
-                showFilePickerDialog();
-                break;
+        if (item.getItemId() == 0) {
+            showFilePickerDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -115,7 +111,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     private void readComponents(final String _path) {
         componentsList = new Gson().fromJson(FileUtil.readFile(_path), Helper.TYPE_MAP_LIST);
         if (componentsList != null && componentsList.size() > 0) {
-            adapter = new ComponentsAdapter(componentsList);
+            ComponentsAdapter adapter = new ComponentsAdapter(componentsList);
             Parcelable state = componentView.getLayoutManager().onSaveInstanceState();
             componentView.setAdapter(adapter);
             componentView.getLayoutManager().onRestoreInstanceState(state);
@@ -236,9 +232,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     }
 
     public class ComponentsAdapter extends RecyclerView.Adapter<ComponentsAdapter.ViewHolder> {
-        private ArrayList<HashMap<String, Object>> components;
-        private List<Boolean> collapse;
-        private List<Boolean> confirmation;
+        private final ArrayList<HashMap<String, Object>> components;
+        private final List<Boolean> collapse;
+        private final List<Boolean> confirmation;
 
         public ComponentsAdapter(ArrayList<HashMap<String, Object>> itemList) {
             this.components = itemList;
@@ -307,21 +303,18 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                 collapsibleComponentLayout = itemView.findViewById(R.id.component_option);
                 collapsibleComponentLayout.setButtonOnClickListener(v -> {
                     int lastSelectedItem = getLayoutPosition();
-                    if (v instanceof CollapsibleButton) {
-                        switch (((CollapsibleButton) v).getButtonId()) {
-                            case 0:
-                                export(lastSelectedItem);
-                                confirmation.set(lastSelectedItem, false);
-                                setAnimateNextTransformation(true);
-                                notifyItemChanged(lastSelectedItem);
-                                break;
-
-                            case 1:
-                                confirmation.set(lastSelectedItem, true);
-                                setAnimateNextTransformation(true);
-                                notifyItemChanged(lastSelectedItem);
-                                break;
+                    if (v instanceof CollapsibleButton button) {
+                        int id = button.getButtonId();
+                        if (id == 0) {
+                            export(lastSelectedItem);
+                            confirmation.set(lastSelectedItem, false);
+                        } else if (id == 1) {
+                            confirmation.set(lastSelectedItem, true);
+                        } else {
+                            return;
                         }
+                        setAnimateNextTransformation(true);
+                        notifyItemChanged(lastSelectedItem);
                         return;
                     }
                     int id = v.getId();
@@ -377,16 +370,6 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
             @Override
             protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
                 return Set.of(root);
-            }
-
-            @Override
-            public void collapse() {
-                super.collapse();
-            }
-
-            @Override
-            public void expand() {
-                super.expand();
             }
         }
     }
