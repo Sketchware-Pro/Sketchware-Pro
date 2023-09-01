@@ -27,7 +27,6 @@ public class SketchFilePickerDialog extends aB {
     private final Activity activity;
     private String currentPath;
     private OnFileSelectedListener onFileSelectedListener;
-    private OnBackListener onBackListener;
     private File filePath;
 
     private FileAdapter adapter;
@@ -37,10 +36,6 @@ public class SketchFilePickerDialog extends aB {
 
     public interface OnFileSelectedListener {
         void onFileSelected(SketchFilePickerDialog dialog, File file);
-    }
-
-    public interface OnBackListener {
-        void onBack(SketchFilePickerDialog dialog);
     }
 
     public interface OnItemClickListener {
@@ -73,17 +68,10 @@ public class SketchFilePickerDialog extends aB {
         return this;
     }
 
-    public SketchFilePickerDialog setOnBackListener(OnBackListener listener) {
-        onBackListener = listener;
-        return this;
-    }
-
     @Override
     public void onBackPressed() {
         if (currentPath.equals(FileUtil.getExternalStorageDir())) {
-            if (onBackListener != null) {
-                onBackListener.onBack(this);
-            }
+            dismiss();
         } else if (adapter != null) {
             var lastPath = currentPath.substring(0, currentPath.lastIndexOf(File.separator));
             var currentDirectory = new File(lastPath);

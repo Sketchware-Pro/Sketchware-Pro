@@ -135,8 +135,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                         SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
                     }
                     dialog.dismiss();
-                })
-                .setOnBackListener((SketchFilePickerDialog dialog) -> dialog.dismiss());
+                });
         filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
         filePickerDialog.setIcon(R.drawable.file_48_blue);
         filePickerDialog.show();

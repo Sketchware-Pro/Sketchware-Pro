@@ -195,8 +195,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                         SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
                     }
                     _dialog.dismiss();
-                })
-                .setOnBackListener((SketchFilePickerDialog _dialog) -> _dialog.dismiss());
+                });
         dialog.setTitle(Helper.getResString(R.string.common_word_import));
         dialog.setIcon(R.drawable.file_48_blue);
         dialog.show();
