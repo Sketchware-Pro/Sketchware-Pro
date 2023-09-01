@@ -89,6 +89,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 0) {
             showFilePickerDialog();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
