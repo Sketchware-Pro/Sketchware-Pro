@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:importantForAutofill="noExcludeDescendants">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -72,6 +73,7 @@
                     android:background="@drawable/bg_round_light_grey"
                     android:gravity="center_vertical"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textSize="14sp" />
@@ -144,7 +146,7 @@
 
                     <EditText
                         android:id="@+id/component_icon"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/bg_round_light_grey"
@@ -195,6 +197,7 @@
                     android:background="@drawable/bg_round_light_grey"
                     android:gravity="center_vertical"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textSize="14sp" />
@@ -230,6 +233,7 @@
                     android:background="@drawable/bg_round_light_grey"
                     android:gravity="center_vertical"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textSize="14sp" />
@@ -265,6 +269,7 @@
                     android:background="@drawable/bg_round_light_grey"
                     android:gravity="center_vertical"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textSize="14sp" />
@@ -300,6 +305,7 @@
                     android:background="@drawable/bg_round_light_grey"
                     android:gravity="center_vertical"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textSize="14sp" />
@@ -379,6 +385,7 @@
                     android:background="@drawable/bg_round_light_grey"
                     android:gravity="center_vertical"
                     android:imeOptions="actionDone"
+                    android:inputType="text|textUri"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textSize="14sp" />
