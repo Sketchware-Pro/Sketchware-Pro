@@ -27,7 +27,7 @@ public class SketchFilePickerDialog extends aB {
     private final Activity activity;
     private String currentPath;
     private OnFileSelectedListener onFileSelectedListener;
-    private OnBackCallback onBackCallback;
+    private OnBackListener onBackListener;
     private File filePath;
 
     private FileAdapter adapter;
@@ -39,7 +39,7 @@ public class SketchFilePickerDialog extends aB {
         void onFileSelected(SketchFilePickerDialog dialog, File file);
     }
 
-    public interface OnBackCallback {
+    public interface OnBackListener {
         void onBack(SketchFilePickerDialog dialog);
     }
 
@@ -55,34 +55,34 @@ public class SketchFilePickerDialog extends aB {
     public SketchFilePickerDialog(Activity activity, String initialPath) {
         super(activity);
         this.activity = activity;
-        this.currentPath = initialPath;
+        currentPath = initialPath;
     }
 
     public SketchFilePickerDialog setFilePath(String initialPath) {
-        this.currentPath = initialPath;
+        currentPath = initialPath;
         return this;
     }
 
-    public SketchFilePickerDialog addExtension(String extension) {
+    public SketchFilePickerDialog allowExtension(String extension) {
         extensions.add(extension);
         return this;
     }
 
-    public SketchFilePickerDialog addOnFileSelectedListener(OnFileSelectedListener listener) {
-        this.onFileSelectedListener = listener;
+    public SketchFilePickerDialog setOnFileSelectedListener(OnFileSelectedListener listener) {
+        onFileSelectedListener = listener;
         return this;
     }
 
-    public SketchFilePickerDialog addOnDismissListener(OnBackCallback callback) {
-        this.onBackCallback = callback;
+    public SketchFilePickerDialog setOnBackListener(OnBackListener listener) {
+        onBackListener = listener;
         return this;
     }
 
     @Override
     public void onBackPressed() {
         if (currentPath.equals(FileUtil.getExternalStorageDir())) {
-            if (onBackCallback != null) {
-                onBackCallback.onBack(this);
+            if (onBackListener != null) {
+                onBackListener.onBack(this);
             }
         } else if (adapter != null) {
             var lastPath = currentPath.substring(0, currentPath.lastIndexOf(File.separator));

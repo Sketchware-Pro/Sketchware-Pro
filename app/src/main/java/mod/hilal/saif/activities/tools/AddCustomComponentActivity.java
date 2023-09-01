@@ -186,9 +186,9 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
 
     private void showFilePickerDialog() {
         SketchFilePickerDialog dialog = new SketchFilePickerDialog(this)
-                .addExtension("json")
+                .allowExtension("json")
                 .setFilePath(FileUtil.getExternalStorageDir())
-                .addOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
+                .setOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
                     try {
                         selectComponentToImport(file.getAbsolutePath());
                     } catch (Exception e) {
@@ -196,7 +196,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                     }
                     _dialog.dismiss();
                 })
-                .addOnDismissListener((SketchFilePickerDialog _dialog) -> _dialog.dismiss());
+                .setOnBackListener((SketchFilePickerDialog _dialog) -> _dialog.dismiss());
         dialog.setTitle(Helper.getResString(R.string.common_word_import));
         dialog.setIcon(R.drawable.file_48_blue);
         dialog.show();

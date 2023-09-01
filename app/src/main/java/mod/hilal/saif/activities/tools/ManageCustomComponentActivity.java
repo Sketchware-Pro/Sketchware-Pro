@@ -126,9 +126,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
 
     private void showFilePickerDialog() {
         SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(this)
-                .addExtension("json")
+                .allowExtension("json")
                 .setFilePath(FileUtil.getExternalStorageDir())
-                .addOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
+                .setOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
                     try {
                         selectComponentToImport(file.getAbsolutePath());
                     } catch (Exception e) {
@@ -136,7 +136,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                     }
                     dialog.dismiss();
                 })
-                .addOnDismissListener((SketchFilePickerDialog dialog) -> dialog.dismiss());
+                .setOnBackListener((SketchFilePickerDialog dialog) -> dialog.dismiss());
         filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
         filePickerDialog.setIcon(R.drawable.file_48_blue);
         filePickerDialog.show();
