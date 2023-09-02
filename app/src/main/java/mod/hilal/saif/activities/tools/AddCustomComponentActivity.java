@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import a.a.a.aB;
 import a.a.a.wq;
@@ -202,23 +203,16 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
     }
 
     private void selectComponentToImport(String path) {
-        String text = FileUtil.readFile(path);
-        if (text.isEmpty() || text.equals("[]")) {
-            SketchwareUtil.toastError(Helper.getResString(R.string.common_message_selected_file_empty));
+        var readResult = ComponentsHandler.readComponents(path);
+        if (readResult.first.isPresent()) {
+            SketchwareUtil.toastError(readResult.first.get());
             return;
         }
+        var components = readResult.second;
 
-        ArrayList<HashMap<String, Object>> list = new Gson().fromJson(text, Helper.TYPE_MAP_LIST);
-        if (list.isEmpty() || !ComponentsHandler.isValidComponentList(list)) {
-            SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
-            return;
-        }
-
-        ArrayList<String> componentNames = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            componentNames.add((String) list.get(i).get("name"));
-        }
-
+        var componentNames = components.stream()
+                .map(component -> (String) component.get("name"))
+                .collect(Collectors.toList());
         if (componentNames.size() > 1) {
             var dialog = new aB(this);
             dialog.b(Helper.getResString(R.string.logic_editor_title_select_component));
@@ -235,9 +229,9 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
             dialog.a(listView);
             dialog.b(Helper.getResString(R.string.common_word_import), view -> {
                 int position = choiceToImport.get();
-                HashMap<String, Object> selectedMap = list.get(position);
-                if (position != -1 && ComponentsHandler.isValidComponent(selectedMap)) {
-                    setupViews(selectedMap);
+                var component = components.get(position);
+                if (position != -1 && ComponentsHandler.isValidComponent(component)) {
+                    setupViews(component);
                 } else {
                     SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
                 }
@@ -246,9 +240,9 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
             dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
             dialog.show();
         } else {
-            HashMap<String, Object> map = list.get(0);
-            if (ComponentsHandler.isValidComponent(map)) {
-                setupViews(map);
+            var component = components.get(0);
+            if (ComponentsHandler.isValidComponent(component)) {
+                setupViews(component);
             } else {
                 SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
             }

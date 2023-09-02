@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import a.a.a.aB;
 import a.a.a.wq;
@@ -44,7 +45,7 @@ import mod.hilal.saif.components.ComponentsHandler;
 
 public class ManageCustomComponentActivity extends AppCompatActivity {
 
-    private ArrayList<HashMap<String, Object>> componentsList = new ArrayList<>();
+    private List<HashMap<String, Object>> componentsList = new ArrayList<>();
 
     private static final String COMPONENT_EXPORT_DIR = wq.getExtraDataExport() + "/components/";
     private static final String COMPONENT_DIR = wq.getCustomComponent();
@@ -143,23 +144,16 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     }
 
     private void selectComponentToImport(String path) {
-        String text = FileUtil.readFile(path);
-        if (text.isEmpty() || text.equals("[]")) {
-            SketchwareUtil.toastError(Helper.getResString(R.string.common_message_selected_file_empty));
+        var readResult = ComponentsHandler.readComponents(path);
+        if (readResult.first.isPresent()) {
+            SketchwareUtil.toastError(readResult.first.get());
             return;
         }
+        var components = readResult.second;
 
-        ArrayList<HashMap<String, Object>> list = new Gson().fromJson(text, Helper.TYPE_MAP_LIST);
-        if (list.isEmpty() || !ComponentsHandler.isValidComponentList(list)) {
-            SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
-            return;
-        }
-
-        ArrayList<String> componentNames = new ArrayList<>();
-        for (int j = 0; j < list.size(); j++) {
-            componentNames.add((String) list.get(j).get("name"));
-        }
-
+        var componentNames = components.stream()
+                .map(component -> (String) component.get("name"))
+                .collect(Collectors.toList());
         if (componentNames.size() > 1) {
             var dialog = new aB(this);
             dialog.b(Helper.getResString(R.string.logic_editor_title_select_component));
@@ -182,9 +176,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
             dialog.a(listView);
             dialog.b(Helper.getResString(R.string.common_word_import), view -> {
                 for (int position : selectedPositions) {
-                    HashMap<String, Object> map = list.get(position);
-                    if (position != -1 && ComponentsHandler.isValidComponent(map)) {
-                        componentsList.add(map);
+                    var component = components.get(position);
+                    if (position != -1 && ComponentsHandler.isValidComponent(component)) {
+                        componentsList.add(component);
                     } else {
                         SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
                     }
@@ -196,9 +190,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
             dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
             dialog.show();
         } else {
-            HashMap<String, Object> map = list.get(0);
-            if (ComponentsHandler.isValidComponent(map)) {
-                componentsList.add(map);
+            var component = components.get(0);
+            if (ComponentsHandler.isValidComponent(component)) {
+                componentsList.add(component);
                 FileUtil.writeFile(COMPONENT_DIR, new Gson().toJson(componentsList));
                 readSettings();
             } else {
@@ -221,9 +215,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         dialog.b(Helper.getResString(R.string.common_word_yes), view -> {
             String fileName = componentName + ".json";
             String filePath = new File(COMPONENT_EXPORT_DIR, fileName).getAbsolutePath();
-            ArrayList<HashMap<String, Object>> list = new ArrayList<>();
-            list.add(componentsList.get(position));
-            FileUtil.writeFile(filePath, new Gson().toJson(list));
+            FileUtil.writeFile(filePath, new Gson().toJson(List.of(componentsList.get(position))));
             SketchwareUtil.toast(Helper.getResString(R.string.developer_tools_component_success_message_export, filePath));
             dialog.dismiss();
         });
@@ -232,11 +224,11 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     }
 
     public class ComponentsAdapter extends RecyclerView.Adapter<ComponentsAdapter.ViewHolder> {
-        private final ArrayList<HashMap<String, Object>> components;
+        private final List<HashMap<String, Object>> components;
         private final List<Boolean> collapse;
         private final List<Boolean> confirmation;
 
-        public ComponentsAdapter(ArrayList<HashMap<String, Object>> itemList) {
+        public ComponentsAdapter(List<HashMap<String, Object>> itemList) {
             this.components = itemList;
             this.collapse = new ArrayList<>(Collections.nCopies(itemList.size(), true));
             this.confirmation = new ArrayList<>(Collections.nCopies(itemList.size(), false));

@@ -3,6 +3,7 @@ package mod.hilal.saif.components;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.besome.sketch.SketchApplication;
@@ -12,9 +13,11 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import a.a.a.Lx;
 import a.a.a.xB;
@@ -599,5 +602,19 @@ public class ComponentsHandler {
             }
         }
         return true;
+    }
+
+    public static Pair<Optional<String>, List<HashMap<String, Object>>> readComponents(String filePath) {
+        String content = FileUtil.readFile(filePath);
+        if (content.isEmpty() || content.equals("[]")) {
+            return new Pair<>(Optional.of(Helper.getResString(R.string.common_message_selected_file_empty)), Collections.emptyList());
+        }
+
+        var components = new Gson().fromJson(content, Helper.TYPE_MAP_LIST);
+        if (components == null || components.isEmpty() || !isValidComponentList(components)) {
+            return new Pair<>(Optional.of(Helper.getResString(R.string.publish_message_dialog_invalid_json)), Collections.emptyList());
+        }
+
+        return new Pair<>(Optional.empty(), components);
     }
 }
