@@ -380,6 +380,11 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="ProjectItem" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardElevation">@dimen/project_item_elevation</item>
+    </style>
+
     <style name="SplashScreenTheme" parent="@style/AppTheme">
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
         <item name="android:windowTranslucentStatus">false</item>
