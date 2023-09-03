@@ -32,7 +32,8 @@
                     android:layout_height="64dp"
                     android:layout_centerInParent="true"
                     android:background="@drawable/circle_bg_white"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    android:visibility="gone" />
 
                 <com.besome.sketch.lib.ui.CircleImageView
                     android:id="@+id/img_icon"
