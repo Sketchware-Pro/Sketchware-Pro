@@ -7175,7 +7175,6 @@
     <public name="Animation.AppCompat.DropDownUp" id="0x7f0f0003" type="style" />
     <public name="Animation.AppCompat.Tooltip" id="0x7f0f0004" type="style" />
     <public name="Animation.Design.BottomSheetDialog" id="0x7f0f0005" type="style" />
-    <public name="AppBaseTheme" id="0x7f0f0006" type="style" />
     <public name="AppTheme" id="0x7f0f0007" type="style" />
     <public name="AppTheme.Button.Amber" id="0x7f0f0008" type="style" />
     <public name="AppTheme.Button.Blue" id="0x7f0f0009" type="style" />
@@ -7183,7 +7182,6 @@
     <public name="AppTheme.Button.Green" id="0x7f0f000b" type="style" />
     <public name="AppTheme.Button.Indigo" id="0x7f0f000c" type="style" />
     <public name="AppTheme.Button.LightBlue" id="0x7f0f000d" type="style" />
-    <public name="AppTheme.Button.LightPink" id="0x7f0f000e" type="style" />
     <public name="AppTheme.Button.Orange" id="0x7f0f000f" type="style" />
     <public name="AppTheme.Button.Pink" id="0x7f0f0010" type="style" />
     <public name="AppTheme.Button.Transparent" id="0x7f0f0011" type="style" />
@@ -7583,8 +7581,6 @@
     <public name="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense" id="0x7f0f019b" type="style" />
     <public name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox" id="0x7f0f019c" type="style" />
     <public name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense" id="0x7f0f019d" type="style" />
-    <public name="ThemeOverlay.ToolbarMenu" id="0x7f0f019e" type="style" />
-    <public name="ToolbarTextAppearance" id="0x7f0f019f" type="style" />
     <public name="TranslucentTheme" id="0x7f0f01a0" type="style" />
     <public name="Widget.AppCompat.ActionBar" id="0x7f0f01a1" type="style" />
     <public name="Widget.AppCompat.ActionBar.Solid" id="0x7f0f01a2" type="style" />

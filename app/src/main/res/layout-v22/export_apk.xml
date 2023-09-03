@@ -18,7 +18,7 @@
                 <EditText android:textSize="14.0sp" android:id="@id/et_keystore_passwd" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
             <TextView android:textColor="#ffff0000" android:id="@id/tv_result" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" />
-            <Button android:theme="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
+            <Button style="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
             <LinearLayout android:gravity="center" android:orientation="vertical" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView android:id="@id/card_made_apk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:elevation="4.0dip">
                     <LinearLayout android:gravity="center" android:orientation="vertical" android:padding="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
@@ -27,7 +27,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <TextView android:id="@id/tv_release_apk_path" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip" />
-                <Button android:theme="@style/AppTheme.Button.Blue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_share" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+                <Button style="@style/AppTheme.Button.Blue" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_share" android:layout_width="fill_parent" android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

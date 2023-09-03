@@ -824,9 +824,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         float var11 = Math.min((float) var9 / (float) displayWidth, (float) var8 / (float) displayHeight);
         float var3 = Math.min((float) (var9 - var4 * 2) / (float) displayWidth, (float) (var8 - var5 * 2) / (float) displayHeight);
         if (!isLandscapeMode) {
-            aa.setBackgroundResource(R.drawable.new_view_pane_background_port);
+            //aa.setBackgroundResource(R.drawable.new_view_pane_background_port);
         } else {
-            aa.setBackgroundResource(R.drawable.new_view_pane_background_land);
+            //aa.setBackgroundResource(R.drawable.new_view_pane_background_land);
         }
 
         aa.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));

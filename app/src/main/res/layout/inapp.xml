@@ -24,7 +24,7 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout android:orientation="vertical" android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <Button android:theme="@style/AppTheme.Button.Blue" android:textColor="#ffffffff" android:layout_gravity="center_horizontal" android:id="@id/btn_use_promotion" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <Button style="@style/AppTheme.Button.Blue" android:layout_gravity="center_horizontal" android:id="@id/btn_use_promotion" android:layout_width="wrap_content" android:layout_height="wrap_content" />
         <androidx.recyclerview.widget.RecyclerView android:id="@id/list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:splitMotionEvents="false" />
         <include layout="@layout/loading_3balls" />
     </LinearLayout>

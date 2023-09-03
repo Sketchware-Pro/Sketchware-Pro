@@ -19,6 +19,7 @@
     <dimen name="main_drawer_margin_top">16.0dip</dimen>
     <dimen name="padding_edit_view">5.0dip</dimen>
     <dimen name="project_button_height">72.0dip</dimen>
+    <dimen name="project_item_elevation">6dp</dimen>
     <dimen name="properties_row_height">24.0dip</dimen>
     <dimen name="subtitle_corner_radius">2.0dip</dimen>
     <dimen name="subtitle_outline_width">2.0dip</dimen>

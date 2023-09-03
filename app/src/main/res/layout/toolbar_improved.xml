@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ff008dcd"
+    android:background="?attr/colorSurface"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="10dp"
@@ -16,7 +17,8 @@
         android:layout_height="40dp"
         android:padding="8dp"
         android:scaleType="centerInside"
-        android:src="@drawable/arrow_back_white_48dp" />
+        android:src="@drawable/arrow_back_white_48dp"
+        app:tint="?attr/colorControlNormal" />
 
     <TextView
         android:id="@+id/tx_toolbar_title"
@@ -30,9 +32,8 @@
         android:paddingEnd="8dp"
         android:paddingBottom="6dp"
         android:text="Title"
-        android:textColor="@color/tool_bar_text_color"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textColor="?attr/colorOnSurface"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
 
     <ImageView
         android:id="@+id/ig_toolbar_load_file"
@@ -41,5 +42,6 @@
         android:padding="9dp"
         android:scaleType="centerInside"
         android:src="@drawable/add_file_48"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:tint="?attr/colorControlNormal" />
 </LinearLayout>

@@ -11,8 +11,8 @@
                 <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ff212121" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:text="Google Play Account Needed" />
                 <TextView android:textSize="14.0sp" android:textColor="#ff4d4d4d" android:id="@id/tv_desc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
             </LinearLayout>
-            <Button android:theme="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_console" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-            <Button android:theme="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_doc" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <Button style="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_console" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <Button style="@style/AppTheme.Button.Green" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_doc" android:layout_width="fill_parent" android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

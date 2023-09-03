@@ -7,6 +7,6 @@
             <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="#ff212121" android:layout_gravity="center_vertical" android:id="@id/tv_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" />
         </LinearLayout>
         <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff212121" android:gravity="center" android:id="@id/tv_desc" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
-        <Button android:theme="@style/AppTheme.Button.LightBlue" android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/btn_ok" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_ok" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>

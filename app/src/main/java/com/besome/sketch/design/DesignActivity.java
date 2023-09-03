@@ -397,7 +397,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
+        toolbar.setTitleTextAppearance(this, R.style.DesignToolbarTitleTextAppearance);
+        toolbar.setSubtitleTextAppearance(this, R.style.DesignToolbarSubtitleTextAppearance);
         drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);

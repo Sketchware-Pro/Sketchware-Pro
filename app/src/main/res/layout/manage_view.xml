@@ -7,17 +7,16 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
 
         <include layout="@layout/toolbar" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            style="@style/ManageViewTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:tabTextAppearance="@style/DesignTabTextAppearance" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -43,9 +42,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center|right"
                 android:layout_margin="16dp"
-                android:backgroundTint="@color/color_btn_ltpink_normal"
+                android:backgroundTint="?attr/colorPink"
                 android:src="@drawable/ic_add_white_36dp"
-                app:borderWidth="0dp" />
+                app:borderWidth="0dp"
+                app:tint="?attr/colorOnPink" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
@@ -53,32 +53,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#ffffffff"
             android:orientation="horizontal"
             android:padding="4dp"
             android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_cancel"
+                style="@style/AppTheme.Button.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:theme="@style/AppTheme.Button.Blue" />
+                android:textSize="@dimen/text_size_button_material" />
 
             <Button
                 android:id="@+id/btn_delete"
+                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:textStyle="bold"
-                android:theme="@style/AppTheme.Button.LightBlue" />
+                android:textSize="@dimen/text_size_button_material" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

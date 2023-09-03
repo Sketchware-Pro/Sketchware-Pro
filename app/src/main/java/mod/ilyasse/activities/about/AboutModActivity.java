@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class AboutModActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> teamList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> changelogList = new ArrayList<>();
     private TabLayout tablayout;
+    private Toolbar toolbar;
     private LinearLayout root;
     private LinearLayout trash;
     private LinearLayout teamRecyclerContainer;
@@ -81,7 +83,7 @@ public class AboutModActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         LinearLayout loading = findViewById(R.id.loading_view);
         tablayout = findViewById(R.id.tab_layout);
-        ImageView back = findViewById(R.id.img_back);
+        toolbar = findViewById(R.id.toolbar);
         root = findViewById(R.id.root);
         trash = findViewById(R.id.trash);
         teamRecyclerContainer = findViewById(R.id.team_container);
@@ -93,8 +95,11 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
-        rippleRound(back, "#ffffff", "#1F000000", 90);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        setSupportActionBar(toolbar);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         class OnScrollListener extends RecyclerView.OnScrollListener {
             @Override
@@ -187,12 +192,10 @@ public class AboutModActivity extends AppCompatActivity {
         teamRecycler.setLayoutManager(new LinearLayoutManager(this));
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
         fab.setVisibility(View.GONE);
-        getWindow().setStatusBarColor(Color.WHITE);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initViewPager();
 
         requestData.startRequestNetwork(RequestNetworkController.GET, ABOUT_TEAM_URL, "", requestDataListener);
-        rippleRound(fab, "#5865F2", "#FFFFFF", 90);
+        // rippleRound(fab, "#5865F2", "#FFFFFF", 90);
 
         String toSelect = getIntent().getStringExtra("select");
         if ("changelog".equals(toSelect)) {
@@ -221,7 +224,6 @@ public class AboutModActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0);
         root.addView(viewPager);
 
-        tablayout.setSelectedTabIndicatorColor(0xff008dcd);
         tablayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -312,8 +314,6 @@ public class AboutModActivity extends AppCompatActivity {
                     int eightDp = SketchwareUtil.dpToPx(8);
                     majorChanges.setPadding(eightDp, eightDp, eightDp, eightDp);
 
-                    majorChanges.setTextColor(ContextCompat.getColor(AboutModActivity.this,
-                            R.color.primary_text_default_material_light));
                     majorChanges.setTextSize(14);
                 }
 

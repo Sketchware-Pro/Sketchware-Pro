@@ -32,7 +32,7 @@
                     <EditText android:textSize="13.0sp" android:id="@id/ed_question" android:background="@drawable/bg_round_light_grey" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:maxLines="2" />
                 </LinearLayout>
                 <EditText android:textSize="13.0sp" android:id="@id/ed_question_desc" android:background="@drawable/bg_round_light_grey" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="34.0dip" android:layout_marginRight="4.0dip" android:inputType="textMultiLine" android:imeOptions="actionDone" />
-                <Button android:theme="@style/AppTheme.Button.CoolGreen" android:textColor="#ffffffff" android:layout_gravity="right" android:id="@id/btn_regiser" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" />
+                <Button style="@style/AppTheme.Button.CoolGreen" android:layout_gravity="right" android:id="@id/btn_regiser" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" />
             </LinearLayout>
             <include layout="@layout/no_connection" />
         </LinearLayout>

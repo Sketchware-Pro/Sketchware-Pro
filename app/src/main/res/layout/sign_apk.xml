@@ -28,7 +28,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-            <Button android:theme="@style/AppTheme.Button.CoolGreen" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <Button style="@style/AppTheme.Button.CoolGreen" android:textSize="@dimen/text_size_button_material" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

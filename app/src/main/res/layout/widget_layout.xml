@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@id/layout_widget" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/img_widget" android:padding="2.0dip" android:layout_width="18.0dip" android:layout_height="18.0dip" />
-    <TextView android:textColor="#ff535353" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/tv_widget" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:layout_marginEnd="2.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_widget"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_widget"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center_vertical"
+        android:padding="2dp" />
+
+    <TextView
+        android:id="@+id/tv_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="2dp"
+        android:layout_marginEnd="2dp"
+        android:alpha="0.87"
+        android:gravity="center" />
+
 </LinearLayout>

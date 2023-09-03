@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ProjectItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginTop="0dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginBottom="@dimen/card_view_margin"
-    android:elevation="8dp"
-    app:cardBackgroundColor="#ffffffff">
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="@dimen/card_view_margin8">
 
     <LinearLayout
         android:id="@+id/project_one"
         android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:background="?selectableItemBackground"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -36,4 +33,4 @@
             android:textColor="@color/scolor_blue_01"
             tools:text="@string/myprojects_list_menu_title_create_a_new_project" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -51,14 +51,13 @@
 
                     <Button
                         android:id="@id/btn_sign_apk"
+                        style="@style/AppTheme.Button.Indigo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="40dp"
                         android:layout_marginBottom="16dp"
-                        android:textColor="#ffffffff"
-                        android:textSize="14sp"
-                        android:theme="@style/AppTheme.Button.Indigo" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -164,14 +163,13 @@
 
                     <Button
                         android:id="@id/btn_export_src"
+                        style="@style/AppTheme.Button.Indigo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="48dp"
                         android:layout_marginBottom="16dp"
-                        android:textColor="#ffffffff"
-                        android:textSize="14sp"
-                        android:theme="@style/AppTheme.Button.Indigo" />
+                        android:textSize="14sp" />
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@id/loading_export_src"
@@ -240,13 +238,12 @@
 
                         <Button
                             android:id="@id/btn_send_src"
+                            style="@style/AppTheme.Button.Green"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_gravity="right"
                             android:layout_marginRight="16dp"
-                            android:textColor="#ffffffff"
-                            android:textSize="12sp"
-                            android:theme="@style/AppTheme.Button.Green" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

@@ -31,7 +31,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
-        <Button android:theme="@style/AppTheme.Button.CoolGreen" android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/btn_docs" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" />
-        <Button android:theme="@style/AppTheme.Button.LightBlue" android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <Button style="@style/AppTheme.Button.CoolGreen" android:id="@id/btn_docs" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" />
+        <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>

@@ -127,21 +127,19 @@
 
         <Button
             android:id="@+id/btn_import"
+            style="@style/AppTheme.Button.Pink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightPink"
             tools:text="@string/design_library_button_import_from_other_project" />
 
         <Button
             android:id="@+id/btn_open_doc"
+            style="@style/AppTheme.Button.LightBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffffff"
             android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightBlue"
             tools:text="@string/design_library_google_map_button_open_doc" />
     </LinearLayout>
 </LinearLayout>

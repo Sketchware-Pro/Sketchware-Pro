@@ -35,6 +35,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <TextView android:textSize="14.0sp" android:textColor="#ff212121" android:gravity="center" android:id="@id/tv_made_complete" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:layout_marginBottom="16.0dip" />
-        <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/btn_retry_upload" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_retry_upload" android:layout_width="wrap_content" android:layout_height="wrap_content" />
     </LinearLayout>
 </RelativeLayout>

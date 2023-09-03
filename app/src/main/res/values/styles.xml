@@ -1,84 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppBaseTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
-
-    <style name="AppTheme" parent="@style/AppBaseTheme">
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorControlHighlight">@color/color_control_highlight</item>
-        <item name="colorControlNormal">@color/color_primary</item>
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+    <style name="BaseAppTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorPrimaryFixed">@color/md_theme_light_primaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_light_primaryFixedDim</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_light_onPrimaryFixed</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_light_onPrimaryFixedVariant</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorSecondaryFixed">@color/md_theme_light_secondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_light_secondaryFixedDim</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_light_onSecondaryFixed</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_light_onSecondaryFixedVariant</item>
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorTertiaryFixed">@color/md_theme_light_tertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_light_tertiaryFixedDim</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_light_onTertiaryFixed</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_light_onTertiaryFixedVariant</item>
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
+        <item name="colorAmber">#785900</item>
+        <item name="colorOnAmber">#ffffff</item>
+        <item name="colorAmberContainer">#ffdf9e</item>
+        <item name="colorOnAmberContainer">#261a00</item>
+        <item name="harmonizeAmber">true</item>
+        <item name="colorBlue">#006494</item>
+        <item name="colorOnBlue">#ffffff</item>
+        <item name="colorBlueContainer">#cae6ff</item>
+        <item name="colorOnBlueContainer">#001e30</item>
+        <item name="harmonizeBlue">true</item>
+        <item name="colorCoolGreen">#006d44</item>
+        <item name="colorOnCoolGreen">#ffffff</item>
+        <item name="colorCoolGreenContainer">#7afbb7</item>
+        <item name="colorOnCoolGreenContainer">#002111</item>
+        <item name="harmonizeCoolGreen">true</item>
+        <item name="colorGreen">#006a62</item>
+        <item name="colorOnGreen">#ffffff</item>
+        <item name="colorGreenContainer">#72f7e9</item>
+        <item name="colorOnGreenContainer">#00201d</item>
+        <item name="harmonizeGreen">true</item>
+        <item name="colorIndigo">#4355b9</item>
+        <item name="colorOnIndigo">#ffffff</item>
+        <item name="colorIndigoContainer">#dee0ff</item>
+        <item name="colorOnIndigoContainer">#00105c</item>
+        <item name="harmonizeIndigo">true</item>
+        <item name="colorLightBlue">#00658c</item>
+        <item name="colorOnLightBlue">#ffffff</item>
+        <item name="colorLightBlueContainer">#c5e7ff</item>
+        <item name="colorOnLightBlueContainer">#001e2d</item>
+        <item name="harmonizeLightBlue">true</item>
+        <item name="colorLightOrange">#895200</item>
+        <item name="colorOnLightOrange">#ffffff</item>
+        <item name="colorLightOrangeContainer">#ffdcbc</item>
+        <item name="colorOnLightOrangeContainer">#2c1700</item>
+        <item name="harmonizeLightOrange">true</item>
+        <item name="colorPink">#b62327</item>
+        <item name="colorOnPink">#ffffff</item>
+        <item name="colorPinkContainer">#ffdad7</item>
+        <item name="colorOnPinkContainer">#410004</item>
+        <item name="harmonizePink">true</item>
+        <item name="colorOrange">#895200</item>
+        <item name="colorOnOrange">#ffffff</item>
+        <item name="colorOrangeContainer">#ffdcbc</item>
+        <item name="colorOnOrangeContainer">#2c1700</item>
+        <item name="harmonizeOrange">true</item>
+        <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
-    <style name="AppTheme.Button.Amber" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ffffc107</item>
-        <item name="colorControlHighlight">#ffffb300</item>
+    <style name="AppTheme" parent="BaseAppTheme">
+        <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
+
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
     </style>
 
-    <style name="AppTheme.Button.Blue" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_blue_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_blue_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
+        <item name="subtitleTextAppearance">?attr/textAppearanceSubtitle1</item>
     </style>
 
-    <style name="AppTheme.Button.CoolGreen" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ff34bc7e</item>
-        <item name="colorControlHighlight">@color/scolor_green_normal</item>
+    <style name="AppTheme.Button.Amber" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Amber</item>
     </style>
 
-    <style name="AppTheme.Button.Green" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/scolor_green_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_green_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Blue" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Blue</item>
     </style>
 
-    <style name="AppTheme.Button.Indigo" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ff3f51b5</item>
-        <item name="colorControlHighlight">#ff3949ab</item>
+    <style name="AppTheme.Button.CoolGreen" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.CoolGreen</item>
     </style>
 
-    <style name="AppTheme.Button.LightBlue" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltblue_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltblue_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Green" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Green</item>
     </style>
 
-    <style name="AppTheme.Button.LightPink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltpink_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltpink_highlight</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Indigo" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Indigo</item>
     </style>
 
-    <style name="AppTheme.Button.Orange" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltorange_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltorange_dark</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.LightBlue" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.LightBlue</item>
     </style>
 
-    <style name="AppTheme.Button.Pink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ffff5955</item>
-        <item name="colorControlHighlight">#ffff8784</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Pink" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Pink</item>
     </style>
 
-    <style name="AppTheme.Button.Transparent" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="colorButtonNormal">@color/transparent</item>
-        <item name="colorControlHighlight">@color/transparent</item>
+    <style name="AppTheme.Button.Orange" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Orange</item>
     </style>
 
-    <style name="AppTheme.Button.WhiteBlue" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">@color/color_primary</item>
-        <item name="colorButtonNormal">#ffffffff</item>
-        <item name="colorControlHighlight">#ffdddddd</item>
-        <item name="textAllCaps">false</item>
+    <style name="AppTheme.Button.Transparent" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Transparent</item>
     </style>
 
-    <style name="AppTheme.Button.WhitePink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">@color/color_btn_ltpink_normal</item>
-        <item name="colorButtonNormal">#ffffffff</item>
-        <item name="colorControlHighlight">#ffdddddd</item>
+    <style name="AppTheme.Button.WhiteBlue" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.WhiteBlue</item>
+    </style>
+
+    <style name="AppTheme.Button.WhitePink" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.WhitePink</item>
     </style>
 
     <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">
@@ -106,20 +182,8 @@
         <item name="android:minHeight">3.0dip</item>
     </style>
 
-    <style name="DesignTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/design_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/design_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/design_tab_selected_text_color</item>
-        <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
-    </style>
-
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">12.0sp</item>
-        <item name="android:textColor">@color/design_tab_text_color</item>
         <item name="textAllCaps">true</item>
     </style>
 
@@ -138,28 +202,6 @@
         <item name="android:textSize">12.0sp</item>
         <item name="android:textColor">@color/main_tab_text_color</item>
         <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="ManageImageTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/design_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/design_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/design_tab_selected_text_color</item>
-        <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
-    </style>
-
-    <style name="ManageViewTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/design_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/design_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/design_tab_selected_text_color</item>
-        <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
     </style>
 
     <style name="MyPageTabLayout" parent="@style/Widget.Design.TabLayout">
@@ -270,16 +312,15 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="ThemeOverlay.ToolbarMenu" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">@color/design_menu_bg</item>
-        <item name="android:textColor">@color/design_menu_text_color</item>
+    <style name="DesignToolbarTitleTextAppearance" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="ToolbarTextAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">15.0sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/tool_bar_text_color</item>
-        <item name="android:textAllCaps">false</item>
+    <style name="DesignToolbarSubtitleTextAppearance" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:alpha">0.6</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TranslucentTheme" parent="@style/AppTheme">
@@ -337,6 +378,11 @@
     <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="ProjectItem" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardElevation">@dimen/project_item_elevation</item>
     </style>
 
     <style name="SplashScreenTheme" parent="@style/AppTheme">

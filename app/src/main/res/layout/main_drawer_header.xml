@@ -3,7 +3,6 @@
     android:id="@id/layout_main_drawer_header"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
-    android:background="#fffafafa"
     android:orientation="vertical">
 
     <LinearLayout
