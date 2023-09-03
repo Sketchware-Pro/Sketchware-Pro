@@ -5,9 +5,9 @@
     style="@style/ProjectItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginBottom="@dimen/card_view_margin">
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="@dimen/card_view_margin8">
 
     <LinearLayout
         android:id="@+id/project_one"
