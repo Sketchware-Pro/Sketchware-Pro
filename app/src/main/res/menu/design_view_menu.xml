@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/ic_undo_grey_48dp" android:id="@id/menu_view_undo" android:orderInCategory="100" android:title="Undo" app:showAsAction="always" />
-    <item android:icon="@drawable/ic_redo_grey_48dp" android:id="@id/menu_view_redo" android:orderInCategory="100" android:title="Redo" app:showAsAction="always" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_view_undo"
+        android:icon="@drawable/ic_undo_grey_48dp"
+        android:orderInCategory="100"
+        android:title="Undo"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_view_redo"
+        android:icon="@drawable/ic_redo_grey_48dp"
+        android:orderInCategory="100"
+        android:title="Redo"
+        app:showAsAction="always" />
+
 </menu>
