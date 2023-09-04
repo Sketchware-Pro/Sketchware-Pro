@@ -29,6 +29,7 @@ import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.moreblock.MoreblockValidator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.BlockUtil;
 
 @SuppressLint("ViewConstructor")
 public class dt extends LinearLayout {
@@ -208,36 +209,9 @@ public class dt extends LinearLayout {
                     break;
             }
         }
-        rs.setSpec(fullSpec.toString());
-
-        int validParametersI = 0;
-        for (int i = 0; i < variables.size(); ) {
-            Pair<String, String> parameter = variables.get(i);
-            String parameterType = parameter.first;
-
-            Rs block;
-            if (parameterType.equals("b")) {
-                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, "b", "getArg");
-            } else if (parameterType.equals("d")) {
-                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, "d", "getArg");
-            } else if (parameterType.equals("s")) {
-                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, "s", "getArg");
-            } else if (parameterType.length() > 2) {
-                String customType = parameterType.substring(parameterType.indexOf(".") + 1);
-                String letter = kq.a(customType);
-                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, letter, kq.b(customType), "getArg");
-            } else {
-                ++i;
-                continue;
-            }
-
-            blockArea.addView(block);
-            rs.a((Ts) rs.V.get(validParametersI), block);
-            ++validParametersI;
-
-            ++i;
-        }
-
+        var spec = fullSpec.toString();
+        rs.setSpec(spec);
+        BlockUtil.loadPreviewBlockVariables(blockArea, rs, spec);
         rs.k();
         removeArea.removeAllViews();
 
