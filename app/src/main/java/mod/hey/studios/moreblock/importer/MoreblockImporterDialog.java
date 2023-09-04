@@ -184,8 +184,6 @@ public class MoreblockImporterDialog extends aB {
             TextView title = convertView.findViewById(R.id.tv_block_name);
             ImageView selected = convertView.findViewById(R.id.img_selected);
 
-            TextView blockPreview = convertView.findViewById(R.id.spec);
-
             if (position == selectedPos) {
                 selected.setVisibility(View.VISIBLE);
             } else {
