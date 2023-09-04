@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/searchProjects"
-        android:icon="@drawable/search_icon_white"
+        android:icon="@drawable/search_icon_tinted"
         android:title="@string/search_menu_title"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView"
