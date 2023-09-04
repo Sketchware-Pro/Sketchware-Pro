@@ -19,16 +19,11 @@ import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.aB;
-import a.a.a.FB;
-import a.a.a.kq;
-import a.a.a.Rs;
-import a.a.a.Ts;
 import mod.SketchwareUtil;
-import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.BlockUtil;
 
 public class MoreblockImporterDialog extends aB {
 
@@ -192,44 +187,8 @@ public class MoreblockImporterDialog extends aB {
 
             title.setText(getItem(position).name);
             blockArea.removeAllViews();
+            BlockUtil.loadMoreblockPreview(blockArea, getItem(position).spec);
 
-            String spec = getItem(position).spec;
-            int blockId = 0;
-            var block = new Rs(act, 0, ReturnMoreblockManager.getMbName(spec), ReturnMoreblockManager.getMoreblockType(spec), "definedFunc");
-            blockArea.addView(block);
-            Iterator<String> specs = FB.c(spec).iterator();
-
-            while (specs.hasNext()) {
-                Rs specBlock;
-                String specPart = specs.next();
-
-                if (specPart.charAt(0) != '%') {
-                    continue;
-                }
-
-                char type = specPart.charAt(1);
-
-                switch (type) {
-                    case 'b':
-                    case 'd':
-                    case 's':
-                        specBlock = new Rs(act, blockId + 1, specPart.substring(3), Character.toString(type), "getVar");
-                        break;
-                    case 'm':
-                        String specLast = specPart.substring(specPart.lastIndexOf(".") + 1);
-                        String specFirst = specPart.substring(specPart.indexOf(".") + 1, specPart.lastIndexOf("."));
-                        specBlock = new Rs(act, blockId + 1, specLast, kq.a(specFirst), kq.b(specFirst), "getVar");
-                        break;
-                    default:
-                        continue;
-                }
-
-                blockArea.addView(specBlock);
-                block.a((Ts) block.V.get(blockId), specBlock);
-                blockId++;
-            }
-            block.k();
-            
             View.OnClickListener listener = v -> {
                 selectedPos = position;
                 notifyDataSetChanged();

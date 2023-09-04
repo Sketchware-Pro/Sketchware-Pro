@@ -94,7 +94,6 @@ import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.kC;
-import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.sq;
@@ -115,6 +114,7 @@ import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
+import mod.jbk.util.BlockUtil;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -2019,25 +2019,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         for (int i = 0; i < spec.size(); i++) {
             String specBit = spec.get(i);
             if (specBit.charAt(0) == '%') {
-                label44:
-                {
-                    Rs block;
-                    if (specBit.charAt(1) == 'b') {
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "b", "getArg");
-                    } else if (specBit.charAt(1) == 'd') {
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "d", "getArg");
-                    } else if (specBit.charAt(1) == 's') {
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "s", "getArg");
-                    } else {
-                        if (specBit.charAt(1) != 'm') {
-                            break label44;
-                        }
-
-                        String selector = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
-                        String type = kq.a(selector);
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(specBit.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
-                    }
-
+                Rs block = BlockUtil.getVariableBlock(getContext(), blockId + 1, specBit, "getArg");
+                if (block != null) {
                     block.setBlockType(1);
                     o.addView(block);
                     o.getRoot().a((Ts) o.getRoot().V.get(blockId), block);
