@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.lib.handle.BuiltInUtilClassHandler;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.blocks.CommandBlock;
@@ -742,12 +743,12 @@ public class yq {
         ix.setYq(this);
 
         // Make generated classes viewable
-        if (!javaFiles.contains(new File(javaDir + "SketchwareUtil.java"))) {
+        if (BuiltInUtilClassHandler.isSketchwareUtilBlockUsed(projectFileManager, projectDataManager) && !javaFiles.contains(new File(javaDir + "SketchwareUtil.java"))) {
             srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
                     Lx.i(packageName)));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "FileUtil.java"))) {
+        if (BuiltInUtilClassHandler.isFileUtilBlockUsed(projectFileManager, projectDataManager) && !javaFiles.contains(new File(javaDir + "FileUtil.java"))) {
             srcCodeBeans.add(new SrcCodeBean("FileUtil.java",
                     Lx.e(packageName)));
         }
