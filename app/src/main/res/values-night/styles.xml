@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BaseAppTheme" parent="Theme.Material3.Dark.NoActionBar">
+
+    <style name="Platform.V21.AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />
+
+    <style name="Base.AppTheme" parent="Platform.AppTheme">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorPrimaryFixed">@color/md_theme_dark_primaryFixed</item>
         <item name="colorPrimaryFixedDim">@color/md_theme_dark_primaryFixedDim</item>
@@ -85,4 +93,5 @@
         <item name="harmonizeOrange">true</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
     </style>
+
 </resources>

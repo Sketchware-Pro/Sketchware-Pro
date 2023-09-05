@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BaseAppTheme" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Platform.V21.AppTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+    </style>
+
+    <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />
+
+    <style name="Base.AppTheme" parent="Platform.AppTheme">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorPrimaryFixed">@color/md_theme_light_primaryFixed</item>
         <item name="colorPrimaryFixedDim">@color/md_theme_light_primaryFixedDim</item>
@@ -87,11 +94,10 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
-    <style name="AppTheme" parent="BaseAppTheme">
+    <style name="AppTheme" parent="Base.AppTheme">
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
 
-        <item name="android:statusBarColor">?android:attr/colorBackground</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
@@ -185,6 +191,35 @@
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">12.0sp</item>
         <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="MainDrawer" parent="Widget.Material3.NavigationView">
+        <item name="dividerInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="dividerInsetStart">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemHorizontalPadding">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemIconPadding">@dimen/main_drawer_icon_padding</item>
+        <item name="itemShapeInsetEnd">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemShapeInsetStart">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemTextAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="materialThemeOverlay">@style/MainDrawerThemeOverlay</item>
+        <item name="subheaderInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="subheaderInsetStart">@dimen/main_drawer_horizontal_padding</item>
+    </style>
+
+    <style name="MainDrawerThemeOverlay" parent="">
+        <item name="android:listDivider">?attr/colorOutlineVariant</item>
+    </style>
+
+    <style name="MainDrawerCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/MainDrawerCorners</item>
+    </style>
+
+    <style name="MainDrawerCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">@dimen/main_drawer_corners_radius</item>
+        <item name="cornerSizeBottomRight">@dimen/main_drawer_corners_radius</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
