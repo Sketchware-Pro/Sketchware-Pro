@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/about_team"
-        android:icon="@drawable/side_menu_info_icon_over_white"
+        android:icon="@drawable/ic_team_24"
         android:title="About the Team" />
 
     <item
         android:id="@+id/changelog"
-        android:icon="@drawable/icon_file_white_96"
+        android:icon="@drawable/ic_update_24"
         android:title="Changelog" />
 
     <item
         android:id="@+id/system_settings"
-        android:icon="@drawable/side_menu_setting_icon_over_white"
+        android:icon="@drawable/ic_settings_24"
         android:title="System Settings" />
 
     <item
         android:id="@+id/program_info"
-        android:icon="@drawable/side_menu_info_icon_over_white"
+        android:icon="@drawable/ic_sketchware_24"
         android:title="Program Information" />
 
     <item
         android:id="@+id/dev_tools"
-        android:icon="@drawable/ic_export_his_white_48dp"
+        android:icon="@drawable/ic_terminal_24"
         android:title="Developer Tools" />
 
     <item
         android:id="@+id/create_release_keystore"
-        android:icon="@drawable/new_96"
+        android:icon="@drawable/ic_key_24"
         android:title="Create Release Keystore" />
 
     <item android:title="Social Links">
