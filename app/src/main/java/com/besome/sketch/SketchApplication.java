@@ -11,6 +11,7 @@ import android.util.Log;
 import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.material.color.DynamicColors;
 
 public class SketchApplication extends Application {
 
@@ -46,5 +47,6 @@ public class SketchApplication extends Application {
             }
         });
         super.onCreate();
+        DynamicColors.applyToActivitiesIfAvailable(this);
     }
 }
