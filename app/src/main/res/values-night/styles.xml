@@ -4,6 +4,7 @@
     <style name="Platform.V21.AppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
     </style>
 
     <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />

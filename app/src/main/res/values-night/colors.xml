@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  input layout  -->
+    <color name="inputLayoutBackgroundColor">#2e2e2e</color>
+    <color name="inputLayoutStrokeColor">#505050</color>
+</resources>

@@ -177,4 +177,9 @@
     <color name="LightOrange">#FFB055</color>
     <color name="Pink">#FF5955</color>
     <color name="Orange">#FFB055</color>
+
+
+    <!--  input layout  -->
+    <color name="inputLayoutBackgroundColor">#F5F5F5</color>
+    <color name="inputLayoutStrokeColor">#D1D1D1</color>
 </resources>

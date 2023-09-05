@@ -4,6 +4,7 @@
     <style name="Platform.V21.AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:statusBarColor">@android:color/black</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
     </style>
 
     <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />
@@ -24,7 +25,8 @@
         <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
         <item name="colorOnSecondaryFixed">@color/md_theme_light_onSecondaryFixed</item>
-        <item name="colorOnSecondaryFixedVariant">@color/md_theme_light_onSecondaryFixedVariant</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_light_onSecondaryFixedVariant
+        </item>
         <item name="colorTertiary">@color/md_theme_light_tertiary</item>
         <item name="colorTertiaryFixed">@color/md_theme_light_tertiaryFixed</item>
         <item name="colorTertiaryFixedDim">@color/md_theme_light_tertiaryFixedDim</item>
@@ -177,19 +179,19 @@
     </style>
 
     <style name="CustomCollapsingExpanded">
-        <item name="android:textSize">0.0sp</item>
+        <item name="android:textSize">0sp</item>
         <item name="android:textColor">@color/transparent</item>
     </style>
 
     <style name="CustomProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:maxHeight">5.0dip</item>
+        <item name="android:maxHeight">5dp</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/custom_progress_bar_horizontal</item>
-        <item name="android:minHeight">3.0dip</item>
+        <item name="android:minHeight">3dp</item>
     </style>
 
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
-        <item name="android:textSize">12.0sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="textAllCaps">true</item>
     </style>
 
@@ -226,15 +228,15 @@
         <item name="android:background">@color/main_tab_background</item>
         <item name="tabGravity">fill</item>
         <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabMaxWidth">0dp</item>
         <item name="tabMode">fixed</item>
         <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
         <item name="tabTextAppearance">@style/MainTabTextAppearance</item>
     </style>
 
     <style name="MainTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
-        <item name="android:textSize">12.0sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/main_tab_text_color</item>
         <item name="textAllCaps">true</item>
     </style>
@@ -243,31 +245,41 @@
         <item name="android:background">@color/main_tab_background</item>
         <item name="tabGravity">fill</item>
         <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabMaxWidth">0dp</item>
         <item name="tabMode">fixed</item>
         <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
     </style>
 
     <style name="NumberPickerText" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@color/scolor_blue_01</item>
-        <item name="android:textSize">14.0dip</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColorHighlight">#ffeeeeee</item>
     </style>
 
     <style name="SoundProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:maxHeight">5.0dip</item>
+        <item name="android:maxHeight">5dp</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/sound_progress_bar_horizontal</item>
-        <item name="android:minHeight">3.0dip</item>
+        <item name="android:minHeight">3dp</item>
     </style>
 
-    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColorPrimary">@color/light_grey</item>
-        <item name="android:textSize">12.0sp</item>
-        <item name="colorControlActivated">@color/light_grey</item>
-        <item name="colorControlNormal">@color/light_grey</item>
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:paddingHorizontal">0dp</item>
+        <item name="boxBackgroundColor">@color/inputLayoutBackgroundColor</item>
+        <item name="boxStrokeColor">@color/input_layout_selector</item>
+        <item name="hintTextColor">#CFCFCF</item>
+        <item name="hintEnabled">true</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded
+        </item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/inputfields_corners_radius</item>
+    </style>
+
 
     <style name="TextAppearance.Compat.Notification.Info.Media" parent="@style/TextAppearance.Compat.Notification.Info">
         <item name="android:textColor">@color/secondary_text_default_material_dark</item>
@@ -383,8 +395,8 @@
     </style>
 
     <style name="seekbarGreen" parent="@style/Widget.AppCompat.SeekBar">
-        <item name="android:paddingLeft">0.0dip</item>
-        <item name="android:paddingRight">0.0dip</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
         <item name="colorAccent">@color/scolor_green_01</item>
         <item name="colorControlNormal">#ffffffff</item>
         <item name="colorPrimaryDark">#ff03539a</item>

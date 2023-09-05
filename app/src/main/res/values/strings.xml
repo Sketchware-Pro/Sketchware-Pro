@@ -1766,13 +1766,14 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_sign_apk_new_certificate_hint_certificate_name">Enter certificate name</string>
     <string name="myprojects_sign_apk_new_certificate_hint_city">City or Locality</string>
     <string name="myprojects_sign_apk_new_certificate_hint_confirm_password">Confirm the password</string>
-    <string name="myprojects_sign_apk_new_certificate_hint_country_code">Country Code(XX)</string>
+    <string name="myprojects_sign_apk_new_certificate_hint_country_code">Country Code (XX)</string>
     <string name="myprojects_sign_apk_new_certificate_hint_first_and_last_name">First and Last Name</string>
     <string name="myprojects_sign_apk_new_certificate_hint_organization">Organization</string>
     <string name="myprojects_sign_apk_new_certificate_hint_organizational_unit">Organizational Unit</string>
     <string name="myprojects_sign_apk_new_certificate_hint_state">State or Province</string>
     <string name="myprojects_sign_apk_new_certificate_title_certificate">Certificate</string>
-    <string name="myprojects_sign_apk_new_certificate_title_new_certificate">Create a New Certificate</string>
+    <string name="myprojects_sign_apk_new_certificate_title_new_certificate">Create new certificate</string>
+    <string name="myprojects_sign_apk_new_certificate_title_certificate_creds">Certificate credentials</string>
     <string name="myprojects_sign_apk_new_certificate_title_validity">Validity(Years)</string>
     <string name="myprojects_sign_apk_title_certificate">Certificate</string>
     <string name="myprojects_sign_apk_title_export_certificate">Export Certificate</string>
