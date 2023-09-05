@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="Platform.V23.AppTheme" parent="Platform.V21.AppTheme">
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Platform.AppTheme" parent="Platform.V23.AppTheme" />
+
     <style name="ProjectItem" parent="Widget.Material3.CardView.Filled">
         <!-- On newer API levels, hide shadows while keeping elevation -->
         <item name="android:outlineAmbientShadowColor">@android:color/transparent</item>
@@ -8,4 +16,5 @@
         <item name="cardBackgroundColor">?attr/colorSurface</item>
         <item name="cardElevation">@dimen/project_item_elevation</item>
     </style>
+
 </resources>
