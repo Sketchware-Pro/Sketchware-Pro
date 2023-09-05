@@ -2,7 +2,10 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="64dp"
-    android:layout_margin="16dp"
-    app:srcCompat="@drawable/sketchware_logo"
-    app:tint="?attr/colorOnSurface" />
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="@dimen/main_drawer_horizontal_padding"
+    android:layout_marginRight="@dimen/main_drawer_horizontal_padding"
+    android:layout_marginTop="16dp"
+    app:srcCompat="@drawable/swpro_header_logo"
+    app:tint="?attr/colorControlNormal" />

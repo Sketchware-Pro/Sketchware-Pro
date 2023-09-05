@@ -187,6 +187,23 @@
         <item name="textAllCaps">true</item>
     </style>
 
+    <style name="MainDrawer" parent="Widget.Material3.NavigationView">
+        <item name="dividerInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="dividerInsetStart">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemHorizontalPadding">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemIconPadding">@dimen/main_drawer_icon_padding</item>
+        <item name="itemShapeInsetEnd">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemShapeInsetStart">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemTextAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="materialThemeOverlay">@style/MainDrawerThemeOverlay</item>
+        <item name="subheaderInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="subheaderInsetStart">@dimen/main_drawer_horizontal_padding</item>
+    </style>
+
+    <style name="MainDrawerThemeOverlay" parent="">
+        <item name="android:listDivider">?attr/colorOutlineVariant</item>
+    </style>
+
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
         <item name="android:background">@color/main_tab_background</item>
         <item name="tabGravity">fill</item>

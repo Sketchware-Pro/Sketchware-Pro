@@ -16,7 +16,10 @@
     <dimen name="browser_actions_context_menu_min_padding">20.0dip</dimen>
     <dimen name="card_view_margin">4.0dip</dimen>
     <dimen name="card_view_margin8">8.0dip</dimen>
+    <dimen name="main_drawer_icon_padding">16dp</dimen>
     <dimen name="main_drawer_margin_top">16.0dip</dimen>
+    <dimen name="main_drawer_horizontal_padding">20dp</dimen>
+    <dimen name="main_drawer_shape_horizontal_inset">4dp</dimen>
     <dimen name="padding_edit_view">5.0dip</dimen>
     <dimen name="project_button_height">72.0dip</dimen>
     <dimen name="project_item_elevation">4dp</dimen>
