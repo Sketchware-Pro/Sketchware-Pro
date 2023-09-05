@@ -159,7 +159,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
         boolean expandAdvancedOptions = getIntent().getBooleanExtra("advanced_open", false);
 
-        ((TextView) findViewById(R.id.tv_change_icon)).setText(Helper.getResString(R.string.myprojects_settings_description_change_icon));
         findViewById(R.id.contents).setOnClickListener(this);
         findViewById(R.id.app_icon_layout).setOnClickListener(this);
         findViewById(R.id.advanced_setting).setOnClickListener(this);

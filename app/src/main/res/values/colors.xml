@@ -180,6 +180,6 @@
 
 
     <!--  input layout  -->
-    <color name="inputLayoutBackgroundColor">#F5F5F5</color>
-    <color name="inputLayoutStrokeColor">#D1D1D1</color>
+    <color name="inputLayoutBackgroundColor">#FAFAFA</color>
+    <color name="inputLayoutStrokeColor">#E3E3E3</color>
 </resources>
