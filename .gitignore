@@ -74,3 +74,4 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 .idea/render.experimental.xml
+.DS_Store
