@@ -1132,8 +1132,6 @@ public class OldResourceIdMapper {
                 return R.drawable.ic_expire_48dp;
             case 2131165749:
                 return R.drawable.ic_export_grey_48dp;
-            case 2131165750:
-                return R.drawable.ic_export_his_white_48dp;
             case 2131165751:
                 return R.drawable.ic_finger_print_96dp;
             case 2131165752:
@@ -1430,8 +1428,6 @@ public class OldResourceIdMapper {
                 return R.drawable.icon_delete_active;
             case 2131165898:
                 return R.drawable.icon_edittext_white_96;
-            case 2131165899:
-                return R.drawable.icon_file_white_96;
             case 2131165900:
                 return R.drawable.icon_image_white_96;
             case 2131165901:
@@ -1594,10 +1590,6 @@ public class OldResourceIdMapper {
                 return R.drawable.natural_user_interface2_48;
             case 2131165980:
                 return R.drawable.navigation_empty_icon;
-            case 2131165981:
-                return R.drawable.new_48;
-            case 2131165982:
-                return R.drawable.new_96;
             case 2131165983:
                 return R.drawable.new_view_pane_background_land;
             case 2131165984:
