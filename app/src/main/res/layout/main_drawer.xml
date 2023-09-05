@@ -4,5 +4,5 @@
     android:id="@+id/layout_main"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    app:itemTextAppearanceActiveBoldEnabled="false"
+    app:headerLayout="@layout/main_drawer_header"
     app:menu="@menu/main_drawer_menu" />
