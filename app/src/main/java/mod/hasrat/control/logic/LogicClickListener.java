@@ -132,61 +132,47 @@ public class LogicClickListener implements View.OnClickListener {
 
         dialog.a(root);
         dialog.b(Helper.getResString(R.string.common_word_add), view -> {
-            boolean isValidModifier = modifiersValidator.isValid();
-            boolean isValidType = varTypeValidator.isValid();
-            boolean isValidName = validator.b();
-
             String variableModifier = modifier.getText().toString().trim();
             String variableType = type.getText().toString().trim();
             String variableName = name.getText().toString().trim();
             String variableInitializer = initializer.getText().toString().trim();
 
-            boolean isModifierEmpty = variableModifier.isEmpty();
-            boolean validType = !variableType.isEmpty();
-            boolean validName = !variableName.isEmpty();
-            boolean getsInitialized = !variableInitializer.isEmpty();
+            boolean isValidModifier = modifiersValidator.isValid() || variableModifier.isEmpty();
+            boolean isValidType = varTypeValidator.isValid();
+            boolean isValidName = validator.b();
 
-            CharSequence modifierError = modifierLayout.getError();
-            if (!isModifierEmpty && !isValidModifier && modifierError != null) {
+            if (!isValidModifier) {
                 modifierLayout.requestFocus();
-                modifierLayout.setError(modifierError.toString());
                 return;
-            } else {
-                modifierLayout.setError(null);
             }
 
-            if (validType && isValidType) {
+            if (isValidType) {
                 typeLayout.setError(null);
-            } else if (validType && !isValidType) {
-                typeLayout.requestFocus();
-                typeLayout.setError("Invalid variable type");
-                return;
             } else {
-                if (validName) typeLayout.requestFocus();
-                typeLayout.setError("Type can't be empty");
+                typeLayout.requestFocus();
+                if (variableType.isEmpty()) {
+                    typeLayout.setError("Type can't be empty");
+                }
                 return;
             }
 
-            CharSequence nameError = nameLayout.getError();
-            if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
-                if (validName) {
-                    nameLayout.setError(null);
-                } else {
-                    nameLayout.requestFocus();
+            if (isValidName) {
+                nameLayout.setError(null);
+            } else {
+                nameLayout.requestFocus();
+                if (variableName.isEmpty()) {
                     nameLayout.setError("Name can't be empty");
-                    return;
                 }
+                return;
             }
 
-            if (validName && validType && isValidName && isValidType) {
-                String toAdd = (!isModifierEmpty ? variableModifier + " " : "");
-                toAdd += variableType + " " + variableName;
-                if (getsInitialized) {
-                    toAdd += " = " + variableInitializer;
-                }
-                logicEditor.b(6, toAdd.trim());
-                dialog.dismiss();
+            String variable = variableModifier.length() > 0 ? variableModifier + " " : "";
+            variable += variableType + " " + variableName;
+            if (variableInitializer.length() > 0) {
+                variable += " = " + variableInitializer;
             }
+            logicEditor.b(6, variable.trim());
+            dialog.dismiss();
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
