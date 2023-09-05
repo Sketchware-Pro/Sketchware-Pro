@@ -1357,7 +1357,6 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_tab_title_component">Component</string>
     <string name="design_tab_title_event">Event</string>
     <string name="design_tab_title_view">View</string>
-    <string name="docs_url">https://docs.sketchware.io/</string>
     <string name="event_context_menu_title">Event Menu</string>
     <string name="event_context_menu_title_delete_event">Delete Event</string>
     <string name="event_context_menu_title_delete_more_block">Delete moreBlock</string>
@@ -1433,11 +1432,9 @@ Do you want to continue?"</string>
     <string name="event_title_add_new_component">Add new component</string>
     <string name="event_title_add_new_event">Add new event</string>
     <string name="facebook_app_id">255022168522663</string>
-    <string name="facebook_url">https://fb.com/sketchware</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
     <string name="firebase_database_url">https://dependable-flag-825.firebaseio.com</string>
     <string name="ga_trackingId">UA-80718117-1</string>
-    <string name="ideas_url">https://ideas.sketchware.io/</string>
     <string name="import_project_desc_download_complete">Download for %s completed.</string>
     <string name="import_project_desc_download_complete_is_not_root">Download for %s completed. Refresh Project list in the project tab and check the downloaded project.</string>
     <string name="import_project_error_invalid_id">The ID is invalid.</string>
@@ -1665,7 +1662,6 @@ But, components should be added manually for working correctly."</string>
     <string name="manage_export_url_tab_title_apk">Signed APK</string>
     <string name="manage_export_url_tab_title_data">Exported Data</string>
     <string name="manage_export_url_word_extend">Expand</string>
-    <string name="medium_url">https://medium.com/sketchware</string>
     <string name="message_compatible_chrome_brower">The following page is compatible with Google Chrome. Would you like to install Chrome?</string>
     <string name="message_device_not_support">Your device does not support this hardware. This component may not function properly</string>
     <string name="message_device_not_supported">"This device is not supported. Google Play Services aren't installed."</string>
@@ -1792,15 +1788,15 @@ But, components should be added manually for working correctly."</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>
     <string name="preset_setting_title">Preset Settings</string>
     <string name="program_information_actionbar_title">Program Information</string>
-    <string name="program_information_button_check_update">Check Update</string>
-    <string name="program_information_button_reset_system">Reset system</string>
+    <string name="program_information_button_check_update">Check for Updates</string>
+    <string name="program_information_button_reset_system">Reset settings</string>
     <string name="program_information_reset_system_complete_initialize">All of the data was initialized</string>
     <string name="program_information_reset_system_confirm_description">"All projects will be resetted.
 Do you want to continue?"</string>
     <string name="program_information_reset_system_title">Reset</string>
     <string name="program_information_reset_system_title_all_settings">Reset all settings</string>
     <string name="program_information_reset_system_title_all_settings_data">Reset all settings and data</string>
-    <string name="program_information_title_docs">Update Log</string>
+    <string name="program_information_title_docs">Docs</string>
     <string name="program_information_title_open_source_license">Open Source Licenses</string>
     <string name="program_information_title_service_terms">Service terms</string>
     <string name="program_information_title_share_with_friends">Share with Friends</string>
@@ -2465,9 +2461,10 @@ Create a zip file included Java and XML source code of your project."</string>
     <string name="title_company_tel">Telephone</string>
     <string name="title_company_url">Website</string>
     <string name="title_compatible_chrome_browser">Chrome Browser Required</string>
-    <string name="title_facebook_community">Facebook</string>
+    <string name="title_discord_community">Discord</string>
+    <string name="title_telegram_community">Telegram</string>
     <string name="title_free_trial">Free Trial</string>
-    <string name="title_sketchware">Sketchware</string>
+    <string name="title_sketchware">Sketchware Pro</string>
     <string name="title_slogan">Imagine. Create. Share</string>
     <string name="tutorial_dialog_description_confirm_save_as_new_project">Would you like to save the tutorial as a new project? You will be able to freely play around with it.</string>
     <string name="tutorial_list_button_download_sample_project">Download Sample Project</string>
@@ -2600,4 +2597,17 @@ Please check the URL again."</string>
     <string name="about_loading_title">Getting data…</string>
     <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
     <string name="about_joindiscord">Join our Discord server</string>
+
+
+    <!--  links  -->
+    <string name="link_github_release">https://github.com/Sketchware-Pro/Sketchware-Pro/releases</string>
+    <string name="link_docs_url">https://sketchware-pro.vercel.app/docs</string>
+    <string name="link_ideas_url">https://discord.gg/4uxhMwCt</string>
+    <string name="link_discord_invite">https://discord.gg/kq39yhT4rX</string>
+    <string name="link_telegram_invite">https://t.me/sketchwarepro</string>
+    <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json</string>
+    <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
+
+
+
 </resources>

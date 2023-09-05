@@ -1,7 +1,6 @@
 package com.besome.sketch.help;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -29,10 +28,10 @@ import mod.hey.studios.util.Helper;
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
 
     private static final int ITEM_SYSTEM_INFORMATION = 1;
-    private static final int ITEM_UPDATE_LOG = 4;
+    private static final int ITEM_DOCS_LOG = 4;
     private static final int ITEM_SOCIAL_NETWORK = 5;
-    private static final int ITEM_FACEBOOK = 6;
-    private static final int ITEM_MEDIUM = 8;
+    private static final int ITEM_DISCORD = 6;
+    private static final int ITEM_TELEGRAM = 8;
     private static final int ITEM_OPEN_SOURCE_LICENSES = 15;
     private static final int ITEM_SUGGEST_IDEAS = 17;
 
@@ -49,15 +48,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         item.setDesc(description);
         content.addView(item);
         item.setOnClickListener(this);
-        if (key != ITEM_UPDATE_LOG) {
-            if (key == ITEM_FACEBOOK || key == ITEM_MEDIUM) {
-                return;
-            }
-
-            if (key != ITEM_SUGGEST_IDEAS) {
-                return;
-            }
-        }
     }
 
     private void addSingleLineItem(int key, int name) {
@@ -72,12 +62,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         if (key == ITEM_SYSTEM_INFORMATION || key == ITEM_OPEN_SOURCE_LICENSES) {
             item.setOnClickListener(this);
         }
-    }
-
-    private void openMedium() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Helper.getResString(R.string.besome_blog_url)));
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
     }
 
     private void resetDialog() {
@@ -102,23 +86,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         dialog.show();
     }
 
-    private void openFacebook() {
-        String facebookPageUrl = Helper.getResString(R.string.facebook_url);
-
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookPageUrl)));
-        } catch (Exception e) {
-            startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl)),
-                    Helper.getResString(R.string.common_word_choose)));
-        }
-    }
-
-    private void openIdeasSite() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ideas.sketchware.io/"));
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
-    }
-
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -130,46 +97,24 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
             if (v instanceof PropertyOneLineItem) {
                 key = ((PropertyOneLineItem) v).getKey();
                 switch (key) {
-                    case ITEM_SYSTEM_INFORMATION:
-                        toSystemInfoActivity();
-                        break;
-
-                    case ITEM_OPEN_SOURCE_LICENSES:
+                    case ITEM_SYSTEM_INFORMATION -> toSystemInfoActivity();
+                    case ITEM_OPEN_SOURCE_LICENSES -> {
                         if (!GB.h(getApplicationContext())) {
                             bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
                         } else {
                             toLicenseActivity();
                         }
-                        break;
-
-                    default:
+                    }
                 }
             }
 
             if (v instanceof PropertyTwoLineItem) {
                 key = ((PropertyTwoLineItem) v).getKey();
                 switch (key) {
-                    case ITEM_UPDATE_LOG:
-                        if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
-                        } else {
-                            openBlog();
-                        }
-                        break;
-
-                    case ITEM_SUGGEST_IDEAS:
-                        openIdeasSite();
-                        break;
-
-                    case ITEM_MEDIUM:
-                        openMedium();
-                        break;
-
-                    case ITEM_FACEBOOK:
-                        openFacebook();
-                        break;
-
-                    default:
+                    case ITEM_DOCS_LOG -> openUrl(getString(R.string.link_docs_url));
+                    case ITEM_SUGGEST_IDEAS -> openUrl(getString(R.string.link_ideas_url));
+                    case ITEM_TELEGRAM -> openUrl(getString(R.string.link_telegram_invite));
+                    case ITEM_DISCORD -> openUrl(getString(R.string.link_discord_invite));
                 }
             }
         }
@@ -189,18 +134,19 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         content = findViewById(R.id.content);
 
         TextView version = findViewById(R.id.tv_sketch_ver);
-        version.setText("Version " + GB.e(getApplicationContext()));
+        version.setText(GB.e(getApplicationContext()));
         Button resetSystem = findViewById(R.id.btn_app_init);
-        resetSystem.setText(Helper.getResString(R.string.program_information_button_reset_system));
         resetSystem.setOnClickListener(this);
         Button checkForUpdates = findViewById(R.id.btn_app_upgrade);
-        checkForUpdates.setText(Helper.getResString(R.string.program_information_button_check_update));
-        checkForUpdates.setOnClickListener(this);
-        addTwoLineItem(ITEM_UPDATE_LOG, R.string.program_information_title_docs, R.string.docs_url);
-        addTwoLineItem(ITEM_SUGGEST_IDEAS, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
+        checkForUpdates.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_github_release)));
+            startActivity(intent);
+        });
+        addTwoLineItem(ITEM_DOCS_LOG, R.string.program_information_title_docs, R.string.link_docs_url);
+        addTwoLineItem(ITEM_SUGGEST_IDEAS, R.string.program_information_title_suggest_ideas, R.string.link_ideas_url);
         addSingleLineItem(ITEM_SOCIAL_NETWORK, R.string.title_community);
-        addTwoLineItem(ITEM_FACEBOOK, R.string.title_facebook_community, R.string.facebook_url);
-        addTwoLineItem(ITEM_MEDIUM, R.string.title_besome_blog, R.string.besome_blog_url);
+        addTwoLineItem(ITEM_DISCORD, R.string.title_discord_community, R.string.link_discord_invite);
+        addTwoLineItem(ITEM_TELEGRAM, R.string.title_telegram_community, R.string.link_telegram_invite);
         addSingleLineItem(ITEM_SYSTEM_INFORMATION, R.string.program_information_title_system_information);
         addSingleLineItem(ITEM_OPEN_SOURCE_LICENSES, R.string.program_information_title_open_source_license);
     }
@@ -211,15 +157,15 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(intent);
     }
 
-    private void openBlog() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.sketchware.io/blog"));
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
-    }
-
     private void toSystemInfoActivity() {
         Intent intent = new Intent(getApplicationContext(), SystemInfoActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
+
+    private void openUrl(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
 }

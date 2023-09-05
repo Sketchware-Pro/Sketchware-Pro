@@ -931,9 +931,6 @@
     <item type="id" name="smallLabel" />
     <item type="id" name="snackbar_action" />
     <item type="id" name="snackbar_text" />
-    <item type="id" name="social_fb" />
-    <item type="id" name="social_medium" />
-    <item type="id" name="social_slack" />
     <item type="id" name="sound_list" />
     <item type="id" name="spacer" />
     <item type="id" name="split_action_bar" />

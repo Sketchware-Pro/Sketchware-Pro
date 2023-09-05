@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -34,7 +35,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:text="@string/title_sketchware"
                     android:textAppearance="?attr/textAppearanceHeadlineSmall"
@@ -44,13 +45,13 @@
                     android:id="@+id/tv_sketch_ver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:textIsSelectable="true"
+                    android:layout_margin="8dp"
                     android:gravity="center"
                     android:textColor="?attr/colorGreen"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="Version 1.0.0" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -77,22 +78,21 @@
 
                     <Button
                         android:id="@+id/btn_app_init"
-                        style="@style/AppTheme.Button.Blue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="8dp"
+                        android:text="@string/program_information_button_reset_system"
                         android:textSize="@dimen/text_size_button_material" />
 
                     <Button
                         android:id="@+id/btn_app_upgrade"
-                        style="@style/AppTheme.Button.LightBlue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:padding="8dp"
+                        android:text="@string/program_information_button_check_update"
                         android:textSize="@dimen/text_size_button_material" />
                 </LinearLayout>
             </LinearLayout>

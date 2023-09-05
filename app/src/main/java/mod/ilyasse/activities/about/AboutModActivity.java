@@ -50,8 +50,6 @@ import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 public class AboutModActivity extends AppCompatActivity {
-    private static final String ABOUT_TEAM_URL = "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json";
-
     private ViewPager viewPager;
     private ExtendedFloatingActionButton fab;
     private ArrayList<HashMap<String, Object>> teamList = new ArrayList<>();
@@ -194,8 +192,7 @@ public class AboutModActivity extends AppCompatActivity {
         fab.setVisibility(View.GONE);
         initViewPager();
 
-        requestData.startRequestNetwork(RequestNetworkController.GET, ABOUT_TEAM_URL, "", requestDataListener);
-        // rippleRound(fab, "#5865F2", "#FFFFFF", 90);
+        requestData.startRequestNetwork(RequestNetworkController.GET, getString(R.string.link_about_team), "", requestDataListener);
 
         String toSelect = getIntent().getStringExtra("select");
         if ("changelog".equals(toSelect)) {
@@ -208,7 +205,7 @@ public class AboutModActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
-            finish();
+            super.onBackPressed();
         } else {
             viewPager.setCurrentItem(0);
         }

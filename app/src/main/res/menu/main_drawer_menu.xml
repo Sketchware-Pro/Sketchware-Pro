@@ -31,22 +31,22 @@
         android:icon="@drawable/ic_key_24"
         android:title="Create Release Keystore" />
 
-    <item android:title="Social Links">
+    <item android:title="Related links">
         <menu>
             <item
-                android:id="@+id/social_facebook"
-                android:icon="@drawable/facebook_white"
-                android:title="Facebook" />
+                android:id="@+id/social_discord"
+                android:icon="@drawable/ic_discord"
+                android:title="Discord" />
 
             <item
-                android:id="@+id/social_medium"
-                android:icon="@drawable/medium_white"
-                android:title="Medium" />
+                android:id="@+id/social_telegram"
+                android:icon="@drawable/ic_telegram"
+                android:title="Telegram" />
 
             <item
-                android:id="@+id/social_slack"
-                android:icon="@drawable/slack_white"
-                android:title="Slack" />
+                android:id="@+id/social_github"
+                android:icon="@drawable/ic_github"
+                android:title="GitHub" />
         </menu>
     </item>
 
