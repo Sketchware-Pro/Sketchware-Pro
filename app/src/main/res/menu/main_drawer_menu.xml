@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/about_team"
+        android:icon="@drawable/side_menu_info_icon_over_white"
+        android:title="About the Team" />
+
+    <item
+        android:id="@+id/changelog"
+        android:icon="@drawable/icon_file_white_96"
+        android:title="Changelog" />
+
+    <item
+        android:id="@+id/system_settings"
+        android:icon="@drawable/side_menu_setting_icon_over_white"
+        android:title="System Settings" />
+
+    <item
+        android:id="@+id/program_info"
+        android:icon="@drawable/side_menu_info_icon_over_white"
+        android:title="Program Information" />
+
+    <item
+        android:id="@+id/dev_tools"
+        android:icon="@drawable/ic_export_his_white_48dp"
+        android:title="Developer Tools" />
+
+    <item
+        android:id="@+id/create_release_keystore"
+        android:icon="@drawable/new_96"
+        android:title="Create Release Keystore" />
+
+    <item android:title="Social Links">
+        <menu>
+            <item
+                android:id="@+id/social_facebook"
+                android:icon="@drawable/facebook_white"
+                android:title="Facebook" />
+
+            <item
+                android:id="@+id/social_medium"
+                android:icon="@drawable/medium_white"
+                android:title="Medium" />
+
+            <item
+                android:id="@+id/social_slack"
+                android:icon="@drawable/slack_white"
+                android:title="Slack" />
+        </menu>
+    </item>
+
+</menu>

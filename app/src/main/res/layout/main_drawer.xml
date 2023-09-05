@@ -1,62 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- If I change the background color, the drawer header will look weird -->
-<!-- because the it has a blue hardcoded background color -->
-<!-- Check @drawable/side_menu_bg_puzzle -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/layout_main"
-    android:layout_width="260dp"
+<com.google.android.material.navigation.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_main"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/color_primary"
-    android:orientation="vertical">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@id/menu_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scrollbars="vertical"
-                android:splitMotionEvents="false" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="bottom|center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@id/social_fb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:src="@drawable/facebook_white"
-                    android:theme="@style/selectableMainItemBackground" />
-
-                <ImageView
-                    android:id="@id/social_medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:src="@drawable/medium_white"
-                    android:theme="@style/selectableMainItemBackground" />
-
-                <ImageView
-                    android:id="@id/social_slack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:src="@drawable/slack_white"
-                    android:theme="@style/selectableMainItemBackground" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    app:itemTextAppearanceActiveBoldEnabled="false"
+    app:menu="@menu/main_drawer_menu" />
