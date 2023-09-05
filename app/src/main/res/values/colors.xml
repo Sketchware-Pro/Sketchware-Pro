@@ -177,8 +177,4 @@
     <color name="LightOrange">#FFB055</color>
     <color name="Pink">#FF5955</color>
     <color name="Orange">#FFB055</color>
-
-    <color name="system_window_scrim_light">#44000000</color>
-    <color name="system_window_scrim_dark">#66000000</color>
-
 </resources>
