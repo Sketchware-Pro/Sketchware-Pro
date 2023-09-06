@@ -1,0 +1,16 @@
+
+E
+java:S1066|"/Merge this if statement with the enclosing one.(¾ÙÇô
+k	java:S117)"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÐšÑƒÿÿÿÿÿ
+P
+java:S1172"3Remove this unused method parameter "useSeparator".(™£°ë8¥çõ­¦1
+l
+java:S6201|"VReplace this instanceof check and cast with 'instanceof DesignActivity designActivity'(¾ÙÇô
+{
+java:S1450×"XRemove the "separator" field and declare it as a local variable in the relevant methods.( Ó¬Àøÿÿÿÿ8ß—ö­¦1
+~
+java:S1450Ö"[Remove the "subSeparator" field and declare it as a local variable in the relevant methods.(€¬Íµøÿÿÿÿ8á—ö­¦1
+F
+java:S1172î"*Remove this unused method parameter "tag".(¡÷‰šùÿÿÿÿ
+S
+java:S1068Ö"0Remove this unused "subSeparator" private field.(€¬Íµøÿÿÿÿ8’˜ö­¦1

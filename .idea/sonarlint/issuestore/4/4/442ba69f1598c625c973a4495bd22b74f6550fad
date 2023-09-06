@@ -1,0 +1,6 @@
+
+k	java:S117j"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÄÈŸÈûÿÿÿÿ
+k	java:S117m"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ô½ê—þÿÿÿÿ
+[
+java:S62014"FReplace this instanceof check and cast with 'instanceof String string'( Àí
+d	java:S100€"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚­ÄË

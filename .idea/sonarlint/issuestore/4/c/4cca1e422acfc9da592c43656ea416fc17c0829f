@@ -1,0 +1,7 @@
+
+„
+java:S1319B"iThe type of "arrayList" should be an interface such as "List" rather than the implementation "ArrayList".(Ýí”Ùúÿÿÿÿ
+T
+java:S1155D">Use isEmpty() to check whether the collection is empty or not.(ÓŸü
+T
+java:S6201U">Replace this instanceof check and cast with 'instanceof Us us'(ÊÆ×Ñ

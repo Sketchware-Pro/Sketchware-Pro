@@ -1,0 +1,18 @@
+
+K
+java:S1066ğ"/Merge this if statement with the enclosing one.(¬¸İÿÿÿÿÿ
+f	java:S1174"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã¿×©
+k	java:S1175"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©ã–›ıÿÿÿÿ
+k	java:S1176"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äãÒĞùÿÿÿÿ
+h
+java:S1104Á"QMake title a static final constant or non-public and provide accessors if needed.(Å¬õ
+l
+java:S1104Å"PMake icon a static final constant or non-public and provide accessors if needed.(¸«é­şÿÿÿÿ
+h
+java:S3776D"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(¡é††
+:
+java:S3066Á"#Lower the visibility of this field.(Å¬õ
+?
+java:S3066Å"#Lower the visibility of this field.(¸«é­şÿÿÿÿ
+A
+java:S3398¬"*Move this method into "DrawerItemAdapter".(ß‘Õ…

@@ -1,0 +1,64 @@
+
+K
+java:S1066•"/Merge this if statement with the enclosing one.(‰Û ùÿÿÿÿ
+E
+java:S1066œ"/Merge this if statement with the enclosing one.(´Á{
+K
+java:S1066Á"/Merge this if statement with the enclosing one.(ÆÿÒ­ıÿÿÿÿ
+g	java:S117®"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ªŞ´¼
+g	java:S117Ğ	"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(î§©ª
+g	java:S117é	"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ªŞ´¼
+g	java:S117ù	"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(î§©ª
+g	java:S117¡
+"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(î§©ª
+‰
+java:S3252Õ"mUse static access with "com.google.android.material.snackbar.BaseTransientBottomBar" for "LENGTH_INDEFINITE".( ²³üıÿÿÿÿ
+n
+java:S3776÷"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(™¨Òÿÿÿÿÿ
+i
+java:S3776¾"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(¡é††
+i
+java:S3776ù"RRefactor this method to reduce its Cognitive Complexity from 56 to the 15 allowed.(ßìê¯
+
+java:S1186¾"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(™Î«şÿÿÿÿ
+
+java:S1186Â"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ø´´øÿÿÿÿ
+i
+java:S3776è"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(ƒã¼¤
+M
+java:S1117ò"6Rename "q" which hides the field declared at line 125.(œ¥š”
+D	java:S108Ö")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+D	java:S108Û")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+Y
+java:S1117‰"=Rename "activity" which hides the field declared at line 882.(Äâ‹¸øÿÿÿÿ
+Y
+java:S1117—"=Rename "activity" which hides the field declared at line 882.(Äâ‹¸øÿÿÿÿ
+i
+java:S3776§"RRefactor this method to reduce its Cognitive Complexity from 44 to the 15 allowed.(Ö‡«®
+Y
+java:S1117«"=Rename "activity" which hides the field declared at line 882.(Äâ‹¸øÿÿÿÿ
+R
+java:S1117 ";Rename "dialog" which hides the field declared at line 883.(İãû÷
+Y
+java:S1117ë"=Rename "activity" which hides the field declared at line 882.(Äâ‹¸øÿÿÿÿ
+Y
+java:S1117ü"=Rename "activity" which hides the field declared at line 882.(Äâ‹¸øÿÿÿÿ
+Z
+java:S1117–	">Rename "activity" which hides the field declared at line 1162.(Äâ‹¸øÿÿÿÿ
+Z
+java:S1117Â	">Rename "activity" which hides the field declared at line 1208.(Äâ‹¸øÿÿÿÿ
+Z
+java:S1117É	">Rename "activity" which hides the field declared at line 1208.(Äâ‹¸øÿÿÿÿ
+Z
+java:S1117è	">Rename "activity" which hides the field declared at line 1245.(Äâ‹¸øÿÿÿÿ
+Z
+java:S1117“
+">Rename "activity" which hides the field declared at line 1288.(Äâ‹¸øÿÿÿÿ
+˜
+java:S1186º
+"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(µ½é²
+
+java:S1186¾
+"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ùˆ¦ıÿÿÿÿ
+Ş
+java:S6541§"ÆA "Brain Method" was detected. Refactor it to reduce at least one of the following metrics: LOC from 128 to 64, Complexity from 15 to 14, Nesting Level from 6 to 2, Number of Variables from 15 to 6.(Ö‡«®
