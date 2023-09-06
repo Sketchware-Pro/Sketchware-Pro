@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="project_item_elevation">3dp</dimen>
+    <dimen name="elevated_item_without_shadow_elevation">3dp</dimen>
 </resources>
