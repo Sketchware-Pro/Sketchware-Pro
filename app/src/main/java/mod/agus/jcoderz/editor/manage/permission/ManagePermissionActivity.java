@@ -169,7 +169,6 @@ public class ManagePermissionActivity extends Activity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             String permission = namePerm.get(position);
             holder.checkBox.setText(permission);
-            holder.checkBox.setSelected(true);
             holder.checkBox.setOnCheckedChangeListener(null); // Important to avoid infinite loops
             holder.checkBox.setChecked(frc.getPermissionList().contains(permission));
             holder.checkBox.setOnCheckedChangeListener((button, checked) -> {
