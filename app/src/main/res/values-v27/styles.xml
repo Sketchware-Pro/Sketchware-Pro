@@ -4,6 +4,8 @@
     <style name="Platform.V27.AppTheme" parent="Platform.V23.AppTheme">
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
     <style name="Platform.AppTheme" parent="Platform.V27.AppTheme" />
