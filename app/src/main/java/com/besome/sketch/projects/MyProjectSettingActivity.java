@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
@@ -514,7 +515,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     }
 
     private void showCustomIconOptions() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(Helper.getResString(R.string.myprojects_settings_context_menu_title_choose));
         builder.setItems(new String[]{
                 Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
