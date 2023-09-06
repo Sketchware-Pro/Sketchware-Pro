@@ -1,70 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="4dp">
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
         android:focusable="false"
+        android:paddingHorizontal="4dp"
         android:text="@string/local_library_manager_enter_dependency"
         android:textColor="?attr/colorPrimary"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
-    <com.google.android.material.divider.MaterialDivider
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ed_inputLayout"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="@color/light_grey" />
+        android:layout_marginTop="14dp"
+        android:hint="@string/local_library_manager_dependency_example"
+        android:importantForAutofill="noExcludeDescendants">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/local_library_manager_dependency_example"
-            android:inputType="textNoSuggestions"
-            android:singleLine="true"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:gravity="top"
-        android:orientation="horizontal">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:paddingVertical="8dp"
+        android:text="@string/local_library_manager_dependency_info"
+        android:textColor="#ff757575"
+        android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/tv_progress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingVertical="8dp"
-            android:text="@string/local_library_manager_dependency_info"
-            android:textColor="#ff757575"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_download"
-        style="@style/AppTheme.Button.Blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/common_word_download" />
 </LinearLayout>
