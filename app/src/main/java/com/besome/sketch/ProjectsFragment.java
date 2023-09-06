@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -24,6 +25,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.lC;
 import a.a.a.wB;
+import dev.chrisbanes.insetter.Insetter;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
@@ -64,7 +67,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
         loading = view.findViewById(R.id.loading_3balls);
 
-        requireActivity().findViewById(R.id.create_new_project).setOnClickListener(this);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
+        fab.setOnClickListener(this);
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(fab);
 
         swipeRefresh.setOnRefreshListener(() -> {
             // Check storage access

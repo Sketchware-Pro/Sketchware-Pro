@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -136,6 +137,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();
