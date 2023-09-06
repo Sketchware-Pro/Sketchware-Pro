@@ -209,8 +209,8 @@ public class CompileLogActivity extends Activity {
 
         LinearLayout layout = new LinearLayout(this);
         layout.addView(picker, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER));
 
         new AlertDialog.Builder(this)
@@ -219,7 +219,7 @@ public class CompileLogActivity extends Activity {
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     logViewerPreferences.edit().putInt(PREFERENCE_FONT_SIZE, picker.getValue()).apply();
 
-                    tv_compile_log.setTextSize((float) picker.getValue());
+                    tv_compile_log.setTextSize(picker.getValue());
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();

@@ -21,12 +21,10 @@
                 android:id="@id/tv_compile_log"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
+                android:paddingHorizontal="8dp"
                 android:paddingBottom="48dp"
-                android:textColor="@color/primary_text_default_material_light"
-                android:textSize="11sp"
-                android:typeface="monospace" />
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textSize="12sp" />
         </HorizontalScrollView>
     </ScrollView>
 </LinearLayout>

@@ -31,9 +31,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         DrawerItem drawerItem = new DrawerItem(context, tag);
         drawerItem.setContent(iconResId, Helper.getResString(titleResId), Helper.getResString(descriptionResId));
         drawerItem.setTag(tag);
-        drawerItem.setOnClickListener(this);
-        drawerItem.setSeparatorVisibility(useSeparator);
-        drawerItem.setSubSeparatorVisibility(!useSeparator);
+        drawerItem.setClickListener(this);
         return drawerItem;
     }
 
@@ -213,8 +211,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         private ImageView imgIcon;
         private TextView titleTextView;
         private TextView subTitleTextView;
-        private View subSeparator;
-        private View separator;
 
         public DrawerItem(Context context) {
             super(context);
@@ -242,16 +238,14 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
             imgIcon = findViewById(R.id.img_icon);
             titleTextView = findViewById(R.id.tv_root_title);
             subTitleTextView = findViewById(R.id.tv_sub_title);
-            subSeparator = findViewById(R.id.sub_separator);
-            separator = findViewById(R.id.separator);
         }
 
-        public void setSeparatorVisibility(boolean visible) {
-            separator.setVisibility(visible ? VISIBLE : GONE);
+        public void setClickListener(OnClickListener listener) {
+            findViewById(R.id.root).setOnClickListener(listener);
         }
 
-        public void setSubSeparatorVisibility(boolean visible) {
-            subSeparator.setVisibility(visible ? VISIBLE : GONE);
+        public void setTag(int tag) {
+            findViewById(R.id.root).setTag(tag);
         }
     }
 }

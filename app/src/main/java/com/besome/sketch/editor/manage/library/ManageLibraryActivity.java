@@ -18,6 +18,7 @@ import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
 import java.lang.ref.WeakReference;
@@ -70,6 +71,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             ((ViewGroup) title.getParent()).removeView(title);
             libraryItemLayout.addView(title);
         }
+        libraryItemView.setBackgroundColor(MaterialColors.getColor(this, R.attr.colorSurface, 0));
         libraryItemLayout.addView(libraryItemView);
     }
 

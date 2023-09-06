@@ -333,7 +333,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel"
-                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -342,7 +341,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/common_word_cancel"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                    android:textAppearance="@style/TextAppearance.Material3.DisplayMedium"
                     android:textColor="#ffffffff"
                     android:textSize="12sp" />
 

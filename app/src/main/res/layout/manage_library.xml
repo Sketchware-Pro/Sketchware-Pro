@@ -28,6 +28,7 @@
                 android:layout_marginBottom="4dp"
                 android:textColor="?colorAccent"
                 android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 tools:text="Advanced" />
         </LinearLayout>
     </ScrollView>

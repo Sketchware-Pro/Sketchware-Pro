@@ -261,13 +261,13 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         setContentView(R.layout.manage_view);
-        Toolbar m = findViewById(R.id.toolbar);
-        setSupportActionBar(m);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_view));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        m.setNavigationOnClickListener(view -> {
+        toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });
 

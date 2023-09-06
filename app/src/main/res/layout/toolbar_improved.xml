@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/tx_toolbar_title"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:gravity="center|start"
@@ -33,7 +33,7 @@
         android:paddingBottom="6dp"
         android:text="Title"
         android:textColor="?attr/colorOnSurface"
-        android:textAppearance="?attr/textAppearanceHeadline6" />
+        android:textAppearance="@style/TextAppearance.Material3.DisplayMedium" />
 
     <ImageView
         android:id="@+id/ig_toolbar_load_file"
@@ -43,5 +43,5 @@
         android:scaleType="centerInside"
         android:src="@drawable/add_file_48"
         android:visibility="gone"
-        app:tint="?attr/colorControlNormal" />
+        app:tint="?colorControlNormal" />
 </LinearLayout>

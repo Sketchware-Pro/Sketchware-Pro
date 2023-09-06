@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.activity.EdgeToEdge.*;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -158,6 +160,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+
+        EdgeToEdge.enable(this);
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);

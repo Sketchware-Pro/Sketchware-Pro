@@ -14,9 +14,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:tabTextAppearance="@style/DesignTabTextAppearance" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -37,6 +35,7 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                style="@style/Widget.Material3.FloatingActionButton.Surface"
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,8 +43,8 @@
                 android:layout_margin="16dp"
                 android:backgroundTint="?attr/colorPink"
                 android:src="@drawable/ic_add_white_36dp"
-                app:borderWidth="0dp"
-                app:tint="?attr/colorOnPink" />
+                app:backgroundTint="?colorControlNormal"
+                app:borderWidth="0dp" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
