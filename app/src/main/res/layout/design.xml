@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -21,7 +22,21 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <include layout="@layout/toolbar" />
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?actionBarSize"
+                        app:navigationIcon="@drawable/abc_ic_ab_back_material"
+                        app:subtitleTextAppearance="@style/DesignToolbarSubtitleTextAppearance"
+                        app:titleTextAppearance="@style/DesignToolbarTitleTextAppearance"
+                        tools:menu="@menu/design_menu"
+                        tools:subtitle="605"
+                        tools:title="InternalDemo" />
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
