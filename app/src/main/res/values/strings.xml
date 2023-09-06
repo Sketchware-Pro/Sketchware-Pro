@@ -2614,6 +2614,7 @@ Please check the URL again."</string>
     <string name="local_library_manager">Local library Manager</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
     <string name="local_library_manager_dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+    <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
 
     <!--  about the team screen  -->
     <string name="about_title">About Sketchware Pro</string>

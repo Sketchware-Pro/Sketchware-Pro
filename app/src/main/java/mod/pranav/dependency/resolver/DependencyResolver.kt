@@ -31,7 +31,8 @@ import kotlin.io.path.writeText
 class DependencyResolver(
     private val groupId: String,
     private val artifactId: String,
-    private val version: String
+    private val version: String,
+    private val skipDependencies: Boolean,
 ) {
     companion object {
         private val DEFAULT_REPOS = """
@@ -230,33 +231,36 @@ class DependencyResolver(
         callback: DependencyResolverCallback
     ) {
         dependencies.add(artifact)
-        callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
-        val pom = artifact.getPOM()
-        if (pom == null) {
-            callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
-            return
-        }
-        val deps = pom.resolvePOM(dependencies, callback)
-        deps.forEach { dep ->
-            callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
-            if (dep.version.isEmpty()) {
-                callback.log("Fetching latest version of ${dep.artifactId}")
-                val factory = DocumentBuilderFactory.newInstance()
-                val builder = factory.newDocumentBuilder()
-                val doc = builder.parse(dep.getMavenMetadata().byteInputStream())
-                val v = doc.getElementsByTagName("release").item(0)
-                if (v != null) {
-                    dep.version = v.textContent
-                    callback.log("Latest version of ${dep.groupId}:${dep.artifactId} is ${dep.version}")
-                }
-            }
-            callback.log("Resolved ${dep.groupId}:${dep.artifactId}")
-            if (artifact.version.isEmpty() || artifact.repository == null) {
-                callback.onDependencyNotFound(artifact.toStr())
-                callback.log("Cannot resolve ${artifact.toStr()}")
+
+        if (!skipDependencies) {
+            callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
+            val pom = artifact.getPOM()
+            if (pom == null) {
+                callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
                 return
             }
-            resolve(dep, dependencies, callback)
+            val deps = pom.resolvePOM(dependencies, callback)
+            deps.forEach { dep ->
+                callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
+                if (dep.version.isEmpty()) {
+                    callback.log("Fetching latest version of ${dep.artifactId}")
+                    val factory = DocumentBuilderFactory.newInstance()
+                    val builder = factory.newDocumentBuilder()
+                    val doc = builder.parse(dep.getMavenMetadata().byteInputStream())
+                    val v = doc.getElementsByTagName("release").item(0)
+                    if (v != null) {
+                        dep.version = v.textContent
+                        callback.log("Latest version of ${dep.groupId}:${dep.artifactId} is ${dep.version}")
+                    }
+                }
+                callback.log("Resolved ${dep.groupId}:${dep.artifactId}")
+                if (artifact.version.isEmpty() || artifact.repository == null) {
+                    callback.onDependencyNotFound(artifact.toStr())
+                    callback.log("Cannot resolve ${artifact.toStr()}")
+                    return
+                }
+                resolve(dep, dependencies, callback)
+            }
         }
     }
 
