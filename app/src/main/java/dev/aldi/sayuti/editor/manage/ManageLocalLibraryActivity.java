@@ -18,11 +18,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -168,6 +171,12 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_locallibraries);
+
+        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsingToolbar);
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
 
         recyclerView = findViewById(R.id.main_content);
         initButtons();
