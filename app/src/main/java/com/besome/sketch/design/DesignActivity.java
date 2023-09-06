@@ -571,9 +571,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
         dialog.a(R.drawable.exit_96);
         dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
-        dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), v -> {
+        dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), (d, which) -> {
             if (!mB.a()) {
-                dialog.dismiss();
+                d.dismiss();
                 try {
                     k();
                     new SaveChangesProjectCloser(this).execute();
@@ -583,9 +583,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_exit), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_exit), (d, which) -> {
             if (!mB.a()) {
-                dialog.dismiss();
+                d.dismiss();
                 try {
                     k();
                     new DiscardChangesProjectCloser(this).execute();
@@ -596,7 +596,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         });
         dialog.configureDefaultButton(Helper.getResString(R.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+                (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -609,7 +609,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.a(R.drawable.break_warning_96_red);
         dialog.a(Helper.getResString(R.string.common_message_insufficient_storage_space));
         dialog.b(Helper.getResString(R.string.common_word_ok),
-                Helper.getDialogDismissListener(dialog));
+                (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -619,7 +619,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.a(R.drawable.data_backup_96);
         dialog.b(Helper.getResString(R.string.design_restore_data_title));
         dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
-        dialog.b(Helper.getResString(R.string.common_word_restore), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_restore), (dialogInterface, which) -> {
             if (!mB.a()) {
                 boolean g = jC.c(sc_id).g();
                 boolean g2 = jC.b(sc_id).g();
@@ -655,12 +655,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
                 projectFileSelector.syncState();
                 B = false;
-                dialog.dismiss();
+                dialogInterface.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_no), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_no), (d, which) -> {
             B = false;
-            dialog.dismiss();
+            d.dismiss();
         });
         dialog.setCancelable(false);
         dialog.show();
@@ -1059,8 +1059,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             dialog.a("A directory important for building is missing. " +
                                     "Sketchware Pro can try creating " + e.getMissingFile().getAbsolutePath() +
                                     " if you'd like to.");
-                            dialog.configureDefaultButton("Create", v -> {
-                                dialog.dismiss();
+                            dialog.configureDefaultButton("Create", (d, which) -> {
+                                d.dismiss();
                                 if (!e.getMissingFile().mkdirs()) {
                                     SketchwareUtil.toastError("Failed to create directory / directories!");
                                 }
@@ -1071,7 +1071,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                     "Put the correct file back to " + e.getMissingFile().getAbsolutePath() +
                                     " and try building again.");
                         }
-                        dialog.b("Dismiss", Helper.getDialogDismissListener(dialog));
+                        dialog.b("Dismiss", (d, which) -> Helper.getDialogDismissListener(d));
                         dialog.show();
                     });
                 } catch (Throwable tr) {

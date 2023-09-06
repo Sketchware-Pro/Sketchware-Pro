@@ -44,8 +44,8 @@ public class GetKeyStoreCredentialsDialog {
         dialog.a(iconResourceId);
         dialog.b(title);
         dialog.a(noticeText);
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(R.string.common_word_next), next -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_next), (d, which) -> {
             if (mode == SigningMode.OWN_KEY_STORE) {
                 // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
                 if (new File(wq.j()).exists()) {
@@ -70,7 +70,7 @@ public class GetKeyStoreCredentialsDialog {
                     }
 
                     if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
-                        dialog.dismiss();
+                        d.dismiss();
 
                         receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString(),
                                 password.getText().toString(), alias.getText().toString(), password.getText().toString()));
@@ -79,10 +79,10 @@ public class GetKeyStoreCredentialsDialog {
                     SketchwareUtil.toastError("Keystore not found");
                 }
             } else if (mode == SigningMode.TESTKEY) {
-                dialog.dismiss();
+                d.dismiss();
                 receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString()));
             } else if (mode == SigningMode.DONT_SIGN) {
-                dialog.dismiss();
+                d.dismiss();
                 receiver.gotCredentials(null);
             }
         });
@@ -175,7 +175,7 @@ public class GetKeyStoreCredentialsDialog {
         inputContainer.addView(tilSigningAlgorithm);
 
         dialog.a(scrollView);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     public void show() {

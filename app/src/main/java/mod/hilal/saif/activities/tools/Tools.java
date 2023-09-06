@@ -293,9 +293,9 @@ public class Tools extends Activity {
         apkPathDialog.a(testkey_root);
 
         apkPathDialog.a(Helper.getResString(R.string.common_word_cancel),
-                Helper.getDialogDismissListener(apkPathDialog));
-        apkPathDialog.b("Next", next -> {
-            apkPathDialog.dismiss();
+                (dialogInterface, whichDialog) -> Helper.getDialogDismissListener(dialogInterface));
+        apkPathDialog.b("Next", (dialogInterface, whichDialog) -> {
+            dialogInterface.dismiss();
 
             String input_apk_path = ed_input.getEditText().getText().toString();
             String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
@@ -310,9 +310,9 @@ public class Tools extends Activity {
                         "/Internal storage/sketchware/signed_apk/. Overwrite it?");
 
                 confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel),
-                        Helper.getDialogDismissListener(confirmOverwrite));
-                confirmOverwrite.b("Overwrite", overwrite -> {
-                    confirmOverwrite.dismiss();
+                        (d, which) -> Helper.getDialogDismissListener(d));
+                confirmOverwrite.b("Overwrite", (d, which) -> {
+                    d.dismiss();
                     signApkFileWithDialog(input_apk_path, output_apk_path, true,
                             null, null, null, null);
                 });

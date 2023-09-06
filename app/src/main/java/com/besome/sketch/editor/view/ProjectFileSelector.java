@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -179,7 +180,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     }
 
     private void showAvailableJavaFiles() {
-        availableFilesDialog = new aB((Activity) getContext());
+        availableFilesDialog = new aB(getContext());
         availableFilesDialog.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
         availableFilesDialog.a(R.drawable.java_96);
         View customView = wB.a(getContext(), R.layout.file_selector_popup_select_java);
@@ -233,7 +234,8 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
                         currentXmlFileName = projectFileBean.getXmlName();
                     }
                     selectedFileChangeListener.a(1, projectFileBean);
-                    availableFilesDialog.dismiss();
+                    AlertDialog d = availableFilesDialog.create();
+                    d.dismiss();
                 });
             }
         }

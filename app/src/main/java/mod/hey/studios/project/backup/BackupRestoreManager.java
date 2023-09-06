@@ -110,11 +110,11 @@ public class BackupRestoreManager {
         checkboxContainer.addView(includeUsedCustomBlocks);
 
         dialog.a(checkboxContainer);
-        dialog.b("Back up", v -> {
-            dialog.dismiss();
+        dialog.b("Back up", (d, which) -> {
+            d.dismiss();
             doBackup(sc_id, project_name);
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

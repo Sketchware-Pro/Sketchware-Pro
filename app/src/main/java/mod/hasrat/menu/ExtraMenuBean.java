@@ -707,7 +707,7 @@ public class ExtraMenuBean {
 
         dialog.b(title);
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof RadioButton) {
                     RadioButton rb = (RadioButton) viewGroup.getChildAt(i);
@@ -716,16 +716,16 @@ public class ExtraMenuBean {
                     }
                 }
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.configureDefaultButton("Code Editor", v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.configureDefaultButton("Code Editor", (d, which) -> {
             AsdAllEditor editor = new AsdAllEditor(logicEditor);
             editor.setCon(menu.getArgValue().toString());
             editor.show();
             editor.saveLis(logicEditor, menu, editor);
             editor.cancelLis(logicEditor, editor);
-            dialog.dismiss();
+            d.dismiss();
         });
         dialog.show();
     }
@@ -759,16 +759,16 @@ public class ExtraMenuBean {
         edittext.setText(ss.getArgValue().toString());
         dialog.a(root);
 
-        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
             String content = edittext.getText().toString();
             if (content.length() > 0 && content.charAt(0) == '@') {
                 content = " " + content;
             }
             logicEditor.a(ss, (Object) content);
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.configureDefaultButton("Code Editor", v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.configureDefaultButton("Code Editor", (d, which) -> {
             if (ConfigActivity.isLegacyCeEnabled()) {
                 AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
                 asdOldDialog.setCon(edittext.getText().toString());
@@ -782,7 +782,7 @@ public class ExtraMenuBean {
                 asdDialog.saveLis(logicEditor, false, ss, asdDialog);
                 asdDialog.cancelLis(asdDialog);
             }
-            dialog.dismiss();
+            d.dismiss();
         });
         dialog.show();
     }

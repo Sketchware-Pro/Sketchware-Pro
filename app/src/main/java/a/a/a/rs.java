@@ -263,7 +263,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void showSaveMoreBlockToCollectionsDialog(int moreBlockPosition) {
-        aB aBVar = new aB(requireActivity());
+        aB aBVar = new aB(requireContext());
         aBVar.b(xB.b().a(requireContext(), R.string.logic_more_block_favorites_save_title));
         aBVar.a(R.drawable.ic_bookmark_red_48dp);
         View a2 = wB.a(requireContext(), R.layout.property_popup_save_to_favorite);
@@ -275,16 +275,16 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(requireContext(), a2.findViewById(R.id.ti_input), Pp.h().g());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(requireContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(requireContext(), R.string.common_word_save), (d, which) -> {
             if (nb.b()) {
                 saveMoreBlockToCollection(editText.getText().toString(), moreBlocks.get(moreBlockPosition));
                 mB.a(requireContext(), editText);
-                aBVar.dismiss();
+                d.dismiss();
             }
         });
-        aBVar.a(xB.b().a(requireContext(), R.string.common_word_cancel), v -> {
+        aBVar.a(xB.b().a(requireContext(), R.string.common_word_cancel), (d, which) -> {
             mB.a(requireContext(), editText);
-            aBVar.dismiss();
+            d.dismiss();
         });
         aBVar.show();
     }

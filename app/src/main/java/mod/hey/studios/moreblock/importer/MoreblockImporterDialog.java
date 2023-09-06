@@ -124,7 +124,7 @@ public class MoreblockImporterDialog {
         ln.addView(lw);
 
         dialog.a(ln);
-        dialog.b(act.getString(R.string.common_word_select), v -> {
+        dialog.b(act.getString(R.string.common_word_select), (d, which) -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
@@ -132,10 +132,10 @@ public class MoreblockImporterDialog {
             } else {
                 callback.onSelected(selectedBean);
 
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(act.getString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

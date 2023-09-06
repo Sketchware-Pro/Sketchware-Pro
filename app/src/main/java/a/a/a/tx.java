@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -199,7 +200,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             radioButton.setChecked(true);
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_select), (d, which) -> {
             for (int i = 0; i < tx.this.i.getChildCount(); i++) {
                 RadioButton child = (RadioButton) tx.this.i.getChildAt(i);
                 if (child.isChecked()) {
@@ -210,12 +211,13 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     break;
                 }
             }
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         RadioButton finalRadioButton = radioButton;
-        aBVar.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
-        aBVar.show();
+        AlertDialog alertDialog = aBVar.create();
+        alertDialog.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
+        alertDialog.show();
     }
 
     public final RadioButton a(String str) {

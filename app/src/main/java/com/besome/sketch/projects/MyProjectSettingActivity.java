@@ -2,7 +2,6 @@ package com.besome.sketch.projects;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.besome.sketch.lib.base.BaseDialogActivity;
@@ -379,14 +379,14 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 picker.setValue(projectVersionNameSecondPart);
             }
         });
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
             if (!mB.a()) {
                 projectVersionCodeView.setText(String.valueOf(versionCodePicker.getValue()));
                 projectVersionNameView.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -448,12 +448,12 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         dialog.b(Helper.getResString(R.string.common_word_settings));
         dialog.a(R.drawable.default_icon);
         dialog.a(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
-        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_reset), (d, which) -> {
             appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -546,7 +546,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(R.drawable.break_warning_96_red);
         dialog.a(Helper.getResString(R.string.myprojects_settings_message_package_rename));
-        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

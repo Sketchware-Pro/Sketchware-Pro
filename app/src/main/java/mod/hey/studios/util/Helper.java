@@ -5,6 +5,7 @@ import static com.besome.sketch.SketchApplication.getContext;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -80,7 +81,7 @@ public class Helper {
         return v -> activity.onBackPressed();
     }
 
-    public static DialogDismissListener getDialogDismissListener(final Dialog dialog) {
+    public static DialogDismissListener getDialogDismissListener(final DialogInterface dialog) {
         return new DialogDismissListener(dialog);
     }
 
@@ -173,12 +174,12 @@ public class Helper {
      */
     public static class DialogDismissListener implements View.OnClickListener {
 
-        private final Dialog dialog;
+        private final DialogInterface dialog;
 
         /**
          * Constructor for {@link Helper#getDialogDismissListener(Dialog)}.
          */
-        private DialogDismissListener(Dialog dialog) {
+        private DialogDismissListener(DialogInterface dialog) {
             this.dialog = dialog;
         }
 

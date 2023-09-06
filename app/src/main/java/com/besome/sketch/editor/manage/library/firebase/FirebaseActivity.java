@@ -253,15 +253,15 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         dialog.a(R.drawable.chrome_96);
         dialog.b(xB.b().a(getApplicationContext(), R.string.title_compatible_chrome_browser));
         dialog.a(xB.b().a(getApplicationContext(), R.string.message_compatible_chrome_brower));
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), (d, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 }
