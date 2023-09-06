@@ -39,7 +39,6 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import mod.SketchwareUtil;
-import mod.hasrat.dialog.SketchDialog;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.util.Helper;
 
@@ -169,9 +168,9 @@ public class LogicClickListener implements View.OnClickListener {
     }
 
     private void removeVariable() {
-        SketchDialog dialog = new SketchDialog(logicEditor);
-        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
-        dialog.setIcon(R.drawable.delete_96);
+        aB dialog = new aB(logicEditor);
+        dialog.b(Helper.getResString(R.string.logic_editor_title_remove_variable));
+        dialog.a(R.drawable.delete_96);
 
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
@@ -211,16 +210,16 @@ public class LogicClickListener implements View.OnClickListener {
             }
         }
 
-        dialog.setView(recyclerView);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), v -> {
+        dialog.a(recyclerView);
+        dialog.b(Helper.getResString(R.string.common_word_remove), (d, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.m(item.text);
                 }
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.a(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

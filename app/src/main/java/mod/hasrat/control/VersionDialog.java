@@ -13,8 +13,8 @@ import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
+import a.a.a.aB;
 import a.a.a.mB;
-import mod.hasrat.dialog.SketchDialog;
 import mod.hasrat.validator.VersionNamePostfixValidator;
 import mod.hey.studios.util.Helper;
 
@@ -27,9 +27,9 @@ public class VersionDialog {
     }
 
     public void show() {
-        final SketchDialog dialog = new SketchDialog(activity);
-        dialog.setTitle("Advanced Version Control");
-        dialog.setIcon(R.drawable.numbers_48);
+        final aB dialog = new aB(activity);
+        dialog.a(R.drawable.numbers_48);
+        dialog.b("Advanced Version Control");
         final LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.VERTICAL);
 
@@ -128,8 +128,8 @@ public class VersionDialog {
         if (activity.projectVersionNameView.getText().toString().split(" ").length > 1) {
             version_name2.setText(activity.projectVersionNameView.getText().toString().split(" ")[1]);
         }
-        dialog.setView(root);
-        dialog.setPositiveButton(activity.getString(R.string.common_word_save), v -> {
+        dialog.a(root);
+        dialog.b(activity.getString(R.string.common_word_save), (d, which) -> {
             final String versionCode = version_code.getText().toString();
             final String versionName = version_name1.getText().toString();
             final String versionNamePostfix = version_name2.getText().toString();
@@ -152,10 +152,10 @@ public class VersionDialog {
             if (!mB.a() && validVersionCode && validVersionName) {
                 activity.projectVersionCodeView.setText(versionCode);
                 activity.projectVersionNameView.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.setNegativeButton(activity.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(activity.getString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 }
