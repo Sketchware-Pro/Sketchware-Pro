@@ -1,5 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBox android:id="@id/checkbox_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="android.permission.WRITE_EXTERNAL_STORAGE" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="?colorSurfaceBright"
+        app:strokeWidth="0dp">
+
+        <CheckBox
+            android:id="@id/checkbox_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:layout_marginHorizontal="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginVertical="10dp"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="android.permission.WRITE_EXTERNAL_STORAGE"
+            android:textSize="16sp" />
+
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

@@ -267,9 +267,7 @@
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:paddingHorizontal">0dp</item>
-        <item name="boxBackgroundColor">@color/inputLayoutBackgroundColor</item>
-        <item name="boxStrokeColor">@color/input_layout_selector</item>
-        <item name="hintTextColor">#CFCFCF</item>
+
         <item name="android:textStyle">normal</item>
         <item name="hintEnabled">true</item>
         <item name="shapeAppearanceOverlay">
@@ -285,6 +283,16 @@
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="MaterialToolbarTextExpandedAppearance" parent="@style/TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+    </style>
+
+    <style name="MaterialToolbarTextCollapsedAppearance" parent="@style/TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
 
