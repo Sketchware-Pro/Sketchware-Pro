@@ -72,10 +72,12 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 .setView(view)
                 .create();
         EditText editText = view.findViewById(R.id.ed_input);
+        CheckBox skipDownloadingDependencies = view.findViewById(R.id.checkbox);
         var linear = view.findViewById(R.id.btn_download);
         TextView text = view.findViewById(R.id.tv_progress);
         linear.setOnClickListener(v1 -> {
             linear.setVisibility(View.GONE);
+            skipDownloadingDependencies.setEnabled(false);
             String url = editText.getText().toString();
             if (url.isEmpty()) {
                 SketchwareUtil.toastError("Please enter a dependency");
@@ -90,7 +92,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             var group = parts[0];
             var artifact = parts[1];
             var version = parts[2];
-            var resolver = new DependencyResolver(group, artifact, version);
+            var resolver = new DependencyResolver(group, artifact, version, skipDownloadingDependencies.isChecked());
             var handler = new Handler(Looper.getMainLooper());
 
             class SetTextRunnable implements Runnable {

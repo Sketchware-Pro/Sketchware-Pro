@@ -3,11 +3,10 @@ package mod.hey.studios.moreblock.importer;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,10 +22,10 @@ import java.util.ArrayList;
 
 import a.a.a.aB;
 import mod.SketchwareUtil;
-import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.BlockUtil;
 
-public class MoreblockImporterDialog {
+public class MoreblockImporterDialog extends aB {
 
     private final ArrayList<MoreBlockCollectionBean> internalList;
     private final CallBack callback;
@@ -36,6 +35,7 @@ public class MoreblockImporterDialog {
     private Adapter la;
 
     public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
+        super(act);
         this.act = act;
         internalList = beanList;
         list = new ArrayList<>(beanList);
@@ -43,9 +43,8 @@ public class MoreblockImporterDialog {
     }
 
     public void show() {
-        final aB dialog = new aB(act);
-        dialog.b("Select a More Block");
-        dialog.a(R.drawable.more_block_96dp);
+        super.b("Select a More Block");
+        super.a(R.drawable.more_block_96dp);
 
         SearchView searchView = new SearchView(act);
 
@@ -123,8 +122,8 @@ public class MoreblockImporterDialog {
         ln.addView(searchView);
         ln.addView(lw);
 
-        dialog.a(ln);
-        dialog.b(act.getString(R.string.common_word_select), v -> {
+        super.a(ln);
+        super.b(act.getString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
@@ -132,11 +131,11 @@ public class MoreblockImporterDialog {
             } else {
                 callback.onSelected(selectedBean);
 
-                dialog.dismiss();
+                dismiss();
             }
         });
-        dialog.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.show();
+        super.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
+        super.show();
     }
 
     public interface CallBack {
@@ -176,11 +175,9 @@ public class MoreblockImporterDialog {
                 convertView = act.getLayoutInflater().inflate(R.layout.manage_collection_popup_import_more_block_list_item, parent, false);
             }
 
-            ViewGroup container = convertView.findViewById(R.id.block_area);
+            FrameLayout blockArea = convertView.findViewById(R.id.block_area);
             TextView title = convertView.findViewById(R.id.tv_block_name);
             ImageView selected = convertView.findViewById(R.id.img_selected);
-
-            TextView blockPreview = convertView.findViewById(R.id.spec);
 
             if (position == selectedPos) {
                 selected.setVisibility(View.VISIBLE);
@@ -189,21 +186,8 @@ public class MoreblockImporterDialog {
             }
 
             title.setText(getItem(position).name);
-
-            Drawable containerBackground = container.getBackground();
-            if (containerBackground != null) {
-                selected.setBackground(containerBackground);
-            }
-
-            String spec = getItem(position).spec;
-            blockPreview.setText(ReturnMoreblockManager.getMbName(spec));
-            blockPreview.setBackgroundResource(switch (ReturnMoreblockManager.getMoreblockChar(spec)) {
-                case "s" -> R.drawable.block_string;
-                case "b" -> R.drawable.block_boolean;
-                case "d" -> R.drawable.block_num;
-                default -> R.drawable.block_ori;
-            });
-            blockPreview.getBackground().setColorFilter(0xff8a55d7, PorterDuff.Mode.MULTIPLY);
+            blockArea.removeAllViews();
+            BlockUtil.loadMoreblockPreview(blockArea, getItem(position).spec);
 
             View.OnClickListener listener = v -> {
                 selectedPos = position;
@@ -211,7 +195,7 @@ public class MoreblockImporterDialog {
             };
 
             convertView.findViewById(R.id.layout_item).setOnClickListener(listener);
-            container.setOnClickListener(listener);
+            blockArea.setOnClickListener(listener);
             title.setOnClickListener(listener);
 
             return convertView;

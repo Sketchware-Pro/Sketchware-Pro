@@ -8,9 +8,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
         android:focusable="false"
         android:text="@string/local_library_manager_enter_dependency"
         android:textColor="#ff296cf7"
@@ -58,6 +58,13 @@
             android:textColor="#ff757575"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:text="@string/local_library_manager_skip_downloading_dependencies" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_download"
