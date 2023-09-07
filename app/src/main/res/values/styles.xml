@@ -142,14 +142,20 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.Button.LightBlue</item>
     </style>
 
-    <style name="AppTheme.Button.Pink" parent="Widget.Material3.Button.TonalButton">
-        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Pink</item>
+    <style name="AppTheme.Button.LightPink" parent="@style/Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/color_btn_ltpink_normal</item>
+        <item name="colorControlHighlight">@color/color_btn_ltpink_highlight</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="AppTheme.Button.Orange" parent="Widget.Material3.Button.TonalButton">
         <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Orange</item>
+    </style>
+
+    <style name="AppTheme.Button.Pink" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Pink</item>
     </style>
 
     <style name="AppTheme.Button.Transparent" parent="Widget.Material3.Button.TonalButton">
@@ -376,6 +382,18 @@
         <item name="android:alpha">0.6</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ThemeOverlay.ToolbarMenu" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/design_menu_bg</item>
+        <item name="android:textColor">@color/design_menu_text_color</item>
+    </style>
+
+    <style name="ToolbarTextAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tool_bar_text_color</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TranslucentTheme" parent="@style/AppTheme">
