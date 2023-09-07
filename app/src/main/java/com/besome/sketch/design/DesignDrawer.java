@@ -14,9 +14,6 @@ import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
-
-    private Context context;
-
     public DesignDrawer(Context context) {
         super(context);
         initialize(context);
@@ -28,7 +25,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     }
 
     private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
-        DrawerItem drawerItem = new DrawerItem(context, tag);
+        DrawerItem drawerItem = new DrawerItem(getContext(), tag);
         drawerItem.setContent(iconResId, Helper.getResString(titleResId), Helper.getResString(descriptionResId));
         drawerItem.setTag(tag);
         drawerItem.setOnClickListener(this);
@@ -38,7 +35,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     }
 
     private void initialize(Context context) {
-        this.context = context;
         wB.a(context, this, R.layout.design_drawer);
         TextView tv_title_configuration = findViewById(R.id.tv_title_configuration);
         tv_title_configuration.setText(Helper.getResString(R.string.design_drawer_menu_title));
@@ -116,90 +112,89 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         menusLayout.addView(addDrawerItem(16, false,
                 R.drawable.code_icon, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
         /* Add Logcat Reader */
-        menusLayout.addView(addDrawerItem(22,false,
-                R.drawable.icons8_app_components,R.string.design_drawer_menu_title_logcat_reader,R.string.design_drawer_menu_subtitle_logcat_reader));
+        menusLayout.addView(addDrawerItem(22, false,
+                R.drawable.icons8_app_components, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader));
     }
 
     @Override
     public void onClick(View view) {
         if (!mB.a()) {
-            if (context instanceof DesignActivity) {
-                DesignActivity designActivity = (DesignActivity) context;
+            if (getContext() instanceof DesignActivity activity) {
                 switch ((Integer) view.getTag()) {
                     case 1:
-                        designActivity.toCollectionManager();
+                        activity.toCollectionManager();
                         return;
 
                     case 3:
-                        designActivity.toLibraryManager();
+                        activity.toLibraryManager();
                         return;
 
                     case 4:
-                        designActivity.toViewManager();
+                        activity.toViewManager();
                         return;
 
                     case 5:
-                        designActivity.toImageManager();
+                        activity.toImageManager();
                         return;
 
                     case 6:
-                        designActivity.toSoundManager();
+                        activity.toSoundManager();
                         return;
 
                     case 7:
-                        designActivity.toFontManager();
+                        activity.toFontManager();
                         return;
 
                     case 8:
-                        designActivity.toJavaManager();
+                        activity.toJavaManager();
                         return;
 
                     case 9:
-                        designActivity.toResourceManager();
+                        activity.toResourceManager();
                         return;
 
                     case 10:
-                        designActivity.toAssetManager();
+                        activity.toAssetManager();
                         return;
 
                     case 11:
-                        designActivity.toPermissionManager();
+                        activity.toPermissionManager();
                         return;
 
                     case 12:
-                        designActivity.toAppCompatInjectionManager();
+                        activity.toAppCompatInjectionManager();
                         return;
 
                     case 13:
-                        designActivity.toAndroidManifestManager();
+                        activity.toAndroidManifestManager();
                         return;
 
                     case 14:
-                        designActivity.toLocalLibraryManager();
+                        activity.toLocalLibraryManager();
                         return;
 
                     case 16:
-                        designActivity.toSourceCodeViewer();
+                        activity.toSourceCodeViewer();
                         return;
 
                     case 17:
-                        designActivity.toProguardManager();
+                        activity.toProguardManager();
                         return;
 
                     case 18:
-                        designActivity.toStringFogManager();
+                        activity.toStringFogManager();
                         return;
 
                     case 19:
-                        designActivity.toNativeLibraryManager();
+                        activity.toNativeLibraryManager();
                         return;
 
                     case 20:
-                        designActivity.toCustomBlocksViewer();
+                        activity.toCustomBlocksViewer();
                         return;
 
                     case 22:
-                        designActivity.toLogReader();
+                        activity.toLogReader();
                         return;
                     case 2:
                     default:
