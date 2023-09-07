@@ -6,7 +6,6 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.tools.QuizBoard;
 import com.sketchware.remod.R;
 
@@ -26,8 +25,6 @@ public class BuildingDialog extends Dialog {
         LinearLayout quizLayout = findViewById(R.id.layout_quiz);
         quizBoard = new QuizBoard(getContext());
         quizLayout.addView(quizBoard);
-        LottieAnimationView animationView = findViewById(R.id.animation_view);
-        animationView.setScale(2);
         setTitle(Helper.getResString(R.string.common_message_progress));
         tvProgress = findViewById(R.id.tv_progress);
         tvProgress.setText(Helper.getResString(R.string.common_message_loading));
