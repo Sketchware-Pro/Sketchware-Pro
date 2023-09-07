@@ -44,6 +44,8 @@ public class BuiltInLibraryManager {
             }
         } else {
             Log.v(ProjectBuilder.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies as it's excluded");
+            Log.v(ProjectBuilder.TAG, "Adding its dependencies though");
+            addDependencies(libraryName);
         }
     }
 

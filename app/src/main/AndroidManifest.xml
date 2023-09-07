@@ -280,11 +280,13 @@
             android:name="mod.hilal.saif.activities.tools.BlocksManagerDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.ComponentsMaker"
-            android:configChanges="orientation|screenSize" />
+            android:name="mod.hilal.saif.activities.tools.ManageCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.ComponentsMakerCreator"
-            android:configChanges="orientation|screenSize" />
+            android:name="mod.hilal.saif.activities.tools.AddCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="mod.hilal.saif.activities.tools.ConfigActivity"
             android:configChanges="orientation|screenSize" />

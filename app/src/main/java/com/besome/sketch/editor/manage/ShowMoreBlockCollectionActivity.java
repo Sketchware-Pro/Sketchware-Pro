@@ -24,7 +24,6 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.FB;
 import a.a.a.GB;
 import a.a.a.NB;
 import a.a.a.Pp;
@@ -32,10 +31,10 @@ import a.a.a.Rs;
 import a.a.a.Ss;
 import a.a.a.Ts;
 import a.a.a.bB;
-import a.a.a.kq;
 import mod.SketchwareUtil;
 import mod.hasrat.tools.ImageFactory;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.BlockUtil;
 
 public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -109,33 +108,10 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     }
 
     private void addHeaderBlock(String spec) {
-        Rs header = null;
         pane.a(spec, "moreBlock");
-
-        ArrayList<String> parameterSpecs = FB.c(spec);
-        int idCounter = 0;
-        for (int i = 0; i < parameterSpecs.size(); i++) {
-            String parameterSpec = parameterSpecs.get(i);
-            if (parameterSpec.charAt(0) == '%') {
-                if (parameterSpec.charAt(1) == 'b') {
-                    header = new Rs(getBaseContext(), idCounter + 1, parameterSpec.substring(3), "b", "getArg");
-                } else if (parameterSpec.charAt(1) == 'd') {
-                    header = new Rs(getBaseContext(), idCounter + 1, parameterSpec.substring(3), "d", "getArg");
-                } else if (parameterSpec.charAt(1) == 's') {
-                    header = new Rs(getBaseContext(), idCounter + 1, parameterSpec.substring(3), "s", "getArg");
-                } else if (parameterSpec.charAt(1) == 'm') {
-                    String parameterName = parameterSpec.substring(parameterSpec.lastIndexOf(".") + 1);
-                    String parameterType = parameterSpec.substring(parameterSpec.indexOf(".") + 1, parameterSpec.lastIndexOf("."));
-                    header = new Rs(getBaseContext(), idCounter + 1, parameterName, kq.a(parameterType), kq.b(parameterType), "getArg");
-                }
-
-                header.setBlockType(1);
-                pane.addView(header);
-                pane.getRoot().a((Ts) pane.getRoot().V.get(idCounter), header);
-                idCounter++;
-            }
-        }
-        pane.getRoot().k();
+        var header = pane.getRoot();
+        BlockUtil.loadPreviewBlockVariables(pane, header, spec);
+        header.k();
     }
 
     private void resizeBottomViews() {

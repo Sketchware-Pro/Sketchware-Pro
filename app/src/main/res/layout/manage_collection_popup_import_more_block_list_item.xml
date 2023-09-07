@@ -35,6 +35,7 @@
                 android:layout_marginRight="16dp"
                 android:textColor="#ff404040"
                 android:textSize="16sp"
+                android:singleLine="true"
                 tools:text="gaming Block" />
 
             <HorizontalScrollView
@@ -47,10 +48,7 @@
                 <FrameLayout
                     android:id="@+id/block_area"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <include layout="@layout/block_customview_spec" />
-                </FrameLayout>
+                    android:layout_height="match_parent" />
             </HorizontalScrollView>
         </LinearLayout>
 

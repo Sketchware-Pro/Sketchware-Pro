@@ -993,6 +993,7 @@ Without this permission, we can not manage the purchase history"</string>
 Please click on Settings to allow permission for Storage. Without this permission, some features may not function properly"</string>
     <string name="common_message_permission_title_storage">Permission Required</string>
     <string name="common_message_progress">Progressing</string>
+    <string name="common_message_selected_file_empty">Selected file is empty</string>
     <string name="common_message_uploading">Uploading...</string>
     <string name="common_open_on_phone">Open on phone</string>
     <string name="common_signin_button_text">Sign in</string>
@@ -1026,6 +1027,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_enroll">Enroll</string>
     <string name="common_word_enrolled">Enrolled</string>
     <string name="common_word_exit">Exit</string>
+    <string name="common_word_export">Export</string>
     <string name="common_word_finish">Finish</string>
     <string name="common_word_font">Font</string>
     <string name="common_word_go_to_documentation">Go To Documentation</string>
@@ -1061,6 +1063,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_review">Review</string>
     <string name="common_word_run">Run</string>
     <string name="common_word_save">Save</string>
+    <string name="common_word_saved">Saved</string>
     <string name="common_word_save_as_new">Save as new</string>
     <string name="common_word_see_all">See All</string>
     <string name="common_word_see_more">See More</string>
@@ -1254,12 +1257,12 @@ ex)\"users/username\""</string>
     <string name="design_library_firebase_hint_enter_data_location">Enter the data location</string>
     <string name="design_library_firebase_hint_enter_firebase_api_key">Enter Firebase API Key</string>
     <string name="design_library_firebase_hint_enter_firebase_app_id">Enter Firebase APP ID</string>
-    <string name="design_library_firebase_hint_enter_firebase_project_id">Enter Full Firebase Database Url</string>
-    <string name="design_library_firebase_hint_enter_firebase_storage_bucket_url">Enter Firebase Storage Bucket Url</string>
-    <string name="design_library_firebase_message_id_fill_out">Full Database Url, App ID, and API Key must be filled out.</string>
+    <string name="design_library_firebase_hint_enter_firebase_project_id">Enter Full Firebase Database URL</string>
+    <string name="design_library_firebase_hint_enter_firebase_storage_bucket_url">Enter Firebase Storage Bucket URL</string>
+    <string name="design_library_firebase_message_id_fill_out">Full Database URL, App ID, and API Key must be filled out.</string>
     <string name="design_library_firebase_message_need_compat">AppCompat Library will be enabled since Firebase requires AppCompat as a dependency.</string>
     <string name="design_library_firebase_message_not_input_text">Please provide all necessary information</string>
-    <string name="design_library_firebase_setting_step1_desc">Enter Full Database Url, Web API Key, and App ID</string>
+    <string name="design_library_firebase_setting_step1_desc">Enter Full Database URL, Web API Key, and App ID</string>
     <string name="design_library_firebase_setting_step1_title">Project Settings</string>
     <string name="design_library_firebase_setting_step2_desc">Enter the Firebase Storage URL</string>
     <string name="design_library_firebase_setting_step2_title">Storage URL Settings</string>
@@ -1272,7 +1275,7 @@ ex)\"users/username\""</string>
     <string name="design_library_firebase_title_firebase_manager">Firebase Manager</string>
     <string name="design_library_firebase_title_firebase_settings">Firebase Settings</string>
     <string name="design_library_firebase_title_firebase_setup_tutorial">Firebase Setup Tutorial</string>
-    <string name="design_library_firebase_title_project_id">Full Database Url (e.g. sk-pro-default-rtdb.firebaseio.com)</string>
+    <string name="design_library_firebase_title_project_id">Full Database URL (e.g. sk-pro-default-rtdb.firebaseio.com)</string>
     <string name="design_library_firebase_title_storage_bucket_url">Storage Bucket URL</string>
     <string name="design_library_google_map_button_open_doc">Open Documentation</string>
     <string name="design_library_google_map_title">GoogleMap</string>
@@ -1357,6 +1360,24 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_tab_title_component">Component</string>
     <string name="design_tab_title_event">Event</string>
     <string name="design_tab_title_view">View</string>
+    <string name="developer_tools_component_add_var">Additional Variables</string>
+    <string name="developer_tools_component_build_class">Build Class</string>
+    <string name="developer_tools_component_define_add_var">Define Additional Variables</string>
+    <string name="developer_tools_component_description">Description</string>
+    <string name="developer_tools_component_description_guide_add_component">"If you add a component here
+ You can use it in Logic Editor"</string>
+    <string name="developer_tools_component_url">Document URL</string>
+    <string name="developer_tools_component_id">Component ID</string>
+    <string name="developer_tools_component_icon">Component Icon</string>
+    <string name="developer_tools_component_imports">Imports</string>
+    <string name="developer_tools_component_manager">Component manager</string>
+    <string name="developer_tools_component_message_export">Are you sure you want to export %s?</string>
+    <string name="developer_tools_component_name">Component Name</string>
+    <string name="developer_tools_component_success_message_export">Successfully exported component to:\n%s</string>
+    <string name="developer_tools_component_type_class">Type Class</string>
+    <string name="developer_tools_component_type_name">Type Name</string>
+    <string name="developer_tools_component_var_type_name">Variable Type Name</string>
+    <string name="docs_url">https://docs.sketchware.io/</string>
     <string name="event_context_menu_title">Event Menu</string>
     <string name="event_context_menu_title_delete_event">Delete Event</string>
     <string name="event_context_menu_title_delete_more_block">Delete moreBlock</string>
@@ -1431,6 +1452,7 @@ Do you want to continue?"</string>
     <string name="event_onuploadsuccess">onUploadSuccess</string>
     <string name="event_title_add_new_component">Add new component</string>
     <string name="event_title_add_new_event">Add new event</string>
+    <string name="event_title_edit_component">Edit component</string>
     <string name="facebook_app_id">255022168522663</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
     <string name="firebase_database_url">https://dependable-flag-825.firebaseio.com</string>
@@ -1457,7 +1479,10 @@ Do you want to continue?"</string>
     <string name="intro_pager_2_title">Simple Block Programming</string>
     <string name="intro_pager_3_description">Explore and share awesome creations with others</string>
     <string name="intro_pager_3_title">Share With the World</string>
+    <string name="invalid_component">Invalid component</string>
     <string name="invalid_email_address">Invalid e-mail address</string>
+    <string name="invalid_icon_id">Invalid icon ID</string>
+    <string name="invalid_required_fields">Some required fields are empty</string>
     <string name="invalid_value_format">Invalid format</string>
     <string name="invalid_value_max_lenth">You can use maximum %d letters</string>
     <string name="invalid_value_min_lenth">Use at least %d letter(s)</string>
@@ -2588,6 +2613,7 @@ Please check the URL again."</string>
     <string name="local_library_manager">Local library Manager</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
     <string name="local_library_manager_dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+    <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
 
     <!--  about the team screen  -->
     <string name="about_title">About Sketchware Pro</string>
