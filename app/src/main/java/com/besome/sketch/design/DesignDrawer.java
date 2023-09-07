@@ -26,7 +26,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
     private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
         DrawerItem drawerItem = new DrawerItem(getContext(), tag);
-        drawerItem.setContent(iconResId, Helper.getResString(titleResId), Helper.getResString(descriptionResId));
+        drawerItem.setContent(iconResId, Helper.getResString(drawerItem, titleResId), Helper.getResString(drawerItem, descriptionResId));
         drawerItem.setTag(tag);
         drawerItem.setOnClickListener(this);
         drawerItem.setSeparatorVisibility(useSeparator);
@@ -37,8 +37,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     private void initialize(Context context) {
         wB.a(context, this, R.layout.design_drawer);
         TextView tv_title_configuration = findViewById(R.id.tv_title_configuration);
-        tv_title_configuration.setText(Helper.getResString(R.string.design_drawer_menu_title));
-        ((TextView) findViewById(R.id.tv_title_global)).setText(Helper.getResString(R.string.design_drawer_menu_bottom_title));
+        tv_title_configuration.setText(Helper.getResString(tv_title_configuration, R.string.design_drawer_menu_title));
+        TextView global = findViewById(R.id.tv_title_global);
+        global.setText(Helper.getResString(global, R.string.design_drawer_menu_bottom_title));
         LinearLayout menusLayout = findViewById(R.id.layout_menus);
         LinearLayout bottomMenusLayout = findViewById(R.id.layout_bottom_menus);
         /* Add collection item */
