@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@+id/bottomViewsHolder"
     android:orientation="vertical">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -29,7 +28,7 @@
                     android:id="@+id/topAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title="Permissions Manager" />
+                    app:title="Local Libraries Manager" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,7 +44,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <!--   search gotta be implemented fr, ez but eh    -->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/searchInputLayout"
@@ -84,7 +86,6 @@
                     app:iconTint="?colorPrimary"
                     app:strokeColor="#B5B5B5"
                     app:strokeWidth="1dp" />
-
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -96,21 +97,53 @@
                 android:clipToPadding="false"
                 android:paddingBottom="80dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:listitem="@layout/view_item_permission" />
+                tools:listitem="@layout/view_item_local_lib" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/noContentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:colorBackground"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="100dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/img_nocontent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="No local libraries available"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="You don't have any local libraries yet, try downloading one."
+                android:textSize="14dp" />
+        </LinearLayout>
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/downloadLibraryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="20dp"
-            android:text="Scroll to the top"
-            app:icon="@drawable/ic_arrow_drop_up_grey600_24dp" />
+            android:text="Download a library"
+            app:icon="@drawable/ic_download_24" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 </LinearLayout>
