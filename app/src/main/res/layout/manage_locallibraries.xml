@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -89,13 +89,13 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_content"
+                android:id="@+id/librariesList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="14dp"
                 android:clipToPadding="false"
-                android:paddingBottom="80dp"
+                android:paddingBottom="120dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/view_item_local_lib" />
 
@@ -134,16 +134,15 @@
                 android:text="You don't have any local libraries yet, try downloading one."
                 android:textSize="14dp" />
         </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/downloadLibraryButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:text="Download a library"
-            app:icon="@drawable/ic_download_24" />
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/downloadLibraryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:layout_centerHorizontal="true"
+        android:text="Download a library"
+        app:icon="@drawable/ic_download_24" />
+</RelativeLayout>
