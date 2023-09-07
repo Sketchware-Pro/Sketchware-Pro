@@ -25,7 +25,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     }
 
     private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
-        DrawerItem drawerItem = new DrawerItem(getContext(), tag);
+        DrawerItem drawerItem = new DrawerItem(getContext());
         drawerItem.setContent(iconResId, Helper.getResString(drawerItem, titleResId), Helper.getResString(drawerItem, descriptionResId));
         drawerItem.setTag(tag);
         drawerItem.setOnClickListener(this);
@@ -118,10 +118,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (!mB.a()) {
             if (getContext() instanceof DesignActivity activity) {
-                switch ((Integer) view.getTag()) {
+                switch ((Integer) v.getTag()) {
                     case 1:
                         activity.toCollectionManager();
                         return;
@@ -204,42 +204,31 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    static class DrawerItem extends LinearLayout {
-
-        private ImageView imgIcon;
-        private TextView titleTextView;
-        private TextView subTitleTextView;
-        private View subSeparator;
-        private View separator;
+    private static class DrawerItem extends LinearLayout {
+        private final ImageView imgIcon;
+        private final TextView titleTextView;
+        private final TextView subTitleTextView;
+        private final View subSeparator;
+        private final View separator;
 
         public DrawerItem(Context context) {
-            super(context);
-            new DrawerItem(context, 0);
+            this(context, null);
         }
 
         public DrawerItem(Context context, AttributeSet set) {
             super(context, set);
-            new DrawerItem(context, 0);
-        }
-
-        public DrawerItem(Context context, int tag) {
-            super(context);
-            initialize(context, tag);
-        }
-
-        public void setContent(int iconResId, String rootTitleText, String subTitleText) {
-            imgIcon.setImageResource(iconResId);
-            titleTextView.setText(rootTitleText);
-            subTitleTextView.setText(subTitleText);
-        }
-
-        public final void initialize(Context context, int tag) {
             wB.a(context, this, R.layout.design_drawer_item);
             imgIcon = findViewById(R.id.img_icon);
             titleTextView = findViewById(R.id.tv_root_title);
             subTitleTextView = findViewById(R.id.tv_sub_title);
             subSeparator = findViewById(R.id.sub_separator);
             separator = findViewById(R.id.separator);
+        }
+
+        public void setContent(int iconResId, String rootTitleText, String subTitleText) {
+            imgIcon.setImageResource(iconResId);
+            titleTextView.setText(rootTitleText);
+            subTitleTextView.setText(subTitleText);
         }
 
         public void setSeparatorVisibility(boolean visible) {
