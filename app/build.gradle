@@ -93,6 +93,10 @@ android {
             keyPassword "testkey"
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
