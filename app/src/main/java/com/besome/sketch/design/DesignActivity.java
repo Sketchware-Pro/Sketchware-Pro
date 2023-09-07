@@ -125,9 +125,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private yq q;
     private DB r;
     private DB t;
-    /**
-     * The Run-Button in bottom right corner
-     */
+    private Button buildSettings;
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
     private ViewEditorFragment viewTabAdapter = null;
@@ -320,7 +318,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (v.getId() == R.id.btn_execute) {
                 new BuildAsyncTask(this).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
+                PopupMenu popupMenu = new PopupMenu(this, buildSettings);
                 Menu menu = popupMenu.getMenu();
 
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
@@ -397,10 +395,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
+        buildSettings = findViewById(R.id.btn_compiler_opt);
+        buildSettings.setOnClickListener(this);
         runProject = findViewById(R.id.btn_execute);
         runProject.setText(Helper.getResString(R.string.common_word_run));
         runProject.setOnClickListener(this);
-        findViewById(R.id.btn_compiler_opt).setOnClickListener(this);
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
         projectFileSelector = findViewById(R.id.file_selector);
         projectFileSelector.setScId(sc_id);
