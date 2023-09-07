@@ -15,7 +15,7 @@
         android:textSize="20sp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ed_inputLayout"
+        android:id="@+id/dependencyInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
@@ -24,7 +24,7 @@
         android:importantForAutofill="noExcludeDescendants">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_input"
+            android:id="@+id/dependencyInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
@@ -32,7 +32,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/tv_progress"
+        android:id="@+id/progressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
@@ -42,7 +42,7 @@
         android:textSize="14sp" />
 
     <CheckBox
-        android:id="@+id/checkbox"
+        android:id="@+id/skipSubDependenciesCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="6dp"
@@ -50,7 +50,7 @@
         android:text="@string/local_library_manager_skip_downloading_dependencies" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_download"
+        android:id="@+id/downloadButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"

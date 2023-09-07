@@ -6,23 +6,22 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.elevation.SurfaceColors;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManagePermissionBinding;
+import com.sketchware.remod.databinding.ViewItemPermissionBinding;
 
 import java.util.ArrayList;
 
@@ -36,13 +35,39 @@ public class ManagePermissionActivity extends Activity {
     private FileResConfig frc;
     private String numProj;
 
-    private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    private ExtendedFloatingActionButton fab;
-    private CollapsingToolbarLayout collapsingToolbar;
-    private AppBarLayout appBarLayout;
+    private ManagePermissionBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ManagePermissionBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        if (getIntent().hasExtra("sc_id")) {
+            numProj = getIntent().getStringExtra("sc_id");
+            frc = new FileResConfig(numProj);
+        }
+        arrayList = new ArrayList<>();
+        initRecyclerView();
+        checkFile();
+        setItems();
+        setUpSearchView();
+        initButtons();
+        initViews();
+    }
+
+    private void initViews() {
+        var collapsingToolbar = binding.collapsingToolbar;
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+    }
 
     private void setItems() {
+        var recyclerView = binding.recyclerView;
         Parcelable rvSavedState = recyclerView.getLayoutManager().onSaveInstanceState();
         arrayList = ListPermission.getPermissions();
         PermissionsAdapter listAdapter = new PermissionsAdapter(arrayList);
@@ -84,6 +109,7 @@ public class ManagePermissionActivity extends Activity {
     }
 
     public void initButtons() {
+        var fab = binding.fab;
         MaterialButton resetPermissions = findViewById(R.id.resetPermissions);
         resetPermissions.setOnClickListener(view -> new AlertDialog.Builder(ManagePermissionActivity.this)
                 .setTitle("Reset permissions")
@@ -96,40 +122,16 @@ public class ManagePermissionActivity extends Activity {
                 }));
         fab.setOnClickListener(view -> {
             fab.hide();
-            appBarLayout.setExpanded(true);
-            recyclerView.smoothScrollToPosition(0);
+            binding.appBarLayout.setExpanded(true);
+            binding.recyclerView.smoothScrollToPosition(0);
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_permission);
-        collapsingToolbar = findViewById(R.id.collapsingToolbar);
-        appBarLayout = findViewById(R.id.appBarLayout);
-        fab = findViewById(R.id.fab);
-        layoutManager = new LinearLayoutManager(this);
-
-
-        if (getIntent().hasExtra("sc_id")) {
-            numProj = getIntent().getStringExtra("sc_id");
-            frc = new FileResConfig(numProj);
-        }
-        arrayList = new ArrayList<>();
-        initRecyclerView();
-        checkFile();
-        setItems();
-        setUpSearchView();
-        initButtons();
-
-
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
-        collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
-    }
-
     private void initRecyclerView() {
-        recyclerView = findViewById(R.id.main_content);
+        var recyclerView = binding.recyclerView;
+        var fab = binding.fab;
+
+        layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -151,7 +153,6 @@ public class ManagePermissionActivity extends Activity {
     }
 
     private class PermissionsAdapter extends RecyclerView.Adapter<PermissionsAdapter.ViewHolder> {
-
         private ArrayList<String> namePerm;
 
         public PermissionsAdapter(ArrayList<String> arrayList) {
@@ -161,17 +162,22 @@ public class ManagePermissionActivity extends Activity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.view_item_permission, parent, false);
-            return new ViewHolder(view);
+            var listBinding = ViewItemPermissionBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            listBinding.getRoot().setLayoutParams(layoutParams);
+            return new ViewHolder(listBinding);
         }
+
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            var binding = holder.listBinding;
+
             String permission = namePerm.get(position);
-            holder.checkBox.setText(permission);
-            holder.checkBox.setOnCheckedChangeListener(null); // Important to avoid infinite loops
-            holder.checkBox.setChecked(frc.getPermissionList().contains(permission));
-            holder.checkBox.setOnCheckedChangeListener((button, checked) -> {
+            binding.checkboxContent.setText(permission);
+            binding.checkboxContent.setOnCheckedChangeListener(null); // Important to avoid infinite loops
+            binding.checkboxContent.setChecked(frc.getPermissionList().contains(permission));
+            binding.checkboxContent.setOnCheckedChangeListener((button, checked) -> {
                 if (checked) {
                     if (!frc.getPermissionList().contains(button.getText().toString())) {
                         frc.listFilePermission.add(button.getText().toString());
@@ -193,11 +199,11 @@ public class ManagePermissionActivity extends Activity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            CheckBox checkBox;
+            private final ViewItemPermissionBinding listBinding;
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.checkbox_content);
+            public ViewHolder(ViewItemPermissionBinding listBinding) {
+                super(listBinding.getRoot());
+                this.listBinding = listBinding;
             }
         }
     }
