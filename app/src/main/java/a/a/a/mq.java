@@ -758,7 +758,7 @@ public class mq {
             case "SpeechToText" -> "SpeechRecognizer";
             case "FragmentAdapter" -> "FragmentStatePagerAdapter";
             case "Context" -> "Activity";
-            case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool", "ResInteger", "ResAttr", "ResXml", "Color" ->
+            case "Res String", "Res Style", "Res Color", "Res Array", "Res Dimen", "Res Bool", "Res Integer", "Res Attr", "Res Xml", "Color" -> 
                     "int";
             default -> typeName;
         };
