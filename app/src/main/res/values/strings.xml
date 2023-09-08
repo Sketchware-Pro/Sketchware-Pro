@@ -958,6 +958,7 @@ with a free Sketchware Account"</string>
     <string name="common_google_play_services_update_title">Update Google Play services</string>
     <string name="common_google_play_services_updating_text">"%1$s won't run without Google Play services, which are currently updating."</string>
     <string name="common_google_play_services_wear_update_text">New version of Google Play services needed. It will update itself shortly.</string>
+    <string name="common_message_cannot_contain_periods">Name cannot contain periods(.)</string>
     <string name="common_message_check_network">Please check your internet connection</string>
     <string name="common_message_complete_copy">Copy complete</string>
     <string name="common_message_complete_copy_to_clipborad">Copied to clipboard</string>
@@ -1036,6 +1037,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_import">Import</string>
     <string name="common_word_import_count">Import %s Item(s)</string>
     <string name="common_word_information">Information</string>
+    <string name="common_word_insert">Insert</string>
     <string name="common_word_locale">Locale</string>
     <string name="common_word_modify">Modify</string>
     <string name="common_word_moreblock">MoreBlock</string>
@@ -1483,7 +1485,9 @@ Do you want to continue?"</string>
     <string name="intro_pager_3_title">Share With the World</string>
     <string name="invalid_component">Invalid component</string>
     <string name="invalid_email_address">Invalid e-mail address</string>
+    <string name="invalid_generated_source">Failed to generate source.</string>
     <string name="invalid_icon_id">Invalid icon ID</string>
+    <string name="invalid_name_cannot_be_empty">Name can\'t be empty</string>
     <string name="invalid_required_fields">Some required fields are empty</string>
     <string name="invalid_value_format">Invalid format</string>
     <string name="invalid_value_max_lenth">You can use maximum %d letters</string>
@@ -1689,6 +1693,15 @@ But, components should be added manually for working correctly."</string>
     <string name="manage_export_url_tab_title_apk">Signed APK</string>
     <string name="manage_export_url_tab_title_data">Exported Data</string>
     <string name="manage_export_url_word_extend">Expand</string>
+    <string name="manage_xml_description_color">A color resource is specified using an RGB value and alpha channel</string>
+    <string name="manage_xml_description_string">A string resource provides text strings for your application</string>
+    <string name="manage_xml_description_style">A style resource defines the format and look for a UI</string>
+    <string name="manage_xml_title_color">Color</string>
+    <string name="manage_xml_title_string">String</string>
+    <string name="manage_xml_title_style">Style</string>
+    <string name="manage_xml_title_select_color">Select Color Resources</string>
+    <string name="manage_xml_title_select_string">Select String Resources</string>
+    <string name="manage_xml_title_select_style">Select Style Resources</string>
     <string name="medium_url">https://medium.com/sketchware</string>
     <string name="message_compatible_chrome_brower">The following page is compatible with Google Chrome. Would you like to install Chrome?</string>
     <string name="message_device_not_support">Your device does not support this hardware. This component may not function properly</string>
@@ -2560,10 +2573,13 @@ Please check the URL again."</string>
     <string name="text_title_menu_assets">Asset</string>
     <string name="text_title_menu_permission">Permission</string>
     <string name="text_title_menu_local_library">Local library</string>
+    <string name="text_title_menu_xml">XML</string>
+    <string name="text_title_menu_xml_manager">XML Manager</string>
     <string name="text_subtitle_menu_resource">Import resource files</string>
     <string name="text_subtitle_menu_assets">Import asset files</string>
     <string name="text_subtitle_menu_permission">Add custom permissions</string>
     <string name="text_subtitle_menu_local_library">Add local libraries</string>
+    <string name="text_subtitle_menu_xml">Manage color, string and style</string>
     <string name="text_title_menu_broadcast">Background Service</string>
     <string name="text_subtitle_menu_broadcast">Import Background Service files</string>
     <string name="component_description_video_ad">Video Ad lets you add video advertisements</string>
