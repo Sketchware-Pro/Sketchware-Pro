@@ -91,6 +91,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.editor.manage.resource.ManageXmlActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -791,6 +792,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toProguardManager() {
         launchActivity(ManageProguardActivity.class, null);
+    }
+
+    /**
+     * Opens {@link ManageXmlActivity}.
+     */
+    void toXmlManager() {
+        launchActivity(ManageXmlActivity.class, null);
     }
 
     /**

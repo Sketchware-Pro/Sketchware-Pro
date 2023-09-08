@@ -25,6 +25,8 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +41,8 @@ import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.beans.ResourceXmlBean;
+import mod.elfilibustero.sketch.lib.utils.ResourceHandler;
 import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -591,15 +595,24 @@ public class ExtraMenuBean {
                 menus.add("SIZE_WIDE");
                 break;
 
-            case "ResString":
-            case "ResStyle":
-            case "ResColor":
-            case "ResArray":
-            case "ResDimen":
-            case "ResBool":
-            case "ResInteger":
-            case "ResAttr":
-            case "ResXml":
+            case "resString":
+                title = Helper.getResString(R.string.manage_xml_title_select_string);
+                parseResources(menus, ResourceXmlBean.RES_TYPE_STRING);
+                break;
+            case "resColor":
+                title = Helper.getResString(R.string.manage_xml_title_select_color);
+                parseResources(menus, ResourceXmlBean.RES_TYPE_COLOR);
+                break;
+            case "resStyle":
+                title = Helper.getResString(R.string.manage_xml_title_select_style);
+                parseResources(menus, ResourceXmlBean.RES_TYPE_STYLE);
+                break;
+            case "resArray":
+            case "resDimen":
+            case "resBool":
+            case "resInteger":
+            case "resAttr":
+            case "resXml":
                 title = "Deprecated";
                 dialog.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
                 break;
@@ -740,6 +753,27 @@ public class ExtraMenuBean {
 
     private ArrayList<String> getComponentMenus(int type) {
         return projectDataManager.b(javaName, type);
+    }
+
+    private void parseResources(ArrayList<String> menus, int resType) {
+        String fileName = ResourceXmlBean.getResFileName(resType);
+        ResourceHandler handler = new ResourceHandler(logicEditor, sc_id);
+        List<Map<String, Object>> resources = handler.parseResourceFile(fileName);
+        if (resources == null || resources.isEmpty()) {
+            resources = switch (resType) {
+                case ResourceXmlBean.RES_TYPE_STRING -> handler.getDefaultString();
+                case ResourceXmlBean.RES_TYPE_COLOR -> handler.getDefaultColor();
+                case ResourceXmlBean.RES_TYPE_STYLE -> handler.getDefaultStyle();
+                default -> new ArrayList<>();
+            };
+        }
+        for (Map<String, Object> map : resources) {
+            String name = (String) map.get("name");
+            if (resType == ResourceXmlBean.RES_TYPE_STYLE) {
+                name = name.replaceAll("\\.", "_");
+            }
+            menus.add(name);
+        }
     }
 
     private void asdDialog(Ss ss, String message) {
