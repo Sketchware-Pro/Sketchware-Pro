@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import com.sketchware.remod.xml.XmlBuilder;
 import mod.SketchwareUtil;
@@ -75,7 +76,7 @@ public class AndroidManifestInjector {
         return attributes;
     }
 
-    public static void getP(XmlBuilder nx, String id) {
+    public static void getP(List<String> permissions, String id) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(id);
 
         for (int i = 0; i < attributes.size(); i++) {
@@ -85,11 +86,12 @@ public class AndroidManifestInjector {
             if (name instanceof String) {
                 Object value = attribute.get("value");
 
-                if (value instanceof String) {
+                if (value instanceof String permissionItem) {
                     if ("_application_permissions".equals(name)) {
-                        XmlBuilder usesPermissionTag = new XmlBuilder("uses-permission");
-                        usesPermissionTag.addAttributeValue((String) value);
-                        nx.a(usesPermissionTag);
+                        String permission = permissionItem.replaceAll("android:name=\"|\"", "");
+                        if (!permissions.contains(permission)) {
+                            permissions.add(permission);
+                        }
                     }
                 } else {
                     SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));

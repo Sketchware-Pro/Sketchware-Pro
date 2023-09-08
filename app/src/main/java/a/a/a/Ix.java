@@ -15,7 +15,9 @@ import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import mod.agus.jcoderz.editor.manifest.EditorManifest;
@@ -39,6 +41,8 @@ public class Ix {
     public ProjectSettings settings;
     private boolean targetsSdkVersion31OrHigher = false;
     private String packageName;
+
+    private List<String> permissions = new ArrayList<>();
 
     public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans, BuiltInLibraryManager builtInLibraryManager) {
         c = jq;
@@ -422,19 +426,19 @@ public class Ix {
 
         if (!c.hasPermissions()) {
             if (c.hasPermission(jq.PERMISSION_CALL_PHONE)) {
-                writePermission(a, Manifest.permission.CALL_PHONE);
+                addPermission(Manifest.permission.CALL_PHONE);
             }
             if (c.hasPermission(jq.PERMISSION_INTERNET)) {
-                writePermission(a, Manifest.permission.INTERNET);
+                addPermission(Manifest.permission.INTERNET);
             }
             if (c.hasPermission(jq.PERMISSION_VIBRATE)) {
-                writePermission(a, Manifest.permission.VIBRATE);
+                addPermission(Manifest.permission.VIBRATE);
             }
             if (c.hasPermission(jq.PERMISSION_ACCESS_NETWORK_STATE)) {
-                writePermission(a, Manifest.permission.ACCESS_NETWORK_STATE);
+                addPermission(Manifest.permission.ACCESS_NETWORK_STATE);
             }
             if (c.hasPermission(jq.PERMISSION_CAMERA)) {
-                writePermission(a, Manifest.permission.CAMERA);
+                addPermission(Manifest.permission.CAMERA);
             }
             if (c.hasPermission(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
                 try {
@@ -443,69 +447,74 @@ public class Ix {
                     }
                 } catch (NumberFormatException ignored) {
                 }
-                writePermission(a, Manifest.permission.READ_EXTERNAL_STORAGE);
+                addPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (c.hasPermission(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
-                writePermission(a, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
             if (c.hasPermission(jq.PERMISSION_RECORD_AUDIO)) {
-                writePermission(a, Manifest.permission.RECORD_AUDIO);
+                addPermission(Manifest.permission.RECORD_AUDIO);
             }
             if (c.hasPermission(jq.PERMISSION_BLUETOOTH)) {
-                writePermission(a, Manifest.permission.BLUETOOTH);
+                addPermission(Manifest.permission.BLUETOOTH);
             }
             if (c.hasPermission(jq.PERMISSION_BLUETOOTH_ADMIN)) {
-                writePermission(a, Manifest.permission.BLUETOOTH_ADMIN);
+                addPermission(Manifest.permission.BLUETOOTH_ADMIN);
             }
             if (c.hasPermission(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
-                writePermission(a, Manifest.permission.ACCESS_FINE_LOCATION);
+                addPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             }
         }
         if (FileUtil.isExistFile(fpu.getPathPermission(c.sc_id))) {
             for (String s : frc.getPermissionList()) {
-                writePermission(a, s);
+                addPermission(s);
             }
         }
         if (c.isAdMobEnabled) {
-            writePermission(a, "com.google.android.gms.permission.AD_ID");
+            addPermission("com.google.android.gms.permission.AD_ID");
         }
         if (builtInLibraryManager.containsLibrary(BuiltInLibraries.ANDROIDX_WORK_RUNTIME)) {
-            writePermission(a, "android.permission.WAKE_LOCK");
-            writePermission(a, "android.permission.ACCESS_NETWORK_STATE");
-            writePermission(a, "android.permission.RECEIVE_BOOT_COMPLETED");
-            writePermission(a, "android.permission.FOREGROUND_SERVICE");
+            addPermission("android.permission.WAKE_LOCK");
+            addPermission("android.permission.ACCESS_NETWORK_STATE");
+            addPermission("android.permission.RECEIVE_BOOT_COMPLETED");
+            addPermission("android.permission.FOREGROUND_SERVICE");
         }
         if (c.x.isFCMUsed) {
-            writePermission(a, Manifest.permission.WAKE_LOCK);
-            writePermission(a, "com.google.android.c2dm.permission.RECEIVE");
+            addPermission(Manifest.permission.WAKE_LOCK);
+            addPermission("com.google.android.c2dm.permission.RECEIVE");
         }
         if (c.x.isOneSignalUsed) {
             XmlBuilder permission = new XmlBuilder("permission");
             permission.addAttribute("android", "name", packageName + ".permission.C2D_MESSAGE");
             permission.addAttribute("android", "protectionLevel", "signature");
             a.a(permission);
-            writePermission(a, packageName + ".permission.C2D_MESSAGE");
-            writePermission(a, Manifest.permission.WAKE_LOCK);
-            writePermission(a, Manifest.permission.VIBRATE);
-            writePermission(a, Manifest.permission.RECEIVE_BOOT_COMPLETED);
-            writePermission(a, "com.sec.android.provider.badge.permission.READ");
-            writePermission(a, "com.sec.android.provider.badge.permission.WRITE");
-            writePermission(a, "com.htc.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.htc.launcher.permission.UPDATE_SHORTCUT");
-            writePermission(a, "com.sonyericsson.home.permission.BROADCAST_BADGE");
-            writePermission(a, "com.sonymobile.home.permission.PROVIDER_INSERT_BADGE");
-            writePermission(a, "com.anddoes.launcher.permission.UPDATE_COUNT");
-            writePermission(a, "com.majeur.launcher.permission.UPDATE_BADGE");
-            writePermission(a, "com.huawei.android.launcher.permission.CHANGE_BADGE");
-            writePermission(a, "com.huawei.android.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.huawei.android.launcher.permission.WRITE_SETTINGS");
-            writePermission(a, "android.permission.READ_APP_BADGE");
-            writePermission(a, "com.oppo.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.oppo.launcher.permission.WRITE_SETTINGS");
-            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_READ");
-            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_WRITE");
+            addPermission(packageName + ".permission.C2D_MESSAGE");
+            addPermission(Manifest.permission.WAKE_LOCK);
+            addPermission(Manifest.permission.VIBRATE);
+            addPermission(Manifest.permission.RECEIVE_BOOT_COMPLETED);
+            addPermission("com.sec.android.provider.badge.permission.READ");
+            addPermission("com.sec.android.provider.badge.permission.WRITE");
+            addPermission("com.htc.launcher.permission.READ_SETTINGS");
+            addPermission("com.htc.launcher.permission.UPDATE_SHORTCUT");
+            addPermission("com.sonyericsson.home.permission.BROADCAST_BADGE");
+            addPermission("com.sonymobile.home.permission.PROVIDER_INSERT_BADGE");
+            addPermission("com.anddoes.launcher.permission.UPDATE_COUNT");
+            addPermission("com.majeur.launcher.permission.UPDATE_BADGE");
+            addPermission("com.huawei.android.launcher.permission.CHANGE_BADGE");
+            addPermission("com.huawei.android.launcher.permission.READ_SETTINGS");
+            addPermission("com.huawei.android.launcher.permission.WRITE_SETTINGS");
+            addPermission("android.permission.READ_APP_BADGE");
+            addPermission("com.oppo.launcher.permission.READ_SETTINGS");
+            addPermission("com.oppo.launcher.permission.WRITE_SETTINGS");
+            addPermission("me.everything.badger.permission.BADGE_COUNT_READ");
+            addPermission("me.everything.badger.permission.BADGE_COUNT_WRITE");
         }
-        AndroidManifestInjector.getP(a, c.sc_id);
+        AndroidManifestInjector.getP(permissions, c.sc_id);
+        removeExtraPermissions();
+        Collections.sort(permissions);
+        for (String permission : permissions) {
+            writePermission(a, permission);
+        }
 
         if (c.isAdMobEnabled) {
             XmlBuilder queries = new XmlBuilder("queries");
@@ -746,5 +755,21 @@ public class Ix {
             }
         }
         return new ArrayList<>();
+    }
+
+    private void addPermission(String permission) {
+        if (!permissions.contains(permission)) {
+            permissions.add(permission);
+        }
+    }
+
+    private void removeExtraPermissions() {
+        ArrayList<String> newPermissions = new ArrayList<>();
+        for (String permission : permissions) {
+            if (!newPermissions.contains(permission) && !permission.trim().isEmpty()) {
+                newPermissions.add(permission);
+            }
+        }
+        permissions = newPermissions;
     }
 }
