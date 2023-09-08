@@ -551,6 +551,7 @@ public class Ix {
         }
         AndroidManifestInjector.getAppAttrs(applicationTag, c.sc_id);
 
+        boolean hasDebugActivity = false;
         for (ProjectFileBean projectFileBean : b) {
             if (!projectFileBean.fileName.contains("_fragment")) {
                 XmlBuilder activityTag = new XmlBuilder("activity");
@@ -612,8 +613,12 @@ public class Ix {
                 }
                 applicationTag.a(activityTag);
             }
+            if (projectFileBean.fileName.equals("debug")) {
+                hasDebugActivity = true;
+            }
         }
-        {
+
+        if (!hasDebugActivity) {
             XmlBuilder activityTag = new XmlBuilder("activity");
             activityTag.addAttribute("android", "name", ".DebugActivity");
             activityTag.addAttribute("android", "screenOrientation", "portrait");
