@@ -2406,6 +2406,26 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad register fullscreen content callbacks (This Block isn't needed anymore, please remove it)");
         arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getResString");
+        hashMap.put("type", "s");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "getString(R.string.%s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "get string %m.resString");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getResColor");
+        hashMap.put("type", "v");
+        hashMap.put("typeName", "Color");
+        hashMap.put("code", "getColor(R.color.%s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "get color %m.resColor");
+        arrayList.add(hashMap);
     }
 
     private static void checkDir() {
@@ -2643,6 +2663,9 @@ public class BlocksHandler {
             logicEditorActivity.a("s", "GsonListTojsonString");
             logicEditorActivity.a(" ", "stringSplitToList");
         }
+        logicEditorActivity.a("Resources", 0xff555555);
+        logicEditorActivity.a("s", "getResString");
+        logicEditorActivity.a("", "v", "Color", "getResColor");
         logicEditorActivity.a("add source directly", 0xff555555);
         logicEditorActivity.a(" ", "addSourceDirectly");
         logicEditorActivity.a("b", "asdBoolean");
