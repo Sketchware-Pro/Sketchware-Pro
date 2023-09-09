@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 
 import a.a.a.mB;
@@ -30,10 +31,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
         DrawerItem drawerItem = new DrawerItem(getContext());
         drawerItem.setContent(iconResId, Helper.getResString(drawerItem, titleResId), Helper.getResString(drawerItem, descriptionResId));
-        drawerItem.setTag(tag);
-        drawerItem.setOnClickListener(this);
-        drawerItem.setSeparatorVisibility(useSeparator);
-        drawerItem.setSubSeparatorVisibility(!useSeparator);
+        drawerItem.setOnClickListener(tag, this);
         return drawerItem;
     }
 
@@ -214,11 +212,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     }
 
     private static class DrawerItem extends LinearLayout {
+        private final MaterialCardView root;
         private final ImageView imgIcon;
         private final TextView titleTextView;
         private final TextView subTitleTextView;
-        private final View subSeparator;
-        private final View separator;
 
         public DrawerItem(Context context) {
             this(context, null);
@@ -227,11 +224,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         public DrawerItem(Context context, AttributeSet set) {
             super(context, set);
             wB.a(context, this, R.layout.design_drawer_item);
+            root = findViewById(R.id.root);
             imgIcon = findViewById(R.id.img_icon);
             titleTextView = findViewById(R.id.tv_root_title);
             subTitleTextView = findViewById(R.id.tv_sub_title);
-            subSeparator = findViewById(R.id.sub_separator);
-            separator = findViewById(R.id.separator);
         }
 
         public void setContent(int iconResId, String rootTitleText, String subTitleText) {
@@ -240,12 +236,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
             subTitleTextView.setText(subTitleText);
         }
 
-        public void setSeparatorVisibility(boolean visible) {
-            separator.setVisibility(visible ? VISIBLE : GONE);
-        }
-
-        public void setSubSeparatorVisibility(boolean visible) {
-            subSeparator.setVisibility(visible ? VISIBLE : GONE);
+        public void setOnClickListener(int tag, OnClickListener listener) {
+            root.setTag(tag);
+            root.setOnClickListener(listener);
         }
     }
 }

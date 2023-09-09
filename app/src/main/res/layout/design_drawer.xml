@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_drawer"
     android:layout_width="250dp"
     android:layout_height="match_parent"
-    android:background="#ffffffff"
+    android:background="?colorSurface"
     android:orientation="vertical">
 
     <ScrollView
@@ -23,18 +24,20 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
-                android:textColor="@color/scolor_dark_yellow_01"
-                android:textSize="14sp" />
+                android:textAppearance="?textAppearanceTitleMedium"
+                android:textSize="14sp"
+                tools:text="@string/design_drawer_menu_title" />
 
-            <View
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="1.1999817dip"
-                android:background="@color/scolor_light_grey" />
+                android:layout_height="1dp"
+                android:background="?colorControlHighlight" />
 
             <LinearLayout
                 android:id="@+id/layout_menus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
@@ -48,15 +51,14 @@
             android:id="@+id/tv_title_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
             android:padding="8dp"
-            android:textColor="@color/light_grey"
-            android:textSize="14sp" />
+            android:textAppearance="?textAppearanceTitleMedium"
+            android:textSize="14sp"
+            tools:text="@string/design_drawer_menu_bottom_title" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1.1999817dip"
-            android:background="@color/scolor_light_grey" />
+            android:layout_height="1dp" />
     </LinearLayout>
 
     <LinearLayout

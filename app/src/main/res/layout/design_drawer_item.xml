@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="4dp"
+    android:layout_marginStart="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    app:cardCornerRadius="24dp"
+    app:contentPadding="4dp"
+    app:rippleColor="?colorControlHighlight"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="8dp">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/img_icon"
@@ -21,47 +29,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/tv_root_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/tv_root_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/scolor_black_02"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_sub_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/light_grey"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/img_more"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/selector_ic_chevron_right_grey_48" />
+                <TextView
+                    android:id="@+id/tv_sub_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textSize="12sp" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_more"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/selector_ic_chevron_right_grey_48"
+                app:tint="?colorControlNormal" />
+        </LinearLayout>
     </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="40dp"
-        android:paddingRight="4dp">
+        android:paddingStart="40dp"
+        android:paddingEnd="4dp">
 
         <LinearLayout
             android:id="@+id/sub_items"
@@ -69,17 +79,4 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
     </HorizontalScrollView>
-
-    <View
-        android:id="@+id/sub_separator"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@color/scolor_light_grey" />
-
-    <View
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:background="@color/lighter_grey" />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
