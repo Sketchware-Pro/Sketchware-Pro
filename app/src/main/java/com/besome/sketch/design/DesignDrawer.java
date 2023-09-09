@@ -7,10 +7,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.view.WindowInsetsCompat;
+
 import com.sketchware.remod.R;
 
 import a.a.a.mB;
 import a.a.a.wB;
+import dev.chrisbanes.insetter.Insetter;
 import mod.hey.studios.util.Helper;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
@@ -38,10 +41,16 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         wB.a(context, this, R.layout.design_drawer);
         TextView tv_title_configuration = findViewById(R.id.tv_title_configuration);
         tv_title_configuration.setText(Helper.getResString(tv_title_configuration, R.string.design_drawer_menu_title));
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.statusBars())
+                .applyToView(tv_title_configuration);
         TextView global = findViewById(R.id.tv_title_global);
         global.setText(Helper.getResString(global, R.string.design_drawer_menu_bottom_title));
         LinearLayout menusLayout = findViewById(R.id.layout_menus);
         LinearLayout bottomMenusLayout = findViewById(R.id.layout_bottom_menus);
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(bottomMenusLayout);
         /* Add collection item */
         bottomMenusLayout.addView(addDrawerItem(1, false,
                 R.drawable.ic_bookmark_red_48dp, R.string.design_drawer_menu_title_collection, R.string.design_drawer_menu_description_collection
