@@ -1,16 +1,18 @@
 package mod.elfilibustero.sketch.lib.valid;
 
-import a.a.a.MB;
 import android.content.Context;
+
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import a.a.a.MB;
 
 public class VariableModifierValidator extends MB {
     public static final Pattern PATTERN_MODIFIER = Pattern.compile(
-        "\\b(public|protected|private|static|final|transient|volatile)\\b"
+            "\\b(public|protected|private|static|final|transient|volatile)\\b"
     );
 
     public VariableModifierValidator(Context context, TextInputLayout textInputLayout) {
@@ -23,7 +25,7 @@ public class VariableModifierValidator extends MB {
         String trimmedInput = input.trim();
         String[] words = trimmedInput.split("\\s+");
         String reconsInput = String.join(" ", words);
-        
+
         if (!input.equals(reconsInput)) {
             b.setErrorEnabled(true);
             b.setError("Extra spaces between words or at the end are not allowed.");

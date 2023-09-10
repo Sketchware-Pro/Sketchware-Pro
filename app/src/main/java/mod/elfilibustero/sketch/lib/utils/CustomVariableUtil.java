@@ -6,17 +6,17 @@ import java.util.regex.Pattern;
 public class CustomVariableUtil {
     public static final Pattern PATTERN_CUSTOM_VARIABLE = Pattern.compile(
             "\\b((private|public|protected|static|final|transient|volatile)\\s+)*"
-            + "([\\w$]+(?:\\s*,\\s*[\\w$]+)*"
-            + "(?:\\s*<[a-zA-Z0-9.,_ ?<>\\[\\]]*>)?"
-            + "(?:\\[\\])*)?\\s+"
-            + "([\\w$]+)"
-            + "(?:\\s*=\\s*([^;]+))?\\s*"
+                    + "([\\w$]+(?:\\s*,\\s*[\\w$]+)*"
+                    + "(?:\\s*<[a-zA-Z0-9.,_ ?<>\\[\\]]*>)?"
+                    + "(?:\\[\\])*)?\\s+"
+                    + "([\\w$]+)"
+                    + "(?:\\s*=\\s*([^;]+))?\\s*"
     );
 
     private static final int VARIABLE_TYPE = 3;
     private static final int VARIABLE_NAME = 4;
     private static final int VARIABLE_INITIALIZER = 5;
-  
+
     public static String getVariableModifier(String input) {
         Matcher matcher = getMatcher(input);
         if (matcher.find()) {
@@ -59,7 +59,7 @@ public class CustomVariableUtil {
     private static Matcher getMatcher(String input) {
         return PATTERN_CUSTOM_VARIABLE.matcher(input);
     }
-    
+
     private static String removeSpaces(String variableType) {
         return variableType.replaceAll("\\s", "");
     }

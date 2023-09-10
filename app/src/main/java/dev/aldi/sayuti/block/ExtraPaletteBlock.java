@@ -201,7 +201,7 @@ public class ExtraPaletteBlock {
                     case "boolean" -> "b";
                     case "String" -> "s";
                     case "double", "int", "float", "long" -> "d";
-                    default  -> "v";
+                    default -> "v";
                 };
                 logicEditor.a(variableName, type, variableType, "getVar").setTag(variable);
             } else {

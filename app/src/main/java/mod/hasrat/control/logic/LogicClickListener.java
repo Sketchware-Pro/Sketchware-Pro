@@ -145,7 +145,7 @@ public class LogicClickListener implements View.OnClickListener {
             boolean validType = !variableType.isEmpty();
             boolean validName = !variableName.isEmpty();
             boolean getsInitialized = !variableInitializer.isEmpty();
-          
+
             CharSequence modifierError = modifierLayout.getError();
             if (!isModifierEmpty && !isValidModifier && modifierError != null) {
                 modifierLayout.requestFocus();
@@ -179,7 +179,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
 
             if (validName && validType && isValidName && isValidType) {
-                String toAdd = (!isModifierEmpty? variableModifier + " ": "");
+                String toAdd = (!isModifierEmpty ? variableModifier + " " : "");
                 toAdd += variableType + " " + variableName;
                 if (getsInitialized) {
                     toAdd += " = " + variableInitializer;
