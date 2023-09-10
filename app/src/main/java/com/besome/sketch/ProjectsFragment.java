@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,36 +62,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         }
     });
-
-    private void initialize(View view) {
-        preference = new DB(requireContext(), "project");
-        swipeRefresh = view.findViewById(R.id.swipe_refresh);
-        loading = view.findViewById(R.id.loading_3balls);
-
-        FloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
-        fab.setOnClickListener(this);
-        Insetter.builder()
-                .margin(WindowInsetsCompat.Type.navigationBars())
-                .applyToView(fab);
-
-        swipeRefresh.setOnRefreshListener(() -> {
-            // Check storage access
-            if (!c()) {
-                swipeRefresh.setRefreshing(false);
-                // Ask for it
-                ((MainActivity) requireActivity()).s();
-            } else {
-                refreshProjectsList();
-            }
-        });
-
-        myProjects = view.findViewById(R.id.myprojects);
-        myProjects.setHasFixedSize(true);
-
-        projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
-        myProjects.setAdapter(projectsAdapter);
-        refreshProjectsList();
-    }
 
     public void refreshProjectsList() {
         // Don't load project list without having permissions
@@ -209,10 +180,40 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View viewGroup = inflater.inflate(R.layout.myprojects, parent, false);
+        View view = inflater.inflate(R.layout.myprojects, parent, false);
         setHasOptionsMenu(true);
-        initialize(viewGroup);
-        return viewGroup;
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        preference = new DB(requireContext(), "project");
+        swipeRefresh = view.findViewById(R.id.swipe_refresh);
+        loading = view.findViewById(R.id.loading_3balls);
+
+        FloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
+        fab.setOnClickListener(this);
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(fab);
+
+        swipeRefresh.setOnRefreshListener(() -> {
+            // Check storage access
+            if (!c()) {
+                swipeRefresh.setRefreshing(false);
+                // Ask for it
+                ((MainActivity) requireActivity()).s();
+            } else {
+                refreshProjectsList();
+            }
+        });
+
+        myProjects = view.findViewById(R.id.myprojects);
+        myProjects.setHasFixedSize(true);
+
+        projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
+        myProjects.setAdapter(projectsAdapter);
+        refreshProjectsList();
     }
 
     private void showProjectSortingDialog() {
