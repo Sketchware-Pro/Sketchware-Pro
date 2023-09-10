@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="@color/switch_thumb_disabled_material_dark" android:state_enabled="false" />
     <item android:color="@color/switch_thumb_normal_material_dark" />

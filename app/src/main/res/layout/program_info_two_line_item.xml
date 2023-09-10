@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
@@ -9,10 +8,10 @@
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:alpha="0.87"
         android:textAppearance="?attr/textAppearanceBodyMedium" />
 
@@ -20,9 +19,9 @@
         android:id="@+id/tv_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
-        android:layout_below="@id/tv_name"
         android:alpha="0.6"
         android:textAppearance="?attr/textAppearanceBodySmall" />
 

@@ -1,6 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/img_ino_popup" android:layout_width="fill_parent" android:layout_height="312.0dip" />
-    <ImageView android:layout_width="24.0dip" android:layout_height="18.0dip" android:layout_margin="8.0dip" android:src="@drawable/ad_label" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff">
+
+    <ImageView
+        android:id="@id/img_ino_popup"
+        android:layout_width="match_parent"
+        android:layout_height="312dp" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="18dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/ad_label" />
 </RelativeLayout>

@@ -1,13 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@drawable/selector_toggle_list_view" android:layout_width="fill_parent" android:layout_height="64.0dip" android:layout_marginLeft="8.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="8.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/img_icon" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginLeft="12.0dip" android:layout_marginRight="12.0dip" android:layout_centerVertical="true" android:contentDescription="@null" />
-    <TextView android:textSize="13.0sp" android:textColor="#ff404040" android:id="@id/tv_target_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="56.0dip" android:layout_marginTop="16.0dip" android:layout_marginStart="56.0dip" />
-    <TextView android:textSize="13.0sp" android:textColor="#ff404040" android:id="@id/tv_sep" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:text=" : " android:layout_toRightOf="@id/tv_target_type" />
-    <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff202020" android:id="@id/tv_target_id" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:layout_marginRight="16.0dip" android:layout_toRightOf="@id/tv_sep" android:layout_marginEnd="16.0dip" />
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="56.0dip" android:layout_marginRight="16.0dip" android:layout_below="@id/tv_target_id" android:layout_marginStart="56.0dip" android:layout_marginEnd="16.0dip">
-        <LinearLayout android:orientation="horizontal" android:id="@id/events_preview" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-        <TextView android:textSize="11.0sp" android:textColor="#ff9a9a9a" android:gravity="center_vertical" android:id="@id/tv_event_name" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/selector_toggle_list_view">
+
+    <ImageView
+        android:id="@id/img_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@id/tv_target_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="16dp"
+        android:textColor="#ff404040"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@id/tv_sep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/tv_target_type"
+        android:text=" : "
+        android:textColor="#ff404040"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@id/tv_target_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@id/tv_sep"
+        android:textColor="#ff202020"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_target_id"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@id/events_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@id/tv_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="#ff9a9a9a"
+            android:textSize="11sp" />
     </LinearLayout>
-    <CheckBox android:gravity="center" android:id="@id/checkbox" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:id="@id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:gravity="center" />
 </RelativeLayout>

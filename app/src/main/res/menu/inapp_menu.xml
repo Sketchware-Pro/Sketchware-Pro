@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/free_trial_white_48" android:id="@id/menu_ads" android:orderInCategory="100" android:title="" support:showAsAction="always" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:support="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@id/menu_ads"
+        android:icon="@drawable/free_trial_white_48"
+        android:orderInCategory="100"
+        android:title=""
+        support:showAsAction="always" />
 </menu>

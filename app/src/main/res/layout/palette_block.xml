@@ -1,43 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#fff5f5f5"
     android:orientation="horizontal">
 
     <com.besome.sketch.lib.ui.CustomScrollView
         android:id="@+id/scv"
-        android:layout_width="0.0dip"
-        android:layout_height="fill_parent"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1.0">
 
         <com.besome.sketch.lib.ui.CustomHorizontalScrollView
             android:id="@+id/hscv"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/block_builder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8.0dip" />
+                android:padding="8dp" />
         </com.besome.sketch.lib.ui.CustomHorizontalScrollView>
     </com.besome.sketch.lib.ui.CustomScrollView>
 
     <View
         android:id="@+id/divider"
-        android:layout_width="1.0dip"
-        android:layout_height="fill_parent"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
         android:background="#12000000" />
 
     <ScrollView
-        android:layout_width="120.0dip"
-        android:layout_height="fill_parent">
+        android:layout_width="120dp"
+        android:layout_height="match_parent">
 
         <com.besome.sketch.editor.logic.PaletteSelector
             android:id="@+id/palette_selector"
-            android:layout_width="120.0dip"
+            android:layout_width="120dp"
             android:layout_height="wrap_content" />
     </ScrollView>
 </LinearLayout>

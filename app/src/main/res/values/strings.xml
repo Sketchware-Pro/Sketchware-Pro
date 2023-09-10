@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_deactivate_actionbar_title">Deactivate Account</string>
     <string name="account_deactivate_button_deactivate_account">Deactivate account</string>
@@ -2634,7 +2633,6 @@ Please check the URL again."</string>
     <string name="link_telegram_invite">https://t.me/sketchwarepro</string>
     <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json</string>
     <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
-
 
 
 </resources>

@@ -1,10 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
-        <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_input" android:layout_width="100.0dip" android:layout_height="wrap_content">
-            <EditText android:textSize="16.0sp" android:id="@id/et_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="numberSigned" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@id/ti_input"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@id/et_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView android:textSize="16.0sp" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="dp"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>

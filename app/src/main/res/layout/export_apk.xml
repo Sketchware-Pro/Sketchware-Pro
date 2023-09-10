@@ -1,33 +1,185 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <ScrollView android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <TextView android:textSize="16.0sp" android:textColor="@color/color_control_normal" android:id="@id/tv_need_cert" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-            <View android:background="#ffc7c7c7" android:layout_width="fill_parent" android:layout_height="1.0dip" />
-            <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ff008dce" android:id="@id/tv_title_cert" android:paddingLeft="16.0dip" android:paddingRight="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
-            <TextView android:textSize="14.0sp" android:textColor="#ffc7c7c7" android:id="@id/tv_key_dir" android:paddingLeft="12.0dip" android:paddingRight="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="4.0dip" />
-            <LinearLayout android:orientation="horizontal" android:background="#ffeeeeee" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip">
-                <TextView android:textSize="16.0sp" android:layout_gravity="center_vertical" android:id="@id/tv_keystore_path" android:padding="4.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
-                <ImageView android:layout_gravity="center_vertical" android:id="@id/img_new_keystore" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/ic_add_circle_24" />
-                <ImageView android:layout_gravity="center_vertical" android:id="@id/img_export_key" android:visibility="gone" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/selector_ic_share_grey" />
-                <ImageView android:layout_gravity="center_vertical" android:id="@id/img_remove_keystore" android:visibility="gone" android:layout_width="36.0dip" android:layout_height="36.0dip" android:src="@drawable/ic_remove_grey600_24dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@id/tv_need_cert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textColor="@color/color_control_normal"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffc7c7c7" />
+
+            <TextView
+                android:id="@id/tv_title_cert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="#ff008dce"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@id/tv_key_dir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="#ffc7c7c7"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#ffeeeeee"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@id/tv_keystore_path"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.0"
+                    android:padding="4dp"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@id/img_new_keystore"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_add_circle_24" />
+
+                <ImageView
+                    android:id="@id/img_export_key"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/selector_ic_share_grey"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@id/img_remove_keystore"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_remove_grey600_24dp"
+                    android:visibility="gone" />
             </LinearLayout>
-            <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_keystore_passwd" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip">
-                <EditText android:textSize="14.0sp" android:id="@id/et_keystore_passwd" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textPassword" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@id/ti_keystore_passwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp">
+
+                <EditText
+                    android:id="@id/et_keystore_passwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
-            <TextView android:textColor="#ffff0000" android:id="@id/tv_result" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" />
-            <Button style="@style/AppTheme.Button.LightBlue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_sign" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" />
-            <LinearLayout android:gravity="center" android:orientation="vertical" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                <androidx.cardview.widget.CardView android:id="@id/card_made_apk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:elevation="4.0dip">
-                    <LinearLayout android:gravity="center" android:orientation="vertical" android:padding="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                        <ImageView android:id="@id/img_export_apk" android:layout_width="72.0dip" android:layout_height="72.0dip" android:src="@drawable/file_app_icon" />
-                        <TextView android:gravity="center" android:id="@id/tv_app_name" android:scrollbars="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" />
+
+            <TextView
+                android:id="@id/tv_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="#ffff0000" />
+
+            <Button
+                android:id="@id/btn_sign"
+                style="@style/AppTheme.Button.LightBlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/text_size_button_material" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@id/card_made_apk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@id/img_export_apk"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:src="@drawable/file_app_icon" />
+
+                        <TextView
+                            android:id="@id/tv_app_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:scrollbars="horizontal" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <TextView android:id="@id/tv_release_apk_path" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip" />
-                <Button style="@style/AppTheme.Button.Blue" android:textSize="@dimen/text_size_button_material" android:textColor="#ffffffff" android:id="@id/btn_share" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@id/tv_release_apk_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+
+                <Button
+                    android:id="@id/btn_share"
+                    style="@style/AppTheme.Button.Blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/text_size_button_material" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

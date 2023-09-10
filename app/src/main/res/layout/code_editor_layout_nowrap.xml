@@ -1,7 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:id="@id/code_editor_layoutScrollView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <HorizontalScrollView android:scrollbarThumbHorizontal="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" android:fillViewport="true" android:overScrollMode="never">
-        <mod.hey.studios.lib.code_editor.CodeEditorEditText android:gravity="top" android:id="@id/code_editor_edittext" android:background="@android:color/transparent" android:padding="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:inputType="textMultiLine" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/code_editor_layoutScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbarThumbHorizontal="@android:color/transparent">
+
+        <mod.hey.studios.lib.code_editor.CodeEditorEditText
+            android:id="@id/code_editor_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:padding="8dp" />
     </HorizontalScrollView>
 </ScrollView>

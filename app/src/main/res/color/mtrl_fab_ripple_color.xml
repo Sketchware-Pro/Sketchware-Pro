@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:alpha="0.32" android:color="@android:color/white" android:state_pressed="true" />
     <item android:alpha="0.32" android:color="@android:color/white" android:state_focused="true" android:state_hovered="true" />

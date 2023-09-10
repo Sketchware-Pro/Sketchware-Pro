@@ -1,5 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="8.0sp" android:textColor="@color/orange" android:id="@id/panel_btn_select_all" android:background="@color/black" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@id/panel_btn_select_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:padding="5dp"
+        android:textColor="@color/orange"
+        android:textSize="8sp" />
 </LinearLayout>

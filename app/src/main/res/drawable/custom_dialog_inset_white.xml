@@ -1,3 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<inset android:drawable="@drawable/bg_rectangle_white" android:insetLeft="16.0dip" android:insetRight="16.0dip" android:insetTop="16.0dip" android:insetBottom="16.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android" />
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/bg_rectangle_white"
+    android:insetLeft="16dp"
+    android:insetTop="16dp"
+    android:insetRight="16dp"
+    android:insetBottom="16dp" />

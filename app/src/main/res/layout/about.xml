@@ -112,10 +112,10 @@
             android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingBottom="3dp"
-            android:fontFamily="sans-serif-medium"
             android:text="@string/about_loading_title"
             android:textSize="16sp" />
 

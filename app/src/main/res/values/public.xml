@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <public name="abc_fade_in" id="0x7f010000" type="anim" />
     <public name="abc_fade_out" id="0x7f010001" type="anim" />

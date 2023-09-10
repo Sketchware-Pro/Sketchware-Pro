@@ -1,13 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="?selectableItemBackground" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:id="@id/property_item" android:layout_width="fill_parent" android:layout_height="60.0dip">
-        <ImageView android:id="@id/img_left_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:layout_centerVertical="true" android:layout_alignParentStart="true" android:layout_marginHorizontal="8.0dip" />
-        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="40.0dip">
-            <TextView android:textSize="16.0sp" android:textColor="#ff404040" android:id="@id/tv_name" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginRight="16.0dip" android:layout_marginBottom="10.0dip" android:layout_weight="1.0" />
-            <Switch android:id="@id/switch_value" android:focusable="false" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="16.0dip" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground">
+
+    <RelativeLayout
+        android:id="@id/property_item"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@id/img_left_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1.0"
+                android:textColor="#ff404040"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@id/switch_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:clickable="false"
+                android:focusable="false" />
         </LinearLayout>
-        <View android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_alignParentBottom="true" android:layout_marginStart="40.0dip" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="40dp"
+            android:background="#fff6f6f6" />
     </RelativeLayout>
+
     <include layout="@layout/property_grid_item" />
 </RelativeLayout>

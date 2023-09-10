@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false" android:drawable="@drawable/user_72_grey_line" />
-    <item android:state_pressed="true" android:drawable="@drawable/user_72_grey_line" />
-    <item android:state_focused="true" android:state_pressed="false" android:drawable="@drawable/user_72_grey_line" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/user_72_grey_line" android:state_enabled="false" />
+    <item android:drawable="@drawable/user_72_grey_line" android:state_pressed="true" />
+    <item android:drawable="@drawable/user_72_grey_line" android:state_focused="true" android:state_pressed="false" />
     <item android:drawable="@drawable/user_72_white_line" />
 </selector>

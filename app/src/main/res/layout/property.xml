@@ -1,15 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <RelativeLayout android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/layout_ads">
-            <androidx.recyclerview.widget.RecyclerView android:id="@id/property_group_list" android:background="#ffffffff" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="fill_parent" android:splitMotionEvents="false" />
-            <View android:background="#ff008dcd" android:layout_width="1.0dip" android:layout_height="fill_parent" />
-            <com.besome.sketch.lib.ui.CustomScrollView android:id="@id/scroll_view" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <LinearLayout android:orientation="vertical" android:id="@id/content" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffffff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/layout_ads"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@id/property_group_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#ffffffff"
+                android:splitMotionEvents="false"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#ff008dcd" />
+
+            <com.besome.sketch.lib.ui.CustomScrollView
+                android:id="@id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
             </com.besome.sketch.lib.ui.CustomScrollView>
         </LinearLayout>
-        <LinearLayout android:orientation="vertical" android:id="@id/layout_ads" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:id="@id/layout_ads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

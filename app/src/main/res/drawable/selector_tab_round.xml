@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:drawable="@drawable/bg_rounded_top_primary" />
-    <item android:state_selected="false" android:drawable="@drawable/bg_rounded_top_gray" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_rounded_top_primary" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_rounded_top_gray" android:state_selected="false" />
 </selector>

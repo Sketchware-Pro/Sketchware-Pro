@@ -1,6 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="16.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/mypage_tab_image" android:layout_width="24.0dip" android:layout_height="24.0dip" />
-    <TextView android:textSize="16.0sp" android:textColor="#ff7d7d7d" android:id="@id/mypage_tab_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1.0"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp">
+
+    <ImageView
+        android:id="@id/mypage_tab_image"
+        android:layout_width="24dp"
+        android:layout_height="24dp" />
+
+    <TextView
+        android:id="@id/mypage_tab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:textColor="#ff7d7d7d"
+        android:textSize="16sp" />
 </LinearLayout>

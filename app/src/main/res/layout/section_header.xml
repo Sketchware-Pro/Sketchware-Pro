@@ -1,6 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/imgv_indicator" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/selector_ic_chevron_right_24" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" android:layout_alignParentStart="true" />
-    <TextView android:textColor="#ff666666" android:id="@id/tv_section_name" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_toRightOf="@id/imgv_indicator" android:layout_centerVertical="true" android:layout_toEndOf="@id/imgv_indicator" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@id/imgv_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@null"
+        android:src="@drawable/selector_ic_chevron_right_24" />
+
+    <TextView
+        android:id="@id/tv_section_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/imgv_indicator"
+        android:layout_toRightOf="@id/imgv_indicator"
+        android:padding="8dp"
+        android:textColor="#ff666666" />
 </RelativeLayout>

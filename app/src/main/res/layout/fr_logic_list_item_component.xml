@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -83,8 +82,8 @@
             android:layout_height="90dp"
             android:orientation="horizontal"
             android:paddingHorizontal="24dp"
-            android:visibility="visible"
             android:scrollbars="horizontal"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/fr_logic_list_item_component_event" />
 

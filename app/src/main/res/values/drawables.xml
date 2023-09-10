@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="drawable" name="dummy_ae_462">false</item>
-    <item type="drawable" name="dummy_ae_46e">false</item>
+    <item name="dummy_ae_462" type="drawable">false</item>
+    <item name="dummy_ae_46e" type="drawable">false</item>
 </resources>

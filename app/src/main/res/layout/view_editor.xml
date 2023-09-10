@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,7 +40,7 @@
         android:layout_toRightOf="@+id/layout_palette"
         android:background="?attr/colorSurface"
         android:forceDarkAllowed="false"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
 
     <com.besome.sketch.editor.view.ViewDummy
         android:id="@+id/dummy"

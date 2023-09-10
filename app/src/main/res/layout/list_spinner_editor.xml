@@ -1,8 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/result_item_desc" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <ImageView android:id="@id/result_item_image" android:focusable="false" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/xml_indosw" android:scaleType="fitCenter" />
-        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/result_item_label" android:padding="8.0dip" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="......" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/result_item_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@id/result_item_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:focusable="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/xml_indosw" />
+
+        <TextView
+            android:id="@id/result_item_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:padding="8dp"
+            android:text="......"
+            android:textColor="#ffffffff"
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

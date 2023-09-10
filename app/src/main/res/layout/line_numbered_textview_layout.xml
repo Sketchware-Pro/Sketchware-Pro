@@ -1,8 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="#fff0f0f0" android:layout_width="wrap_content" android:layout_height="fill_parent">
-        <TextView android:textSize="14.0sp" android:textColor="#ffbdbdbd" android:gravity="right" android:id="@id/line_numbered_textview_lines" android:paddingLeft="2.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:text="1" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#fff0f0f0"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/line_numbered_textview_lines"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:paddingLeft="2dp"
+            android:paddingRight="4dp"
+            android:text="1"
+            android:textColor="#ffbdbdbd"
+            android:textSize="14sp" />
     </LinearLayout>
-    <TextView android:textSize="14.0sp" android:textColor="#ff000000" android:id="@id/line_numbered_textview_main" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="test" />
+
+    <TextView
+        android:id="@id/line_numbered_textview_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="test"
+        android:textColor="#ff000000"
+        android:textSize="14sp" />
 </LinearLayout>
