@@ -74,6 +74,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     }
 
     private void initButtons() {
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         binding.downloadLibraryButton.setOnClickListener(this);
     }
 
