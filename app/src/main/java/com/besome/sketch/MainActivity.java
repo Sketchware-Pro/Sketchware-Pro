@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
@@ -40,6 +41,8 @@ import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
+import dev.chrisbanes.insetter.Insetter;
+import dev.chrisbanes.insetter.Side;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
@@ -142,6 +145,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
+                .applyToView(findViewById(R.id.layout_coordinator));
         setSupportActionBar(findViewById(R.id.toolbar));
 
         u = new DB(getApplicationContext(), "U1");

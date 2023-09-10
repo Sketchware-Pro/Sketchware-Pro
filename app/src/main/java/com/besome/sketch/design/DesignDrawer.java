@@ -15,6 +15,7 @@ import com.sketchware.remod.R;
 import a.a.a.mB;
 import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
+import dev.chrisbanes.insetter.Side;
 import mod.hey.studios.util.Helper;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
@@ -37,6 +38,13 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.design_drawer);
+        var layoutDirection = getResources().getConfiguration().getLayoutDirection();
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars(),
+                        Side.create(layoutDirection == LAYOUT_DIRECTION_RTL, false,
+                                layoutDirection == LAYOUT_DIRECTION_LTR, false))
+                .applyToView(findViewById(R.id.layout_drawer));
+
         TextView tv_title_configuration = findViewById(R.id.tv_title_configuration);
         tv_title_configuration.setText(Helper.getResString(tv_title_configuration, R.string.design_drawer_menu_title));
         Insetter.builder()
@@ -47,7 +55,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         LinearLayout menusLayout = findViewById(R.id.layout_menus);
         LinearLayout bottomMenusLayout = findViewById(R.id.layout_bottom_menus);
         Insetter.builder()
-                .margin(WindowInsetsCompat.Type.navigationBars())
+                .margin(WindowInsetsCompat.Type.navigationBars(), Side.BOTTOM)
                 .applyToView(bottomMenusLayout);
         /* Add collection item */
         bottomMenusLayout.addView(addDrawerItem(1, false,

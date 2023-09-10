@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.besome.sketch.help.ProgramInfoActivity;
 import com.besome.sketch.help.SystemSettingActivity;
@@ -18,6 +19,8 @@ import com.sketchware.remod.R;
 
 import a.a.a.mB;
 import a.a.a.wB;
+import dev.chrisbanes.insetter.Insetter;
+import dev.chrisbanes.insetter.Side;
 import mod.hilal.saif.activities.tools.Tools;
 import mod.ilyasse.activities.about.AboutModActivity;
 
@@ -30,6 +33,13 @@ public class MainDrawer extends FrameLayout {
         super(context, attributeSet);
         wB.a(context, this, R.layout.main_drawer);
         NavigationView navView = findViewById(R.id.layout_main);
+        var layoutDirection = getResources().getConfiguration().getLayoutDirection();
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars(),
+                        Side.create(layoutDirection == LAYOUT_DIRECTION_LTR,
+                                false, layoutDirection == LAYOUT_DIRECTION_RTL, false))
+                .applyToView(navView);
+
         navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             initializeSocialLinks(id);
