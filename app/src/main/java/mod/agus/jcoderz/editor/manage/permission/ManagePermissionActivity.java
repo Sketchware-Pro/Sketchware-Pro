@@ -1,17 +1,18 @@
 package mod.agus.jcoderz.editor.manage.permission;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.core.view.WindowCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,8 +29,9 @@ import java.util.ArrayList;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class ManagePermissionActivity extends Activity {
+public class ManagePermissionActivity extends AppCompatActivity {
     private PermissionsAdapter adapter;
     private ArrayList<String> arrayList;
     private FileResConfig frc;
@@ -40,11 +42,12 @@ public class ManagePermissionActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManagePermissionBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
+        initViews();
         if (getIntent().hasExtra("sc_id")) {
             numProj = getIntent().getStringExtra("sc_id");
             frc = new FileResConfig(numProj);
@@ -55,13 +58,14 @@ public class ManagePermissionActivity extends Activity {
         setItems();
         setUpSearchView();
         initButtons();
-        initViews();
     }
 
     private void initViews() {
         var collapsingToolbar = binding.collapsingToolbar;
 
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollToTopButton,
+                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+
         collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
         collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
     }
@@ -109,7 +113,7 @@ public class ManagePermissionActivity extends Activity {
     }
 
     public void initButtons() {
-        var fab = binding.fab;
+        var scrollToTopButton = binding.scrollToTopButton;
         MaterialButton resetPermissions = findViewById(R.id.resetPermissions);
         resetPermissions.setOnClickListener(view -> new AlertDialog.Builder(ManagePermissionActivity.this)
                 .setTitle("Reset permissions")
@@ -120,8 +124,8 @@ public class ManagePermissionActivity extends Activity {
                     frc = new FileResConfig(numProj);
                     setItems();
                 }));
-        fab.setOnClickListener(view -> {
-            fab.hide();
+        scrollToTopButton.setOnClickListener(view -> {
+            scrollToTopButton.hide();
             binding.appBarLayout.setExpanded(true);
             binding.recyclerView.smoothScrollToPosition(0);
         });
@@ -129,7 +133,7 @@ public class ManagePermissionActivity extends Activity {
 
     private void initRecyclerView() {
         var recyclerView = binding.recyclerView;
-        var fab = binding.fab;
+        var scrollToTopButton = binding.scrollToTopButton;
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -138,9 +142,9 @@ public class ManagePermissionActivity extends Activity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {
-                    if (!fab.isShown()) fab.show();
+                    if (!scrollToTopButton.isShown()) scrollToTopButton.show();
                 } else if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    fab.hide();
+                    scrollToTopButton.hide();
                 }
             }
         });
