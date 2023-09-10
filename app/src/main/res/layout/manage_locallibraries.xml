@@ -137,7 +137,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="20dp"
         android:text="Download a library"
         app:icon="@drawable/ic_download_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
