@@ -23,7 +23,7 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="Local Libraries Manager" />
+                app:title="@string/local_library_manager" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -73,7 +73,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:insetBottom="0dp"
-                android:text="Reset"
+                android:text="@string/common_word_reset"
                 android:textColor="?colorPrimary"
                 app:backgroundTint="?android:colorBackground"
                 app:icon="@drawable/ic_reset_24"
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="No local libraries available"
+            android:text="@string/local_library_manager_no_libraries_title"
             android:textSize="20dp" />
 
         <TextView
@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="You don't have any local libraries yet, try downloading one."
+            android:text="@string/local_library_manager_no_libraries_body"
             android:textSize="14dp" />
     </LinearLayout>
 
@@ -138,6 +138,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"
-        android:text="Download a library"
+        android:text="@string/local_library_manager_download"
         app:icon="@drawable/ic_download_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
