@@ -2,6 +2,7 @@
     android:id="@id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="64dp"
+    android:layout_marginVertical="2dp"
     android:layout_marginLeft="4dp"
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"

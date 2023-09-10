@@ -24,6 +24,8 @@
             android:animateLayoutChanges="true"
             android:background="@drawable/circle_bg"
             android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:paddingRight="8dp"
@@ -38,6 +40,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
@@ -105,6 +108,7 @@
                 android:background="@drawable/bg_outline"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 
@@ -132,6 +136,7 @@
                 android:background="@drawable/bg_outline"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 

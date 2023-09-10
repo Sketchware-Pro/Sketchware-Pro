@@ -5,6 +5,7 @@
     android:background="@drawable/selector_tab_round"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:paddingHorizontal="8dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp">
 
@@ -13,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lines="1"
+        android:paddingHorizontal="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:textColor="#ffffffff"

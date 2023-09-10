@@ -10,6 +10,8 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="horizontal"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
         android:paddingLeft="14dp"
         android:paddingTop="8dp"
         android:paddingRight="14dp"

@@ -11,6 +11,8 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="horizontal"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
         android:paddingLeft="14dp"
         android:paddingTop="8dp"
         android:paddingRight="14dp"
@@ -123,6 +125,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1.1999817dip"
+        android:layout_marginHorizontal="64dp"
         android:layout_marginLeft="64dp"
         android:layout_marginRight="64dp"
         android:background="@color/color_secondary"

@@ -311,6 +311,7 @@
                     android:id="@id/header_project_screenshot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
 
@@ -335,7 +336,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@id/ti_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
                         android:id="@id/et_title"
@@ -362,7 +364,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@id/ti_desc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
                         android:id="@id/et_desc"
@@ -385,23 +388,25 @@
 
             <Button
                 android:id="@id/btn_cancel"
-                style="@style/AppTheme.Button.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:gravity="center"
-                android:textSize="@dimen/text_size_button_material" />
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/text_size_button_material"
+                android:theme="@style/AppTheme.Button.Blue" />
 
             <Button
                 android:id="@id/btn_save"
-                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="1.0"
                 android:gravity="center"
-                android:textSize="@dimen/text_size_button_material" />
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/text_size_button_material"
+                android:theme="@style/AppTheme.Button.LightBlue" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

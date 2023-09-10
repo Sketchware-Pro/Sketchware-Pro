@@ -11,6 +11,7 @@
             android:id="@id/rg_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:orientation="vertical">
@@ -36,8 +37,10 @@
             android:id="@id/ti_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:importantForAutofill="noExcludeDescendants">
 
             <EditText
                 android:id="@id/ed_input"

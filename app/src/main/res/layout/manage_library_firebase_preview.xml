@@ -12,6 +12,7 @@
         android:background="?selectableItemBackground"
         android:gravity="center"
         android:orientation="horizontal"
+        android:paddingVertical="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp">
 

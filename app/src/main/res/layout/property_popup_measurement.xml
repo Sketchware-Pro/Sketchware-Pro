@@ -74,7 +74,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@id/ti_input"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
                         android:id="@id/ed_input"

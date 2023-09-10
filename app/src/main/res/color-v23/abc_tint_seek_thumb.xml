@@ -1,4 +1,0 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:alpha="?android:disabledAlpha" android:color="?colorControlActivated" android:state_enabled="false" />
-    <item android:color="?colorControlActivated" />
-</selector>

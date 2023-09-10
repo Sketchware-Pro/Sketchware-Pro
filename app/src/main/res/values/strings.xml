@@ -2564,6 +2564,8 @@ Please check the URL again."</string>
     <string name="text_subtitle_menu_local_library">Add local libraries</string>
     <string name="text_title_menu_broadcast">Background Service</string>
     <string name="text_subtitle_menu_broadcast">Import Background Service files</string>
+    <string name="text_title_menu_java">Java/Kotlin Manager</string>
+    <string name="text_subtitle_menu_java">Import Java/Kotlin files</string>
     <string name="component_description_video_ad">Video Ad lets you add video advertisements</string>
     <string name="component_description_progress_dialog">Create popup dialog style progress</string>
     <string name="component_description_date_picker_dialog">Dialog to pick date</string>

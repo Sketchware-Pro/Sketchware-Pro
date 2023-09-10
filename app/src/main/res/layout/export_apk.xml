@@ -101,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp">
+                android:layout_marginRight="16dp"
+                android:importantForAutofill="noExcludeDescendants">
 
                 <EditText
                     android:id="@id/et_keystore_passwd"
@@ -128,7 +129,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material" />
 
             <LinearLayout
@@ -178,7 +178,6 @@
                     style="@style/AppTheme.Button.Blue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#ffffffff"
                     android:textSize="@dimen/text_size_button_material" />
             </LinearLayout>
         </LinearLayout>

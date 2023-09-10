@@ -5,9 +5,10 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_events"
+        android:id="@id/list_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingHorizontal="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:splitMotionEvents="false" />

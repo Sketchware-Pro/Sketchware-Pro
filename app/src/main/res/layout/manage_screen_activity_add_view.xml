@@ -7,6 +7,8 @@
     android:focusableInTouchMode="true"
     android:gravity="center"
     android:orientation="vertical"
+    android:paddingHorizontal="32dp"
+    android:paddingVertical="32dp"
     android:paddingLeft="32dp"
     android:paddingTop="32dp"
     android:paddingRight="32dp"

@@ -1,5 +1,5 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:color="?colorControlNormal" android:state_enabled="false" app:alpha="?android:disabledAlpha" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="?android:disabledAlpha" android:color="?colorControlNormal" android:state_enabled="false" />
     <item android:color="?colorControlActivated" android:state_checked="true" />
     <item android:color="?colorControlNormal" />
 </selector>

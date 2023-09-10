@@ -9,6 +9,7 @@
         android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:layout_marginHorizontal="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp" />
 

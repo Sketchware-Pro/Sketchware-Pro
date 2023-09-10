@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:importantForAutofill="noExcludeDescendants">
 
         <EditText
             android:id="@id/ed_input"

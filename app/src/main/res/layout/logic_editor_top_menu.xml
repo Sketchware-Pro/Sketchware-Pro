@@ -3,6 +3,7 @@
     android:layout_height="48dp"
     android:background="#ffefefef"
     android:orientation="horizontal"
+    android:paddingVertical="8dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 

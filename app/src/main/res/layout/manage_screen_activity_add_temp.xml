@@ -118,7 +118,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp">
+                android:layout_marginRight="8dp"
+                android:importantForAutofill="noExcludeDescendants">
 
                 <EditText
                     android:id="@id/ed_name"
@@ -148,6 +149,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginVertical="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@color/lighter_grey" />
@@ -157,6 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginVertical="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:animateLayoutChanges="true"
@@ -195,6 +198,7 @@
                 android:id="@id/tv_screen_orientation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:textColor="@color/color_primary"
@@ -216,6 +220,7 @@
                 android:id="@id/tv_keyboard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:textColor="@color/color_primary"
