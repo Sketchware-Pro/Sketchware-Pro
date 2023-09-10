@@ -4,7 +4,7 @@
         android:id="@id/design_menu_item_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.0"
+        android:layout_weight="1"
         android:drawablePadding="@dimen/design_navigation_icon_padding"
         android:gravity="start|center"
         android:maxLines="1"

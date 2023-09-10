@@ -2,9 +2,9 @@
     android:duration="@integer/bottom_sheet_slide_duration"
     android:interpolator="@android:interpolator/fast_out_linear_in">
     <translate
-        android:fromYDelta="20.000004%p"
-        android:toYDelta="0.0" />
+        android:fromYDelta="20%"
+        android:toYDelta="0" />
     <alpha
-        android:fromAlpha="0.0"
-        android:toAlpha="1.0" />
+        android:fromAlpha="0"
+        android:toAlpha="1" />
 </set>

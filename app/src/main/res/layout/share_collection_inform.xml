@@ -64,7 +64,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1.0" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@id/tv_short_desc_limit"
@@ -128,7 +128,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1.0" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@id/tv_long_desc_limit"
@@ -184,7 +184,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1.0" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@id/tv_tag_count_limit"

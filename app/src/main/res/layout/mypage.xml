@@ -66,7 +66,7 @@
                     android:id="@id/tv_user_alias"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:lines="1"

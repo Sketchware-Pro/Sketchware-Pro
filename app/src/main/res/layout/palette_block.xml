@@ -8,7 +8,7 @@
         android:id="@+id/scv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.0">
+        android:layout_weight="1">
 
         <com.besome.sketch.lib.ui.CustomHorizontalScrollView
             android:id="@+id/hscv"

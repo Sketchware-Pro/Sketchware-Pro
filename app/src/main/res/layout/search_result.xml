@@ -71,7 +71,7 @@
                             android:id="@id/list_search_result"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.0"
+                            android:layout_weight="1"
                             android:padding="8dp"
                             android:splitMotionEvents="false" />
 

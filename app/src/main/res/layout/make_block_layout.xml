@@ -202,7 +202,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
-                            android:layout_weight="1.0"
+                            android:layout_weight="1"
                             android:importantForAutofill="noExcludeDescendants">
 
                             <EditText
@@ -252,7 +252,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_weight="1.0"
+                        android:layout_weight="1"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
@@ -311,7 +311,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_weight="1.0"
+                        android:layout_weight="1"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
@@ -329,7 +329,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_weight="1.0"
+                        android:layout_weight="1"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText

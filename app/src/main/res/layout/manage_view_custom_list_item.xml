@@ -61,7 +61,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView

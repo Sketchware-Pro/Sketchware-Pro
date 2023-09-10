@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:padding="8dp"
                 android:src="@drawable/ic_rotate_right_white_48dp" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:padding="8dp"
                 android:src="@drawable/ic_flip_vertical_white_48dp" />
 
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:padding="8dp"
                 android:src="@drawable/ic_flip_horizontal_white_48dp" />
         </LinearLayout>
@@ -116,7 +116,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginRight="16dp"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <com.besome.sketch.lib.ui.EasyDeleteEditText
@@ -127,7 +127,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -135,7 +135,7 @@
                     android:id="@id/tv_collection"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1"
                     android:gravity="right"
                     android:textSize="12sp" />
 

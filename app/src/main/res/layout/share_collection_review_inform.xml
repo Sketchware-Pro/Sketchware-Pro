@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -201,7 +201,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <RelativeLayout
@@ -350,7 +350,7 @@
                         android:id="@id/tv_update_dt_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3.0"
+                        android:layout_weight="3"
                         android:gravity="center|left"
                         android:textColor="#ff999999"
                         android:textSize="12sp" />
@@ -360,7 +360,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_weight="7.0"
+                        android:layout_weight="7"
                         android:gravity="left"
                         android:textColor="#ff404040"
                         android:textSize="12sp" />
@@ -376,7 +376,7 @@
                         android:id="@id/tv_reg_dt_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3.0"
+                        android:layout_weight="3"
                         android:gravity="center|left"
                         android:textColor="#ff999999"
                         android:textSize="12sp" />
@@ -386,7 +386,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_weight="7.0"
+                        android:layout_weight="7"
                         android:gravity="left"
                         android:textColor="#ff404040"
                         android:textSize="12sp" />
@@ -417,7 +417,7 @@
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_weight="1.0" />
+                        android:layout_weight="1" />
 
                     <ImageView
                         android:layout_width="20dp"

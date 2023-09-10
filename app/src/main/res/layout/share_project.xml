@@ -16,7 +16,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.0">
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                                 android:id="@id/tv_package_title"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3.0"
+                                android:layout_weight="3"
                                 android:gravity="left"
                                 android:paddingLeft="4dp"
                                 android:paddingRight="4dp"
@@ -102,7 +102,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:layout_weight="7.0"
+                                android:layout_weight="7"
                                 android:textColor="#ff404040"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -119,7 +119,7 @@
                                 android:id="@id/tv_project_title"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3.0"
+                                android:layout_weight="3"
                                 android:gravity="left"
                                 android:paddingLeft="4dp"
                                 android:paddingRight="4dp"
@@ -131,7 +131,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:layout_weight="7.0"
+                                android:layout_weight="7"
                                 android:textColor="#ff404040"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -147,7 +147,7 @@
                                 android:id="@id/tv_appname_title"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3.0"
+                                android:layout_weight="3"
                                 android:gravity="left"
                                 android:paddingLeft="4dp"
                                 android:paddingRight="4dp"
@@ -159,7 +159,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:layout_weight="7.0"
+                                android:layout_weight="7"
                                 android:textColor="#ff404040"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -184,7 +184,7 @@
                         android:id="@id/tv_version_code_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3.0"
+                        android:layout_weight="3"
                         android:gravity="left"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
@@ -196,7 +196,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_weight="1.0"
+                        android:layout_weight="1"
                         android:textColor="#ff404040"
                         android:textSize="13sp" />
 
@@ -204,7 +204,7 @@
                         android:id="@id/tv_version_name_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3.0"
+                        android:layout_weight="3"
                         android:gravity="left"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
@@ -216,7 +216,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_weight="1.0"
+                        android:layout_weight="1"
                         android:textColor="#ff404040"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -238,7 +238,7 @@
                         android:id="@id/tv_visibility_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0" />
+                        android:layout_weight="1" />
 
                     <RadioGroup
                         android:layout_width="wrap_content"
@@ -249,7 +249,7 @@
                             android:id="@id/rd_privacy_public"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.0"
+                            android:layout_weight="1"
                             android:checked="true" />
 
                         <RadioButton
@@ -257,7 +257,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:layout_weight="1.0" />
+                            android:layout_weight="1" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -272,7 +272,7 @@
                         android:id="@id/tv_allow_comment_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0" />
+                        android:layout_weight="1" />
 
                     <CheckBox
                         android:id="@id/chk_allow_comment"
@@ -390,7 +390,7 @@
                 android:id="@id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"
@@ -402,7 +402,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"

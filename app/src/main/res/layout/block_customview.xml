@@ -35,7 +35,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -82,7 +82,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:focusable="false"
-                                android:rotation="270.0"
+                                android:rotation="270"
                                 android:scaleType="fitXY"
                                 android:src="@drawable/selector_ic_chevron_left_grey_48" />
                         </LinearLayout>
@@ -110,7 +110,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:focusable="false"
-                                android:rotation="90.0"
+                                android:rotation="90"
                                 android:scaleType="fitXY"
                                 android:src="@drawable/selector_ic_chevron_left_grey_48" />
                         </LinearLayout>

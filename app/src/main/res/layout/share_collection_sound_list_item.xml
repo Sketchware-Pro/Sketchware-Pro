@@ -47,7 +47,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -78,7 +78,7 @@
                         style="@style/SoundProgressBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0" />
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@id/tv_endtime"

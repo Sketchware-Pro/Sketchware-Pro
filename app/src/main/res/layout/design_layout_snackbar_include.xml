@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center"
-        android:layout_weight="1.0"
+        android:layout_weight="1"
         android:ellipsize="end"
         android:maxLines="@integer/design_snackbar_text_max_lines"
         android:paddingLeft="@dimen/design_snackbar_padding_horizontal"

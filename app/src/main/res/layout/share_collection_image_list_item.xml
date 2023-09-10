@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="8dp"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:gravity="center|left"
             android:textColor="#fff5f5f5"
             android:textSize="14sp" />

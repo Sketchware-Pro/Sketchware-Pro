@@ -24,7 +24,7 @@
                 android:id="@id/view_leftline"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:background="@color/color_primary" />
 
             <RelativeLayout
@@ -54,7 +54,7 @@
                 android:id="@id/view_rightline"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_weight="1.0"
+                android:layout_weight="1"
                 android:background="#ffeeeeee" />
         </LinearLayout>
 
@@ -81,7 +81,7 @@
         android:id="@id/layout_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0"
+        android:layout_weight="1"
         android:orientation="vertical" />
 
     <Button

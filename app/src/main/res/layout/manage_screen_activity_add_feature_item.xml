@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:gravity="center_vertical"
-        app:layout_flexGrow="1.0" />
+        app:layout_flexGrow="1" />
 
     <CheckBox
         android:id="@id/checkbox"

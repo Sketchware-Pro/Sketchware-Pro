@@ -3,13 +3,13 @@
     android:height="24dp"
     android:autoMirrored="true"
     android:tint="?colorControlNormal"
-    android:viewportWidth="24.0"
-    android:viewportHeight="24.0">
+    android:viewportWidth="24"
+    android:viewportHeight="24">
     <group
         android:name="arrow"
-        android:pivotX="12.0"
-        android:pivotY="12.0"
-        android:rotation="90.0">
+        android:pivotX="12"
+        android:pivotY="12"
+        android:rotation="90">
         <path
             android:fillColor="@android:color/black"
             android:pathData="M7,14 L12,9 L17,14 L7,14 Z" />

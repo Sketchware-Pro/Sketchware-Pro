@@ -2,7 +2,7 @@
     android:shareInterpolator="false">
     <alpha
         android:duration="@integer/abc_config_activityShortDur"
-        android:fromAlpha="1.0"
+        android:fromAlpha="1"
         android:interpolator="@android:anim/decelerate_interpolator"
-        android:toAlpha="0.0" />
+        android:toAlpha="0" />
 </set>

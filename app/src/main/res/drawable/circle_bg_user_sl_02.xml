@@ -1,7 +1,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:innerRadius="0dp"
     android:shape="ring"
-    android:thicknessRatio="2.0"
+    android:thicknessRatio="2"
     android:useLevel="false">
     <solid android:color="@color/scolor_sl_02" />
     <stroke

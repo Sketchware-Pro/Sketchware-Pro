@@ -2,7 +2,7 @@
     android:id="@id/img_button"
     android:layout_width="0dp"
     android:layout_height="48dp"
-    android:layout_weight="1.0"
+    android:layout_weight="1"
     android:background="?android:selectableItemBackground"
     android:orientation="vertical">
 
