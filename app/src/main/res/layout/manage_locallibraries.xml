@@ -96,7 +96,6 @@
             android:paddingBottom="120dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/view_item_local_lib" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -123,7 +122,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="@string/local_library_manager_no_libraries_title"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,7 +130,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="@string/local_library_manager_no_libraries_body"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
