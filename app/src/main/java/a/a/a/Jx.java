@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import mod.agus.jcoderz.beans.ViewBeans;
@@ -34,6 +35,7 @@ public class Jx {
     private final ProjectFileBean projectFileBean;
     private final eC projectDataManager;
     private final jq buildConfig;
+    private final Ox ox;
     /**
      * Fields with static initializer that added Components need,
      * e.g. {"private Timer _timer = new Timer();"}
@@ -84,6 +86,7 @@ public class Jx {
         mll = new ManageLocalLibrary(eCVar.a);
         settings = new ProjectSettings(eCVar.a);
         permissionManager = new PermissionManager(eCVar.a, projectFileBean.getJavaName());
+        ox = new Ox(buildConfig, projectFileBean);
     }
 
     public String activityResult() {
@@ -893,12 +896,22 @@ public class Jx {
     private void addDrawerComponentInitializer() {
         ArrayList<ViewBean> viewBeans = projectDataManager.d(projectFileBean.getXmlName());
         for (ViewBean viewBean : viewBeans) {
-            initializeMethodCode.add(getViewInitializer(viewBean));
+            if (!viewBean.convert.equals("include")) {
+                Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    initializeMethodCode.add(getViewInitializer(viewBean));
+                }
+            }
         }
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerBeans = projectDataManager.d(projectFileBean.getDrawerXmlName());
             for (ViewBean viewBean : drawerBeans) {
-                initializeMethodCode.add(getDrawerViewInitializer(viewBean));
+                if (!viewBean.convert.equals("include")) {
+                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                    if (!toNotAdd.contains("android:id")) {
+                        initializeMethodCode.add(getDrawerViewInitializer(viewBean));
+                    }
+                }
             }
         }
         ArrayList<ComponentBean> componentBeans = projectDataManager.e(projectFileBean.getJavaName());
@@ -942,11 +955,21 @@ public class Jx {
             lists.add(getListDeclarationAndAddImports(next2.first, next2.second));
         }
         for (ViewBean viewBean : projectDataManager.d(projectFileBean.getXmlName())) {
-            views.add(getViewDeclarationAndAddImports(viewBean));
+            if (!viewBean.convert.equals("include")) {
+                Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    views.add(getViewDeclarationAndAddImports(viewBean));
+                }
+            }
         }
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             for (ViewBean viewBean : projectDataManager.d(projectFileBean.getDrawerXmlName())) {
-                views.add(getDrawerViewDeclarationAndAddImports(viewBean));
+                if (!viewBean.convert.equals("include")) {
+                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                    if (!toNotAdd.contains("android:id")) {
+                        views.add(getDrawerViewDeclarationAndAddImports(viewBean));
+                    }
+                }
             }
         }
         ArrayList<ComponentBean> componentBeans = projectDataManager.e(javaName);
