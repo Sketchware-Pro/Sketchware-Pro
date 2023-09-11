@@ -376,7 +376,7 @@ public class ComponentsHandler {
     }
 
     //√√√ give id and return type name
-    public static String var(int id) {
+    public static String getTypeName(int id) {
         if (id == 36) {
             return "#";
         }

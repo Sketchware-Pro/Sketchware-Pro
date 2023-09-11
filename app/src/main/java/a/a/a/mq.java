@@ -93,7 +93,7 @@ public class mq {
             case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "com.facebook.ads.AdView";
             case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
                     "com.facebook.ads.InterstitialAd";
-            default -> ComponentsHandler.var(componentId);
+            default -> ComponentsHandler.getTypeName(componentId);
         };
     }
 
