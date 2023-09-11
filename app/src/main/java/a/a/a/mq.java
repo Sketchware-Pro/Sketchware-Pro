@@ -760,7 +760,7 @@ public class mq {
             case "Context" -> "Activity";
             case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool", "ResInteger", "ResAttr", "ResXml", "Color" ->
                     "int";
-            default -> typeName;
+            default -> ComponentsHandler.getVarName(typeName);
         };
     }
 }
