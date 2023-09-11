@@ -72,6 +72,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import a.a.a.DB;
 import a.a.a.FB;
@@ -93,9 +94,11 @@ import a.a.a.aB;
 import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
+import a.a.a.jq;
 import a.a.a.kC;
 import a.a.a.mB;
 import a.a.a.oB;
+import a.a.a.Ox;
 import a.a.a.sq;
 import a.a.a.uq;
 import a.a.a.wB;
@@ -1498,7 +1501,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             String convert = viewBean.convert;
             String typeName = convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(convert);
             if (!convert.equals("include")) {
-                viewGroup.addView(d(typeName, viewBean.id));
+                Set<String> toNotAdd = new Ox(new jq(), M).readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    viewGroup.addView(d(typeName, viewBean.id));
+                }
             }
         }
         int childCount = viewGroup.getChildCount();
