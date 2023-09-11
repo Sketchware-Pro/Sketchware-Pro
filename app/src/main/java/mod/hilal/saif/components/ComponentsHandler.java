@@ -414,6 +414,38 @@ public class ComponentsHandler {
         return "";
     }
 
+    public static String getVarName(String componentTypeName) {
+        for (int i = 0; i < cachedCustomComponents.size(); i++) {
+            HashMap<String, Object> component = cachedCustomComponents.get(i);
+            if (component != null) {
+                Object typeName = component.get("typeName");
+
+                if (typeName instanceof String) {
+                    if (componentTypeName.equals(typeName)) {
+                        Object varName = component.get("varName");
+
+                        if (varName instanceof String componentVarName) {
+                            try {
+                                return componentVarName;
+                            } catch (NumberFormatException e) {
+                                SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                break;
+                            }
+                        } else {
+                            SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        }
+                    }
+                } else {
+                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                }
+            } else {
+                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+            }
+        }
+
+        return componentTypeName;
+    }
+
     /**
      * @param name The desired Custom Component's <code>typeName</code>
      * @return A Custom Component's <code>class</code>
