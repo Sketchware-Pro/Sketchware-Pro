@@ -38,7 +38,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
@@ -59,7 +59,7 @@
             android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/assets_manager_rename"
+            android:text="@string/myprojects_sign_apk_new_certificate_button_create"
             android:textSize="@dimen/text_size_button_material" />
     </LinearLayout>
 </LinearLayout>
