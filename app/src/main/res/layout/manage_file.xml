@@ -104,7 +104,7 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:translationY="100dp"
+        android:translationY="300dp"
         tools:translationY="0dp">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
