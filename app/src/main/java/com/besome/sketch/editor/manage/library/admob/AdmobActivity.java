@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -166,7 +168,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             LibrarySettingsImporter importer = new LibrarySettingsImporter(sc_id, iC::b);
             importer.addOnProjectSelectedListener(settings -> {
                 adMobSettings = settings;
-                stepPosition = 4;
+                stepPosition = 0;
+                String app_id;
+                if (!(settings == null || (app_id = settings.appId) == null || isEmpty(app_id))) {
+                    stepPosition = 4;
+                }
                 showStep(stepPosition);
             });
             importer.showDialog(this);
