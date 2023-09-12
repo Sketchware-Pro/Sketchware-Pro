@@ -31,6 +31,7 @@
         android:layout_marginHorizontal="2dp"
         android:layout_marginTop="10dp"
         app:checkedChip="@+id/chip_folder"
+        app:chipSpacingVertical="-5dp"
         app:selectionRequired="true"
         app:singleSelection="true">
 
@@ -38,25 +39,63 @@
             android:id="@+id/chip_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Folder" />
+            android:text="Folder"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Class" />
+            android:text="Class"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activity" />
+            android:text="Activity"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="File"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_java_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Java Class"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_java_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Java Activity"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_kotlin_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kotlin Class"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_kotlin_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kotlin Activity"
             android:visibility="gone"
             tools:visibility="visible" />
 

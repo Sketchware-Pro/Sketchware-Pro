@@ -2620,13 +2620,13 @@ Please check the URL again."</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
 
 
-    <!--  assets manager screen  -->
+    <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>
     <string name="assets_manager_add_new">Create new</string>
     <string name="assets_manager_add_file">Import file</string>
-    <string name="assets_manager_nofiles_title">No assets available</string>
-    <string name="assets_manager_nofiles_body">You don\'t have any assets here yet, try creating one.</string>
+    <string name="assets_manager_nofiles_title">No files here</string>
+    <string name="assets_manager_nofiles_body">You don\'t have any files here yet, try creating one.</string>
     <string name="assets_manager_rename">Rename</string>
 
 
