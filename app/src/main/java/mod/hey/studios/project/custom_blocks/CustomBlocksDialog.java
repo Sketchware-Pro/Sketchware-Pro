@@ -2,16 +2,17 @@ package mod.hey.studios.project.custom_blocks;
 
 import static mod.SketchwareUtil.getDip;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.BlockBean;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ViewUsedCustomBlocksBinding;
 
 import java.util.ArrayList;
 
@@ -27,75 +28,48 @@ public class CustomBlocksDialog {
      //16.12.2020 note: i implemented it.
      */
 
-    public static void show(Context c, String sc_id) {
-        ScrollView background = new ScrollView(c);
-
-        background.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        background.setPadding(
-                (int) getDip(24),
-                (int) getDip(8),
-                (int) getDip(24),
-                0
-        );
-
-        LinearLayout blockContainer = new LinearLayout(c);
-        blockContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        blockContainer.setOrientation(LinearLayout.VERTICAL);
-
-        background.addView(blockContainer);
+    public static void show(Activity context, String sc_id) {
+        ViewUsedCustomBlocksBinding dialogBinding = ViewUsedCustomBlocksBinding.inflate(context.getLayoutInflater());
+        var blockContainer = dialogBinding.customBlocksContainer;
+        var subtitle = "You haven't used any custom blocks in this project.";
 
         ArrayList<BlockBean> list = new CustomBlocksManager(sc_id).getUsedBlocks();
 
-        if (list.isEmpty()) {
-            TextView noteNone = new TextView(c);
-            noteNone.setText("None");
-            noteNone.setTextColor(0xff000000);
-            noteNone.setTextSize(14f);
-
-            blockContainer.addView(noteNone);
-
-        } else {
+        if (!list.isEmpty()) {
+            subtitle = "You have used " + list.size() + " custom block(s) in this project.";
             for (int i = 0; i < list.size(); i++) {
                 BlockBean block = list.get(i);
 
-                blockContainer.addView(createBlockInfo(c, block, sc_id));
-                blockContainer.addView(createBlock(c, block));
+                dialogBinding.customBlocksContainer.addView(createBlockInfo(context, block, sc_id));
+                blockContainer.addView(createBlock(context, block));
 
                 if (i != (list.size() - 1)) {
-                    blockContainer.addView(createSpace(c));
+                    blockContainer.addView(createSpace(context));
                 }
             }
         }
 
-        new AlertDialog.Builder(c)
+        var dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle("Used Custom Blocks")
-                .setPositiveButton(R.string.common_word_close, null)
-                .setView(background)
-                .show();
+                .setMessage(subtitle)
+                .setPositiveButton(R.string.common_word_close, null);
+
+        if (!list.isEmpty())
+            dialog.setView(dialogBinding.getRoot());
+
+        dialog.show();
     }
 
     // Helpers
 
     private static LinearLayout createSpace(Context c) {
         LinearLayout lin = new LinearLayout(c);
-        LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) getDip(1));
+        LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getDip(1));
 
-        prm.setMargins(
-                0,
-                (int) getDip(20),
-                0,
-                (int) getDip(10)
-        );
+        prm.setMargins(0, (int) getDip(10), 0, (int) getDip(0));
 
         lin.setLayoutParams(prm);
-        lin.setBackgroundColor(0xff9e9e9e);
+        lin.setBackgroundColor(Color.parseColor("#9E9E9E"));
         lin.setOrientation(LinearLayout.VERTICAL);
 
         return lin;
