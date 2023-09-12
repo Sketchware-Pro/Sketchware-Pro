@@ -196,6 +196,7 @@ public class ManageJavaActivity extends AppCompatActivity {
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
                 .setTitle("Create new")
+                .setMessage("File extension will be added automatically based on the file type you select")
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Create", null)
                 .create();
