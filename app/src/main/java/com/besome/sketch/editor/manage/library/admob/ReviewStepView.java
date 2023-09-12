@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -53,6 +55,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
         rewardedAdName = findViewById(R.id.tv_reward_name);
         rewardedAdId = findViewById(R.id.tv_reward_id);
         ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_title_app_id)).setText(Helper.getResString(R.string.design_library_admob_title_app_id));
         ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
 
         TextView bannerName = findViewById(R.id.tv_title_banner_name);
@@ -80,6 +83,12 @@ public class ReviewStepView extends LinearLayout implements Uu {
             projectLibraryBean.useYn = "Y";
         } else {
             projectLibraryBean.useYn = "N";
+        }
+    }
+
+    private void setAppId(String appId) {
+        if (!isEmpty(appId)) {
+            ((TextView) findViewById(R.id.tv_app_id)).setText(appId);
         }
     }
 
@@ -135,6 +144,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
         adMobToggle.setChecked(true);
+        setAppId(projectLibraryBean.appId);
         setBannerDetails(projectLibraryBean.reserved1);
         setInterstitialDetails(projectLibraryBean.reserved2);
         setRewardedAdDetails(projectLibraryBean.reserved3);

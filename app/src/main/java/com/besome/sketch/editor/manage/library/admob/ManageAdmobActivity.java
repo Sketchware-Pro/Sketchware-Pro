@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -54,6 +56,12 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
         configure();
+    }
+
+    private void setAppId(String appId) {
+        if (!isEmpty(appId)) {
+            ((TextView) findViewById(R.id.tv_app_id)).setText(appId);
+        }
     }
 
     private void setBannerAdUnit(String adId) {
@@ -201,6 +209,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         A = new DB(getApplicationContext(), "P1");
         admobLibraryBean = getIntent().getParcelableExtra("admob");
         ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_title_app_id)).setText(Helper.getResString(R.string.design_library_admob_title_app_id));
         ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
         ((TextView) findViewById(R.id.tv_title_banner_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_banner_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
@@ -305,6 +314,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         setBannerAdUnit(admobLibraryBean.reserved1);
         setInterAdUnit(admobLibraryBean.reserved2);
         setRewardAdUnit(admobLibraryBean.reserved3);
+        setAppId(admobLibraryBean.appId);
         testDeviceList = admobLibraryBean.testDevices;
         testDeviceAdapter.notifyDataSetChanged();
     }
