@@ -73,7 +73,6 @@ public class ManageAssetsActivity extends AppCompatActivity {
         refresh();
     }
 
-    @SuppressLint("SetTextI18n")
     private void setupUI() {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         binding.showOptionsButton.setOnClickListener(view -> hideShowOptionsButton(false));
@@ -156,8 +155,7 @@ public class ManageAssetsActivity extends AppCompatActivity {
         });
 
         dialogBinding.chipFile.setVisibility(View.VISIBLE);
-        dialogBinding.chipClass.setVisibility(View.GONE);
-        dialogBinding.chipActivity.setVisibility(View.GONE);
+        dialogBinding.chipFolder.setVisibility(View.VISIBLE);
 
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
