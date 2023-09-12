@@ -1,6 +1,7 @@
 package mod.hey.studios.activity.managers.assets;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -80,7 +83,7 @@ public class ManageAssetsActivity extends AppCompatActivity {
             hideShowOptionsButton(true);
         });
         binding.uploadNewButton.setOnClickListener(v -> {
-            showLoadDialog();
+            showImportDialog();
             hideShowOptionsButton(true);
         });
 
@@ -116,40 +119,45 @@ public class ManageAssetsActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void showCreateDialog() {
         DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+        var inputText = dialogBinding.inputText;
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
+                .setTitle("Create new")
+                .setMessage("If you're creating a file, make sure to add an extension.")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Create", null)
                 .create();
 
-        var inputText = dialogBinding.inputText;
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                String editable = inputText.getText().toString().trim();
+
+                if (editable.isEmpty()) {
+                    SketchwareUtil.toastError("Invalid name");
+                    return;
+                }
+
+                int checkedChipId = dialogBinding.chipGroupTypes.getCheckedChipId();
+                if (checkedChipId == R.id.chip_file) {
+                    FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
+                } else if (checkedChipId == R.id.chip_folder) {
+                    FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
+                } else {
+                    SketchwareUtil.toast("Select a file type");
+                    return;
+                }
+
+                refresh();
+                SketchwareUtil.toast("File was created successfully");
+                dialogInterface.dismiss();
+            });
+        });
 
         dialogBinding.chipFile.setVisibility(View.VISIBLE);
         dialogBinding.chipClass.setVisibility(View.GONE);
         dialogBinding.chipActivity.setVisibility(View.GONE);
-
-        dialogBinding.negativeButton.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        dialogBinding.positiveButton.setOnClickListener(v -> {
-            String editable = inputText.getText().toString().trim();
-
-            if (editable.isEmpty()) {
-                SketchwareUtil.toastError("Invalid name");
-                return;
-            }
-
-            int checkedChipId = dialogBinding.chipGroupTypes.getCheckedChipId();
-            if (checkedChipId == R.id.chip_file) {
-                FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
-            } else if (checkedChipId == R.id.chip_folder) {
-                FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
-            } else {
-                SketchwareUtil.toast("Select a file type");
-                return;
-            }
-
-            refresh();
-            SketchwareUtil.toast("File was created successfully");
-            dialog.dismiss();
-        });
 
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
@@ -158,7 +166,7 @@ public class ManageAssetsActivity extends AppCompatActivity {
         inputText.requestFocus();
     }
 
-    private void showLoadDialog() {
+    private void showImportDialog() {
         DialogProperties properties = new DialogProperties();
 
         properties.selection_mode = DialogConfigs.MULTI_MODE;
@@ -191,21 +199,20 @@ public class ManageAssetsActivity extends AppCompatActivity {
         var inputText = dialogBinding.inputText;
 
         var dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Rename " + assetsAdapter.getFileName(position))
                 .setView(dialogBinding.getRoot())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Rename", (dialogInterface, i) -> {
+                    if (!inputText.getText().toString().isEmpty()) {
+                        FileUtil.renameFile(assetsAdapter.getItem(position), new File(current_path, inputText.getText().toString()).getAbsolutePath());
+                        refresh();
+                        SketchwareUtil.toast("Renamed successfully");
+                    }
+                    dialogInterface.dismiss();
+                })
                 .create();
 
         inputText.setText(assetsAdapter.getFileName(position));
-
-        dialogBinding.negativeButton.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        dialogBinding.positiveButton.setOnClickListener(v -> {
-            if (!inputText.getText().toString().isEmpty()) {
-                FileUtil.renameFile(assetsAdapter.getItem(position), new File(current_path, inputText.getText().toString()).getAbsolutePath());
-                refresh();
-                SketchwareUtil.toast("Renamed successfully");
-            }
-
-            dialog.dismiss();
-        });
 
         dialog.show();
 

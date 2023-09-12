@@ -4,33 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/dialog_create_new_file_layoutTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="Create a new file"
-        android:textColor="?colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="If you're creating a file, make sure to add the extension."
-        android:textSize="14sp" />
+    android:paddingHorizontal="20dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="10dp"
         android:hint="Enter a name"
         app:hintEnabled="true">
 
@@ -48,9 +28,9 @@
         android:id="@+id/chipGroupTypes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="2dp"
         android:layout_marginTop="10dp"
         app:checkedChip="@+id/chip_folder"
-        android:layout_marginHorizontal="2dp"
         app:selectionRequired="true"
         app:singleSelection="true">
 
@@ -81,32 +61,4 @@
             tools:visibility="visible" />
 
     </com.google.android.material.chip.ChipGroup>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/negativeButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material"
-            app:backgroundTint="?attr/colorSecondary" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/positiveButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/myprojects_sign_apk_new_certificate_button_create"
-            android:textSize="@dimen/text_size_button_material" />
-    </LinearLayout>
 </LinearLayout>
