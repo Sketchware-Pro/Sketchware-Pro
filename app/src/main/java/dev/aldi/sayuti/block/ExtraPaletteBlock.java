@@ -851,7 +851,6 @@ public class ExtraPaletteBlock {
 
                     if (adMobUsed) {
                         logicEditor.a(" ", "bannerAdViewLoadAd");
-                        logicEditor.a(" ", "setAdmobAppId");
                     }
 
                     if (mapViewUsed) {
