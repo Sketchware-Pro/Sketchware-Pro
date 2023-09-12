@@ -95,10 +95,12 @@ public class ManageAssetsActivity extends AppCompatActivity {
     private void hideShowOptionsButton(boolean isHide) {
         binding.optionsLayout.animate()
                 .translationY(isHide ? 300 : 0)
+                .alpha(isHide ? 0 : 1)
                 .setInterpolator(new OvershootInterpolator());
 
         binding.showOptionsButton.animate()
                 .translationY(isHide ? 0 : 300)
+                .alpha(isHide ? 1 : 0)
                 .setInterpolator(new OvershootInterpolator());
     }
 
