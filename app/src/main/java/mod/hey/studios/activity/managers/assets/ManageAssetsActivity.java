@@ -81,7 +81,7 @@ public class ManageAssetsActivity extends AppCompatActivity {
             showCreateDialog();
             hideShowOptionsButton(true);
         });
-        binding.uploadNewButton.setOnClickListener(v -> {
+        binding.importNewButton.setOnClickListener(v -> {
             showImportDialog();
             hideShowOptionsButton(true);
         });
