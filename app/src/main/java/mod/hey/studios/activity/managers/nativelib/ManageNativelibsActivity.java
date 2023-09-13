@@ -88,7 +88,7 @@ public class ManageNativelibsActivity extends AppCompatActivity implements View.
         ArrayList<String> nativelibsFile = frc.getNativelibsFile(str);
         Helper.sortPaths(nativelibsFile);
         CustomAdapter adapter = new CustomAdapter(nativelibsFile);
-        binding.assetsListRecyclerView.setAdapter(adapter);
+        binding.filesListRecyclerView.setAdapter(adapter);
 
         binding.noContentLayout.setVisibility(nativelibsFile.isEmpty() ? View.VISIBLE : View.GONE);
     }

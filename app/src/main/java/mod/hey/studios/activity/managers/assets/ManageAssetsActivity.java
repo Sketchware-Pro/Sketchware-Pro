@@ -246,7 +246,7 @@ public class ManageAssetsActivity extends AppCompatActivity {
         Helper.sortPaths(currentTree);
 
         assetsAdapter = new AssetsAdapter();
-        binding.assetsListRecyclerView.setAdapter(assetsAdapter);
+        binding.filesListRecyclerView.setAdapter(assetsAdapter);
         if (currentTree.size() == 0) {
             binding.noContentLayout.setVisibility(View.VISIBLE);
         } else {

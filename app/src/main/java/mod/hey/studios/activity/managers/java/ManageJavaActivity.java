@@ -403,7 +403,7 @@ public class ManageJavaActivity extends AppCompatActivity {
 
         filesAdapter = new FilesAdapter(currentTree);
 
-        binding.assetsListRecyclerView.setAdapter(filesAdapter);
+        binding.filesListRecyclerView.setAdapter(filesAdapter);
 
         binding.noContentLayout.setVisibility(currentTree.size() == 0 ? View.VISIBLE : View.GONE);
     }
