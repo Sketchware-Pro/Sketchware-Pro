@@ -1,26 +1,34 @@
 package mod.hey.studios.activity.managers.nativelib;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.elevation.SurfaceColors;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
+import com.sketchware.remod.databinding.DialogInputLayoutBinding;
+import com.sketchware.remod.databinding.ManageFileBinding;
+import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,29 +39,43 @@ import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class ManageNativelibsActivity extends Activity implements View.OnClickListener {
-
+public class ManageNativelibsActivity extends AppCompatActivity implements View.OnClickListener {
     private FilePickerDialog filePicker;
-    private FloatingActionButton fab;
     private FilePathUtil fpu;
     private FileResConfig frc;
-    private GridView gridView;
     private String numProj;
     private String nativeLibrariesPath;
-    private ImageView loadFile;
+
+    private ManageFileBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
+        super.onCreate(savedInstanceState);
+        binding = ManageFileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        if (getIntent().hasExtra("sc_id")) numProj = getIntent().getStringExtra("sc_id");
+
+        frc = new FileResConfig(numProj);
+        fpu = new FilePathUtil();
+
+        setupDialog();
+        checkDir();
+        setupUI();
+    }
+
 
     private void checkDir() {
         if (FileUtil.isExistFile(fpu.getPathNativelibs(numProj))) {
             nativeLibrariesPath = fpu.getPathNativelibs(numProj);
             handleAdapter(nativeLibrariesPath);
             handleFab();
-
             return;
         }
-
         FileUtil.makeDir(fpu.getPathNativelibs(numProj));
-
         FileUtil.makeDir(fpu.getPathNativelibs(numProj) + "/armeabi");
         FileUtil.makeDir(fpu.getPathNativelibs(numProj) + "/armeabi-v7a");
         FileUtil.makeDir(fpu.getPathNativelibs(numProj) + "/arm64-v8a");
@@ -66,7 +88,9 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         ArrayList<String> nativelibsFile = frc.getNativelibsFile(str);
         Helper.sortPaths(nativelibsFile);
         CustomAdapter adapter = new CustomAdapter(nativelibsFile);
-        gridView.setAdapter(adapter);
+        binding.assetsListRecyclerView.setAdapter(adapter);
+
+        binding.noContentLayout.setVisibility(nativelibsFile.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private boolean isInMainDirectory() {
@@ -75,147 +99,117 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
 
     private void handleFab() {
         if (isInMainDirectory()) {
-            if (loadFile != null) {
-                loadFile.setVisibility(View.GONE);
-            }
-
-            fab.setVisibility(View.VISIBLE);
+            binding.importNewButton.setVisibility(View.GONE);
+            binding.createNewButton.setVisibility(View.VISIBLE);
         } else {
-            if (loadFile != null) {
-                loadFile.setVisibility(View.VISIBLE);
-            }
-            fab.setVisibility(View.GONE);
+            binding.importNewButton.setVisibility(View.VISIBLE);
+            binding.createNewButton.setVisibility(View.GONE);
         }
     }
 
-    private void initToolbar() {
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Native library Manager");
+    private void setupUI() {
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.topAppBar.setTitle("Native Library Manager");
 
-        loadFile = findViewById(R.id.ig_toolbar_load_file);
-        Helper.applyRippleToToolbarView(loadFile);
-        loadFile.setOnClickListener(v -> filePicker.show());
+        binding.showOptionsButton.setOnClickListener(view -> hideShowOptionsButton(false));
+        binding.closeButton.setOnClickListener(view -> hideShowOptionsButton(true));
+        binding.createNewButton.setOnClickListener(v -> {
+            createNewDialog();
+            hideShowOptionsButton(true);
+        });
+        binding.importNewButton.setOnClickListener(v -> {
+            filePicker.show();
+            hideShowOptionsButton(true);
+        });
+
+        binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        ViewCompat.setOnApplyWindowInsetsListener(binding.createNewButton,
+                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+    }
+
+    private void hideShowOptionsButton(boolean isHide) {
+        binding.optionsLayout.animate()
+                .translationY(isHide ? 300 : 0)
+                .alpha(isHide ? 0 : 1)
+                .setInterpolator(new OvershootInterpolator());
+
+        binding.showOptionsButton.animate()
+                .translationY(isHide ? 0 : 300)
+                .alpha(isHide ? 1 : 0)
+                .setInterpolator(new OvershootInterpolator());
     }
 
     @Override
     public void onBackPressed() {
         nativeLibrariesPath = nativeLibrariesPath.substring(0, nativeLibrariesPath.lastIndexOf("/"));
-
         if (nativeLibrariesPath.contains("native_libs")) {
             handleAdapter(nativeLibrariesPath);
             handleFab();
         } else {
-            finish();
+            super.onBackPressed();
         }
     }
 
     @Override
     public void onClick(View v) {
-        if (v == fab) {
+        if (v == binding.showOptionsButton) {
             createNewDialog();
         }
     }
 
     private void createNewDialog() {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View root = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+        var inputText = dialogBinding.inputText;
+        var textInputLayout = dialogBinding.textInputLayout;
 
-        final TextView title = root.findViewById(R.id.dialog_create_new_file_layoutTitle);
-        final RadioGroup fileType = root.findViewById(R.id.dialog_radio_filetype);
-        final TextInputLayout filenameLayout;
-        final EditText filename = root.findViewById(R.id.dialog_edittext_name);
-        filenameLayout = (TextInputLayout) filename.getParent().getParent();
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Create a new folder")
+                .setMessage("Enter the name of the new folder")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Create", null)
+                .create();
 
-        title.setText("Create a new folder");
-        fileType.setVisibility(View.GONE);
-        filenameLayout.setHint("Folder name");
+        dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+        textInputLayout.setHint("Folder name");
 
-        root.findViewById(R.id.dialog_text_cancel).setOnClickListener(Helper.getDialogDismissListener(dialog));
-        root.findViewById(R.id.dialog_text_save).setOnClickListener(save -> {
-            String name = filename.getText().toString();
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                String name = inputText.getText().toString();
 
-            if (name.isEmpty()) {
-                filenameLayout.setError("Invalid folder name");
-                return;
-            }
-            filenameLayout.setError(null);
+                if (name.isEmpty()) {
+                    textInputLayout.setError("Invalid folder name");
+                    return;
+                }
+                textInputLayout.setError(null);
 
-            String path = fpu.getPathNativelibs(numProj) + "/" + name;
+                String path = fpu.getPathNativelibs(numProj) + "/" + name;
 
-            if (FileUtil.isExistFile(path)) {
-                filenameLayout.setError("Folder already exists");
-                return;
-            }
-            filenameLayout.setError(null);
+                if (FileUtil.isExistFile(path)) {
+                    textInputLayout.setError("Folder already exists");
+                    return;
+                }
+                textInputLayout.setError(null);
 
-            FileUtil.makeDir(path);
-            handleAdapter(nativeLibrariesPath);
-            SketchwareUtil.toast("Created folder successfully");
-
-            dialog.dismiss();
-        });
-
-        dialog.setView(root);
-        dialog.show();
-
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        filename.requestFocus();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_file);
-
-        if (getIntent().hasExtra("sc_id")) {
-            numProj = getIntent().getStringExtra("sc_id");
-        }
-
-        gridView = findViewById(R.id.list_file);
-        gridView.setNumColumns(1);
-
-        fab = findViewById(R.id.fab_plus);
-
-        TextView tv = findViewById(R.id.text_info);
-        tv.setVisibility(View.GONE);
-
-        frc = new FileResConfig(numProj);
-        fpu = new FilePathUtil();
-
-        setupDialog();
-        checkDir();
-
-        fab.setOnClickListener(this);
-        gridView.setOnItemLongClickListener((parent, view, position, id) -> {
-            if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
-                PopupMenu menu = new PopupMenu(this, view);
-
-                menu.getMenu().add("Delete");
-                menu.setOnMenuItemClickListener(item -> {
-                    FileUtil.deleteFile(frc.listFileNativeLibs.get(position));
-                    handleAdapter(nativeLibrariesPath);
-                    SketchwareUtil.toast("Deleted");
-
-                    return true;
-                });
-
-                menu.show();
-            }
-            return true;
-        });
-
-        gridView.setOnItemClickListener((parent, view, position, id) -> {
-            if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
-                nativeLibrariesPath = frc.listFileNativeLibs.get(position);
+                FileUtil.makeDir(path);
                 handleAdapter(nativeLibrariesPath);
-                handleFab();
-            }
+                SketchwareUtil.toast("Created folder successfully");
+
+                dialog.dismiss();
+            });
+
+            dialog.setView(dialogBinding.getRoot());
+            dialog.show();
+
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            inputText.requestFocus();
         });
 
-        initToolbar();
+        dialog.show();
     }
+
 
     private void setupDialog() {
         File externalStorageDir = new File(FileUtil.getExternalStorageDir());
@@ -244,91 +238,72 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void showDialog(final String path) {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View root = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
+    private void showRenameDialog(final String path) {
+        DialogInputLayoutBinding dialogBinding = DialogInputLayoutBinding.inflate(getLayoutInflater());
+        var inputText = dialogBinding.inputText;
 
-        final TextInputLayout filenameLayout = root.findViewById(R.id.dialoginputlayoutLinearLayout2);
-        final EditText filename = root.findViewById(R.id.edittext_change_name);
-        final TextView cancel = root.findViewById(R.id.text_cancel);
-        final TextView save = root.findViewById(R.id.text_save);
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Rename")
+                .setView(dialogBinding.getRoot())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Rename", (dialogInterface, i) -> {
+                    String newName = inputText.getText().toString();
+                    if (!newName.isEmpty()) {
+                        if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf(File.separator)) + File.separator + newName)) {
+                            SketchwareUtil.toast("Renamed successfully");
+                        } else {
+                            SketchwareUtil.toastError("Renaming failed");
+                        }
+                        handleAdapter(nativeLibrariesPath);
+                        handleFab();
+                    } else {
+                        SketchwareUtil.toast("Nothing changed");
+                    }
+                    dialogInterface.dismiss();
+                })
+                .create();
 
         try {
-            filename.setText(path.substring(path.lastIndexOf("/") + 1));
+            inputText.setText(path.substring(path.lastIndexOf("/") + 1));
         } catch (Exception ignored) {
         }
-        filenameLayout.setHint("New filename");
 
-        cancel.setOnClickListener
-                (Helper.getDialogDismissListener(dialog));
-        save.setOnClickListener(saveButton -> {
-            String newName = filename.getText().toString();
-            if (!newName.isEmpty()) {
-                if (FileUtil.renameFile(path,
-                        path.substring(0, path.lastIndexOf(File.separator)) + File.separator + newName)) {
-                    SketchwareUtil.toast("Renamed successfully");
-                } else {
-                    SketchwareUtil.toastError("Renaming failed");
-                }
-
-                handleAdapter(nativeLibrariesPath);
-                handleFab();
-                dialog.dismiss();
-            } else {
-                filenameLayout.setError("Enter a name");
-            }
-        });
-
-        dialog.setView(root);
+        dialog.setView(dialogBinding.getRoot());
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        filename.requestFocus();
+        inputText.requestFocus();
     }
 
-    private class CustomAdapter extends BaseAdapter {
-
+    private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
         private final ArrayList<String> data;
 
         public CustomAdapter(ArrayList<String> arrayList) {
             data = arrayList;
         }
 
+        @NonNull
         @Override
-        public String getItem(int position) {
-            return data.get(position);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ManageJavaItemHsBinding binding = ManageJavaItemHsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
-        public int getCount() {
-            return data.size();
-        }
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            String path = data.get(position);
+            var binding = holder.binding;
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, parent, false);
-            }
-
-            TextView name = convertView.findViewById(R.id.title);
-            ImageView icon = convertView.findViewById(R.id.icon);
-            ImageView more = convertView.findViewById(R.id.more);
-
-            if (FileUtil.isDirectory(getItem(position))) {
-                more.setVisibility(View.GONE);
+            if (FileUtil.isDirectory(path)) {
+                binding.more.setVisibility(View.GONE);
             } else {
-                more.setVisibility(View.VISIBLE);
+                binding.more.setVisibility(View.VISIBLE);
             }
 
-            name.setText(Uri.parse(getItem(position)).getLastPathSegment());
-            icon.setImageResource(getImageRes(position));
+            binding.title.setText(Uri.parse(path).getLastPathSegment());
+            binding.icon.setImageResource(FileUtil.isDirectory(path) ? R.drawable.ic_folder_24 : R.drawable.ic_file_24);
 
-            more.setOnClickListener(v -> {
+            binding.more.setOnClickListener(v -> {
                 PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, v);
                 menu.inflate(R.menu.popup_menu_double);
 
@@ -339,30 +314,58 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
                 menu.setOnMenuItemClickListener(item -> {
                     String title = item.getTitle().toString();
                     switch (title) {
-                        case "Delete":
+                        case "Delete" -> {
                             FileUtil.deleteFile(frc.listFileNativeLibs.get(position));
                             handleAdapter(nativeLibrariesPath);
-                            break;
-
-                        case "Rename":
-                            showDialog(frc.listFileNativeLibs.get(position));
-                            break;
-
-                        default:
+                        }
+                        case "Rename" -> showRenameDialog(frc.listFileNativeLibs.get(position));
+                        default -> {
                             return false;
+                        }
                     }
 
                     return true;
                 });
-
                 menu.show();
             });
 
-            return convertView;
+            binding.getRoot().setOnLongClickListener((View.OnLongClickListener) view -> {
+                if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
+                    PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, view);
+                    menu.getMenu().add("Delete");
+                    menu.setOnMenuItemClickListener(item -> {
+                        FileUtil.deleteFile(frc.listFileNativeLibs.get(position));
+                        handleAdapter(nativeLibrariesPath);
+                        SketchwareUtil.toast("Deleted");
+
+                        return true;
+                    });
+                    menu.show();
+                }
+                return true;
+            });
+
+            binding.getRoot().setOnClickListener(v -> {
+                if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
+                    nativeLibrariesPath = frc.listFileNativeLibs.get(position);
+                    handleAdapter(nativeLibrariesPath);
+                    handleFab();
+                }
+            });
         }
 
-        private int getImageRes(int position) {
-            return FileUtil.isDirectory(getItem(position)) ? R.drawable.ic_folder_48dp : R.drawable.file_96;
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            private final ManageJavaItemHsBinding binding;
+
+            public ViewHolder(ManageJavaItemHsBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
         }
     }
 }

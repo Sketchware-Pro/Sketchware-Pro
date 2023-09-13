@@ -103,6 +103,7 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="10dp"
         android:alpha="0"
+        android:animateLayoutChanges="true"
         android:gravity="center"
         android:orientation="horizontal"
         android:translationY="200dp"
@@ -128,7 +129,7 @@
             android:src="@drawable/close_gray_48dp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/uploadNewButton"
+            android:id="@+id/importNewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
