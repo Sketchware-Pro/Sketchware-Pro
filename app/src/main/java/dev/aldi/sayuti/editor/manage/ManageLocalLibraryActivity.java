@@ -132,10 +132,12 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                 resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
                     @Override
                     public void invalidPackaging(@NonNull String dep) {
-                        handler.post(new SetTextRunnable("Invalid packaging for dependency \"" + dep + "\""));
-                        downloadButton.setText("Download");
-                        downloadButton.setEnabled(true);
-                        dependencyInput.setEnabled(true);
+                        handler.post(() -> {
+                            new SetTextRunnable("Invalid packaging for dependency \"" + dep + "\"");
+                            downloadButton.setText("Download");
+                            downloadButton.setEnabled(true);
+                            dependencyInput.setEnabled(true);
+                        });
                     }
 
                     @Override
