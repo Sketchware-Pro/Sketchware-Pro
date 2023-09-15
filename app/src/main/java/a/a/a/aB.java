@@ -2,6 +2,8 @@ package a.a.a;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 
+import com.google.android.material.button.MaterialButton;
 import com.sketchware.remod.R;
 
 /**
@@ -89,7 +92,9 @@ public class aB extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawableResource(R.drawable.custom_dialog_inset_white);
+
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
         {
             LayoutParams attributes = getWindow().getAttributes();
@@ -104,13 +109,13 @@ public class aB extends Dialog {
         FrameLayout dialogCustomViewContainer = findViewById(R.id.custom_view);
 
         dialogButtonsContainer = findViewById(R.id.layout_button);
-        TextView dialogDefault = findViewById(R.id.common_dialog_default_button);
+        MaterialButton dialogDefault = findViewById(R.id.common_dialog_default_button);
         dialogDefault.setText(dialogDefaultText);
         dialogDefault.setOnClickListener(dialogDefaultListener);
-        TextView dialogNo = findViewById(R.id.dialog_btn_no);
+        MaterialButton dialogNo = findViewById(R.id.dialog_btn_no);
         dialogNo.setText(dialogNoText);
         dialogNo.setOnClickListener(dialogNoListener);
-        TextView dialogYes = findViewById(R.id.dialog_btn_yes);
+        MaterialButton dialogYes = findViewById(R.id.dialog_btn_yes);
         dialogYes.setText(dialogYesText);
         dialogYes.setOnClickListener(dialogYesListener);
 
