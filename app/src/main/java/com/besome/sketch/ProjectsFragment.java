@@ -219,6 +219,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private void showProjectSortingDialog() {
         SketchDialog dialog = new SketchDialog(requireActivity());
         dialog.setTitle("Sort options");
+        dialog.setIcon(R.drawable.ic_sort_24);
         View root = wB.a(requireActivity(), R.layout.sort_project_dialog);
         RadioButton sortByName = root.findViewById(R.id.sortByName);
         RadioButton sortByID = root.findViewById(R.id.sortByID);

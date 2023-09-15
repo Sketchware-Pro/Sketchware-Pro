@@ -39,7 +39,6 @@
         android:gravity="center"
         android:text="Dismiss"
         android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:textColor="?colorPrimary"
         app:backgroundTint="?android:colorBackground"
         app:rippleColor="?colorControlHighlight" />

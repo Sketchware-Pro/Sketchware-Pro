@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="20dp"
     app:cardBackgroundColor="?colorSurfaceContainerHigh"
-    app:cardCornerRadius="?dialogCornerRadius"
+    app:cardCornerRadius="28dp"
     app:cardElevation="10dp"
     app:strokeWidth="0dp">
 
@@ -36,7 +36,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
-                    app:tint="?colorPrimary"
+                    app:tint="?colorSecondary"
                     tools:src="@drawable/ic_tune_24" />
 
                 <TextView

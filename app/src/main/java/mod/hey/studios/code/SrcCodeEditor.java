@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 
 import org.w3c.dom.Document;
@@ -228,7 +229,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         if (beforeContent.equals(editor.getText().toString())) {
             super.onBackPressed();
         } else {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle("Warning")
                     .setMessage("You have unsaved changes. Are you sure you want to exit?")
                     .setPositiveButton(R.string.common_word_exit, (dialog, which) -> finish())
