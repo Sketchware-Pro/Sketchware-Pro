@@ -244,13 +244,13 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.clear();
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo")
-                .setIcon(getDrawable(R.drawable.ic_undo_white_48dp))
+                .setIcon(getDrawable(R.drawable.ic_undo_24))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo")
-                .setIcon(getDrawable(R.drawable.ic_redo_white_48dp))
+                .setIcon(getDrawable(R.drawable.ic_redo_24))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save")
-                .setIcon(getDrawable(R.drawable.save_white_48))
+                .setIcon(getDrawable(R.drawable.save_white_24))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");
