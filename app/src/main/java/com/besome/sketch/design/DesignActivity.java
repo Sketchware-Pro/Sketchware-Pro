@@ -573,7 +573,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
         dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
-        dialog.a(R.drawable.exit_96);
+        dialog.a(R.drawable.ic_exit_24);
         dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
         dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), v -> {
             if (!mB.a()) {
@@ -620,7 +620,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
-        dialog.a(R.drawable.data_backup_96);
+        dialog.a(R.drawable.ic_history_24);
         dialog.b(Helper.getResString(R.string.design_restore_data_title));
         dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
         dialog.b(Helper.getResString(R.string.common_word_restore), v -> {
