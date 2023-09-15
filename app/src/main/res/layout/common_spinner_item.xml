@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,9 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/imgv_selected"
             android:layout_toLeftOf="@id/imgv_selected"
-            android:background="#00000000"
+            android:layout_marginHorizontal="8dp"
+            tools:text="TextView"
             android:padding="4dp"
-            android:textColor="#ff535353"
             android:textSize="@dimen/text_size_body_small" />
 
         <ImageView
@@ -25,10 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            tools:visibility="visible"
             android:layout_centerVertical="true"
             android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_done_grey600_18dp"
             android:visibility="gone" />

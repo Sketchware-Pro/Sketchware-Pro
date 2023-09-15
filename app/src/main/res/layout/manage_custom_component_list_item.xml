@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="72dp"
             android:layout_marginTop="12dp"
-            android:textColor="#ff404040"
             android:textSize="14sp"
             tools:text="Firebase DB" />
 
