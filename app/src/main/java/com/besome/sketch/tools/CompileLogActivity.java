@@ -1,10 +1,6 @@
 package com.besome.sketch.tools;
 
-import static mod.SketchwareUtil.dpToPx;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -12,55 +8,58 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.elevation.SurfaceColors;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.CompileLogBinding;
 
 import mod.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
 import mod.jbk.diagnostic.CompileErrorSaver;
+import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class CompileLogActivity extends Activity {
+public class CompileLogActivity extends AppCompatActivity {
 
     private static final String PREFERENCE_WRAPPED_TEXT = "wrapped_text";
     private static final String PREFERENCE_USE_MONOSPACED_FONT = "use_monospaced_font";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
-    private TextView tv_compile_log;
-    private HorizontalScrollView err_hScroll;
-    private ScrollView err_vScroll;
     private CompileErrorSaver compileErrorSaver;
     private SharedPreferences logViewerPreferences;
+
+    private CompileLogBinding binding;
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.compile_log);
+        binding = CompileLogBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.optionsLayout,
+                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
 
         logViewerPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        View rootLayout = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        TextView title = findViewById(R.id.tx_toolbar_title);
-        ImageView menu = findViewById(R.id.ig_toolbar_load_file);
-        tv_compile_log = findViewById(R.id.tv_compile_log);
-        err_hScroll = rootLayout.findViewWithTag("err_hScroll");
-        err_vScroll = rootLayout.findViewWithTag("err_vScroll");
-
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
-            title.setText("Last compile log");
+            binding.topAppBar.setTitle("Last compile log");
         } else {
-            title.setText("Compile log");
+            binding.topAppBar.setTitle("Compile log");
         }
 
         String sc_id = getIntent().getStringExtra("sc_id");
@@ -72,21 +71,7 @@ public class CompileLogActivity extends Activity {
         compileErrorSaver = new CompileErrorSaver(sc_id);
 
         if (compileErrorSaver.logFileExists()) {
-            ImageView delete = new ImageView(this);
-            delete.setLayoutParams(new LinearLayout.LayoutParams(
-                    dpToPx(40),
-                    dpToPx(40)));
-            delete.setPadding(
-                    dpToPx(9),
-                    dpToPx(9),
-                    dpToPx(9),
-                    dpToPx(9)
-            );
-            delete.setImageResource(R.drawable.ic_delete_white_24dp);
-            delete.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            ((ViewGroup) menu.getParent()).addView(delete, ((ViewGroup) menu.getParent()).indexOfChild(menu));
-            Helper.applyRippleToToolbarView(delete);
-            delete.setOnClickListener(v -> {
+            binding.clearButton.setOnClickListener(v -> {
                 if (compileErrorSaver.logFileExists()) {
                     compileErrorSaver.deleteSavedLogs();
                     getIntent().removeExtra("error");
@@ -99,43 +84,35 @@ public class CompileLogActivity extends Activity {
             });
         }
 
-        menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
-        menu.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(menu);
-
         final String wrapTextLabel = "Wrap text";
         final String monospacedFontLabel = "Monospaced font";
         final String fontSizeLabel = "Font size";
 
-        PopupMenu options = new PopupMenu(this, menu);
+        PopupMenu options = new PopupMenu(this, binding.formatButton);
         options.getMenu().add(wrapTextLabel).setCheckable(true).setChecked(getWrappedTextPreference());
         options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(getMonospacedFontPreference());
         options.getMenu().add(fontSizeLabel);
 
         options.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getTitle().toString()) {
-                case wrapTextLabel:
+                case wrapTextLabel -> {
                     menuItem.setChecked(!menuItem.isChecked());
                     toggleWrapText(menuItem.isChecked());
-                    break;
-
-                case monospacedFontLabel:
+                }
+                case monospacedFontLabel -> {
                     menuItem.setChecked(!menuItem.isChecked());
                     toggleMonospacedText(menuItem.isChecked());
-                    break;
-
-                case fontSizeLabel:
-                    changeFontSizeDialog();
-                    break;
-
-                default:
+                }
+                case fontSizeLabel -> changeFontSizeDialog();
+                default -> {
                     return false;
+                }
             }
 
             return true;
         });
 
-        menu.setOnClickListener(v -> options.show());
+        binding.formatButton.setOnClickListener(v -> options.show());
 
         applyLogViewerPreferences();
 
@@ -144,18 +121,24 @@ public class CompileLogActivity extends Activity {
 
     private void setErrorText() {
         String error = getIntent().getStringExtra("error");
+        if (error == null) error = compileErrorSaver.getLogsFromFile();
         if (error == null) {
-            error = compileErrorSaver.getLogsFromFile();
+            binding.noContentLayout.setVisibility(View.VISIBLE);
+            binding.optionsLayout.setVisibility(View.GONE);
+            return;
         }
 
-        tv_compile_log.setText(CompileLogHelper.colorErrsAndWarnings(error));
-        tv_compile_log.setTextIsSelectable(true);
+        binding.optionsLayout.setVisibility(View.VISIBLE);
+        binding.noContentLayout.setVisibility(View.GONE);
+
+        binding.tvCompileLog.setText(CompileLogHelper.colorErrsAndWarnings(error));
+        binding.tvCompileLog.setTextIsSelectable(true);
     }
 
     private void applyLogViewerPreferences() {
         toggleWrapText(getWrappedTextPreference());
         toggleMonospacedText(getMonospacedFontPreference());
-        tv_compile_log.setTextSize(getFontSizePreference());
+        binding.tvCompileLog.setTextSize(getFontSizePreference());
     }
 
     private boolean getWrappedTextPreference() {
@@ -174,19 +157,19 @@ public class CompileLogActivity extends Activity {
         logViewerPreferences.edit().putBoolean(PREFERENCE_WRAPPED_TEXT, isChecked).apply();
 
         if (isChecked) {
-            err_vScroll.removeAllViews();
-            if (tv_compile_log.getParent() != null) {
-                ((ViewGroup) tv_compile_log.getParent()).removeView(tv_compile_log);
+            binding.errVScroll.removeAllViews();
+            if (binding.tvCompileLog.getParent() != null) {
+                ((ViewGroup) binding.tvCompileLog.getParent()).removeView(binding.tvCompileLog);
             }
-            err_vScroll.addView(tv_compile_log);
+            binding.errVScroll.addView(binding.tvCompileLog);
         } else {
-            err_vScroll.removeAllViews();
-            if (tv_compile_log.getParent() != null) {
-                ((ViewGroup) tv_compile_log.getParent()).removeView(tv_compile_log);
+            binding.errVScroll.removeAllViews();
+            if (binding.tvCompileLog.getParent() != null) {
+                ((ViewGroup) binding.tvCompileLog.getParent()).removeView(binding.tvCompileLog);
             }
-            err_hScroll.removeAllViews();
-            err_hScroll.addView(tv_compile_log);
-            err_vScroll.addView(err_hScroll);
+            binding.errHScroll.removeAllViews();
+            binding.errHScroll.addView(binding.tvCompileLog);
+            binding.errVScroll.addView(binding.errHScroll);
         }
     }
 
@@ -194,9 +177,9 @@ public class CompileLogActivity extends Activity {
         logViewerPreferences.edit().putBoolean(PREFERENCE_USE_MONOSPACED_FONT, isChecked).apply();
 
         if (isChecked) {
-            tv_compile_log.setTypeface(Typeface.MONOSPACE);
+            binding.tvCompileLog.setTypeface(Typeface.MONOSPACE);
         } else {
-            tv_compile_log.setTypeface(Typeface.DEFAULT);
+            binding.tvCompileLog.setTypeface(Typeface.DEFAULT);
         }
     }
 
@@ -213,13 +196,13 @@ public class CompileLogActivity extends Activity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER));
 
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Select font size")
                 .setView(layout)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                .setPositiveButton("Save", (dialog, which) -> {
                     logViewerPreferences.edit().putInt(PREFERENCE_FONT_SIZE, picker.getValue()).apply();
 
-                    tv_compile_log.setTextSize((float) picker.getValue());
+                    binding.tvCompileLog.setTextSize((float) picker.getValue());
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
