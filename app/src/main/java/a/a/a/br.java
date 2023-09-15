@@ -31,6 +31,7 @@ import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -94,7 +95,7 @@ public class br extends qA implements View.OnClickListener {
         private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
 
         private class ViewHolder extends CollapsibleViewHolder {
-            public final LinearLayout root;
+            public final MaterialCardView root;
             public final LinearLayout optionLayout;
             public final RecyclerView componentEvents;
             public final ImageView icon;
@@ -110,7 +111,7 @@ public class br extends qA implements View.OnClickListener {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView, 200);
-                root = (LinearLayout) itemView;
+                root = (MaterialCardView) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
                 id = itemView.findViewById(R.id.tv_component_id);
@@ -298,26 +299,6 @@ public class br extends qA implements View.OnClickListener {
             }
         }
 
-        public Adapter(RecyclerView recyclerView) {
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 2) {
-                            if (fab.isEnabled()) {
-                                fab.hide();
-                            }
-                        } else if (dy < -2) {
-                            if (fab.isEnabled()) {
-                                fab.show();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ComponentBean componentBean = components.get(position);
@@ -447,7 +428,7 @@ public class br extends qA implements View.OnClickListener {
         empty.setVisibility(View.GONE);
         empty.setText(xB.b().a(requireContext(), R.string.component_message_no_components));
         componentList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-        adapter = new Adapter(componentList);
+        adapter = new Adapter();
         componentList.setAdapter(adapter);
         fab = viewGroup.findViewById(R.id.fab);
         fab.setOnClickListener(this);

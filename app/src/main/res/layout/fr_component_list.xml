@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,10 +24,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/component_list"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp"
                 android:scrollbars="vertical"
-                android:splitMotionEvents="false" />
+                android:splitMotionEvents="false"
+                tools:listitem="@layout/fr_logic_list_item_component" />
 
         </LinearLayout>
     </LinearLayout>
@@ -39,9 +41,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:backgroundTint="?attr/colorPink"
         android:src="@drawable/ic_add_white_36dp"
-        app:borderWidth="0dp"
-        app:tint="?attr/colorOnPink" />
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>
