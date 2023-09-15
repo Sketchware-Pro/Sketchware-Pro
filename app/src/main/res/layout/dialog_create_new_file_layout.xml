@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="2dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:hint="Enter a name"
         app:hintEnabled="true">
 

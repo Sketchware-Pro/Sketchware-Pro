@@ -3,6 +3,8 @@ package mod.hey.studios.activity.managers.nativelib;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,11 +101,9 @@ public class ManageNativelibsActivity extends AppCompatActivity implements View.
 
     private void handleFab() {
         if (isInMainDirectory()) {
-            binding.importNewButton.setVisibility(View.GONE);
-            binding.createNewButton.setVisibility(View.VISIBLE);
+            binding.showOptionsButton.setText("New folder");
         } else {
-            binding.importNewButton.setVisibility(View.VISIBLE);
-            binding.createNewButton.setVisibility(View.GONE);
+            binding.showOptionsButton.setText("Import library");
         }
     }
 
@@ -117,9 +117,12 @@ public class ManageNativelibsActivity extends AppCompatActivity implements View.
             createNewDialog();
             hideShowOptionsButton(true);
         });
-        binding.importNewButton.setOnClickListener(v -> {
-            filePicker.show();
-            hideShowOptionsButton(true);
+        binding.showOptionsButton.setOnClickListener(v -> {
+            if (isInMainDirectory()) {
+                createNewDialog();
+            } else {
+                filePicker.show();
+            }
         });
 
         binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
@@ -173,6 +176,22 @@ public class ManageNativelibsActivity extends AppCompatActivity implements View.
 
         dialogBinding.chipGroupTypes.setVisibility(View.GONE);
         textInputLayout.setHint("Folder name");
+
+        inputText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                textInputLayout.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         dialog.setOnShowListener(dialogInterface -> {
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
