@@ -26,7 +26,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -189,9 +189,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         preference = new DB(requireContext(), "project");
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
+
         loading = view.findViewById(R.id.loading_3balls);
 
-        FloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
+        ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
         fab.setOnClickListener(this);
         Insetter.builder()
                 .margin(WindowInsetsCompat.Type.navigationBars())
@@ -214,6 +215,18 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
         myProjects.setAdapter(projectsAdapter);
         refreshProjectsList();
+
+        myProjects.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 2) {
+                    fab.shrink();
+                } else if (dy < -2) {
+                    fab.extend();
+                }
+            }
+        });
     }
 
     private void showProjectSortingDialog() {
