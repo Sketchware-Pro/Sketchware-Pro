@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff5f5f5"
+    android:background="?colorSurfaceBright"
     android:orientation="horizontal">
 
     <com.besome.sketch.lib.ui.CustomScrollView
@@ -23,12 +23,6 @@
                 android:padding="8dp" />
         </com.besome.sketch.lib.ui.CustomHorizontalScrollView>
     </com.besome.sketch.lib.ui.CustomScrollView>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="#12000000" />
 
     <ScrollView
         android:layout_width="120dp"

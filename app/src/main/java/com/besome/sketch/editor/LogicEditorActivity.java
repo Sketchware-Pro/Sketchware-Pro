@@ -125,7 +125,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public DB H;
     public LinearLayout J;
     public LinearLayout K;
-    public FloatingActionButton L;
+    public FloatingActionButton openBlocksMenuButton;
     public ProjectFileBean M;
     public LogicTopMenu N;
     public LogicEditorDrawer O;
@@ -1586,7 +1586,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams2.gravity = Gravity.CENTER | Gravity.BOTTOM;
             int dimension = (int) getResources().getDimension(R.dimen.action_button_margin);
             layoutParams2.setMargins(dimension, dimension, dimension, dimension);
-            L.setLayoutParams(layoutParams2);
+            openBlocksMenuButton.setLayoutParams(layoutParams2);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1598,7 +1598,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams3.gravity = Gravity.CENTER | Gravity.RIGHT;
             int dimension2 = (int) getResources().getDimension(R.dimen.action_button_margin);
             layoutParams3.setMargins(dimension2, dimension2, dimension2, dimension2);
-            L.setLayoutParams(layoutParams3);
+            openBlocksMenuButton.setLayoutParams(layoutParams3);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -1948,8 +1948,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         o = n.getBlockPane();
         J = findViewById(R.id.layout_palette);
         K = findViewById(R.id.area_palette);
-        L = findViewById(R.id.fab_toggle_palette);
-        L.setOnClickListener(v -> e(!X));
+        openBlocksMenuButton = findViewById(R.id.fab_toggle_palette);
+        openBlocksMenuButton.setOnClickListener(v -> e(!X));
         N = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
         extraPaletteBlock = new ExtraPaletteBlock(this);
@@ -1965,17 +1965,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             return true;
         }
         if (bC.d(B).g(s())) {
-            menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_white_48dp);
+            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_grey_48dp);
+            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         }
         if (bC.d(B).h(s())) {
-            menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_white_48dp);
+            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_grey_48dp);
+            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         }
         return true;

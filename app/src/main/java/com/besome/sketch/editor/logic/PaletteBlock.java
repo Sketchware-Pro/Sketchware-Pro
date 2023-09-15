@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.logic;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
@@ -59,6 +60,7 @@ public class PaletteBlock extends LinearLayout {
         textView.setBackgroundResource(R.drawable.bg_feed);
         textView.setText(title);
         textView.setTextSize(10.0F);
+        textView.setTextColor(Color.BLACK);
         textView.setGravity(17);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
         blockBuilder.addView(textView);
