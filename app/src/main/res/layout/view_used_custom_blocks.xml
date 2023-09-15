@@ -6,17 +6,20 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="5dp"
+        android:layout_weight="1"
         app:cardBackgroundColor="?android:colorBackground"
         app:cardCornerRadius="10dp">
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
             android:paddingBottom="12dp"
-            android:layout_height="wrap_content">
+            android:requiresFadingEdge="vertical">
 
             <LinearLayout
                 android:id="@+id/customBlocksContainer"
@@ -25,5 +28,20 @@
                 android:orientation="vertical" />
         </ScrollView>
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/okayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="8dp"
+        android:gravity="center"
+        android:text="Dismiss"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="?colorPrimary"
+        app:backgroundTint="?android:colorBackground"
+        app:rippleColor="?colorControlHighlight" />
 
 </LinearLayout>
