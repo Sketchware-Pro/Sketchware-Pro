@@ -21,9 +21,8 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:gravity="center"
-        android:textColor="#ff757575"
         android:textSize="12sp"
         tools:text="@string/common_word_delete" />
 </LinearLayout>

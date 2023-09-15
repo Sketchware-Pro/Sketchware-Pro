@@ -40,6 +40,8 @@ import com.besome.sketch.editor.event.AddEventActivity;
 import com.besome.sketch.editor.event.CollapsibleEventLayout;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -71,7 +73,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private ArrayList<EventBean> activityEvents;
     private ArrayList<EventBean> drawerViewEvents;
     private TextView noEvents;
-    private TextView importMoreBlockFromCollection;
+    private MaterialButton importMoreBlockFromCollection;
     private String sc_id;
 
     public static int a(int i) {
@@ -231,21 +233,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         eventAdapter = new EventAdapter();
         eventList.setAdapter(eventAdapter);
         fab.setOnClickListener(this);
-        eventList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 2) {
-                    if (fab.isEnabled()) {
-                        fab.hide();
-                    }
-                } else if (dy < -2) {
-                    if (fab.isEnabled()) {
-                        fab.show();
-                    }
-                }
-            }
-        });
         events = new HashMap<>();
         moreBlocks = new ArrayList<>();
         viewEvents = new ArrayList<>();
@@ -568,7 +555,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         private class ViewHolder extends CollapsibleViewHolder {
-            public final LinearLayout root;
+            public final MaterialCardView root;
             public final ImageView menu;
             public final ImageView preview;
             public final LinearLayout previewContainer;
@@ -583,7 +570,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             public ViewHolder(View itemView) {
                 super(itemView, 200);
-                root = (LinearLayout) itemView;
+                root = (MaterialCardView) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 targetType = itemView.findViewById(R.id.tv_target_type);
                 targetId = itemView.findViewById(R.id.tv_target_id);

@@ -9,7 +9,7 @@
                 <stroke
                     android:width="10dp"
                     android:color="@color/transparent" />
-                <solid android:color="#fff5f5f5" />
+                <solid android:color="?attr/colorAccent" />
             </shape>
         </rotate>
     </item>
