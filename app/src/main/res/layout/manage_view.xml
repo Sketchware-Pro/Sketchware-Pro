@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -39,12 +40,10 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center|right"
+                android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
-                android:backgroundTint="?attr/colorPink"
-                android:src="@drawable/ic_add_white_36dp"
-                app:borderWidth="0dp"
-                app:tint="?attr/colorOnPink" />
+                android:src="@drawable/ic_add_24"
+                tools:ignore="ContentDescription" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
@@ -54,24 +53,24 @@
             android:layout_gravity="bottom"
             android:orientation="horizontal"
             android:padding="4dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
-                style="@style/AppTheme.Button.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_button_material" />
+                android:textSize="@dimen/text_size_button_material"
+                app:backgroundTint="?colorAccent" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_delete"
-                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:textSize="@dimen/text_size_button_material" />
 

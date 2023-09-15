@@ -45,6 +45,7 @@ import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -342,8 +343,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         fab.setOnClickListener(this);
         actionButtonGroup = findViewById(R.id.layout_btn_group);
 
-        Button delete = findViewById(R.id.btn_delete);
-        Button cancel = findViewById(R.id.btn_cancel);
+        MaterialButton delete = findViewById(R.id.btn_delete);
+        MaterialButton cancel = findViewById(R.id.btn_cancel);
         delete.setText(Helper.getResString(R.string.common_word_delete));
         cancel.setText(Helper.getResString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
