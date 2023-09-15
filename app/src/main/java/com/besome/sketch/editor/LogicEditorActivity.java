@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -1957,6 +1958,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logic_menu, menu);
+        menu.findItem(R.id.menu_block_helper).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FF4D4D")));
         menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         if (M == null) {

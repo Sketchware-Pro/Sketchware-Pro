@@ -22,5 +22,6 @@
         android:id="@id/menu_block_helper"
         android:icon="@drawable/selector_ic_block_filled_48"
         android:orderInCategory="100"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:title="Blocks collection" />
 </menu>
