@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="20dp"
+    android:minWidth="280dp"
     app:cardBackgroundColor="?colorSurfaceContainerHigh"
     app:cardCornerRadius="28dp"
     app:cardElevation="10dp"
@@ -64,6 +65,8 @@
                 android:id="@+id/custom_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="14dp"
                 android:layout_gravity="start"
                 android:gravity="center|start" />
         </LinearLayout>
@@ -73,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:minWidth="280dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
