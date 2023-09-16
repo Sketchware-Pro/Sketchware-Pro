@@ -198,9 +198,9 @@ public class ExtraPaletteBlock {
             String variableName = CustomVariableUtil.getVariableName(variable);
             if (variableType != null && variableName != null) {
                 String type = switch (variableType) {
-                    case "boolean" -> "b";
+                    case "boolean", "Boolean" -> "b";
                     case "String" -> "s";
-                    case "double", "int", "float", "long" -> "d";
+                    case "double", "Double", "int", "Integer", "float", "Float", "long", "Long" -> "d";
                     default -> "v";
                 };
                 logicEditor.a(variableName, type, variableType, "getVar").setTag(variable);
