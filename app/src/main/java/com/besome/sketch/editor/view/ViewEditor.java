@@ -4,8 +4,11 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
@@ -16,6 +19,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,6 +116,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private int scaledTouchSlop = 0;
     private ViewDummy dummyView;
     private ImageView deleteIcon;
+    private TextView deleteText;
+    private LinearLayout deleteView;
     private ObjectAnimator animatorTranslateY;
 
     enum PaletteGroup {
@@ -125,12 +131,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void animateUpDown() {
-        animatorTranslateY = ObjectAnimator.ofFloat(deleteIcon, "TranslationY", 0.0f);
+        animatorTranslateY = ObjectAnimator.ofFloat(deleteView, "TranslationY", 0.0f);
         animatorTranslateY.setDuration(500L);
-        animatorTranslateY.setInterpolator(new DecelerateInterpolator());
-        animatorTranslateX = ObjectAnimator.ofFloat(deleteIcon, "TranslationY", deleteIcon.getHeight());
+        animatorTranslateY.setInterpolator(new OvershootInterpolator());
+        animatorTranslateX = ObjectAnimator.ofFloat(deleteView, "TranslationY", deleteView.getHeight());
         animatorTranslateX.setDuration(300L);
-        animatorTranslateX.setInterpolator(new DecelerateInterpolator());
+        animatorTranslateX.setInterpolator(new OvershootInterpolator());
         isAnimating = true;
     }
 
@@ -337,29 +343,29 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     boolean z = false;
                     for (int i3 = 0; i3 < uyVar.getData().size(); i3++) {
                         ViewBean viewBean = uyVar.getData().get(i3);
-                            arrayList.add(viewBean.clone());
-                            String str2 = viewBean.layout.backgroundResource;
-                            String str3 = viewBean.image.resName;
-                            if (!jC.d(a).l(str2) && Op.g().b(str2)) {
-                                ProjectResourceBean a2 = Op.g().a(str2);
-                                try {
-                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + a + File.separator + a2.resFullName);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                jC.d(a).b.add(a2);
-                                z = true;
+                        arrayList.add(viewBean.clone());
+                        String str2 = viewBean.layout.backgroundResource;
+                        String str3 = viewBean.image.resName;
+                        if (!jC.d(a).l(str2) && Op.g().b(str2)) {
+                            ProjectResourceBean a2 = Op.g().a(str2);
+                            try {
+                                oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + a + File.separator + a2.resFullName);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            if (!jC.d(a).l(str3) && Op.g().b(str3)) {
-                                ProjectResourceBean a3 = Op.g().a(str3);
-                                try {
-                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + a + File.separator + a3.resFullName);
-                                } catch (Exception e2) {
-                                    e2.printStackTrace();
-                                }
-                                jC.d(a).b.add(a3);
-                                z = true;
+                            jC.d(a).b.add(a2);
+                            z = true;
+                        }
+                        if (!jC.d(a).l(str3) && Op.g().b(str3)) {
+                            ProjectResourceBean a3 = Op.g().a(str3);
+                            try {
+                                oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + a + File.separator + a3.resFullName);
+                            } catch (Exception e2) {
+                                e2.printStackTrace();
                             }
+                            jC.d(a).b.add(a3);
+                            z = true;
+                        }
                     }
                     if (z) {
                         bB.a(getContext(), xB.b().a(getContext(), R.string.view_widget_favorites_image_auto_added), bB.TOAST_NORMAL).show();
@@ -460,11 +466,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteFavorite = findViewById(R.id.palette_favorite);
         dummyView = findViewById(R.id.dummy);
         deleteIcon = findViewById(R.id.icon_delete);
+        deleteText = findViewById(R.id.text_delete);
+        deleteView = findViewById(R.id.delete_view);
         FrameLayout shape = findViewById(R.id.shape);
         paletteGroup = findViewById(R.id.palette_group);
         g();
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
+        rippleRound(deleteView, "#696969", "#ffffff", 200);
         f = wB.a(context, 1.0f);
         I = (int) (I * f);
         J = (int) (J * f);
@@ -568,7 +577,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
 
         @Override
-        public void onClick(View view) {}
+        public void onClick(View view) {
+        }
 
         public void a(PaletteGroup group) {
             imgGroup.setImageResource(group == PaletteGroup.BASIC ?
@@ -729,7 +739,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void b(boolean z) {
-        deleteIcon.bringToFront();
+        deleteView.bringToFront();
         if (!isAnimating) {
             animateUpDown();
         }
@@ -972,13 +982,34 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private boolean a(float x, float y) {
         int[] locationOnScreen = new int[2];
-        deleteIcon.getLocationOnScreen(locationOnScreen);
-        return x > locationOnScreen[0] && x < locationOnScreen[0] + deleteIcon.getWidth() && y > locationOnScreen[1] && y < (locationOnScreen[1] + deleteIcon.getHeight());
+        deleteView.getLocationOnScreen(locationOnScreen);
+        return x > locationOnScreen[0] && x < locationOnScreen[0] + deleteView.getWidth() && y > locationOnScreen[1] && y < (locationOnScreen[1] + deleteView.getHeight());
     }
 
     private void updateDeleteIcon(boolean z) {
         if (D == z) return;
         D = z;
-        deleteIcon.setImageResource(D ? R.drawable.icon_delete_active : R.drawable.icon_delete);
+        if (D) {
+            rippleRound(deleteView, "#FF5D5D", "#ff0000", 200);
+            shakeView(deleteView);
+        } else {
+            rippleRound(deleteView, "#696969", "#ffffff", 200);
+        }
+        deleteText.setText(D ? "Release to delete" : "Drag here to delete");
+    }
+
+    private void rippleRound(View view, String focus, String pressed, double round) {
+        GradientDrawable GG = new GradientDrawable();
+        GG.setColor(Color.parseColor(focus));
+        GG.setCornerRadius((float) round);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        view.setBackground(RE);
+    }
+
+    public static void shakeView(View view) {
+        ObjectAnimator
+                .ofFloat(view, "translationX", 0, 35, -35, 35, -35, 25, -25, 12, -12, 0)
+                .setDuration(200)
+                .start();
     }
 }

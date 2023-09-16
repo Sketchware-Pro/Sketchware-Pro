@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -37,15 +38,17 @@
         android:id="@+id/shape"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/layout_palette"
+        android:layout_toEndOf="@+id/layout_palette"
         android:background="?attr/colorSurface"
         android:forceDarkAllowed="false"
         tools:ignore="UnusedAttribute" />
+
 
     <com.besome.sketch.editor.view.ViewDummy
         android:id="@+id/dummy"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
     <com.besome.sketch.editor.view.ViewProperties
         android:id="@+id/properties"
@@ -57,18 +60,40 @@
         android:layout_marginRight="16dp"
         android:translationY="150dp" />
 
-    <ImageView
-        android:id="@+id/icon_delete"
-        android:layout_width="50dp"
-        android:layout_height="58dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+    <LinearLayout
+        android:id="@+id/delete_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:contentDescription="@null"
-        android:paddingBottom="8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/icon_delete"
-        android:translationY="66dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:animateLayoutChanges="true"
+        android:background="#696969"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:translationY="106dp"
+        tools:translationY="-20dp">
+
+        <ImageView
+            android:id="@+id/icon_delete"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:contentDescription="@null"
+            android:padding="2dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_delete_24"
+            app:tint="#FFF" />
+
+        <TextView
+            android:id="@+id/text_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Drag here to delete"
+            android:textColor="#FFF" />
+
+    </LinearLayout>
+
+
 </RelativeLayout>
