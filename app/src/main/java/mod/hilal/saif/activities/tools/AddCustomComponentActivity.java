@@ -1,5 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -189,16 +191,23 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
         SketchFilePickerDialog dialog = new SketchFilePickerDialog(this)
                 .allowExtension("json")
                 .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
+                .setOnFileSelectedListener((DialogInterface d, File file) -> {
                     try {
                         selectComponentToImport(file.getAbsolutePath());
                     } catch (Exception e) {
                         SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
                     }
-                    _dialog.dismiss();
+                    d.dismiss();
                 });
         dialog.setTitle(Helper.getResString(R.string.common_word_import));
         dialog.setIcon(R.drawable.file_48_blue);
+        ((MaterialAlertDialogBuilder) dialog).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface d) {
+                dialog.backPressed(d);
+            }
+        });
+        dialog.init();
         dialog.show();
     }
 
@@ -227,7 +236,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                 choiceToImport.set(position);
             });
             dialog.a(listView);
-            dialog.b(Helper.getResString(R.string.common_word_import), view -> {
+            dialog.b(Helper.getResString(R.string.common_word_import), (d, which) -> {
                 int position = choiceToImport.get();
                 var component = components.get(position);
                 if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -235,9 +244,9 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                 } else {
                     SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
                 }
-                dialog.dismiss();
+                d.dismiss();
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
             dialog.show();
         } else {
             var component = components.get(0);

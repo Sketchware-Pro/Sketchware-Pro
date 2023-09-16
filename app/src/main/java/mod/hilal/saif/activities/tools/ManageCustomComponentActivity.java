@@ -1,5 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -130,7 +132,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(this)
                 .allowExtension("json")
                 .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
+                .setOnFileSelectedListener((DialogInterface dialog, File file) -> {
                     try {
                         selectComponentToImport(file.getAbsolutePath());
                     } catch (Exception e) {
@@ -140,6 +142,13 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                 });
         filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
         filePickerDialog.setIcon(R.drawable.file_48_blue);
+        ((MaterialAlertDialogBuilder) filePickerDialog).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface d) {
+                filePickerDialog.backPressed(d);
+            }
+        });
+        filePickerDialog.init();
         filePickerDialog.show();
     }
 
@@ -174,7 +183,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                 }
             });
             dialog.a(listView);
-            dialog.b(Helper.getResString(R.string.common_word_import), view -> {
+            dialog.b(Helper.getResString(R.string.common_word_import), (d, which) -> {
                 for (int position : selectedPositions) {
                     var component = components.get(position);
                     if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -185,9 +194,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                 }
                 FileUtil.writeFile(COMPONENT_DIR, new Gson().toJson(componentsList));
                 readSettings();
-                dialog.dismiss();
+                d.dismiss();
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
             dialog.show();
         } else {
             var component = components.get(0);
@@ -212,14 +221,14 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         dialog.b(Helper.getResString(R.string.common_word_export));
         dialog.a(Helper.getResString(R.string.developer_tools_component_message_export, componentName));
         dialog.a(R.drawable.export_96);
-        dialog.b(Helper.getResString(R.string.common_word_yes), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_yes), (d, which) -> {
             String fileName = componentName + ".json";
             String filePath = new File(COMPONENT_EXPORT_DIR, fileName).getAbsolutePath();
             FileUtil.writeFile(filePath, new Gson().toJson(List.of(componentsList.get(position))));
             SketchwareUtil.toast(Helper.getResString(R.string.developer_tools_component_success_message_export, filePath));
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

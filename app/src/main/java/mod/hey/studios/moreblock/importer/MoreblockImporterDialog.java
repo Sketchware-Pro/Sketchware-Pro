@@ -27,24 +27,18 @@ import mod.jbk.util.BlockUtil;
 
 public class MoreblockImporterDialog extends aB {
 
-    private final ArrayList<MoreBlockCollectionBean> internalList;
-    private final CallBack callback;
-
     private final Activity act;
     private ArrayList<MoreBlockCollectionBean> list;
-    private Adapter la;
 
     public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
         super(act);
         this.act = act;
-        internalList = beanList;
         list = new ArrayList<>(beanList);
-        this.callback = callback;
-    }
 
-    public void show() {
-        super.b("Select a More Block");
-        super.a(R.drawable.more_block_96dp);
+        Adapter la = new Adapter();
+
+        b("Select a More Block");
+        a(R.drawable.more_block_96dp);
 
         SearchView searchView = new SearchView(act);
 
@@ -75,12 +69,12 @@ public class MoreblockImporterDialog extends aB {
             @Override
             public boolean onQueryTextChange(String query) {
                 if (query.isEmpty()) {
-                    //just return the internal list
-                    list = new ArrayList<>(internalList);
+                    //just return the bean list
+                    list = new ArrayList<>(beanList);
                 } else {
                     list = new ArrayList<>();
 
-                    for (MoreBlockCollectionBean bean : internalList) {
+                    for (MoreBlockCollectionBean bean : beanList) {
                         if (bean.name.toLowerCase().contains(query.toLowerCase())
                                 || bean.spec.toLowerCase().contains(query.toLowerCase())) {
                             list.add(bean);
@@ -111,9 +105,6 @@ public class MoreblockImporterDialog extends aB {
             lw.setDividerHeight((int) getDip(10));
         }
 
-        la = new Adapter();
-        lw.setAdapter(la);
-
         LinearLayout ln = new LinearLayout(act);
         ln.setOrientation(LinearLayout.VERTICAL);
         ln.setLayoutParams(new LinearLayout.LayoutParams(
@@ -122,8 +113,10 @@ public class MoreblockImporterDialog extends aB {
         ln.addView(searchView);
         ln.addView(lw);
 
-        dialog.a(ln);
-        dialog.b(act.getString(R.string.common_word_select), (d, which) -> {
+        lw.setAdapter(la);
+
+        a(ln);
+        b(act.getString(R.string.common_word_select), (d, which) -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
@@ -133,8 +126,7 @@ public class MoreblockImporterDialog extends aB {
                 d.dismiss();
             }
         });
-        dialog.a(act.getString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
-        dialog.show();
+        a(act.getString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
     }
 
     public interface CallBack {
