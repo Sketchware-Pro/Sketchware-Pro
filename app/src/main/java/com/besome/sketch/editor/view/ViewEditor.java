@@ -134,8 +134,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         animatorTranslateY = ObjectAnimator.ofFloat(deleteView, "TranslationY", 0.0f);
         animatorTranslateY.setDuration(500L);
         animatorTranslateY.setInterpolator(new OvershootInterpolator());
-        animatorTranslateX = ObjectAnimator.ofFloat(deleteView, "TranslationY", deleteView.getHeight());
-        animatorTranslateX.setDuration(300L);
+        animatorTranslateX = ObjectAnimator.ofFloat(deleteView, "TranslationY", deleteView.getHeight() * 2);
+        animatorTranslateX.setDuration(500L);
         animatorTranslateX.setInterpolator(new OvershootInterpolator());
         isAnimating = true;
     }
