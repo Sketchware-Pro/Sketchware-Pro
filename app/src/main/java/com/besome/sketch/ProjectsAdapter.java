@@ -22,7 +22,9 @@ import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
 import com.besome.sketch.projects.MyProjectButtonLayout;
 import com.besome.sketch.projects.MyProjectSettingActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.BottomSheetProjectOptionsBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -445,5 +447,39 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", yB.c(project, "sc_id"));
         activity.startActivity(intent);
+    }
+
+
+    // TODO: call this method when that tiny arrow is clicked. also entirely remove collapsible layout code
+    private void showProjectOptionsBottomSheet(HashMap<String, Object> projectMap, int position, ProjectViewHolder holder) {
+        BottomSheetDialog projectOptionsBSD = new BottomSheetDialog(activity);
+        var binding = BottomSheetProjectOptionsBinding.inflate(LayoutInflater.from(activity));
+        var view = binding.getRoot();
+        projectOptionsBSD.setContentView(view);
+        projectOptionsBSD.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+
+        binding.projectSettings.setOnClickListener(v -> {
+            toProjectSettingOrRequestPermission(projectMap, position);
+            projectOptionsBSD.dismiss();
+        });
+        binding.projectBackup.setOnClickListener(v -> {
+            backupProject(projectMap);
+            projectOptionsBSD.dismiss();
+        });
+        binding.exportSign.setOnClickListener(v -> {
+            toExportProjectActivity(projectMap);
+            projectOptionsBSD.dismiss();
+        });
+        binding.projectConfig.setOnClickListener(v -> {
+            showProjectSettingDialog(projectMap);
+            projectOptionsBSD.dismiss();
+        });
+        binding.projectDelete.setOnClickListener(v -> {
+            // confirmation is needed here before deleting the project
+            notifyItemChanged(position);
+            deleteProject(holder.getLayoutPosition());
+            projectOptionsBSD.dismiss();
+        });
+        projectOptionsBSD.show();
     }
 }
