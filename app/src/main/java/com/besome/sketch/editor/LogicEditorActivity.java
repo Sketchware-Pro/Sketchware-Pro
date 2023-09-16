@@ -5,9 +5,9 @@ import static mod.SketchwareUtil.getDip;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -63,6 +63,7 @@ import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -94,7 +95,6 @@ import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.kC;
-import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.sq;
@@ -115,6 +115,7 @@ import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
+import mod.jbk.util.BlockUtil;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -124,7 +125,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public DB H;
     public LinearLayout J;
     public LinearLayout K;
-    public FloatingActionButton L;
+    public FloatingActionButton openBlocksMenuButton;
     public ProjectFileBean M;
     public LogicTopMenu N;
     public LogicEditorDrawer O;
@@ -1585,7 +1586,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams2.gravity = Gravity.CENTER | Gravity.BOTTOM;
             int dimension = (int) getResources().getDimension(R.dimen.action_button_margin);
             layoutParams2.setMargins(dimension, dimension, dimension, dimension);
-            L.setLayoutParams(layoutParams2);
+            openBlocksMenuButton.setLayoutParams(layoutParams2);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1597,7 +1598,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams3.gravity = Gravity.CENTER | Gravity.RIGHT;
             int dimension2 = (int) getResources().getDimension(R.dimen.action_button_margin);
             layoutParams3.setMargins(dimension2, dimension2, dimension2, dimension2);
-            L.setLayoutParams(layoutParams3);
+            openBlocksMenuButton.setLayoutParams(layoutParams3);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -1947,8 +1948,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         o = n.getBlockPane();
         J = findViewById(R.id.layout_palette);
         K = findViewById(R.id.area_palette);
-        L = findViewById(R.id.fab_toggle_palette);
-        L.setOnClickListener(v -> e(!X));
+        openBlocksMenuButton = findViewById(R.id.fab_toggle_palette);
+        openBlocksMenuButton.setOnClickListener(v -> e(!X));
         N = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
         extraPaletteBlock = new ExtraPaletteBlock(this);
@@ -1957,23 +1958,24 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logic_menu, menu);
+        menu.findItem(R.id.menu_block_helper).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FF4D4D")));
         menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         if (M == null) {
             return true;
         }
         if (bC.d(B).g(s())) {
-            menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_white_48dp);
+            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_grey_48dp);
+            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         }
         if (bC.d(B).h(s())) {
-            menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_white_48dp);
+            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_grey_48dp);
+            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         }
         return true;
@@ -2018,25 +2020,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         for (int i = 0; i < spec.size(); i++) {
             String specBit = spec.get(i);
             if (specBit.charAt(0) == '%') {
-                label44:
-                {
-                    Rs block;
-                    if (specBit.charAt(1) == 'b') {
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "b", "getArg");
-                    } else if (specBit.charAt(1) == 'd') {
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "d", "getArg");
-                    } else if (specBit.charAt(1) == 's') {
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(3), "s", "getArg");
-                    } else {
-                        if (specBit.charAt(1) != 'm') {
-                            break label44;
-                        }
-
-                        String selector = specBit.substring(specBit.indexOf(".") + 1, specBit.lastIndexOf("."));
-                        String type = kq.a(selector);
-                        block = new Rs(getContext(), blockId + 1, specBit.substring(specBit.lastIndexOf(".") + 1), type, kq.b(selector), "getArg");
-                    }
-
+                Rs block = BlockUtil.getVariableBlock(getContext(), blockId + 1, specBit, "getArg");
+                if (block != null) {
                     block.setBlockType(1);
                     o.addView(block);
                     o.getRoot().a((Ts) o.getRoot().V.get(blockId), block);
@@ -2480,17 +2465,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         codeEditor.setWordwrap(false);
         codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        var dialog = new MaterialAlertDialogBuilder(this)
                 .setTitle("Source code")
-                .setIcon(R.drawable.code_icon)
                 .setPositiveButton(R.string.common_word_close, null)
                 .create();
 
         dialog.setView(codeEditor,
                 (int) getDip(24),
-                (int) getDip(8),
+                (int) getDip(20),
                 (int) getDip(24),
-                (int) getDip(8));
+                (int) getDip(0));
         dialog.show();
     }
 

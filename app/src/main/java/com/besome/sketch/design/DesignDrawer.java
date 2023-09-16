@@ -7,16 +7,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 
 import a.a.a.mB;
 import a.a.a.wB;
+import dev.chrisbanes.insetter.Insetter;
+import dev.chrisbanes.insetter.Side;
 import mod.hey.studios.util.Helper;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
-
-    private Context context;
-
     public DesignDrawer(Context context) {
         super(context);
         initialize(context);
@@ -28,23 +30,33 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     }
 
     private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
-        DrawerItem drawerItem = new DrawerItem(context, tag);
-        drawerItem.setContent(iconResId, Helper.getResString(titleResId), Helper.getResString(descriptionResId));
-        drawerItem.setTag(tag);
-        drawerItem.setOnClickListener(this);
-        drawerItem.setSeparatorVisibility(useSeparator);
-        drawerItem.setSubSeparatorVisibility(!useSeparator);
+        DrawerItem drawerItem = new DrawerItem(getContext());
+        drawerItem.setContent(iconResId, Helper.getResString(drawerItem, titleResId), Helper.getResString(drawerItem, descriptionResId));
+        drawerItem.setOnClickListener(tag, this);
         return drawerItem;
     }
 
     private void initialize(Context context) {
-        this.context = context;
         wB.a(context, this, R.layout.design_drawer);
+        var layoutDirection = getResources().getConfiguration().getLayoutDirection();
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars(),
+                        Side.create(layoutDirection == LAYOUT_DIRECTION_RTL, false,
+                                layoutDirection == LAYOUT_DIRECTION_LTR, false))
+                .applyToView(findViewById(R.id.layout_drawer));
+
         TextView tv_title_configuration = findViewById(R.id.tv_title_configuration);
-        tv_title_configuration.setText(Helper.getResString(R.string.design_drawer_menu_title));
-        ((TextView) findViewById(R.id.tv_title_global)).setText(Helper.getResString(R.string.design_drawer_menu_bottom_title));
+        tv_title_configuration.setText(Helper.getResString(tv_title_configuration, R.string.design_drawer_menu_title));
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.statusBars())
+                .applyToView(tv_title_configuration);
+        TextView global = findViewById(R.id.tv_title_global);
+        global.setText(Helper.getResString(global, R.string.design_drawer_menu_bottom_title));
         LinearLayout menusLayout = findViewById(R.id.layout_menus);
         LinearLayout bottomMenusLayout = findViewById(R.id.layout_bottom_menus);
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars(), Side.BOTTOM)
+                .applyToView(bottomMenusLayout);
         /* Add collection item */
         bottomMenusLayout.addView(addDrawerItem(1, false,
                 R.drawable.ic_bookmark_red_48dp, R.string.design_drawer_menu_title_collection, R.string.design_drawer_menu_description_collection
@@ -116,90 +128,89 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         menusLayout.addView(addDrawerItem(16, false,
                 R.drawable.code_icon, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
         /* Add Logcat Reader */
-        menusLayout.addView(addDrawerItem(22,false,
-                R.drawable.icons8_app_components,R.string.design_drawer_menu_title_logcat_reader,R.string.design_drawer_menu_subtitle_logcat_reader));
+        menusLayout.addView(addDrawerItem(22, false,
+                R.drawable.icons8_app_components, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader));
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (!mB.a()) {
-            if (context instanceof DesignActivity) {
-                DesignActivity designActivity = (DesignActivity) context;
-                switch ((Integer) view.getTag()) {
+            if (getContext() instanceof DesignActivity activity) {
+                switch ((Integer) v.getTag()) {
                     case 1:
-                        designActivity.toCollectionManager();
+                        activity.toCollectionManager();
                         return;
 
                     case 3:
-                        designActivity.toLibraryManager();
+                        activity.toLibraryManager();
                         return;
 
                     case 4:
-                        designActivity.toViewManager();
+                        activity.toViewManager();
                         return;
 
                     case 5:
-                        designActivity.toImageManager();
+                        activity.toImageManager();
                         return;
 
                     case 6:
-                        designActivity.toSoundManager();
+                        activity.toSoundManager();
                         return;
 
                     case 7:
-                        designActivity.toFontManager();
+                        activity.toFontManager();
                         return;
 
                     case 8:
-                        designActivity.toJavaManager();
+                        activity.toJavaManager();
                         return;
 
                     case 9:
-                        designActivity.toResourceManager();
+                        activity.toResourceManager();
                         return;
 
                     case 10:
-                        designActivity.toAssetManager();
+                        activity.toAssetManager();
                         return;
 
                     case 11:
-                        designActivity.toPermissionManager();
+                        activity.toPermissionManager();
                         return;
 
                     case 12:
-                        designActivity.toAppCompatInjectionManager();
+                        activity.toAppCompatInjectionManager();
                         return;
 
                     case 13:
-                        designActivity.toAndroidManifestManager();
+                        activity.toAndroidManifestManager();
                         return;
 
                     case 14:
-                        designActivity.toLocalLibraryManager();
+                        activity.toLocalLibraryManager();
                         return;
 
                     case 16:
-                        designActivity.toSourceCodeViewer();
+                        activity.toSourceCodeViewer();
                         return;
 
                     case 17:
-                        designActivity.toProguardManager();
+                        activity.toProguardManager();
                         return;
 
                     case 18:
-                        designActivity.toStringFogManager();
+                        activity.toStringFogManager();
                         return;
 
                     case 19:
-                        designActivity.toNativeLibraryManager();
+                        activity.toNativeLibraryManager();
                         return;
 
                     case 20:
-                        designActivity.toCustomBlocksViewer();
+                        activity.toCustomBlocksViewer();
                         return;
 
                     case 22:
-                        designActivity.toLogReader();
+                        activity.toLogReader();
                         return;
                     case 2:
                     default:
@@ -208,27 +219,23 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    static class DrawerItem extends LinearLayout {
-
-        private ImageView imgIcon;
-        private TextView titleTextView;
-        private TextView subTitleTextView;
-        private View subSeparator;
-        private View separator;
+    private static class DrawerItem extends LinearLayout {
+        private final MaterialCardView root;
+        private final ImageView imgIcon;
+        private final TextView titleTextView;
+        private final TextView subTitleTextView;
 
         public DrawerItem(Context context) {
-            super(context);
-            new DrawerItem(context, 0);
+            this(context, null);
         }
 
         public DrawerItem(Context context, AttributeSet set) {
             super(context, set);
-            new DrawerItem(context, 0);
-        }
-
-        public DrawerItem(Context context, int tag) {
-            super(context);
-            initialize(context, tag);
+            wB.a(context, this, R.layout.design_drawer_item);
+            root = findViewById(R.id.root);
+            imgIcon = findViewById(R.id.img_icon);
+            titleTextView = findViewById(R.id.tv_root_title);
+            subTitleTextView = findViewById(R.id.tv_sub_title);
         }
 
         public void setContent(int iconResId, String rootTitleText, String subTitleText) {
@@ -237,21 +244,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
             subTitleTextView.setText(subTitleText);
         }
 
-        public final void initialize(Context context, int tag) {
-            wB.a(context, this, R.layout.design_drawer_item);
-            imgIcon = findViewById(R.id.img_icon);
-            titleTextView = findViewById(R.id.tv_root_title);
-            subTitleTextView = findViewById(R.id.tv_sub_title);
-            subSeparator = findViewById(R.id.sub_separator);
-            separator = findViewById(R.id.separator);
-        }
-
-        public void setSeparatorVisibility(boolean visible) {
-            separator.setVisibility(visible ? VISIBLE : GONE);
-        }
-
-        public void setSubSeparatorVisibility(boolean visible) {
-            subSeparator.setVisibility(visible ? VISIBLE : GONE);
+        public void setOnClickListener(int tag, OnClickListener listener) {
+            root.setTag(tag);
+            root.setOnClickListener(listener);
         }
     }
 }

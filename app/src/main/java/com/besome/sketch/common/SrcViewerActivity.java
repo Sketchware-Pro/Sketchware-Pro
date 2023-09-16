@@ -1,6 +1,5 @@
 package com.besome.sketch.common;
 
-import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.ctrls.CommonSpinnerItem;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -162,11 +162,11 @@ public class SrcViewerActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER));
 
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Select font size")
-                .setIcon(R.drawable.ic_font_48dp)
+                .setIcon(R.drawable.ic_formattext_24)
                 .setView(layout)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                .setPositiveButton("Apply", (dialog, which) -> {
                     sourceCodeFontSize = picker.getValue();
                     codeViewer.setTextSize(sourceCodeFontSize);
                 })

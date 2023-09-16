@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillAfter="true"
     android:interpolator="@android:anim/bounce_interpolator">
@@ -6,8 +5,8 @@
         android:duration="700"
         android:fromXScale="0.9"
         android:fromYScale="0.9"
-        android:pivotX="10.000002%"
-        android:pivotY="10.000002%"
-        android:toXScale="1.0"
-        android:toYScale="1.0" />
+        android:pivotX="10%"
+        android:pivotY="10%"
+        android:toXScale="1"
+        android:toYScale="1" />
 </set>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center|left" android:orientation="vertical" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="12.0sp" android:textColor="@color/scolor_black_02" android:id="@id/tv_favorites_guide" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-    <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" android:layout_marginVertical="8.0dip" android:importantForAutofill="noExcludeDescendants">
-        <EditText android:textSize="14.0sp" android:id="@id/ed_input" android:layout_width="fill_parent" android:layout_height="fill_parent" android:lines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>

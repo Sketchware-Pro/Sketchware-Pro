@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:alpha="0.5"
-        android:state_enabled="false"
-        android:drawable="@drawable/ic_redo_tinted_48" />
+    <item android:alpha="0.5" android:drawable="@drawable/ic_redo_tinted_48" android:state_enabled="false" />
     <item android:drawable="@drawable/ic_redo_tinted_48" />
 </selector>

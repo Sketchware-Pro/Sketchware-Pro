@@ -45,6 +45,7 @@ import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -52,23 +53,19 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import a.a.a.FB;
 import a.a.a.Mp;
 import a.a.a.Np;
 import a.a.a.Op;
 import a.a.a.Pp;
 import a.a.a.Qp;
 import a.a.a.Rp;
-import a.a.a.Rs;
-import a.a.a.Ts;
 import a.a.a.bB;
-import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
+import mod.jbk.util.BlockUtil;
 import mod.jbk.util.SoundPlayingAdapter;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -346,8 +343,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         fab.setOnClickListener(this);
         actionButtonGroup = findViewById(R.id.layout_btn_group);
 
-        Button delete = findViewById(R.id.btn_delete);
-        Button cancel = findViewById(R.id.btn_cancel);
+        MaterialButton delete = findViewById(R.id.btn_delete);
+        MaterialButton cancel = findViewById(R.id.btn_cancel);
         delete.setText(Helper.getResString(R.string.common_word_delete));
         cancel.setText(Helper.getResString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
@@ -880,53 +877,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             holder.name.setText(bean.name);
             holder.checkBox.setChecked(bean.isSelected);
             holder.blockArea.removeAllViews();
-
-            int blockId = 0;
-            Rs block = new Rs(getBaseContext(), 0, bean.spec, " ", "definedFunc");
-            holder.blockArea.addView(block);
-            Iterator<String> spec = FB.c(bean.spec).iterator();
-
-            while (true) {
-                Rs specBlock;
-                while (true) {
-                    String specPart;
-                    do {
-                        if (!spec.hasNext()) {
-                            block.k();
-                            return;
-                        }
-
-                        specPart = spec.next();
-                    } while (specPart.charAt(0) != '%');
-
-                    if (specPart.charAt(1) == 'b') {
-                        specBlock = new Rs(getBaseContext(), blockId + 1, specPart.substring(3), "b", "getVar");
-                        break;
-                    }
-
-                    if (specPart.charAt(1) == 'd') {
-                        specBlock = new Rs(getBaseContext(), blockId + 1, specPart.substring(3), "d", "getVar");
-                        break;
-                    }
-
-                    if (specPart.charAt(1) == 's') {
-                        specBlock = new Rs(getBaseContext(), blockId + 1, specPart.substring(3), "s", "getVar");
-                        break;
-                    }
-
-                    if (specPart.charAt(1) == 'm') {
-                        String var8 = specPart.substring(specPart.lastIndexOf(".") + 1);
-                        String var7 = specPart.substring(specPart.indexOf(".") + 1, specPart.lastIndexOf("."));
-                        String type = kq.a(var7);
-                        specBlock = new Rs(getBaseContext(), blockId + 1, var8, type, kq.b(var7), "getVar");
-                        break;
-                    }
-                }
-
-                holder.blockArea.addView(specBlock);
-                block.a((Ts) block.V.get(blockId), specBlock);
-                blockId++;
-            }
+            BlockUtil.loadMoreblockPreview(holder.blockArea, bean.spec);
         }
 
         private void setData(ArrayList<? extends SelectableBean> beans) {

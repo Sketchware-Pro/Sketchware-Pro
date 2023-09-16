@@ -1,9 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:theme="@style/selectableMainItemBackground" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:layout_weight="1.0">
-        <ImageView android:id="@id/img_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" android:contentDescription="@null" />
-        <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:id="@id/tv_component_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginStart="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:theme="@style/selectableMainItemBackground">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@id/img_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@id/tv_component_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="#ff757575"
+            android:textSize="14sp" />
     </LinearLayout>
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/imgv_selected" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:src="@drawable/ic_checkmark_green_48dp" android:contentDescription="@null" android:layout_marginEnd="8.0dip" />
+
+    <ImageView
+        android:id="@id/imgv_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_checkmark_green_48dp"
+        android:visibility="gone" />
 </LinearLayout>

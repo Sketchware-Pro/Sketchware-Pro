@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <public name="abc_fade_in" id="0x7f010000" type="anim" />
     <public name="abc_fade_out" id="0x7f010001" type="anim" />
@@ -4170,49 +4169,10 @@
     <public name="mtrl_fast_out_slow_in" id="0x7f0a0001" type="interpolator" />
     <public name="mtrl_linear" id="0x7f0a0002" type="interpolator" />
     <public name="mtrl_linear_out_slow_in" id="0x7f0a0003" type="interpolator" />
-    <public name="abc_action_bar_title_item" id="0x7f0b0000" type="layout" />
-    <public name="abc_action_bar_up_container" id="0x7f0b0001" type="layout" />
-    <public name="abc_action_menu_item_layout" id="0x7f0b0002" type="layout" />
-    <public name="abc_action_menu_layout" id="0x7f0b0003" type="layout" />
-    <public name="abc_action_mode_bar" id="0x7f0b0004" type="layout" />
-    <public name="abc_action_mode_close_item_material" id="0x7f0b0005" type="layout" />
-    <public name="abc_activity_chooser_view" id="0x7f0b0006" type="layout" />
-    <public name="abc_activity_chooser_view_list_item" id="0x7f0b0007" type="layout" />
-    <public name="abc_alert_dialog_button_bar_material" id="0x7f0b0008" type="layout" />
-    <public name="abc_alert_dialog_material" id="0x7f0b0009" type="layout" />
-    <public name="abc_alert_dialog_title_material" id="0x7f0b000a" type="layout" />
-    <public name="abc_cascading_menu_item_layout" id="0x7f0b000b" type="layout" />
-    <public name="abc_dialog_title_material" id="0x7f0b000c" type="layout" />
-    <public name="abc_expanded_menu_layout" id="0x7f0b000d" type="layout" />
-    <public name="abc_list_menu_item_checkbox" id="0x7f0b000e" type="layout" />
-    <public name="abc_list_menu_item_icon" id="0x7f0b000f" type="layout" />
-    <public name="abc_list_menu_item_layout" id="0x7f0b0010" type="layout" />
-    <public name="abc_list_menu_item_radio" id="0x7f0b0011" type="layout" />
-    <public name="abc_popup_menu_header_item_layout" id="0x7f0b0012" type="layout" />
-    <public name="abc_popup_menu_item_layout" id="0x7f0b0013" type="layout" />
-    <public name="abc_screen_content_include" id="0x7f0b0014" type="layout" />
-    <public name="abc_screen_simple" id="0x7f0b0015" type="layout" />
-    <public name="abc_screen_simple_overlay_action_mode" id="0x7f0b0016" type="layout" />
-    <public name="abc_screen_toolbar" id="0x7f0b0017" type="layout" />
-    <public name="abc_search_dropdown_item_icons_2line" id="0x7f0b0018" type="layout" />
-    <public name="abc_search_view" id="0x7f0b0019" type="layout" />
-    <public name="abc_select_dialog_material" id="0x7f0b001a" type="layout" />
-    <public name="abc_tooltip" id="0x7f0b001b" type="layout" />
-    <public name="ad_fbnative_banner" id="0x7f0b001c" type="layout" />
-    <public name="ad_fbnative_banner_5" id="0x7f0b001d" type="layout" />
-    <public name="ad_fbnative_feed_item" id="0x7f0b001e" type="layout" />
-    <public name="ad_fbnative_grid" id="0x7f0b001f" type="layout" />
-    <public name="ad_recommend_native" id="0x7f0b0020" type="layout" />
     <public name="add_event_item" id="0x7f0b0022" type="layout" />
     <public name="admin_setting_popup" id="0x7f0b0023" type="layout" />
-    <public name="ads" id="0x7f0b0024" type="layout" />
-    <public name="ads_fb_interstitial" id="0x7f0b0025" type="layout" />
-    <public name="ads_fbnative" id="0x7f0b0026" type="layout" />
     <public name="all_init_popup" id="0x7f0b0027" type="layout" />
-    <public name="bad_app_report" id="0x7f0b0028" type="layout" />
     <public name="blog" id="0x7f0b0029" type="layout" />
-    <public name="browser_actions_context_menu_page" id="0x7f0b002a" type="layout" />
-    <public name="browser_actions_context_menu_row" id="0x7f0b002b" type="layout" />
     <public name="build_progress_msg_box" id="0x7f0b002c" type="layout" />
     <public name="color_picker" id="0x7f0b002d" type="layout" />
     <public name="color_picker_grid_item" id="0x7f0b002e" type="layout" />
@@ -4278,18 +4238,12 @@
     <public name="fr_manage_image_list" id="0x7f0b0070" type="layout" />
     <public name="fr_manage_sound_list" id="0x7f0b0071" type="layout" />
     <public name="fr_manage_view_list" id="0x7f0b0072" type="layout" />
-    <public name="fr_recommend_collection" id="0x7f0b0073" type="layout" />
-    <public name="fr_src_viewer" id="0x7f0b007a" type="layout" />
-    <public name="fr_xml_viewer" id="0x7f0b007b" type="layout" />
     <public name="guide_page" id="0x7f0b007d" type="layout" />
     <public name="guide_sign" id="0x7f0b007e" type="layout" />
     <public name="img_popup_view" id="0x7f0b007f" type="layout" />
     <public name="import_icon" id="0x7f0b0080" type="layout" />
     <public name="import_icon_list_item" id="0x7f0b0081" type="layout" />
     <public name="import_project" id="0x7f0b0082" type="layout" />
-    <public name="in_app_item" id="0x7f0b0083" type="layout" />
-    <public name="inapp" id="0x7f0b0084" type="layout" />
-    <public name="inapp_viewpager_page" id="0x7f0b0085" type="layout" />
     <public name="item_button" id="0x7f0b0087" type="layout" />
     <public name="item_edittext" id="0x7f0b0088" type="layout" />
     <public name="item_imageview" id="0x7f0b0089" type="layout" />
@@ -4309,8 +4263,6 @@
     <public name="logic_popup_add_event" id="0x7f0b00a8" type="layout" />
     <public name="logic_popup_add_list" id="0x7f0b00a9" type="layout" />
     <public name="logic_popup_add_variable" id="0x7f0b00aa" type="layout" />
-    <public name="login" id="0x7f0b00ab" type="layout" />
-    <public name="login_google" id="0x7f0b00ac" type="layout" />
     <public name="main" id="0x7f0b00ad" type="layout" />
     <public name="main_drawer" id="0x7f0b00ae" type="layout" />
     <public name="main_drawer_header" id="0x7f0b00af" type="layout" />
@@ -4354,21 +4306,6 @@
     <public name="myprojects" id="0x7f0b0100" type="layout" />
     <public name="myprojects_item" id="0x7f0b0101" type="layout" />
     <public name="no_connection" id="0x7f0b0102" type="layout" />
-    <public name="notification_action" id="0x7f0b0105" type="layout" />
-    <public name="notification_action_tombstone" id="0x7f0b0106" type="layout" />
-    <public name="notification_media_action" id="0x7f0b0107" type="layout" />
-    <public name="notification_media_cancel_action" id="0x7f0b0108" type="layout" />
-    <public name="notification_template_big_media" id="0x7f0b0109" type="layout" />
-    <public name="notification_template_big_media_custom" id="0x7f0b010a" type="layout" />
-    <public name="notification_template_big_media_narrow" id="0x7f0b010b" type="layout" />
-    <public name="notification_template_big_media_narrow_custom" id="0x7f0b010c" type="layout" />
-    <public name="notification_template_custom_big" id="0x7f0b010d" type="layout" />
-    <public name="notification_template_icon_group" id="0x7f0b010e" type="layout" />
-    <public name="notification_template_lines_media" id="0x7f0b010f" type="layout" />
-    <public name="notification_template_media" id="0x7f0b0110" type="layout" />
-    <public name="notification_template_media_custom" id="0x7f0b0111" type="layout" />
-    <public name="notification_template_part_chronometer" id="0x7f0b0112" type="layout" />
-    <public name="notification_template_part_time" id="0x7f0b0113" type="layout" />
     <public name="orders" id="0x7f0b0114" type="layout" />
     <public name="oss" id="0x7f0b0115" type="layout" />
     <public name="palette_block" id="0x7f0b0116" type="layout" />
@@ -4376,22 +4313,11 @@
     <public name="palette_group_item" id="0x7f0b0118" type="layout" />
     <public name="palette_selector_item" id="0x7f0b0119" type="layout" />
     <public name="palette_widget" id="0x7f0b011a" type="layout" />
-    <public name="profile_user" id="0x7f0b011b" type="layout" />
     <public name="program_info" id="0x7f0b011c" type="layout" />
     <public name="program_info_item" id="0x7f0b011d" type="layout" />
     <public name="program_info_two_line_item" id="0x7f0b011e" type="layout" />
     <public name="progress" id="0x7f0b011f" type="layout" />
     <public name="progress_msg_box" id="0x7f0b0120" type="layout" />
-    <public name="promotion_adfb_grid" id="0x7f0b0121" type="layout" />
-    <public name="promotion_coupon" id="0x7f0b0122" type="layout" />
-    <public name="promotion_coupon_item" id="0x7f0b0123" type="layout" />
-    <public name="promotion_list_ad" id="0x7f0b0124" type="layout" />
-    <public name="promotion_reward_item" id="0x7f0b0125" type="layout" />
-    <public name="promotion_stamp" id="0x7f0b0126" type="layout" />
-    <public name="promotion_stamp_item" id="0x7f0b0127" type="layout" />
-    <public name="promotions" id="0x7f0b0128" type="layout" />
-    <public name="promotions_detail" id="0x7f0b0129" type="layout" />
-    <public name="promotions_item" id="0x7f0b012a" type="layout" />
     <public name="property" id="0x7f0b012b" type="layout" />
     <public name="property_color_item" id="0x7f0b012c" type="layout" />
     <public name="property_font_item" id="0x7f0b012d" type="layout" />
@@ -4417,43 +4343,12 @@
     <public name="property_subheader" id="0x7f0b0141" type="layout" />
     <public name="property_switch_item" id="0x7f0b0142" type="layout" />
     <public name="property_switch_item_singleline" id="0x7f0b0143" type="layout" />
-    <public name="publish" id="0x7f0b0144" type="layout" />
-    <public name="publish_check_upload_apk" id="0x7f0b0145" type="layout" />
-    <public name="publish_complete" id="0x7f0b0146" type="layout" />
-    <public name="publish_connecting_account" id="0x7f0b0147" type="layout" />
-    <public name="publish_exception_dialog" id="0x7f0b0148" type="layout" />
-    <public name="publish_images" id="0x7f0b0149" type="layout" />
-    <public name="publish_images_screen_list_item" id="0x7f0b014a" type="layout" />
-    <public name="publish_mail_complete" id="0x7f0b014b" type="layout" />
-    <public name="publish_manage" id="0x7f0b014c" type="layout" />
-    <public name="publish_manage_list_item" id="0x7f0b014d" type="layout" />
-    <public name="publish_no_account" id="0x7f0b014e" type="layout" />
-    <public name="publish_one_final_step" id="0x7f0b014f" type="layout" />
-    <public name="publish_one_step_popup_mail" id="0x7f0b0150" type="layout" />
-    <public name="publish_popup_version_control" id="0x7f0b0151" type="layout" />
-    <public name="publish_preview" id="0x7f0b0152" type="layout" />
-    <public name="publish_preview_detail" id="0x7f0b0153" type="layout" />
-    <public name="publish_preview_screen_list_item" id="0x7f0b0154" type="layout" />
-    <public name="publish_release_track" id="0x7f0b0155" type="layout" />
-    <public name="publish_select_account_json" id="0x7f0b0156" type="layout" />
-    <public name="publish_select_project" id="0x7f0b0157" type="layout" />
-    <public name="publish_select_project_list_item" id="0x7f0b0158" type="layout" />
-    <public name="publish_store_listing" id="0x7f0b0159" type="layout" />
-    <public name="publish_upload_apk" id="0x7f0b015a" type="layout" />
-    <public name="question_detail" id="0x7f0b015b" type="layout" />
-    <public name="question_list" id="0x7f0b015c" type="layout" />
-    <public name="question_list_item" id="0x7f0b015d" type="layout" />
-    <public name="question_popup_vote" id="0x7f0b015e" type="layout" />
-    <public name="question_register" id="0x7f0b015f" type="layout" />
     <public name="quiz_board" id="0x7f0b0160" type="layout" />
     <public name="search_recent" id="0x7f0b0161" type="layout" />
     <public name="search_recent_list_item" id="0x7f0b0162" type="layout" />
     <public name="search_result" id="0x7f0b0163" type="layout" />
     <public name="search_result_tutorial_video_list_item" id="0x7f0b0164" type="layout" />
     <public name="section_header" id="0x7f0b0165" type="layout" />
-    <public name="select_dialog_item_material" id="0x7f0b0166" type="layout" />
-    <public name="select_dialog_multichoice_material" id="0x7f0b0167" type="layout" />
-    <public name="select_dialog_singlechoice_material" id="0x7f0b0168" type="layout" />
     <public name="service_out" id="0x7f0b0169" type="layout" />
     <public name="share_collection" id="0x7f0b016a" type="layout" />
     <public name="share_collection_font_list_item" id="0x7f0b016b" type="layout" />
@@ -4473,7 +4368,6 @@
     <public name="share_project" id="0x7f0b0179" type="layout" />
     <public name="show_all_project" id="0x7f0b018d" type="layout" />
     <public name="show_file_picker_types" id="0x7f0b018e" type="layout" />
-    <public name="show_fr_graphic_editor" id="0x7f0b018f" type="layout" />
     <public name="show_fullscreen_image" id="0x7f0b0190" type="layout" />
     <public name="show_fullscreen_image_item" id="0x7f0b0191" type="layout" />
     <public name="show_logic_editor" id="0x7f0b0192" type="layout" />
@@ -4484,8 +4378,6 @@
     <public name="sketchware_for_ino_popup" id="0x7f0b0197" type="layout" />
     <public name="source_viewer" id="0x7f0b0198" type="layout" />
     <public name="src_viewer" id="0x7f0b0199" type="layout" />
-    <public name="subscribe" id="0x7f0b019a" type="layout" />
-    <public name="subscribe_item" id="0x7f0b019b" type="layout" />
     <public name="support_simple_spinner_dropdown_item" id="0x7f0b019c" type="layout" />
     <public name="system_info" id="0x7f0b019d" type="layout" />
     <public name="system_settings" id="0x7f0b019e" type="layout" />

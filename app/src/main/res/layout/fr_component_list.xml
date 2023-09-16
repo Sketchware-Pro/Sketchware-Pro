@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/empty_message"
@@ -25,10 +24,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/component_list"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp"
                 android:scrollbars="vertical"
-                android:splitMotionEvents="false" />
+                android:splitMotionEvents="false"
+                tools:listitem="@layout/fr_logic_list_item_component" />
 
         </LinearLayout>
     </LinearLayout>
@@ -37,12 +38,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_white_36dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:backgroundTint="?attr/colorPink"
-        app:borderWidth="0dp"
-        app:tint="?attr/colorOnPink" />
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

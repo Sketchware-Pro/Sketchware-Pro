@@ -1,9 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="?selectableItemBackground" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" android:layout_weight="1.0">
-        <ImageView android:id="@id/icon" android:layout_width="16.0dip" android:layout_height="16.0dip" />
-        <TextView android:textSize="12.0dip" android:textColor="@color/scolor_black_02" android:gravity="center_vertical" android:id="@id/name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@id/icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/scolor_black_02"
+            android:textSize="12dp" />
     </LinearLayout>
-    <ImageView android:id="@id/imgv_selected" android:visibility="gone" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/ic_done_grey600_18dp" android:layout_marginEnd="8.0dip" />
+
+    <ImageView
+        android:id="@id/imgv_selected"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_done_grey600_18dp"
+        android:visibility="gone" />
 </LinearLayout>

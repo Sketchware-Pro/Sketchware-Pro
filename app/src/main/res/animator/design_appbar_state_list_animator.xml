@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
@@ -8,7 +7,7 @@
         <objectAnimator
             android:duration="@integer/app_bar_elevation_anim_duration"
             android:propertyName="elevation"
-            android:valueTo="0.0dip"
+            android:valueTo="0dp"
             android:valueType="floatType" />
     </item>
     <item android:state_enabled="true">

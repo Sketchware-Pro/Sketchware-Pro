@@ -147,6 +147,13 @@ public class ReturnMoreblockManager {
         return moreBlockChar;
     }
 
+    public static String getMoreblockType(String spec) {
+        String type = getMoreblockChar(spec);
+        if (!type.contains("|")) return type;
+        String[] splits = type.split("\\|");
+        return splits[0];
+    } 
+
     public static String injectMbType(String str, String str2, String str3) {
         String str4 = str;
 

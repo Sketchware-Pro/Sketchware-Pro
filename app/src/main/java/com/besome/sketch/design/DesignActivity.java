@@ -3,8 +3,6 @@ package com.besome.sketch.design;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -24,15 +22,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -51,9 +53,12 @@ import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
+import com.sketchware.remod.databinding.ViewUsedCustomBlocksBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -83,6 +88,7 @@ import a.a.a.yq;
 import a.a.a.zy;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+import dev.chrisbanes.insetter.Insetter;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
@@ -125,9 +131,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private yq q;
     private DB r;
     private DB t;
-    /**
-     * The Run-Button in bottom right corner
-     */
+    private Button buildSettings;
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
     private ViewEditorFragment viewTabAdapter = null;
@@ -320,7 +324,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (v.getId() == R.id.btn_execute) {
                 new BuildAsyncTask(this).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
+                PopupMenu popupMenu = new PopupMenu(this, buildSettings);
                 Menu menu = popupMenu.getMenu();
 
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
@@ -375,6 +379,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.design);
         if (!j()) {
@@ -393,19 +398,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar.setTitleTextAppearance(this, R.style.DesignToolbarTitleTextAppearance);
-        toolbar.setSubtitleTextAppearance(this, R.style.DesignToolbarSubtitleTextAppearance);
         drawer = findViewById(R.id.drawer_layout);
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(findViewById(R.id.container));
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
+        buildSettings = findViewById(R.id.btn_compiler_opt);
+        buildSettings.setOnClickListener(this);
         runProject = findViewById(R.id.btn_execute);
         runProject.setText(Helper.getResString(R.string.common_word_run));
         runProject.setOnClickListener(this);
-        findViewById(R.id.btn_compiler_opt).setOnClickListener(this);
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
         projectFileSelector = findViewById(R.id.file_selector);
         projectFileSelector.setScId(sc_id);
@@ -569,7 +573,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
         dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
-        dialog.a(R.drawable.exit_96);
+        dialog.a(R.drawable.ic_exit_24);
         dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
         dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), (d, which) -> {
             if (!mB.a()) {
@@ -616,7 +620,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
-        dialog.a(R.drawable.data_backup_96);
+        dialog.a(R.drawable.ic_history_24);
         dialog.b(Helper.getResString(R.string.design_restore_data_title));
         dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
         dialog.b(Helper.getResString(R.string.common_word_restore), (dialogInterface, which) -> {
@@ -667,23 +671,27 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     private void showCurrentActivitySrcCode() {
-        ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage("Generating source...");
-        progress.setCancelable(false);
-        progress.show();
+        ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
+        loadingDialogBinding.tvProgress.setText("Generating source code...");
+        var loadingDialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Please wait")
+                .setCancelable(false)
+                .setView(loadingDialogBinding.getRoot())
+                .create();
+        loadingDialog.show();
 
         new Thread(() -> {
             String filename = projectFileSelector.getFileName();
             final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
+            var dialogBuilder = new MaterialAlertDialogBuilder(this)
                     .setTitle(filename)
                     .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
                 if (isFinishing()) return;
-                progress.dismiss();
+                loadingDialog.dismiss();
 
                 CodeEditor editor = new CodeEditor(this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
@@ -703,9 +711,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.setView(editor,
                         (int) getDip(24),
-                        (int) getDip(8),
+                        (int) getDip(20),
                         (int) getDip(24),
-                        (int) getDip(8));
+                        (int) getDip(0));
                 dialog.show();
             });
         }).start();

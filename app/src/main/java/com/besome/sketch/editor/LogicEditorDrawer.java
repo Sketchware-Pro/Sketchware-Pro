@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class LogicEditorDrawer extends LinearLayout {
         favorite = findViewById(R.id.layout_favorite);
         scrollView = findViewById(R.id.scv);
 
-        CardView tools = findViewById(R.id.new_button);
+        MaterialCardView tools = findViewById(R.id.new_button);
         tools.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Tools.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

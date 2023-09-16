@@ -1,12 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true" app:layout_behavior="@string/appbar_scrolling_view_behavior" xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <androidx.recyclerview.widget.RecyclerView android:id="@id/list" android:background="#fff5f5f5" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="2.0dip" android:layout_weight="1.0" android:splitMotionEvents="false" />
-        <LinearLayout android:gravity="center|top" android:orientation="vertical" android:id="@id/loading_3balls" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="60.0dip">
-            <com.airbnb.lottie.LottieAnimationView android:id="@id/animation_view" android:layout_width="80.0dip" android:layout_height="80.0dip" app:lottie_autoPlay="true" app:lottie_fileName="anim/loading_3balls.json" app:lottie_loop="true" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@id/list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="#fff5f5f5"
+            android:scrollbars="vertical"
+            android:splitMotionEvents="false" />
+
+        <LinearLayout
+            android:id="@id/loading_3balls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center|top"
+            android:orientation="vertical">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@id/animation_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="anim/loading_3balls.json"
+                app:lottie_loop="true" />
         </LinearLayout>
-        <include android:visibility="gone" layout="@layout/no_connection" />
-        <TextView android:textSize="18.0sp" android:textColor="@color/color_primary" android:gravity="center" android:id="@id/tv_nodata" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="60.0dip" />
+
+        <include
+            layout="@layout/no_connection"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@id/tv_nodata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:textColor="@color/color_primary"
+            android:textSize="18sp"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

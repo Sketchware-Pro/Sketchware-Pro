@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 
 import org.w3c.dom.Document;
@@ -228,7 +229,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         if (beforeContent.equals(editor.getText().toString())) {
             super.onBackPressed();
         } else {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle("Warning")
                     .setMessage("You have unsaved changes. Are you sure you want to exit?")
                     .setPositiveButton(R.string.common_word_exit, (dialog, which) -> finish())
@@ -244,13 +245,13 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.clear();
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo")
-                .setIcon(getDrawable(R.drawable.ic_undo_white_48dp))
+                .setIcon(getDrawable(R.drawable.ic_undo_24))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo")
-                .setIcon(getDrawable(R.drawable.ic_redo_white_48dp))
+                .setIcon(getDrawable(R.drawable.ic_redo_24))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save")
-                .setIcon(getDrawable(R.drawable.save_white_48))
+                .setIcon(getDrawable(R.drawable.save_white_24))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");

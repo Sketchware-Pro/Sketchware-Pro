@@ -1,7 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center|left" android:orientation="vertical" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="24.0dip" android:layout_marginBottom="24.0dip">
-        <EditText android:textSize="16.0sp" android:id="@id/ed_input" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center|left"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@id/ti_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:importantForAutofill="noExcludeDescendants">
+
+        <EditText
+            android:id="@id/ed_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

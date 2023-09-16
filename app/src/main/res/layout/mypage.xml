@@ -1,26 +1,106 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@id/layout_coordinator"
-    android:background="#b2000000"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto">
-    <com.google.android.material.appbar.AppBarLayout android:id="@id/appbar_layout" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" ads:elevation="0.0dip">
-        <com.google.android.material.appbar.CollapsingToolbarLayout android:id="@id/collapsing_toolbar" android:layout_width="fill_parent" android:layout_height="fill_parent" ads:layout_scrollFlags="enterAlways|scroll" ads:titleEnabled="false">
-            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/btn_mypage_close" android:paddingTop="16.0dip" android:paddingBottom="16.0dip" android:layout_width="fill_parent" android:layout_height="48.0dip">
-                <ImageView android:layout_width="32.0dip" android:layout_height="32.0dip" android:src="@drawable/icon_white_delete" />
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@id/layout_coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#b2000000">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        ads:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ads:layout_scrollFlags="enterAlways|scroll"
+            ads:titleEnabled="false">
+
+            <LinearLayout
+                android:id="@id/btn_mypage_close"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/icon_white_delete" />
             </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.core.widget.NestedScrollView android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true" ads:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <LinearLayout android:orientation="vertical" android:id="@id/mypage_content" android:background="@drawable/layout_rounded_border_blue" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <LinearLayout android:gravity="center_vertical" android:paddingLeft="24.0dip" android:paddingTop="8.0dip" android:paddingRight="24.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                <TextView android:textSize="18.0sp" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/tv_user_alias" android:layout_width="0.0dip" android:layout_height="wrap_content" android:lines="1" android:layout_weight="1.0" />
-                <ImageView android:id="@id/img_setting" android:padding="8.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/settings_96_white" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:fillViewport="true"
+        ads:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@id/mypage_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_rounded_border_blue"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="8dp"
+                android:paddingLeft="24dp"
+                android:paddingTop="8dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@id/tv_user_alias"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:textColor="#ffffffff"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@id/img_setting"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/settings_96_white" />
             </LinearLayout>
-            <com.google.android.material.tabs.TabLayout android:id="@id/mypage_tabs" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/MyPageTabLayout" />
-            <androidx.viewpager.widget.ViewPager android:id="@id/mypage_pager" android:background="#ffffffff" android:paddingBottom="96.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@id/mypage_tabs"
+                style="@style/MyPageTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@id/mypage_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffffff"
+                android:paddingBottom="96dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <LinearLayout android:layout_gravity="bottom" android:orientation="vertical" android:id="@id/layout_ads" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@id/layout_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#ffffffff"
+        android:orientation="vertical" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

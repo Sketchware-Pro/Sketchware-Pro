@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="action_bar_height">48dp</dimen>
     <dimen name="action_button_margin">16dp</dimen>

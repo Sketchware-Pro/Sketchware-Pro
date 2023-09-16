@@ -1,17 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/card_view"
-    android:padding="4.0dip"
-    android:layout_width="fill_parent"
-    android:layout_height="108.0dip"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/img_thumbnail" android:background="#ffffffff" android:layout_width="108.0dip" android:layout_height="83.0dip" android:layout_margin="4.0dip" android:scaleType="fitCenter" />
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <TextView android:textSize="12.0sp" android:textColor="@color/scolor_black_01" android:id="@id/tv_title" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginLeft="8.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="8.0dip" android:layout_weight="1.0" />
-        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="4.0dip" android:layout_marginBottom="4.0dip">
-            <ImageView android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/ic_channel_96dp" />
-            <TextView android:textSize="12.0sp" android:textColor="@color/color_primary" android:id="@id/tv_channel_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:lines="1" android:layout_weight="1.0" />
+    android:layout_width="match_parent"
+    android:layout_height="108dp"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <ImageView
+        android:id="@id/img_thumbnail"
+        android:layout_width="108dp"
+        android:layout_height="83dp"
+        android:layout_margin="4dp"
+        android:background="#ffffffff"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/scolor_black_01"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ic_channel_96dp" />
+
+            <TextView
+                android:id="@id/tv_channel_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lines="1"
+                android:textColor="@color/color_primary"
+                android:textSize="12sp" />
         </LinearLayout>
-        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ffffffff" android:gravity="center" android:layout_gravity="right" android:id="@id/tv_save_as_new" android:background="@drawable/bg_round_red" android:paddingLeft="16.0dip" android:paddingTop="4.0dip" android:paddingRight="16.0dip" android:paddingBottom="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:layout_marginBottom="4.0dip" />
+
+        <TextView
+            android:id="@id/tv_save_as_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/bg_round_red"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="4dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="4dp"
+            android:textColor="#ffffffff"
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

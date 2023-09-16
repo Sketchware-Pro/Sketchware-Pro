@@ -1,9 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/layout_item" android:paddingLeft="5.0dip" android:paddingTop="10.0dip" android:paddingRight="5.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:layout_width="52.0dip" android:layout_height="52.0dip">
-        <ImageView android:id="@id/img" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_alignParentBottom="true" />
-        <ImageView android:id="@id/img_conflict" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_alignParentEnd="true" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/layout_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingTop="10dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="10dp">
+
+    <RelativeLayout
+        android:layout_width="52dp"
+        android:layout_height="52dp">
+
+        <ImageView
+            android:id="@id/img"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true" />
+
+        <ImageView
+            android:id="@id/img_conflict"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
-    <TextView android:textSize="10.0sp" android:textColor="#ff000000" android:gravity="center" android:id="@id/tv_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" />
+
+    <TextView
+        android:id="@id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#ff000000"
+        android:textSize="10sp" />
 </LinearLayout>

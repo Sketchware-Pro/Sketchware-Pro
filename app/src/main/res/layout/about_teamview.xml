@@ -78,11 +78,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_user_name"
                 android:alpha="0.87"
+                android:autoLink="all"
                 android:focusable="false"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:autoLink="all"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 tools:text="Their description" />
 
@@ -91,13 +91,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/tv_user_name"
-                android:paddingHorizontal="6dp"
                 android:layout_marginBottom="3dp"
-                android:paddingVertical="1dp"
                 android:layout_toEndOf="@+id/tv_user_name"
                 android:background="#676767"
                 android:focusable="false"
                 android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
                 android:textColor="#FFF"
                 android:textSize="11sp"
                 tools:text="status" />

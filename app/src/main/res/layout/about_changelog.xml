@@ -85,7 +85,7 @@
                     android:singleLine="true"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
-                    tools:text="Sketchware Pro v6.4.0" />
+                    tools:text="Sketchware Pro v6.4" />
 
                 <TextView
                     android:id="@+id/tv_release_note"

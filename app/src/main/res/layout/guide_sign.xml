@@ -1,21 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/container" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="180.0dip">
-        <ImageView android:id="@id/cloud_left" android:paddingTop="16.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/cloud_left" android:scaleType="fitStart" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" />
-        <ImageView android:id="@id/cloud_right" android:paddingTop="16.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/cloud_right" android:scaleType="fitEnd" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
-        <LinearLayout android:orientation="horizontal" android:padding="24.0dip" android:clipChildren="false" android:clipToPadding="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
-            <androidx.cardview.widget.CardView android:id="@id/cv_app" android:background="@drawable/bg_outline" android:clipChildren="false" android:clipToPadding="false" android:layout_width="80.0dip" android:layout_height="80.0dip" android:rotation="10.0" android:layout_marginEnd="8.0dip" android:elevation="3.0dip">
-                <com.besome.sketch.lib.ui.CircleImageView android:id="@id/img_app_icon" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <ImageView
+            android:id="@id/cloud_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:paddingTop="16dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/cloud_left" />
+
+        <ImageView
+            android:id="@id/cloud_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:paddingTop="16dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/cloud_right" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:padding="24dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@id/cv_app"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_outline"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="3dp"
+                android:rotation="10">
+
+                <com.besome.sketch.lib.ui.CircleImageView
+                    android:id="@id/img_app_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp" />
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView android:id="@id/cv_play" android:background="@drawable/bg_outline" android:clipChildren="false" android:clipToPadding="false" android:layout_width="80.0dip" android:layout_height="80.0dip" android:rotation="-10.0" android:layout_marginStart="8.0dip" android:elevation="4.0dip">
-                <ImageView android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/google_play_icon" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@id/cv_play"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_outline"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="4dp"
+                android:rotation="-10">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/google_play_icon" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </RelativeLayout>
-    <View android:background="@color/lighter_grey" android:layout_width="fill_parent" android:layout_height="2.0dip" />
-    <LinearLayout android:orientation="vertical" android:background="#ffffffff" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/color_primary" android:id="@id/tv_title" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-        <TextView android:textColor="@color/grey" android:id="@id/tv_desc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/lighter_grey" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/grey" />
     </LinearLayout>
 </LinearLayout>

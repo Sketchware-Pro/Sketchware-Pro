@@ -1,9 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="16.0dip">
-        <ProgressBar android:id="@id/prog_box" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@null" />
-        <TextView android:textColor="#ff535353" android:gravity="start|center" android:id="@id/tv_progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:text="@string/common_message_loading" android:layout_marginStart="16.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:indeterminate="true"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="5dp"
+            tools:indeterminate="false"
+            tools:progress="60" />
+
+        <TextView
+            android:id="@id/tv_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="start|center"
+            android:text="@string/common_message_loading" />
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:id="@id/layout_ads" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" />
+
+    <LinearLayout
+        android:id="@id/layout_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:visibility="gone" />
 </LinearLayout>

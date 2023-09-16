@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="#ff4a6cd4" />
-    <stroke android:width="0.0dip" />
-    <corners android:radius="4.0dip" />
-    <gradient android:startColor="#ff4a6cd4" android:endColor="#ff4a6cd4" />
+    <stroke android:width="0dp" />
+    <corners android:radius="4dp" />
+    <gradient
+        android:endColor="#ff4a6cd4"
+        android:startColor="#ff4a6cd4" />
 </shape>

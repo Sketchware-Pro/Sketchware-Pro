@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:drawable="@drawable/outline_right_corner_filled" />
-    <item android:state_selected="false" android:drawable="@drawable/outline_right_corner" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/outline_right_corner_filled" android:state_selected="true" />
+    <item android:drawable="@drawable/outline_right_corner" android:state_selected="false" />
 </selector>

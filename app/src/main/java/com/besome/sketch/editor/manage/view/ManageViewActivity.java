@@ -23,6 +23,7 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
@@ -272,8 +273,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         });
 
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
-        Button delete = findViewById(R.id.btn_delete);
-        Button cancel = findViewById(R.id.btn_cancel);
+        MaterialButton delete = findViewById(R.id.btn_delete);
+        MaterialButton cancel = findViewById(R.id.btn_cancel);
         delete.setText(xB.b().a(getApplicationContext(), R.string.common_word_delete));
         cancel.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
         delete.setOnClickListener(this);

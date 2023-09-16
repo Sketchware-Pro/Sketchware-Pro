@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <objectAnimator
         android:duration="@integer/flip_time_full"
@@ -10,6 +9,6 @@
         android:duration="1"
         android:propertyName="alpha"
         android:startOffset="@integer/flip_time_half"
-        android:valueFrom="1.0"
-        android:valueTo="0.0" />
+        android:valueFrom="1"
+        android:valueTo="0" />
 </set>

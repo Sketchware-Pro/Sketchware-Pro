@@ -1,22 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <LinearLayout android:orientation="vertical" android:id="@id/layout_step" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="24.0dip">
-        <LinearLayout android:gravity="center" android:orientation="horizontal" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip">
-            <View android:id="@id/view_leftline" android:background="@color/color_primary" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_weight="1.0" />
-            <RelativeLayout android:layout_width="32.0dip" android:layout_height="32.0dip">
-                <ImageView android:background="@drawable/circle_bg" android:padding="8.0dip" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_centerInParent="true" android:contentDescription="@null" />
-                <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ffffffff" android:gravity="center" android:id="@id/tv_step_num" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:id="@id/layout_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <View
+                android:id="@id/view_leftline"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@color/color_primary" />
+
+            <RelativeLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle_bg"
+                    android:contentDescription="@null"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@id/tv_step_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="#ffffffff"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
-            <View android:id="@id/view_rightline" android:background="#ffeeeeee" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_weight="1.0" />
+
+            <View
+                android:id="@id/view_rightline"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#ffeeeeee" />
         </LinearLayout>
-        <TextView android:textSize="12.0sp" android:textColor="@color/color_primary" android:gravity="center" android:id="@id/tv_step_title" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-        <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:gravity="center" android:id="@id/tv_step_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" />
+
+        <TextView
+            android:id="@id/tv_step_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_primary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@id/tv_step_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="#ff4d4d4d"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:id="@id/layout_container" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
-    <Button style="@style/AppTheme.Button.LightBlue" android:id="@id/btn_complete" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip" />
-    <Button style="@style/AppTheme.Button.Green" android:id="@id/btn_doc" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="16.0dip" />
+
+    <LinearLayout
+        android:id="@id/layout_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    <Button
+        android:id="@id/btn_complete"
+        style="@style/AppTheme.Button.LightBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@id/btn_doc"
+        style="@style/AppTheme.Button.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone" />
 </LinearLayout>

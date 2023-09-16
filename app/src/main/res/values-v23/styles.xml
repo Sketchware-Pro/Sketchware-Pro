@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="Platform.V23.AppTheme" parent="Platform.V21.AppTheme">
         <item name="android:statusBarColor">?android:attr/colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
     <style name="Platform.AppTheme" parent="Platform.V23.AppTheme" />

@@ -213,7 +213,7 @@ public class Tools extends Activity {
         makeup(componentManagerLayout, R.drawable.collage_48, "Component manager", "Manage your own components");
         base.addView(componentManager);
         componentManagerLayout.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), ComponentsMaker.class)));
+                new Intent(getApplicationContext(), ManageCustomComponentActivity.class)));
 
         CardView eventManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout eventManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);

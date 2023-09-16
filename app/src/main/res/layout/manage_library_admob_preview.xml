@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -208,7 +207,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:textColor="#ff404040"
-                            android:textSize="14.0sp"
+                            android:textSize="14sp"
                             tools:text="@string/design_library_admob_title_ad_unit_id" />
 
                         <TextView

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -234,7 +233,8 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity"
             android:configChanges="orientation|screenSize" />
@@ -280,11 +280,13 @@
             android:name="mod.hilal.saif.activities.tools.BlocksManagerDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.ComponentsMaker"
-            android:configChanges="orientation|screenSize" />
+            android:name="mod.hilal.saif.activities.tools.ManageCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.ComponentsMakerCreator"
-            android:configChanges="orientation|screenSize" />
+            android:name="mod.hilal.saif.activities.tools.AddCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="mod.hilal.saif.activities.tools.ConfigActivity"
             android:configChanges="orientation|screenSize" />
@@ -303,8 +305,7 @@
         <activity
             android:name="mod.ilyasse.activities.about.AboutModActivity"
             android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
+        <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.PresetSettingActivity"
             android:configChanges="orientation|screenSize"

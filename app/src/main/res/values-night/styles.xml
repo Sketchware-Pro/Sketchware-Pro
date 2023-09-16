@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="Platform.V21.AppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">?android:attr/colorBackground</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="chipStyle">@style/ChipStyle</item>
         <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
     <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />
@@ -26,7 +27,8 @@
         <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
         <item name="colorOnSecondaryFixed">@color/md_theme_dark_onSecondaryFixed</item>
-        <item name="colorOnSecondaryFixedVariant">@color/md_theme_dark_onSecondaryFixedVariant</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_dark_onSecondaryFixedVariant
+        </item>
         <item name="colorTertiary">@color/md_theme_dark_tertiary</item>
         <item name="colorTertiaryFixed">@color/md_theme_dark_tertiaryFixed</item>
         <item name="colorTertiaryFixedDim">@color/md_theme_dark_tertiaryFixedDim</item>

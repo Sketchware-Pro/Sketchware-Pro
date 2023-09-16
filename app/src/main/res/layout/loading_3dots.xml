@@ -1,5 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:id="@id/loading_3dots" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.airbnb.lottie.LottieAnimationView android:id="@id/aniview_pager" android:layout_width="80.0dip" android:layout_height="80.0dip" app:lottie_autoPlay="true" app:lottie_fileName="anim/loading_simple_gray.json" app:lottie_loop="true" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/loading_3dots"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@id/aniview_pager"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="anim/loading_simple_gray.json"
+        app:lottie_loop="true" />
 </LinearLayout>

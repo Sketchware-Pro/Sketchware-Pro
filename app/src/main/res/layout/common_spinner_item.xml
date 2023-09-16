@@ -1,8 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip">
-        <TextView android:textSize="@dimen/text_size_body_small" android:textColor="#ff535353" android:id="@id/tv_spn_name" android:background="#00000000" android:padding="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_toLeftOf="@id/imgv_selected" android:layout_toStartOf="@id/imgv_selected" />
-        <ImageView android:id="@id/imgv_selected" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="4.0dip" android:src="@drawable/ic_done_grey600_18dp" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" android:layout_marginEnd="4.0dip" android:layout_alignParentEnd="true" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp">
+
+        <TextView
+            android:id="@id/tv_spn_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/imgv_selected"
+            android:layout_toLeftOf="@id/imgv_selected"
+            android:layout_marginHorizontal="8dp"
+            tools:text="TextView"
+            android:padding="4dp"
+            android:textSize="@dimen/text_size_body_small" />
+
+        <ImageView
+            android:id="@id/imgv_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            tools:visibility="visible"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_done_grey600_18dp"
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

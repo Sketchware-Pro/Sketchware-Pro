@@ -1,33 +1,158 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#ffffffff"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <LinearLayout android:orientation="vertical" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip">
-            <ImageView android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_title" />
-            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:id="@id/tv_title_user_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_title" />
+
+            <TextView
+                android:id="@id/tv_title_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff4d4d4d"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
-        <TextView android:textSize="14.0sp" android:textColor="#ff4d4d4d" android:id="@id/tv_user_name" android:background="@drawable/bg_round_light_grey" android:padding="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" />
-        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip">
-            <ImageView android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_title" />
-            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:id="@id/tv_title_app_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@id/tv_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_round_light_grey"
+            android:padding="12dp"
+            android:textColor="#ff4d4d4d"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_title" />
+
+            <TextView
+                android:id="@id/tv_title_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff4d4d4d"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
-        <TextView android:textSize="14.0sp" android:textColor="#ff4d4d4d" android:id="@id/tv_app_name" android:background="@drawable/bg_round_light_grey" android:padding="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" />
-        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip">
-            <ImageView android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_title" />
-            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:id="@id/tv_title_package_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@id/tv_app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_round_light_grey"
+            android:padding="12dp"
+            android:textColor="#ff4d4d4d"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_title" />
+
+            <TextView
+                android:id="@id/tv_title_package_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff4d4d4d"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
-        <TextView android:textSize="14.0sp" android:textColor="#ff4d4d4d" android:id="@id/tv_package_name" android:background="@drawable/bg_round_light_grey" android:padding="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" />
-        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip">
-            <ImageView android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_renew_48dp" />
-            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:id="@id/tv_title_expire_dt" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@id/tv_package_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_round_light_grey"
+            android:padding="12dp"
+            android:textColor="#ff4d4d4d"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_renew_48dp" />
+
+            <TextView
+                android:id="@id/tv_title_expire_dt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff4d4d4d"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
-        <TextView android:textSize="14.0sp" android:textColor="@color/scolor_red_01" android:id="@id/tv_expire_dt" android:background="@drawable/bg_round_light_grey" android:padding="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" />
-        <Button style="@style/AppTheme.Button.Blue" android:textSize="@dimen/text_size_button_material" android:gravity="center" android:id="@id/btn_download" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" />
+
+        <TextView
+            android:id="@id/tv_expire_dt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_round_light_grey"
+            android:padding="12dp"
+            android:textColor="@color/scolor_red_01"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@id/btn_download"
+            style="@style/AppTheme.Button.Blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_button_material" />
     </LinearLayout>
 </LinearLayout>

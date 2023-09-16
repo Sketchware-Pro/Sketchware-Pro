@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -44,7 +44,8 @@
             android:layout_height="38dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_undo_white_48dp" />
+            android:src="@drawable/ic_undo_24"
+            app:tint="#FFFFFFFF" />
 
         <ImageView
             android:id="@+id/menu_view_redo"
@@ -53,7 +54,8 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_redo_white_48dp" />
+            android:src="@drawable/ic_redo_24"
+            app:tint="#FFFFFFFF" />
 
         <ImageView
             android:id="@+id/save"
@@ -62,7 +64,8 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/save_white_48" />
+            android:src="@drawable/ic_save_24"
+            app:tint="#FFFFFFFF" />
 
         <ImageView
             android:id="@+id/more"
@@ -71,7 +74,8 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_more_vert_white_24dp" />
+            android:src="@drawable/ic_morevert_24"
+            app:tint="#FFFFFFFF" />
     </LinearLayout>
 
     <io.github.rosemoe.sora.widget.CodeEditor

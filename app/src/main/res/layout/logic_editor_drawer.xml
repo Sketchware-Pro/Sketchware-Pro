@@ -1,39 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_drawer"
     android:layout_width="150dp"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/action_bar_height"
-    android:background="#fff5f5f5"
+    android:layout_marginTop="56dp"
+    android:background="?colorSurfaceBright"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_block_collection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:textColor="@color/scolor_red_02"
-        android:textSize="12sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@color/scolor_light_grey" />
-
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/new_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardElevation="4dp">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp"
+        app:cardBackgroundColor="?colorSurfaceBright"
+        app:cardCornerRadius="10dp"
+        app:rippleColor="?colorControlHighlight"
+        app:strokeColor="?colorControlHighlight">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,16 +30,32 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="4dp"
-                android:src="@drawable/side_menu_block_icon_over" />
+                android:src="@drawable/ic_puzzle_24" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Developer Tools"
-                android:textColor="@color/color_primary"
                 android:textSize="12sp" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginVertical="8dp"
+        android:background="?colorControlHighlight" />
+
+    <TextView
+        android:id="@+id/tv_block_collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
+        android:text="@string/logic_editor_title_block_collection"
+        android:textColor="@color/scolor_red_02"
+        android:textSize="12sp" />
 
     <com.besome.sketch.lib.ui.CustomScrollView
         android:id="@+id/scv"

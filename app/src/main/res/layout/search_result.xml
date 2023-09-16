@@ -1,21 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@id/layout_coordinator" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout android:orientation="vertical" android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="fill_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/layout_coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff6f6f6"
+        android:orientation="vertical">
+
         <include layout="@layout/toolbar" />
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <include android:visibility="gone" layout="@layout/no_connection" />
-            <com.google.android.material.tabs.TabLayout android:layout_gravity="bottom" android:id="@id/tab_layout" android:layout_width="fill_parent" android:layout_height="40.0dip" style="@style/MainTabLayout" />
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@id/swipe_refresh" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/layout_nodata" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                        <ImageView android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_marginBottom="8.0dip" android:src="@drawable/ic_search_color_96dp" />
-                        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff34bc7e" android:gravity="center" android:id="@id/tv_nodata" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/no_connection"
+                android:visibility="gone" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@id/tab_layout"
+                style="@style/MainTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom" />
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@id/layout_nodata"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_search_color_96dp" />
+
+                        <TextView
+                            android:id="@id/tv_nodata"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#ff34bc7e"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="vertical" android:id="@id/layout_list" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                        <androidx.recyclerview.widget.RecyclerView android:id="@id/list_search_result" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" android:splitMotionEvents="false" />
-                        <LinearLayout android:gravity="center" android:id="@id/layout_list_loading" android:background="@color/transparent" android:paddingTop="16.0dip" android:paddingBottom="8.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                            <com.airbnb.lottie.LottieAnimationView android:id="@id/aniview_list_loading" android:layout_width="fill_parent" android:layout_height="28.0dip" android:scaleType="centerCrop" app:lottie_autoPlay="true" app:lottie_fileName="anim/preloader.json" app:lottie_loop="true" />
+
+                    <LinearLayout
+                        android:id="@id/layout_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@id/list_search_result"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:splitMotionEvents="false" />
+
+                        <LinearLayout
+                            android:id="@id/layout_list_loading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:gravity="center"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="8dp"
+                            android:visibility="gone">
+
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:id="@id/aniview_list_loading"
+                                android:layout_width="match_parent"
+                                android:layout_height="28dp"
+                                android:scaleType="centerCrop"
+                                app:lottie_autoPlay="true"
+                                app:lottie_fileName="anim/preloader.json"
+                                app:lottie_loop="true" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

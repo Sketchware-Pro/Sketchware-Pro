@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +18,8 @@
                 android:id="@+id/category_list"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:splitMotionEvents="false" />
+                android:splitMotionEvents="false"
+                tools:listitem="@layout/common_category_triangle_item" />
         </LinearLayout>
 
         <LinearLayout
@@ -27,23 +28,18 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_import"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="4dp"
-                android:paddingTop="4dp"
-                android:paddingRight="4dp">
-
-                <TextView
-                    android:id="@+id/tv_import"
-                    style="@style/AppTheme.Button.WhiteBlue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/logic_button_import_more_block"
+                android:textColor="?colorPrimary"
+                android:textSize="14sp"
+                app:backgroundTint="?android:colorBackground"
+                app:strokeColor="?colorPrimary"
+                app:strokeWidth="1dp" />
 
             <TextView
                 android:id="@+id/tv_no_events"
@@ -56,10 +52,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/event_list"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp"
                 android:scrollbars="vertical"
-                android:splitMotionEvents="false" />
+                android:splitMotionEvents="false"
+                tools:listitem="@layout/fr_logic_list_item" />
         </LinearLayout>
     </LinearLayout>
 
@@ -70,8 +69,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:backgroundTint="?attr/colorPink"
         android:src="@drawable/ic_add_white_36dp"
-        app:borderWidth="0dp"
-        app:tint="?attr/colorOnPink" />
+        tools:ignore="ContentDescription" />
 </RelativeLayout>

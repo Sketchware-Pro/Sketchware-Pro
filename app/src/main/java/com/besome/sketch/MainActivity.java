@@ -1,7 +1,6 @@
 package com.besome.sketch;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -13,21 +12,19 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.R;
@@ -44,6 +41,8 @@ import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
+import dev.chrisbanes.insetter.Insetter;
+import dev.chrisbanes.insetter.Side;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
@@ -55,7 +54,7 @@ import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
-public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends BasePermissionAppCompatActivity {
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -66,19 +65,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private ViewPager viewPager;
     private DB u;
     private CoordinatorLayout coordinator;
     private Snackbar storageAccessDenied;
     private ProjectsFragment projectsFragment = null;
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
 
     @Override
     // onRequestPermissionsResult but for Storage access only, and only when granted
@@ -86,7 +76,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (i == 9501) {
             allFilesAccessCheck();
 
-            if (viewPager.getCurrentItem() == 0 && projectsFragment != null) {
+            if (projectsFragment != null) {
                 projectsFragment.refreshProjectsList();
             }
         }
@@ -101,12 +91,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     public void l() {
-    }
-
-    private void selectPageZero() {
-        if (viewPager != null) {
-            viewPager.setCurrentItem(0, true);
-        }
     }
 
     @Override
@@ -126,7 +110,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             switch (requestCode) {
                 case 105:
                     sB.a(this, data.getBooleanExtra("onlyConfig", true));
-                    selectPageZero();
                     break;
 
                 case 111:
@@ -157,10 +140,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
+                .applyToView(findViewById(R.id.layout_coordinator));
         setSupportActionBar(findViewById(R.id.toolbar));
 
         u = new DB(getApplicationContext(), "U1");
@@ -199,9 +186,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
         });
 
-        viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        viewPager.addOnPageChangeListener(this);
+        projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentById(androidx.fragment.R.id.fragment_container_view_tag);
 
         coordinator = findViewById(R.id.layout_coordinator);
 
@@ -232,7 +217,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                             BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, projectsFragment);
 
                             if (BackupFactory.zipContainsFile(path, "local_libs")) {
-                                new AlertDialog.Builder(MainActivity.this)
+                                new MaterialAlertDialogBuilder(MainActivity.this)
                                         .setTitle("Warning")
                                         .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
                                         .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
@@ -383,13 +368,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override
-    public void onPageSelected(int position) {
-        if (position == 0)
-            if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0)
-                projectsFragment.refreshProjectsList();
-    }
-
     //This is annoying Please remove/togglize it
     private void tryLoadingCustomizedAppStrings() {
         // Refresh extracted provided strings file if necessary
@@ -412,36 +390,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             bB.a(getApplicationContext(),
                     Helper.getResString(R.string.message_strings_xml_loaded),
                     0, 80, 0, 128).show();
-        }
-    }
-
-    private class PagerAdapter extends FragmentPagerAdapter {
-        public PagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-
-        @Override
-        @NonNull
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            projectsFragment = (ProjectsFragment) fragment;
-            return fragment;
-        }
-
-        @Override
-        @NonNull
-        public Fragment getItem(int position) {
-            return new ProjectsFragment();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return Helper.getResString(R.string.main_tab_title_myproject);
         }
     }
 }

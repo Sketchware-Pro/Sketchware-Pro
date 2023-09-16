@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,7 +21,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:background="?selectableItemBackground"
             android:orientation="vertical">
 
@@ -33,6 +32,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
+                android:singleLine="true"
                 android:textColor="#ff404040"
                 android:textSize="16sp"
                 tools:text="gaming Block" />
@@ -47,10 +47,7 @@
                 <FrameLayout
                     android:id="@+id/block_area"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <include layout="@layout/block_customview_spec" />
-                </FrameLayout>
+                    android:layout_height="match_parent" />
             </HorizontalScrollView>
         </LinearLayout>
 

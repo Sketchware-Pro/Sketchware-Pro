@@ -1,8 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:width="3.0dip" android:color="#ffff8700" />
-    <corners android:radius="2.0dip" />
-    <padding android:left="4.0dip" android:top="4.0dip" android:right="4.0dip" android:bottom="4.0dip" />
-    <gradient android:startColor="@color/transparent" android:endColor="@color/transparent" />
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:width="3dp"
+        android:color="#ffff8700" />
+    <corners android:radius="2dp" />
+    <padding
+        android:bottom="4dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp" />
+    <gradient
+        android:endColor="@color/transparent"
+        android:startColor="@color/transparent" />
 </shape>

@@ -1,5 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="horizontal" android:id="@id/manage_buttons" android:layout_width="fill_parent" android:layout_height="48.0dip" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@id/manage_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal" />
 </FrameLayout>
