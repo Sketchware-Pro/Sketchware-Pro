@@ -1,13 +1,12 @@
-package
+package <?package_name?>;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class DebugActivity extends Activity {
 
@@ -61,7 +60,7 @@ public class DebugActivity extends Activity {
             }
         }
 
-        var dialog = new MaterialAlertDialogBuilder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("An error occurred")
                 .setMessage(madeErrorMessage)
                 .setPositiveButton("End Application", new DialogInterface.OnClickListener() {
