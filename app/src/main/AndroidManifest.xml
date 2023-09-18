@@ -258,9 +258,6 @@
             android:name="mod.hey.studios.project.proguard.ManageProguardActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hey.studios.project.stringfog.ManageStringfogActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="mod.hilal.saif.activities.android_manifest.AndroidManifestInjection"
             android:configChanges="orientation|screenSize" />
         <activity

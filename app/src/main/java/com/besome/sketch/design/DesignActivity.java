@@ -22,7 +22,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -58,7 +57,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
-import com.sketchware.remod.databinding.ViewUsedCustomBlocksBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -105,7 +103,7 @@ import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
 import mod.hey.studios.project.proguard.ProguardHandler;
-import mod.hey.studios.project.stringfog.ManageStringfogActivity;
+import mod.hey.studios.project.stringfog.ManageStringFogFragment;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
@@ -810,10 +808,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     /**
-     * Opens {@link ManageStringfogActivity}.
+     * Opens {@link ManageStringFogFragment}.
      */
     void toStringFogManager() {
-        launchActivity(ManageStringfogActivity.class, null);
+        var fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag("stringFogFragment") == null) {
+            var bottomSheet = new ManageStringFogFragment();
+            bottomSheet.show(fragmentManager, "stringFogFragment");
+        }
     }
 
     /**
