@@ -505,10 +505,10 @@
     <string name="design_library_firebase_hint_enter_firebase_api_key">Enter Firebase API Key
     </string>
     <string name="design_library_firebase_hint_enter_firebase_storage_bucket_url">Enter Firebase
-        Storage Bucket Url
+        Storage Bucket URL
     </string>
 
-    <string name="design_library_firebase_description_settings">Project ID, App ID, and API Key must
+    <string name="design_library_firebase_description_settings">Full Database URL, App ID, and API Key must
         match the values inside the Firebase Console.
     </string>
     <string name="design_library_firebase_description_storage">Storage Bucket URL must match the
@@ -3314,7 +3314,7 @@
     <string name="design_library_admob_title_admob_manager">AdMob Manager</string>
 
     <string name="design_library_firebase_setting_step1_title">Project Settings</string>
-    <string name="design_library_firebase_setting_step1_desc">Enter Full Database Url, Web API Key,
+    <string name="design_library_firebase_setting_step1_desc">Enter Full Database URL, Web API Key,
         and App ID
     </string>
 
