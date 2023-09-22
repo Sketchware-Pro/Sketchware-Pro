@@ -121,54 +121,28 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private final Handler Z = new Handler();
     private Vibrator F;
-    private boolean G;
-    private DB H;
-    private LinearLayout J;
-    private LinearLayout K;
+    private LinearLayout J, K;
     private FloatingActionButton L;
     public ProjectFileBean M;
     private LogicTopMenu N;
     private LogicEditorDrawer O;
-    private ObjectAnimator U;
-    private ObjectAnimator V;
-    private ObjectAnimator ba;
-    private ObjectAnimator ca;
+    private ObjectAnimator U, V, ba, ca, fa, ga;
     private ExtraPaletteBlock extraPaletteBlock;
-    private ObjectAnimator fa;
-    private ObjectAnimator ga;
-    private Toolbar k;
-    private PaletteSelector l;
     public PaletteBlock m;
     private ViewLogicEditor n;
     public BlockPane o;
     private ViewDummy p;
-    private ArrayList<MoreBlockCollectionBean> pa;
     private Rs w;
-    private int x;
-    private int y;
-    private float q;
-    private float r;
-    private float s;
-    private float t;
-    private boolean u;
-    private int[] v = new int[2];
-    private int[] z = new int[2];
-    private int A;
+    private float r, q, s, t;
+    private final int[] v = new int[2];
     public String B = "";
     public String C = "";
     public String D = "";
-    private String E = "";
-    private oB P = new oB();
-    private int S;
+    private int A, S, e, x, y;
     private int T = -30;
-    private boolean W;
-    private boolean X;
     private View Y;
-    private boolean da;
-    private boolean ea;
-    private boolean ha;
-    private boolean ia;
-    private Runnable aa = this::r;
+    private boolean G, u, W, X, da, ea, ha, ia;
+    private final Runnable aa = this::r;
 
     private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
@@ -355,7 +329,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void I() {
-        pa = Pp.h().f();
+        ArrayList<MoreBlockCollectionBean> pa = Pp.h().f();
         new MoreblockImporterDialog(this, pa, this).show();
     }
 
@@ -643,7 +617,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         y = -1;
         x = 0;
         int[] iArr = new int[2];
-        z = iArr;
         rs.getLocationOnScreen(iArr);
         Rs rs2 = rs.E;
         if (rs2 != null) {
@@ -1913,9 +1886,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
-        H = new DB(this, "P1");
+        DB h = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
-        k = findViewById(R.id.toolbar);
+        Toolbar k = findViewById(R.id.toolbar);
         setSupportActionBar(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -1941,7 +1914,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
         d.setTitle(stringExtra);
-        l = findViewById(R.id.palette_selector);
+        PaletteSelector l = findViewById(R.id.palette_selector);
         l.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         p = findViewById(R.id.dummy);
@@ -2011,11 +1984,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         } else {
             title = xB.b().a(getContext(), C, D);
         }
-        E = title;
+        String e1 = title;
 
-        o.a(E, D);
+        o.a(e1, D);
 
-        ArrayList<String> spec = FB.c(E);
+        ArrayList<String> spec = FB.c(e1);
         int blockId = 0;
         for (int i = 0; i < spec.size(); i++) {
             String specBit = spec.get(i);
