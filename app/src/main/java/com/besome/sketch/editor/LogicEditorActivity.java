@@ -118,56 +118,31 @@ import mod.jbk.util.BlockUtil;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
-    public final Handler Z = new Handler();
-    public Vibrator F;
-    public boolean G;
-    public DB H;
-    public LinearLayout J;
-    public LinearLayout K;
-    public FloatingActionButton L;
+
+    private final Handler Z = new Handler();
+    private Vibrator F;
+    private LinearLayout J, K;
+    private FloatingActionButton L;
     public ProjectFileBean M;
-    public LogicTopMenu N;
-    public LogicEditorDrawer O;
-    public ObjectAnimator U;
-    public ObjectAnimator V;
-    public ObjectAnimator ba;
-    public ObjectAnimator ca;
-    public ExtraPaletteBlock extraPaletteBlock;
-    public ObjectAnimator fa;
-    public ObjectAnimator ga;
-    public Toolbar k;
-    public PaletteSelector l;
+    private LogicTopMenu N;
+    private LogicEditorDrawer O;
+    private ObjectAnimator U, V, ba, ca, fa, ga;
+    private ExtraPaletteBlock extraPaletteBlock;
     public PaletteBlock m;
-    public ViewLogicEditor n;
+    private ViewLogicEditor n;
     public BlockPane o;
-    public ViewDummy p;
-    public ArrayList<MoreBlockCollectionBean> pa;
-    public Rs w;
-    public int x;
-    public int y;
-    public float q = 0.0f;
-    public float r = 0.0f;
-    public float s = 0.0f;
-    public float t = 0.0f;
-    public boolean u = false;
-    public int[] v = new int[2];
-    public int[] z = new int[2];
-    public int A = 0;
+    private ViewDummy p;
+    private Rs w;
+    private float r, q, s, t;
+    private final int[] v = new int[2];
     public String B = "";
     public String C = "";
     public String D = "";
-    public String E = "";
-    public oB P = new oB();
-    public int S = 0;
-    public int T = -30;
-    public boolean W = false;
-    public boolean X = false;
-    public View Y = null;
-    public boolean da = false;
-    public boolean ea = false;
-    public boolean ha = false;
-    public boolean ia = false;
-    public Runnable aa = this::r;
+    private int A, S, e, x, y;
+    private int T = -30;
+    private View Y;
+    private boolean G, u, W, X, da, ea, ha, ia;
+    private final Runnable aa = this::r;
 
     private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
@@ -354,7 +329,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void I() {
-        pa = Pp.h().f();
+        ArrayList<MoreBlockCollectionBean> pa = Pp.h().f();
         new MoreblockImporterDialog(this, pa, this).show();
     }
 
@@ -642,7 +617,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         y = -1;
         x = 0;
         int[] iArr = new int[2];
-        z = iArr;
         rs.getLocationOnScreen(iArr);
         Rs rs2 = rs.E;
         if (rs2 != null) {
@@ -1912,9 +1886,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
-        H = new DB(this, "P1");
+        DB h = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
-        k = findViewById(R.id.toolbar);
+        Toolbar k = findViewById(R.id.toolbar);
         setSupportActionBar(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -1940,7 +1914,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
         d.setTitle(stringExtra);
-        l = findViewById(R.id.palette_selector);
+        PaletteSelector l = findViewById(R.id.palette_selector);
         l.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         p = findViewById(R.id.dummy);
@@ -2010,11 +1984,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         } else {
             title = xB.b().a(getContext(), C, D);
         }
-        E = title;
+        String e1 = title;
 
-        o.a(E, D);
+        o.a(e1, D);
 
-        ArrayList<String> spec = FB.c(E);
+        ArrayList<String> spec = FB.c(e1);
         int blockId = 0;
         for (int i = 0; i < spec.size(); i++) {
             String specBit = spec.get(i);

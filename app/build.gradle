@@ -156,7 +156,7 @@ dependencies {
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {
-        new File("$projectDir/google-services.json").text = secrets;
+        new File("$projectDir/google-services.json").text = secrets
     }
     implementation platform("com.google.firebase:firebase-bom:31.2.1")
     implementation "com.google.firebase:firebase-crashlytics"
