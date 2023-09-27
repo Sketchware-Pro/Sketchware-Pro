@@ -2,6 +2,7 @@ package com.besome.sketch.lib.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,10 +39,10 @@ public class EasyDeleteEditText extends RelativeLayout {
     
     public final void a() {
         if (c.isEnabled() && c.hasFocus() && c.length() > 0) {
-            b.setVisibility(0);
+            b.setVisibility(View.VISIBLE);
         }
         else {
-            b.setVisibility(8);
+            b.setVisibility(View.GONE);
         }
     }
     
@@ -50,7 +51,7 @@ public class EasyDeleteEditText extends RelativeLayout {
         b = findViewById(R.id.img_delete);
         c = findViewById(R.id.easy_ed_input);
         d = findViewById(R.id.easy_ti_input);
-        b.setVisibility(8);
+        b.setVisibility(View.GONE);
         b.setOnClickListener(new VA(this));
         c.addTextChangedListener(new WA(this));
         c.setOnFocusChangeListener(new XA(this));
