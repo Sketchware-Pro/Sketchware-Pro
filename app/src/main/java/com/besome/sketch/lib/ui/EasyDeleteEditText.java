@@ -1,11 +1,8 @@
 package com.besome.sketch.lib.ui;
 
 import android.content.Context;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.view.View$OnClickListener;
-import android.view.View$OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -48,14 +45,14 @@ public class EasyDeleteEditText extends RelativeLayout {
     }
     
     public final void a(final Context a) {
-        wB.a(this.a = a, (ViewGroup)this, 2131427412);
-        b = (ImageView)findViewById(2131231132);
-        c = (EditText)findViewById(2131230983);
-        d = (TextInputLayout)findViewById(2131230984);
+        wB.a(this.a = a, this, 2131427412);
+        b = findViewById(2131231132);
+        c = findViewById(2131230983);
+        d = findViewById(2131230984);
         b.setVisibility(8);
-        b.setOnClickListener((View$OnClickListener)new VA(this));
-        c.addTextChangedListener((TextWatcher)new WA(this));
-        c.setOnFocusChangeListener((View$OnFocusChangeListener)new XA(this));
+        b.setOnClickListener(new VA(this));
+        c.addTextChangedListener(new WA(this));
+        c.setOnFocusChangeListener(new XA(this));
         a();
     }
     
@@ -68,6 +65,6 @@ public class EasyDeleteEditText extends RelativeLayout {
     }
     
     public void setHint(final String hint) {
-        d.setHint((CharSequence)hint);
+        d.setHint(hint);
     }
 }
