@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import a.a.a.VA;
 import a.a.a.WA;
@@ -45,10 +46,10 @@ public class EasyDeleteEditText extends RelativeLayout {
     }
     
     public final void a(final Context a) {
-        wB.a(this.a = a, this, 2131427412);
-        b = findViewById(2131231132);
-        c = findViewById(2131230983);
-        d = findViewById(2131230984);
+        wB.a(this.a = a, this, R.layout.easy_delete_edittext);
+        b = findViewById(R.id.img_delete);
+        c = findViewById(R.id.easy_ed_input);
+        d = findViewById(R.id.easy_ti_input);
         b.setVisibility(8);
         b.setOnClickListener(new VA(this));
         c.addTextChangedListener(new WA(this));
