@@ -1,17 +1,19 @@
 package com.besome.sketch.lib.ui;
 
-import android.view.ViewGroup;
-import a.a.a.wB;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class MiddleLineHeader extends LinearLayout
-{
+import a.a.a.wB;
+
+import com.sketchware.remod.R;
+
+public class MiddleLineHeader extends LinearLayout {
     public ImageView a;
     public TextView b;
     public View c;
@@ -27,7 +29,7 @@ public class MiddleLineHeader extends LinearLayout
     }
     
     public void a() {
-        a(1, 16, getContext().getResources().getColor(2131034284));
+        a(1, 16, getContext().getResources().getColor(R.color.scolor_blue_01));
     }
     
     public void a(final int n, final int n2, final int textColor) {
@@ -37,10 +39,10 @@ public class MiddleLineHeader extends LinearLayout
     }
     
     public final void a(final Context context) {
-        wB.a(context, this, 2131427572);
-        a = findViewById(2131231079);
-        b = findViewById(2131231081);
-        c = findViewById(2131231080);
+        wB.a(context, this, R.layout.middle_line_header);
+        a = findViewById(R.id.header_icon);
+        b = findViewById(R.id.header_name);
+        c = findViewById(R.id.header_line);
         a();
     }
 }
