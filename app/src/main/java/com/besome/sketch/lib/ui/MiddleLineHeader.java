@@ -20,29 +20,25 @@ public class MiddleLineHeader extends LinearLayout {
     
     public MiddleLineHeader(final Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
     
     public MiddleLineHeader(final Context context, final AttributeSet set) {
         super(context, set);
-        a(context);
+        initialize(context);
     }
     
-    public void a() {
-        a(1, 16, getContext().getResources().getColor(R.color.scolor_blue_01));
-    }
-    
-    public void a(final int n, final int n2, final int textColor) {
-        b.setTypeface((Typeface)null, n);
-        b.setTextSize(2, (float)n2);
+    public void updateTextViewAppearance(final int typeface, final int fontSize, final int textColor) {
+        b.setTypeface((Typeface)null, typeface);
+        b.setTextSize(2, (float)fontSize);
         b.setTextColor(textColor);
     }
     
-    public final void a(final Context context) {
+    public final void initialize(final Context context) {
         wB.a(context, this, R.layout.middle_line_header);
         a = findViewById(R.id.header_icon);
         b = findViewById(R.id.header_name);
         c = findViewById(R.id.header_line);
-        a();
+        updateTextViewAppearance(1, 16, getContext().getResources().getColor(R.color.scolor_blue_01));
     }
 }
