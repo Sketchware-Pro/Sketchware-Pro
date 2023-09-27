@@ -1,6 +1,8 @@
 package com.besome.sketch.lib.ui;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
-import a.a.a.VA;
-import a.a.a.WA;
 import a.a.a.wB;
-import a.a.a.XA;
 
 public class EasyDeleteEditText extends RelativeLayout {
     public Context a;
@@ -52,9 +51,27 @@ public class EasyDeleteEditText extends RelativeLayout {
         c = findViewById(R.id.easy_ed_input);
         d = findViewById(R.id.easy_ti_input);
         b.setVisibility(View.GONE);
-        b.setOnClickListener(new VA(this));
-        c.addTextChangedListener(new WA(this));
-        c.setOnFocusChangeListener(new XA(this));
+        b.setOnClickListener((view) -> {
+            c.setText("");
+        });
+        c.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(final Editable editable) {}
+            
+            @Override
+            public void beforeTextChanged(final CharSequence charSequence, final int n, final int n2, final int n3) {}
+            
+            @Override
+            public void onTextChanged(final CharSequence charSequence, final int n, final int n2, final int n3) {
+                a();
+            }
+        });
+        c.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(final View view, final boolean b) {
+                a();
+            }
+        });
         a();
     }
     
