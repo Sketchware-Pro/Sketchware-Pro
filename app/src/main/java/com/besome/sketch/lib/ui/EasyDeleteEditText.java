@@ -1,19 +1,21 @@
 package com.besome.sketch.lib.ui;
 
-import android.view.View$OnFocusChangeListener;
-import a.a.a.XA;
+import android.content.Context;
 import android.text.TextWatcher;
-import a.a.a.WA;
-import android.view.View$OnClickListener;
-import a.a.a.VA;
-import android.view.ViewGroup;
-import a.a.a.wB;
 import android.util.AttributeSet;
-import com.google.android.material.textfield.TextInputLayout;
+import android.view.ViewGroup;
+import android.view.View$OnClickListener;
+import android.view.View$OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.content.Context;
 import android.widget.RelativeLayout;
+
+import com.google.android.material.textfield.TextInputLayout;
+
+import a.a.a.VA;
+import a.a.a.WA;
+import a.a.a.wB;
+import a.a.a.XA;
 
 public class EasyDeleteEditText extends RelativeLayout {
     public Context a;
