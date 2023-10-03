@@ -21,6 +21,7 @@ public class ItemAdView extends LinearLayout implements sy {
     private Paint paint;
     private float paddingFactor;
     private ImageView imgView;
+    private final Rect rect = new Rect();
 
     public ItemAdView(Context context) {
         super(context);
@@ -59,7 +60,8 @@ public class ItemAdView extends LinearLayout implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+            canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
     }
