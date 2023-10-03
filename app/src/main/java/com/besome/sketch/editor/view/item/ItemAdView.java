@@ -42,10 +42,12 @@ public class ItemAdView extends LinearLayout implements sy {
         setGravity(17);
     }
 
+    @Override
     public ViewBean getBean() {
         return a;
     }
 
+    @Override
     public boolean getFixed() {
         return c;
     }
@@ -54,6 +56,7 @@ public class ItemAdView extends LinearLayout implements sy {
         return b;
     }
 
+    @Override
     public void onDraw(Canvas var1) {
         if (b) {
             var1.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
@@ -110,6 +113,7 @@ public class ItemAdView extends LinearLayout implements sy {
 
     }
 
+    @Override
     public void setBean(ViewBean var1) {
         a = var1;
     }
@@ -118,12 +122,13 @@ public class ItemAdView extends LinearLayout implements sy {
         c = var1;
     }
 
+    @Override
     public void setPadding(int var1, int var2, int var3, int var4) {
-        float var5 = var1;
         float var6 = e;
         super.setPadding((int) (var5 * var6), (int) (var2 * var6), (int) (var3 * var6), (int) (var4 * var6));
     }
 
+    @Override
     public void setSelection(boolean var1) {
         b = var1;
         invalidate();
