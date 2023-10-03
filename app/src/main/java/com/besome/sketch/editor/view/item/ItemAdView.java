@@ -15,122 +15,94 @@ import a.a.a.wB;
 
 public class ItemAdView extends LinearLayout implements sy {
 
-    public ViewBean a;
-    public boolean b;
-    public boolean c;
-    public Paint d;
-    public float e;
-    public ImageView f;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean isFixed;
+    private Paint paint;
+    private float paddingFactor;
+    private ImageView imgView;
 
-    public ItemAdView(Context var1) {
-        super(var1);
-        a(var1);
+    public ItemAdView(Context context) {
+        super(context);
+        initialize(context);
     }
 
-    public void a(Context var1) {
-        e = wB.a(var1, 1.0F);
-        d = new Paint(1);
-        d.setColor(-1785080368);
+    private void initialize(Context context) {
+        paddingFactor = wB.a(context, 1.0F);
+        paint = new Paint(1);
+        paint.setColor(-1785080368);
         setDrawingCacheEnabled(true);
-        f = new ImageView(getContext());
-        LinearLayout.LayoutParams var2 = new LinearLayout.LayoutParams(-1, -2);
-        f.setLayoutParams(var2);
-        f.setImageResource(2131165302);
-        f.setScaleType(ScaleType.FIT_XY);
-        f.setPadding(0, 0, 0, 0);
-        addView(f);
+        imgView = new ImageView(getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, -2);
+        imgView.setLayoutParams(layoutParams);
+        imgView.setImageResource(2131165302);
+        imgView.setScaleType(ScaleType.FIT_XY);
+        imgView.setPadding(0, 0, 0, 0);
+        addView(imgView);
         setGravity(17);
     }
 
     @Override
     public ViewBean getBean() {
-        return a;
+        return viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return c;
+        return isFixed;
     }
 
     public boolean getSelection() {
-        return b;
+        return hasSelection;
     }
 
     @Override
-    public void onDraw(Canvas var1) {
-        if (b) {
-            var1.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
+    public void onDraw(Canvas canvas) {
+        if (hasSelection) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
-
-        super.onDraw(var1);
+        super.onDraw(canvas);
     }
 
-    public void setAdSize(String var1) {
-        byte var2;
-        label38:
-        {
-            switch (var1) {
-                case "LARGE_BANNER":
-                    var2 = 3;
-                    break label38;
-                case "SMART_BANNER":
-                    var2 = 1;
-                    break label38;
-                case "MEDIUM_RECTANGLE":
-                    var2 = 2;
-                    break label38;
-                case "BANNER":
-                    var2 = 0;
-                    break label38;
+    public void setAdSize(String adSize) {
+        switch (adSize) {
+            case "BANNER", "SMART_BANNER" -> {
+                imgView.setImageResource(2131165302);
+                imgView.getLayoutParams().width = (int) (paddingFactor * 320.0F);
+                imgView.getLayoutParams().height = (int) (paddingFactor * 50.0F);
             }
-
-            var2 = -1;
-        }
-
-        if (var2 != 0) {
-            if (var2 != 1) {
-                if (var2 != 2) {
-                    if (var2 == 3) {
-                        f.setImageResource(2131165303);
-                        f.getLayoutParams().width = (int) (e * 320.0F);
-                        f.getLayoutParams().height = (int) (e * 100.0F);
-                    }
-                } else {
-                    f.setImageResource(2131165304);
-                    f.getLayoutParams().width = (int) (e * 300.0F);
-                    f.getLayoutParams().height = (int) (e * 250.0F);
-                }
-            } else {
-                f.setImageResource(2131165302);
-                f.getLayoutParams().width = (int) (e * 320.0F);
-                f.getLayoutParams().height = (int) (e * 50.0F);
+            case "MEDIUM_RECTANGLE" -> {
+                imgView.setImageResource(2131165304);
+                imgView.getLayoutParams().width = (int) (paddingFactor * 300.0F);
+                imgView.getLayoutParams().height = (int) (paddingFactor * 250.0F);
             }
-        } else {
-            f.setImageResource(2131165302);
-            f.getLayoutParams().width = (int) (e * 320.0F);
-            f.getLayoutParams().height = (int) (e * 50.0F);
+            case "LARGE_BANNER" -> {
+                imgView.setImageResource(2131165303);
+                imgView.getLayoutParams().width = (int) (paddingFactor * 320.0F);
+                imgView.getLayoutParams().height = (int) (paddingFactor * 100.0F);
+            }
         }
-
     }
 
     @Override
-    public void setBean(ViewBean var1) {
-        a = var1;
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
     }
 
-    public void setFixed(boolean var1) {
-        c = var1;
-    }
-
-    @Override
-    public void setPadding(int var1, int var2, int var3, int var4) {
-        float var6 = e;
-        super.setPadding((int) (var5 * var6), (int) (var2 * var6), (int) (var3 * var6), (int) (var4 * var6));
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
     @Override
-    public void setSelection(boolean var1) {
-        b = var1;
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(
+                (int) (left * paddingFactor), (int) (top * paddingFactor),
+                (int) (right * paddingFactor), (int) (bottom * paddingFactor));
+    }
+
+    @Override
+    public void setSelection(boolean selection) {
+        hasSelection = selection;
         invalidate();
     }
 }
