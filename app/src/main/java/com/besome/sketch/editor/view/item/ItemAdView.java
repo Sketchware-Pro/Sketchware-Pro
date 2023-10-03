@@ -24,39 +24,39 @@ public class ItemAdView extends LinearLayout implements sy {
 
     public ItemAdView(Context var1) {
         super(var1);
-        this.a(var1);
+        a(var1);
     }
 
     public void a(Context var1) {
-        this.e = wB.a(var1, 1.0F);
-        this.d = new Paint(1);
-        this.d.setColor(-1785080368);
-        this.setDrawingCacheEnabled(true);
-        this.f = new ImageView(this.getContext());
+        e = wB.a(var1, 1.0F);
+        d = new Paint(1);
+        d.setColor(-1785080368);
+        setDrawingCacheEnabled(true);
+        f = new ImageView(getContext());
         LinearLayout.LayoutParams var2 = new LinearLayout.LayoutParams(-1, -2);
-        this.f.setLayoutParams(var2);
-        this.f.setImageResource(2131165302);
-        this.f.setScaleType(ScaleType.FIT_XY);
-        this.f.setPadding(0, 0, 0, 0);
-        this.addView(this.f);
-        this.setGravity(17);
+        f.setLayoutParams(var2);
+        f.setImageResource(2131165302);
+        f.setScaleType(ScaleType.FIT_XY);
+        f.setPadding(0, 0, 0, 0);
+        addView(f);
+        setGravity(17);
     }
 
     public ViewBean getBean() {
-        return this.a;
+        return a;
     }
 
     public boolean getFixed() {
-        return this.c;
+        return c;
     }
 
     public boolean getSelection() {
-        return this.b;
+        return b;
     }
 
     public void onDraw(Canvas var1) {
-        if (this.b) {
-            var1.drawRect(new Rect(0, 0, this.getMeasuredWidth(), this.getMeasuredHeight()), this.d);
+        if (b) {
+            var1.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), d);
         }
 
         super.onDraw(var1);
@@ -88,44 +88,44 @@ public class ItemAdView extends LinearLayout implements sy {
             if (var2 != 1) {
                 if (var2 != 2) {
                     if (var2 == 3) {
-                        this.f.setImageResource(2131165303);
-                        this.f.getLayoutParams().width = (int) (this.e * 320.0F);
-                        this.f.getLayoutParams().height = (int) (this.e * 100.0F);
+                        f.setImageResource(2131165303);
+                        f.getLayoutParams().width = (int) (e * 320.0F);
+                        f.getLayoutParams().height = (int) (e * 100.0F);
                     }
                 } else {
-                    this.f.setImageResource(2131165304);
-                    this.f.getLayoutParams().width = (int) (this.e * 300.0F);
-                    this.f.getLayoutParams().height = (int) (this.e * 250.0F);
+                    f.setImageResource(2131165304);
+                    f.getLayoutParams().width = (int) (e * 300.0F);
+                    f.getLayoutParams().height = (int) (e * 250.0F);
                 }
             } else {
-                this.f.setImageResource(2131165302);
-                this.f.getLayoutParams().width = (int) (this.e * 320.0F);
-                this.f.getLayoutParams().height = (int) (this.e * 50.0F);
+                f.setImageResource(2131165302);
+                f.getLayoutParams().width = (int) (e * 320.0F);
+                f.getLayoutParams().height = (int) (e * 50.0F);
             }
         } else {
-            this.f.setImageResource(2131165302);
-            this.f.getLayoutParams().width = (int) (this.e * 320.0F);
-            this.f.getLayoutParams().height = (int) (this.e * 50.0F);
+            f.setImageResource(2131165302);
+            f.getLayoutParams().width = (int) (e * 320.0F);
+            f.getLayoutParams().height = (int) (e * 50.0F);
         }
 
     }
 
     public void setBean(ViewBean var1) {
-        this.a = var1;
+        a = var1;
     }
 
     public void setFixed(boolean var1) {
-        this.c = var1;
+        c = var1;
     }
 
     public void setPadding(int var1, int var2, int var3, int var4) {
-        float var5 = (float) var1;
-        float var6 = this.e;
-        super.setPadding((int) (var5 * var6), (int) ((float) var2 * var6), (int) ((float) var3 * var6), (int) ((float) var4 * var6));
+        float var5 = var1;
+        float var6 = e;
+        super.setPadding((int) (var5 * var6), (int) (var2 * var6), (int) (var3 * var6), (int) (var4 * var6));
     }
 
     public void setSelection(boolean var1) {
-        this.b = var1;
-        this.invalidate();
+        b = var1;
+        invalidate();
     }
 }
