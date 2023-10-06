@@ -1,7 +1,5 @@
 package com.besome.sketch.projects;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,17 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
-
-import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.GB;
 import a.a.a.HB;
@@ -41,7 +30,6 @@ import a.a.a.UB;
 import a.a.a.VB;
 import a.a.a.Zx;
 import a.a.a.aB;
-import a.a.a.gB;
 import a.a.a.iB;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -50,12 +38,23 @@ import a.a.a.oB;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
+
 import mod.SketchwareUtil;
 import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
-public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
     private static final int REQUEST_CODE_PICK_ICON = 207;
@@ -69,7 +68,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private EditText projectName;
     private LinearLayout themeColorsContainer;
     private ImageView colorGuide;
-    private LinearLayout advancedSettingsContainer;
     private ImageView appIcon;
     private UB projectPackageNameValidator;
     private VB projectNameValidator;
@@ -122,17 +120,15 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.advanced_setting) {
-            showHideAdvancedSettings();
-        } else if (id == R.id.app_icon_layout) {
+        if (id == R.id.app_icon_layout) {
             showCustomIconOptions();
-        } else if (id == R.id.common_dialog_cancel_button) {
-            finish();
-        } else if (id == R.id.common_dialog_ok_button) {
+        } else if (id == R.id.ok_button) {
             mB.a(v);
             if (isInputValid()) {
                 new SaveProjectAsyncTask(getApplicationContext()).execute();
             }
+        } else if (id == R.id.cancel) {
+            finish();
         } else if (id == R.id.img_theme_color_help) {
             if (colorGuide.getVisibility() == View.VISIBLE) {
                 colorGuide.setVisibility(View.GONE);
@@ -152,16 +148,27 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myproject_setting);
+        
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.myprojects_list_menu_title_create_a_new_project);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                onBackPressed();
+            }
+        });
+        
         if (!j()) {
             finish();
         }
         sc_id = getIntent().getStringExtra("sc_id");
         updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
-        boolean expandAdvancedOptions = getIntent().getBooleanExtra("advanced_open", false);
 
         findViewById(R.id.contents).setOnClickListener(this);
         findViewById(R.id.app_icon_layout).setOnClickListener(this);
-        findViewById(R.id.advanced_setting).setOnClickListener(this);
         projectVersionCodeView = findViewById(R.id.ver_code);
         projectVersionCodeView.setOnClickListener(this);
         projectVersionNameView = findViewById(R.id.ver_name);
@@ -175,7 +182,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         projectAppName = findViewById(R.id.et_app_name);
         projectPackageName = findViewById(R.id.et_package_name);
         this.projectName = findViewById(R.id.et_project_name);
-        ((TextView) findViewById(R.id.tv_advanced_settings)).setText(Helper.getResString(R.string.myprojects_settings_title_advanced_settings));
         appIcon = findViewById(R.id.app_icon);
 
         projectAppNameValidator = new LB(getApplicationContext(), appName);
@@ -193,10 +199,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         themeColorsContainer = findViewById(R.id.layout_theme_colors);
         findViewById(R.id.img_theme_color_help).setOnClickListener(this);
         colorGuide = findViewById(R.id.img_color_guide);
-        advancedSettingsContainer = findViewById(R.id.advanced_setting_layout);
         /* Save & Cancel buttons */
-        r.setOnClickListener(this);
-        s.setOnClickListener(this);
+        findViewById(R.id.ok_button).setOnClickListener(this);
+        findViewById(R.id.cancel).setOnClickListener(this);
 
         projectThemeColors[0] = getResources().getColor(R.color.color_accent);
         projectThemeColors[1] = getResources().getColor(R.color.color_primary);
@@ -204,7 +209,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         projectThemeColors[3] = getResources().getColor(R.color.color_control_highlight);
         projectThemeColors[4] = getResources().getColor(R.color.color_control_normal);
         for (int i = 0; i < themeColorKeys.length; i++) {
-            ThemeColorView colorView = new ThemeColorView(getApplicationContext(), i);
+            ThemeColorView colorView = new ThemeColorView(this, i);
             colorView.name.setText(themeColorLabels[i]);
             colorView.color.setBackgroundColor(Color.WHITE);
             themeColorsContainer.addView(colorView);
@@ -214,14 +219,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 }
             });
         }
-        /* Set the cancel button's label */
-        b(Helper.getResString(R.string.common_word_cancel));
-
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
-            e(Helper.getResString(R.string.myprojects_settings_actionbar_title_project_settings));
-            d(Helper.getResString(R.string.myprojects_settings_button_save));
-
             HashMap<String, Object> metadata = lC.b(sc_id);
             projectPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             this.projectName.setText(yB.c(metadata, "my_ws_name"));
@@ -244,9 +243,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             }
         } else {
             /* Set the dialog's title & create button label */
-            e(Helper.getResString(R.string.myprojects_settings_actionbar_title_new_projet));
-            d(Helper.getResString(R.string.myprojects_settings_button_create_app));
-
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
             if (sc_id == null || sc_id.equals("")) {
@@ -280,11 +276,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             }
         }
         syncThemeColors();
-
-        if (expandAdvancedOptions) {
-            advancedSettingsContainer.setVisibility(View.VISIBLE);
-            projectPackageName.requestFocus();
-        }
     }
 
     @Override
@@ -388,32 +379,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
-    }
-
-    private void showHideAdvancedSettings() {
-        if (!advancedSettingsContainer.isShown()) {
-            advancedSettingsContainer.setVisibility(View.VISIBLE);
-            gB.b(advancedSettingsContainer, 300, null);
-            return;
-        }
-        gB.a(advancedSettingsContainer, 300, new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                advancedSettingsContainer.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-        });
     }
 
     private void syncThemeColors() {
