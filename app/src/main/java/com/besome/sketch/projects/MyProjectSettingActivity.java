@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
@@ -50,7 +53,6 @@ import mod.SketchwareUtil;
 import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.ilyasse.AppUtils;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -239,7 +241,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         } else if (id == R.id.cancel) {
             finish();
         } else if (id == R.id.img_theme_color_help) {
-            AppUtils.animateLayoutChanges(binding.getRoot());
+            animateLayoutChanges(binding.getRoot());
             if (binding.imgColorGuide.getVisibility() == View.VISIBLE) {
                 binding.imgColorGuide.setVisibility(View.GONE);
             } else {
@@ -578,5 +580,11 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         protected String doInBackground(Void... voids) {
             return a(voids);
         }
+    }
+
+    private void animateLayoutChanges(View view) {
+        var autoTransition = new AutoTransition();
+        autoTransition.setDuration((short) 200);
+        TransitionManager.beginDelayedTransition((ViewGroup) view, autoTransition);
     }
 }
