@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/contents"
     android:layout_width="match_parent"
@@ -23,7 +22,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <LinearLayout
@@ -35,7 +34,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -72,13 +71,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                app:startIconDrawable="@drawable/ic_android">
+                app:startIconDrawable="@drawable/ic_android_24">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@id/et_app_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -86,13 +87,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:startIconDrawable="@drawable/ic_package">
+                app:startIconDrawable="@drawable/ic_package_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@id/et_package_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center"
+                    android:imeOptions="actionNext"
                     android:inputType="text"
                     android:textColor="#ff535353"
                     android:textColorHint="#ff8e8e8e"
@@ -104,56 +106,73 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:startIconDrawable="@drawable/ic_abc">
+                app:startIconDrawable="@drawable/ic_interests_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@id/et_project_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardPreventCornerOverlap="true"
-                app:cardBackgroundColor="@android:color/transparent"
+                android:layout_marginTop="14dp"
                 android:clickable="false"
                 android:focusable="false"
-                android:layout_marginTop="8dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:padding="8dp">
+
                         <HorizontalScrollView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fadingEdge="horizontal"
                             android:fillViewport="true"
                             android:paddingTop="4dp"
-                            android:paddingBottom="4dp">
+                            android:paddingBottom="4dp"
+                            android:requiresFadingEdge="horizontal"
+                            android:scrollbars="none">
 
                             <LinearLayout
                                 android:id="@id/layout_theme_colors"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal" />
                         </HorizontalScrollView>
+
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="#ffc6c6c6" />
 
                         <ImageView
                             android:id="@id/img_theme_color_help"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:layout_marginLeft="8dp"
-                            android:padding="4dp"
-                            android:src="@drawable/help_96_blue" />
+                            android:paddingVertical="6dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_help_24" />
                     </LinearLayout>
 
                     <ImageView
@@ -169,32 +188,33 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardPreventCornerOverlap="true"
-                app:cardBackgroundColor="@android:color/transparent"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="30dp"
                 android:clickable="false"
                 android:focusable="false"
-                android:layout_marginTop="8dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:padding="8dp">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="6dp"
                         android:contentDescription="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/code_96" />
+                        android:src="@drawable/ic_version_control_24" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="8dp"
-                        android:orientation="horizontal">
+                        android:layout_marginEnd="24dp"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
 
                         <TextView
                             android:id="@id/ver_code"

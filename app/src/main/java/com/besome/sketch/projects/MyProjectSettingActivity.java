@@ -14,13 +14,21 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.MyprojectSettingBinding;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.GB;
 import a.a.a.HB;
@@ -38,37 +46,20 @@ import a.a.a.oB;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
-
 import mod.SketchwareUtil;
 import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
+
+    public MyprojectSettingBinding binding;
 
     private static final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
     private static final int REQUEST_CODE_PICK_ICON = 207;
     private final String[] themeColorKeys = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
     private final String[] themeColorLabels = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
     private final int[] projectThemeColors = new int[themeColorKeys.length];
-    public TextView projectVersionCodeView;
-    public TextView projectVersionNameView;
-    private EditText projectAppName;
-    private EditText projectPackageName;
-    private EditText projectName;
-    private LinearLayout themeColorsContainer;
-    private ImageView colorGuide;
-    private ImageView appIcon;
     private UB projectPackageNameValidator;
     private VB projectNameValidator;
     private LB projectAppNameValidator;
@@ -79,6 +70,123 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private int projectVersionNameSecondPart;
     private boolean shownPackageNameChangeWarning;
     private String sc_id;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = MyprojectSettingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.toolbar.setTitle(R.string.myprojects_list_menu_title_create_a_new_project);
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        binding.toolbar.setNavigationOnClickListener(arg0 -> onBackPressed());
+
+        if (!isStoragePermissionGranted()) finish();
+
+        sc_id = getIntent().getStringExtra("sc_id");
+        updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
+
+        binding.contents.setOnClickListener(this);
+        binding.appIconLayout.setOnClickListener(this);
+        binding.verCode.setOnClickListener(this);
+        binding.verName.setOnClickListener(this);
+        binding.etAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
+        binding.etPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
+        binding.etProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
+
+        projectAppNameValidator = new LB(getApplicationContext(), binding.tiAppName);
+        projectPackageNameValidator = new UB(getApplicationContext(), binding.tiPackageName);
+        projectNameValidator = new VB(getApplicationContext(), binding.tiProjectName);
+        binding.etPackageName.setPrivateImeOptions("defaultInputmode=english;");
+        binding.etProjectName.setPrivateImeOptions("defaultInputmode=english;");
+        binding.tiPackageName.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
+                    showPackageNameChangeWarning();
+                }
+            }
+        });
+        binding.imgThemeColorHelp.setOnClickListener(this);
+        /* Save & Cancel buttons */
+        binding.okButton.setOnClickListener(this);
+        binding.cancel.setOnClickListener(this);
+
+        projectThemeColors[0] = getResources().getColor(R.color.color_accent);
+        projectThemeColors[1] = getResources().getColor(R.color.color_primary);
+        projectThemeColors[2] = getResources().getColor(R.color.color_primary_dark);
+        projectThemeColors[3] = getResources().getColor(R.color.color_control_highlight);
+        projectThemeColors[4] = getResources().getColor(R.color.color_control_normal);
+        for (int i = 0; i < themeColorKeys.length; i++) {
+            ThemeColorView colorView = new ThemeColorView(this, i);
+            colorView.name.setText(themeColorLabels[i]);
+            colorView.color.setBackgroundColor(Color.WHITE);
+            binding.layoutThemeColors.addView(colorView);
+            colorView.setOnClickListener(v -> {
+                if (!mB.a()) {
+                    pickColor((Integer) v.getTag());
+                }
+            });
+        }
+        if (updatingExistingProject) {
+            /* Set the dialog's title & save button label */
+            HashMap<String, Object> metadata = lC.b(sc_id);
+            binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
+            binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));
+            binding.etAppName.setText(yB.c(metadata, "my_app_name"));
+            projectVersionCode = parseInt(yB.c(metadata, "sc_ver_code"), 1);
+            parseVersion(yB.c(metadata, "sc_ver_name"));
+            binding.verCode.setText(yB.c(metadata, "sc_ver_code"));
+            binding.verName.setText(yB.c(metadata, "sc_ver_name"));
+            projectHasCustomIcon = yB.a(metadata, "custom_icon");
+            if (projectHasCustomIcon) {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    binding.appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
+                } else {
+                    binding.appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
+                }
+            }
+
+            for (int i = 0; i < themeColorKeys.length; i++) {
+                projectThemeColors[i] = yB.a(metadata, themeColorKeys[i], projectThemeColors[i]);
+            }
+        } else {
+            /* Set the dialog's title & create button label */
+            String newProjectName = getIntent().getStringExtra("my_ws_name");
+            String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
+            if (sc_id == null || sc_id.equals("")) {
+                sc_id = lC.b();
+                newProjectName = lC.c();
+                newProjectPackageName = "com.my." + newProjectName.toLowerCase();
+            }
+            binding.etPackageName.setText(newProjectPackageName);
+            binding.etProjectName.setText(newProjectName);
+            binding.etAppName.setText(getIntent().getStringExtra("my_app_name"));
+
+            String newProjectVersionCode = getIntent().getStringExtra("sc_ver_code");
+            String newProjectVersionName = getIntent().getStringExtra("sc_ver_name");
+            if (newProjectVersionCode == null || newProjectVersionCode.isEmpty()) {
+                newProjectVersionCode = "1";
+            }
+            if (newProjectVersionName == null || newProjectVersionName.isEmpty()) {
+                newProjectVersionName = "1.0";
+            }
+            projectVersionCode = parseInt(newProjectVersionCode, 1);
+            parseVersion(newProjectVersionName);
+            binding.verCode.setText(newProjectVersionCode);
+            binding.verName.setText(newProjectVersionName);
+            projectHasCustomIcon = getIntent().getBooleanExtra("custom_icon", false);
+            if (projectHasCustomIcon) {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    binding.appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
+                } else {
+                    binding.appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
+                }
+            }
+        }
+        syncThemeColors();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,7 +204,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 try {
                     int attributeInt = new ExifInterface(filename).getAttributeInt("Orientation", -1);
                     Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
-                    appIcon.setImageBitmap(newBitmap);
+                    binding.appIcon.setImageBitmap(newBitmap);
                     saveBitmapTo(newBitmap, getCustomIconPath());
                     projectHasCustomIcon = true;
                 } catch (Exception e) {
@@ -108,7 +216,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             if (requestCode == REQUEST_CODE_PICK_CROPPED_ICON && resultCode == RESULT_OK && extras != null) {
                 try {
                     Bitmap bitmap = extras.getParcelable("data");
-                    appIcon.setImageBitmap(bitmap);
+                    binding.appIcon.setImageBitmap(bitmap);
                     projectHasCustomIcon = true;
                     saveBitmapTo(bitmap, getCustomIconPath());
                 } catch (Exception ignored) {
@@ -130,10 +238,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         } else if (id == R.id.cancel) {
             finish();
         } else if (id == R.id.img_theme_color_help) {
-            if (colorGuide.getVisibility() == View.VISIBLE) {
-                colorGuide.setVisibility(View.GONE);
+            if (binding.imgColorGuide.getVisibility() == View.VISIBLE) {
+                binding.imgColorGuide.setVisibility(View.GONE);
             } else {
-                colorGuide.setVisibility(View.VISIBLE);
+                binding.imgColorGuide.setVisibility(View.VISIBLE);
             }
         } else if (id == R.id.ver_code || id == R.id.ver_name) {
             if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
@@ -145,144 +253,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.myproject_setting);
-        
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.myprojects_list_menu_title_create_a_new_project);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                onBackPressed();
-            }
-        });
-        
-        if (!j()) {
-            finish();
-        }
-        sc_id = getIntent().getStringExtra("sc_id");
-        updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
-
-        findViewById(R.id.contents).setOnClickListener(this);
-        findViewById(R.id.app_icon_layout).setOnClickListener(this);
-        projectVersionCodeView = findViewById(R.id.ver_code);
-        projectVersionCodeView.setOnClickListener(this);
-        projectVersionNameView = findViewById(R.id.ver_name);
-        projectVersionNameView.setOnClickListener(this);
-        TextInputLayout appName = findViewById(R.id.ti_app_name);
-        TextInputLayout packageName = findViewById(R.id.ti_package_name);
-        TextInputLayout projectName = findViewById(R.id.ti_project_name);
-        appName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
-        packageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
-        projectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
-        projectAppName = findViewById(R.id.et_app_name);
-        projectPackageName = findViewById(R.id.et_package_name);
-        this.projectName = findViewById(R.id.et_project_name);
-        appIcon = findViewById(R.id.app_icon);
-
-        projectAppNameValidator = new LB(getApplicationContext(), appName);
-        projectPackageNameValidator = new UB(getApplicationContext(), packageName);
-        projectNameValidator = new VB(getApplicationContext(), projectName);
-        projectPackageName.setPrivateImeOptions("defaultInputmode=english;");
-        this.projectName.setPrivateImeOptions("defaultInputmode=english;");
-        projectPackageName.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
-                    showPackageNameChangeWarning();
-                }
-            }
-        });
-        themeColorsContainer = findViewById(R.id.layout_theme_colors);
-        findViewById(R.id.img_theme_color_help).setOnClickListener(this);
-        colorGuide = findViewById(R.id.img_color_guide);
-        /* Save & Cancel buttons */
-        findViewById(R.id.ok_button).setOnClickListener(this);
-        findViewById(R.id.cancel).setOnClickListener(this);
-
-        projectThemeColors[0] = getResources().getColor(R.color.color_accent);
-        projectThemeColors[1] = getResources().getColor(R.color.color_primary);
-        projectThemeColors[2] = getResources().getColor(R.color.color_primary_dark);
-        projectThemeColors[3] = getResources().getColor(R.color.color_control_highlight);
-        projectThemeColors[4] = getResources().getColor(R.color.color_control_normal);
-        for (int i = 0; i < themeColorKeys.length; i++) {
-            ThemeColorView colorView = new ThemeColorView(this, i);
-            colorView.name.setText(themeColorLabels[i]);
-            colorView.color.setBackgroundColor(Color.WHITE);
-            themeColorsContainer.addView(colorView);
-            colorView.setOnClickListener(v -> {
-                if (!mB.a()) {
-                    pickColor((Integer) v.getTag());
-                }
-            });
-        }
-        if (updatingExistingProject) {
-            /* Set the dialog's title & save button label */
-            HashMap<String, Object> metadata = lC.b(sc_id);
-            projectPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
-            this.projectName.setText(yB.c(metadata, "my_ws_name"));
-            projectAppName.setText(yB.c(metadata, "my_app_name"));
-            projectVersionCode = parseInt(yB.c(metadata, "sc_ver_code"), 1);
-            parseVersion(yB.c(metadata, "sc_ver_name"));
-            projectVersionCodeView.setText(yB.c(metadata, "sc_ver_code"));
-            projectVersionNameView.setText(yB.c(metadata, "sc_ver_name"));
-            projectHasCustomIcon = yB.a(metadata, "custom_icon");
-            if (projectHasCustomIcon) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
-                } else {
-                    appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
-                }
-            }
-
-            for (int i = 0; i < themeColorKeys.length; i++) {
-                projectThemeColors[i] = yB.a(metadata, themeColorKeys[i], projectThemeColors[i]);
-            }
-        } else {
-            /* Set the dialog's title & create button label */
-            String newProjectName = getIntent().getStringExtra("my_ws_name");
-            String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
-            if (sc_id == null || sc_id.equals("")) {
-                sc_id = lC.b();
-                newProjectName = lC.c();
-                newProjectPackageName = "com.my." + newProjectName.toLowerCase();
-            }
-            projectPackageName.setText(newProjectPackageName);
-            this.projectName.setText(newProjectName);
-            projectAppName.setText(getIntent().getStringExtra("my_app_name"));
-
-            String newProjectVersionCode = getIntent().getStringExtra("sc_ver_code");
-            String newProjectVersionName = getIntent().getStringExtra("sc_ver_name");
-            if (newProjectVersionCode == null || newProjectVersionCode.isEmpty()) {
-                newProjectVersionCode = "1";
-            }
-            if (newProjectVersionName == null || newProjectVersionName.isEmpty()) {
-                newProjectVersionName = "1.0";
-            }
-            projectVersionCode = parseInt(newProjectVersionCode, 1);
-            parseVersion(newProjectVersionName);
-            projectVersionCodeView.setText(newProjectVersionCode);
-            projectVersionNameView.setText(newProjectVersionName);
-            projectHasCustomIcon = getIntent().getBooleanExtra("custom_icon", false);
-            if (projectHasCustomIcon) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
-                } else {
-                    appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
-                }
-            }
-        }
-        syncThemeColors();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
     }
@@ -322,7 +296,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         versionNameFirstPartPicker.setWrapSelectorWheel(false);
         versionNameSecondPartPicker.setWrapSelectorWheel(false);
 
-        int versionCode = Integer.parseInt(projectVersionCodeView.getText().toString());
+        int versionCode = Integer.parseInt(binding.verCode.getText().toString());
         int versionCodeMinimum = versionCode - 5;
         int versionNameFirstPartMinimum = 1;
         if (versionCodeMinimum <= 0) {
@@ -332,7 +306,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         versionCodePicker.setMaxValue(versionCode + 5);
         versionCodePicker.setValue(versionCode);
 
-        String[] split = projectVersionNameView.getText().toString().split("\\.");
+        String[] split = binding.verName.getText().toString().split("\\.");
         AtomicInteger projectNewVersionNameFirstPart = new AtomicInteger(parseInt(split[0], 1));
         AtomicInteger projectNewVersionNameSecondPart = new AtomicInteger(parseInt(split[1], 0));
         if (projectNewVersionNameFirstPart.get() - 5 > 0) {
@@ -372,8 +346,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         });
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a()) {
-                projectVersionCodeView.setText(String.valueOf(versionCodePicker.getValue()));
-                projectVersionNameView.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
+                binding.verCode.setText(String.valueOf(versionCodePicker.getValue()));
+                binding.verName.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
                 dialog.dismiss();
             }
         });
@@ -383,7 +357,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private void syncThemeColors() {
         for (int i = 0; i < projectThemeColors.length; i++) {
-            ((ThemeColorView) themeColorsContainer.getChildAt(i)).color.setBackgroundColor(projectThemeColors[i]);
+            ((ThemeColorView) binding.layoutThemeColors.getChildAt(i)).color.setBackgroundColor(projectThemeColors[i]);
         }
     }
 
@@ -414,7 +388,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.a(R.drawable.default_icon);
         dialog.a(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
         dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
-            appIcon.setImageResource(R.drawable.default_icon);
+            binding.appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
             dialog.dismiss();
         });
@@ -487,17 +461,11 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_default)
         }, (dialog, which) -> {
             switch (which) {
-                case 0:
-                    pickCustomIcon();
-                    break;
-
-                case 1:
-                    pickAndCropCustomIcon();
-                    break;
-
-                case 2:
+                case 0 -> pickCustomIcon();
+                case 1 -> pickAndCropCustomIcon();
+                case 2 -> {
                     if (projectHasCustomIcon) showResetIconConfirmation();
-                    break;
+                }
             }
         });
         AlertDialog create = builder.create();
@@ -572,13 +540,13 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         public void b() {
             HashMap<String, Object> data = new HashMap<>();
             data.put("sc_id", sc_id);
-            data.put("my_sc_pkg_name", projectPackageName.getText().toString());
-            data.put("my_ws_name", projectName.getText().toString());
-            data.put("my_app_name", projectAppName.getText().toString());
+            data.put("my_sc_pkg_name", binding.etPackageName.getText().toString());
+            data.put("my_ws_name", binding.etProjectName.getText().toString());
+            data.put("my_app_name", binding.etAppName.getText().toString());
             if (updatingExistingProject) {
                 data.put("custom_icon", projectHasCustomIcon);
-                data.put("sc_ver_code", projectVersionCodeView.getText().toString());
-                data.put("sc_ver_name", projectVersionNameView.getText().toString());
+                data.put("sc_ver_code", binding.verCode.getText().toString());
+                data.put("sc_ver_name", binding.verName.getText().toString());
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
                 for (int i = 0; i < themeColorKeys.length; i++) {
                     data.put(themeColorKeys[i], projectThemeColors[i]);
@@ -587,8 +555,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             } else {
                 data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
                 data.put("custom_icon", projectHasCustomIcon);
-                data.put("sc_ver_code", projectVersionCodeView.getText().toString());
-                data.put("sc_ver_name", projectVersionNameView.getText().toString());
+                data.put("sc_ver_code", binding.verCode.getText().toString());
+                data.put("sc_ver_name", binding.verName.getText().toString());
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
                 for (int i = 0; i < themeColorKeys.length; i++) {
                     data.put(themeColorKeys[i], projectThemeColors[i]);
