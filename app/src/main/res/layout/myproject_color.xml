@@ -1,11 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/layout_theme_color"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
     android:gravity="center"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,11 +17,17 @@
         android:paddingTop="8dp"
         android:paddingRight="4dp"
         android:paddingBottom="4dp">
-
-        <TextView
-            android:id="@id/color"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardPreventCornerOverlap="true"
+            android:clickable="false"
+            android:focusable="false">
+            <TextView
+                android:id="@id/color"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@id/name"
