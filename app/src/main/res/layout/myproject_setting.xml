@@ -196,9 +196,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:padding="8dp">
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ver_code_holder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="?android:selectableItemBackground"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:id="@id/ver_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Version code"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/imageView2"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="6dp"
@@ -207,36 +235,30 @@
                         android:src="@drawable/ic_version_control_24" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/ver_name_holder"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:id="@id/ver_code"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="?android:selectableItemBackground"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="#ffc6c6c6" />
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="?android:selectableItemBackground"
+                        android:orientation="vertical"
+                        android:paddingVertical="12dp">
 
                         <TextView
                             android:id="@id/ver_name"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="?android:selectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="1"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Version name"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

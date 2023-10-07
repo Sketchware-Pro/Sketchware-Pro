@@ -91,8 +91,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
         binding.contents.setOnClickListener(this);
         binding.appIconLayout.setOnClickListener(this);
-        binding.verCode.setOnClickListener(this);
-        binding.verName.setOnClickListener(this);
+        binding.verCodeHolder.setOnClickListener(this);
+        binding.verNameHolder.setOnClickListener(this);
         binding.etAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
         binding.etPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
         binding.etProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
@@ -245,7 +245,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             } else {
                 binding.imgColorGuide.setVisibility(View.VISIBLE);
             }
-        } else if (id == R.id.ver_code || id == R.id.ver_name) {
+        } else if (id == R.id.ver_code_holder || id == R.id.ver_name_holder) {
             if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
                 new VersionDialog(this).show();
             } else {

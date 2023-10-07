@@ -21,7 +21,7 @@
                 android:id="@+id/version_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Version Code"
+                android:hint="Version code"
                 android:singleLine="true"
                 android:imeOptions="actionNext"
                 android:inputType="number"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:hint="Version Name"
+                android:hint="Version name"
                 android:imeOptions="actionNext"
                 android:inputType="numberDecimal"
                 android:textSize="13sp" />
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:hint="Version Name Extra"
+            android:hint="Version name extra"
             android:imeOptions="actionDone"
             android:textSize="13sp" />
     </com.google.android.material.textfield.TextInputLayout>
