@@ -199,7 +199,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         themeColorsContainer = findViewById(R.id.layout_theme_colors);
         findViewById(R.id.img_theme_color_help).setOnClickListener(this);
         colorGuide = findViewById(R.id.img_color_guide);
-        /* Save & Cancel buttons */
+        /* Save button */
         findViewById(R.id.ok_button).setOnClickListener(this);
         findViewById(R.id.cancel).setOnClickListener(this);
 
@@ -220,7 +220,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             });
         }
         if (updatingExistingProject) {
-            /* Set the dialog's title & save button label */
             HashMap<String, Object> metadata = lC.b(sc_id);
             projectPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             this.projectName.setText(yB.c(metadata, "my_ws_name"));
@@ -242,7 +241,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 projectThemeColors[i] = yB.a(metadata, themeColorKeys[i], projectThemeColors[i]);
             }
         } else {
-            /* Set the dialog's title & create button label */
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
             if (sc_id == null || sc_id.equals("")) {
