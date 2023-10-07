@@ -380,7 +380,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.design);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -536,7 +536,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -551,7 +551,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         outState.putString("sc_id", sc_id);
         projectFileSelector.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 

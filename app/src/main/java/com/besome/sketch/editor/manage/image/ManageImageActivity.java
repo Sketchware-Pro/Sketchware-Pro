@@ -72,7 +72,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_image);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -102,7 +102,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

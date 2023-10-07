@@ -16,7 +16,7 @@ import mod.hey.studios.util.Helper;
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {
 
     public boolean f(int i) {
-        boolean j = j();
+        boolean j = isStoragePermissionGranted();
         if (!j) {
             i(i);
         }
@@ -57,7 +57,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     }
 
     @Override
-    public boolean j() {
+    public boolean isStoragePermissionGranted() {
         return ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0;

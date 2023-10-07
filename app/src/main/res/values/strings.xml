@@ -1719,7 +1719,7 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_export_title_email_subject">%s APK file for installation</string>
     <string name="myprojects_fail_share">Share failed. Please try again later</string>
     <string name="myprojects_import_project_actionbar_title">Import Project</string>
-    <string name="myprojects_list_menu_title_create_a_new_project">New Project</string>
+    <string name="myprojects_list_menu_title_create_a_new_project">New project</string>
     <string name="myprojects_list_menu_title_delete">Delete</string>
     <string name="myprojects_list_menu_title_export">Export</string>
     <string name="myprojects_list_menu_title_publish">Publish</string>
