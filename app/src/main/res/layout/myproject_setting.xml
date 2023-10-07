@@ -276,6 +276,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
+            android:layout_marginEnd="7dp"
             android:text="@string/common_word_cancel"
             android:textSize="@dimen/text_size_button_material"
             app:backgroundTint="?colorAccent" />
@@ -284,7 +285,7 @@
             android:id="@+id/ok_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="7dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/myprojects_list_menu_title_create_a_new_project"
