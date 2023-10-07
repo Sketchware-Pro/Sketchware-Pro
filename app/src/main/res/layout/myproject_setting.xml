@@ -3,7 +3,7 @@
     android:id="@id/contents"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffffff"
+    android:background="?android:colorBackground"
     android:orientation="vertical"
     android:paddingBottom="10dp">
 
@@ -34,7 +34,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="12dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -61,7 +62,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/myprojects_settings_description_change_icon"
-                    android:textColor="#ff606060"
                     android:textSize="11sp" />
             </LinearLayout>
 
@@ -96,8 +96,6 @@
                     android:gravity="start|center"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:textColor="#ff535353"
-                    android:textColorHint="#ff8e8e8e"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +127,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -224,7 +221,6 @@
                             android:background="?android:selectableItemBackground"
                             android:gravity="center"
                             android:text="1"
-                            android:textColor="#ff757575"
                             android:textSize="14sp" />
 
                         <View
@@ -240,7 +236,6 @@
                             android:background="?android:selectableItemBackground"
                             android:gravity="center"
                             android:text="1"
-                            android:textColor="#ff757575"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>

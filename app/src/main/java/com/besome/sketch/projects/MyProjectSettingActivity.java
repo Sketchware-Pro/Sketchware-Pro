@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import androidx.exifinterface.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
@@ -50,6 +50,7 @@ import mod.SketchwareUtil;
 import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.ilyasse.AppUtils;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -238,6 +239,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         } else if (id == R.id.cancel) {
             finish();
         } else if (id == R.id.img_theme_color_help) {
+            AppUtils.animateLayoutChanges(binding.getRoot());
             if (binding.imgColorGuide.getVisibility() == View.VISIBLE) {
                 binding.imgColorGuide.setVisibility(View.GONE);
             } else {
