@@ -89,6 +89,10 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
     }
 
+    public boolean j() {
+        return isStoragePermissionGranted();
+    }
+
     public void k() {
         if (lottieDialog != null && !lottieDialog.isShowing() && !isFinishing()) {
             lottieDialog.show();
