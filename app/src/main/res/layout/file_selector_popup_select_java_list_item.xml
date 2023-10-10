@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_toggle_list_view"
@@ -8,20 +9,22 @@
         android:id="@id/tv_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:textColor="#ff404040"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="?android:textColorPrimary"
+        tools:text="MainActivity.java" />
 
     <TextView
         android:id="@id/tv_linked_filename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:textColor="#ff757575"
         android:gravity="center_vertical"
-        android:textColor="#ff9a9a9a"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="main.xml" />
 </LinearLayout>
