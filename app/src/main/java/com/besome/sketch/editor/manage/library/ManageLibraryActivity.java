@@ -248,7 +248,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
@@ -318,7 +318,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

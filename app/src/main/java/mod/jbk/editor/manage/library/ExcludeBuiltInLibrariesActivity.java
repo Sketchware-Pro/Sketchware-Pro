@@ -63,7 +63,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
             return;
         }

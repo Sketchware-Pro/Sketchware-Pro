@@ -38,11 +38,14 @@ captures/
 .idea/libraries/
 .idea/modules/
 .idea/shelf/
+.idea/sonarlint/issuestore/
+.idea/sonarlint/securityhotspotstore/
 .idea/assetWizardSettings.xml
 .idea/compiler.xml
 .idea/deploymentTargetDropDown.xml
 .idea/discord.xml
 .idea/gradle.xml
+.idea/intellij-javadocs-4.0.1.xml
 .idea/kotlinc.xml
 .idea/misc.xml
 .idea/modules.xml

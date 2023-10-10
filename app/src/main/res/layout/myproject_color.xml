@@ -1,4 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/layout_theme_color"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -17,17 +19,25 @@
         android:paddingRight="4dp"
         android:paddingBottom="4dp">
 
-        <TextView
-            android:id="@id/color"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            app:cardPreventCornerOverlap="true">
+
+            <TextView
+                android:id="@id/color"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/scolor_black_01"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            tools:text="Black" />
     </LinearLayout>
 </LinearLayout>

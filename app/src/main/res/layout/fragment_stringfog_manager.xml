@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/rounded_bottom_sheet_slider" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="StringFog Manager"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/sw_pg_enabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="12dp"
+        android:checked="true"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="Activated"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_info_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
+            android:textColor="?colorControlNormal"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dismiss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Dismiss"
+        android:textColor="?colorSurfaceBright"
+        android:textSize="@dimen/text_size_button_material"
+        app:backgroundTint="?colorPrimary" />
+</LinearLayout>

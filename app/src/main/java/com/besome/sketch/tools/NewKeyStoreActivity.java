@@ -136,7 +136,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
@@ -202,7 +202,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

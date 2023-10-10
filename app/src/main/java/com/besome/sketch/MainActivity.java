@@ -123,7 +123,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     break;
 
                 case 212:
-                    if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
+                    if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && isStoragePermissionGranted()) {
                         projectsFragment.refreshProjectsList();
                     }
                     break;
@@ -190,7 +190,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         coordinator = findViewById(R.id.layout_coordinator);
 
-        boolean hasStorageAccess = j();
+        boolean hasStorageAccess = isStoragePermissionGranted();
         if (!hasStorageAccess) {
             showNoticeNeedStorageAccess();
         }
@@ -287,7 +287,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (freeMegabytes < 100 && freeMegabytes > 0) {
             showNoticeNotEnoughFreeStorageSpace();
         }
-        if (j() && storageAccessDenied != null && storageAccessDenied.isShown()) {
+        if (isStoragePermissionGranted() && storageAccessDenied != null && storageAccessDenied.isShown()) {
             storageAccessDenied.dismiss();
         }
         Bundle bundle = new Bundle();

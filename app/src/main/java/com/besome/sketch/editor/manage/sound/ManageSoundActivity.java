@@ -72,7 +72,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
         setContentView(R.layout.manage_sound);
@@ -103,7 +103,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

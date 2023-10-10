@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -401,7 +400,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -441,7 +440,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     @Override
     public void onResume() {
         super.onResume();
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
