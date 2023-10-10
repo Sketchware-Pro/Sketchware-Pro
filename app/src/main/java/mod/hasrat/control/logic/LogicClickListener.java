@@ -42,7 +42,6 @@ import mod.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.elfilibustero.sketch.lib.valid.VariableModifierValidator;
 import mod.elfilibustero.sketch.lib.valid.VariableTypeValidator;
-import mod.hasrat.dialog.SketchDialog;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.util.Helper;
 
@@ -131,7 +130,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(R.string.common_word_add), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), (d, which) -> {
             String variableModifier = modifier.getText().toString().trim();
             String variableType = type.getText().toString().trim();
             String variableName = name.getText().toString().trim();
@@ -172,19 +171,19 @@ public class LogicClickListener implements View.OnClickListener {
                 variable += " = " + variableInitializer;
             }
             logicEditor.b(6, variable.trim());
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
 
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         modifierLayout.requestFocus();
     }
 
     private void removeVariable() {
-        SketchDialog dialog = new SketchDialog(logicEditor);
-        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
-        dialog.setIcon(R.drawable.delete_96);
+        aB dialog = new aB(logicEditor);
+        dialog.b(Helper.getResString(R.string.logic_editor_title_remove_variable));
+        dialog.a(R.drawable.delete_96);
 
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
@@ -224,16 +223,16 @@ public class LogicClickListener implements View.OnClickListener {
             }
         }
 
-        dialog.setView(recyclerView);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), v -> {
+        dialog.a(recyclerView);
+        dialog.b(Helper.getResString(R.string.common_word_remove), (d, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.m(item.text);
                 }
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.a(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -259,7 +258,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(R.string.common_word_add), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), (d, which) -> {
             String variableType = type.getText().toString();
             String variableName = name.getText().toString();
 
@@ -285,13 +284,13 @@ public class LogicClickListener implements View.OnClickListener {
 
             if (validType && validName && validator.b()) {
                 logicEditor.a(4, variableType + " " + variableName + " = new ArrayList<>()");
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
 
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         typeLayout.requestFocus();
     }
 
@@ -326,15 +325,15 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.a(recyclerView);
-        dialog.b(Helper.getResString(R.string.common_word_remove), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_remove), (d, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.l(item.text);
                 }
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

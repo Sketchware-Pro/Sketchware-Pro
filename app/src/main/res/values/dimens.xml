@@ -22,7 +22,7 @@
     <dimen name="main_drawer_corners_radius">15dp</dimen>
     <dimen name="padding_edit_view">5dp</dimen>
     <dimen name="project_button_height">72dp</dimen>
-    <dimen name="project_item_elevation">2dp</dimen>
+    <dimen name="elevated_item_without_shadow_elevation">2dp</dimen>
     <dimen name="properties_row_height">24dp</dimen>
     <dimen name="subtitle_corner_radius">2dp</dimen>
     <dimen name="subtitle_outline_width">2dp</dimen>

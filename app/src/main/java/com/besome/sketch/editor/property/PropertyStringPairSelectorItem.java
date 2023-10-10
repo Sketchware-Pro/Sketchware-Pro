@@ -128,7 +128,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
             counter++;
         }
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
             int childCount1 = radioGroupContent.getChildCount();
             int counter1 = 0;
             while (true) {
@@ -145,9 +145,9 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, value);
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

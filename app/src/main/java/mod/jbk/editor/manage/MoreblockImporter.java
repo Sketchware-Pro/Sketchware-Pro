@@ -162,7 +162,7 @@ public class MoreblockImporter {
         aBVar.b(xB.b().a(activity, R.string.logic_more_block_title_add_variable_resource));
         aBVar.a(R.drawable.break_warning_96_red);
         aBVar.a(xB.b().a(activity, R.string.logic_more_block_desc_add_variable_resource));
-        aBVar.b(xB.b().a(activity, R.string.common_word_continue), v -> {
+        aBVar.b(xB.b().a(activity, R.string.common_word_continue), (d, which) -> {
             for (Pair<Integer, String> pair : toBeAddedVariables) {
                 eC eC = jC.a(sc_id);
                 eC.c(activityJavaName, pair.first, pair.second);
@@ -181,9 +181,9 @@ public class MoreblockImporter {
                 copyFontFromCollectionsToProject(bean.resName);
             }
             createEvent(moreBlock);
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(activity, R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -207,19 +207,19 @@ public class MoreblockImporter {
 
         ZB validator = new ZB(activity, customView.findViewById(R.id.ti_input), uq.b, uq.a(), new ArrayList<>(moreBlockNamesWithoutReturnTypes));
         dialog.a(customView);
-        dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
+        dialog.b(xB.b().a(activity, R.string.common_word_save), (d, which) -> {
             if (validator.b()) {
                 String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
                 moreBlock.spec = newName.getText().toString() + moreBlock.spec.substring(moreBlockName.length());
 
                 handleVariables(moreBlock);
                 mB.a(activity, newName);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> {
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), (d, which) -> {
             mB.a(activity, newName);
-            dialog.dismiss();
+            d.dismiss();
         });
         dialog.show();
     }

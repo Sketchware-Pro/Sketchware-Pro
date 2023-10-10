@@ -94,10 +94,10 @@ public class ProjectSettingsDialog {
                 useNewMaterialComponentsAppTheme
         };
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
             settings.setValues(preferences);
-            dialog.dismiss();
+            d.dismiss();
         });
         dialog.show();
     }
@@ -120,7 +120,6 @@ public class ProjectSettingsDialog {
 
         i.setText(hint);
         i.setChecked(v.equals("true"));
-        i.setTextColor(Color.BLACK);
         i.setPadding(
                 (int) getDip(4),
                 (int) getDip(8),
@@ -151,16 +150,7 @@ public class ProjectSettingsDialog {
         e.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        e.setPadding(
-                (int) getDip(4),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        e.setTextSize(16);
-        e.setTextColor(Color.BLACK);
         e.setHint(hint);
-        e.setHintTextColor(0xff607d8b);
         e.setText(settings.getValue(key, defaultValue));
         e.setTag(key);
         e.setInputType(inputType);

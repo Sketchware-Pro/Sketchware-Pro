@@ -1,6 +1,7 @@
 package com.besome.sketch.projects;
 
-import android.app.AlertDialog;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,12 +19,14 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.MyprojectSettingBinding;
 
@@ -348,14 +351,14 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 picker.setValue(projectVersionNameSecondPart);
             }
         });
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
             if (!mB.a()) {
                 binding.verCode.setText(String.valueOf(versionCodePicker.getValue()));
                 binding.verName.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -391,12 +394,12 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.b(Helper.getResString(R.string.common_word_settings));
         dialog.a(R.drawable.default_icon);
         dialog.a(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
-        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_reset), (d, which) -> {
             binding.appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -457,7 +460,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     }
 
     private void showCustomIconOptions() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(Helper.getResString(R.string.myprojects_settings_context_menu_title_choose));
         builder.setItems(new String[]{
                 Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
@@ -483,7 +486,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(R.drawable.break_warning_96_red);
         dialog.a(Helper.getResString(R.string.myprojects_settings_message_package_rename));
-        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

@@ -133,14 +133,14 @@ public class ViewEvents extends LinearLayout {
                     dialog.b("Confirm Delete");
                     dialog.a("Click on Confirm to delete the selected Event.");
 
-                    dialog.b(Helper.getResString(R.string.common_word_delete), del -> {
-                        dialog.dismiss();
+                    dialog.b(Helper.getResString(R.string.common_word_delete), (d, which) -> {
+                        d.dismiss();
                         EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
                         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
                         eventBean.isSelected = false;
                         eventAdapter.notifyItemChanged(position);
                     });
-                    dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+                    dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
                     dialog.show();
                     return true;
                 });

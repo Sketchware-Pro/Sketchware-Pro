@@ -63,7 +63,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
 
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_add), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), (d, which) -> {
             if (!nameValidator.b()) {
                 edName.requestFocus();
             } else if (!adUnitValidator.b()) {
@@ -73,10 +73,10 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 String id = edAdUnitId.getText().toString();
                 adUnitBeanArrayList.add(new AdUnitBean(id, name));
                 adUnitsAdapter.notifyItemInserted(adUnitBeanArrayList.size() - 1);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -85,13 +85,13 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_delete_adunit_title));
         dialog.a(R.drawable.delete_96);
         dialog.a(Helper.getResString(R.string.design_library_admob_dialog_confirm_delete_adunit));
-        dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), (d, which) -> {
             adUnitBeanArrayList.remove(position);
             adUnitsAdapter.notifyItemRemoved(position);
             bB.a(getContext(), Helper.getResString(R.string.common_message_complete_delete), 0).show();
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

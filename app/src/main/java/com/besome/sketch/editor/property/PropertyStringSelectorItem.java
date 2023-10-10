@@ -153,7 +153,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
 
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
             int childCount = radioGroupContent.getChildCount();
             int counter = 0;
             while (true) {
@@ -170,9 +170,9 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, value);
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 

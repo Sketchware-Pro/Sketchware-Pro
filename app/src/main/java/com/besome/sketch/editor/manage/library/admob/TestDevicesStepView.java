@@ -145,17 +145,17 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
         edDeviceId.setText(getCurrentDeviceId());
         edDeviceId.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(content);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_add), (d, which) -> {
             if (validator.b()) {
                 String deviceId = edDeviceId.getText().toString();
                 testDevices.add(new AdTestDeviceBean(deviceId));
                 adapter.notifyItemInserted(testDevices.size() - 1);
-                dialog.dismiss();
+                d.dismiss();
             } else {
                 edDeviceId.requestFocus();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -164,13 +164,13 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
         dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_test_device_title));
         dialog.a(R.drawable.delete_96);
         dialog.a(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_test_device));
-        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), (d, which) -> {
             testDevices.remove(index);
             adapter.notifyItemRemoved(index);
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 }

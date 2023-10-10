@@ -33,12 +33,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.aB;
 import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.lC;
 import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
-import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -230,9 +230,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     private void showProjectSortingDialog() {
-        SketchDialog dialog = new SketchDialog(requireActivity());
-        dialog.setTitle("Sort options");
-        dialog.setIcon(R.drawable.ic_sort_24);
+        aB dialog = new aB(requireContext());
+        dialog.b("Sort options");
         View root = wB.a(requireActivity(), R.layout.sort_project_dialog);
         RadioButton sortByName = root.findViewById(R.id.sortByName);
         RadioButton sortByID = root.findViewById(R.id.sortByID);
@@ -252,8 +251,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
             sortOrderDesc.setChecked(true);
         }
-        dialog.setView(root);
-        dialog.setPositiveButton("Save", v -> {
+        dialog.a(root);
+        dialog.b("Save", (d, which) -> {
             int sortValue = 0;
             if (sortByName.isChecked()) {
                 sortValue |= ProjectComparator.SORT_BY_NAME;
@@ -268,10 +267,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
             }
             preference.a("sortBy", sortValue, true);
-            dialog.dismiss();
+            d.dismiss();
             refreshProjectsList();
         });
-        dialog.setNegativeButton("Cancel", Helper.getDialogDismissListener(dialog));
+        dialog.a("Cancel", (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 }

@@ -33,7 +33,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
             dialog.a(R.drawable.break_warning_96_red);
             dialog.a(Helper.getResString(R.string.common_message_permission_storage));
-            dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
+            dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> {
                 if (!mB.a()) {
                     ActivityCompat.requestPermissions(this,
                             new String[]{
@@ -41,16 +41,16 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
                                     Manifest.permission.READ_EXTERNAL_STORAGE
                             },
                             i);
-                    dialog.dismiss();
+                    d.dismiss();
                 }
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+            dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> {
                 l();
-                dialog.dismiss();
+                d.dismiss();
             });
             dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             Sp.a = true;
         }
@@ -88,19 +88,19 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
             dialog.a(R.drawable.break_warning_96_red);
             dialog.a(Helper.getResString(R.string.common_message_permission_storage1));
-            dialog.b(Helper.getResString(R.string.common_word_settings), v -> {
+            dialog.b(Helper.getResString(R.string.common_word_settings), (d, which) -> {
                 if (!mB.a()) {
                     h(i);
-                    dialog.dismiss();
+                    d.dismiss();
                 }
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+            dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> {
                 m();
-                dialog.dismiss();
+                d.dismiss();
             });
             dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             Sp.a = true;
         }

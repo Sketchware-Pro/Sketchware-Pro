@@ -213,7 +213,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             }
         });
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
             if (chk_pty_all.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
                     int left = Integer.parseInt(et_left.getText().toString());
@@ -223,7 +223,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                     a(left, top, right, bottom);
                     if (valueChangeListener != null) {
                         valueChangeListener.a(key, new int[]{left, top, right, bottom});
-                        dialog.dismiss();
+                        d.dismiss();
                     }
                 }
             } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
@@ -234,11 +234,11 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 a(left, top, right, bottom);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, new int[]{left, top, right, bottom});
-                    dialog.dismiss();
+                    d.dismiss();
                 }
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 }

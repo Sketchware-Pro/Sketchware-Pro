@@ -297,7 +297,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_add), (d, which) -> {
             if (zb.b()) {
                 int i = 1;
                 int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -310,10 +310,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
 
                 a(i, editText.getText().toString());
-                aBVar.dismiss();
+                d.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -333,7 +333,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ((TextView) customView.findViewById(R.id.rb_map)).setText(xB.b().a(getContext(), R.string.logic_variable_type_map));
         ZB nameValidator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         dialog.a(customView);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_add), (d, which) -> {
             int variableType = 1;
             if (radioGroup.getCheckedRadioButtonId() == R.id.rb_boolean) {
                 variableType = 0;
@@ -347,10 +347,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             if (nameValidator.b()) {
                 b(variableType, editText.getText().toString());
-                dialog.dismiss();
+                d.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -369,7 +369,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e(list.second));
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_remove), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_remove), (d, which) -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -385,9 +385,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 i++;
             }
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -403,7 +403,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e);
         }
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_remove), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_remove), (d, which) -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -419,9 +419,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 i++;
             }
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -730,7 +730,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
 
         dialog.a(customView);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), (d, which) -> {
             int childCount = radioGroup.getChildCount();
             int i = 0;
             while (true) {
@@ -744,9 +744,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 i++;
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -766,7 +766,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), (dialogInterface, which) -> {
             String text = editText.getText().toString();
             emptyStringSetter:
             {
@@ -790,9 +790,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
 
             a(ss, text);
-            aBVar.dismiss();
+            dialogInterface.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (dialogInterface, which) -> Helper.getDialogDismissListener(dialogInterface));
         aBVar.show();
     }
 
@@ -1295,13 +1295,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(this, a2.findViewById(R.id.ti_input), Mp.h().g());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), (d, which) -> {
             if (nb.b()) {
                 a(editText.getText().toString(), rs);
-                aBVar.dismiss();
+                d.dismiss();
             }
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -1317,11 +1317,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), (d, which) -> {
             a(ss, editText.getText().toString());
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -1404,7 +1404,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
 
         dialog.a(customView);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), (d, which) -> {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -1412,9 +1412,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     break;
                 }
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -1448,11 +1448,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), (d, which) -> {
             a(ss, editText.getText().toString());
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -1535,15 +1535,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             i++;
         }
         dialog.a(a2);
-        dialog.configureDefaultButton("Code Editor", v -> {
+        dialog.configureDefaultButton("Code Editor", (d, which) -> {
             AsdAllEditor editor = new AsdAllEditor(this);
             editor.setCon(ss.getArgValue().toString());
             editor.show();
             editor.saveLis(this, ss, editor);
             editor.cancelLis(this, editor);
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), (d, which) -> {
             int childCount2 = viewGroup.getChildCount();
             int j = 0;
             while (true) {
@@ -1557,9 +1557,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 j++;
             }
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -1690,12 +1690,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             sound.setOnClickListener(v -> soundPool.load(jC.d(B).i(sound.getText().toString()), 1));
         }
         dialog.a(customView);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), (d, which) -> {
             RadioButton checkedRadioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
             a(ss, checkedRadioButton.getText().toString());
-            dialog.dismiss();
+            d.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 
@@ -1729,7 +1729,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_save), (d, which) -> {
             int childCount = radioGroup.getChildCount();
             int i = 0;
             while (true) {
@@ -1743,9 +1743,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
                 i++;
             }
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
@@ -1791,12 +1791,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.b(xB.b().a(getContext(), R.string.logic_block_favorites_delete_title));
         aBVar.a(R.drawable.high_priority_96_red);
         aBVar.a(xB.b().a(getContext(), R.string.logic_block_favorites_delete_message));
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), (d, which) -> {
             Mp.h().a(str, true);
             O.a(str);
-            aBVar.dismiss();
+            d.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         aBVar.show();
     }
 
