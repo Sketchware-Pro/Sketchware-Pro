@@ -2,7 +2,6 @@ package com.besome.sketch.projects;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +26,7 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.MyprojectSettingBinding;
 
@@ -355,7 +355,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             if (!mB.a()) {
                 binding.verCode.setText(String.valueOf(versionCodePicker.getValue()));
                 binding.verName.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
-                dialog.dismiss();
+                d.dismiss();
             }
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
@@ -394,7 +394,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.b(Helper.getResString(R.string.common_word_settings));
         dialog.a(R.drawable.default_icon);
         dialog.a(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
-        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_reset), (d, which) -> {
             binding.appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
             d.dismiss();

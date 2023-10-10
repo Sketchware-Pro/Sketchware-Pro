@@ -54,9 +54,9 @@ public class VersionDialog {
                 binding.versionName1.setError("Invalid Version Name");
             }
 
-            if (!mB.a() && validVersionCode && validVersionName) {
-                activity.projectVersionCodeView.setText(versionCode);
-                activity.projectVersionNameView.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
+            if (!mB.a() && validVerCode && validVerName) {
+                activity.binding.verCode.setText(verCode);
+                activity.binding.verName.setText(verNamePostfix.length() > 0 ? (verName + " " + verNamePostfix) : verName);
                 d.dismiss();
             }
         });

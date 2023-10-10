@@ -171,7 +171,7 @@ public class LogicClickListener implements View.OnClickListener {
                 variable += " = " + variableInitializer;
             }
             logicEditor.b(6, variable.trim());
-            dialog.dismiss();
+            d.dismiss();
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
