@@ -1,27 +1,24 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="4dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginBottom="2dp"
-    android:elevation="8dp"
-    app:cardBackgroundColor="#fff5f5f5">
+    android:layout_height="75dp"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="2dp"
+    android:elevation="0dp"
+    app:cardBackgroundColor="#00000000">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:gravity="center|left"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="?selectableItemBackground"
             android:orientation="vertical">
 
@@ -29,20 +26,20 @@
                 android:id="@+id/tv_block_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="9dp"
                 android:singleLine="true"
-                android:textColor="#ff404040"
                 android:textSize="16sp"
                 tools:text="gaming Block" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
+                android:scrollbars="none"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="8dp">
+                android:fadingEdge="horizontal"
+                android:requiresFadingEdge="horizontal"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp">
 
                 <FrameLayout
                     android:id="@+id/block_area"
@@ -51,13 +48,25 @@
             </HorizontalScrollView>
         </LinearLayout>
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/img_selected"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_checkmark_green_48dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shadow_gradient_right"
+            android:gravity="center|end"
             android:visibility="gone"
-            tools:visibility="visible" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_checked_24" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
