@@ -66,11 +66,14 @@ import mod.hey.studios.util.ProjectFile;
 @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
 
+    private final int[] G = new int[2];
+    private final Handler s = new Handler();
+    public boolean isLayoutChanged = true;
+    public PaletteWidget paletteWidget;
     private ObjectAnimator animatorTranslateX;
     private boolean isAnimating = false;
     private boolean C = false;
     private boolean D = false;
-    private final int[] G = new int[2];
     private sy H;
     private int I = 50;
     private int J = 30;
@@ -79,7 +82,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private Iw M;
     private _x draggingListener;
     private ay O;
-    public boolean isLayoutChanged = true;
     private ProjectFileBean projectFileBean;
     private boolean S = true;
     private boolean T = false;
@@ -92,11 +94,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private int screenType;
     private boolean da = true;
     private int[] e = new int[20];
-    private final Runnable ea = this::e;
     private float f = 0;
     private int displayWidth;
     private int displayHeight;
-    public PaletteWidget paletteWidget;
     private PaletteFavorite paletteFavorite;
     private LinearLayout k;
     private TextView l;
@@ -105,7 +105,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private ViewPane viewPane;
     private Vibrator vibrator;
     private View r = null;
-    private final Handler s = new Handler();
     private boolean t = false;
     private float u = 0;
     private float v = 0;
@@ -113,14 +112,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private ViewDummy dummyView;
     private ImageView deleteIcon;
     private ObjectAnimator animatorTranslateY;
-
-    enum PaletteGroup {
-        BASIC,
-        FAVORITE
-    }
+    private final Runnable ea = this::e;
 
     public ViewEditor(Context context) {
         super(context);
+        initialize(context);
+    }
+
+    public ViewEditor(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         initialize(context);
     }
 
@@ -549,32 +549,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return g;
     }
 
-    static class PaletteGroupItem extends LinearLayout implements View.OnClickListener {
-
-        private ImageView imgGroup;
-
-        public PaletteGroupItem(Context context) {
-            super(context);
-            initialize(context);
-        }
-
-        private void initialize(Context context) {
-            wB.a(context, this, R.layout.palette_group_item);
-            imgGroup = findViewById(R.id.img_group);
-        }
-
-        @Override
-        public void onClick(View view) {
-        }
-
-        public void a(PaletteGroup group) {
-            imgGroup.setImageResource(group == PaletteGroup.BASIC ?
-                    R.drawable.selector_palette_tab_ic_sketchware :
-                    R.drawable.selector_palette_tab_ic_bookmark);
-            setOnClickListener(this);
-        }
-    }
-
     private boolean c(ViewBean viewBean) {
         int i;
         int i2 = projectFileBean.fileType;
@@ -705,11 +679,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int[] locationOnScreen = new int[2];
         viewPane.getLocationOnScreen(locationOnScreen);
         return f > ((float) locationOnScreen[0]) && f < ((float) locationOnScreen[0]) + (((float) viewPane.getWidth()) * viewPane.getScaleX()) && f2 > ((float) locationOnScreen[1]) && f2 < ((float) locationOnScreen[1]) + (((float) viewPane.getHeight()) * viewPane.getScaleY());
-    }
-
-    public ViewEditor(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        initialize(context);
     }
 
     private void deleteWidgetFromCollection(String str) {
@@ -994,5 +963,36 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (D == z) return;
         D = z;
         deleteIcon.setImageResource(D ? R.drawable.icon_delete_active : R.drawable.icon_delete);
+    }
+
+    enum PaletteGroup {
+        BASIC,
+        FAVORITE
+    }
+
+    static class PaletteGroupItem extends LinearLayout implements View.OnClickListener {
+
+        private ImageView imgGroup;
+
+        public PaletteGroupItem(Context context) {
+            super(context);
+            initialize(context);
+        }
+
+        private void initialize(Context context) {
+            wB.a(context, this, R.layout.palette_group_item);
+            imgGroup = findViewById(R.id.img_group);
+        }
+
+        @Override
+        public void onClick(View view) {
+        }
+
+        public void a(PaletteGroup group) {
+            imgGroup.setImageResource(group == PaletteGroup.BASIC ?
+                    R.drawable.selector_palette_tab_ic_sketchware :
+                    R.drawable.selector_palette_tab_ic_bookmark);
+            setOnClickListener(this);
+        }
     }
 }
