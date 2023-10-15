@@ -92,6 +92,7 @@ import mod.hey.studios.util.ProjectFile;
 
 @SuppressLint({"RtlHardcoded", "DiscouragedApi"})
 public class ViewPane extends RelativeLayout {
+
     private ViewGroup rootLayout;
     private int b;
     private ArrayList<Object[]> c;
@@ -102,6 +103,15 @@ public class ViewPane extends RelativeLayout {
 
     public ViewPane(Context context) {
         super(context);
+        rootLayout = null;
+        b = 99;
+        c = new ArrayList<>();
+        d = null;
+        initialize();
+    }
+
+    public ViewPane(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         rootLayout = null;
         b = 99;
         c = new ArrayList<>();
@@ -254,8 +264,7 @@ public class ViewPane extends RelativeLayout {
                     new ItemPatternLockView(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR -> new ItemWaveSideBar(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON -> new ItemMaterialButton(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON ->
-                    new ItemSignInButton(getContext());
+            case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON -> new ItemSignInButton(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW ->
                     new ItemCircleImageView(getContext());
             case ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW ->
@@ -276,15 +285,6 @@ public class ViewPane extends RelativeLayout {
 
     private void c(ViewBean viewBean) {
         a(viewBean, (ItemLinearLayout) rootLayout);
-    }
-
-    public ViewPane(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        rootLayout = null;
-        b = 99;
-        c = new ArrayList<>();
-        d = null;
-        initialize();
     }
 
     public void setScId(String str) {
@@ -465,16 +465,16 @@ public class ViewPane extends RelativeLayout {
                     if (!buttonSize.startsWith("@")) {
                         hasButtonSize = true;
                         switch (buttonSize) {
-                        case "icon_only":
-                            button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
-                            break;
-                        case "wide":
-                            button.setSize(ItemSignInButton.ButtonSize.WIDE);
-                            break;
-                        case "standard":
-                        default:
-                            button.setSize(ItemSignInButton.ButtonSize.STANDARD);
-                            break;
+                            case "icon_only":
+                                button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
+                                break;
+                            case "wide":
+                                button.setSize(ItemSignInButton.ButtonSize.WIDE);
+                                break;
+                            case "standard":
+                            default:
+                                button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                                break;
                         }
                     }
                 }
@@ -483,14 +483,14 @@ public class ViewPane extends RelativeLayout {
                     if (!colorScheme.startsWith("@")) {
                         hasColorScheme = true;
                         switch (colorScheme) {
-                        case "dark":
-                            button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
-                            break;
-                        case "auto":
-                        case "light":
-                        default:
-                            button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
-                            break;
+                            case "dark":
+                                button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
+                                break;
+                            case "auto":
+                            case "light":
+                            default:
+                                button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
+                                break;
                         }
                     }
                 }
@@ -594,8 +594,8 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public void a(int i, int i2, int width, int height) {
-        Object[] a2 = a(i, i2);
+    public void a(int x, int y, int width, int height) {
+        Object[] a2 = a(x, y);
         if (a2 == null) {
             a(true);
         } else if (d != a2) {
@@ -614,13 +614,13 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    private Object[] a(int i, int i2) {
+    private Object[] a(int x, int y) {
         Object[] objArr = null;
         int i3 = -1;
         for (int i4 = 0; i4 < c.size(); i4++) {
             Object[] objArr2 = c.get(i4);
             Rect rect = (Rect) objArr2[0];
-            if (i >= rect.left && i < rect.right && i2 >= rect.top && i2 < rect.bottom && i3 < (Integer) objArr2[3]) {
+            if (x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom && i3 < (Integer) objArr2[3]) {
                 i3 = (Integer) objArr2[3];
                 objArr = objArr2;
             }
