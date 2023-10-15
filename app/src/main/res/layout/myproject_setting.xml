@@ -202,8 +202,8 @@
                         android:id="@+id/ver_code_holder"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="?android:selectableItemBackground"
                         android:layout_weight="1"
+                        android:background="?android:selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingVertical="12dp">
@@ -212,7 +212,13 @@
                             android:id="@id/ver_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
                             android:gravity="center"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:singleLine="true"
                             android:text="1"
                             android:textSize="16sp" />
 
@@ -239,8 +245,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:background="?android:selectableItemBackground"
+                        android:gravity="center"
                         android:orientation="vertical"
                         android:paddingVertical="12dp">
 
@@ -248,7 +254,13 @@
                             android:id="@id/ver_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
                             android:gravity="center"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:singleLine="true"
                             android:text="1"
                             android:textSize="16sp" />
 
@@ -275,8 +287,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_weight="1"
             android:layout_marginEnd="7dp"
+            android:layout_weight="1"
             android:text="@string/common_word_cancel"
             android:textSize="@dimen/text_size_button_material"
             app:backgroundTint="?colorAccent" />

@@ -1,7 +1,5 @@
 package com.besome.sketch.projects;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -94,6 +92,9 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         sc_id = getIntent().getStringExtra("sc_id");
         updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
 
+        binding.verCode.setSelected(true);
+        binding.verName.setSelected(true);
+
         binding.contents.setOnClickListener(this);
         binding.appIconLayout.setOnClickListener(this);
         binding.verCodeHolder.setOnClickListener(this);
@@ -141,6 +142,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));
             binding.etAppName.setText(yB.c(metadata, "my_app_name"));
+            binding.okButton.setText("Save changes");
             projectVersionCode = parseInt(yB.c(metadata, "sc_ver_code"), 1);
             parseVersion(yB.c(metadata, "sc_ver_name"));
             binding.verCode.setText(yB.c(metadata, "sc_ver_code"));
