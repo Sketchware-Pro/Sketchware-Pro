@@ -29,12 +29,11 @@ public class VersionDialog {
 
         binding.versionCode.setText(String.valueOf(Integer.parseInt(activity.binding.verCode.getText().toString())));
         binding.versionName1.setText(activity.binding.verName.getText().toString().split(" ")[0]);
-        if (activity.binding.verName.getText().toString().split(" ").length > 1) {
+        if (activity.binding.verName.getText().toString().split(" ").length > 1)
             binding.versionName2.setText(activity.binding.verName.getText().toString().split(" ")[1]);
-        }
 
         dialog.a(binding.getRoot());
-        dialog.a(activity.getString(R.string.common_word_save), (d, which) -> {
+        dialog.b(activity.getString(R.string.common_word_save), (d, which) -> {
             final String verCode = binding.versionCode.getText().toString();
             final String verName = binding.versionName1.getText().toString();
             final String verNamePostfix = binding.versionName2.getText().toString();
