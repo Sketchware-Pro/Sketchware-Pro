@@ -230,7 +230,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     private void showProjectSortingDialog() {
-        aB dialog = new aB(requireContext());
+        aB dialog = new aB(requireActivity());
         dialog.b("Sort options");
         View root = wB.a(requireActivity(), R.layout.sort_project_dialog);
         RadioButton sortByName = root.findViewById(R.id.sortByName);

@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -714,7 +713,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void deleteWidgetFromCollection(String str) {
-        aB aBVar = new aB(getContext());
+        aB aBVar = new aB((Activity) getContext());
         aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
         aBVar.a(R.drawable.high_priority_96_red);
         aBVar.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));

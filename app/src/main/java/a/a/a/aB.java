@@ -2,6 +2,7 @@ package a.a.a;
 
 import static mod.SketchwareUtil.getDip;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
@@ -16,8 +17,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
  */
 public class aB extends MaterialAlertDialogBuilder {
 
-    public aB(Context context) {
-        super(context);
+    public aB(Activity activity) {
+        super(activity);
     }
 
     /**

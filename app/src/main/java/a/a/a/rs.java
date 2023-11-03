@@ -250,7 +250,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void showSaveMoreBlockToCollectionsDialog(int moreBlockPosition) {
-        aB aBVar = new aB(requireContext());
+        aB aBVar = new aB(requireActivity());
         aBVar.b(xB.b().a(requireContext(), R.string.logic_more_block_favorites_save_title));
         aBVar.a(R.drawable.ic_bookmark_red_48dp);
         View a2 = wB.a(requireContext(), R.layout.property_popup_save_to_favorite);
