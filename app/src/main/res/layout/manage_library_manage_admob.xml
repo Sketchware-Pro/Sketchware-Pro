@@ -83,7 +83,7 @@
                             android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            tools:text="@string/design_library_admob_title_app_id" />
+                            android:text="@string/design_library_admob_title_app_id" />
                     </LinearLayout>
 
                     <androidx.cardview.widget.CardView
@@ -323,7 +323,7 @@
                             android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            tools:text="Rewarded Ad" />
+                            android:text="Rewarded Ad" />
                     </LinearLayout>
 
                     <androidx.cardview.widget.CardView

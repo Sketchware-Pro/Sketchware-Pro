@@ -55,7 +55,6 @@ public class ReviewStepView extends LinearLayout implements Uu {
         rewardedAdName = findViewById(R.id.tv_reward_name);
         rewardedAdId = findViewById(R.id.tv_reward_id);
         ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(R.id.tv_title_app_id)).setText(Helper.getResString(R.string.design_library_admob_title_app_id));
         ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
 
         TextView bannerName = findViewById(R.id.tv_title_banner_name);

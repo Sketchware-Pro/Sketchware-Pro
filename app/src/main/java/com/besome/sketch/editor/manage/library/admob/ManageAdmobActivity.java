@@ -209,14 +209,12 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         A = new DB(getApplicationContext(), "P1");
         admobLibraryBean = getIntent().getParcelableExtra("admob");
         ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(R.id.tv_title_app_id)).setText(Helper.getResString(R.string.design_library_admob_title_app_id));
         ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
         ((TextView) findViewById(R.id.tv_title_banner_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_banner_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
         ((TextView) findViewById(R.id.tv_title_inter)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
         ((TextView) findViewById(R.id.tv_title_inter_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_inter_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_reward)).setText("Rewarded Ad");
         ((TextView) findViewById(R.id.tv_title_reward_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_reward_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
         ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
