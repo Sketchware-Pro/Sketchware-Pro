@@ -70,7 +70,6 @@ public class ExtraBlocks {
         arrayList.add(addBlock("signInButtonSetSize", " ", "", "%1$s.setSize(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setSize %m.SignButtonSize"));
         //Admob's AdView Blocks
         arrayList.add(addBlock("bannerAdViewLoadAd", " ", "", "{\r\nAdRequest adRequest = new AdRequest.Builder().build();\r\n%1$s.loadAd(adRequest);\r\n}", "#4a6cd4", "%m.adview load"));
-        arrayList.add(addBlock("setAdmobAppId", " ", "", "", "#2ca5e2", "setAdmobAppId %s.inputOnly"));
         //DynamicLink's blocks
         arrayList.add(addBlock("setDynamicLinkDataHost", " ", "", "", "#2ca5e2", "DynamicLink: setHost %s.inputOnly setScheme %s.inputOnly"));
         //RewardedVideoAd

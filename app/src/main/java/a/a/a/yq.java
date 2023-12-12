@@ -539,10 +539,6 @@ public class yq {
                             }
                             break;
 
-                        case "setAdmobAppId":
-                            N.appId = block.parameters.get(0);
-                            break;
-
                         case "intentSetAction":
                             // If an Intent setAction (ACTION_CALL) block is used
                             if (block.parameters.get(1).equals(uq.c[1])) {

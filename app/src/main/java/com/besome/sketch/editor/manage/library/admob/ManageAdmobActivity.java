@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -54,6 +56,12 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
         configure();
+    }
+
+    private void setAppId(String appId) {
+        if (!isEmpty(appId)) {
+            ((TextView) findViewById(R.id.tv_app_id)).setText(appId);
+        }
     }
 
     private void setBannerAdUnit(String adId) {
@@ -207,7 +215,6 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         ((TextView) findViewById(R.id.tv_title_inter)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
         ((TextView) findViewById(R.id.tv_title_inter_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_inter_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_reward)).setText("Rewarded Ad");
         ((TextView) findViewById(R.id.tv_title_reward_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         ((TextView) findViewById(R.id.tv_title_reward_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
         ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
@@ -305,6 +312,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         setBannerAdUnit(admobLibraryBean.reserved1);
         setInterAdUnit(admobLibraryBean.reserved2);
         setRewardAdUnit(admobLibraryBean.reserved3);
+        setAppId(admobLibraryBean.appId);
         testDeviceList = admobLibraryBean.testDevices;
         testDeviceAdapter.notifyDataSetChanged();
     }

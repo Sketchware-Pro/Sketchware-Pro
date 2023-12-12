@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,7 +47,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private TextView topTitle;
 
     private void showStep(int position) {
-        if (position == 3) {
+        if (position == 4) {
             topTitle.setText(Helper.getResString(R.string.common_word_review));
             nextStep.setText(Helper.getResString(R.string.common_word_save));
         } else {
@@ -66,13 +68,21 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         stepContainer.removeAllViews();
         switch (position) {
             case 0:
+                AddAppIdStepView addAppIdStep = new AddAppIdStepView(this);
+                stepContainer.addView(addAppIdStep);
+                addAppIdStep.setData(adMobSettings);
+                step = addAppIdStep;
+                break;
+
+            case 1:
+                goToConsole.setVisibility(View.GONE);
                 AddAdUnitStepView addAdUnitsStep = new AddAdUnitStepView(this);
                 stepContainer.addView(addAdUnitsStep);
                 addAdUnitsStep.setData(adMobSettings);
                 step = addAdUnitsStep;
                 break;
 
-            case 1:
+            case 2:
                 goToConsole.setVisibility(View.GONE);
                 AssignAdUnitStepView assignAdUnitsStep = new AssignAdUnitStepView(this);
                 stepContainer.addView(assignAdUnitsStep);
@@ -80,7 +90,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 step = assignAdUnitsStep;
                 break;
 
-            case 2:
+            case 3:
                 goToConsole.setVisibility(View.GONE);
                 TestDevicesStepView testDevicesStep = new TestDevicesStepView(this);
                 stepContainer.addView(testDevicesStep);
@@ -88,7 +98,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 step = testDevicesStep;
                 break;
 
-            case 3:
+            case 4:
                 goToConsole.setVisibility(View.GONE);
                 ReviewStepView reviewStep = new ReviewStepView(this);
                 stepContainer.addView(reviewStep);
@@ -121,7 +131,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private void nextStep() {
         if (step.isValid()) {
             step.a(adMobSettings);
-            if (stepPosition < 3) {
+            if (stepPosition < 4) {
                 showStep(++stepPosition);
             } else {
                 Intent intent = new Intent();
@@ -158,7 +168,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             LibrarySettingsImporter importer = new LibrarySettingsImporter(sc_id, iC::b);
             importer.addOnProjectSelectedListener(settings -> {
                 adMobSettings = settings;
-                stepPosition = 3;
+                stepPosition = 0;
+                String app_id;
+                if (!(settings == null || (app_id = settings.appId) == null || isEmpty(app_id))) {
+                    stepPosition = 4;
+                }
                 showStep(stepPosition);
             });
             importer.showDialog(this);
@@ -199,13 +213,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 Helper.getResString(R.string.design_library_admob_setting_step1_title),
                 Helper.getResString(R.string.design_library_admob_setting_step2_title),
                 Helper.getResString(R.string.design_library_admob_setting_step3_title),
-                Helper.getResString(R.string.design_library_admob_setting_step4_title)
+                Helper.getResString(R.string.design_library_admob_setting_step4_title),
+                Helper.getResString(R.string.design_library_admob_setting_step5_title)
         };
         stepDescriptions = new String[]{
                 Helper.getResString(R.string.design_library_admob_setting_step1_desc),
                 Helper.getResString(R.string.design_library_admob_setting_step2_desc),
                 Helper.getResString(R.string.design_library_admob_setting_step3_desc),
-                Helper.getResString(R.string.design_library_admob_setting_step4_desc)
+                Helper.getResString(R.string.design_library_admob_setting_step4_desc),
+                Helper.getResString(R.string.design_library_admob_setting_step5_desc)
         };
         goToConsole = findViewById(R.id.cv_console);
         goToConsole.setOnClickListener(this);

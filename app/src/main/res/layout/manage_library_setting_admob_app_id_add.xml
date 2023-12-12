@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_app_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:importantForAutofill="noExcludeDescendants">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_app_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -119,7 +121,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private void toAdmobActivity(ProjectLibraryBean libraryBean) {
         Intent intent;
-        if (!libraryBean.reserved1.isEmpty()) {
+        if (!isEmpty(libraryBean.reserved1) && !isEmpty(libraryBean.appId)) {
             intent = new Intent(getApplicationContext(), ManageAdmobActivity.class);
         } else {
             intent = new Intent(getApplicationContext(), AdmobActivity.class);

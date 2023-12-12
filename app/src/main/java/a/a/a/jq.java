@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.util.Pair;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
@@ -285,6 +287,10 @@ public class jq {
         String reserved3;
         if (projectLibraryBean != null && (reserved3 = projectLibraryBean.reserved3) != null && !reserved3.isEmpty()) {
             rewardAdUnitId = reserved3.substring(reserved3.lastIndexOf(" : ") + 3);
+        }
+        String app_id;
+        if (!(projectLibraryBean == null || (app_id = projectLibraryBean.appId) == null || isEmpty(app_id))) {
+            appId = app_id;
         }
     }
 
