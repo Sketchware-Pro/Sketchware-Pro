@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/Sketchware-Pro.png" />
+  <img src="assets/Sketchware-Pro.png" style="width: 30%;" />
 </p>
 
 # Sketchware Pro
@@ -34,7 +34,8 @@ To select the appropriate build variant in Android Studio, use the Build Variant
 | `a.a.a.tq`      | Responsible for the compiling dialog's quizzes |
 | `a.a.a.yq`      | Organizes Sketchware projects' file paths    |
 
-You can also check the `mod` package, which contains the majority of contributors' changes.
+> [!TIP]
+> You can also check the `mod` package, which contains the majority of contributors' changes.
 
 ## Contributing
 
@@ -51,6 +52,8 @@ We welcome contributions of any size, whether they are major features or bug fix
 ### What Changes We're Unlikely to Accept
 
 Most changes related to the user interface (components that already exist in vanilla Sketchware) are unlikely to be accepted. If something design-related gets changed, ideally the whole app should follow the new style too, which is challenging, especially for mods.
+> [!NOTE]
+> In the meantime, we don't accept UI changes in the main branch, but we do in the [redesign branch](https://github.com/Sketchware-Pro/Sketchware-Pro/tree/material-redesign) since we're actively working on a material design version of Sketchware Pro.
 
 ### Commit Message
 

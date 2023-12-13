@@ -30,6 +30,8 @@ public class ProjectLibraryBean implements Parcelable {
     public static final int PROJECT_LIB_TYPE_FIREBASE = 0;
     public static final int PROJECT_LIB_TYPE_GOOGLE_MAP = 3;
     @Expose
+    public String appId;
+    @Expose
     public ArrayList<AdUnitBean> adUnits;
     @Expose
     public String data;
@@ -47,6 +49,7 @@ public class ProjectLibraryBean implements Parcelable {
     public String useYn;
 
     public ProjectLibraryBean(int i) {
+        appId = "";
         libType = i;
         useYn = LIB_USE_N;
         data = "";
@@ -58,6 +61,7 @@ public class ProjectLibraryBean implements Parcelable {
     }
 
     public ProjectLibraryBean(Parcel parcel) {
+        appId = parcel.readString();
         libType = parcel.readInt();
         useYn = parcel.readString();
         data = parcel.readString();
@@ -121,6 +125,7 @@ public class ProjectLibraryBean implements Parcelable {
     }
 
     public void copy(ProjectLibraryBean projectLibraryBean) {
+        appId = projectLibraryBean.appId;
         libType = projectLibraryBean.libType;
         useYn = projectLibraryBean.useYn;
         data = projectLibraryBean.data;
@@ -153,6 +158,7 @@ public class ProjectLibraryBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(appId);
         parcel.writeInt(libType);
         parcel.writeString(useYn);
         parcel.writeString(data);

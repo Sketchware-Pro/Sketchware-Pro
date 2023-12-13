@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.library.admob;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -83,6 +85,12 @@ public class ReviewStepView extends LinearLayout implements Uu {
         }
     }
 
+    private void setAppId(String appId) {
+        if (!isEmpty(appId)) {
+            ((TextView) findViewById(R.id.tv_app_id)).setText(appId);
+        }
+    }
+
     private void setBannerDetails(String adUnit) {
         if (!adUnit.isEmpty()) {
             if (adUnit.contains(" : ")) {
@@ -135,6 +143,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
         adMobToggle.setChecked(true);
+        setAppId(projectLibraryBean.appId);
         setBannerDetails(projectLibraryBean.reserved1);
         setInterstitialDetails(projectLibraryBean.reserved2);
         setRewardedAdDetails(projectLibraryBean.reserved3);
