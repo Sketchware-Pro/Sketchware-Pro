@@ -57,7 +57,7 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
         setAppId(projectLibraryBean.appId);
-        
+
     }
 
     private void initialize(Context context) {
@@ -82,21 +82,21 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
         aB dialog = new aB((Activity) getContext());
         dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_app_id));
         dialog.a(R.drawable.add_96_blue);
-        ManageLibrarySettingAdmobAppIdAddBinding addBinding = ManageLibrarySettingAdmobAppIdAddBinding.inflate(dialog.getLayoutInflater());
+        ManageLibrarySettingAdmobAppIdAddBinding addBinding = ManageLibrarySettingAdmobAppIdAddBinding.inflate(dialog.create().getLayoutInflater());
         EditText edAppId = addBinding.edAppId;
         edAppId.setText(appId);
         edAppId.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(addBinding.getRoot());
-        dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_add), (d, which) -> {
             String id = edAppId.getText().toString();
             if (!isEmpty(id)) {
                 setAppId(id);
-                dialog.dismiss();
+                d.dismiss();
             } else {
                 edAppId.requestFocus();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
         dialog.show();
     }
 }
