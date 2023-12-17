@@ -1363,6 +1363,10 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_run_message_invalid_forever_block">Stop block does not exist in forever block</string>
     <string name="design_run_message_usage_break_block">Break block can only be used inside the repeat or forever blocks</string>
     <string name="design_run_title_ready_to_build">Getting ready to build</string>
+    <string name="design_cancel_build_title">Cancel build?</string>
+    <string name="design_cancel_build_desc">Are you sure you want to cancel building? This may take some time.</string>
+    <string name="design_cancel_build_btn_stop">Stop building</string>
+    <string name="design_cancel_build_btn_continue">Continue building</string>
     <string name="design_tab_title_component">Component</string>
     <string name="design_tab_title_event">Event</string>
     <string name="design_tab_title_view">View</string>
