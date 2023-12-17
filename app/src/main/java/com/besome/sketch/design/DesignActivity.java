@@ -335,36 +335,24 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
-                        case 1:
-                            new BuildSettingsDialog(this, sc_id).show();
-                            break;
-
-                        case 2:
-                            new Thread(() -> {
-                                FileUtil.deleteFile(q.projectMyscPath);
-                                runOnUiThread(() ->
-                                        SketchwareUtil.toast("Done cleaning temporary files!"));
-                            }).start();
-                            break;
-
-                        case 3:
-                            new CompileErrorSaver(sc_id).showLastErrors(this);
-                            break;
-
-                        case 4:
+                        case 1 -> new BuildSettingsDialog(this, sc_id).show();
+                        case 2 -> new Thread(() -> {
+                            FileUtil.deleteFile(q.projectMyscPath);
+                            runOnUiThread(() ->
+                                    SketchwareUtil.toast("Done cleaning temporary files!"));
+                        }).start();
+                        case 3 -> new CompileErrorSaver(sc_id).showLastErrors(this);
+                        case 4 -> {
                             if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                                 installBuiltApk();
                             } else {
                                 SketchwareUtil.toast("APK doesn't exist anymore");
                             }
-                            break;
-
-                        case 5:
-                            showCurrentActivitySrcCode();
-                            break;
-
-                        default:
+                        }
+                        case 5 -> showCurrentActivitySrcCode();
+                        default -> {
                             return false;
+                        }
                     }
 
                     return true;
@@ -892,6 +880,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         private final WeakReference<DesignActivity> activity;
         private final BuildingDialog dialog;
         private boolean canceled = false;
+        private boolean isBuildFinished = false;
 
         public BuildAsyncTask(DesignActivity activity) {
             super(activity.getApplicationContext());
@@ -946,6 +935,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (canceled) {
                 cancel(true);
             } else {
+                isBuildFinished = false;
                 var activity = this.activity.get();
                 try {
                     var q = activity.q;
@@ -1059,7 +1049,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     activity.installBuiltApk();
+                    isBuildFinished = true;
                 } catch (MissingFileException e) {
+                    isBuildFinished = true;
                     activity.runOnUiThread(() -> {
                         boolean isMissingDirectory = e.isMissingDirectory();
 
@@ -1127,13 +1119,39 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            if (!dialog.isCancelableOnBackPressed()) {
-                dialog.setIsCancelableOnBackPressed(true);
-                maybeShow();
-                publishProgress("Canceling build...");
-                canceled = true;
+            Activity currentActivity = this.activity.get();
+
+            if (currentActivity != null) {
+                currentActivity.runOnUiThread(() -> {
+                    aB cancelDialog = new aB(currentActivity);
+                    cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_title));
+                    cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_desc));
+                    cancelDialog.a(R.drawable.ic_exit_24);
+
+                    cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_btn_stop), (d, which) -> {
+                        if (!isBuildFinished) {
+                            if (!dialog.isCancelableOnBackPressed()) {
+                                dialog.setIsCancelableOnBackPressed(true);
+                                maybeShow();
+                                publishProgress("Canceling build...");
+                                canceled = true;
+                            }
+                            dialog.show();
+                        }
+                        d.dismiss();
+                    });
+
+                    cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_btn_continue), (d, which) -> {
+                        if (!isBuildFinished)
+                            dialog.show();
+                        d.dismiss();
+                    });
+
+                    cancelDialog.show();
+                });
             }
         }
+
 
         @Override
         public void onCancelled() {
