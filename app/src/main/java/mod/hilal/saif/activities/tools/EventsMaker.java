@@ -519,7 +519,7 @@ public class EventsMaker extends Activity {
                                     break;
 
                                 case 1:
-                                    export(1);
+                                    export(position);
                                     break;
 
                                 case 2:
