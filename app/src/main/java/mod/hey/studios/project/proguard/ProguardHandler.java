@@ -1,4 +1,4 @@
-package mod.hey.studios.project.proguard;
+ package mod.hey.studios.project.proguard;
 
 import com.google.gson.Gson;
 
@@ -42,29 +42,29 @@ public class ProguardHandler {
                     "-keep public class com.google.vending.licensing.ILicensingService\n" +
                     "-keep public class com.android.vending.licensing.ILicensingService\n" +
                     "\n" +
-                    "-keepclasseswithmembernames class * {\n" +
+                    "-eswithmembernames class * {\n" +
                     "    native <methods>;\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclassmembers public class * extends android.view.View {\n" +
+                    "-members public class * extends android.view.View {\n" +
                     "   void set*(***);\n" +
                     "   *** get*();\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclassmembers class * extends android.app.Activity {\n" +
+                    "-members class * extends android.app.Activity {\n" +
                     "   public void *(android.view.View);\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclassmembers enum * {\n" +
+                    "-members enum * {\n" +
                     "    public static **[] values();\n" +
                     "    public static ** valueOf(java.lang.String);\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclassmembers class * implements android.os.Parcelable {\n" +
+                    "-members class * implements android.os.Parcelable {\n" +
                     "  public static final android.os.Parcelable$Creator CREATOR;\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclassmembers class **.R$* {\n" +
+                    "-members class **.R$* {\n" +
                     "    public static <fields>;\n" +
                     "}\n" +
                     "\n" +
@@ -74,16 +74,20 @@ public class ProguardHandler {
                     "\n" +
                     "-keep @android.support.annotation.Keep class * {*;}\n" +
                     "\n" +
-                    "-keepclasseswithmembers class * {\n" +
+                    "-eswithmembers class * {\n" +
                     "    @android.support.annotation.Keep <methods>;\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclasseswithmembers class * {\n" +
+                    "-eswithmembers class * {\n" +
                     "    @android.support.annotation.Keep <fields>;\n" +
                     "}\n" +
                     "\n" +
-                    "-keepclasseswithmembers class * {\n" +
+                    "-eswithmembers class * {\n" +
                     "    @android.support.annotation.Keep <init>(...);\n" +
+                    "}\n" +
+                    "\n" +
+                    "keepclassmembers class * {\n" +
+                    "    @android.webkit.JavascriptInterface <methods>;\n" +
                     "}\n" +
                     "\n" +
                     "-dontwarn android.arch.**\n" +

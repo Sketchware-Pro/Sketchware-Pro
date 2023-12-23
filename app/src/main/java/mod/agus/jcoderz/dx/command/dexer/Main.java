@@ -714,7 +714,7 @@ public class Main {
 
         if (isClass) {
 
-            if (keepResources && args.keepClassesInJar) {
+            if (keepResources && args.esInJar) {
                 synchronized (outputResources) {
                     outputResources.put(fixedName, bytes);
                 }
