@@ -16,6 +16,8 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
+
 @SuppressLint("ViewConstructor")
 public class Pw extends RelativeLayout implements View.OnClickListener {
 
@@ -27,6 +29,7 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     private int f;
     private View g;
     private View h;
+    private Kw k;
     private ArrayList<ProjectFileBean> i;
 
     public Pw(Context context, boolean idk) {
@@ -67,8 +70,19 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         }
 
         dialog.a(rootView);
-        dialog.b(xB.b().a(this.getContext(), 2131625035), new Nw(this, dialog));
-        dialog.a(xB.b().a(this.getContext(), 2131624974), new Ow(this, dialog));
+        dialog.b(xB.b().a(this.getContext(), 2131625035), view -> {
+            for (int i = 0, childCount = j.getChildCount(); i < childCount; i++) {
+                RadioButton radioButton = (RadioButton) j.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    setValue(radioButton.getTag().toString());
+                }
+            }
+            if (k != null) {
+                k.a(a, b);
+            }
+            dialog.dismiss();
+        });
+        dialog.a(xB.b().a(this.getContext(), 2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -125,6 +139,7 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     }
 
     public void setOnPropertyValueChangeListener(Kw var1) {
+        k = var1;
     }
 
     public void setOrientationItem(int orientationItem) {
