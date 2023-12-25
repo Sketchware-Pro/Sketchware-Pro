@@ -15,7 +15,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 @SuppressLint("ViewConstructor")
 public class Pw extends RelativeLayout implements View.OnClickListener {
@@ -30,9 +29,9 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     private View h;
     private ArrayList<ProjectFileBean> i;
 
-    public Pw(Context context, boolean var2) {
+    public Pw(Context context, boolean idk) {
         super(context);
-        this.a(var2);
+        this.a(idk);
     }
 
     private RadioButton a(String fileName) {
@@ -52,26 +51,19 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         View rootView = wB.a(this.getContext(), R.layout.property_popup_selector_single);
         ViewGroup j = (ViewGroup) rootView.findViewById(R.id.rg_content);
         j.addView(this.a("none"));
-        Iterator var3 = this.i.iterator();
 
-        while (var3.hasNext()) {
-            RadioButton var4 = this.a(((ProjectFileBean) var3.next()).fileName);
+        for (ProjectFileBean projectFileBean : this.i) {
+            RadioButton var4 = this.a(projectFileBean.fileName);
             j.addView(var4);
         }
 
-        int childCount = j.getChildCount();
-        ViewGroup var7 = j;
-        int var6 = 0;
-        ((RadioButton) var7.getChildAt(0)).setChecked(true);
+        ((RadioButton) j.getChildAt(0)).setChecked(true);
 
-        while (var6 < childCount) {
-            RadioButton var8 = (RadioButton) j.getChildAt(var6);
-            if (var8.getTag().toString().equals(this.b)) {
-                var8.setChecked(true);
-                break;
+        for (int i = 0, childCount = j.getChildCount(); i < childCount; i++) {
+            RadioButton radioButton = (RadioButton) j.getChildAt(i);
+            if (radioButton.getTag().toString().equals(b)) {
+                radioButton.setChecked(true);
             }
-
-            ++var6;
         }
 
         dialog.a(rootView);
