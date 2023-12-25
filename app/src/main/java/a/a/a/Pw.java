@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package a.a.a;
 
 import android.app.Activity;
@@ -14,11 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.besome.sketch.beans.ProjectFileBean;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Pw extends RelativeLayout implements View.OnClickListener {
+
     public String a = "";
     public String b = "";
     public TextView c;
@@ -40,33 +38,33 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         RadioButton var2 = new RadioButton(this.getContext());
         var2.setText(var1);
         var2.setTag(var1);
-        LinearLayout.LayoutParams var3 = new LinearLayout.LayoutParams(-1, (int)(wB.a(this.getContext(), 1.0F) * 40.0F));
+        LinearLayout.LayoutParams var3 = new LinearLayout.LayoutParams(-1, (int) (wB.a(this.getContext(), 1.0F) * 40.0F));
         var2.setGravity(19);
         var2.setLayoutParams(var3);
         return var2;
     }
 
     public final void a() {
-        aB var1 = new aB((Activity)this.getContext());
+        aB var1 = new aB((Activity) this.getContext());
         var1.b(this.c.getText().toString());
         var1.a(this.f);
         View var2 = wB.a(this.getContext(), 2131427643);
-        this.j = (ViewGroup)var2.findViewById(2131231668);
+        this.j = (ViewGroup) var2.findViewById(2131231668);
         this.j.addView(this.a("none"));
         Iterator var3 = this.i.iterator();
 
-        while(var3.hasNext()) {
-            RadioButton var4 = this.a(((ProjectFileBean)var3.next()).fileName);
+        while (var3.hasNext()) {
+            RadioButton var4 = this.a(((ProjectFileBean) var3.next()).fileName);
             this.j.addView(var4);
         }
 
         int var5 = this.j.getChildCount();
         ViewGroup var7 = this.j;
         int var6 = 0;
-        ((RadioButton)var7.getChildAt(0)).setChecked(true);
+        ((RadioButton) var7.getChildAt(0)).setChecked(true);
 
-        while(var6 < var5) {
-            RadioButton var8 = (RadioButton)this.j.getChildAt(var6);
+        while (var6 < var5) {
+            RadioButton var8 = (RadioButton) this.j.getChildAt(var6);
             if (var8.getTag().toString().equals(this.b)) {
                 var8.setChecked(true);
                 break;
@@ -83,11 +81,11 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     public final void a(Context var1, boolean var2) {
         wB.a(this.getContext(), this, 2131427648);
-        this.c = (TextView)this.findViewById(2131232055);
-        this.d = (TextView)this.findViewById(2131232270);
+        this.c = (TextView) this.findViewById(2131232055);
+        this.d = (TextView) this.findViewById(2131232270);
         this.g = this.findViewById(2131231626);
         this.h = this.findViewById(2131231628);
-        this.e = (ImageView)this.findViewById(2131231155);
+        this.e = (ImageView) this.findViewById(2131231155);
         if (var2) {
             this.setOnClickListener(this);
             this.setSoundEffectsEnabled(true);
@@ -129,8 +127,8 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
             this.c.setText(xB.b().a(this.getResources(), var2));
             this.f = 2131165638;
             if (this.h.getVisibility() == 0) {
-                ImageView var3 = (ImageView)this.findViewById(2131231151);
-                TextView var4 = (TextView)this.findViewById(2131232195);
+                ImageView var3 = (ImageView) this.findViewById(2131231151);
+                TextView var4 = (TextView) this.findViewById(2131232195);
                 var3.setImageResource(this.f);
                 var4.setText(xB.b().a(this.getContext(), var2));
             } else {
@@ -157,7 +155,8 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     public void setValue(String var1) {
         String var2;
-        label11: {
+        label11:
+        {
             if (var1 != null) {
                 var2 = var1;
                 if (var1.length() > 0) {
