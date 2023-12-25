@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -15,56 +16,55 @@ import com.besome.sketch.beans.ProjectFileBean;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@SuppressLint("ViewConstructor")
 public class Pw extends RelativeLayout implements View.OnClickListener {
 
-    public String a = "";
-    public String b = "";
-    public TextView c;
-    public TextView d;
-    public ImageView e;
-    public int f;
-    public View g;
-    public View h;
-    public ArrayList<ProjectFileBean> i;
-    public ViewGroup j;
-    public Kw k;
+    private String a = "";
+    private String b = "";
+    private TextView c;
+    private TextView d;
+    private ImageView e;
+    private int f;
+    private View g;
+    private View h;
+    private ArrayList<ProjectFileBean> i;
 
-    public Pw(Context var1, boolean var2) {
-        super(var1);
-        this.a(var1, var2);
+    public Pw(Context context, boolean var2) {
+        super(context);
+        this.a(var2);
     }
 
-    public final RadioButton a(String var1) {
-        RadioButton var2 = new RadioButton(this.getContext());
-        var2.setText(var1);
-        var2.setTag(var1);
-        LinearLayout.LayoutParams var3 = new LinearLayout.LayoutParams(-1, (int) (wB.a(this.getContext(), 1.0F) * 40.0F));
-        var2.setGravity(19);
-        var2.setLayoutParams(var3);
-        return var2;
+    private RadioButton a(String fileName) {
+        RadioButton radioButton = new RadioButton(this.getContext());
+        radioButton.setText(fileName);
+        radioButton.setTag(fileName);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, (int) (wB.a(this.getContext(), 1.0F) * 40.0F));
+        radioButton.setGravity(19);
+        radioButton.setLayoutParams(layoutParams);
+        return radioButton;
     }
 
-    public final void a() {
-        aB var1 = new aB((Activity) this.getContext());
-        var1.b(this.c.getText().toString());
-        var1.a(this.f);
-        View var2 = wB.a(this.getContext(), 2131427643);
-        this.j = (ViewGroup) var2.findViewById(2131231668);
-        this.j.addView(this.a("none"));
+    private void a() {
+        aB dialog = new aB((Activity) this.getContext());
+        dialog.b(this.c.getText().toString());
+        dialog.a(this.f);
+        View rootView = wB.a(this.getContext(), 2131427643);
+        ViewGroup j = (ViewGroup) rootView.findViewById(2131231668);
+        j.addView(this.a("none"));
         Iterator var3 = this.i.iterator();
 
         while (var3.hasNext()) {
             RadioButton var4 = this.a(((ProjectFileBean) var3.next()).fileName);
-            this.j.addView(var4);
+            j.addView(var4);
         }
 
-        int var5 = this.j.getChildCount();
-        ViewGroup var7 = this.j;
+        int childCount = j.getChildCount();
+        ViewGroup var7 = j;
         int var6 = 0;
         ((RadioButton) var7.getChildAt(0)).setChecked(true);
 
-        while (var6 < var5) {
-            RadioButton var8 = (RadioButton) this.j.getChildAt(var6);
+        while (var6 < childCount) {
+            RadioButton var8 = (RadioButton) j.getChildAt(var6);
             if (var8.getTag().toString().equals(this.b)) {
                 var8.setChecked(true);
                 break;
@@ -73,13 +73,13 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
             ++var6;
         }
 
-        var1.a(var2);
-        var1.b(xB.b().a(this.getContext(), 2131625035), new Nw(this, var1));
-        var1.a(xB.b().a(this.getContext(), 2131624974), new Ow(this, var1));
-        var1.show();
+        dialog.a(rootView);
+        dialog.b(xB.b().a(this.getContext(), 2131625035), new Nw(this, dialog));
+        dialog.a(xB.b().a(this.getContext(), 2131624974), new Ow(this, dialog));
+        dialog.show();
     }
 
-    public final void a(Context var1, boolean var2) {
+    private void a(boolean var2) {
         wB.a(this.getContext(), this, 2131427648);
         this.c = (TextView) this.findViewById(2131232055);
         this.d = (TextView) this.findViewById(2131232270);
@@ -103,26 +103,19 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     public void onClick(View var1) {
         if (!mB.a()) {
-            String var3 = this.a;
-            byte var2 = -1;
-            if (var3.hashCode() == 1118712953 && var3.equals("property_custom_view_listview")) {
-                var2 = 0;
-            }
-
-            if (var2 == 0) {
+            if ("property_custom_view_listview".equals(a)) {
                 this.a();
             }
-
         }
     }
 
-    public void setCustomView(ArrayList<ProjectFileBean> var1) {
-        this.i = var1;
+    public void setCustomView(ArrayList<ProjectFileBean> customView) {
+        this.i = customView;
     }
 
-    public void setKey(String var1) {
-        this.a = var1;
-        int var2 = this.getResources().getIdentifier(var1, "string", this.getContext().getPackageName());
+    public void setKey(String key) {
+        this.a = key;
+        int var2 = this.getResources().getIdentifier(key, "string", this.getContext().getPackageName());
         if (var2 > 0) {
             this.c.setText(xB.b().a(this.getResources(), var2));
             this.f = 2131165638;
@@ -139,11 +132,10 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     }
 
     public void setOnPropertyValueChangeListener(Kw var1) {
-        this.k = var1;
     }
 
-    public void setOrientationItem(int var1) {
-        if (var1 == 0) {
+    public void setOrientationItem(int orientationItem) {
+        if (orientationItem == 0) {
             this.g.setVisibility(8);
             this.h.setVisibility(0);
         } else {
@@ -153,13 +145,13 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     }
 
-    public void setValue(String var1) {
+    public void setValue(String value) {
         String var2;
         label11:
         {
-            if (var1 != null) {
-                var2 = var1;
-                if (var1.length() > 0) {
+            if (value != null) {
+                var2 = value;
+                if (value.length() > 0) {
                     break label11;
                 }
             }
