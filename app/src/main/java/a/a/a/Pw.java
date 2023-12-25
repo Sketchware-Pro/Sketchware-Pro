@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,8 +49,8 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         aB dialog = new aB((Activity) this.getContext());
         dialog.b(this.c.getText().toString());
         dialog.a(this.f);
-        View rootView = wB.a(this.getContext(), 2131427643);
-        ViewGroup j = (ViewGroup) rootView.findViewById(2131231668);
+        View rootView = wB.a(this.getContext(), R.layout.property_popup_selector_single);
+        ViewGroup j = (ViewGroup) rootView.findViewById(R.id.rg_content);
         j.addView(this.a("none"));
         Iterator var3 = this.i.iterator();
 
@@ -80,12 +81,12 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     }
 
     private void a(boolean var2) {
-        wB.a(this.getContext(), this, 2131427648);
-        this.c = (TextView) this.findViewById(2131232055);
-        this.d = (TextView) this.findViewById(2131232270);
-        this.g = this.findViewById(2131231626);
-        this.h = this.findViewById(2131231628);
-        this.e = (ImageView) this.findViewById(2131231155);
+        wB.a(this.getContext(), this, R.layout.property_selector_item);
+        this.c = (TextView) this.findViewById(R.id.tv_name);
+        this.d = (TextView) this.findViewById(R.id.tv_value);
+        this.g = this.findViewById(R.id.property_item);
+        this.h = this.findViewById(R.id.property_menu_item);
+        this.e = (ImageView) this.findViewById(R.id.img_left_icon);
         if (var2) {
             this.setOnClickListener(this);
             this.setSoundEffectsEnabled(true);
@@ -119,9 +120,9 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         if (var2 > 0) {
             this.c.setText(xB.b().a(this.getResources(), var2));
             this.f = 2131165638;
-            if (this.h.getVisibility() == 0) {
-                ImageView var3 = (ImageView) this.findViewById(2131231151);
-                TextView var4 = (TextView) this.findViewById(2131232195);
+            if (this.h.getVisibility() == View.VISIBLE) {
+                ImageView var3 = (ImageView) this.findViewById(R.id.img_icon);
+                TextView var4 = (TextView) this.findViewById(R.id.tv_title);
                 var3.setImageResource(this.f);
                 var4.setText(xB.b().a(this.getContext(), var2));
             } else {
@@ -136,11 +137,11 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            this.g.setVisibility(8);
-            this.h.setVisibility(0);
+            this.g.setVisibility(View.GONE);
+            this.h.setVisibility(View.VISIBLE);
         } else {
-            this.g.setVisibility(0);
-            this.h.setVisibility(8);
+            this.g.setVisibility(View.VISIBLE);
+            this.h.setVisibility(View.GONE);
         }
 
     }
