@@ -6,8 +6,8 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ViewBean;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
@@ -871,13 +871,16 @@ public class Lx {
     /**
      * @return Code of an adapter for a ListView
      */
-    public static String getListAdapterCode(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
+    public static String getListAdapterCode(Ox ox, String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
         String className = a(widgetName);
 
         String initializers = "";
         StringBuilder initializersBuilder = new StringBuilder(initializers);
         for (ViewBean bean : views) {
-            initializersBuilder.append(getViewInitializerString(bean)).append("\r\n");
+            Set<String> toNotAdd = ox.readAttributesToReplace(bean);
+            if (!toNotAdd.contains("android:id")) {
+                initializersBuilder.append(getViewInitializerString(bean)).append("\r\n");
+            }
         }
         initializers = initializersBuilder.toString();
 
@@ -3230,22 +3233,18 @@ public class Lx {
         return formattedCode.toString();
     }
 
-    public static String pagerAdapter(String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic) {
+    public static String pagerAdapter(Ox ox, String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic) {
         String adapterName = a(pagerName);
-        Iterator<ViewBean> viewIterator = pagerItemViews.iterator();
 
-        StringBuilder viewsInitializer;
-        if (viewIterator.hasNext()) {
-            viewsInitializer = new StringBuilder(getViewInitializerString(viewIterator.next()))
-                    .append("\r\n");
-            while (viewIterator.hasNext()) {
-                viewsInitializer
-                        .append(getViewInitializerString(viewIterator.next()))
-                        .append("\r\n");
+        String viewsInitializer = "";
+        StringBuilder viewInitBuilder = new StringBuilder(viewsInitializer);
+        for (ViewBean bean : pagerItemViews) {
+            Set<String> toNotAdd = ox.readAttributesToReplace(bean);
+            if (!toNotAdd.contains("android:id")) {
+                viewInitBuilder.append(getViewInitializerString(bean)).append("\r\n");
             }
-        } else {
-            viewsInitializer = new StringBuilder();
         }
+        viewsInitializer = viewInitBuilder.toString();
 
         String baseCode = "public class " + adapterName + " extends PagerAdapter {\r\n" +
                 "\r\n" +
@@ -3309,22 +3308,17 @@ public class Lx {
                 "}\r\n";
     }
 
-    public static String recyclerViewAdapter(String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
+    public static String recyclerViewAdapter(Ox ox, String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
         String adapterName = a(recyclerViewName);
-        Iterator<ViewBean> viewIterator = itemViews.iterator();
-
-        StringBuilder viewsInitializer;
-        if (viewIterator.hasNext()) {
-            viewsInitializer = new StringBuilder(getViewInitializerString(viewIterator.next()))
-                    .append("\r\n");
-            while (viewIterator.hasNext()) {
-                viewsInitializer
-                        .append(getViewInitializerString(viewIterator.next()))
-                        .append("\r\n");
+        String viewsInitializer = "";
+        StringBuilder viewInitBuilder = new StringBuilder(viewsInitializer);
+        for (ViewBean bean : itemViews) {
+            Set<String> toNotAdd = ox.readAttributesToReplace(bean);
+            if (!toNotAdd.contains("android:id")) {
+                viewInitBuilder.append(getViewInitializerString(bean)).append("\r\n");
             }
-        } else {
-            viewsInitializer = new StringBuilder();
         }
+        viewsInitializer = viewInitBuilder.toString();
 
         String baseCode = "public class " + adapterName + " extends RecyclerView.Adapter<" + adapterName + ".ViewHolder> {\r\n" +
                 "\r\n" +
