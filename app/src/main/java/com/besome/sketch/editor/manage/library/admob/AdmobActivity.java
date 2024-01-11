@@ -125,7 +125,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        
     }
 
     private void nextStep() {
@@ -201,7 +201,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        
         setContentView(R.layout.manage_library_admob);
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");

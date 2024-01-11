@@ -60,7 +60,7 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        
     }
 
     public void l() {
@@ -75,7 +75,7 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.common_dialog_layout);
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        
         p = findViewById(R.id.common_dialog_icon);
         k = findViewById(R.id.common_dialog_container);
         l = findViewById(R.id.common_dialog_content);

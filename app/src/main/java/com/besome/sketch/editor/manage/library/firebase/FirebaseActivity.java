@@ -94,7 +94,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        
     }
 
     private void onNextPressed() {
@@ -189,7 +189,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+        
         setContentView(R.layout.manage_library_firebase);
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");

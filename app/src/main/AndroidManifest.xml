@@ -204,12 +204,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.manage.library.admob.AdmobActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name="com.besome.sketch.editor.manage.library.firebase.FirebaseActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name="com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity"
             android:configChanges="orientation|screenSize" />
