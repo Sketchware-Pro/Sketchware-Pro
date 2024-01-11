@@ -10,9 +10,12 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import a.a.a.jC;
+import a.a.a.jq;
 import a.a.a.kq;
+import a.a.a.Ox;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.lib.FileResConfig;
@@ -272,14 +275,17 @@ public class ExtraPaletteBlock {
         ArrayList<ViewBean> views = jC.a(sc_id).d(xmlName);
         for (int i = 0, viewsSize = views.size(); i < viewsSize; i++) {
             ViewBean view = views.get(i);
+            Set<String> toNotAdd = new Ox(new jq(), projectFile).readAttributesToReplace(view);
 
             if (i == 0) {
                 logicEditor.a("Views", 0xff555555);
             }
 
             if (!view.convert.equals("include")) {
-                String typeName = view.convert.isEmpty() ? ViewBean.getViewTypeName(view.type) : IdGenerator.getLastPath(view.convert);
-                logicEditor.a(view.id, "v", typeName, "getVar").setTag(view.id);
+                if (!toNotAdd.contains("android:id")) {
+                    String typeName = view.convert.isEmpty() ? ViewBean.getViewTypeName(view.type) : IdGenerator.getLastPath(view.convert);
+                    logicEditor.a(view.id, "v", typeName, "getVar").setTag(view.id);
+                }
             }
         }
     }

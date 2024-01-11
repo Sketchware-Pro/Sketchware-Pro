@@ -72,6 +72,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import a.a.a.DB;
 import a.a.a.FB;
@@ -93,9 +94,11 @@ import a.a.a.aB;
 import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
+import a.a.a.jq;
 import a.a.a.kC;
 import a.a.a.mB;
 import a.a.a.oB;
+import a.a.a.Ox;
 import a.a.a.sq;
 import a.a.a.uq;
 import a.a.a.wB;
@@ -109,6 +112,7 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.hasrat.menu.ExtraMenuBean;
+import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.util.Helper;
@@ -1491,8 +1495,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         dialog.b(xB.b().a(getContext(), R.string.logic_editor_title_select_view));
-        for (Pair<Integer, String> next : jC.a(B).d(xmlName, ss.getClassInfo().a())) {
-            viewGroup.addView(d(ViewBean.getViewTypeName(next.first), next.second));
+        ArrayList<ViewBean> views = jC.a(B).d(xmlName);
+        for (int i = 0, viewsSize = views.size(); i < viewsSize; i++) {
+            ViewBean viewBean = views.get(i);
+            String convert = viewBean.convert;
+            String typeName = convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(convert);
+            if (!convert.equals("include")) {
+                Set<String> toNotAdd = new Ox(new jq(), M).readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    viewGroup.addView(d(typeName, viewBean.id));
+                }
+            }
         }
         int childCount = viewGroup.getChildCount();
         int i = 0;

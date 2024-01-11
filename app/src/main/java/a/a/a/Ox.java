@@ -858,7 +858,7 @@ public class Ox {
         return Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find();
     }
 
-    private Set<String> readAttributesToReplace(ViewBean viewBean) {
+    public Set<String> readAttributesToReplace(ViewBean viewBean) {
         Set<String> toReplace = new HashSet<>();
 
         try {
