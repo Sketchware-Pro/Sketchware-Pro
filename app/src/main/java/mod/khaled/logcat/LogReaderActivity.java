@@ -113,9 +113,12 @@ public class LogReaderActivity extends AppCompatActivity {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         binding.autoScrollSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            autoScroll = isChecked;
             if (autoScroll) {
+                binding.autoScrollSwitch.setText("Auto scroll enabled");
                 Objects.requireNonNull(binding.logsRecyclerView.getLayoutManager()).scrollToPosition(Objects.requireNonNull(binding.logsRecyclerView.getAdapter()).getItemCount() - 1);
+            } else {
+                binding.autoScrollSwitch.setText("Auto scroll disabled");
             }
         });
 

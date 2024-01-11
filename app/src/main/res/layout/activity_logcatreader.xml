@@ -189,9 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Auto scroll enabled"
-                    android:textOff="Auto scroll disabled"
-                    android:textOn="Auto scroll enabled" />
+                    android:text="Auto scroll enabled" />
             </LinearLayout>
 
             <LinearLayout
