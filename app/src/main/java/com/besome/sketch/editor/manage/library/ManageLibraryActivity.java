@@ -86,21 +86,10 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private void initializeLibrary(@Nullable ProjectLibraryBean libraryBean) {
         if (libraryBean != null) {
             switch (libraryBean.libType) {
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE:
-                    firebaseLibraryBean = libraryBean;
-                    break;
-
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT:
-                    compatLibraryBean = libraryBean;
-                    break;
-
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB:
-                    admobLibraryBean = libraryBean;
-                    break;
-
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
-                    googleMapLibraryBean = libraryBean;
-                    break;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE -> firebaseLibraryBean = libraryBean;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT -> compatLibraryBean = libraryBean;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB -> admobLibraryBean = libraryBean;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP -> googleMapLibraryBean = libraryBean;
             }
         }
 
