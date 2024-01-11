@@ -2,4 +2,8 @@
     <!--  input layout  -->
     <color name="inputLayoutBackgroundColor">#2e2e2e</color>
     <color name="inputLayoutStrokeColor">#505050</color>
+
+    <!--  main layouts  -->
+    <color name="backgroundColor">#1C1C1C</color>
+    <color name="dialogBackgroundColor">#2E2E2E</color>
 </resources>

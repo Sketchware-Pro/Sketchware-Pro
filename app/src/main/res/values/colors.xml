@@ -180,5 +180,9 @@
 
     <!--  input layout  -->
     <color name="inputLayoutBackgroundColor">#FAFAFA</color>
-    <color name="inputLayoutStrokeColor">#E3E3E3</color>
+    <color name="inputLayoutStrokeColor">#D3D3D3</color>
+
+    <!--  main layouts  -->
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="dialogBackgroundColor">#FFFFFF</color>
 </resources>

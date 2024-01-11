@@ -1,40 +1,37 @@
 package mod.khaled.logcat;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static mod.SketchwareUtil.dpToPx;
-
-import android.app.AlertDialog;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.elevation.SurfaceColors;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ActivityLogcatreaderBinding;
+import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
+import com.sketchware.remod.databinding.ViewLogcatItemBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,102 +49,89 @@ public class LogReaderActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
-    private EditText filterEdittext;
-    private RecyclerView recyclerview;
+    private ActivityLogcatreaderBinding binding;
+    private BottomSheetBehavior<View> bottomSheetBehavior;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
+        binding = ActivityLogcatreaderBinding.inflate(getLayoutInflater());
         initialize();
         initializeLogic();
+        setContentView(binding.getRoot());
     }
 
     private void initialize() {
-        LinearLayout root = new LinearLayout(this);
-        root.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        root.setOrientation(LinearLayout.VERTICAL);
-        setContentView(root);
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
 
-        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(R.layout.toolbar_improved, root, false);
-        root.addView(toolbar);
-        ImageView back = toolbar.findViewById(R.id.ig_toolbar_back);
-        TextView title = toolbar.findViewById(R.id.tx_toolbar_title);
-        ImageView optionsMenu = toolbar.findViewById(R.id.ig_toolbar_load_file);
+        new Handler().postDelayed(() -> {
+            if (bottomSheetBehavior != null)
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }, 100);
 
-        toolbar.removeView(title);
-        optionsMenu.setVisibility(View.VISIBLE);
-        optionsMenu.setImageResource(R.drawable.ic_more_vert_white_24dp);
-
-        filterEdittext = new EditText(this);
-        {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1f);
-            params.leftMargin = dpToPx(8);
-            params.topMargin = dpToPx(2);
-            params.rightMargin = dpToPx(8);
-            params.bottomMargin = dpToPx(2);
-            params.gravity = Gravity.CENTER_VERTICAL;
-            filterEdittext.setLayoutParams(params);
-        }
-        filterEdittext.setTextSize(15f);
-        filterEdittext.setHint("Search log");
-        filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
-        filterEdittext.setTextColor(0xffffffff);
-        filterEdittext.setSingleLine(true);
-        toolbar.addView(filterEdittext, toolbar.indexOfChild(optionsMenu));
-
-        PopupMenu options = new PopupMenu(this, optionsMenu);
-        options.getMenu().add("Clear all");
-        options.getMenu().add("Filter by package");
-        options.getMenu().add("Auto scroll").setCheckable(true).setChecked(true);
-        options.setOnMenuItemClickListener(menuItem -> {
-            switch (menuItem.getTitle().toString()) {
-                case "Clear all":
-                    mainList.clear();
-                    ((Adapter) recyclerview.getAdapter()).deleteAll();
-                    break;
-
-                case "Filter by package":
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Filter by package name")
-                            .setMessage("For multiple package names, separate them with a comma (,).");
-                    final EditText _e = new EditText(this);
-                    _e.setText(pkgFilter);
-                    builder.setView(_e);
-                    builder.setPositiveButton("Apply", (dialog, which) -> {
-                        pkgFilter = _e.getText().toString();
-                        pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
-                        filterEdittext.setText(filterEdittext.getText().toString());
-                    });
-                    builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-                    builder.show();
-                    break;
-
-                case "Auto scroll": {
-                    menuItem.setChecked(!menuItem.isChecked());
-                    autoScroll = menuItem.isChecked();
-                    if (autoScroll) {
-                        recyclerview.getLayoutManager().scrollToPosition(recyclerview.getAdapter().getItemCount() - 1);
-                    }
-                    break;
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                    binding.dimView.setOnClickListener(view -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+                    binding.dimView.setClickable(true);
+                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            binding.optionsSwipeText.setText("Swipe down to hide");
+                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                        }
+                    }).start();
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                    binding.dimView.setOnClickListener(null);
+                    binding.dimView.setClickable(false);
+                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            binding.optionsSwipeText.setText("Swipe up to see options");
+                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                        }
+                    }).start();
                 }
             }
-            return true;
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                var dimView = binding.dimView;
+                dimView.setAlpha(slideOffset);
+
+                binding.optionsIcon.animate().rotation(slideOffset * 180).setDuration(0).start();
+            }
         });
 
-        recyclerview = new RecyclerView(this);
-        recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        recyclerview.setPadding(dpToPx(4), 0, dpToPx(4), 0);
-        root.addView(recyclerview);
+        binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
 
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
-        filterEdittext.addTextChangedListener(new BaseTextWatcher() {
+        binding.autoScrollSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            if (autoScroll) {
+                Objects.requireNonNull(binding.logsRecyclerView.getLayoutManager()).scrollToPosition(Objects.requireNonNull(binding.logsRecyclerView.getAdapter()).getItemCount() - 1);
+            }
+        });
+
+        binding.filterSwitchLayout.setOnClickListener(view -> showFilterDialog());
+
+        binding.clearSwitchLayout.setOnClickListener(view -> {
+            mainList.clear();
+            ((Adapter) Objects.requireNonNull(binding.logsRecyclerView.getAdapter())).deleteAll();
+        });
+
+        binding.searchInput.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String _charSeq = s.toString();
                 if (_charSeq.equals("") && (pkgFilterList.size() == 0)) {
-                    recyclerview.setAdapter(new Adapter(mainList));
+                    binding.logsRecyclerView.setAdapter(new Adapter(mainList));
                 } else {
                     ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
                     for (HashMap<String, Object> m : mainList) {
@@ -161,22 +145,42 @@ public class LogReaderActivity extends AppCompatActivity {
                             filteredList.add(m);
                         }
                     }
-                    recyclerview.setAdapter(new Adapter(filteredList));
+                    binding.logsRecyclerView.setAdapter(new Adapter(filteredList));
                 }
             }
         });
-
-        optionsMenu.setOnClickListener(v -> options.show());
-        Helper.applyRippleToToolbarView(optionsMenu);
     }
 
     private void initializeLogic() {
-        recyclerview.setAdapter(new Adapter(new ArrayList<>()));
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
         autoScroll = true;
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
         registerReceiver(logger, intentFilter);
+    }
+
+    void showFilterDialog() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        var dialogBinding = EasyDeleteEdittextBinding.inflate(getLayoutInflater());
+        View view = dialogBinding.getRoot();
+
+        dialogBinding.imgDelete.setVisibility(View.GONE);
+
+        var builder = new MaterialAlertDialogBuilder(this)
+                .setTitle("Filter by package name")
+                .setMessage("For multiple package names, separate them with a comma (,).")
+                .setIcon(R.drawable.ic_filter_24)
+                .setView(view)
+                .setPositiveButton("Apply", (dialog, which) -> {
+                    pkgFilter = dialogBinding.easyEdInput.getText().toString();
+                    pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
+                    binding.searchInput.setText(binding.searchInput.getText().toString());
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+
+        builder.show();
     }
 
     private class Logger extends BroadcastReceiver {
@@ -206,20 +210,20 @@ public class LogReaderActivity extends AppCompatActivity {
 
                 mainList.add(map);
                 if (pkgFilterList.size() == 0) {
-                    if (!filterEdittext.getText().toString().equals("")) {
-                        if (map.get("logRaw").toString().toLowerCase().contains(filterEdittext.getText().toString().toLowerCase())) {
-                            ((Adapter) recyclerview.getAdapter()).updateList(map);
+                    if (!binding.searchInput.getText().toString().equals("")) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
+                            ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
                     } else {
-                        ((Adapter) recyclerview.getAdapter()).updateList(map);
+                        ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                     }
                 } else if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
-                    if (!filterEdittext.getText().toString().equals("")) {
-                        if (map.get("logRaw").toString().toLowerCase().contains(filterEdittext.getText().toString().toLowerCase())) {
-                            ((Adapter) recyclerview.getAdapter()).updateList(map);
+                    if (!binding.searchInput.getText().toString().equals("")) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
+                            ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
                     } else {
-                        ((Adapter) recyclerview.getAdapter()).updateList(map);
+                        ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                     }
                 }
             }
@@ -229,7 +233,7 @@ public class LogReaderActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        filterEdittext.clearFocus();
+        binding.searchInput.clearFocus();
     }
 
     @Override
@@ -239,21 +243,33 @@ public class LogReaderActivity extends AppCompatActivity {
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-
         private final ArrayList<HashMap<String, Object>> data;
 
         public void updateList(final HashMap<String, Object> _map) {
             data.add(_map);
-            recyclerview.getAdapter().notifyItemInserted(data.size() + 1);
+            binding.logsRecyclerView.getAdapter().notifyItemInserted(data.size() + 1);
 
             if (autoScroll) {
-                ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(data.size() - 1);
+                ((LinearLayoutManager) binding.logsRecyclerView.getLayoutManager()).scrollToPosition(data.size() - 1);
+                binding.appBarLayout.setExpanded(false);
+            }
+
+            if (data.size() > 0) {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    bottomSheetBehavior.setHideable(false);
+                }
+                binding.noContentLayout.setVisibility(View.GONE);
+            } else {
+                binding.noContentLayout.setVisibility(View.VISIBLE);
             }
         }
 
         public void deleteAll() {
             data.clear();
-            recyclerview.getAdapter().notifyDataSetChanged();
+            binding.logsRecyclerView.getAdapter().notifyDataSetChanged();
+            binding.noContentLayout.setVisibility(View.VISIBLE);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
         public Adapter(ArrayList<HashMap<String, Object>> data) {
@@ -263,156 +279,70 @@ public class LogReaderActivity extends AppCompatActivity {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final LinearLayout _v = new LinearLayout(LogReaderActivity.this);
-            _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-            _v.setOrientation(LinearLayout.VERTICAL);
-
-            LinearLayout clickListener = new LinearLayout(LogReaderActivity.this);
-            clickListener.setTag("clickListener");
-            clickListener.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-            clickListener.setOrientation(LinearLayout.HORIZONTAL);
-            clickListener.setBackgroundColor(0xffffffff);
-
-            LinearLayout divider = new LinearLayout(LogReaderActivity.this);
-            divider.setTag("divider");
-            divider.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, dpToPx(1)));
-            divider.setBackgroundColor(0xffe0e0e0);
-
-            TextView type = new TextView(LogReaderActivity.this);
-            type.setTag("type");
-            type.setFocusable(false);
-            type.setClickable(false);
-            type.setText("U");
-            type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            type.setTypeface(null, Typeface.BOLD);
-            type.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
-            type.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(22), MATCH_PARENT));
-            type.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-            type.setTextColor(0xffffffff);
-            type.setBackgroundColor(0xff000000);
-
-            final LinearLayout detailHolder = new LinearLayout(LogReaderActivity.this);
-            detailHolder.setTag("detailHolder");
-            detailHolder.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-            detailHolder.setOrientation(LinearLayout.VERTICAL);
-            detailHolder.setPadding(dpToPx(3), dpToPx(3), dpToPx(3), dpToPx(3));
-            detailHolder.setClickable(false);
-
-            TextView date_header = new TextView(LogReaderActivity.this);
-            date_header.setTag("date_header");
-            date_header.setFocusable(false);
-            date_header.setClickable(false);
-            date_header.setVisibility(View.GONE);
-            date_header.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            date_header.setTypeface(null, Typeface.BOLD);
-            date_header.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            date_header.setTextColor(0xff757575);
-
-            TextView log = new TextView(LogReaderActivity.this);
-            log.setTag("log");
-            log.setFocusable(false);
-            log.setClickable(false);
-            log.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            log.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            log.setTextColor(0xff000000);
-
-            TextView pkgName = new TextView(LogReaderActivity.this);
-            pkgName.setTag("pkgName");
-            pkgName.setFocusable(false);
-            pkgName.setClickable(false);
-            pkgName.setVisibility(View.GONE);
-            pkgName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            pkgName.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            pkgName.setTextColor(0xff757575);
-
-            detailHolder.addView(date_header, 0);
-            detailHolder.addView(log, 1);
-            detailHolder.addView(pkgName, 2);
-            clickListener.addView(type, 0);
-            clickListener.addView(detailHolder, 1);
-            _v.addView(clickListener, 0);
-            _v.addView(divider, 1);
-
-            return new ViewHolder(_v);
+            var listBinding = ViewLogcatItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            listBinding.getRoot().setLayoutParams(layoutParams);
+            return new ViewHolder(listBinding);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+            var binding = holder.listBinding;
+
             if (data.get(position).containsKey("pkgName")) {
-                holder.packageName.setText(data.get(position).get("pkgName").toString());
-                holder.packageName.setVisibility(View.VISIBLE);
+                binding.pkgName.setText(data.get(position).get("pkgName").toString());
+                binding.pkgName.setVisibility(View.VISIBLE);
             } else {
-                holder.packageName.setVisibility(View.GONE);
+                binding.pkgName.setVisibility(View.GONE);
             }
             if (data.get(position).containsKey("culturedLog")) {
-                holder.date.setVisibility(View.VISIBLE);
-                holder.type.setText(data.get(position).get("type").toString());
-                holder.date.setText(data.get(position).get("date").toString() + " | " + (data.get(position).get("header").toString()));
-                switch (data.get(position).get("type").toString()) {
-                    case "A":
-                        holder.type.setBackgroundColor(0xFF9C27B0);
-                        break;
-
-                    case "D":
-                        holder.type.setBackgroundColor(0xFF2196F3);
-                        break;
-
-                    case "E":
-                        holder.type.setBackgroundColor(0xFFF44336);
-                        break;
-
-                    case "I":
-                        holder.type.setBackgroundColor(0xFF4CAF50);
-                        break;
-
-                    case "V":
-                        holder.type.setBackgroundColor(0xFF000000);
-                        break;
-
-                    case "W":
-                        holder.type.setBackgroundColor(0xFFFFC107);
-                        break;
-
-                    default:
-                        holder.type.setBackgroundColor(0xFF000000);
-                        holder.type.setText("U");
+                binding.dateHeader.setVisibility(View.VISIBLE);
+                binding.type.setText(data.get(position).get("type").toString());
+                binding.dateHeader.setText(data.get(position).get("date").toString() + " | " + (data.get(position).get("header").toString()));
+                switch (Objects.requireNonNull(data.get(position).get("type")).toString()) {
+                    case "A" -> binding.type.setBackgroundColor(0xFF9C27B0);
+                    case "D" -> binding.type.setBackgroundColor(0xFF2196F3);
+                    case "E" -> binding.type.setBackgroundColor(0xFFF44336);
+                    case "I" -> binding.type.setBackgroundColor(0xFF4CAF50);
+                    case "V" -> binding.type.setBackgroundColor(0xFF000000);
+                    case "W" -> binding.type.setBackgroundColor(0xFFFFC107);
+                    default -> {
+                        binding.type.setBackgroundColor(0xFF000000);
+                        binding.type.setText("U");
+                    }
                 }
-                holder.logText.setText(data.get(position).get("body").toString());
+                binding.log.setText(data.get(position).get("body").toString());
                 try {
                     if (data.get(position).get("date").toString().equals(data.get(position + 1).get("date").toString())) {
-                        holder.divider.setVisibility(View.GONE);
+//                        binding.divider.setVisibility(View.GONE);
                         try {
                             if (data.get(position).get("pkgName").toString().equals(data.get(position + 1).get("pkgName").toString())) {
-                                holder.packageName.setVisibility(View.GONE);
+                                binding.pkgName.setVisibility(View.GONE);
                             } else {
-                                holder.packageName.setVisibility(View.VISIBLE);
+                                binding.pkgName.setVisibility(View.VISIBLE);
                             }
                         } catch (Exception ignored) {
-                            holder.packageName.setVisibility(View.VISIBLE);
+                            binding.pkgName.setVisibility(View.VISIBLE);
                         }
                         try {
                             if (data.get(position).get("header").toString().equals(data.get(position + 1).get("header").toString())) {
-                                holder.date.setVisibility(View.GONE);
+                                binding.dateHeader.setVisibility(View.GONE);
                             } else {
-                                holder.date.setVisibility(View.VISIBLE);
+                                binding.dateHeader.setVisibility(View.VISIBLE);
                             }
                         } catch (Exception ignored) {
-                            holder.date.setVisibility(View.VISIBLE);
+                            binding.dateHeader.setVisibility(View.VISIBLE);
                         }
-                    } else {
-                        holder.divider.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception ignored) {
-                    holder.divider.setVisibility(View.VISIBLE);
                 }
             } else {
-                holder.logText.setText(data.get(position).get("logRaw").toString());
-                holder.type.setBackgroundColor(0xFF000000);
-                holder.type.setText("U");
-                holder.date.setVisibility(View.GONE);
-                holder.divider.setVisibility(View.VISIBLE);
+                binding.log.setText(data.get(position).get("logRaw").toString());
+                binding.type.setBackgroundColor(0xFF000000);
+                binding.type.setText("U");
+                binding.dateHeader.setVisibility(View.GONE);
             }
-            holder.root.setOnLongClickListener(v -> {
+            binding.getRoot().setOnLongClickListener(v -> {
                 SketchwareUtil.toast("Copied to clipboard");
                 ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", data.get(position).get("logRaw").toString()));
                 return true;
@@ -425,24 +355,11 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
+            private final ViewLogcatItemBinding listBinding;
 
-            public final LinearLayout root;
-            public final LinearLayout divider;
-            public final TextView type;
-            public final LinearLayout details;
-            public final TextView date;
-            public final TextView logText;
-            public final TextView packageName;
-
-            public ViewHolder(View v) {
-                super(v);
-                root = v.findViewWithTag("clickListener");
-                divider = v.findViewWithTag("divider");
-                type = v.findViewWithTag("type");
-                details = v.findViewWithTag("detailHolder");
-                date = v.findViewWithTag("date_header");
-                logText = v.findViewWithTag("log");
-                packageName = v.findViewWithTag("pkgName");
+            public ViewHolder(@NonNull ViewLogcatItemBinding listBinding) {
+                super(listBinding.getRoot());
+                this.listBinding = listBinding;
             }
         }
     }
