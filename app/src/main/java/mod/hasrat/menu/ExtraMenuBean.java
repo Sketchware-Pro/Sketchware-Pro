@@ -690,7 +690,7 @@ public class ExtraMenuBean {
                 for (String variable : projectDataManager.e(javaName, 6)) {
                     String variableType = CustomVariableUtil.getVariableType(variable);
                     String variableName = CustomVariableUtil.getVariableName(variable);
-                    if (variableType != null && menuName.equals(variableType)) {
+                    if (menuName.equals(variableType)) {
                         title = "Select a " + variableType + " Variable";
                         menus.add(variableName);
                     }
@@ -707,8 +707,7 @@ public class ExtraMenuBean {
             viewGroup.addView(logicEditor.e(menuArg));
         }
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            if (viewGroup.getChildAt(i) instanceof RadioButton) {
-                RadioButton rb = (RadioButton) viewGroup.getChildAt(i);
+            if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                 if (menu.getArgValue().toString().equals(rb.getText().toString())) {
                     rb.setChecked(true);
                     break;
@@ -720,10 +719,9 @@ public class ExtraMenuBean {
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                if (viewGroup.getChildAt(i) instanceof RadioButton) {
-                    RadioButton rb = (RadioButton) viewGroup.getChildAt(i);
+                if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                     if (rb.isChecked()) {
-                        logicEditor.a(menu, (Object) rb.getText().toString());
+                        logicEditor.a(menu, rb.getText().toString());
                     }
                 }
             }
@@ -775,7 +773,7 @@ public class ExtraMenuBean {
             if (!content.isEmpty() && content.charAt(0) == '@') {
                 content = " " + content;
             }
-            logicEditor.a(ss, (Object) content);
+            logicEditor.a(ss, content);
             dialog.dismiss();
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -826,7 +824,7 @@ public class ExtraMenuBean {
             splitter = strArr[strArr.length - 1];
         }
         fpd.setProperties(mProperty);
-        fpd.setDialogSelectionListener(files -> logicEditor.a(ss, (Object) files[0].split(splitter)[1]));
+        fpd.setDialogSelectionListener(files -> logicEditor.a(ss, files[0].split(splitter)[1]));
         fpd.show();
     }
 }
