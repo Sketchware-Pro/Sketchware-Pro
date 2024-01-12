@@ -2,7 +2,7 @@
 <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:animateLayoutChanges="true">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="0dp" android:layout_weight="1.0">
             <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true" app:layout_behavior="@string/appbar_scrolling_view_behavior">
                 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
                     <TextView android:textSize="14.0sp" android:textColor="@color/grey" android:gravity="center" android:id="@id/tv_guide" android:background="#fff6f6f6" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="@string/design_manager_image_description_guide_add_image" android:layout_weight="1.0" />
