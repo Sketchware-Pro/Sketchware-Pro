@@ -549,7 +549,7 @@ public class ExtraMenuBean {
                             activityMenu.add(activity.substring(1 + activity.lastIndexOf(".")));
                         }
                     }
-                    if (activityMenu.size() >= 1) {
+                    if (!activityMenu.isEmpty()) {
                         TextView txt = new TextView(logicEditor);
                         txt.setText("Custom Activities");
                         txt.setPadding(
@@ -772,7 +772,7 @@ public class ExtraMenuBean {
 
         dialog.b(Helper.getResString(R.string.common_word_save), view -> {
             String content = edittext.getText().toString();
-            if (content.length() > 0 && content.charAt(0) == '@') {
+            if (!content.isEmpty() && content.charAt(0) == '@') {
                 content = " " + content;
             }
             logicEditor.a(ss, (Object) content);
