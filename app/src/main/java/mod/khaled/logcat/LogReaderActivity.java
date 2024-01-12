@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import android.view.ViewGroup;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +37,6 @@ import java.util.regex.Pattern;
 import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
-import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
 public class LogReaderActivity extends AppCompatActivity {
 
@@ -68,14 +64,10 @@ public class LogReaderActivity extends AppCompatActivity {
     private void initialize() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
 
-        new Handler().postDelayed(() -> {
+        binding.optionsSheet.post(() -> {
             if (bottomSheetBehavior != null)
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        }, 100);
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.optionsSheet,
-                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+        });
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override

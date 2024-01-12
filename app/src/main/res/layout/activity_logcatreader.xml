@@ -122,6 +122,7 @@
         android:id="@+id/optionsSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/actionBarSize"
         app:behavior_autoShrink="true"
         app:behavior_hideable="true"
         app:behavior_peekHeight="90dp"
@@ -138,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="40dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -167,7 +168,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/view_switch_background"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
