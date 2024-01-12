@@ -40,11 +40,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/searchInputLayout"
+            style="@style/InLayoutTextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
-            style="@style/InLayoutTextInputLayoutStyle"
             android:hint="Search log"
             android:importantForAutofill="noExcludeDescendants"
             app:boxCornerRadiusBottomEnd="50dp"
@@ -111,32 +111,34 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:background="@drawable/ui_logcat_gradient_background"
         android:id="@+id/dimView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:alpha="0"
-
-        tools:alpha="1"
-        android:layout_height="match_parent"/>
+        android:background="@drawable/ui_logcat_gradient_background"
+        tools:alpha="1" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/optionsSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:behavior_autoShrink="true"
         app:behavior_hideable="true"
         app:behavior_peekHeight="90dp"
-        android:id="@+id/optionsSheet"
         app:cardBackgroundColor="@color/dialogBackgroundColor"
         app:cardCornerRadius="25dp"
         app:cardElevation="20dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:strokeWidth="0dp">
+        app:strokeWidth="0dp"
+        tools:behavior_peekHeight="490dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/optionsSheetLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -163,113 +165,120 @@
                 app:layout_constraintTop_toBottomOf="@+id/optionsIcon" />
 
             <LinearLayout
-                android:id="@+id/scrollSwitchLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/view_switch_background"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="3dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/optionsSwipeText">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_scroller_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/autoScrollSwitch"
+                <LinearLayout
+                    android:id="@+id/scrollSwitchLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Auto scroll enabled" />
-            </LinearLayout>
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="3dp">
 
-            <LinearLayout
-                android:id="@+id/filterSwitchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/view_switch_background"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollSwitchLayout">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_scroller_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/autoScrollSwitch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Auto scroll enabled" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@color/inputLayoutStrokeColor" />
+
+                <LinearLayout
+                    android:id="@+id/filterSwitchLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_filter_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="15dp">
 
-                <TextView
-                    android:layout_width="0dp"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_filter_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Filter by package name"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="#848484" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@color/inputLayoutStrokeColor" />
+
+                <LinearLayout
+                    android:id="@+id/clearSwitchLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Filter by package name"
-                    android:textSize="14sp" />
+                    android:layout_marginBottom="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="15dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#848484" />
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_clear_all_24"
+                        app:tint="#FF685E" />
 
-            <LinearLayout
-                android:id="@+id/clearSwitchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/view_switch_background"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/filterSwitchLayout">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Clear all logs"
+                        android:textColor="#FF685E"
+                        android:textSize="14sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_clear_all_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#FF685E" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Clear all logs"
-                    android:textColor="#FF685E"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#848484" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right_24"
+                        app:tint="#848484" />
+                </LinearLayout>
             </LinearLayout>
 
 
