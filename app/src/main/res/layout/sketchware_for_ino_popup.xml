@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/img_ino_popup" android:layout_width="fill_parent" android:layout_height="312.0dip" />
-    <ImageView android:layout_width="24.0dip" android:layout_height="18.0dip" android:layout_margin="8.0dip" android:src="@drawable/ad_label" />
-</RelativeLayout>
