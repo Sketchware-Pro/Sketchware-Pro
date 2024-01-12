@@ -3,6 +3,7 @@ package mod.hasrat.menu;
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
 
+import android.annotation.SuppressLint;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -62,15 +62,7 @@ public class ExtraMenuBean {
     public static final String[] intentKey = {"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
     public static final String[] pixelFormat = {"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
     public static final String[] patternFlags = {"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
-    public static final String[] permission;
-
-    static {
-        ArrayList<String> permissions = new ArrayList<>();
-        for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
-            permissions.add(permissionField.getName());
-        }
-        permission = permissions.toArray(new String[0]);
-    }
+    public static final String[] permission = {"CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "RECORD_AUDIO", "READ_CONTACTS", "WRITE_CONTACTS", "READ_SMS", "SEND_SMS", "READ_PHONE_STATE", "CALL_PHONE", "READ_CALENDAR", "WRITE_CALENDAR", "BLUETOOTH", "BLUETOOTH_ADMIN"};
 
     private final String ASSETS_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/assets/";
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
@@ -230,6 +222,7 @@ public class ExtraMenuBean {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void defaultMenus(Ss menu) {
         String menuName = menu.getMenuName();
         aB dialog = new aB(logicEditor);
