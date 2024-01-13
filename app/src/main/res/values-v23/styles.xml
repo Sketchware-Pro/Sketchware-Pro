@@ -1,14 +1,4 @@
 <resources>
-
-    <style name="Platform.V23.AppTheme" parent="Platform.V21.AppTheme">
-        <item name="android:statusBarColor">?android:attr/colorBackground</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="fontFamily">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
-    </style>
-
-    <style name="Platform.AppTheme" parent="Platform.V23.AppTheme" />
-
     <style name="ElevatedItemWithoutShadow" parent="Widget.Material3.CardView.Filled">
         <!-- On newer API levels, hide shadows while keeping elevation -->
         <item name="android:outlineAmbientShadowColor">@android:color/transparent</item>
@@ -17,5 +7,4 @@
         <item name="cardBackgroundColor">?attr/colorSurface</item>
         <item name="cardElevation">@dimen/elevated_item_without_shadow_elevation</item>
     </style>
-
 </resources>
