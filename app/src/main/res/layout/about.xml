@@ -16,10 +16,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabContentStart="56dp"
-            app:tabGravity="fill"
-            app:tabMode="scrollable">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -99,7 +96,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
-        android:visibility="visible"
         tools:visibility="gone">
 
         <ImageView
@@ -112,24 +108,18 @@
             android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="3dp"
             android:text="@string/about_loading_title"
-            android:textSize="16sp" />
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
 
         <TextView
             android:id="@+id/tv_loading_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.87"
             android:paddingLeft="8dp"
-            android:paddingTop="3dp"
+            android:paddingTop="4dp"
             android:paddingRight="8dp"
-            android:paddingBottom="8dp"
             android:text="@string/about_loading_subtitle"
-            android:textSize="12sp" />
+            android:textAppearance="?attr/textAppearanceBodySmall" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

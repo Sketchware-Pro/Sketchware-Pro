@@ -12,7 +12,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:focusable="false"
         android:padding="8dp"
         android:text="@string/about_team_title"
         android:textAppearance="?attr/textAppearanceLabelLarge"
@@ -62,14 +61,12 @@
                 android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:fontFamily="sans-serif-medium"
                 android:paddingLeft="8dp"
                 android:paddingTop="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="2dp"
                 android:singleLine="true"
-                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 tools:text="A contributor" />
 
             <TextView
@@ -77,7 +74,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_user_name"
-                android:alpha="0.87"
                 android:autoLink="all"
                 android:focusable="false"
                 android:paddingLeft="8dp"
