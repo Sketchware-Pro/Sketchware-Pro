@@ -122,11 +122,13 @@
         android:id="@+id/optionsSheet"
         style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="175dp"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="80dp"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        tools:behavior_peekHeight="175dp">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="96dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
             android:id="@+id/optionsSheetLayout"
@@ -137,10 +139,8 @@
             <com.google.android.material.bottomsheet.BottomSheetDragHandleView
                 android:id="@+id/drag_handle"
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp" />
 
             <LinearLayout
                 android:id="@+id/scrollSwitchLayout"
@@ -162,6 +162,7 @@
                     android:id="@+id/autoScrollSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
                     android:focusable="false"
                     android:clickable="false"
                     android:checked="true"

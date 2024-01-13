@@ -18,6 +18,8 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,13 +42,14 @@ import java.util.regex.Pattern;
 import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
+import mod.remaker.util.AddPaddingOnApplyWindowInsetsListener;
 
 public class LogReaderActivity extends AppCompatActivity {
 
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
     private String pkgFilter = "";
-    private boolean autoScroll = false;
+    private boolean autoScroll = true;
 
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
@@ -90,7 +93,7 @@ public class LogReaderActivity extends AppCompatActivity {
 
     private void initialize() {
         binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
-        autoScroll = true;
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
         registerReceiver(logger, intentFilter);
@@ -99,15 +102,10 @@ public class LogReaderActivity extends AppCompatActivity {
         persistentBottomSheetBehavior.addBottomSheetCallback(createBottomSheetCallback());
 
         binding.optionsSheet.post(() -> {
-            // persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-
             int state = persistentBottomSheetBehavior.getState();
             updateBackHandlingEnabled(state);
         });
         setupBackHandling();
-
-        // binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
-        // binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
 
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
@@ -121,12 +119,16 @@ public class LogReaderActivity extends AppCompatActivity {
             }
         });
 
+        binding.scrollSwitchLayout.setOnClickListener(view -> binding.autoScrollSwitch.performClick());
+
         binding.filterSwitchLayout.setOnClickListener(view -> showFilterDialog());
 
         binding.clearSwitchLayout.setOnClickListener(view -> {
             mainList.clear();
             ((Adapter) Objects.requireNonNull(binding.logsRecyclerView.getAdapter())).deleteAll();
         });
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.optionsSheet, new AddPaddingOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars()));
 
         binding.searchInput.addTextChangedListener(new BaseTextWatcher() {
             @Override
