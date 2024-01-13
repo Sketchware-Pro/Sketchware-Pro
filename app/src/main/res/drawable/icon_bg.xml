@@ -1,3 +1,11 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/colorSurfaceContainerLowest" />
-</shape>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="4dp"
+    android:insetTop="4dp"
+    android:insetRight="4dp"
+    android:insetBottom="4dp">
+    <shape>
+        <corners android:radius="4dp" />
+        <solid android:color="?attr/colorSurfaceContainerHigh" />
+        <size android:height="20dp" />
+    </shape>
+</inset>
