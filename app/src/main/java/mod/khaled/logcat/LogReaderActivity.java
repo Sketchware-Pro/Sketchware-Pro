@@ -99,14 +99,15 @@ public class LogReaderActivity extends AppCompatActivity {
         persistentBottomSheetBehavior.addBottomSheetCallback(createBottomSheetCallback());
 
         binding.optionsSheet.post(() -> {
-            int state = persistentBottomSheetBehavior.getState();
             // persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+            int state = persistentBottomSheetBehavior.getState();
             updateBackHandlingEnabled(state);
         });
         setupBackHandling();
 
-        binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
-        binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        // binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
+        // binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
 
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
@@ -187,36 +188,17 @@ public class LogReaderActivity extends AppCompatActivity {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
                     binding.dimView.setOnClickListener(view -> persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
                     binding.dimView.setClickable(true);
-                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            binding.optionsSwipeText.setText("Swipe down to hide");
-                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
-                        }
-                    }).start();
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
                     binding.dimView.setOnClickListener(null);
                     binding.dimView.setClickable(false);
-                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            binding.optionsSwipeText.setText("Swipe up to see options");
-                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
-                        }
-                    }).start();
                 }
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                var dimView = binding.dimView;
-                dimView.setAlpha(slideOffset);
-
-                binding.optionsIcon.animate().rotation(slideOffset * 180).setDuration(0).start();
+                binding.dimView.setAlpha(slideOffset);
             }
         };
     }
