@@ -74,12 +74,13 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.design.DesignActivity"
+            android:theme="@style/AppTheme.Design"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.MainActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/AppTheme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

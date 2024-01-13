@@ -6,7 +6,7 @@
         <item name="titleCollapseMode">scale</item>
     </style>
 
-    <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
+    <style name="AppTheme.Design.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
         <item name="subtitleTextAppearance">?attr/textAppearanceSubtitle1</item>
     </style>
@@ -389,10 +389,5 @@
     <style name="ElevatedItemWithoutShadow" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">?attr/colorSurface</item>
         <item name="cardElevation">@dimen/elevated_item_without_shadow_elevation</item>
-    </style>
-
-    <style name="SplashScreenTheme" parent="@style/AppTheme">
-        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
-        <item name="android:windowTranslucentStatus">false</item>
     </style>
 </resources>

@@ -1,14 +1,22 @@
 <resources>
     <style name="AppTheme" parent="Platform.AppTheme">
-        <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutMediumStyle</item>
         <item name="collapsingToolbarLayoutMediumStyle">@style/AppTheme.CollapsingToolbar</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
-        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
 
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
+    </style>
+
+    <style name="AppTheme.Design">
+        <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+        <item name="toolbarStyle">@style/AppTheme.Design.Toolbar</item>
+    </style>
+
+    <style name="AppTheme.Starting">
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="Platform.V21.AppTheme" parent="Base.AppTheme">
