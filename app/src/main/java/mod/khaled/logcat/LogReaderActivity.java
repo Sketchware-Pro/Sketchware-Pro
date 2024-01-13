@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.BackEventCompat;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.elevation.SurfaceColors;
 import com.sketchware.remod.R;
@@ -49,62 +52,58 @@ public class LogReaderActivity extends AppCompatActivity {
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
     private ActivityLogcatreaderBinding binding;
-    private BottomSheetBehavior<View> bottomSheetBehavior;
+    private BottomSheetBehavior<View> persistentBottomSheetBehavior;
+
+    private final OnBackPressedCallback persistentBottomSheetBackCallback =
+        new OnBackPressedCallback(/* enabled= */ false) {
+            @Override
+            public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
+                persistentBottomSheetBehavior.startBackProgress(backEvent);
+            }
+    
+            @Override
+            public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
+                persistentBottomSheetBehavior.updateBackProgress(backEvent);
+            }
+    
+            @Override
+            public void handleOnBackPressed() {
+                persistentBottomSheetBehavior.handleBackInvoked();
+            }
+    
+            @Override
+            public void handleOnBackCancelled() {
+                persistentBottomSheetBehavior.cancelBackProgress();
+            }
+        };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
+
         binding = ActivityLogcatreaderBinding.inflate(getLayoutInflater());
-        initialize();
-        initializeLogic();
         setContentView(binding.getRoot());
+
+        initialize();
     }
 
     private void initialize() {
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
+        binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
+        autoScroll = true;
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
+        registerReceiver(logger, intentFilter);
+
+        persistentBottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
+        persistentBottomSheetBehavior.addBottomSheetCallback(createBottomSheetCallback());
 
         binding.optionsSheet.post(() -> {
-            if (bottomSheetBehavior != null)
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            int state = persistentBottomSheetBehavior.getState();
+            // persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            updateBackHandlingEnabled(state);
         });
-
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
-                    binding.dimView.setOnClickListener(view -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
-                    binding.dimView.setClickable(true);
-                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            binding.optionsSwipeText.setText("Swipe down to hide");
-                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
-                        }
-                    }).start();
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
-                    binding.dimView.setOnClickListener(null);
-                    binding.dimView.setClickable(false);
-                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            binding.optionsSwipeText.setText("Swipe up to see options");
-                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
-                        }
-                    }).start();
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                var dimView = binding.dimView;
-                dimView.setAlpha(slideOffset);
-
-                binding.optionsIcon.animate().rotation(slideOffset * 180).setDuration(0).start();
-            }
-        });
+        setupBackHandling();
 
         binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
         binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
@@ -153,16 +152,77 @@ public class LogReaderActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeLogic() {
-        binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
-        autoScroll = true;
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
-        registerReceiver(logger, intentFilter);
+    private void setupBackHandling() {
+        getOnBackPressedDispatcher().addCallback(this, persistentBottomSheetBackCallback);
+        persistentBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                updateBackHandlingEnabled(newState);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+        });
+    }
+
+    private void updateBackHandlingEnabled(int state) {
+        switch (state) {
+            case BottomSheetBehavior.STATE_EXPANDED:
+            case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                persistentBottomSheetBackCallback.setEnabled(true);
+                break;
+            case BottomSheetBehavior.STATE_COLLAPSED:
+            case BottomSheetBehavior.STATE_HIDDEN:
+                persistentBottomSheetBackCallback.setEnabled(false);
+                break;
+            case BottomSheetBehavior.STATE_DRAGGING:
+            case BottomSheetBehavior.STATE_SETTLING:
+            default:
+                break;
+        }
+    }
+
+    private BottomSheetBehavior.BottomSheetCallback createBottomSheetCallback() {
+        return new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                    binding.dimView.setOnClickListener(view -> persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+                    binding.dimView.setClickable(true);
+                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            binding.optionsSwipeText.setText("Swipe down to hide");
+                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                        }
+                    }).start();
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                    binding.dimView.setOnClickListener(null);
+                    binding.dimView.setClickable(false);
+                    binding.optionsSwipeText.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            binding.optionsSwipeText.setText("Swipe up to see options");
+                            binding.optionsSwipeText.animate().alpha(1).setDuration(400).start();
+                        }
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                var dimView = binding.dimView;
+                dimView.setAlpha(slideOffset);
+
+                binding.optionsIcon.animate().rotation(slideOffset * 180).setDuration(0).start();
+            }
+        };
     }
 
     void showFilterDialog() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         var dialogBinding = EasyDeleteEdittextBinding.inflate(getLayoutInflater());
         View view = dialogBinding.getRoot();
@@ -257,9 +317,9 @@ public class LogReaderActivity extends AppCompatActivity {
             }
 
             if (data.size() > 0) {
-                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    bottomSheetBehavior.setHideable(false);
+                if (persistentBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                    persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    persistentBottomSheetBehavior.setHideable(false);
                 }
                 binding.noContentLayout.setVisibility(View.GONE);
             } else {
@@ -271,7 +331,7 @@ public class LogReaderActivity extends AppCompatActivity {
             data.clear();
             binding.logsRecyclerView.getAdapter().notifyDataSetChanged();
             binding.noContentLayout.setVisibility(View.VISIBLE);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
         public Adapter(ArrayList<HashMap<String, Object>> data) {
