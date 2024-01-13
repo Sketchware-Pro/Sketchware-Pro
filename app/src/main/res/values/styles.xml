@@ -100,11 +100,19 @@
 
     <style name="AppTheme" parent="Base.AppTheme">
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+        <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutMediumStyle</item>
+        <item name="collapsingToolbarLayoutMediumStyle">@style/AppTheme.CollapsingToolbar</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
 
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
+    </style>
+
+    <style name="AppTheme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Medium">
+        <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance</item>
+        <item name="expandedTitleTextAppearance">@style/MaterialToolbarTextExpandedAppearance</item>
+        <item name="titleCollapseMode">scale</item>
     </style>
 
     <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">

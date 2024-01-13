@@ -14,10 +14,7 @@
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
-            app:collapsedTitleTextAppearance="@style/MaterialToolbarTextCollapsedAppearance"
-            app:expandedTitleTextAppearance="@style/MaterialToolbarTextExpandedAppearance"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleCollapseMode="scale">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
