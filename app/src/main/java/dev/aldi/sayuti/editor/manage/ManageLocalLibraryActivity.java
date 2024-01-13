@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.elevation.SurfaceColors;
 import com.google.gson.Gson;
 import com.sketchware.remod.databinding.LibraryDownloaderDialogBinding;
 import com.sketchware.remod.databinding.ManageLocallibrariesBinding;
@@ -58,8 +57,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
-        binding.collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
         ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton,
                 new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
 

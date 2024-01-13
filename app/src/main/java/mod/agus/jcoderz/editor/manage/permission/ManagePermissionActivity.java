@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -61,13 +60,8 @@ public class ManagePermissionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        var collapsingToolbar = binding.collapsingToolbar;
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.scrollToTopButton,
                 new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
-
-        collapsingToolbar.setStatusBarScrimColor(SurfaceColors.SURFACE_2.getColor(this));
-        collapsingToolbar.setContentScrimColor(SurfaceColors.SURFACE_2.getColor(this));
     }
 
     private void setItems() {
