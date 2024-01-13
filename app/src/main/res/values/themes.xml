@@ -9,6 +9,10 @@
         <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
+    <style name="AppTheme.Main">
+        <item name="navigationViewStyle">@style/MainDrawer</item>
+    </style>
+
     <style name="AppTheme.Design">
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
         <item name="toolbarStyle">@style/AppTheme.Design.Toolbar</item>

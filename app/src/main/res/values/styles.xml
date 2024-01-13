@@ -119,18 +119,6 @@
         <item name="android:listDivider">?attr/colorOutlineVariant</item>
     </style>
 
-    <style name="MainDrawerCardView" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/MainDrawerCorners</item>
-    </style>
-
-    <style name="MainDrawerCorners" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">0dp</item>
-        <item name="cornerSizeTopRight">@dimen/main_drawer_corners_radius</item>
-        <item name="cornerSizeBottomRight">@dimen/main_drawer_corners_radius</item>
-        <item name="cornerSizeBottomLeft">0dp</item>
-    </style>
-
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
         <item name="android:background">@color/main_tab_background</item>
         <item name="tabGravity">fill</item>

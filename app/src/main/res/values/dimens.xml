@@ -19,7 +19,6 @@
     <dimen name="main_drawer_margin_top">16dp</dimen>
     <dimen name="main_drawer_horizontal_padding">20dp</dimen>
     <dimen name="main_drawer_shape_horizontal_inset">4dp</dimen>
-    <dimen name="main_drawer_corners_radius">15dp</dimen>
     <dimen name="padding_edit_view">5dp</dimen>
     <dimen name="project_button_height">72dp</dimen>
     <dimen name="elevated_item_without_shadow_elevation">2dp</dimen>

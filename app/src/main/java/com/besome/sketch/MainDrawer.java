@@ -1,13 +1,17 @@
 package com.besome.sketch;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -24,26 +28,35 @@ import dev.chrisbanes.insetter.Side;
 import mod.hilal.saif.activities.tools.Tools;
 import mod.ilyasse.activities.about.AboutModActivity;
 
-public class MainDrawer extends FrameLayout {
-    public MainDrawer(Context context) {
+public class MainDrawer extends NavigationView {
+    private static final int DEF_STYLE_RES = R.style.MainDrawer;
+
+    public MainDrawer(@NonNull Context context) {
         this(context, null);
     }
 
-    public MainDrawer(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        wB.a(context, this, R.layout.main_drawer);
-        NavigationView navView = findViewById(R.id.layout_main);
-        var layoutDirection = getResources().getConfiguration().getLayoutDirection();
+    public MainDrawer(@NonNull Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, R.attr.navigationViewStyle);
+    }
+
+    public MainDrawer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+        context = getContext();
+
+        var layoutDirection = context.getResources().getConfiguration().getLayoutDirection();
         Insetter.builder()
                 .margin(WindowInsetsCompat.Type.navigationBars(),
                         Side.create(layoutDirection == LAYOUT_DIRECTION_LTR,
                                 false, layoutDirection == LAYOUT_DIRECTION_RTL, false))
-                .applyToView(navView);
+                .applyToView(this);
 
-        navView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            initializeSocialLinks(id);
-            initializeDrawerItems(id);
+        inflateHeaderView(R.layout.main_drawer_header);
+        inflateMenu(R.menu.main_drawer_menu);
+        setNavigationItemSelectedListener(item -> {
+            initializeSocialLinks(item.getItemId());
+            initializeDrawerItems(item.getItemId());
+
+            // Return false to prevent selection
             return false;
         });
     }
@@ -60,13 +73,13 @@ public class MainDrawer extends FrameLayout {
             }
 
             if (url != -1) {
-                openUrl(getContext().getString(url));
+                openUrl(getContext().getResources().getString(url));
             }
         }
     }
 
     private void initializeDrawerItems(@IdRes int id) {
-        Activity activity = (Activity) getContext();
+        Activity activity = unwrap(getContext());
         if (id == R.id.about_team) {
             Intent intent = new Intent(activity, AboutModActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -96,7 +109,16 @@ public class MainDrawer extends FrameLayout {
     }
 
     private void openUrl(String url) {
+        Activity activity = unwrap(getContext());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        getContext().startActivity(intent);
+        activity.startActivity(intent);
+    }
+
+    private Activity unwrap(Context context) {
+        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+
+        return (Activity) context;
     }
 }
