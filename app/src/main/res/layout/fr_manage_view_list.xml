@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#fff6f6f6"
             android:gravity="center"
             android:textColor="@color/grey"
             android:textSize="14sp" />
@@ -26,7 +25,6 @@
             android:layout_height="0dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="#fff5f5f5"
             android:scrollbars="vertical"
             android:splitMotionEvents="false" />
     </LinearLayout>

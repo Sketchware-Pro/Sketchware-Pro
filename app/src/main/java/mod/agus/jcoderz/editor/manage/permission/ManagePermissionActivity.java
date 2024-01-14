@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
 public class ManagePermissionActivity extends AppCompatActivity {
@@ -60,6 +61,7 @@ public class ManagePermissionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         ViewCompat.setOnApplyWindowInsetsListener(binding.scrollToTopButton,
                 new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
     }

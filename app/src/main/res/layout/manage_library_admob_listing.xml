@@ -39,11 +39,10 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginVertical="4dp"
-        android:background="@color/color_secondary" />
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp" />
 
     <TextView
         android:id="@+id/tv_warning"

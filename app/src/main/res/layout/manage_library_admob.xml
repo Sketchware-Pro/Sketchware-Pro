@@ -18,15 +18,16 @@
 
         <ImageView
             android:id="@+id/img_backbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:focusable="true"
             android:clickable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:src="@drawable/ic_arrow_left_primary_48dp" />
+            android:padding="16dp"
+            android:src="@drawable/ic_arrow_left_primary_48dp"
+            app:tint="?attr/colorControlNormal" />
 
         <TextView
             android:id="@+id/tv_prevbtn"
@@ -34,8 +35,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:textSize="16sp"
-            android:visibility="gone"
             tools:text="@string/common_word_prev" />
 
         <TextView
@@ -78,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnSurface"
             tools:text="@string/design_library_admob_setting_step1_title" />
 
         <TextView
@@ -87,6 +91,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="@string/design_library_admob_setting_step1_desc" />
 
         <com.google.android.material.card.MaterialCardView
@@ -101,6 +106,7 @@
                 android:id="@+id/ll_goto_console"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="8dp">
 
@@ -143,6 +149,7 @@
         android:id="@+id/btn_import"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         tools:text="@string/design_library_button_import_from_other_project" />
@@ -154,7 +161,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         tools:text="@string/common_word_go_to_documentation" />
 </LinearLayout>

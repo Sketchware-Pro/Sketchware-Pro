@@ -1,66 +1,80 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
-    android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 
     <LinearLayout
-        android:layout_width="48dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/lib_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp" />
+
+            <TextView
+                android:id="@+id/tv_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lib_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/lib_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+        </LinearLayout>
 
         <ImageView
-            android:id="@+id/lib_icon"
-            android:layout_width="28dp"
-            android:layout_height="28dp" />
-
-        <TextView
-            android:id="@+id/tv_enable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="4dp"
-            android:background="@drawable/selector_bg_round"
-            android:gravity="center"
-            android:lines="1"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textColor="#ffffffff"
-            android:textSize="10sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/lib_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff757575"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/lib_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="8dp"
-            android:textColor="@color/light_grey"
-            android:textSize="12sp" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:focusable="true"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/side_menu_setting_icon_over"
+            android:visibility="gone" />
+
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="8dp"
-        android:src="@drawable/side_menu_setting_icon_over"
-        android:visibility="gone" />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+

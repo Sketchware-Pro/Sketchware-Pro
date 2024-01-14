@@ -14,9 +14,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:tabTextAppearance="@style/DesignTabTextAppearance" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
