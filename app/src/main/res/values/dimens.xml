@@ -52,4 +52,5 @@
     <dimen name="tutorial_item_margin">8dp</dimen>
 
     <dimen name="inputfields_corners_radius">10dp</dimen>
+    <dimen name="logcat_bottom_sheet_peek_height">90dp</dimen>
 </resources>

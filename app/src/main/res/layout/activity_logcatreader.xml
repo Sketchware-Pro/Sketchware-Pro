@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:ignore="ContentDescription">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -125,7 +124,7 @@
         android:layout_marginBottom="?attr/actionBarSize"
         app:behavior_autoShrink="true"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="90dp"
+        app:behavior_peekHeight="@dimen/logcat_bottom_sheet_peek_height"
         app:cardBackgroundColor="@color/dialogBackgroundColor"
         app:cardCornerRadius="25dp"
         app:cardElevation="20dp"
@@ -139,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 

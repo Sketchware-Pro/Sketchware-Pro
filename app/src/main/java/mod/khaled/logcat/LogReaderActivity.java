@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,12 +65,34 @@ public class LogReaderActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        final View decorView = getWindow().getDecorView();
+        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
+            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            binding.appBarLayout.setPadding(
+                    binding.appBarLayout.getPaddingLeft(),
+                    systemBarsInsets.top,
+                    binding.appBarLayout.getPaddingRight(),
+                    binding.appBarLayout.getPaddingBottom());
+
+            binding.optionsSheet.setPadding(
+                    binding.optionsSheet.getPaddingLeft(),
+                    binding.optionsSheet.getPaddingTop(),
+                    binding.optionsSheet.getPaddingRight(),
+                    systemBarsInsets.bottom);
+
+            bottomSheetBehavior.setPeekHeight(
+                    getResources().getDimensionPixelSize(R.dimen.logcat_bottom_sheet_peek_height) + systemBarsInsets.bottom,
+                    true);
+            return WindowInsetsCompat.CONSUMED;
+        });
         bottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
 
         binding.optionsSheet.post(() -> {
             if (bottomSheetBehavior != null)
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
+
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
