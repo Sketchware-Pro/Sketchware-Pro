@@ -31,7 +31,6 @@ public class ManageStringFogFragment extends BottomSheetDialogFragment {
             stringfogHandler.setStringfogEnabled(isChecked);
             setStringFogStatus(isChecked);
         });
-        binding.dismiss.setOnClickListener(view -> dismiss());
         setStringFogStatus(stringfogHandler.isStringfogEnabled());
     }
 

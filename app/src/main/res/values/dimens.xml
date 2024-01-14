@@ -51,4 +51,5 @@
     <dimen name="tutorial_item_margin">8dp</dimen>
 
     <dimen name="inputfields_corners_radius">10dp</dimen>
+    <dimen name="collapsing_toolbar_large_size">132dp</dimen>
 </resources>

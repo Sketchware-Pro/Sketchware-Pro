@@ -3,45 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingBottom="16dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
 
-    <View
-        android:layout_width="50dp"
-        android:layout_height="5dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/rounded_bottom_sheet_slider" />
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="0dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="StringFog Manager"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textAppearance="?attr/textAppearanceTitleLarge" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/sw_pg_enabled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:checked="true"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="Activated"
-        android:textSize="16sp" />
+        android:text="Activated" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:scaleType="fitStart"
             android:src="@drawable/ic_info_24" />
 
@@ -49,19 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
-            android:textColor="?colorControlNormal"
-            android:textSize="14sp" />
-
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/dismiss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:text="Dismiss"
-        android:textColor="?colorSurfaceBright"
-        android:textSize="@dimen/text_size_button_material"
-        app:backgroundTint="?colorPrimary" />
 </LinearLayout>

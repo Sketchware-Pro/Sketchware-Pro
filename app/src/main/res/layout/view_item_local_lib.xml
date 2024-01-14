@@ -1,42 +1,48 @@
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
-    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-        <CheckBox
-            android:id="@id/checkbox_content"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            tools:text="com.sketchware.pro:1.0.0" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@id/img_delete"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:focusable="true"
-            android:clickable="true"
-            android:padding="4dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_more_vert_grey600_24dp"
-            app:tint="?attr/colorControlNormal" />
+            <CheckBox
+                android:id="@id/checkbox_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:paddingStart="8dp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                tools:text="com.sketchware.pro:1.0.0" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@id/img_delete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:focusable="true"
+                android:clickable="true"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_more_vert_grey600_24dp"
+                app:tint="?attr/colorControlNormal" />
 
-</com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

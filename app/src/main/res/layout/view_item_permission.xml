@@ -1,21 +1,29 @@
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
-    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+    android:layout_height="wrap_content">
 
-    <CheckBox
-        android:id="@id/checkbox_content"
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="12dp"
-        android:textAppearance="?attr/textAppearanceBodyLarge"
-        tools:text="android.permission.WRITE_EXTERNAL_STORAGE" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-</com.google.android.material.card.MaterialCardView>
+        <CheckBox
+            android:id="@id/checkbox_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            tools:text="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

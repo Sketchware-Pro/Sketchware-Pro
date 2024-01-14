@@ -309,8 +309,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="mod.khaled.logcat.LogReaderActivity"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
-            android:windowSoftInputMode="adjustResize" />
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

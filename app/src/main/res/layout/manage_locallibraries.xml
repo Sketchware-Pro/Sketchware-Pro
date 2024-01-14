@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <!-- please set lift on scroll to false and elevation to 0 -->
+    <!-- when you implement search -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -14,7 +16,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -43,6 +45,7 @@
                 android:id="@+id/searchInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:hint="Search for permissions"
                 android:importantForAutofill="noExcludeDescendants"
@@ -80,11 +83,11 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- add padding top 8dp when search is implemented -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/librariesList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
             android:clipToPadding="false"
             android:paddingBottom="120dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

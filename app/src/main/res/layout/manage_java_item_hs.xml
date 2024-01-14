@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="8dp"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="24dp"
     app:rippleColor="?attr/colorControlHighlight"
@@ -17,9 +16,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
-        android:paddingEnd="8dp"
+        android:paddingEnd="16dp"
         android:paddingStart="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="8dp">
 
         <ImageView
             android:id="@+id/icon"

@@ -1,14 +1,14 @@
 <resources>
 
-    <style name="AppTheme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Medium">
+    <style name="AppTheme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
         <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance</item>
         <item name="expandedTitleTextAppearance">@style/MaterialToolbarTextExpandedAppearance</item>
         <item name="titleCollapseMode">scale</item>
     </style>
 
     <style name="AppTheme.Design.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
-        <item name="subtitleTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="titleTextAppearance">@style/DesignToolbarTitleTextAppearance</item>
+        <item name="subtitleTextAppearance">@style/DesignToolbarSubtitleTextAppearance</item>
     </style>
 
     <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">
@@ -49,13 +49,8 @@
         <item name="itemShapeInsetEnd">@dimen/main_drawer_shape_horizontal_inset</item>
         <item name="itemShapeInsetStart">@dimen/main_drawer_shape_horizontal_inset</item>
         <item name="itemTextAppearance">?attr/textAppearanceBodyMedium</item>
-        <item name="materialThemeOverlay">@style/MainDrawerThemeOverlay</item>
         <item name="subheaderInsetEnd">@dimen/main_drawer_horizontal_padding</item>
         <item name="subheaderInsetStart">@dimen/main_drawer_horizontal_padding</item>
-    </style>
-
-    <style name="MainDrawerThemeOverlay" parent="">
-        <item name="android:listDivider">?attr/colorOutlineVariant</item>
     </style>
 
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
@@ -144,16 +139,15 @@
         <item name="fontFamily">@font/gilroy</item>
     </style>
 
-    <style name="MaterialToolbarTextExpandedAppearance" parent="@style/TextAppearance.MaterialComponents.Headline4">
+    <style name="MaterialToolbarTextExpandedAppearance" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
-    <style name="MaterialToolbarTextCollapsedAppearance" parent="@style/TextAppearance.MaterialComponents.Headline5">
+    <style name="MaterialToolbarTextCollapsedAppearance" parent="TextAppearance.Material3.TitleLarge">
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
     </style>
-
 
     <style name="TextAppearance.Compat.Notification.Info.Media" parent="@style/TextAppearance.Compat.Notification.Info">
         <item name="android:textColor">@color/secondary_text_default_material_dark</item>

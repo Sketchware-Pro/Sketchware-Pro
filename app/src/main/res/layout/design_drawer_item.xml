@@ -8,9 +8,10 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="24dp"
     app:contentPadding="4dp"
-    app:rippleColor="?colorControlHighlight"
+    app:rippleColor="?attr/colorControlHighlight"
     app:strokeWidth="0dp">
 
     <LinearLayout
@@ -43,18 +44,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textSize="14sp" />
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                 <TextView
                     android:id="@+id/tv_sub_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textAppearance="?android:textAppearanceSmall"
-                    android:textSize="12sp" />
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
             </LinearLayout>
 
             <ImageView
@@ -62,7 +61,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/selector_ic_chevron_right_grey_48"
-                app:tint="?colorControlNormal" />
+                app:tint="?attr/colorControlNormal" />
         </LinearLayout>
     </LinearLayout>
 

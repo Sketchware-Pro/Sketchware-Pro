@@ -3,7 +3,7 @@
     android:id="@+id/layout_drawer"
     android:layout_width="250dp"
     android:layout_height="match_parent"
-    android:background="?colorSurface"
+    android:background="?attr/colorSurfaceContainer"
     android:orientation="vertical">
 
     <ScrollView
@@ -21,22 +21,19 @@
                 android:id="@+id/tv_title_configuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:padding="8dp"
-                android:textAppearance="?textAppearanceTitleMedium"
-                android:textSize="14sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 tools:text="@string/design_drawer_menu_title" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?colorControlHighlight" />
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/layout_menus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
+                android:layout_marginVertical="4dp"
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
@@ -46,18 +43,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/tv_title_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textAppearance="?textAppearanceTitleMedium"
-            android:textSize="14sp"
+            android:textAppearance="?textAppearanceBodyMedium"
             tools:text="@string/design_drawer_menu_bottom_title" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
     </LinearLayout>
 
     <LinearLayout

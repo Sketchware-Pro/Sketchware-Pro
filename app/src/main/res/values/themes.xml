@@ -1,8 +1,9 @@
 <resources>
     <style name="AppTheme" parent="Platform.AppTheme">
         <item name="chipStyle">@style/ChipStyle</item>
-        <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutMediumStyle</item>
-        <item name="collapsingToolbarLayoutMediumStyle">@style/AppTheme.CollapsingToolbar</item>
+        <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
+        <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
+        <item name="collapsingToolbarLayoutLargeStyle">@style/AppTheme.CollapsingToolbar</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
 
         <item name="fontFamily">@font/gilroy</item>
