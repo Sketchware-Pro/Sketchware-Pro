@@ -167,16 +167,6 @@
     <color name="md_theme_dark_surfaceTint">#8DCDFF</color>
     <color name="md_theme_dark_outlineVariant">#41474D</color>
     <color name="md_theme_dark_scrim">#000000</color>
-    <color name="Amber">#FFC107</color>
-    <color name="Blue">#008DCE</color>
-    <color name="CoolGreen">#34BC7E</color>
-    <color name="Green">#26A59A</color>
-    <color name="Indigo">#3F51B5</color>
-    <color name="LightBlue">#33B8F5</color>
-    <color name="LightOrange">#FFB055</color>
-    <color name="Pink">#FF5955</color>
-    <color name="Orange">#FFB055</color>
-
 
     <!--  input layout  -->
     <color name="inputLayoutBackgroundColor">#FAFAFA</color>

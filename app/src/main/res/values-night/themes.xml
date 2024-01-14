@@ -50,11 +50,6 @@
         <item name="colorAmberContainer">#5b4300</item>
         <item name="colorOnAmberContainer">#ffdf9e</item>
         <item name="harmonizeAmber">true</item>
-        <item name="colorBlue">#8ecdff</item>
-        <item name="colorOnBlue">#00344f</item>
-        <item name="colorBlueContainer">#004b70</item>
-        <item name="colorOnBlueContainer">#cae6ff</item>
-        <item name="harmonizeBlue">true</item>
         <item name="colorCoolGreen">#5cde9c</item>
         <item name="colorOnCoolGreen">#003921</item>
         <item name="colorCoolGreenContainer">#005232</item>
@@ -65,30 +60,5 @@
         <item name="colorGreenContainer">#00504a</item>
         <item name="colorOnGreenContainer">#72f7e9</item>
         <item name="harmonizeGreen">true</item>
-        <item name="colorIndigo">#bac3ff</item>
-        <item name="colorOnIndigo">#08218a</item>
-        <item name="colorIndigoContainer">#293ca0</item>
-        <item name="colorOnIndigoContainer">#dee0ff</item>
-        <item name="harmonizeIndigo">true</item>
-        <item name="colorLightBlue">#7fd0ff</item>
-        <item name="colorOnLightBlue">#00344a</item>
-        <item name="colorLightBlueContainer">#004c6a</item>
-        <item name="colorOnLightBlueContainer">#c5e7ff</item>
-        <item name="harmonizeLightBlue">true</item>
-        <item name="colorLightOrange">#ffb86a</item>
-        <item name="colorOnLightOrange">#492900</item>
-        <item name="colorLightOrangeContainer">#683d00</item>
-        <item name="colorOnLightOrangeContainer">#ffdcbc</item>
-        <item name="harmonizeLightOrange">true</item>
-        <item name="colorPink">#ffb3ad</item>
-        <item name="colorOnPink">#68000a</item>
-        <item name="colorPinkContainer">#930013</item>
-        <item name="colorOnPinkContainer">#ffdad7</item>
-        <item name="harmonizePink">true</item>
-        <item name="colorOrange">#ffb86a</item>
-        <item name="colorOnOrange">#492900</item>
-        <item name="colorOrangeContainer">#683d00</item>
-        <item name="colorOnOrangeContainer">#ffdcbc</item>
-        <item name="harmonizeOrange">true</item>
     </style>
 </resources>

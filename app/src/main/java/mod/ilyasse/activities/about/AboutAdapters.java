@@ -119,8 +119,8 @@ public class AboutAdapters {
                     activeBackgroundTextColor = MaterialColors.getColor(holder.status, R.attr.colorOnCoolGreenContainer);
                 } else {
                     holder.status.setText("Inactive");
-                    activeBackgroundColor = MaterialColors.getColor(holder.status, com.google.android.material.R.attr.colorSurfaceInverse);
-                    activeBackgroundTextColor = MaterialColors.getColor(holder.status, com.google.android.material.R.attr.colorOnSurfaceInverse);
+                    activeBackgroundColor = MaterialColors.getColor(holder.status, R.attr.colorAmberContainer);
+                    activeBackgroundTextColor = MaterialColors.getColor(holder.status, R.attr.colorOnAmberContainer);
                 }
                 rippleRound(holder.status, activeBackgroundColor, activeBackgroundColor, 100);
                 holder.status.setTextColor(activeBackgroundTextColor);
