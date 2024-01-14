@@ -67,7 +67,7 @@ public class PermissionManager {
     }
 
     public boolean hasNewPermission() {
-        return addedPermissions().size() != 0;
+        return !addedPermissions().isEmpty();
     }
 
     public String writePermission(boolean isAppCompat, int var1) {
@@ -104,7 +104,7 @@ public class PermissionManager {
             }
             removePermission(true, checkPerm, addPerm);
 
-            if (checkPerm.size() != 0 && addPerm.size() != 0) {
+            if (!checkPerm.isEmpty() && !addPerm.isEmpty()) {
                 permissionCode.append("if (");
 
                 for (int i = 0; i < checkPerm.size(); i++) {
@@ -152,7 +152,7 @@ public class PermissionManager {
             }
             removePermission(false, checkPerm, addPerm);
 
-            if (checkPerm.size() != 0 && addPerm.size() != 0) {
+            if (!checkPerm.isEmpty() && !addPerm.isEmpty()) {
                 permissionCode.append("if (Build.VERSION.SDK_INT >= 23) {" + Jx.EOL + "if (");
 
                 for (int i = 0; i < checkPerm.size(); i++) {
@@ -177,7 +177,7 @@ public class PermissionManager {
             }
         }
 
-        hasPermission = checkPerm.size() != 0 || addPerm.size() != 0;
+        hasPermission = !checkPerm.isEmpty() || !addPerm.isEmpty();
 
         if (permissionCode.toString().trim().isEmpty()) {
             return "initializeLogic();" + Jx.EOL;

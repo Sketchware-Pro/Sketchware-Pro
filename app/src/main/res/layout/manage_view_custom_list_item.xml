@@ -7,7 +7,7 @@
             <ImageView android:layout_gravity="center" android:id="@id/img_delete" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/ic_trashcan_white_48dp" />
         </LinearLayout>
         <ImageView android:id="@id/img_activity" android:background="#fff6f6f6" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="48.0dip" android:layout_height="52.0dip" android:layout_marginLeft="8.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" />
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_weight="1.0">
+        <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_weight="1.0">
             <TextView android:textSize="16.0sp" android:textColor="#ff404040" android:gravity="center_vertical" android:id="@id/tv_screen_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
         </LinearLayout>
         <ImageView android:id="@id/img_preset_setting" android:visibility="gone" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="16.0dip" android:src="@drawable/ic_detail_setting_48dp" />

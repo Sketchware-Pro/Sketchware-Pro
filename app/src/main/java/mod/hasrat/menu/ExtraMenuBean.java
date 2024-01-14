@@ -3,6 +3,7 @@ package mod.hasrat.menu;
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
 
+import android.annotation.SuppressLint;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.R;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -62,15 +62,7 @@ public class ExtraMenuBean {
     public static final String[] intentKey = {"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
     public static final String[] pixelFormat = {"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
     public static final String[] patternFlags = {"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
-    public static final String[] permission;
-
-    static {
-        ArrayList<String> permissions = new ArrayList<>();
-        for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
-            permissions.add(permissionField.getName());
-        }
-        permission = permissions.toArray(new String[0]);
-    }
+    public static final String[] permission = {"CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "RECORD_AUDIO", "READ_CONTACTS", "WRITE_CONTACTS", "READ_SMS", "SEND_SMS", "READ_PHONE_STATE", "CALL_PHONE", "READ_CALENDAR", "WRITE_CALENDAR", "BLUETOOTH", "BLUETOOTH_ADMIN"};
 
     private final String ASSETS_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/assets/";
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
@@ -230,6 +222,7 @@ public class ExtraMenuBean {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void defaultMenus(Ss menu) {
         String menuName = menu.getMenuName();
         aB dialog = new aB(logicEditor);
@@ -556,7 +549,7 @@ public class ExtraMenuBean {
                             activityMenu.add(activity.substring(1 + activity.lastIndexOf(".")));
                         }
                     }
-                    if (activityMenu.size() >= 1) {
+                    if (!activityMenu.isEmpty()) {
                         TextView txt = new TextView(logicEditor);
                         txt.setText("Custom Activities");
                         txt.setPadding(
@@ -697,7 +690,7 @@ public class ExtraMenuBean {
                 for (String variable : projectDataManager.e(javaName, 6)) {
                     String variableType = CustomVariableUtil.getVariableType(variable);
                     String variableName = CustomVariableUtil.getVariableName(variable);
-                    if (variableType != null && menuName.equals(variableType)) {
+                    if (menuName.equals(variableType)) {
                         title = "Select a " + variableType + " Variable";
                         menus.add(variableName);
                     }
@@ -714,8 +707,7 @@ public class ExtraMenuBean {
             viewGroup.addView(logicEditor.e(menuArg));
         }
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            if (viewGroup.getChildAt(i) instanceof RadioButton) {
-                RadioButton rb = (RadioButton) viewGroup.getChildAt(i);
+            if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                 if (menu.getArgValue().toString().equals(rb.getText().toString())) {
                     rb.setChecked(true);
                     break;
@@ -727,10 +719,9 @@ public class ExtraMenuBean {
         dialog.a(rootView);
         dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                if (viewGroup.getChildAt(i) instanceof RadioButton) {
-                    RadioButton rb = (RadioButton) viewGroup.getChildAt(i);
+                if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                     if (rb.isChecked()) {
-                        logicEditor.a(menu, (Object) rb.getText().toString());
+                        logicEditor.a(menu, rb.getText().toString());
                     }
                 }
             }
@@ -779,10 +770,10 @@ public class ExtraMenuBean {
 
         dialog.b(Helper.getResString(R.string.common_word_save), view -> {
             String content = edittext.getText().toString();
-            if (content.length() > 0 && content.charAt(0) == '@') {
+            if (!content.isEmpty() && content.charAt(0) == '@') {
                 content = " " + content;
             }
-            logicEditor.a(ss, (Object) content);
+            logicEditor.a(ss, content);
             dialog.dismiss();
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -833,7 +824,7 @@ public class ExtraMenuBean {
             splitter = strArr[strArr.length - 1];
         }
         fpd.setProperties(mProperty);
-        fpd.setDialogSelectionListener(files -> logicEditor.a(ss, (Object) files[0].split(splitter)[1]));
+        fpd.setDialogSelectionListener(files -> logicEditor.a(ss, files[0].split(splitter)[1]));
         fpd.show();
     }
 }
