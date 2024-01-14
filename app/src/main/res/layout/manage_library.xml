@@ -22,12 +22,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="4dp"
-                android:textColor="?colorAccent"
-                android:textSize="14sp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
                 tools:text="Advanced" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

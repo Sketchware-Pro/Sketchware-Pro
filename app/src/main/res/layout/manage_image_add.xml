@@ -5,13 +5,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="24dp">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="200dp"
@@ -37,8 +31,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textColor="@color/grey"
-                    android:textSize="12sp" />
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorPrimary" />
             </LinearLayout>
 
             <ImageView
@@ -112,10 +106,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="24dp"
-            android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -131,18 +122,20 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <CheckBox
+                    android:id="@id/chk_collection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp" />
+
                 <TextView
                     android:id="@id/tv_collection"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:textSize="12sp" />
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
 
-                <CheckBox
-                    android:id="@id/chk_collection"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

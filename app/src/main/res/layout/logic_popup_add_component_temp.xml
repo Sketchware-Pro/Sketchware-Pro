@@ -248,14 +248,13 @@
 
             <Button
                 android:id="@+id/docs_button"
-                style="@style/AppTheme.Button.CoolGreen"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffffff" />
+                android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/add_button"
-                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

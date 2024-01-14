@@ -88,18 +88,18 @@
 
                 <Button
                     android:id="@id/cancel_button"
-                    style="@style/AppTheme.Button.Blue"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1" />
 
                 <Button
                     android:id="@id/add_button"
-                    style="@style/AppTheme.Button.Blue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1" />
 
             </LinearLayout>

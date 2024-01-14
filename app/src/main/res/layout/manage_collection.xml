@@ -28,7 +28,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="#ffffffff"
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -48,19 +47,15 @@
                         android:id="@+id/tv_no_collections"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#fff5f5f5"
                         android:gravity="center"
-                        android:textColor="@color/grey"
-                        android:textSize="12sp"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/collection_list"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="2dp"
                         android:layout_weight="1"
-                        android:background="#fff5f5f5"
                         android:scrollbars="vertical"
                         android:splitMotionEvents="false" />
                 </LinearLayout>
@@ -70,7 +65,7 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
+                android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_add_24" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -79,30 +74,25 @@
             android:id="@+id/layout_btn_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
             android:orientation="horizontal"
-            android:padding="4dp"
             android:visibility="gone"
             tools:visibility="visible">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_cancel"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:textSize="@dimen/text_size_button_material"
-                app:backgroundTint="?colorAccent" />
+                android:layout_weight="1" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_delete"
-                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:textSize="@dimen/text_size_button_material" />
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

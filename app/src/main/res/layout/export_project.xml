@@ -50,7 +50,6 @@
 
                     <Button
                         android:id="@id/btn_sign_apk"
-                        style="@style/AppTheme.Button.Indigo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -162,7 +161,6 @@
 
                     <Button
                         android:id="@id/btn_export_src"
-                        style="@style/AppTheme.Button.Indigo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -237,7 +235,6 @@
 
                         <Button
                             android:id="@id/btn_send_src"
-                            style="@style/AppTheme.Button.Green"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_gravity="right"

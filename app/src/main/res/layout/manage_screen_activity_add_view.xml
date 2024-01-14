@@ -63,13 +63,12 @@
 
                 <Button
                     android:id="@id/btn_cancel"
-                    style="@style/AppTheme.Button.LightBlue"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <Button
                     android:id="@id/btn_add"
-                    style="@style/AppTheme.Button.Blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

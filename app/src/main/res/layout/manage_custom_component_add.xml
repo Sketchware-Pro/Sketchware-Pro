@@ -521,9 +521,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 android:text="@string/common_word_import"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:theme="@style/AppTheme.Button.Green" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btn_save"
@@ -535,9 +533,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 android:text="@string/common_word_accept"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:theme="@style/AppTheme.Button.LightPink" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

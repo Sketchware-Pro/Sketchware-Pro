@@ -124,7 +124,6 @@
 
             <Button
                 android:id="@id/btn_sign"
-                style="@style/AppTheme.Button.LightBlue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -175,7 +174,6 @@
 
                 <Button
                     android:id="@id/btn_share"
-                    style="@style/AppTheme.Button.Blue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_button_material" />

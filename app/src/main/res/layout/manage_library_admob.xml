@@ -3,27 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffffff"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_height"
-        android:background="#ffffffff"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="14dp"
+        android:paddingStart="16dp"
         android:paddingTop="8dp"
-        android:paddingRight="14dp"
+        android:paddingEnd="16dp"
         android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/img_backbtn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:padding="2dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
             android:src="@drawable/ic_arrow_left_primary_48dp" />
 
         <TextView
@@ -32,9 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/color_primary"
             android:textSize="16sp"
-            android:textStyle="bold"
             android:visibility="gone"
             tools:text="@string/common_word_prev" />
 
@@ -43,9 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/color_primary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_nextbtn"
@@ -53,9 +51,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/color_primary"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:textSize="16sp"
-            android:textStyle="bold"
             tools:text="@string/common_word_next" />
     </RelativeLayout>
 
@@ -78,52 +77,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="#ff212121"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             tools:text="@string/design_library_admob_setting_step1_title" />
 
         <TextView
             android:id="@+id/tv_step_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:textColor="#ff4d4d4d"
-            android:textSize="12sp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             tools:text="@string/design_library_admob_setting_step1_desc" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_console"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_margin="2dp"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            app:cardElevation="2dp">
+            android:focusable="true"
+            android:clickable="true">
 
             <LinearLayout
                 android:id="@+id/ll_goto_console"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/chrome_96" />
 
                 <TextView
                     android:id="@+id/tv_goto_console"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textSize="10sp"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
                     tools:text="@string/design_library_admob_button_goto_setting" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
     <ScrollView
@@ -147,24 +141,20 @@
 
     <Button
         android:id="@+id/btn_import"
-        style="@style/AppTheme.Button.Pink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:textSize="@dimen/text_size_button_material"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         tools:text="@string/design_library_button_import_from_other_project" />
 
     <Button
         android:id="@+id/btn_open_doc"
-        style="@style/AppTheme.Button.Green"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="@dimen/text_size_button_material"
+        android:layout_marginBottom="16dp"
         tools:text="@string/common_word_go_to_documentation" />
 </LinearLayout>

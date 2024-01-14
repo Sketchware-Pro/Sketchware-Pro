@@ -72,21 +72,18 @@
 
         <Button
             android:id="@+id/btn_cancel"
-            style="@style/AppTheme.Button.Blue"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:textSize="@dimen/text_size_button_material" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_accept"
-            style="@style/AppTheme.Button.LightBlue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:textSize="@dimen/text_size_button_material" />
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>

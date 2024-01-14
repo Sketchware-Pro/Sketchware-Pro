@@ -7068,17 +7068,6 @@
     <public name="Animation.AppCompat.Tooltip" id="0x7f0f0004" type="style" />
     <public name="Animation.Design.BottomSheetDialog" id="0x7f0f0005" type="style" />
     <public name="AppTheme" id="0x7f0f0007" type="style" />
-    <public name="AppTheme.Button.Amber" id="0x7f0f0008" type="style" />
-    <public name="AppTheme.Button.Blue" id="0x7f0f0009" type="style" />
-    <public name="AppTheme.Button.CoolGreen" id="0x7f0f000a" type="style" />
-    <public name="AppTheme.Button.Green" id="0x7f0f000b" type="style" />
-    <public name="AppTheme.Button.Indigo" id="0x7f0f000c" type="style" />
-    <public name="AppTheme.Button.LightBlue" id="0x7f0f000d" type="style" />
-    <public name="AppTheme.Button.Orange" id="0x7f0f000f" type="style" />
-    <public name="AppTheme.Button.Pink" id="0x7f0f0010" type="style" />
-    <public name="AppTheme.Button.Transparent" id="0x7f0f0011" type="style" />
-    <public name="AppTheme.Button.WhiteBlue" id="0x7f0f0012" type="style" />
-    <public name="AppTheme.Button.WhitePink" id="0x7f0f0013" type="style" />
     <public name="AppTheme.Check.White" id="0x7f0f0014" type="style" />
     <public name="Base.AlertDialog.AppCompat" id="0x7f0f0015" type="style" />
     <public name="Base.AlertDialog.AppCompat.Light" id="0x7f0f0016" type="style" />

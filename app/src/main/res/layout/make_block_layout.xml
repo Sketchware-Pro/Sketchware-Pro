@@ -217,12 +217,8 @@
 
                         <Button
                             android:id="@+id/add_variable"
-                            style="@style/AppTheme.Button.Blue"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:gravity="center"
-                            android:padding="8dp"
-                            android:textSize="12sp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -267,12 +263,8 @@
 
                     <Button
                         android:id="@+id/add_label"
-                        style="@style/AppTheme.Button.Blue"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:textSize="12sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -345,13 +337,9 @@
 
                     <Button
                         android:id="@+id/add"
-                        style="@style/AppTheme.Button.Blue"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="ADD"
-                        android:textSize="12sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ADD" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

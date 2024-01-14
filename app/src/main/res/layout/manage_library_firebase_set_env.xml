@@ -98,11 +98,9 @@
 
         <Button
             android:id="@id/btn_goto_console"
-            style="@style/AppTheme.Button.CoolGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:textSize="@dimen/text_size_button_material" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp" />
     </LinearLayout>
 </ScrollView>

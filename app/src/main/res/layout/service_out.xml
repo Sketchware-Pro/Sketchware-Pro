@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff6f6f6"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -42,9 +41,7 @@
 
         <Button
             android:id="@id/btn_service_out"
-            style="@style/AppTheme.Button.Green"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_button_material" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>
