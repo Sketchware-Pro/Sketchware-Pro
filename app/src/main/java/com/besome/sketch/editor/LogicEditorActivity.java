@@ -1818,7 +1818,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (ia) {
             g(false);
             return;
