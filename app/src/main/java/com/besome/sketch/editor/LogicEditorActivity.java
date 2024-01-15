@@ -5,7 +5,6 @@ import static mod.SketchwareUtil.getDip;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -63,6 +62,7 @@ import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -769,7 +769,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, text);
             dialogInterface.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (dialogInterface, which) -> Helper.getDialogDismissListener(dialogInterface));
         aBVar.show();
     }
 
@@ -2451,17 +2451,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         codeEditor.setWordwrap(false);
         codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        var dialog = new MaterialAlertDialogBuilder(this)
                 .setTitle("Source code")
-                .setIcon(R.drawable.code_icon)
                 .setPositiveButton(R.string.common_word_close, null)
                 .create();
 
         dialog.setView(codeEditor,
                 (int) getDip(24),
-                (int) getDip(8),
+                (int) getDip(20),
                 (int) getDip(24),
-                (int) getDip(8));
+                (int) getDip(0));
         dialog.show();
     }
 
