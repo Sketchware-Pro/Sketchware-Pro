@@ -1,8 +1,8 @@
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
     android:insetLeft="4dp"
-    android:insetTop="4dp"
+    android:insetTop="2dp"
     android:insetRight="4dp"
-    android:insetBottom="4dp">
+    android:insetBottom="2dp">
     <shape>
         <corners android:radius="4dp" />
         <solid android:color="?attr/colorSurfaceContainerHigh" />
