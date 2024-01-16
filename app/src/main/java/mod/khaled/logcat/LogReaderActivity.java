@@ -43,7 +43,6 @@ import java.util.regex.Pattern;
 import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
-import mod.remaker.util.AddPaddingOnApplyWindowInsetsListener;
 
 public class LogReaderActivity extends AppCompatActivity {
 
@@ -150,8 +149,6 @@ public class LogReaderActivity extends AppCompatActivity {
             mainList.clear();
             ((Adapter) Objects.requireNonNull(binding.logsRecyclerView.getAdapter())).deleteAll();
         });
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.optionsSheet, new AddPaddingOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars()));
 
         binding.searchInput.addTextChangedListener(new BaseTextWatcher() {
             @Override
