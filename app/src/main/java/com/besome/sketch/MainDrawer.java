@@ -73,7 +73,7 @@ public class MainDrawer extends NavigationView {
             }
 
             if (url != -1) {
-                openUrl(getContext().getResources().getString(url));
+                openUrl(getContext().getString(url));
             }
         }
     }
