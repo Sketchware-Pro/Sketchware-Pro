@@ -18,6 +18,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,6 +98,28 @@ public class LogReaderActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
         registerReceiver(logger, intentFilter);
+
+        final View decorView = getWindow().getDecorView();
+        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
+            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            binding.appBarLayout.setPadding(
+                    binding.appBarLayout.getPaddingLeft(),
+                    systemBarsInsets.top,
+                    binding.appBarLayout.getPaddingRight(),
+                    binding.appBarLayout.getPaddingBottom());
+
+            binding.optionsSheet.setPadding(
+                    binding.optionsSheet.getPaddingLeft(),
+                    binding.optionsSheet.getPaddingTop(),
+                    binding.optionsSheet.getPaddingRight(),
+                    systemBarsInsets.bottom);
+
+            persistentBottomSheetBehavior.setPeekHeight(
+                    getResources().getDimensionPixelSize(R.dimen.logcat_bottom_sheet_peek_height) + systemBarsInsets.bottom,
+                    true);
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         persistentBottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
         persistentBottomSheetBehavior.addBottomSheetCallback(createBottomSheetCallback());

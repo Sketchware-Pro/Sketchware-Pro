@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:ignore="ContentDescription">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -125,9 +124,8 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:clickable="true"
-        android:fitsSystemWindows="true"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="96dp"
+        app:behavior_peekHeight="@dimen/logcat_bottom_sheet_peek_height"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
@@ -140,7 +138,7 @@
                 android:id="@+id/drag_handle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="0dp" />
+                android:paddingBottom="8dp" />
 
             <LinearLayout
                 android:id="@+id/scrollSwitchLayout"

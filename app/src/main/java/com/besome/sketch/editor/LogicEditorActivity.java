@@ -5,9 +5,9 @@ import static mod.SketchwareUtil.getDip;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -63,6 +63,7 @@ import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -82,6 +83,7 @@ import a.a.a.Lx;
 import a.a.a.MA;
 import a.a.a.Mp;
 import a.a.a.NB;
+import a.a.a.Ox;
 import a.a.a.Pp;
 import a.a.a.Rs;
 import a.a.a.Ss;
@@ -97,8 +99,6 @@ import a.a.a.jC;
 import a.a.a.jq;
 import a.a.a.kC;
 import a.a.a.mB;
-import a.a.a.oB;
-import a.a.a.Ox;
 import a.a.a.sq;
 import a.a.a.uq;
 import a.a.a.wB;
@@ -126,14 +126,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private final Handler Z = new Handler();
     private final int[] v = new int[2];
     public ProjectFileBean M;
+    private PaletteSelector l;
+    private Toolbar k;
     public PaletteBlock m;
     public BlockPane o;
+    private ArrayList<MoreBlockCollectionBean> pa;
+    private int[] z = new int[2];
     public String B = "";
     public String C = "";
     public String D = "";
+    private DB H;
     private Vibrator F;
     private LinearLayout J, K;
-    private FloatingActionButton L;
+    private FloatingActionButton openBlocksMenuButton;
     private LogicTopMenu N;
     private LogicEditorDrawer O;
     private ObjectAnimator U, V, ba, ca, fa, ga;
@@ -333,7 +338,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void I() {
-        ArrayList<MoreBlockCollectionBean> pa = Pp.h().f();
+        pa = Pp.h().f();
         new MoreblockImporterDialog(this, pa, this).show();
     }
 
@@ -621,6 +626,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         y = -1;
         x = 0;
         int[] iArr = new int[2];
+        z = iArr;
         rs.getLocationOnScreen(iArr);
         Rs rs2 = rs.E;
         if (rs2 != null) {
@@ -769,7 +775,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, text);
             dialogInterface.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (dialogInterface, which) -> Helper.getDialogDismissListener(dialogInterface));
         aBVar.show();
     }
 
@@ -1572,7 +1578,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams2.gravity = Gravity.CENTER | Gravity.BOTTOM;
             int dimension = (int) getResources().getDimension(R.dimen.action_button_margin);
             layoutParams2.setMargins(dimension, dimension, dimension, dimension);
-            L.setLayoutParams(layoutParams2);
+            openBlocksMenuButton.setLayoutParams(layoutParams2);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1584,7 +1590,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams3.gravity = Gravity.CENTER | Gravity.RIGHT;
             int dimension2 = (int) getResources().getDimension(R.dimen.action_button_margin);
             layoutParams3.setMargins(dimension2, dimension2, dimension2, dimension2);
-            L.setLayoutParams(layoutParams3);
+            openBlocksMenuButton.setLayoutParams(layoutParams3);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -1818,7 +1824,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (ia) {
             g(false);
             return;
@@ -1884,7 +1889,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logic_editor);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
         Parcelable parcelable;
@@ -1900,9 +1905,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
-        DB h = new DB(this, "P1");
+        H = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
-        Toolbar k = findViewById(R.id.toolbar);
+        k = findViewById(R.id.toolbar);
         setSupportActionBar(k);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -1912,7 +1917,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 onBackPressed();
             }
         });
-        k.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
         G = new DB(getContext(), "P12").a("P12I0", true);
         A = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -1928,7 +1932,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
         d.setTitle(stringExtra);
-        PaletteSelector l = findViewById(R.id.palette_selector);
+        l = findViewById(R.id.palette_selector);
         l.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         p = findViewById(R.id.dummy);
@@ -1936,8 +1940,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         o = n.getBlockPane();
         J = findViewById(R.id.layout_palette);
         K = findViewById(R.id.area_palette);
-        L = findViewById(R.id.fab_toggle_palette);
-        L.setOnClickListener(v -> e(!X));
+        openBlocksMenuButton = findViewById(R.id.fab_toggle_palette);
+        openBlocksMenuButton.setOnClickListener(v -> e(!X));
         N = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
         extraPaletteBlock = new ExtraPaletteBlock(this);
@@ -1946,23 +1950,24 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logic_menu, menu);
+        menu.findItem(R.id.menu_block_helper).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FF4D4D")));
         menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         if (M == null) {
             return true;
         }
         if (bC.d(B).g(s())) {
-            menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_white_48dp);
+            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_redo).setIcon(R.drawable.ic_redo_grey_48dp);
+            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         }
         if (bC.d(B).h(s())) {
-            menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_white_48dp);
+            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_undo).setIcon(R.drawable.ic_undo_grey_48dp);
+            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         }
         return true;
@@ -2028,7 +2033,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }
@@ -2452,17 +2457,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         codeEditor.setWordwrap(false);
         codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        var dialog = new MaterialAlertDialogBuilder(this)
                 .setTitle("Source code")
-                .setIcon(R.drawable.code_icon)
                 .setPositiveButton(R.string.common_word_close, null)
                 .create();
 
         dialog.setView(codeEditor,
                 (int) getDip(24),
-                (int) getDip(8),
+                (int) getDip(20),
                 (int) getDip(24),
-                (int) getDip(8));
+                (int) getDip(0));
         dialog.show();
     }
 

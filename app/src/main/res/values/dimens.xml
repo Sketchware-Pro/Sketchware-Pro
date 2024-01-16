@@ -52,4 +52,5 @@
 
     <dimen name="inputfields_corners_radius">10dp</dimen>
     <dimen name="collapsing_toolbar_large_size">132dp</dimen>
+    <dimen name="logcat_bottom_sheet_peek_height">90dp</dimen>
 </resources>
