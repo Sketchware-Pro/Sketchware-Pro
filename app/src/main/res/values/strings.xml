@@ -1338,7 +1338,7 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_view_description_guide_create_activity">To create a new Activity, add it here</string>
     <string name="design_manager_view_description_guide_create_custom_view">Create a new Custom View here</string>
     <string name="design_manager_view_description_guide_use_custom_view">Custom View can be used to change the way items are displayed inside the ListView or the Spinner</string>
-    <string name="design_manager_view_hint_enter_view_name">Enter View name</string>
+    <string name="design_manager_view_hint_enter_view_name">Enter view name</string>
     <string name="design_manager_view_message_no_view">No views to display</string>
     <string name="design_manager_view_message_slow_down">Including the drawer or the FAB may slow down the compilation time on certain devices.</string>
     <string name="design_manager_view_title_activity_name">Activity Name :</string>
