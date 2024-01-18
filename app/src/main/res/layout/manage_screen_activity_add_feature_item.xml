@@ -1,15 +1,16 @@
-<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:flexDirection="row">
+    android:paddingHorizontal="3dp"
+    android:paddingVertical="5dp"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@id/img_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_alignSelf="center"
         tools:src="@drawable/fab_color" />
 
     <TextView
@@ -17,12 +18,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        app:layout_alignSelf="center"
-        app:layout_flexGrow="1"
+        android:layout_weight="1"
         tools:text="ToolBar" />
 
     <CheckBox
         android:id="@id/checkbox"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-</com.google.android.flexbox.FlexboxLayout>
+</LinearLayout>

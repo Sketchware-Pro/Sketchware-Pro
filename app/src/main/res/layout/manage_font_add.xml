@@ -1,58 +1,96 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp">
 
-    <TextView
-        android:id="@+id/font_preview"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/font_preview_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:textColor="#ff7d7d7d"
-        android:textSize="12sp"
-        android:visibility="gone" />
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Font preview"
+                android:textColor="#ff7d7d7d"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/font_preview_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is how your font would look like."
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.besome.sketch.lib.ui.EasyDeleteEditText
-            android:id="@+id/ed_input"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="4dp"
+            android:layout_weight="1"
+            android:importantForAutofill="noExcludeDescendants">
 
-        <ImageView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@id/ed_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter font name"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/select_file"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:padding="8dp"
+            android:layout_width="52dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/transparent"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/add_96_blue" />
+            app:cornerRadius="10dp"
+            app:icon="@drawable/ic_add_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="22dp"
+            app:iconTint="?colorPrimary"
+            app:strokeColor="?colorPrimary"
+            app:strokeWidth="1dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/chk_collection"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:textSize="12sp" />
-
-        <CheckBox
-            android:id="@+id/chk_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:text="Add to my collection" />
 </LinearLayout>

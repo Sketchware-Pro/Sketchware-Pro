@@ -40,6 +40,7 @@
                     android:id="@+id/common_dialog_title_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:gravity="center|left"
                     android:orientation="horizontal"
                     android:padding="16dp">
@@ -58,9 +59,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:paddingStart="16dp"
+                        android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        tools:text="Bravo" />
+                        tools:text="Sketchware 2022 is real" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -75,6 +76,8 @@
                     android:id="@+id/common_dialog_button_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center_vertical"
                     android:minWidth="280dp"
                     android:orientation="horizontal">
@@ -84,15 +87,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
                         android:minWidth="0dp"
-                        android:minHeight="0dp"
-                        android:padding="16dp"
-                        android:textAllCaps="false"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="12dp"
                         android:textColor="?colorPrimary"
-                        app:backgroundTint="@color/transparent"
-                        app:rippleColor="?colorControlHighlight"
                         tools:text="Default" />
 
                     <LinearLayout
@@ -106,15 +104,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
                             android:minWidth="0dp"
-                            android:minHeight="0dp"
-                            android:padding="16dp"
-                            android:textAllCaps="false"
+                            android:paddingHorizontal="18dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingVertical="12dp"
                             android:textColor="?colorPrimary"
-                            app:backgroundTint="@color/transparent"
-                            app:rippleColor="?colorControlHighlight"
                             tools:text="Cancel" />
 
                         <TextView
@@ -123,15 +118,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:gravity="center"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
                             android:minWidth="0dp"
-                            android:minHeight="0dp"
-                            android:padding="16dp"
-                            android:textAllCaps="false"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="12dp"
                             android:textColor="?colorPrimary"
-                            app:backgroundTint="@color/transparent"
-                            app:rippleColor="?colorControlHighlight"
                             tools:text="Okay" />
                     </LinearLayout>
                 </LinearLayout>

@@ -26,20 +26,12 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
     private ArrayList<ProjectFileBean> presets;
 
     private void applyPresetData(String presetName) {
-        int resDrawable;
-        switch (requestCode) {
-            case 276:
-                resDrawable = rq.e(presetName);
-                break;
-            case AddCustomViewActivity.REQ_CD_PRESET_ACTIVITY:
-                resDrawable = rq.a(presetName);
-                break;
-            case 278:
-                resDrawable = rq.c(presetName);
-                break;
-            default:
-                resDrawable = -1;
-        }
+        int resDrawable = switch (requestCode) {
+            case 276 -> rq.e(presetName);
+            case AddCustomViewActivity.REQ_CD_PRESET_ACTIVITY -> rq.a(presetName);
+            case 278 -> rq.c(presetName);
+            default -> -1;
+        };
 
         activity.setImageResource(resDrawable);
         activityName.setText(presetName);
