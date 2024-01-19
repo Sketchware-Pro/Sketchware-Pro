@@ -68,17 +68,19 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/select_file"
+            style="?attr/materialIconButtonOutlinedStyle"
             android:layout_width="52dp"
             android:layout_height="54dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="3.5dp"
             android:layout_marginBottom="5dp"
             android:backgroundTint="@color/transparent"
             android:insetLeft="0dp"
+            android:layout_marginStart="4dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:scaleType="fitCenter"
-            app:cornerRadius="10dp"
+            app:cornerRadius="12dp"
             app:icon="@drawable/ic_add_24"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
@@ -89,7 +91,7 @@
     </LinearLayout>
 
     <CheckBox
-        android:id="@+id/chk_collection"
+        android:id="@+id/add_to_collection_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to my collection" />

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -16,6 +15,7 @@ import com.besome.sketch.beans.SelectableBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
@@ -44,7 +44,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     private TextInputEditText inputEditText;
     private TextInputLayout inputLayout;
     private WB fontValidator;
-    private ImageView addNewFontBtn;
+    private MaterialButton addNewFontBtn;
     private boolean isEditMode = false;
     private Uri selectedFontUri = null;
 
@@ -67,8 +67,8 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         addToCollectionCheckBox.setVisibility(View.GONE);
         inputEditText = findViewById(R.id.ed_input);
         inputLayout = findViewById(R.id.ti_input);
-        addNewFontBtn = (ImageView) findViewById(R.id.select_file);
-        fontPreviewText = (TextView) findViewById(R.id.font_preview);
+        addNewFontBtn = findViewById(R.id.select_file);
+        fontPreviewText = findViewById(R.id.font_preview_txt);
         fontValidator = new WB(this, inputLayout, uq.b, getExistingFontNames());
         addNewFontBtn.setOnClickListener(new Nt(this));
         ((BaseDialogActivity) this).r.setOnClickListener(this);
@@ -138,7 +138,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
 
     public void onResume() {
         super.onResume();
-        ((BaseAppCompatActivity) this).d.setScreenName(AddFontCollectionActivity.class.getSimpleName().toString());
+        ((BaseAppCompatActivity) this).d.setScreenName(AddFontCollectionActivity.class.getSimpleName());
         ((BaseAppCompatActivity) this).d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
