@@ -1,5 +1,27 @@
 package com.besome.sketch.editor.manage.font;
 
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.beans.SelectableBean;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import a.a.a.HB;
 import a.a.a.Np;
 import a.a.a.Nt;
@@ -9,25 +31,6 @@ import a.a.a.uq;
 import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.yy;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.beans.SelectableBean;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class AddFontCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
     public TextView A;
@@ -38,8 +41,8 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     public ProjectResourceBean G;
     public String u;
     public int v;
-    public EditText w;
-    public EasyDeleteEditText x;
+    public TextInputEditText inputEditText;
+    public TextInputLayout inputLayout;
     public WB y;
     public ImageView z;
     public boolean t = false;
@@ -48,9 +51,8 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     public final ArrayList<String> n() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.F.iterator();
-        while (it.hasNext()) {
-            arrayList.add(it.next().resName);
+        for (ProjectResourceBean projectResourceBean : this.F) {
+            arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
     }
@@ -59,7 +61,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     public final void o() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, 0x7f0e0410)), 229);
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 229);
     }
 
     /* JADX WARN: Multi-variable type inference failed */
@@ -76,18 +78,18 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
                 a.substring(a.lastIndexOf("."));
                 this.E = true;
                 this.A.setTypeface(Typeface.createFromFile(a));
-                if (this.w.getText() == null || this.w.getText().length() <= 0) {
+                if (this.inputEditText.getText() == null || this.inputEditText.getText().length() <= 0) {
                     int lastIndexOf = a.lastIndexOf("/");
                     int lastIndexOf2 = a.lastIndexOf(".");
                     if (lastIndexOf2 <= 0) {
                         lastIndexOf2 = a.length();
                     }
-                    this.w.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
+                    this.inputEditText.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
                 }
-                this.A.setVisibility(0);
+                this.A.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 this.E = false;
-                this.A.setVisibility(8);
+                this.A.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }
@@ -96,21 +98,20 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == 0x7f0800bd) {
+        if (id == R.id.common_dialog_cancel_button) {
             finish();
-        } else if (id != 0x7f0800c2) {
+        } else if (id != R.id.common_dialog_ok_button) {
         } else {
             p();
         }
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        e(xB.b().a(this, 0x7f0e052d));
-        d(xB.b().a(this, 0x7f0e0447));
-        b(xB.b().a(this, 0x7f0e040e));
-        setContentView(0x7f0b00c1);
+        e(xB.b().a(this, R.string.design_manager_font_title_add_font));
+        d(xB.b().a(this, R.string.common_word_save));
+        b(xB.b().a(this, R.string.common_word_cancel));
+        setContentView(R.layout.manage_font_add);
         Intent intent = getIntent();
         this.u = intent.getStringExtra("sc_id");
         this.F = intent.getParcelableArrayListExtra("fonts");
@@ -119,42 +120,38 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         if (this.G != null) {
             this.t = true;
         }
-        this.C = (CheckBox) findViewById(0x7f0800a7);
-        this.C.setVisibility(8);
-        this.B = (TextView) findViewById(0x7f0804a9);
-        this.B.setVisibility(8);
-        this.x = findViewById(0x7f08010e);
-        this.z = (ImageView) findViewById(0x7f0803de);
-        this.A = (TextView) findViewById(0x7f08015d);
-        this.w = this.x.getEditText();
-        this.x.setHint(xB.b().a(this, 0x7f0e052b));
-        this.y = new WB(this, this.x.getTextInputLayout(), uq.b, n());
-        this.w.setPrivateImeOptions("defaultInputmode=english;");
-        this.A.setText(xB.b().a(this, 0x7f0e052a));
-        this.B.setText(xB.b().a(this, 0x7f0e0549));
+        this.C = (CheckBox) findViewById(R.id.chk_collection);
+        this.C.setVisibility(View.GONE);
+        this.B = (TextView) findViewById(R.id.tv_collection);
+        this.B.setVisibility(View.GONE);
+        this.inputEditText = findViewById(R.id.ed_input);
+        this.inputLayout = findViewById(R.id.ti_input);
+        this.z = (ImageView) findViewById(R.id.select_file);
+        this.A = (TextView) findViewById(R.id.font_preview);
+        this.y = new WB(this, inputLayout, uq.b, n());
+        this.A.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
+        this.B.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
         this.z.setOnClickListener(new Nt(this));
         ((BaseDialogActivity) this).r.setOnClickListener(this);
         ((BaseDialogActivity) this).s.setOnClickListener(this);
         if (this.t) {
-            e(xB.b().a(this, 0x7f0e0530));
-            this.y = new WB(this, this.x.getTextInputLayout(), uq.b, n(), this.G.resName);
-            this.w.setText(this.G.resName);
+            e(xB.b().a(this, R.string.design_manager_font_title_edit_font_name));
+            this.y = new WB(this, inputLayout, uq.b, n(), this.G.resName);
+            this.inputEditText.setText(this.G.resName);
             this.A.setTypeface(Typeface.createFromFile(a(this.G)));
         }
     }
 
     public void onResume() {
-        super/*com.besome.sketch.lib.base.BaseAppCompatActivity*/.onResume();
+        super.onResume();
         ((BaseAppCompatActivity) this).d.setScreenName(AddFontCollectionActivity.class.getSimpleName().toString());
         ((BaseAppCompatActivity) this).d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public final void p() {
-        char c;
         if (a(this.y)) {
             if (!this.t) {
-                String obj = this.w.getText().toString();
+                String obj = this.inputEditText.getText().toString();
                 String a = HB.a(this, this.D);
                 if (a == null) {
                     return;
@@ -164,52 +161,46 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
                 ((SelectableBean) projectResourceBean).isNew = true;
                 try {
                     Np.g().a(this.u, projectResourceBean);
-                    bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e053c), 1).show();
-                } catch (yy e) {
-                    String message = e.getMessage();
-                    int hashCode = message.hashCode();
-                    if (hashCode == -2111590760) {
-                        if (message.equals("fail_to_copy")) {
-                            c = 2;
+                    bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
+                } catch (Exception e) {
+                    int c = -1;
+                    // Well, (parts of) the bytecode's lying, yy can be thrown.
+                    //noinspection ConstantConditions
+                    if (e instanceof yy) {
+                        String message = e.getMessage();
+                        switch (message) {
+                            case "fail_to_copy" -> c = 2;
+                            case "file_no_exist" -> c = 1;
+                            case "duplicate_name" -> c = 0;
                         }
-                        c = 65535;
-                    } else if (hashCode != -1587253668) {
-                        if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                            c = 0;
+
+                        switch (c) {
+                            case 0 ->
+                                    bB.a(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
+                            case 1 ->
+                                    bB.a(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
+                            case 2 ->
+                                    bB.a(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
                         }
-                        c = 65535;
-                    } else {
-                        if (message.equals("file_no_exist")) {
-                            c = 1;
-                        }
-                        c = 65535;
-                    }
-                    if (c == 0) {
-                        bB.a(this, xB.b().a(this, 0x7f0e03c7), 1).show();
-                        return;
-                    } else if (c == 1) {
-                        bB.a(this, xB.b().a(this, 0x7f0e03c9), 1).show();
-                        return;
-                    } else if (c != 2) {
-                        return;
-                    } else {
-                        bB.a(this, xB.b().a(this, 0x7f0e03c8), 1).show();
-                        return;
                     }
                 }
-            } else {
-                Np.g().a(this.G, this.w.getText().toString(), true);
-                bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e053f), 1).show();
+
             }
-            finish();
+        } else {
+            Np.g().a(this.G, this.inputEditText.getText().toString(), true);
+            bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
         }
+        finish();
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
+    public static void a(AddFontCollectionActivity addFontCollectionActivity) {
+        addFontCollectionActivity.o();
+    }
+
     public boolean a(WB wb) {
         if (wb.b()) {
             if ((!this.E || this.D == null) && !this.t) {
-                this.z.startAnimation(AnimationUtils.loadAnimation(this, 0x7f01000c));
+                this.z.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
                 return false;
             }
             return true;

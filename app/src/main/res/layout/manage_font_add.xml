@@ -22,11 +22,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.besome.sketch.lib.ui.EasyDeleteEditText
-            android:id="@+id/ed_input"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="4dp"
+            android:layout_weight="1"
+            android:importantForAutofill="noExcludeDescendants">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@id/ed_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/design_manager_font_hint_enter_font_name"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/select_file"
