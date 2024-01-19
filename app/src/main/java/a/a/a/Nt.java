@@ -16,6 +16,6 @@ public class Nt implements View.OnClickListener {
         if (mB.a()) {
             return;
         }
-        AddFontCollectionActivity.a(this.a);
+        AddFontCollectionActivity.startFontSelection(this.a);
     }
 }

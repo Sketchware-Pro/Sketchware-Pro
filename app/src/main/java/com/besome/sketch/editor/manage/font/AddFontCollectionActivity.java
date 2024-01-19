@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -33,63 +34,93 @@ import a.a.a.xB;
 import a.a.a.yy;
 
 public class AddFontCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
-    public TextView A;
-    public TextView B;
-    public CheckBox C;
-    public boolean E;
-    public ArrayList<ProjectResourceBean> F;
-    public ProjectResourceBean G;
-    public String u;
-    public int v;
-    public TextInputEditText inputEditText;
-    public TextInputLayout inputLayout;
-    public WB y;
-    public ImageView z;
-    public boolean t = false;
-    public Uri D = null;
+    private TextView fontPreviewText;
+    private CheckBox addToCollectionCheckBox;
+    private boolean isFontLoaded;
+    private ArrayList<ProjectResourceBean> projectResourceBeanArrayList;
+    private ProjectResourceBean projectResourceBean;
+    private String projectId;
+    public int requestCode;
+    private TextInputEditText inputEditText;
+    private TextInputLayout inputLayout;
+    private WB fontValidator;
+    private ImageView addNewFontBtn;
+    private boolean isEditMode = false;
+    private Uri selectedFontUri = null;
 
-    public final ArrayList<String> n() {
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView(R.layout.manage_font_add);
+
+        e(xB.b().a(this, R.string.design_manager_font_title_add_font));
+        d(xB.b().a(this, R.string.common_word_save));
+        b(xB.b().a(this, R.string.common_word_cancel));
+        Intent intent = getIntent();
+        projectId = intent.getStringExtra("sc_id");
+        projectResourceBeanArrayList = intent.getParcelableArrayListExtra("fonts");
+        requestCode = intent.getIntExtra("request_code", -1);
+        projectResourceBean = intent.getParcelableExtra("edit_target");
+        if (projectResourceBean != null) {
+            isEditMode = true;
+        }
+        addToCollectionCheckBox = findViewById(R.id.add_to_collection_checkbox);
+        addToCollectionCheckBox.setVisibility(View.GONE);
+        inputEditText = findViewById(R.id.ed_input);
+        inputLayout = findViewById(R.id.ti_input);
+        addNewFontBtn = (ImageView) findViewById(R.id.select_file);
+        fontPreviewText = (TextView) findViewById(R.id.font_preview);
+        fontValidator = new WB(this, inputLayout, uq.b, getExistingFontNames());
+        addNewFontBtn.setOnClickListener(new Nt(this));
+        ((BaseDialogActivity) this).r.setOnClickListener(this);
+        ((BaseDialogActivity) this).s.setOnClickListener(this);
+        if (isEditMode) {
+            e(xB.b().a(this, R.string.design_manager_font_title_edit_font_name));
+            fontValidator = new WB(this, inputLayout, uq.b, getExistingFontNames(), projectResourceBean.resName);
+            inputEditText.setText(projectResourceBean.resName);
+            fontPreviewText.setTypeface(Typeface.createFromFile(getFontFilePath(projectResourceBean)));
+        }
+    }
+
+    public final ArrayList<String> getExistingFontNames() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        for (ProjectResourceBean projectResourceBean : this.F) {
+        for (ProjectResourceBean projectResourceBean : projectResourceBeanArrayList) {
             arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
-    public final void o() {
+    public final void selectFontFile() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 229);
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public void onActivityResult(int i, int i2, Intent intent) {
-        Uri data;
-        super/*androidx.fragment.app.FragmentActivity*/.onActivityResult(i, i2, intent);
-        if (i == 229 && this.z != null && i2 == -1 && (data = intent.getData()) != null) {
-            this.D = data;
+        Uri fontUri;
+        super.onActivityResult(i, i2, intent);
+        if (i == 229 && addNewFontBtn != null && i2 == -1 && (fontUri = intent.getData()) != null) {
+            selectedFontUri = fontUri;
             try {
-                String a = HB.a(this, this.D);
-                if (a == null) {
+                String fontFilePath = HB.a(this, selectedFontUri);
+                if (fontFilePath == null) {
                     return;
                 }
-                a.substring(a.lastIndexOf("."));
-                this.E = true;
-                this.A.setTypeface(Typeface.createFromFile(a));
-                if (this.inputEditText.getText() == null || this.inputEditText.getText().length() <= 0) {
-                    int lastIndexOf = a.lastIndexOf("/");
-                    int lastIndexOf2 = a.lastIndexOf(".");
+                fontFilePath.substring(fontFilePath.lastIndexOf("."));
+                isFontLoaded = true;
+                fontPreviewText.setTypeface(Typeface.createFromFile(fontFilePath));
+                if (inputEditText.getText() == null || inputEditText.getText().length() <= 0) {
+                    int lastIndexOf = fontFilePath.lastIndexOf("/");
+                    int lastIndexOf2 = fontFilePath.lastIndexOf(".");
                     if (lastIndexOf2 <= 0) {
-                        lastIndexOf2 = a.length();
+                        lastIndexOf2 = fontFilePath.length();
                     }
-                    this.inputEditText.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
+                    inputEditText.setText(fontFilePath.substring(lastIndexOf + 1, lastIndexOf2));
                 }
-                this.A.setVisibility(View.VISIBLE);
+                fontPreviewText.setVisibility(View.VISIBLE);
             } catch (Exception e) {
-                this.E = false;
-                this.A.setVisibility(View.GONE);
+                isFontLoaded = false;
+                fontPreviewText.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }
@@ -100,45 +131,8 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         int id = view.getId();
         if (id == R.id.common_dialog_cancel_button) {
             finish();
-        } else if (id != R.id.common_dialog_ok_button) {
-        } else {
-            p();
-        }
-    }
-
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        e(xB.b().a(this, R.string.design_manager_font_title_add_font));
-        d(xB.b().a(this, R.string.common_word_save));
-        b(xB.b().a(this, R.string.common_word_cancel));
-        setContentView(R.layout.manage_font_add);
-        Intent intent = getIntent();
-        this.u = intent.getStringExtra("sc_id");
-        this.F = intent.getParcelableArrayListExtra("fonts");
-        this.v = intent.getIntExtra("request_code", -1);
-        this.G = intent.getParcelableExtra("edit_target");
-        if (this.G != null) {
-            this.t = true;
-        }
-        this.C = (CheckBox) findViewById(R.id.chk_collection);
-        this.C.setVisibility(View.GONE);
-        this.B = (TextView) findViewById(R.id.tv_collection);
-        this.B.setVisibility(View.GONE);
-        this.inputEditText = findViewById(R.id.ed_input);
-        this.inputLayout = findViewById(R.id.ti_input);
-        this.z = (ImageView) findViewById(R.id.select_file);
-        this.A = (TextView) findViewById(R.id.font_preview);
-        this.y = new WB(this, inputLayout, uq.b, n());
-        this.A.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
-        this.B.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
-        this.z.setOnClickListener(new Nt(this));
-        ((BaseDialogActivity) this).r.setOnClickListener(this);
-        ((BaseDialogActivity) this).s.setOnClickListener(this);
-        if (this.t) {
-            e(xB.b().a(this, R.string.design_manager_font_title_edit_font_name));
-            this.y = new WB(this, inputLayout, uq.b, n(), this.G.resName);
-            this.inputEditText.setText(this.G.resName);
-            this.A.setTypeface(Typeface.createFromFile(a(this.G)));
+        } else if (id == R.id.common_dialog_ok_button) {
+            saveFont();
         }
     }
 
@@ -148,59 +142,58 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         ((BaseAppCompatActivity) this).d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public final void p() {
-        if (a(this.y)) {
-            if (!this.t) {
-                String obj = this.inputEditText.getText().toString();
-                String a = HB.a(this, this.D);
-                if (a == null) {
-                    return;
-                }
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a);
-                ((SelectableBean) projectResourceBean).savedPos = 1;
-                ((SelectableBean) projectResourceBean).isNew = true;
-                try {
-                    Np.g().a(this.u, projectResourceBean);
-                    bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
-                } catch (Exception e) {
-                    int c = -1;
-                    // Well, (parts of) the bytecode's lying, yy can be thrown.
-                    //noinspection ConstantConditions
-                    if (e instanceof yy) {
-                        String message = e.getMessage();
-                        switch (message) {
-                            case "fail_to_copy" -> c = 2;
-                            case "file_no_exist" -> c = 1;
-                            case "duplicate_name" -> c = 0;
-                        }
-
-                        switch (c) {
-                            case 0 ->
-                                    bB.a(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
-                            case 1 ->
-                                    bB.a(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
-                            case 2 ->
-                                    bB.a(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
-                        }
+    public final void saveFont() {
+        Log.d("AddFontCollectionActivity", "saving font");
+        if (validateFont(fontValidator) && !isEditMode) {
+            Log.d("AddFontCollectionActivity", "saveFont: " + selectedFontUri);
+            String fontName = inputEditText.getText().toString();
+            String fontFilePath = HB.a(this, selectedFontUri);
+            if (fontFilePath == null) {
+                return;
+            }
+            ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, fontFilePath);
+            ((SelectableBean) projectResourceBean).savedPos = 1;
+            ((SelectableBean) projectResourceBean).isNew = true;
+            try {
+                Np.g().a(projectId, projectResourceBean);
+                bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
+            } catch (Exception e) {
+                int errorCode = -1;
+                // Well, (parts of) the bytecode's lying, yy can be thrown.
+                //noinspection ConstantConditions
+                if (e instanceof yy) {
+                    String message = e.getMessage();
+                    switch (message) {
+                        case "fail_to_copy" -> errorCode = 2;
+                        case "file_no_exist" -> errorCode = 1;
+                        case "duplicate_name" -> errorCode = 0;
+                    }
+                    switch (errorCode) {
+                        case 0 ->
+                                bB.a(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
+                        case 1 ->
+                                bB.a(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
+                        case 2 ->
+                                bB.a(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
                     }
                 }
-
             }
         } else {
-            Np.g().a(this.G, this.inputEditText.getText().toString(), true);
+            Log.e("AddFontCollectionActivity", "saveFont: " + selectedFontUri);
+            Np.g().a(projectResourceBean, inputEditText.getText().toString(), true);
             bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
         }
         finish();
     }
 
-    public static void a(AddFontCollectionActivity addFontCollectionActivity) {
-        addFontCollectionActivity.o();
+    public static void startFontSelection(AddFontCollectionActivity addFontCollectionActivity) {
+        addFontCollectionActivity.selectFontFile();
     }
 
-    public boolean a(WB wb) {
+    public boolean validateFont(WB wb) {
         if (wb.b()) {
-            if ((!this.E || this.D == null) && !this.t) {
-                this.z.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+            if ((!isFontLoaded || selectedFontUri == null) && !isEditMode) {
+                addNewFontBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
                 return false;
             }
             return true;
@@ -208,7 +201,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         return false;
     }
 
-    public final String a(ProjectResourceBean projectResourceBean) {
+    public final String getFontFilePath(ProjectResourceBean projectResourceBean) {
         return wq.a() + File.separator + "font" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
     }
 }
