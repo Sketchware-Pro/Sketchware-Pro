@@ -1,5 +1,34 @@
 package com.besome.sketch.editor.manage.sound;
 
+import android.content.Intent;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.beans.SelectableBean;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import a.a.a.HB;
 import a.a.a.Hv;
 import a.a.a.Iv;
@@ -15,51 +44,24 @@ import a.a.a.uq;
 import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.yy;
-import android.content.Intent;
-import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.beans.SelectableBean;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.analytics.HitBuilders;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class AddSoundCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
-    public EasyDeleteEditText A;
-    public TextView B;
-    public TextView C;
-    public TextView D;
-    public ImageView E;
-    public ImageView F;
+    public TextInputEditText inputAudioName;
+    public TextInputLayout inputLayoutAudioName;
+    public TextView filename;
+    public TextView audioCurrentTime;
+    public TextView audioLengthText;
+    public ImageView albumImage;
+    public ImageView playAudioBtn;
     public MediaPlayer G;
     public TimerTask I;
-    public SeekBar J;
+    public SeekBar audioSeekBar;
     public WB M;
     public ArrayList<ProjectResourceBean> N;
     public String t;
-    public LinearLayout v;
-    public LinearLayout w;
+    public MaterialCardView playerControlLayout;
     public LinearLayout x;
-    public RelativeLayout y;
-    public EditText z;
+    public MaterialCardView selectAudioBtn;
     public boolean u = false;
     public Timer H = new Timer();
     public Uri K = null;
@@ -67,17 +69,17 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     public ProjectResourceBean O = null;
 
     public void finish() {
-        Timer timer = this.H;
+        Timer timer = H;
         if (timer != null) {
             timer.cancel();
         }
-        MediaPlayer mediaPlayer = this.G;
+        MediaPlayer mediaPlayer = G;
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
-                this.G.stop();
+                G.stop();
             }
-            this.G.release();
-            this.G = null;
+            G.release();
+            G = null;
         }
         super.finish();
     }
@@ -85,35 +87,33 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     public final ArrayList<String> n() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.N.iterator();
-        while (it.hasNext()) {
-            arrayList.add(it.next().resName);
+        for (ProjectResourceBean projectResourceBean : N) {
+            arrayList.add(projectResourceBean.resName);
         }
         return arrayList;
     }
 
     public final void o() {
-        MediaPlayer mediaPlayer = this.G;
+        MediaPlayer mediaPlayer = G;
         if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
             return;
         }
-        this.H.cancel();
-        this.G.pause();
-        this.F.setImageResource(0x7f070274);
+        H.cancel();
+        G.pause();
+        playAudioBtn.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public void onActivityResult(int i, int i2, Intent intent) {
-        RelativeLayout relativeLayout;
+        MaterialCardView relativeLayout;
         Uri data;
-        super/*androidx.fragment.app.FragmentActivity*/.onActivityResult(i, i2, intent);
-        if (i == 218 && (relativeLayout = this.y) != null) {
+        super.onActivityResult(i, i2, intent);
+        if (i == 218 && (relativeLayout = selectAudioBtn) != null) {
             relativeLayout.setEnabled(true);
             if (i2 != -1 || (data = intent.getData()) == null) {
                 return;
             }
-            this.K = data;
-            if (HB.a(this, this.K) == null) {
+            K = data;
+            if (HB.a(this, K) == null) {
                 return;
             }
             a(data);
@@ -122,108 +122,102 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case 2131230909:
-                finish();
-                return;
-            case 2131230914:
-                r();
-                return;
-            case 2131231599:
-                q();
-                return;
-            case 2131231710:
-                if (this.u) {
-                    return;
-                }
-                this.y.setEnabled(false);
+        int id = view.getId();
+
+        if (id == R.id.common_dialog_cancel_button) {
+            finish();
+            return;
+        }
+        if (id == R.id.common_dialog_ok_button) {
+            r();
+            return;
+        }
+        if (id == R.id.play) {
+            q();
+            return;
+        }
+        if (id == R.id.select_file) {
+            if (!u) {
+                selectAudioBtn.setEnabled(false);
                 p();
-                return;
-            default:
-                return;
+            }
         }
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        e(xB.b().a(this, 0x7f0e0543));
-        setContentView(0x7f0b00ed);
-        d(xB.b().a(this, 0x7f0e0447));
-        b(xB.b().a(this, 0x7f0e040e));
+        e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
+        setContentView(R.layout.manage_sound_add);
+        d(xB.b().a(this, R.string.common_word_save));
+        b(xB.b().a(this, R.string.common_word_cancel));
         Intent intent = getIntent();
-        this.N = intent.getParcelableArrayListExtra("sounds");
-        this.t = intent.getStringExtra("sc_id");
-        this.O = intent.getParcelableExtra("edit_target");
-        if (this.O != null) {
-            this.u = true;
+        N = intent.getParcelableArrayListExtra("sounds");
+        t = intent.getStringExtra("sc_id");
+        O = intent.getParcelableExtra("edit_target");
+        if (O != null) {
+            u = true;
         }
-        this.B = (TextView) findViewById(0x7f080153);
-        this.C = (TextView) findViewById(0x7f0800d9);
-        this.D = (TextView) findViewById(0x7f080151);
-        this.v = (LinearLayout) findViewById(0x7f08025b);
-        this.v.setVisibility(8);
-        this.w = (LinearLayout) findViewById(0x7f080266);
-        this.x = (LinearLayout) findViewById(0x7f080276);
-        this.y = (RelativeLayout) findViewById(0x7f0803de);
-        this.F = (ImageView) findViewById(0x7f08036f);
-        this.E = (ImageView) findViewById(0x7f080182);
-        this.J = (SeekBar) findViewById(0x7f0803dc);
-        this.w.setVisibility(8);
-        this.A = findViewById(0x7f08010e);
-        this.z = this.A.getEditText();
-        this.z.setPrivateImeOptions("defaultInputmode=english;");
-        this.A.setHint(xB.b().a(this, 0x7f0e0542));
-        this.M = new WB(this, this.A.getTextInputLayout(), uq.b, n());
-        this.F.setEnabled(false);
-        this.F.setOnClickListener(this);
-        this.J.setOnSeekBarChangeListener(new Hv(this));
-        this.y.setOnClickListener(this);
+        filename = findViewById(R.id.file_name);
+        audioCurrentTime = findViewById(R.id.current_time);
+        audioLengthText = findViewById(R.id.file_length);
+        playerControlLayout = findViewById(R.id.layout_control);
+        x = findViewById(R.id.layout_guide);
+        selectAudioBtn = findViewById(R.id.select_file);
+        playAudioBtn = findViewById(R.id.play);
+        albumImage = findViewById(R.id.img_album);
+        audioSeekBar = findViewById(R.id.seek);
+        playerControlLayout.setVisibility(View.GONE);
+        inputAudioName = findViewById(R.id.ed_input);
+        inputLayoutAudioName = findViewById(R.id.ti_input);
+        inputAudioName.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
+        M = new WB(this, inputLayoutAudioName, uq.b, n());
+        playAudioBtn.setEnabled(false);
+        playAudioBtn.setOnClickListener(this);
+        audioSeekBar.setOnSeekBarChangeListener(new Hv(this));
+        selectAudioBtn.setOnClickListener(this);
         ((BaseDialogActivity) this).r.setOnClickListener(this);
         ((BaseDialogActivity) this).s.setOnClickListener(this);
-        if (this.u) {
-            e(xB.b().a(this, 0x7f0e0546));
-            this.M = new WB(this, this.A.getTextInputLayout(), uq.b, n(), this.O.resName);
-            this.z.setText(this.O.resName);
-            f(a(this.O));
+        if (u) {
+            e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
+            M = new WB(this, inputLayoutAudioName, uq.b, n(), O.resName);
+            inputAudioName.setText(O.resName);
+            f(a(O));
         }
     }
 
     public void onPause() {
-        super/*com.besome.sketch.lib.base.BaseAppCompatActivity*/.onPause();
+        super.onPause();
         o();
     }
 
     public void onResume() {
-        super/*com.besome.sketch.lib.base.BaseAppCompatActivity*/.onResume();
+        super.onResume();
         ((BaseAppCompatActivity) this).d.setScreenName(AddSoundCollectionActivity.class.getSimpleName().toString());
         ((BaseAppCompatActivity) this).d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public final void p() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("audio/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, 0x7f0e0410)), 218);
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 218);
     }
 
     public final void q() {
-        if (this.G.isPlaying()) {
+        if (G.isPlaying()) {
             o();
             return;
         }
-        this.G.start();
+        G.start();
         s();
-        this.F.setImageResource(0x7f07026d);
+        playAudioBtn.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public final void r() {
         char c;
-        if (a(this.M)) {
-            if (!this.u) {
-                String obj = this.z.getText().toString();
-                String a = HB.a(this, this.K);
+        if (a(M)) {
+            if (!u) {
+                String obj = inputAudioName.getText().toString();
+                String a = HB.a(this, K);
                 if (a == null) {
                     return;
                 }
@@ -231,122 +225,123 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                 ((SelectableBean) projectResourceBean).savedPos = 1;
                 ((SelectableBean) projectResourceBean).isNew = true;
                 try {
-                    Qp.g().a(this.t, projectResourceBean);
-                    bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e053c), 1).show();
-                } catch (yy e) {
-                    String message = e.getMessage();
-                    int hashCode = message.hashCode();
-                    if (hashCode == -2111590760) {
-                        if (message.equals("fail_to_copy")) {
-                            c = 2;
+                    Qp.g().a(t, projectResourceBean);
+                    bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
+                } catch (Exception e) {
+                    if (e instanceof yy) {
+                        String message = e.getMessage();
+                        int hashCode = message.hashCode();
+                        if (hashCode == -2111590760) {
+                            if (message.equals("fail_to_copy")) {
+                                c = 2;
+                            }
+                            c = 65535;
+                        } else if (hashCode != -1587253668) {
+                            if (hashCode == -105163457 && message.equals("duplicate_name")) {
+                                c = 0;
+                            }
+                            c = 65535;
+                        } else {
+                            if (message.equals("file_no_exist")) {
+                                c = 1;
+                            }
+                            c = 65535;
                         }
-                        c = 65535;
-                    } else if (hashCode != -1587253668) {
-                        if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                            c = 0;
+                        if (c == 0) {
+                            bB.a(this, xB.b().a(getApplicationContext(), R.string.collection_duplicated_name), 1).show();
+                            return;
+                        } else if (c == 1) {
+                            bB.a(this, xB.b().a(getApplicationContext(), R.string.collection_no_exist_file), 1).show();
+                            return;
+                        } else if (c != 2) {
+                            return;
+                        } else {
+                            bB.a(this, xB.b().a(getApplicationContext(), R.string.collection_failed_to_copy), 1).show();
+                            return;
                         }
-                        c = 65535;
-                    } else {
-                        if (message.equals("file_no_exist")) {
-                            c = 1;
-                        }
-                        c = 65535;
                     }
-                    if (c == 0) {
-                        bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e03c7), 1).show();
-                        return;
-                    } else if (c == 1) {
-                        bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e03c9), 1).show();
-                        return;
-                    } else if (c != 2) {
-                        return;
-                    } else {
-                        bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e03c8), 1).show();
-                        return;
-                    }
+
                 }
             } else {
-                Qp.g().a(this.O, this.z.getText().toString(), true);
-                bB.a(this, xB.b().a(getApplicationContext(), 0x7f0e053f), 1).show();
+                Qp.g().a(O, inputAudioName.getText().toString(), true);
+                bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
             }
             finish();
         }
     }
 
     public final void s() {
-        this.H = new Timer();
-        this.I = new Ov(this);
-        this.H.schedule(this.I, 100L, 100L);
+        H = new Timer();
+        I = new Ov(this);
+        H.schedule(I, 100L, 100L);
     }
 
     public final String a(ProjectResourceBean projectResourceBean) {
-        return wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + this.O.resFullName;
+        return wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + O.resFullName;
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public final void f(String str) {
         try {
-            if (this.G != null) {
-                if (this.I != null) {
-                    this.I.cancel();
+            if (G != null) {
+                if (I != null) {
+                    I.cancel();
                 }
-                if (this.G.isPlaying()) {
-                    this.G.stop();
+                if (G.isPlaying()) {
+                    G.stop();
                 }
             }
-            this.G = new MediaPlayer();
-            this.G.setAudioStreamType(3);
-            this.G.setOnPreparedListener(new Kv(this));
-            this.G.setOnCompletionListener(new Lv(this));
-            this.G.setDataSource(this, Uri.parse(str));
-            this.G.prepare();
-            this.L = true;
-            a(str, this.E);
-            this.w.setVisibility(0);
-            this.x.setVisibility(8);
+            G = new MediaPlayer();
+            G.setAudioStreamType(3);
+            G.setOnPreparedListener(new Kv(this));
+            G.setOnCompletionListener(new Lv(this));
+            G.setDataSource(this, Uri.parse(str));
+            G.prepare();
+            L = true;
+            a(str, albumImage);
+            playerControlLayout.setVisibility(View.VISIBLE);
+            x.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
     public final void a(Uri uri) {
         String a = HB.a(this, uri);
-        this.K = uri;
+        K = uri;
         try {
-            if (this.G != null) {
-                if (this.I != null) {
-                    this.I.cancel();
+            if (G != null) {
+                if (I != null) {
+                    I.cancel();
                 }
-                if (this.G.isPlaying()) {
-                    this.G.stop();
+                if (G.isPlaying()) {
+                    G.stop();
                 }
             }
-            this.G = new MediaPlayer();
-            this.G.setAudioStreamType(3);
-            this.G.setOnPreparedListener(new Iv(this, a));
-            this.G.setOnCompletionListener(new Jv(this));
-            this.G.setDataSource(this, uri);
-            this.G.prepare();
-            this.L = true;
-            a(HB.a(this, this.K), this.E);
-            this.w.setVisibility(0);
-            this.x.setVisibility(8);
+            G = new MediaPlayer();
+            G.setAudioStreamType(3);
+            G.setOnPreparedListener(new Iv(this, a));
+            G.setOnCompletionListener(new Jv(this));
+            G.setDataSource(this, uri);
+            G.prepare();
+            L = true;
+            a(HB.a(this, K), albumImage);
+            playerControlLayout.setVisibility(View.VISIBLE);
+            x.setVisibility(View.GONE);
             try {
-                if (this.z.getText() == null || this.z.getText().length() <= 0) {
+                if (inputAudioName.getText() == null || inputAudioName.getText().length() <= 0) {
                     int lastIndexOf = a.lastIndexOf("/");
                     int lastIndexOf2 = a.lastIndexOf(".");
                     if (lastIndexOf2 <= 0) {
                         lastIndexOf2 = a.length();
                     }
-                    this.z.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
+                    inputAudioName.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
                 }
-            } catch (Exception unused) {
+            } catch (Exception ignored) {
             }
         } catch (Exception e) {
-            this.L = false;
-            this.w.setVisibility(8);
-            this.x.setVisibility(0);
+            L = false;
+            playerControlLayout.setVisibility(View.GONE);
+            x.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
@@ -358,19 +353,50 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                 Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new Mv(this, imageView));
             } else {
-                imageView.setImageResource(0x7f070150);
+                imageView.setImageResource(R.drawable.default_album_art_200dp);
             }
-        } catch (IllegalArgumentException unused) {
-            imageView.setImageResource(0x7f070150);
+            mediaMetadataRetriever.release();
+        } catch (Exception ignored) {
+            imageView.setImageResource(R.drawable.default_album_art_200dp);
         }
-        mediaMetadataRetriever.release();
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
+    public static MediaPlayer a(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.G;
+    }
+
+    public static Timer b(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.H;
+    }
+
+    public static void c(AddSoundCollectionActivity addSoundCollectionActivity) {
+        addSoundCollectionActivity.s();
+    }
+
+    public static ImageView d(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.playAudioBtn;
+    }
+
+    public static SeekBar e(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.audioSeekBar;
+    }
+
+    public static TextView f(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.audioLengthText;
+    }
+
+    public static TextView g(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.filename;
+    }
+
+    public static TextView h(AddSoundCollectionActivity addSoundCollectionActivity) {
+        return addSoundCollectionActivity.audioCurrentTime;
+    }
+
     public boolean a(WB wb) {
         if (wb.b()) {
-            if ((!this.L || this.K == null) && !this.u) {
-                this.y.startAnimation(AnimationUtils.loadAnimation(this, 0x7f01000c));
+            if ((!L || K == null) && !u) {
+                selectAudioBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
                 return false;
             }
             return true;
@@ -378,3 +404,4 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         return false;
     }
 }
+
