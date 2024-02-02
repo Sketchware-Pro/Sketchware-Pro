@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@id/mypage_setting"
-        android:icon="@drawable/selector_ic_exit_24"
-        android:orderInCategory="100"
-        android:title="@string/account_deactivate_actionbar_title"
-        support:showAsAction="always" />
-</menu>

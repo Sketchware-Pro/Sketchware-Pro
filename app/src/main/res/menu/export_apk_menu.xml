@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@id/menu_export_key"
-        android:icon="@drawable/selector_ic_share"
-        android:orderInCategory="100"
-        android:title="@string/myprojects_sign_apk_title_export_certificate"
-        support:showAsAction="always" />
-</menu>

@@ -49,7 +49,6 @@ import a.a.a.GB;
 import a.a.a.Iw;
 import a.a.a.Op;
 import a.a.a.Rp;
-import a.a.a._x;
 import a.a.a.aB;
 import a.a.a.ay;
 import a.a.a.bB;
@@ -83,7 +82,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean isVibrationEnabled;
     private cy L;
     private Iw M;
-    private _x draggingListener;
+    private DraggingListener draggingListener;
     private ay O;
     private ProjectFileBean projectFileBean;
     private boolean S = true;
@@ -433,7 +432,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         da = z;
     }
 
-    public void setOnDraggingListener(_x dragListener) {
+    public void setOnDraggingListener(DraggingListener dragListener) {
         draggingListener = dragListener;
     }
 
@@ -577,7 +576,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         break;
                     }
                 }
-                if (isAdViewUsed && !draggingListener.a()) {
+                if (isAdViewUsed && !draggingListener.isAdmobEnabled()) {
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
@@ -589,14 +588,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         break;
                     }
                 }
-                if (isMapViewUsed && !draggingListener.c()) {
+                if (isMapViewUsed && !draggingListener.isGoogleMapEnabled()) {
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
-            } else if ((r instanceof IconAdView) && !draggingListener.a()) {
+            } else if ((r instanceof IconAdView) && !draggingListener.isAdmobEnabled()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if ((r instanceof IconMapView) && !draggingListener.c()) {
+            } else if ((r instanceof IconMapView) && !draggingListener.isGoogleMapEnabled()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
