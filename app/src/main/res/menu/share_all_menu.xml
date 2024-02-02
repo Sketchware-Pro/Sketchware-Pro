@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/ic_search_white_24dp" android:id="@id/menu_find" android:orderInCategory="100" android:title="" support:actionViewClass="androidx.appcompat.widget.SearchView" support:showAsAction="always" />
-</menu>

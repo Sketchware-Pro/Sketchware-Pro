@@ -11,11 +11,6 @@
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
     </style>
 
-    <style name="AppTheme.Button.Amber" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ffffc107</item>
-        <item name="colorControlHighlight">#ffffb300</item>
-    </style>
-
     <style name="AppTheme.Button.Blue" parent="@style/Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/color_btn_blue_normal</item>
         <item name="colorControlHighlight">@color/color_btn_blue_highlight</item>
@@ -50,24 +45,6 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="AppTheme.Button.Orange" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/color_btn_ltorange_normal</item>
-        <item name="colorControlHighlight">@color/color_btn_ltorange_dark</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="AppTheme.Button.Pink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">#ffff5955</item>
-        <item name="colorControlHighlight">#ffff8784</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="AppTheme.Button.Transparent" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="colorButtonNormal">@color/transparent</item>
-        <item name="colorControlHighlight">@color/transparent</item>
-    </style>
-
     <style name="AppTheme.Button.WhiteBlue" parent="@style/Base.Widget.AppCompat.Button">
         <item name="android:textColor">@color/color_primary</item>
         <item name="colorButtonNormal">#ffffffff</item>
@@ -75,35 +52,9 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="AppTheme.Button.WhitePink" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:textColor">@color/color_btn_ltpink_normal</item>
-        <item name="colorButtonNormal">#ffffffff</item>
-        <item name="colorControlHighlight">#ffdddddd</item>
-    </style>
-
     <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlActivated">@color/color_chk_white_highlight</item>
         <item name="colorControlNormal">@color/color_chk_white_normal</item>
-    </style>
-
-    <style name="CardViewStyle.White" parent="@style/CardView">
-        <item name="cardBackgroundColor">@color/cardview_light_background</item>
-    </style>
-
-    <style name="CustomCollapsingCollapsed">
-        <item name="android:textColor">@color/tool_bar_text_color</item>
-    </style>
-
-    <style name="CustomCollapsingExpanded">
-        <item name="android:textSize">0.0sp</item>
-        <item name="android:textColor">@color/transparent</item>
-    </style>
-
-    <style name="CustomProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:maxHeight">5.0dip</item>
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/custom_progress_bar_horizontal</item>
-        <item name="android:minHeight">3.0dip</item>
     </style>
 
     <style name="DesignTabLayout" parent="@style/Widget.Design.TabLayout">
@@ -120,23 +71,6 @@
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">12.0sp</item>
         <item name="android:textColor">@color/design_tab_text_color</item>
-        <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/main_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
-        <item name="tabTextAppearance">@style/MainTabTextAppearance</item>
-    </style>
-
-    <style name="MainTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
-        <item name="android:textSize">12.0sp</item>
-        <item name="android:textColor">@color/main_tab_text_color</item>
         <item name="textAllCaps">true</item>
     </style>
 
@@ -162,16 +96,6 @@
         <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
     </style>
 
-    <style name="MyPageTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/main_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3.0dip</item>
-        <item name="tabMaxWidth">0.0dip</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
-    </style>
-
     <style name="NumberPickerText" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@color/scolor_blue_01</item>
         <item name="android:textSize">14.0dip</item>
@@ -190,33 +114,6 @@
         <item name="android:textSize">12.0sp</item>
         <item name="colorControlActivated">@color/light_grey</item>
         <item name="colorControlNormal">@color/light_grey</item>
-    </style>
-
-    <style name="TextAppearance.Compat.Notification.Info.Media" parent="@style/TextAppearance.Compat.Notification.Info">
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
-    </style>
-
-    <style name="TextAppearance.Compat.Notification.Line2.Media" parent="@style/TextAppearance.Compat.Notification.Info.Media" />
-
-    <style name="TextAppearance.Compat.Notification.Media" parent="@style/TextAppearance.Compat.Notification">
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
-    </style>
-
-    <style name="TextAppearance.Compat.Notification.Time.Media" parent="@style/TextAppearance.Compat.Notification.Time">
-        <item name="android:textColor">@color/secondary_text_default_material_dark</item>
-    </style>
-
-    <style name="TextAppearance.Compat.Notification.Title.Media" parent="@style/TextAppearance.Compat.Notification.Title">
-        <item name="android:textColor">@color/primary_text_default_material_dark</item>
-    </style>
-
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/AppTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar.Translucent" parent="@style/AppTheme">
@@ -261,15 +158,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.IAPTheme" parent="@android:style/Theme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
     <style name="ThemeOverlay.ToolbarMenu" parent="@style/ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/design_menu_bg</item>
         <item name="android:textColor">@color/design_menu_text_color</item>
@@ -282,19 +170,6 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="TranslucentTheme" parent="@style/AppTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowActionBar">false</item>
-    </style>
-
-    <style name="cursorColor" parent="@style/Widget.AppCompat.AutoCompleteTextView">
-        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
-    </style>
-
     <style name="progress">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
@@ -304,18 +179,6 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowSoftInputMode">adjustPan</item>
-    </style>
-
-    <style name="seekbarGreen" parent="@style/Widget.AppCompat.SeekBar">
-        <item name="android:paddingLeft">0.0dip</item>
-        <item name="android:paddingRight">0.0dip</item>
-        <item name="colorAccent">@color/scolor_green_01</item>
-        <item name="colorControlNormal">#ffffffff</item>
-        <item name="colorPrimaryDark">#ff03539a</item>
-    </style>
-
-    <style name="seekbarStyle" parent="@style/Widget.AppCompat.SeekBar.Discrete">
-        <item name="tickMark">@drawable/seekbar_month_marker</item>
     </style>
 
     <style name="selectableMainItemBackground">

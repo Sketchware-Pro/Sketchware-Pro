@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/no_connection" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/no_connection_96" />
-    <TextView android:textSize="12.0sp" android:textColor="#ff7d7d7d" android:gravity="center" android:id="@id/tv_check_network" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/try_again_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" />
-</LinearLayout>
