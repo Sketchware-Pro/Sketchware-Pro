@@ -25,11 +25,16 @@
     <color name="light_grey">#ffc6c6c6</color>
     <color name="lighter_grey">#ffeeeeee</color>
     <color name="list_selected_background">#20008dcd</color>
+    <color name="main_tab_background">#ffffffff</color>
+    <color name="main_tab_indicator_color">#ff71bce9</color>
+    <color name="main_tab_selected_text_color">#ff007cc9</color>
+    <color name="main_tab_text_color">#ff007cc9</color>
     <color name="sc_item_bg">#fffff9ac</color>
     <color name="scolor_black_01">#ff1d2129</color>
     <color name="scolor_black_02">#ff757575</color>
     <color name="scolor_blue_01">#ff09a7ec</color>
     <color name="scolor_dark_yellow_01">#ffff8700</color>
+    <color name="scolor_green_01">#ff52f55c</color>
     <color name="scolor_green_02">#ff74f37c</color>
     <color name="scolor_green_normal">#ff26a59a</color>
     <color name="scolor_light_grey">#ffd4d4d4</color>
