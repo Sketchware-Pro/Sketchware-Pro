@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +20,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.SelectableButtonBar;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class AddViewActivity extends BaseDialogActivity {
                 } else if (var1.d) {
                     d(A);
                 } else {
-                    a((View) A);
+                    a(A);
                 }
             } else if (var1.d) {
                 if (!J) {
@@ -118,7 +119,7 @@ public class AddViewActivity extends BaseDialogActivity {
 
     public final void b(boolean var1) {
         for (int var2 = 0; var2 < t.size(); ++var2) {
-            a var3 = (a) t.get(var2);
+            a var3 = t.get(var2);
             if (var3.a == 2) {
                 var3.d = var1;
                 v.notifyItemChanged(var2);
@@ -133,11 +134,11 @@ public class AddViewActivity extends BaseDialogActivity {
     }
 
     public final void c(boolean var1) {
-        for (int var2 = 0; var2 < t.size(); ++var2) {
-            a var3 = (a) t.get(var2);
+        for (int i = 0; i < t.size(); ++i) {
+            a var3 = t.get(i);
             if (var3.a == 1) {
                 var3.d = var1;
-                v.notifyItemChanged(var2);
+                v.notifyItemChanged(i);
                 break;
             }
         }
@@ -180,9 +181,11 @@ public class AddViewActivity extends BaseDialogActivity {
         v.notifyDataSetChanged();
     }
 
+    @Override
     public void onActivityResult(int var1, int var2, Intent var3) {
+        super.onActivityResult(var1, var2, var3);
         if (var1 == 276 && var2 == -1) {
-            ProjectFileBean var4 = (ProjectFileBean) var3.getParcelableExtra("preset_data");
+            ProjectFileBean var4 = var3.getParcelableExtra("preset_data");
             P = var4.presetName;
             g(var4.options);
             o();
@@ -190,6 +193,8 @@ public class AddViewActivity extends BaseDialogActivity {
 
     }
 
+    @Override
+    @SuppressLint("ResourceType")
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         setContentView(2131427557);
@@ -197,29 +202,29 @@ public class AddViewActivity extends BaseDialogActivity {
         Intent var2 = getIntent();
         I = var2.getStringArrayListExtra("screen_names");
         N = var2.getIntExtra("request_code", 264);
-        O = (ProjectFileBean) var2.getParcelableExtra("project_file");
+        O = var2.getParcelableExtra("project_file");
         if (O != null) {
             e(xB.b().a(getApplicationContext(), 2131625300));
         }
 
-        add_view_type_selector = (SelectableButtonBar) findViewById(2131232506);
-        add_view_type_selector_layout = (LinearLayout) findViewById(2131232507);
-        w = (SelectableButtonBar) findViewById(2131230865);
-        x = (SelectableButtonBar) findViewById(2131230864);
-        y = (LinearLayout) findViewById(2131231604);
-        z = (LinearLayout) findViewById(2131231605);
-        A = (LinearLayout) findViewById(2131231601);
-        B = (RelativeLayout) findViewById(2131231603);
-        C = (ImageView) findViewById(2131231602);
-        D = (ImageView) findViewById(2131231154);
-        E = (TextInputLayout) findViewById(2131231825);
-        F = (EditText) findViewById(2131231007);
-        H = (TextView) findViewById(2131232285);
+        add_view_type_selector = findViewById(2131232506);
+        add_view_type_selector_layout = findViewById(2131232507);
+        w = findViewById(2131230865);
+        x = findViewById(2131230864);
+        y = findViewById(2131231604);
+        z = findViewById(2131231605);
+        A = findViewById(2131231601);
+        B = findViewById(2131231603);
+        C = findViewById(2131231602);
+        D = findViewById(2131231154);
+        E = findViewById(2131231825);
+        F = findViewById(2131231007);
+        H = findViewById(2131232285);
         H.setVisibility(8);
         H.setText(xB.b().a(getApplicationContext(), 2131625295));
         E.setHint(xB.b().a(this, 2131625293));
         F.setPrivateImeOptions("defaultInputmode=english;");
-        u = (RecyclerView) findViewById(2131231056);
+        u = findViewById(2131231056);
         v = new b(this);
         u.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
         u.setHasFixedSize(true);
@@ -290,7 +295,7 @@ public class AddViewActivity extends BaseDialogActivity {
             finish();
         });
         if (N == 265) {
-            G = new YB(getApplicationContext(), E, uq.b, new ArrayList(), O.fileName);
+            G = new YB(getApplicationContext(), E, uq.b, new ArrayList<>(), O.fileName);
             F.setText(O.fileName);
             F.setEnabled(false);
             F.setBackgroundResource(2131034318);
@@ -323,12 +328,12 @@ public class AddViewActivity extends BaseDialogActivity {
         return suffix;
     }
 
-    public class a {
+    private class a {
+        public final AddViewActivity e;
         public int a;
         public int b;
         public String c;
         public boolean d;
-        public final AddViewActivity e;
 
         public a(AddViewActivity var1, int var2, int var3, String var4, boolean var5) {
             e = var1;
@@ -339,26 +344,27 @@ public class AddViewActivity extends BaseDialogActivity {
         }
     }
 
-    public class b extends RecyclerView.Adapter<a> {
+    public class b extends RecyclerView.Adapter<b.ViewHolder> {
+        public final AddViewActivity e;
         public int c;
         public boolean d;
-        public final AddViewActivity e;
 
         public b(AddViewActivity var1) {
             e = var1;
             c = -1;
         }
 
+        @Override
         public int getItemCount() {
             return e.t.size();
         }
 
-        public void onBindViewHolder(a var1, int var2) {
+        public void onBindViewHolder(ViewHolder viewHolder, int var2) {
             d = true;
-            a var3 = (a) e.t.get(var2);
-            var1.t.setImageResource(var3.b);
-            var1.u.setText(var3.c);
-            var1.v.setChecked(var3.d);
+            a var3 = t.get(var2);
+            viewHolder.t.setImageResource(var3.b);
+            viewHolder.u.setText(var3.c);
+            viewHolder.v.setChecked(var3.d);
             var2 = var3.a;
             if (var2 == 0) {
                 e.J = var3.d;
@@ -372,37 +378,35 @@ public class AddViewActivity extends BaseDialogActivity {
 
             AddViewActivity var4 = e;
             if (var4.L || var4.M) {
-                e.H.setVisibility(0);
+                e.H.setVisibility(View.VISIBLE);
             }
 
             e.a(var3);
             d = false;
         }
 
-        public a onCreateViewHolder(ViewGroup var1, int var2) {
-            View var3 = wB.a(var1.getContext(), 2131427556);
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup var1, int var2) {
+            @SuppressLint("ResourceType") View var3 = wB.a(var1.getContext(), 2131427556);
             var3.setLayoutParams(new ViewGroup.LayoutParams(-1, -2));
-            return new a(this, var3);
+            return new ViewHolder(this, var3);
         }
 
-        public class a extends RecyclerView.ViewHolder {
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final b w;
             public ImageView t;
             public TextView u;
             public CheckBox v;
-            public final b w;
 
-            public a(b var1, View var2) {
+            @SuppressLint("ResourceType")
+            public ViewHolder(b var1, View var2) {
                 super(var2);
                 w = var1;
-                t = (ImageView) var2.findViewById(2131231151);
-                u = (TextView) var2.findViewById(2131232055);
-                v = (CheckBox) var2.findViewById(2131230883);
-                v.setOnCheckedChangeListener(new sw(this, var1));
-            }
-        }
-    }
-}
-
+                t = var2.findViewById(2131231151);
+                u = var2.findViewById(2131232055);
+                v = var2.findViewById(2131230883);
+                v.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (!d) {
                         c = getLayoutPosition();
                         a item = AddViewActivity.this.t.get(c);
@@ -416,3 +420,7 @@ public class AddViewActivity extends BaseDialogActivity {
                         notifyItemChanged(c);
                     }
                 });
+            }
+        }
+    }
+}
