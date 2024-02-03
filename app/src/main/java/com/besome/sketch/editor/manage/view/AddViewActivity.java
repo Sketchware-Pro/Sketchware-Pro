@@ -24,11 +24,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 
 import a.a.a.YB;
-import a.a.a.pw;
-import a.a.a.qw;
+import a.a.a.bB;
 import a.a.a.rq;
-import a.a.a.rw;
-import a.a.a.sw;
 import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
@@ -241,11 +238,57 @@ public class AddViewActivity extends BaseDialogActivity {
         x.a(1, "Visible");
         x.a(2, "Hidden");
         x.a();
-        x.setListener(new pw(this));
+        x.setListener(i -> {
+            if (0 == i || 1 == i) {
+                e(B);
+            } else if (2 == i) {
+                B.animate().translationY((float) D.getMeasuredHeight()).start();
+            }
+        });
         d(xB.b().a(getApplicationContext(), 2131624970));
         b(xB.b().a(getApplicationContext(), 2131624974));
-        super.r.setOnClickListener(new qw(this));
-        super.s.setOnClickListener(new rw(this));
+
+        super.r.setOnClickListener(v -> {
+            int options = 1;
+            if (265 == N) {
+                O.orientation = w.getSelectedItemKey();
+                O.keyboardSetting = x.getSelectedItemKey();
+                if (!K) {
+                    options = 0;
+                }
+                if (!J) {
+                    options = options | 2;
+                }
+                if (L) {
+                    options = options | 8;
+                }
+                if (M) {
+                    options = options | 4;
+                }
+                O.options = options;
+                Intent intent = new Intent();
+                intent.putExtra("project_file", O);
+                setResult(-1, intent);
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279, new Object[0]), 0).show();
+                finish();
+            } else if (a(G)) {
+                String var4 = F.getText().toString() + getSuffix(add_view_type_selector);
+                ProjectFileBean projectFileBean = new ProjectFileBean(0, var4, w.getSelectedItemKey(), x.getSelectedItemKey(), K, !J, L, M);
+                Intent intent = new Intent();
+                intent.putExtra("project_file", projectFileBean);
+                if (P != null) {
+                    intent.putExtra("preset_views", f(P));
+                }
+                setResult(-1, intent);
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625276, new Object[0]), 0).show();
+                finish();
+            }
+
+        });
+        super.s.setOnClickListener(v -> {
+            setResult(0);
+            finish();
+        });
         if (N == 265) {
             G = new YB(getApplicationContext(), E, uq.b, new ArrayList(), O.fileName);
             F.setText(O.fileName);
@@ -265,10 +308,19 @@ public class AddViewActivity extends BaseDialogActivity {
         o();
     }
 
-    public void onResume() {
-        super.onResume();
-        super.d.setScreenName(AddViewActivity.class.getSimpleName());
-        super.d.send((new HitBuilders.ScreenViewBuilder()).build());
+    private String getSuffix(SelectableButtonBar buttonBar) {
+        int selectedItemKey = buttonBar.getSelectedItemKey();
+        String suffix;
+        if (selectedItemKey == 0) {
+            suffix = "";
+        } else if (selectedItemKey == 1) {
+            suffix = "_fragment";
+        } else if (selectedItemKey == 2) {
+            suffix = "_dialog_fragment";
+        } else {
+            suffix = "";
+        }
+        return suffix;
     }
 
     public class a {
@@ -350,3 +402,17 @@ public class AddViewActivity extends BaseDialogActivity {
         }
     }
 }
+
+                    if (!d) {
+                        c = getLayoutPosition();
+                        a item = AddViewActivity.this.t.get(c);
+                        H.setVisibility(8);
+                        item.d = isChecked;
+                        if (item.a == 2 || item.d) {
+                            c(true);
+                        } else if (item.a == 1 || !item.d) {
+                            b(false);
+                        }
+                        notifyItemChanged(c);
+                    }
+                });
