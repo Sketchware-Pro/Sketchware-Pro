@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +17,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.SelectableButtonBar;
-import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.databinding.ManageScreenActivityAddTempBinding;
 
 import java.util.ArrayList;
 
@@ -32,14 +29,8 @@ import a.a.a.wB;
 import a.a.a.xB;
 
 public class AddViewActivity extends BaseDialogActivity {
-    public LinearLayout A;
-    public RelativeLayout B;
-    public ImageView C;
-    public ImageView D;
-    public TextInputLayout E;
-    public EditText F;
+
     public YB G;
-    public TextView H;
     public ArrayList<String> I;
     public boolean J;
     public boolean K;
@@ -48,15 +39,10 @@ public class AddViewActivity extends BaseDialogActivity {
     public int N;
     public ProjectFileBean O;
     public String P;
-    public SelectableButtonBar add_view_type_selector;
-    public LinearLayout add_view_type_selector_layout;
     public ArrayList<a> t;
-    public RecyclerView u;
     public b v;
-    public SelectableButtonBar w;
-    public SelectableButtonBar x;
-    public LinearLayout y;
-    public LinearLayout z;
+
+    private ManageScreenActivityAddTempBinding binding;
 
     public final void a(View var1) {
         var1.animate().translationX((float) (-var1.getMeasuredWidth())).start();
@@ -69,36 +55,36 @@ public class AddViewActivity extends BaseDialogActivity {
                 if (var2 != 2) {
                     if (var2 == 3) {
                         if (var1.d) {
-                            e(C);
+                            e(binding.previewFab);
                         } else {
-                            b(C);
+                            b(binding.previewFab);
                         }
                     }
                 } else if (var1.d) {
-                    d(A);
+                    d(binding.previewDrawer);
                 } else {
-                    a(A);
+                    a(binding.previewDrawer);
                 }
             } else if (var1.d) {
                 if (!J) {
-                    z.animate().translationY((float) (-y.getMeasuredHeight())).start();
+                    binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
                 } else {
-                    e(z);
+                    e(binding.previewToolbar);
                 }
             } else if (!J) {
                 n();
             } else {
-                c(z);
+                c(binding.previewToolbar);
             }
         } else if (var1.d) {
-            e(y);
+            e(binding.previewStatusbar);
             if (K) {
-                e(z);
+                e(binding.previewToolbar);
             }
         } else {
-            c(y);
+            c(binding.previewStatusbar);
             if (K) {
-                z.animate().translationY((float) (-y.getMeasuredHeight())).start();
+                binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
             } else {
                 n();
             }
@@ -169,7 +155,7 @@ public class AddViewActivity extends BaseDialogActivity {
     }
 
     public final void n() {
-        z.animate().translationY((float) (-(y.getMeasuredHeight() + z.getMeasuredHeight()))).start();
+        binding.previewToolbar.animate().translationY((float) (-(binding.previewStatusbar.getMeasuredHeight() + binding.previewToolbar.getMeasuredHeight()))).start();
     }
 
     public final void o() {
@@ -197,7 +183,8 @@ public class AddViewActivity extends BaseDialogActivity {
     @SuppressLint("ResourceType")
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
-        setContentView(2131427557);
+        binding = ManageScreenActivityAddTempBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         e(xB.b().a(getApplicationContext(), 2131625299));
         Intent var2 = getIntent();
         I = var2.getStringArrayListExtra("screen_names");
@@ -207,47 +194,33 @@ public class AddViewActivity extends BaseDialogActivity {
             e(xB.b().a(getApplicationContext(), 2131625300));
         }
 
-        add_view_type_selector = findViewById(2131232506);
-        add_view_type_selector_layout = findViewById(2131232507);
-        w = findViewById(2131230865);
-        x = findViewById(2131230864);
-        y = findViewById(2131231604);
-        z = findViewById(2131231605);
-        A = findViewById(2131231601);
-        B = findViewById(2131231603);
-        C = findViewById(2131231602);
-        D = findViewById(2131231154);
-        E = findViewById(2131231825);
-        F = findViewById(2131231007);
-        H = findViewById(2131232285);
-        H.setVisibility(8);
-        H.setText(xB.b().a(getApplicationContext(), 2131625295));
-        E.setHint(xB.b().a(this, 2131625293));
-        F.setPrivateImeOptions("defaultInputmode=english;");
-        u = findViewById(2131231056);
+        binding.tvWarning.setVisibility(8);
+        binding.tvWarning.setText(xB.b().a(getApplicationContext(), 2131625295));
+        binding.tiName.setHint(xB.b().a(this, 2131625293));
+        binding.edName.setPrivateImeOptions("defaultInputmode=english;");
         v = new b(this);
-        u.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
-        u.setHasFixedSize(true);
-        u.setAdapter(v);
-        ((TextView) findViewById(2131232145)).setText(xB.b().a(getApplicationContext(), 2131625303));
-        ((TextView) findViewById(2131232020)).setText(xB.b().a(getApplicationContext(), 2131625302));
-        add_view_type_selector.a(0, "Activity");
-        add_view_type_selector.a(1, "Fragment");
-        add_view_type_selector.a(2, "DialogFragment");
-        add_view_type_selector.a();
-        w.a(0, "Portrait");
-        w.a(1, "Landscape");
-        w.a(2, "Both");
-        w.a();
-        x.a(0, "Unspecified");
-        x.a(1, "Visible");
-        x.a(2, "Hidden");
-        x.a();
-        x.setListener(i -> {
+        binding.featureTypes.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+        binding.featureTypes.setHasFixedSize(true);
+        binding.featureTypes.setAdapter(v);
+        binding.tvScreenOrientation.setText(xB.b().a(getApplicationContext(), 2131625303));
+        binding.tvKeyboard.setText(xB.b().a(getApplicationContext(), 2131625302));
+        binding.addViewTypeSelector.a(0, "Activity");
+        binding.addViewTypeSelector.a(1, "Fragment");
+        binding.addViewTypeSelector.a(2, "DialogFragment");
+        binding.addViewTypeSelector.a();
+        binding.btnbarOrientation.a(0, "Portrait");
+        binding.btnbarOrientation.a(1, "Landscape");
+        binding.btnbarOrientation.a(2, "Both");
+        binding.btnbarOrientation.a();
+        binding.btnbarKeyboard.a(0, "Unspecified");
+        binding.btnbarKeyboard.a(1, "Visible");
+        binding.btnbarKeyboard.a(2, "Hidden");
+        binding.btnbarKeyboard.a();
+        binding.btnbarKeyboard.setListener(i -> {
             if (0 == i || 1 == i) {
-                e(B);
+                e(binding.activityPreview);
             } else if (2 == i) {
-                B.animate().translationY((float) D.getMeasuredHeight()).start();
+                binding.activityPreview.animate().translationY((float) binding.imgKeyboard.getMeasuredHeight()).start();
             }
         });
         d(xB.b().a(getApplicationContext(), 2131624970));
@@ -256,8 +229,8 @@ public class AddViewActivity extends BaseDialogActivity {
         super.r.setOnClickListener(v -> {
             int options = 1;
             if (265 == N) {
-                O.orientation = w.getSelectedItemKey();
-                O.keyboardSetting = x.getSelectedItemKey();
+                O.orientation = binding.btnbarOrientation.getSelectedItemKey();
+                O.keyboardSetting = binding.btnbarKeyboard.getSelectedItemKey();
                 if (!K) {
                     options = 0;
                 }
@@ -277,8 +250,8 @@ public class AddViewActivity extends BaseDialogActivity {
                 bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279, new Object[0]), 0).show();
                 finish();
             } else if (a(G)) {
-                String var4 = F.getText().toString() + getSuffix(add_view_type_selector);
-                ProjectFileBean projectFileBean = new ProjectFileBean(0, var4, w.getSelectedItemKey(), x.getSelectedItemKey(), K, !J, L, M);
+                String var4 = binding.edName.getText().toString() + getSuffix(binding.addViewTypeSelector);
+                ProjectFileBean projectFileBean = new ProjectFileBean(0, var4, binding.btnbarOrientation.getSelectedItemKey(), binding.btnbarKeyboard.getSelectedItemKey(), K, !J, L, M);
                 Intent intent = new Intent();
                 intent.putExtra("project_file", projectFileBean);
                 if (P != null) {
@@ -295,19 +268,19 @@ public class AddViewActivity extends BaseDialogActivity {
             finish();
         });
         if (N == 265) {
-            G = new YB(getApplicationContext(), E, uq.b, new ArrayList<>(), O.fileName);
-            F.setText(O.fileName);
-            F.setEnabled(false);
-            F.setBackgroundResource(2131034318);
+            G = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), O.fileName);
+            binding.edName.setText(O.fileName);
+            binding.edName.setEnabled(false);
+            binding.edName.setBackgroundResource(2131034318);
             g(O.options);
-            add_view_type_selector_layout.setVisibility(8);
-            w.setSelectedItemByKey(O.orientation);
-            x.setSelectedItemByKey(O.keyboardSetting);
+            binding.addViewTypeSelectorLayout.setVisibility(8);
+            binding.btnbarOrientation.setSelectedItemByKey(O.orientation);
+            binding.btnbarKeyboard.setSelectedItemByKey(O.keyboardSetting);
             super.r.setText(xB.b().a(getApplicationContext(), 2131625031).toUpperCase());
         } else {
             K = true;
             J = true;
-            G = new YB(getApplicationContext(), E, uq.b, I);
+            G = new YB(getApplicationContext(), binding.tiName, uq.b, I);
         }
 
         o();
@@ -378,7 +351,7 @@ public class AddViewActivity extends BaseDialogActivity {
 
             AddViewActivity var4 = e;
             if (var4.L || var4.M) {
-                e.H.setVisibility(View.VISIBLE);
+                binding.tvWarning.setVisibility(View.VISIBLE);
             }
 
             e.a(var3);
@@ -410,7 +383,7 @@ public class AddViewActivity extends BaseDialogActivity {
                     if (!d) {
                         c = getLayoutPosition();
                         a item = AddViewActivity.this.t.get(c);
-                        H.setVisibility(8);
+                        binding.tvWarning.setVisibility(8);
                         item.d = isChecked;
                         if (item.a == 2 || item.d) {
                             c(true);
