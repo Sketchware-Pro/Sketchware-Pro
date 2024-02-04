@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="design_tab_height">28</integer>
-    <integer name="design_tab_width">110</integer>
     <integer name="enter_fade_duration_time">100</integer>
     <integer name="exit_fade_duration_time">500</integer>
     <integer name="flip_time_full">300</integer>

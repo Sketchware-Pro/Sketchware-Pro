@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:id="@id/container" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <WebView android:id="@id/webview" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-        <ProgressBar android:id="@id/progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" style="@style/CustomProgressBar" />
-    </RelativeLayout>
-</LinearLayout>

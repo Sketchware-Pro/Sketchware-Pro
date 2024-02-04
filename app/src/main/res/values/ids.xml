@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="id" name="action0" />
     <item type="id" name="action_bar" />
     <item type="id" name="action_bar_activity_content" />
     <item type="id" name="action_bar_container" />
@@ -21,13 +20,6 @@
     <item type="id" name="actions" />
     <item type="id" name="activity_chooser_view_content" />
     <item type="id" name="activity_preview" />
-    <item type="id" name="ad_bg" />
-    <item type="id" name="ad_btn" />
-    <item type="id" name="ad_choice" />
-    <item type="id" name="ad_icon" />
-    <item type="id" name="ad_layout" />
-    <item type="id" name="ad_social" />
-    <item type="id" name="ad_title" />
     <item type="id" name="add_button" />
     <item type="id" name="add_event" />
     <item type="id" name="add_label" />
@@ -37,115 +29,44 @@
     <item type="id" name="alertTitle" />
     <item type="id" name="anim_sketchware" />
     <item type="id" name="animation_view" />
-    <item type="id" name="aniview_editor" />
-    <item type="id" name="aniview_favorite" />
-    <item type="id" name="aniview_list" />
-    <item type="id" name="aniview_list_loading" />
-    <item type="id" name="aniview_native_banner_ad" />
-    <item type="id" name="aniview_pager" />
-    <item type="id" name="aniview_recent" />
-    <item type="id" name="aniview_tag" />
-    <item type="id" name="answer_header" />
-    <item type="id" name="app_bar_layout" />
     <item type="id" name="app_icon" />
     <item type="id" name="app_icon_layout" />
     <item type="id" name="app_name" />
-    <item type="id" name="appbar_layout" />
     <item type="id" name="area_palette" />
-    <item type="id" name="area_source" />
-    <item type="id" name="area_xml" />
-    <item type="id" name="ban_user" />
     <item type="id" name="basic" />
-    <item type="id" name="benefit_list" />
     <item type="id" name="bg" />
     <item type="id" name="block_area" />
     <item type="id" name="block_builder" />
-    <item type="id" name="block_define_list" />
-    <item type="id" name="block_example_list" />
-    <item type="id" name="browser_actions_header_text" />
-    <item type="id" name="browser_actions_menu_item_icon" />
-    <item type="id" name="browser_actions_menu_item_text" />
-    <item type="id" name="browser_actions_menu_items" />
-    <item type="id" name="browser_actions_menu_view" />
     <item type="id" name="btn_accept" />
-    <item type="id" name="btn_add" />
-    <item type="id" name="btn_all_accept" />
     <item type="id" name="btn_app_init" />
     <item type="id" name="btn_app_upgrade" />
     <item type="id" name="btn_black" />
     <item type="id" name="btn_cancel" />
-    <item type="id" name="btn_cert" />
-    <item type="id" name="btn_check_in" />
-    <item type="id" name="btn_comment_send" />
-    <item type="id" name="btn_complete" />
     <item type="id" name="btn_console" />
     <item type="id" name="btn_decide" />
     <item type="id" name="btn_delete" />
-    <item type="id" name="btn_doc" />
-    <item type="id" name="btn_docs" />
     <item type="id" name="btn_download" />
     <item type="id" name="btn_editproperties" />
-    <item type="id" name="btn_enroll" />
-    <item type="id" name="btn_enter" />
     <item type="id" name="btn_execute" />
-    <item type="id" name="btn_export_apk" />
-    <item type="id" name="btn_export_data" />
     <item type="id" name="btn_export_src" />
-    <item type="id" name="btn_google_login" />
-    <item type="id" name="btn_goto_console" />
-    <item type="id" name="btn_goto_doc" />
     <item type="id" name="btn_grey" />
     <item type="id" name="btn_import" />
     <item type="id" name="btn_keystore_cancel" />
     <item type="id" name="btn_keystore_save" />
     <item type="id" name="btn_left" />
-    <item type="id" name="btn_login_close" />
-    <item type="id" name="btn_logout" />
-    <item type="id" name="btn_mypage_close" />
-    <item type="id" name="btn_ok" />
-    <item type="id" name="btn_open" />
     <item type="id" name="btn_open_doc" />
-    <item type="id" name="btn_preview" />
-    <item type="id" name="btn_regiser" />
-    <item type="id" name="btn_req_publish" />
-    <item type="id" name="btn_request" />
-    <item type="id" name="btn_res_more_detail" />
-    <item type="id" name="btn_retry_upload" />
     <item type="id" name="btn_right" />
     <item type="id" name="btn_save" />
-    <item type="id" name="btn_save_as_new" />
     <item type="id" name="btn_send_src" />
-    <item type="id" name="btn_service_out" />
-    <item type="id" name="btn_share" />
-    <item type="id" name="btn_show_result" />
-    <item type="id" name="btn_sign" />
     <item type="id" name="btn_sign_apk" />
-    <item type="id" name="btn_submit" />
-    <item type="id" name="btn_subscribe" />
-    <item type="id" name="btn_unlock" />
-    <item type="id" name="btn_upload" />
-    <item type="id" name="btn_use_coupon" />
-    <item type="id" name="btn_use_promotion" />
     <item type="id" name="btn_white" />
     <item type="id" name="btnbar_keyboard" />
     <item type="id" name="btnbar_orientation" />
     <item type="id" name="buttonPanel" />
     <item type="id" name="button_bar" />
-    <item type="id" name="cancel_action" />
     <item type="id" name="cancel_button" />
-    <item type="id" name="cancel_editors_choice" />
-    <item type="id" name="card_have_account" />
-    <item type="id" name="card_json_path" />
-    <item type="id" name="card_made_apk" />
-    <item type="id" name="card_no_have_account" />
-    <item type="id" name="card_view" />
     <item type="id" name="category_list" />
-    <item type="id" name="category_name" />
-    <item type="id" name="channel_icon" />
-    <item type="id" name="channel_name" />
     <item type="id" name="checkbox" />
-    <item type="id" name="chk_agreement" />
-    <item type="id" name="chk_allow_comment" />
     <item type="id" name="chk_bottom" />
     <item type="id" name="chk_collection" />
     <item type="id" name="chk_hcenter" />
@@ -157,9 +78,6 @@
     <item type="id" name="chk_top" />
     <item type="id" name="chk_vcenter" />
     <item type="id" name="chronometer" />
-    <item type="id" name="cloud_left" />
-    <item type="id" name="cloud_right" />
-    <item type="id" name="collapsing_toolbar" />
     <item type="id" name="collection_list" />
     <item type="id" name="color" />
     <item type="id" name="color_list" />
@@ -172,18 +90,14 @@
     <item type="id" name="common_dialog_ok_button" />
     <item type="id" name="common_dialog_title_layout" />
     <item type="id" name="common_dialog_tv_title" />
-    <item type="id" name="competition_period_seek" />
     <item type="id" name="component_events" />
     <item type="id" name="component_list" />
     <item type="id" name="component_option" />
     <item type="id" name="component_option_layout" />
     <item type="id" name="confirm_layout" />
     <item type="id" name="confirm_no" />
-    <item type="id" name="confirm_no_icon" />
     <item type="id" name="confirm_no_text" />
-    <item type="id" name="confirm_title" />
     <item type="id" name="confirm_yes" />
-    <item type="id" name="confirm_yes_icon" />
     <item type="id" name="confirm_yes_text" />
     <item type="id" name="container" />
     <item type="id" name="content" />
@@ -196,25 +110,11 @@
     <item type="id" name="customPanel" />
     <item type="id" name="custom_toast_container" />
     <item type="id" name="custom_view" />
-    <item type="id" name="cv_app" />
-    <item type="id" name="cv_block_btn" />
     <item type="id" name="cv_console" />
-    <item type="id" name="cv_create_new" />
-    <item type="id" name="cv_item" />
-    <item type="id" name="cv_restore_projects" />
-    <item type="id" name="cv_more_block_btn" />
-    <item type="id" name="cv_my_result" />
-    <item type="id" name="cv_play" />
-    <item type="id" name="cv_shared_blocks" />
-    <item type="id" name="cv_shared_views" />
-    <item type="id" name="cv_view_btn" />
-    <item type="id" name="debug_layout" />
     <item type="id" name="decor_content_parent" />
     <item type="id" name="default_activity_button" />
     <item type="id" name="delete_img_container" />
-    <item type="id" name="delete_project" />
     <item type="id" name="desc" />
-    <item type="id" name="description" />
     <item type="id" name="design_actionbar_titleopen_drawer" />
     <item type="id" name="design_bottom_sheet" />
     <item type="id" name="design_menu_item_action_area" />
@@ -236,8 +136,6 @@
     <item type="id" name="easy_ti_input" />
     <item type="id" name="ed_adunit_id" />
     <item type="id" name="ed_api_key" />
-    <item type="id" name="ed_app_id" />
-    <item type="id" name="ed_comment" />
     <item type="id" name="ed_device_id" />
     <item type="id" name="ed_input" />
     <item type="id" name="ed_input_api_key" />
@@ -245,34 +143,18 @@
     <item type="id" name="ed_input_file_picker" />
     <item type="id" name="ed_input_filename" />
     <item type="id" name="ed_input_firebase_path" />
-    <item type="id" name="ed_input_full_desc" />
-    <item type="id" name="ed_input_long_desc" />
-    <item type="id" name="ed_input_name" />
     <item type="id" name="ed_input_project_id" />
-    <item type="id" name="ed_input_release_name" />
-    <item type="id" name="ed_input_release_note" />
-    <item type="id" name="ed_input_short_desc" />
     <item type="id" name="ed_input_storage_url" />
-    <item type="id" name="ed_input_tag" />
-    <item type="id" name="ed_input_video" />
     <item type="id" name="ed_label" />
     <item type="id" name="ed_name" />
-    <item type="id" name="ed_project_id" />
-    <item type="id" name="ed_question" />
-    <item type="id" name="ed_question_desc" />
     <item type="id" name="ed_variable_name" />
-    <item type="id" name="ed_youtube_url" />
-    <item type="id" name="edit_project" />
     <item type="id" name="edit_query" />
     <item type="id" name="editor" />
     <item type="id" name="empty_message" />
-    <item type="id" name="empty_projects" />
-    <item type="id" name="end_padder" />
     <item type="id" name="et_all" />
     <item type="id" name="et_app_name" />
     <item type="id" name="et_bottom" />
     <item type="id" name="et_custom_color" />
-    <item type="id" name="et_desc" />
     <item type="id" name="et_dn_c" />
     <item type="id" name="et_dn_cn" />
     <item type="id" name="et_dn_l" />
@@ -284,11 +166,9 @@
     <item type="id" name="et_keystore_passwd" />
     <item type="id" name="et_keystore_passwd1" />
     <item type="id" name="et_left" />
-    <item type="id" name="et_login_id" />
     <item type="id" name="et_package_name" />
     <item type="id" name="et_project_name" />
     <item type="id" name="et_right" />
-    <item type="id" name="et_title" />
     <item type="id" name="et_top" />
     <item type="id" name="et_valid_year" />
     <item type="id" name="event_list" />
@@ -299,7 +179,6 @@
     <item type="id" name="expand_activities_button" />
     <item type="id" name="expanded_menu" />
     <item type="id" name="fab" />
-    <item type="id" name="fab_label" />
     <item type="id" name="fab_toggle_palette" />
     <item type="id" name="feature_types" />
     <item type="id" name="file_length" />
@@ -311,31 +190,21 @@
     <item type="id" name="ghost_view" />
     <item type="id" name="group_divider" />
     <item type="id" name="group_item" />
-    <item type="id" name="guide_button_container" />
-    <item type="id" name="guide_explore" />
-    <item type="id" name="guide_signin" />
     <item type="id" name="hcv_property" />
-    <item type="id" name="header_collection_info" />
     <item type="id" name="header_icon" />
     <item type="id" name="header_line" />
     <item type="id" name="header_name" />
-    <item type="id" name="header_project_info" />
-    <item type="id" name="header_project_screenshot" />
-    <item type="id" name="header_views_info" />
-    <item type="id" name="hidden" />
     <item type="id" name="home" />
     <item type="id" name="hscv" />
     <item type="id" name="icon" />
     <item type="id" name="icon_apk" />
     <item type="id" name="icon_bg" />
-    <item type="id" name="icon_data" />
     <item type="id" name="icon_delete" />
     <item type="id" name="icon_group" />
     <item type="id" name="icon_src" />
     <item type="id" name="image" />
     <item type="id" name="image_list" />
     <item type="id" name="img" />
-    <item type="id" name="img_1st" />
     <item type="id" name="img_activity" />
     <item type="id" name="img_add" />
     <item type="id" name="img_album" />
@@ -343,309 +212,98 @@
     <item type="id" name="img_answer_b" />
     <item type="id" name="img_answer_o" />
     <item type="id" name="img_answer_x" />
-    <item type="id" name="img_app_icon" />
     <item type="id" name="img_back" />
     <item type="id" name="img_backbtn" />
-    <item type="id" name="img_bg" />
-    <item type="id" name="img_bg_font" />
-    <item type="id" name="img_bg_image" />
-    <item type="id" name="img_bg_sound" />
-    <item type="id" name="img_bi" />
     <item type="id" name="img_block" />
-    <item type="id" name="img_button" />
-    <item type="id" name="img_cancelbtn" />
     <item type="id" name="img_close" />
-    <item type="id" name="img_closebtn" />
-    <item type="id" name="img_collection_type" />
     <item type="id" name="img_color_guide" />
     <item type="id" name="img_conflict" />
-    <item type="id" name="img_copy_apk_url" />
-    <item type="id" name="img_copy_data_url" />
-    <item type="id" name="img_copy_url" />
-    <item type="id" name="img_cover" />
-    <item type="id" name="img_crown" />
     <item type="id" name="img_delete" />
-    <item type="id" name="img_down" />
-    <item type="id" name="img_down1" />
-    <item type="id" name="img_down2" />
-    <item type="id" name="img_downvote" />
     <item type="id" name="img_dummy" />
     <item type="id" name="img_edit" />
     <item type="id" name="img_event" />
-    <item type="id" name="img_expire" />
-    <item type="id" name="img_export_apk" />
-    <item type="id" name="img_export_key" />
-    <item type="id" name="img_feature" />
-    <item type="id" name="img_file_icon" />
     <item type="id" name="img_file_picker" />
     <item type="id" name="img_font" />
-    <item type="id" name="img_grade" />
     <item type="id" name="img_group" />
-    <item type="id" name="img_hidden" />
     <item type="id" name="img_horizontal" />
     <item type="id" name="img_icon" />
-    <item type="id" name="img_image" />
-    <item type="id" name="img_ino_popup" />
     <item type="id" name="img_keyboard" />
     <item type="id" name="img_left_icon" />
     <item type="id" name="img_menu" />
-    <item type="id" name="img_more" />
-    <item type="id" name="img_my_coupon" />
-    <item type="id" name="img_new_json" />
-    <item type="id" name="img_new_keystore" />
     <item type="id" name="img_nine_patch" />
-    <item type="id" name="img_nodata" />
     <item type="id" name="img_notallowed" />
     <item type="id" name="img_orientation" />
     <item type="id" name="img_play" />
-    <item type="id" name="img_play_video" />
-    <item type="id" name="img_popup" />
     <item type="id" name="img_preset_setting" />
     <item type="id" name="img_preview" />
-    <item type="id" name="img_promotion" />
-    <item type="id" name="img_publish_check" />
-    <item type="id" name="img_read_detail" />
-    <item type="id" name="img_recommend" />
-    <item type="id" name="img_remove_keystore" />
-    <item type="id" name="img_reward_icon" />
     <item type="id" name="img_rotate" />
     <item type="id" name="img_save" />
-    <item type="id" name="img_screen" />
     <item type="id" name="img_select_banner" />
     <item type="id" name="img_select_inter" />
     <item type="id" name="img_selected" />
     <item type="id" name="img_selector" />
-    <item type="id" name="img_setting" />
-    <item type="id" name="img_shared_count" />
-    <item type="id" name="img_sound" />
-    <item type="id" name="img_stamp" />
-    <item type="id" name="img_step_guide" />
     <item type="id" name="img_theme_color_help" />
-    <item type="id" name="img_thumb" />
-    <item type="id" name="img_thumb_up" />
-    <item type="id" name="img_thumbnail" />
-    <item type="id" name="img_ticket" />
-    <item type="id" name="img_title_logo" />
-    <item type="id" name="img_up" />
-    <item type="id" name="img_up1" />
-    <item type="id" name="img_up2" />
-    <item type="id" name="img_upvote" />
     <item type="id" name="img_used_event" />
     <item type="id" name="img_user_icon" />
-    <item type="id" name="img_user_status" />
-    <item type="id" name="img_valid" />
-    <item type="id" name="img_value" />
     <item type="id" name="img_vertical" />
     <item type="id" name="img_view" />
     <item type="id" name="img_widget" />
-    <item type="id" name="img_write_comment" />
-    <item type="id" name="imgv_indicator" />
     <item type="id" name="imgv_selected" />
     <item type="id" name="imgv_src_size" />
     <item type="id" name="info" />
     <item type="id" name="item" />
     <item type="id" name="item_desc" />
-    <item type="id" name="item_header" />
-    <item type="id" name="item_price" />
-    <item type="id" name="item_sale" />
-    <item type="id" name="item_title" />
     <item type="id" name="item_touch_helper_previous_elevation" />
     <item type="id" name="iv_bookmark" />
     <item type="id" name="iv_copy" />
     <item type="id" name="iv_create_new" />
     <item type="id" name="iv_detail" />
-    <item type="id" name="iv_icon" />
-    <item type="id" name="iv_restore_projects" />
-    <item type="id" name="iv_question_expender" />
     <item type="id" name="iv_trash" />
-    <item type="id" name="language_categorylayout" />
-    <item type="id" name="language_categorytext" />
-    <item type="id" name="language_coordinatorlayout" />
-    <item type="id" name="language_detail_about_desc" />
-    <item type="id" name="language_detail_about_headerinfo" />
-    <item type="id" name="language_detail_about_morealias" />
-    <item type="id" name="language_detail_about_morelayout" />
-    <item type="id" name="language_detail_about_regdt" />
-    <item type="id" name="language_detail_about_updatedt" />
-    <item type="id" name="language_detail_about_version" />
-    <item type="id" name="language_detail_alias" />
-    <item type="id" name="language_detail_appbarlayout" />
-    <item type="id" name="language_detail_collapsingtoolbar" />
-    <item type="id" name="language_detail_commentcnt" />
-    <item type="id" name="language_detail_commentedittext" />
-    <item type="id" name="language_detail_commentlayout" />
-    <item type="id" name="language_detail_comments_commentslayout" />
-    <item type="id" name="language_detail_comments_refreshlayout" />
-    <item type="id" name="language_detail_comments_scrollview" />
-    <item type="id" name="language_detail_commentsendbtn" />
-    <item type="id" name="language_detail_coordinatorlayout" />
-    <item type="id" name="language_detail_downloadbtn" />
-    <item type="id" name="language_detail_filesize" />
-    <item type="id" name="language_detail_language" />
-    <item type="id" name="language_detail_languagecode" />
-    <item type="id" name="language_detail_likecnt" />
-    <item type="id" name="language_detail_pager" />
-    <item type="id" name="language_detail_tabimg" />
-    <item type="id" name="language_detail_tabs" />
-    <item type="id" name="language_detail_tabtext" />
-    <item type="id" name="language_detail_thumbup_img" />
-    <item type="id" name="language_detail_toolbar" />
-    <item type="id" name="language_item" />
-    <item type="id" name="language_item_cntlayout" />
-    <item type="id" name="language_item_commentcnt" />
-    <item type="id" name="language_item_downcnt" />
-    <item type="id" name="language_item_expandbtn" />
-    <item type="id" name="language_item_language" />
-    <item type="id" name="language_item_languagecode" />
-    <item type="id" name="language_item_likecnt" />
-    <item type="id" name="language_item_option" />
-    <item type="id" name="language_item_optionlayout" />
-    <item type="id" name="language_item_uploader" />
-    <item type="id" name="language_item_version" />
-    <item type="id" name="language_layout" />
-    <item type="id" name="language_name" />
-    <item type="id" name="language_nodata" />
-    <item type="id" name="language_recyclerview" />
-    <item type="id" name="language_refresh" />
-    <item type="id" name="language_shared_fab" />
-    <item type="id" name="language_shared_layout" />
-    <item type="id" name="language_shared_nodata" />
-    <item type="id" name="language_shared_recyclerview" />
-    <item type="id" name="language_shared_refresh" />
-    <item type="id" name="language_shared_toolbar" />
-    <item type="id" name="language_showall_layout" />
-    <item type="id" name="language_showall_nodata" />
-    <item type="id" name="language_showall_recyclerview" />
-    <item type="id" name="language_showall_refresh" />
-    <item type="id" name="language_showall_toolbar" />
-    <item type="id" name="language_toolbar" />
-    <item type="id" name="language_upload_cancelbtn" />
-    <item type="id" name="language_upload_categorylayout" />
-    <item type="id" name="language_upload_description" />
-    <item type="id" name="language_upload_expandbtn" />
-    <item type="id" name="language_upload_textlanguage" />
-    <item type="id" name="language_upload_uploadbtn" />
-    <item type="id" name="language_upload_version" />
-    <item type="id" name="language_uploadnoti_locale" />
-    <item type="id" name="language_uploadnoti_version" />
-    <item type="id" name="largeLabel" />
     <item type="id" name="layout" />
-    <item type="id" name="layout_adchoice" />
-    <item type="id" name="layout_admin" />
     <item type="id" name="layout_ads" />
-    <item type="id" name="layout_all" />
-    <item type="id" name="layout_answer" />
     <item type="id" name="layout_answer_ab" />
     <item type="id" name="layout_answer_ox" />
     <item type="id" name="layout_apk_path" />
-    <item type="id" name="layout_apk_url" />
     <item type="id" name="layout_bottom_menus" />
-    <item type="id" name="layout_btn" />
     <item type="id" name="layout_btn_group" />
     <item type="id" name="layout_button" />
-    <item type="id" name="layout_category" />
-    <item type="id" name="layout_channel_info" />
     <item type="id" name="layout_check" />
-    <item type="id" name="layout_checker" />
-    <item type="id" name="layout_code" />
     <item type="id" name="layout_color_item" />
     <item type="id" name="layout_color_title" />
-    <item type="id" name="layout_comment" />
-    <item type="id" name="layout_competition_content" />
-    <item type="id" name="layout_competition_header" />
     <item type="id" name="layout_container" />
-    <item type="id" name="layout_content" />
-    <item type="id" name="layout_contents" />
     <item type="id" name="layout_control" />
     <item type="id" name="layout_coordinator" />
     <item type="id" name="layout_copy" />
     <item type="id" name="layout_delete" />
     <item type="id" name="layout_description" />
     <item type="id" name="layout_detail" />
-    <item type="id" name="layout_down_btn" />
     <item type="id" name="layout_drawer" />
     <item type="id" name="layout_dummy" />
-    <item type="id" name="layout_duration_inapp" />
-    <item type="id" name="layout_export_apk" />
-    <item type="id" name="layout_export_data" />
     <item type="id" name="layout_export_src" />
     <item type="id" name="layout_favorite" />
-    <item type="id" name="layout_goto_channel" />
-    <item type="id" name="layout_grade" />
     <item type="id" name="layout_guide" />
     <item type="id" name="layout_hsv_color" />
-    <item type="id" name="layout_icon" />
     <item type="id" name="layout_img_icon" />
     <item type="id" name="layout_img_inform" />
     <item type="id" name="layout_img_modify" />
-    <item type="id" name="layout_import_ad_units" />
     <item type="id" name="layout_input_file_picker" />
     <item type="id" name="layout_inputs" />
     <item type="id" name="layout_item" />
-    <item type="id" name="layout_json_inform" />
-    <item type="id" name="layout_keystore" />
-    <item type="id" name="layout_language" />
-    <item type="id" name="layout_like_btn" />
-    <item type="id" name="layout_list" />
-    <item type="id" name="layout_list_loading" />
-    <item type="id" name="layout_login_info" />
-    <item type="id" name="layout_made_apk" />
     <item type="id" name="layout_main" />
     <item type="id" name="layout_main_drawer_header" />
     <item type="id" name="layout_main_logo" />
-    <item type="id" name="layout_manage_publish" />
     <item type="id" name="layout_manual_add_ad_unit" />
     <item type="id" name="layout_menus" />
-    <item type="id" name="layout_middle_native_banner_ad" />
-    <item type="id" name="layout_middle_native_banner_ad_loading" />
-    <item type="id" name="layout_more_collection" />
-    <item type="id" name="layout_msg" />
-    <item type="id" name="layout_no_recent" />
-    <item type="id" name="layout_nodata" />
-    <item type="id" name="layout_notice" />
     <item type="id" name="layout_palette" />
-    <item type="id" name="layout_play_store" />
-    <item type="id" name="layout_preview_guide" />
-    <item type="id" name="layout_price" />
-    <item type="id" name="layout_project" />
-    <item type="id" name="layout_promotion" />
-    <item type="id" name="layout_promotion_bottom" />
     <item type="id" name="layout_property_group" />
     <item type="id" name="layout_property_see_all" />
-    <item type="id" name="layout_publish_inform" />
-    <item type="id" name="layout_qna_bottom" />
-    <item type="id" name="layout_question_warning" />
     <item type="id" name="layout_quiz" />
-    <item type="id" name="layout_read_detail" />
-    <item type="id" name="layout_reason" />
-    <item type="id" name="layout_recent_btn" />
-    <item type="id" name="layout_reward_1st" />
-    <item type="id" name="layout_rewards" />
-    <item type="id" name="layout_save_as_new" />
-    <item type="id" name="layout_search" />
-    <item type="id" name="layout_see_all" />
-    <item type="id" name="layout_select_project" />
     <item type="id" name="layout_set_test_device" />
-    <item type="id" name="layout_sign_apk" />
     <item type="id" name="layout_srclist" />
-    <item type="id" name="layout_step" />
     <item type="id" name="layout_step_guide" />
     <item type="id" name="layout_switch" />
-    <item type="id" name="layout_tag" />
-    <item type="id" name="layout_tag_loading" />
-    <item type="id" name="layout_tag_nodata" />
-    <item type="id" name="layout_tag_recommend" />
     <item type="id" name="layout_theme_color" />
     <item type="id" name="layout_theme_colors" />
-    <item type="id" name="layout_ticket" />
-    <item type="id" name="layout_title" />
-    <item type="id" name="layout_top_downloaded" />
-    <item type="id" name="layout_upload_key" />
-    <item type="id" name="layout_url" />
-    <item type="id" name="layout_user_status" />
-    <item type="id" name="layout_video_info" />
-    <item type="id" name="layout_vote" />
-    <item type="id" name="layout_warning_content" />
     <item type="id" name="layout_widget" />
     <item type="id" name="left_drawer" />
     <item type="id" name="lib_desc" />
@@ -654,142 +312,56 @@
     <item type="id" name="lib_title" />
     <item type="id" name="line1" />
     <item type="id" name="line3" />
-    <item type="id" name="linear_all" />
-    <item type="id" name="linear_comments" />
-    <item type="id" name="linear_firebase_how_to" />
-    <item type="id" name="linear_my_project" />
-    <item type="id" name="linear_operation" />
-    <item type="id" name="linear_shared_project" />
     <item type="id" name="list" />
     <item type="id" name="list_activities" />
     <item type="id" name="list_ad_unit" />
-    <item type="id" name="list_ads" />
-    <item type="id" name="list_category" />
-    <item type="id" name="list_collection" />
-    <item type="id" name="list_editor_choice" />
-    <item type="id" name="list_editor_loading" />
     <item type="id" name="list_events" />
-    <item type="id" name="list_favorite" />
-    <item type="id" name="list_favorite_loading" />
-    <item type="id" name="list_fonts" />
-    <item type="id" name="list_images" />
     <item type="id" name="list_item" />
-    <item type="id" name="list_pager" />
-    <item type="id" name="list_pager_loading" />
-    <item type="id" name="list_projects" />
-    <item type="id" name="list_publish" />
-    <item type="id" name="list_recent" />
-    <item type="id" name="list_recent_loading" />
-    <item type="id" name="list_screenshots" />
-    <item type="id" name="list_search_recent" />
-    <item type="id" name="list_search_result" />
-    <item type="id" name="list_shared_views" />
-    <item type="id" name="list_sounds" />
-    <item type="id" name="list_tag" />
-    <item type="id" name="list_tag_recommend" />
     <item type="id" name="list_test_device" />
-    <item type="id" name="list_tickets" />
-    <item type="id" name="list_tutorial" />
     <item type="id" name="list_xml" />
-    <item type="id" name="ll_choose_project" />
     <item type="id" name="ll_goto_console" />
-    <item type="id" name="ll_grade" />
     <item type="id" name="ll_img_event" />
-    <item type="id" name="ll_more_projects" />
     <item type="id" name="ll_preview" />
-    <item type="id" name="ll_projects_remaining" />
     <item type="id" name="loading_3balls" />
-    <item type="id" name="loading_3dots" />
-    <item type="id" name="loading_export_data" />
     <item type="id" name="loading_export_src" />
     <item type="id" name="loading_sign_apk" />
     <item type="id" name="loading_view" />
-    <item type="id" name="login_content" />
-    <item type="id" name="login_lottie" />
     <item type="id" name="lottie_layer_name" />
     <item type="id" name="makeblock_view" />
-    <item type="id" name="manage_buttons" />
-    <item type="id" name="manual_firebase" />
     <item type="id" name="masked" />
-    <item type="id" name="media_actions" />
-    <item type="id" name="media_bg" />
-    <item type="id" name="media_view" />
     <item type="id" name="menu_add_image_res" />
     <item type="id" name="menu_admob_help" />
     <item type="id" name="menu_admob_settings" />
-    <item type="id" name="menu_ads" />
     <item type="id" name="menu_block_helper" />
-    <item type="id" name="menu_bookmark" />
     <item type="id" name="menu_collection_delete" />
     <item type="id" name="menu_collection_edit" />
-    <item type="id" name="menu_delete" />
-    <item type="id" name="menu_export_key" />
     <item type="id" name="menu_find" />
     <item type="id" name="menu_firebase_help" />
     <item type="id" name="menu_firebase_settings" />
     <item type="id" name="menu_font_add" />
     <item type="id" name="menu_font_delete" />
     <item type="id" name="menu_font_edit" />
-    <item type="id" name="menu_library_add" />
-    <item type="id" name="menu_library_delete" />
-    <item type="id" name="menu_like" />
     <item type="id" name="menu_list" />
     <item type="id" name="menu_logic_redo" />
     <item type="id" name="menu_logic_undo" />
-    <item type="id" name="menu_login" />
-    <item type="id" name="menu_mng_image" />
-    <item type="id" name="menu_mng_screen" />
-    <item type="id" name="menu_mng_sound" />
-    <item type="id" name="menu_mypage" />
-    <item type="id" name="menu_myshared" />
-    <item type="id" name="menu_publish_settings" />
-    <item type="id" name="menu_refresh_account" />
-    <item type="id" name="menu_reset" />
-    <item type="id" name="menu_reset_tutorial" />
     <item type="id" name="menu_screen_delete" />
-    <item type="id" name="menu_screen_edit" />
-    <item type="id" name="menu_share_link" />
-    <item type="id" name="menu_show_source" />
     <item type="id" name="menu_sound_add" />
     <item type="id" name="menu_sound_delete" />
     <item type="id" name="menu_sound_edit" />
-    <item type="id" name="menu_update" />
     <item type="id" name="menu_view_redo" />
     <item type="id" name="menu_view_undo" />
     <item type="id" name="message" />
-    <item type="id" name="mo1_license" />
     <item type="id" name="moreblock_create" />
     <item type="id" name="moreblock_layout" />
     <item type="id" name="mtrl_child_content_container" />
     <item type="id" name="mtrl_internal_children_alpha_tag" />
-    <item type="id" name="mypage_content" />
-    <item type="id" name="mypage_pager" />
-    <item type="id" name="mypage_setting" />
-    <item type="id" name="mypage_tab_image" />
-    <item type="id" name="mypage_tab_text" />
-    <item type="id" name="mypage_tabs" />
     <item type="id" name="myprojects" />
-    <item type="id" name="mypromotions" />
-    <item type="id" name="mypromotions_layout" />
-    <item type="id" name="myshared_buttons" />
     <item type="id" name="name" />
-    <item type="id" name="native_ad" />
     <item type="id" name="navigation_header_container" />
-    <item type="id" name="nestedScrollView" />
-    <item type="id" name="no_connection" />
-    <item type="id" name="nodata" />
-    <item type="id" name="notice_list" />
     <item type="id" name="notification_background" />
     <item type="id" name="notification_main_column" />
     <item type="id" name="notification_main_column_container" />
-    <item type="id" name="order_id_layout" />
     <item type="id" name="package_name" />
-    <item type="id" name="page_description" />
-    <item type="id" name="page_icon" />
-    <item type="id" name="page_title" />
-    <item type="id" name="pager" />
-    <item type="id" name="pager_container" />
-    <item type="id" name="pager_screen" />
     <item type="id" name="pager_soruce_code" />
     <item type="id" name="palette_block" />
     <item type="id" name="palette_favorite" />
@@ -799,7 +371,6 @@
     <item type="id" name="pane" />
     <item type="id" name="parentPanel" />
     <item type="id" name="parent_matrix" />
-    <item type="id" name="placement_id" />
     <item type="id" name="play" />
     <item type="id" name="pointer_left" />
     <item type="id" name="preview_drawer" />
@@ -809,7 +380,6 @@
     <item type="id" name="preview_toolbar" />
     <item type="id" name="prog_box" />
     <item type="id" name="prog_playtime" />
-    <item type="id" name="progress" />
     <item type="id" name="progress_circular" />
     <item type="id" name="progress_horizontal" />
     <item type="id" name="progressshape" />
@@ -820,37 +390,18 @@
     <item type="id" name="project_option" />
     <item type="id" name="project_option_layout" />
     <item type="id" name="project_version" />
-    <item type="id" name="promotion_img" />
-    <item type="id" name="promotions" />
-    <item type="id" name="promotions_layout" />
-    <item type="id" name="properties" />
     <item type="id" name="property_contents" />
     <item type="id" name="property_group_item" />
     <item type="id" name="property_group_list" />
     <item type="id" name="property_item" />
     <item type="id" name="property_layout" />
     <item type="id" name="property_menu_item" />
-    <item type="id" name="purchase" />
-    <item type="id" name="qna_container" />
-    <item type="id" name="question_list" />
     <item type="id" name="radio" />
     <item type="id" name="radio_all" />
-    <item type="id" name="radio_alpha" />
     <item type="id" name="radio_audio" />
-    <item type="id" name="radio_beta" />
-    <item type="id" name="radio_completed" />
-    <item type="id" name="radio_draft" />
     <item type="id" name="radio_group" />
-    <item type="id" name="radio_halted" />
     <item type="id" name="radio_image" />
-    <item type="id" name="radio_inprogress" />
-    <item type="id" name="radio_not_upload" />
-    <item type="id" name="radio_own" />
-    <item type="id" name="radio_production" />
-    <item type="id" name="radio_rollout" />
-    <item type="id" name="radio_sketch" />
     <item type="id" name="radio_text" />
-    <item type="id" name="radio_upload" />
     <item type="id" name="rb_all" />
     <item type="id" name="rb_boolean" />
     <item type="id" name="rb_directinput" />
@@ -860,35 +411,22 @@
     <item type="id" name="rb_only_config" />
     <item type="id" name="rb_string" />
     <item type="id" name="rb_wrapcontent" />
-    <item type="id" name="rd_privacy_onlyme" />
-    <item type="id" name="rd_privacy_public" />
-    <item type="id" name="read_more" />
     <item type="id" name="recycler_list" />
-    <item type="id" name="recycler_view" />
     <item type="id" name="remove_area" />
-    <item type="id" name="report_project" />
     <item type="id" name="rg" />
     <item type="id" name="rg_content" />
-    <item type="id" name="rg_langtype" />
     <item type="id" name="rg_type" />
-    <item type="id" name="rg_upload_apk" />
     <item type="id" name="rg_width_height" />
     <item type="id" name="right_drawer" />
     <item type="id" name="right_icon" />
     <item type="id" name="right_side" />
     <item type="id" name="root" />
-    <item type="id" name="rv_grade" />
     <item type="id" name="save_button" />
-    <item type="id" name="save_image_matrix" />
     <item type="id" name="save_non_transition_alpha" />
-    <item type="id" name="save_scale_type" />
-    <item type="id" name="screen_list" />
     <item type="id" name="scrollIndicatorDown" />
     <item type="id" name="scrollIndicatorUp" />
     <item type="id" name="scrollView" />
-    <item type="id" name="scroll_comment" />
     <item type="id" name="scroll_view" />
-    <item type="id" name="scrollview" />
     <item type="id" name="scv" />
     <item type="id" name="sdialog_root" />
     <item type="id" name="search_badge" />
@@ -901,34 +439,12 @@
     <item type="id" name="search_plate" />
     <item type="id" name="search_src_text" />
     <item type="id" name="search_voice_btn" />
-    <item type="id" name="see_more" />
     <item type="id" name="seek" />
     <item type="id" name="select_dialog_listview" />
     <item type="id" name="select_file" />
     <item type="id" name="separator" />
-    <item type="id" name="set_editors_choice" />
-    <item type="id" name="set_private" />
     <item type="id" name="shape" />
-    <item type="id" name="share_recommend_btn" />
-    <item type="id" name="share_recommend_tv" />
-    <item type="id" name="shared_blurview" />
-    <item type="id" name="shared_detail_pager" />
-    <item type="id" name="shared_detail_tabs" />
-    <item type="id" name="shared_list_pager" />
-    <item type="id" name="shared_pager_app_creator" />
-    <item type="id" name="shared_pager_app_title" />
-    <item type="id" name="shared_pager_bg" />
-    <item type="id" name="shared_pager_bg2" />
-    <item type="id" name="shared_pager_bg3" />
-    <item type="id" name="shared_pager_btn" />
-    <item type="id" name="shared_pager_comment_count" />
-    <item type="id" name="shared_pager_icon" />
-    <item type="id" name="shared_pager_liked_count" />
-    <item type="id" name="shared_pager_root" />
-    <item type="id" name="shared_pager_share_count" />
-    <item type="id" name="shared_pager_topic" />
     <item type="id" name="shortcut" />
-    <item type="id" name="smallLabel" />
     <item type="id" name="snackbar_action" />
     <item type="id" name="snackbar_text" />
     <item type="id" name="social_fb" />
@@ -937,51 +453,30 @@
     <item type="id" name="sound_list" />
     <item type="id" name="spacer" />
     <item type="id" name="split_action_bar" />
-    <item type="id" name="spn_my_project" />
-    <item type="id" name="spn_shared_project" />
     <item type="id" name="spn_src_list" />
-    <item type="id" name="spn_type" />
     <item type="id" name="spn_widget" />
-    <item type="id" name="src_viewer" />
-    <item type="id" name="stamps" />
-    <item type="id" name="status_bar_latest_event_content" />
-    <item type="id" name="sub_items" />
-    <item type="id" name="sub_layout" />
     <item type="id" name="sub_separator" />
     <item type="id" name="submenuarrow" />
     <item type="id" name="submit_area" />
-    <item type="id" name="sv_component_events" />
-    <item type="id" name="sw_value" />
     <item type="id" name="swipe_refresh" />
     <item type="id" name="switch_lib" />
-    <item type="id" name="switch_project" />
     <item type="id" name="switch_value" />
-    <item type="id" name="tab_dots" />
-    <item type="id" name="tab_item" />
     <item type="id" name="tab_layout" />
-    <item type="id" name="tab_text" />
     <item type="id" name="tag_transition_group" />
     <item type="id" name="tag_unhandled_key_event_manager" />
     <item type="id" name="tag_unhandled_key_listeners" />
-    <item type="id" name="test" />
     <item type="id" name="text" />
     <item type="id" name="textSpacerNoButtons" />
     <item type="id" name="textSpacerNoTitle" />
     <item type="id" name="text_font" />
-    <item type="id" name="text_input_password_toggle" />
     <item type="id" name="textinput_counter" />
     <item type="id" name="textinput_error" />
     <item type="id" name="textinput_helper_text" />
-    <item type="id" name="thumb" />
-    <item type="id" name="thumbnail_view" />
     <item type="id" name="ti_adunit_id" />
     <item type="id" name="ti_all" />
-    <item type="id" name="ti_api_key" />
-    <item type="id" name="ti_app_id" />
     <item type="id" name="ti_app_name" />
     <item type="id" name="ti_bottom" />
     <item type="id" name="ti_custom_color" />
-    <item type="id" name="ti_desc" />
     <item type="id" name="ti_device_id" />
     <item type="id" name="ti_dn_c" />
     <item type="id" name="ti_dn_cn" />
@@ -1000,29 +495,21 @@
     <item type="id" name="ti_left" />
     <item type="id" name="ti_name" />
     <item type="id" name="ti_package_name" />
-    <item type="id" name="ti_project_id" />
     <item type="id" name="ti_project_name" />
     <item type="id" name="ti_right" />
-    <item type="id" name="ti_title" />
     <item type="id" name="ti_top" />
     <item type="id" name="ti_valid_year" />
     <item type="id" name="ti_variable_name" />
-    <item type="id" name="ticket_no" />
     <item type="id" name="time" />
     <item type="id" name="timeout_bar" />
     <item type="id" name="title" />
     <item type="id" name="titleDividerNoCustom" />
     <item type="id" name="title_apk_path" />
-    <item type="id" name="title_apk_url" />
-    <item type="id" name="title_data_url" />
-    <item type="id" name="title_export_data" />
     <item type="id" name="title_export_src" />
     <item type="id" name="title_sign_apk" />
     <item type="id" name="title_src_path" />
     <item type="id" name="title_template" />
     <item type="id" name="toolbar" />
-    <item type="id" name="tooltip_container" />
-    <item type="id" name="tooltip_layout" />
     <item type="id" name="topPanel" />
     <item type="id" name="top_menu" />
     <item type="id" name="touch_outside" />
@@ -1031,34 +518,16 @@
     <item type="id" name="transition_position" />
     <item type="id" name="transition_scene_layoutid_cache" />
     <item type="id" name="transition_transform" />
-    <item type="id" name="trending_body" />
-    <item type="id" name="trending_layout" />
-    <item type="id" name="trending_no" />
     <item type="id" name="trash" />
-    <item type="id" name="try_again_btn" />
     <item type="id" name="tv_activity_name" />
     <item type="id" name="tv_add_color" />
     <item type="id" name="tv_add_photo" />
-    <item type="id" name="tv_add_sound" />
     <item type="id" name="tv_advanced_settings" />
-    <item type="id" name="tv_agree_consent" />
-    <item type="id" name="tv_agree_terms" />
-    <item type="id" name="tv_allow_comment_title" />
     <item type="id" name="tv_answer_a" />
     <item type="id" name="tv_answer_b" />
-    <item type="id" name="tv_answer_cnt" />
-    <item type="id" name="tv_answer_label" />
     <item type="id" name="tv_api_key" />
-    <item type="id" name="tv_apk_name" />
     <item type="id" name="tv_apk_path" />
-    <item type="id" name="tv_apk_url" />
-    <item type="id" name="tv_apk_url_expire" />
     <item type="id" name="tv_app_id" />
-    <item type="id" name="tv_app_name" />
-    <item type="id" name="tv_app_vername" />
-    <item type="id" name="tv_appname_title" />
-    <item type="id" name="tv_avail_promotion" />
-    <item type="id" name="tv_badge" />
     <item type="id" name="tv_banner_edit" />
     <item type="id" name="tv_banner_id" />
     <item type="id" name="tv_banner_id_title" />
@@ -1068,411 +537,121 @@
     <item type="id" name="tv_block_collection" />
     <item type="id" name="tv_block_name" />
     <item type="id" name="tv_category" />
-    <item type="id" name="tv_category_block" />
-    <item type="id" name="tv_category_more_block" />
-    <item type="id" name="tv_category_view" />
     <item type="id" name="tv_cert_title" />
     <item type="id" name="tv_change_icon" />
-    <item type="id" name="tv_channel_info" />
-    <item type="id" name="tv_channel_name" />
-    <item type="id" name="tv_check_network" />
-    <item type="id" name="tv_checkin_rule" />
-    <item type="id" name="tv_choose_project" />
-    <item type="id" name="tv_choose_project_desc" />
-    <item type="id" name="tv_client_id" />
-    <item type="id" name="tv_client_mail" />
-    <item type="id" name="tv_cnt_comments" />
-    <item type="id" name="tv_cnt_likes" />
-    <item type="id" name="tv_cnt_shared" />
-    <item type="id" name="tv_cnt_thumb_up" />
     <item type="id" name="tv_code" />
     <item type="id" name="tv_collection" />
-    <item type="id" name="tv_collection_name" />
     <item type="id" name="tv_color_code" />
     <item type="id" name="tv_color_name" />
-    <item type="id" name="tv_comment" />
-    <item type="id" name="tv_comment_user" />
-    <item type="id" name="tv_commentcnt" />
-    <item type="id" name="tv_company" />
-    <item type="id" name="tv_competition_desc" />
     <item type="id" name="tv_compile_log" />
     <item type="id" name="tv_component_id" />
-    <item type="id" name="tv_component_name" />
     <item type="id" name="tv_component_title" />
     <item type="id" name="tv_component_type" />
     <item type="id" name="tv_copy" />
-    <item type="id" name="tv_create_account" />
     <item type="id" name="tv_create_new" />
     <item type="id" name="tv_currentnum" />
     <item type="id" name="tv_currenttime" />
     <item type="id" name="tv_custom_color" />
-    <item type="id" name="tv_cvtitle_block" />
-    <item type="id" name="tv_cvtitle_moreblock" />
-    <item type="id" name="tv_cvtitle_view" />
-    <item type="id" name="tv_data_url" />
-    <item type="id" name="tv_data_url_expire" />
-    <item type="id" name="tv_day" />
     <item type="id" name="tv_delete" />
-    <item type="id" name="tv_delete_project" />
-    <item type="id" name="tv_delete_recent_all" />
-    <item type="id" name="tv_dep_facebook" />
-    <item type="id" name="tv_deprecated" />
     <item type="id" name="tv_desc" />
-    <item type="id" name="tv_desc_apk" />
-    <item type="id" name="tv_desc_complete" />
-    <item type="id" name="tv_desc_export" />
     <item type="id" name="tv_desc_file_picker" />
     <item type="id" name="tv_desc_firebase_path" />
-    <item type="id" name="tv_desc_id_firebase" />
     <item type="id" name="tv_desc_intent_usage" />
-    <item type="id" name="tv_desc_publish" />
-    <item type="id" name="tv_desc_sign" />
     <item type="id" name="tv_description" />
     <item type="id" name="tv_detail" />
     <item type="id" name="tv_device_id" />
-    <item type="id" name="tv_discount" />
-    <item type="id" name="tv_down_btn" />
-    <item type="id" name="tv_downcnt" />
-    <item type="id" name="tv_downloads" />
-    <item type="id" name="tv_early_end" />
-    <item type="id" name="tv_edit_project" />
-    <item type="id" name="tv_editor_see_more" />
-    <item type="id" name="tv_empty_message" />
     <item type="id" name="tv_enable" />
-    <item type="id" name="tv_end_dt" />
     <item type="id" name="tv_endtime" />
-    <item type="id" name="tv_entry_count" />
-    <item type="id" name="tv_entry_status" />
     <item type="id" name="tv_event_name" />
     <item type="id" name="tv_event_text" />
     <item type="id" name="tv_event_type" />
-    <item type="id" name="tv_expire_date" />
-    <item type="id" name="tv_expire_dt" />
     <item type="id" name="tv_favorite" />
-    <item type="id" name="tv_favorite_see_more" />
     <item type="id" name="tv_favorites_guide" />
     <item type="id" name="tv_file_name" />
     <item type="id" name="tv_filename" />
     <item type="id" name="tv_font_name" />
     <item type="id" name="tv_font_preview" />
-    <item type="id" name="tv_full_desc" />
-    <item type="id" name="tv_full_desc_limit" />
-    <item type="id" name="tv_go_premium" />
-    <item type="id" name="tv_goto_auth" />
-    <item type="id" name="tv_goto_channel" />
     <item type="id" name="tv_goto_console" />
-    <item type="id" name="tv_goto_db" />
-    <item type="id" name="tv_goto_storage" />
-    <item type="id" name="tv_grade" />
-    <item type="id" name="tv_grade_desc" />
-    <item type="id" name="tv_grade_label" />
-    <item type="id" name="tv_grade_name" />
-    <item type="id" name="tv_grade_point" />
-    <item type="id" name="tv_grade_point_max" />
-    <item type="id" name="tv_grade_point_min" />
     <item type="id" name="tv_guide" />
-    <item type="id" name="tv_guide_editor" />
-    <item type="id" name="tv_guide_favorite" />
-    <item type="id" name="tv_guide_recent" />
-    <item type="id" name="tv_have_account" />
     <item type="id" name="tv_icon_name" />
     <item type="id" name="tv_image_name" />
     <item type="id" name="tv_imgcnt" />
     <item type="id" name="tv_import" />
-    <item type="id" name="tv_import_adunits" />
     <item type="id" name="tv_input_dp" />
-    <item type="id" name="tv_input_filename" />
-    <item type="id" name="tv_input_firebase_path" />
-    <item type="id" name="tv_install" />
     <item type="id" name="tv_inter_edit" />
     <item type="id" name="tv_inter_id" />
     <item type="id" name="tv_inter_id_title" />
     <item type="id" name="tv_inter_name" />
     <item type="id" name="tv_inter_name_title" />
     <item type="id" name="tv_inter_title" />
-    <item type="id" name="tv_join_cnt" />
-    <item type="id" name="tv_json_path" />
-    <item type="id" name="tv_key_dir" />
     <item type="id" name="tv_keyboard" />
-    <item type="id" name="tv_keyfile_result" />
     <item type="id" name="tv_keystore_path" />
-    <item type="id" name="tv_keyword" />
-    <item type="id" name="tv_language" />
-    <item type="id" name="tv_language_info" />
-    <item type="id" name="tv_language_share_guide" />
-    <item type="id" name="tv_last_updated" />
     <item type="id" name="tv_layout" />
-    <item type="id" name="tv_license_duration" />
-    <item type="id" name="tv_like_btn" />
-    <item type="id" name="tv_likecnt" />
     <item type="id" name="tv_linked_filename" />
     <item type="id" name="tv_loading" />
     <item type="id" name="tv_loading_desc" />
-    <item type="id" name="tv_locale" />
-    <item type="id" name="tv_login_desc" />
-    <item type="id" name="tv_login_id" />
-    <item type="id" name="tv_long_desc" />
-    <item type="id" name="tv_long_desc_limit" />
-    <item type="id" name="tv_long_desc_title" />
-    <item type="id" name="tv_made_complete" />
-    <item type="id" name="tv_restore_projects" />
     <item type="id" name="tv_manual_add_ad_unit" />
     <item type="id" name="tv_matchparent" />
     <item type="id" name="tv_menu_name" />
-    <item type="id" name="tv_message" />
-    <item type="id" name="tv_more_collection" />
-    <item type="id" name="tv_more_project" />
-    <item type="id" name="tv_msg" />
-    <item type="id" name="tv_my_coupon" />
-    <item type="id" name="tv_my_promotions" />
-    <item type="id" name="tv_my_result" />
-    <item type="id" name="tv_my_status" />
-    <item type="id" name="tv_my_status_label" />
-    <item type="id" name="tv_my_tickets" />
     <item type="id" name="tv_name" />
-    <item type="id" name="tv_name_limit" />
-    <item type="id" name="tv_need_cert" />
     <item type="id" name="tv_new_cert_title" />
     <item type="id" name="tv_nextbtn" />
-    <item type="id" name="tv_nickname_public" />
     <item type="id" name="tv_no_collections" />
-    <item type="id" name="tv_no_data" />
     <item type="id" name="tv_no_events" />
-    <item type="id" name="tv_no_have_account" />
-    <item type="id" name="tv_no_recent" />
-    <item type="id" name="tv_nodata" />
-    <item type="id" name="tv_nofile_desc" />
-    <item type="id" name="tv_not_support_font" />
-    <item type="id" name="tv_notice" />
-    <item type="id" name="tv_notice_dt" />
-    <item type="id" name="tv_notice_name" />
-    <item type="id" name="tv_order_id" />
-    <item type="id" name="tv_order_no" />
     <item type="id" name="tv_oss" />
-    <item type="id" name="tv_package_name" />
-    <item type="id" name="tv_package_title" />
-    <item type="id" name="tv_period" />
-    <item type="id" name="tv_period_time" />
-    <item type="id" name="tv_pkg_name" />
-    <item type="id" name="tv_play_store" />
     <item type="id" name="tv_prevbtn" />
     <item type="id" name="tv_preview" />
-    <item type="id" name="tv_preview_desc" />
-    <item type="id" name="tv_preview_title" />
-    <item type="id" name="tv_price" />
-    <item type="id" name="tv_process_st" />
     <item type="id" name="tv_progress" />
-    <item type="id" name="tv_progress_st" />
     <item type="id" name="tv_project_id" />
-    <item type="id" name="tv_project_size" />
-    <item type="id" name="tv_project_title" />
-    <item type="id" name="tv_projects_remaining" />
-    <item type="id" name="tv_promotion_desc" />
-    <item type="id" name="tv_promotion_title" />
     <item type="id" name="tv_published" />
-    <item type="id" name="tv_purchase_date" />
-    <item type="id" name="tv_purchase_item" />
-    <item type="id" name="tv_purchase_list" />
-    <item type="id" name="tv_purchase_price" />
-    <item type="id" name="tv_purchase_time" />
-    <item type="id" name="tv_purchase_timestamp" />
     <item type="id" name="tv_question" />
-    <item type="id" name="tv_question_desc" />
-    <item type="id" name="tv_question_label" />
-    <item type="id" name="tv_question_register" />
-    <item type="id" name="tv_question_register_title" />
-    <item type="id" name="tv_question_waring" />
-    <item type="id" name="tv_question_warning_title" />
-    <item type="id" name="tv_rating" />
-    <item type="id" name="tv_read_detail" />
-    <item type="id" name="tv_reason" />
-    <item type="id" name="tv_recent_btn" />
-    <item type="id" name="tv_recent_see_more" />
-    <item type="id" name="tv_reg_dt" />
-    <item type="id" name="tv_reg_dt_title" />
-    <item type="id" name="tv_register_date" />
-    <item type="id" name="tv_release_apk_path" />
-    <item type="id" name="tv_release_name_limit" />
     <item type="id" name="tv_release_note" />
-    <item type="id" name="tv_release_note_limit" />
-    <item type="id" name="tv_remaing_shares" />
     <item type="id" name="tv_remaing_time" />
-    <item type="id" name="tv_remaing_time_label" />
-    <item type="id" name="tv_remaining_day" />
-    <item type="id" name="tv_remaining_time" />
-    <item type="id" name="tv_report_project" />
-    <item type="id" name="tv_report_reason" />
-    <item type="id" name="tv_req_publish" />
-    <item type="id" name="tv_res_title" />
-    <item type="id" name="tv_rest_days" />
-    <item type="id" name="tv_result" />
-    <item type="id" name="tv_reward" />
-    <item type="id" name="tv_reward_1st_title" />
-    <item type="id" name="tv_reward_label" />
-    <item type="id" name="tv_reward_title" />
-    <item type="id" name="tv_reward_type" />
     <item type="id" name="tv_root_title" />
     <item type="id" name="tv_samename" />
-    <item type="id" name="tv_save_as_new" />
-    <item type="id" name="tv_sc_name" />
-    <item type="id" name="tv_sc_price" />
-    <item type="id" name="tv_sc_ver_code" />
-    <item type="id" name="tv_sc_ver_name" />
     <item type="id" name="tv_screen_name" />
     <item type="id" name="tv_screen_orientation" />
-    <item type="id" name="tv_search" />
-    <item type="id" name="tv_section_name" />
-    <item type="id" name="tv_see_all" />
-    <item type="id" name="tv_select_my_project" />
-    <item type="id" name="tv_select_shared_projects" />
     <item type="id" name="tv_sendbtn" />
     <item type="id" name="tv_sep" />
-    <item type="id" name="tv_seq" />
     <item type="id" name="tv_set_test_device" />
-    <item type="id" name="tv_share_desc" />
-    <item type="id" name="tv_share_title" />
-    <item type="id" name="tv_shared" />
-    <item type="id" name="tv_shared_blocks" />
-    <item type="id" name="tv_shared_editor" />
-    <item type="id" name="tv_shared_new" />
-    <item type="id" name="tv_shared_popular" />
-    <item type="id" name="tv_shared_views" />
-    <item type="id" name="tv_short_desc" />
-    <item type="id" name="tv_short_desc_limit" />
-    <item type="id" name="tv_short_desc_title" />
-    <item type="id" name="tv_show_details" />
     <item type="id" name="tv_sketch_ver" />
-    <item type="id" name="tv_slogan" />
     <item type="id" name="tv_sound_name" />
     <item type="id" name="tv_spn_name" />
-    <item type="id" name="tv_sponsored" />
     <item type="id" name="tv_src_path" />
-    <item type="id" name="tv_stamp" />
-    <item type="id" name="tv_start_dt" />
-    <item type="id" name="tv_step" />
     <item type="id" name="tv_step_desc" />
-    <item type="id" name="tv_step_name" />
-    <item type="id" name="tv_step_num" />
     <item type="id" name="tv_step_title" />
     <item type="id" name="tv_stoast" />
     <item type="id" name="tv_storage_url" />
     <item type="id" name="tv_sub_title" />
-    <item type="id" name="tv_subject" />
-    <item type="id" name="tv_submit_desc" />
-    <item type="id" name="tv_submit_status" />
-    <item type="id" name="tv_subscribe_desc" />
-    <item type="id" name="tv_subscribe_desc2" />
-    <item type="id" name="tv_tag" />
-    <item type="id" name="tv_tag_count_limit" />
-    <item type="id" name="tv_tag_nodata" />
-    <item type="id" name="tv_tag_recommend" />
     <item type="id" name="tv_target_id" />
     <item type="id" name="tv_target_type" />
-    <item type="id" name="tv_terms" />
     <item type="id" name="tv_title" />
     <item type="id" name="tv_title_add_variable" />
     <item type="id" name="tv_title_api_key" />
-    <item type="id" name="tv_title_apk_path" />
     <item type="id" name="tv_title_app_id" />
-    <item type="id" name="tv_title_app_name" />
     <item type="id" name="tv_title_banner" />
     <item type="id" name="tv_title_banner_id" />
     <item type="id" name="tv_title_banner_name" />
     <item type="id" name="tv_title_blockname" />
-    <item type="id" name="tv_title_cert" />
-    <item type="id" name="tv_title_choose_ticket" />
-    <item type="id" name="tv_title_client_id" />
-    <item type="id" name="tv_title_client_mail" />
-    <item type="id" name="tv_title_code" />
-    <item type="id" name="tv_title_collection_name" />
-    <item type="id" name="tv_title_complete" />
     <item type="id" name="tv_title_configuration" />
-    <item type="id" name="tv_title_desc" />
-    <item type="id" name="tv_title_discount_coupons" />
-    <item type="id" name="tv_title_expire_dt" />
-    <item type="id" name="tv_title_export" />
-    <item type="id" name="tv_title_full_desc" />
     <item type="id" name="tv_title_global" />
-    <item type="id" name="tv_title_icon" />
     <item type="id" name="tv_title_inter" />
     <item type="id" name="tv_title_inter_id" />
     <item type="id" name="tv_title_inter_name" />
-    <item type="id" name="tv_title_json" />
-    <item type="id" name="tv_title_language" />
-    <item type="id" name="tv_title_long_desc" />
-    <item type="id" name="tv_title_msg" />
-    <item type="id" name="tv_title_name" />
-    <item type="id" name="tv_title_package_name" />
-    <item type="id" name="tv_title_passwd" />
-    <item type="id" name="tv_title_point_label" />
-    <item type="id" name="tv_title_project" />
     <item type="id" name="tv_title_project_id" />
-    <item type="id" name="tv_title_reason" />
-    <item type="id" name="tv_title_recent" />
-    <item type="id" name="tv_title_release_name" />
-    <item type="id" name="tv_title_release_note" />
-    <item type="id" name="tv_title_reward_detail" />
-    <item type="id" name="tv_title_screenshots" />
-    <item type="id" name="tv_title_short_desc" />
-    <item type="id" name="tv_title_sign" />
     <item type="id" name="tv_title_storage_url" />
-    <item type="id" name="tv_title_submit" />
-    <item type="id" name="tv_title_tag_name" />
-    <item type="id" name="tv_title_tag_recommend" />
-    <item type="id" name="tv_title_terms" />
     <item type="id" name="tv_title_test_device" />
-    <item type="id" name="tv_title_ticket" />
-    <item type="id" name="tv_title_track" />
-    <item type="id" name="tv_title_update_dt" />
-    <item type="id" name="tv_title_user_name" />
-    <item type="id" name="tv_title_version" />
-    <item type="id" name="tv_title_video" />
-    <item type="id" name="tv_title_youtube_url" />
-    <item type="id" name="tv_tooltip" />
-    <item type="id" name="tv_top_down" />
-    <item type="id" name="tv_top_down_nodata" />
     <item type="id" name="tv_toptitle" />
     <item type="id" name="tv_totalnum" />
-    <item type="id" name="tv_track" />
-    <item type="id" name="tv_type_desc" />
     <item type="id" name="tv_unit_id" />
-    <item type="id" name="tv_until_expire" />
-    <item type="id" name="tv_update_dt" />
-    <item type="id" name="tv_update_dt_title" />
-    <item type="id" name="tv_uploader_name" />
-    <item type="id" name="tv_url" />
-    <item type="id" name="tv_user_alias" />
     <item type="id" name="tv_user_name" />
-    <item type="id" name="tv_user_status" />
     <item type="id" name="tv_value" />
-    <item type="id" name="tv_ver_name" />
-    <item type="id" name="tv_version" />
-    <item type="id" name="tv_version1" />
-    <item type="id" name="tv_version2" />
-    <item type="id" name="tv_version_code_title" />
-    <item type="id" name="tv_version_name_title" />
-    <item type="id" name="tv_video" />
-    <item type="id" name="tv_video_info" />
-    <item type="id" name="tv_video_title" />
-    <item type="id" name="tv_visibility" />
-    <item type="id" name="tv_visibility_title" />
-    <item type="id" name="tv_vote_cnt" />
-    <item type="id" name="tv_vote_label" />
-    <item type="id" name="tv_warn_comment" />
     <item type="id" name="tv_warning" />
-    <item type="id" name="tv_warning_desc" />
     <item type="id" name="tv_warning_message" />
     <item type="id" name="tv_widget" />
     <item type="id" name="tv_widget_name" />
-    <item type="id" name="tv_winner_status" />
     <item type="id" name="tv_wrapcontent" />
-    <item type="id" name="tv_ws_name" />
-    <item type="id" name="tv_youtube_guide" />
-    <item type="id" name="tv_youtube_url" />
-    <item type="id" name="txt" />
     <item type="id" name="up" />
-    <item type="id" name="url_option" />
-    <item type="id" name="url_option_layout" />
     <item type="id" name="var_type_category" />
     <item type="id" name="var_type_list" />
     <item type="id" name="var_type_spinner" />
@@ -1481,13 +660,8 @@
     <item type="id" name="version_code" />
     <item type="id" name="version_name1" />
     <item type="id" name="version_name2" />
-    <item type="id" name="video_option" />
-    <item type="id" name="video_option_layout" />
-    <item type="id" name="view_ads_boader" />
     <item type="id" name="view_answer_a" />
     <item type="id" name="view_answer_b" />
-    <item type="id" name="view_category_line_one" />
-    <item type="id" name="view_category_line_two" />
     <item type="id" name="view_color" />
     <item type="id" name="view_editor" />
     <item type="id" name="view_event" />
@@ -1497,14 +671,9 @@
     <item type="id" name="view_offset_helper" />
     <item type="id" name="view_pager" />
     <item type="id" name="view_property" />
-    <item type="id" name="view_rightline" />
     <item type="id" name="viewpager" />
     <item type="id" name="visible" />
-    <item type="id" name="webview" />
     <item type="id" name="widget" />
-    <item type="id" name="wv_full_json" />
-    <item type="id" name="xml_viewer" />
-    <item type="id" name="yv_guide" />
     <item type="id" name="image_type" />
     <item type="id" name="fname" />
     <item type="id" name="ftype" />
@@ -1526,16 +695,11 @@
     <item type="id" name="text_title" />
     <item type="id" name="text_content" />
     <item type="id" name="checkbox_content" />
-    <item type="id" name="edit" />
-    <item type="id" name="delete" />
     <item type="id" name="dialoginputlayoutLinearLayout2" />
     <item type="id" name="edittext_change_name" />
     <item type="id" name="text_cancel" />
     <item type="id" name="text_save" />
-    <item type="id" name="rename" />
-    <item type="id" name="tv_title_select_mb_type" />
     <item type="id" name="radio_mb_type" />
-    <item type="id" name="radio_mb_type_void" />
     <item type="id" name="radio_mb_type_string" />
     <item type="id" name="radio_mb_type_number" />
     <item type="id" name="radio_mb_type_boolean" />
@@ -1555,7 +719,6 @@
     <item type="id" name="radio_mb_type_listmap" />
     <item type="id" name="radio_mb_type_view" />
     <item type="id" name="menu_logic_showsource" />
-    <item type="id" name="code_editor_lines" />
     <item type="id" name="code_editor_edittext" />
     <item type="id" name="code_editor_zoomin" />
     <item type="id" name="code_editor_zoomout" />
@@ -1568,13 +731,10 @@
     <item type="id" name="dialog_edittext_name" />
     <item type="id" name="dialog_text_cancel" />
     <item type="id" name="dialog_text_save" />
-    <item type="id" name="line_numbered_textview_lines" />
-    <item type="id" name="line_numbered_textview_main" />
     <item type="id" name="custom_view_pro_background" />
     <item type="id" name="custom_view_pro_img" />
     <item type="id" name="custom_view_pro_title" />
     <item type="id" name="custom_view_pro_subtitle" />
-    <item type="id" name="events_creator_scrollview" />
     <item type="id" name="events_creator_eventname" />
     <item type="id" name="events_creator_varname" />
     <item type="id" name="events_creator_listenername" />
@@ -1585,27 +745,8 @@
     <item type="id" name="events_creator_spec" />
     <item type="id" name="events_creator_code" />
     <item type="id" name="events_creator_checkbox" />
-    <item type="id" name="events_creator_hide" />
-    <item type="id" name="events_creator_listenernameA" />
-    <item type="id" name="events_creator_listenercode" />
-    <item type="id" name="events_creator_listenercustomimport" />
     <item type="id" name="events_creator_cancel" />
     <item type="id" name="events_creator_save" />
-    <item type="id" name="components_creator_name" />
-    <item type="id" name="components_creator_id" />
-    <item type="id" name="components_creator_typename" />
-    <item type="id" name="components_creator_icon" />
-    <item type="id" name="components_creator_iconselector" />
-    <item type="id" name="components_creator_description" />
-    <item type="id" name="components_creator_varname" />
-    <item type="id" name="components_creator_typeclass" />
-    <item type="id" name="components_creator_buildclass" />
-    <item type="id" name="components_creator_url" />
-    <item type="id" name="components_creator_addirional" />
-    <item type="id" name="components_creator_deadditional" />
-    <item type="id" name="components_creator_custom" />
-    <item type="id" name="components_creator_cancel" />
-    <item type="id" name="components_creator_save" />
     <item type="id" name="codeeditor_more_options" />
     <item type="id" name="code_editor_layoutScrollView" />
     <item type="id" name="add_view_type_selector" />
@@ -1614,18 +755,9 @@
     <item type="id" name="dialog_create_new_file_layoutTitle" />
     <item type="id" name="background" />
     <item type="id" name="recycle_bin" />
-    <item type="id" name="dirs" />
-    <item type="id" name="back_icon" />
     <item type="id" name="list_pallete" />
     <item type="id" name="recycle_sub" />
-    <item type="id" name="recycle_icon" />
-    <item type="id" name="pallet_dir" />
-    <item type="id" name="blocks_dir" />
-    <item type="id" name="extra_input_layout" />
     <item type="id" name="save" />
-    <item type="id" name="defaults" />
-    <item type="id" name="title_icon" />
-    <item type="id" name="custom_import" />
     <item type="id" name="sub" />
     <item type="id" name="listview" />
     <item type="id" name="backicon" />
@@ -1636,32 +768,23 @@
     <item type="id" name="down" />
     <item type="id" name="up_layout" />
     <item type="id" name="down_layout" />
-    <item type="id" name="cardv" />
     <item type="id" name="name_lay" />
     <item type="id" name="select_type" />
     <item type="id" name="type" />
     <item type="id" name="type_name" />
     <item type="id" name="spec_2lay" />
-    <item type="id" name="colour_lay" />
     <item type="id" name="colour_selector" />
     <item type="id" name="parameter_holder" />
     <item type="id" name="spec2" />
     <item type="id" name="code" />
     <item type="id" name="reset" />
-    <item type="id" name="option_a" />
-    <item type="id" name="option_b" />
-    <item type="id" name="a1_sw" />
-    <item type="id" name="a2_sw" />
     <item type="id" name="customimport" />
     <item type="id" name="back" />
-    <item type="id" name="card" />
-    <item type="id" name="back_i" />
     <item type="id" name="label" />
     <item type="id" name="contai" />
     <item type="id" name="spinner" />
     <item type="id" name="dele" />
     <item type="id" name="edi" />
-    <item type="id" name="namelay" />
     <item type="id" name="canc" />
     <item type="id" name="listv" />
     <item type="id" name="val" />
@@ -1673,7 +796,6 @@
     <item type="id" name="ln_pg_rules" />
     <item type="id" name="sw_pg_enabled" />
     <item type="id" name="radio_button_folder" />
-    <item type="id" name="save_code" />
     <item type="id" name="more" />
     <item type="id" name="btn_compiler_opt" />
     <item type="id" name="project_config_title" />
@@ -1682,8 +804,4 @@
     <item type="id" name="result_item_desc" />
     <item type="id" name="result_item_image" />
     <item type="id" name="result_item_label" />
-    <item type="id" name="original_view" />
-    <item type="id" name="show_edited_code" />
-    <item type="id" name="spinner_edited" />
-    <item type="id" name="restore_all" />
 </resources>
