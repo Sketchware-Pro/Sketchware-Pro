@@ -175,25 +175,25 @@ public class AddViewActivity extends BaseDialogActivity {
         super.onCreate(savedInstanceState);
         binding = ManageScreenActivityAddTempBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        e(xB.b().a(getApplicationContext(), 2131625299));
+        e(getTranslatedString(2131625299));
         Intent intent1 = getIntent();
         ArrayList<String> screenNames = intent1.getStringArrayListExtra("screen_names");
         requestCode = intent1.getIntExtra("request_code", 264);
         projectFileBean = intent1.getParcelableExtra("project_file");
         if (projectFileBean != null) {
-            e(xB.b().a(getApplicationContext(), 2131625300));
+            e(getTranslatedString(2131625300));
         }
 
         binding.tvWarning.setVisibility(8);
-        binding.tvWarning.setText(xB.b().a(getApplicationContext(), 2131625295));
-        binding.tiName.setHint(xB.b().a(this, 2131625293));
+        binding.tvWarning.setText(getTranslatedString(2131625295));
+        binding.tiName.setHint(getTranslatedString( 2131625293));
         binding.edName.setPrivateImeOptions("defaultInputmode=english;");
         featuresAdapter = new FeaturesAdapter();
         binding.featureTypes.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
         binding.featureTypes.setHasFixedSize(true);
         binding.featureTypes.setAdapter(featuresAdapter);
-        binding.tvScreenOrientation.setText(xB.b().a(getApplicationContext(), 2131625303));
-        binding.tvKeyboard.setText(xB.b().a(getApplicationContext(), 2131625302));
+        binding.tvScreenOrientation.setText(getTranslatedString(2131625303));
+        binding.tvKeyboard.setText(getTranslatedString(2131625302));
         binding.addViewTypeSelector.a(0, "Activity");
         binding.addViewTypeSelector.a(1, "Fragment");
         binding.addViewTypeSelector.a(2, "DialogFragment");
@@ -213,8 +213,8 @@ public class AddViewActivity extends BaseDialogActivity {
                 binding.activityPreview.animate().translationY((float) binding.imgKeyboard.getMeasuredHeight()).start();
             }
         });
-        d(xB.b().a(getApplicationContext(), 2131624970));
-        b(xB.b().a(getApplicationContext(), 2131624974));
+        d(getTranslatedString(2131624970));
+        b(getTranslatedString(2131624974));
 
         super.r.setOnClickListener(v -> {
             int options = 1;
@@ -266,7 +266,7 @@ public class AddViewActivity extends BaseDialogActivity {
             binding.addViewTypeSelectorLayout.setVisibility(8);
             binding.btnbarOrientation.setSelectedItemByKey(projectFileBean.orientation);
             binding.btnbarKeyboard.setSelectedItemByKey(projectFileBean.keyboardSetting);
-            super.r.setText(xB.b().a(getApplicationContext(), 2131625031).toUpperCase());
+            super.r.setText(getTranslatedString(2131625031).toUpperCase());
         } else {
             featureToolbar = true;
             featureStatusBar = true;

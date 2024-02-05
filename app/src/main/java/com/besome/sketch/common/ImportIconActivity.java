@@ -139,7 +139,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_icon_actionbar_title));
+        getSupportActionBar().setTitle(getTranslatedString(R.string.design_manager_icon_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -150,9 +150,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         ArrayList<String> alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
         Button save = findViewById(R.id.btn_accept);
-        save.setText(xB.b().a(getApplicationContext(), R.string.common_word_accept));
+        save.setText(getTranslatedString(R.string.common_word_accept));
         Button cancel = findViewById(R.id.btn_cancel);
-        cancel.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
+        cancel.setText(getTranslatedString(R.string.common_word_cancel));
         save.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
@@ -164,14 +164,14 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         showBlackIcons = findViewById(R.id.btn_black);
         showGreyIcons = findViewById(R.id.btn_grey);
         showWhiteIcons = findViewById(R.id.btn_white);
-        showBlackIcons.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_black));
-        showGreyIcons.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_grey));
-        showWhiteIcons.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_import_icon_button_white));
+        showBlackIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_black));
+        showGreyIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_grey));
+        showWhiteIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_white));
         showBlackIcons.setOnClickListener(this);
         showGreyIcons.setOnClickListener(this);
         showWhiteIcons.setOnClickListener(this);
         iconName = findViewById(R.id.ed_input);
-        ((TextInputLayout) findViewById(R.id.ti_input)).setHint(xB.b().a(getApplicationContext(), R.string.design_manager_icon_hint_enter_icon_name));
+        ((TextInputLayout) findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.design_manager_icon_hint_enter_icon_name));
         iconNameValidator = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, alreadyAddedImageNames);
         iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();

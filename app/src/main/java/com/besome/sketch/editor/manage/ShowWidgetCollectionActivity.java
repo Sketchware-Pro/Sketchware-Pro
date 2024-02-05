@@ -69,7 +69,7 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
             onBackPressed();
         } else if (id == R.id.save_button && widgetNameValidator.b()) {
             Rp.h().a(widgetName, widgetNameInput.getText().toString(), true);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+            bB.a(getApplicationContext(), getTranslatedString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }
     }
@@ -88,7 +88,7 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_manager_widget_title_actionbar_title));
+        getSupportActionBar().setTitle(getTranslatedString(R.string.design_manager_widget_title_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -107,9 +107,9 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         widgetNameInput = input.getEditText();
         widgetNameInput.setPrivateImeOptions("defaultInputmode=english;");
         widgetNameInput.setText(widgetName);
-        input.setHint(xB.b().a(this, R.string.design_manager_widget_hint_enter_widget_name));
+        input.setHint(getTranslatedString(R.string.design_manager_widget_hint_enter_widget_name));
         Button save = findViewById(R.id.save_button);
-        save.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
+        save.setText(getTranslatedString(R.string.common_word_save));
         save.setOnClickListener(this);
         widgetNameValidator = new NB(this, input.getTextInputLayout(), Rp.h().g());
         actionContainer = findViewById(R.id.layout_button);
