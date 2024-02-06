@@ -97,4 +97,9 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     public void setContentView(int layoutResID) {
         wB.a(this, l, layoutResID);
     }
+
+    @Override
+    public void setContentView(View view) {
+        l.addView(view);
+    }
 }

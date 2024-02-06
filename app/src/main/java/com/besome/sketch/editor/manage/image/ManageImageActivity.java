@@ -78,7 +78,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_image));
+        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -128,8 +128,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public PagerAdapter(FragmentManager manager) {
             super(manager);
             labels = new String[2];
-            labels[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            labels[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            labels[0] = getTranslatedString(R.string.design_manager_tab_title_this_project).toUpperCase();
+            labels[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override

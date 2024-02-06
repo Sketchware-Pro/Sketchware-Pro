@@ -52,9 +52,9 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         super.onCreate(bundle);
         setContentView(R.layout.manage_font_add);
 
-        e(xB.b().a(this, R.string.design_manager_font_title_add_font));
-        d(xB.b().a(this, R.string.common_word_save));
-        b(xB.b().a(this, R.string.common_word_cancel));
+        e(getTranslatedString(R.string.design_manager_font_title_add_font));
+        d(getTranslatedString(R.string.common_word_save));
+        b(getTranslatedString(R.string.common_word_cancel));
         Intent intent = getIntent();
         projectId = intent.getStringExtra("sc_id");
         projectResourceBeanArrayList = intent.getParcelableArrayListExtra("fonts");
@@ -74,7 +74,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         ((BaseDialogActivity) this).r.setOnClickListener(this);
         ((BaseDialogActivity) this).s.setOnClickListener(this);
         if (isEditMode) {
-            e(xB.b().a(this, R.string.design_manager_font_title_edit_font_name));
+            e(getTranslatedString(R.string.design_manager_font_title_edit_font_name));
             fontValidator = new WB(this, inputLayout, uq.b, getExistingFontNames(), projectResourceBean.resName);
             inputEditText.setText(projectResourceBean.resName);
             fontPreviewText.setTypeface(Typeface.createFromFile(getFontFilePath(projectResourceBean)));
@@ -93,7 +93,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     public final void selectFontFile() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 229);
+        startActivityForResult(Intent.createChooser(intent, getTranslatedString(R.string.common_word_choose)), 229);
     }
 
     public void onActivityResult(int i, int i2, Intent intent) {
@@ -156,7 +156,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
             ((SelectableBean) projectResourceBean).isNew = true;
             try {
                 Np.g().a(projectId, projectResourceBean);
-                bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
+                bB.a(this, getTranslatedString(R.string.design_manager_message_add_complete), 1).show();
             } catch (Exception e) {
                 int errorCode = -1;
                 // Well, (parts of) the bytecode's lying, yy can be thrown.
@@ -170,18 +170,18 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
                     }
                     switch (errorCode) {
                         case 0 ->
-                                bB.a(this, xB.b().a(this, R.string.collection_duplicated_name), 1).show();
+                                bB.a(this, getTranslatedString(R.string.collection_duplicated_name), 1).show();
                         case 1 ->
-                                bB.a(this, xB.b().a(this, R.string.collection_no_exist_file), 1).show();
+                                bB.a(this, getTranslatedString(R.string.collection_no_exist_file), 1).show();
                         case 2 ->
-                                bB.a(this, xB.b().a(this, R.string.collection_failed_to_copy), 1).show();
+                                bB.a(this, getTranslatedString(R.string.collection_failed_to_copy), 1).show();
                     }
                 }
             }
         } else {
             Log.e("AddFontCollectionActivity", "saveFont: " + selectedFontUri);
             Np.g().a(projectResourceBean, inputEditText.getText().toString(), true);
-            bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
+            bB.a(this, getTranslatedString(R.string.design_manager_message_edit_complete), 1).show();
         }
         finish();
     }
