@@ -17,8 +17,10 @@ RUN sed -i 's|resize=scale|resize=remote|g' /opt/novnc/index.html
 
 RUN add-apt-repository ppa:maarten-fonville/android-studio && \
     apt-get update && \
-    apt-get lib32stdc++6 \
+    apt-get install android-sdk \
+        lib32stdc++6 \
         android-studio \
+        android-sdk-platform-23 --no-install-recommends --yes \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
 
