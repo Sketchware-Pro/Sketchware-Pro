@@ -79,7 +79,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_sound));
+        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_sound));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -129,8 +129,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public PagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             titles = new String[TAB_COUNT];
-            titles[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            titles[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            titles[0] = getTranslatedString(R.string.design_manager_tab_title_this_project).toUpperCase();
+            titles[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override

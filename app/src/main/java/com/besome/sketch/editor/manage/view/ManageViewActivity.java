@@ -38,7 +38,6 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wq;
-import a.a.a.xB;
 import a.a.a.xw;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
@@ -236,7 +235,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                     a(false);
                     activitiesFragment.g();
                     customViewsFragment.g();
-                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
+                    bB.a(getApplicationContext(), getTranslatedString(R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                     s.show();
                 }
             } else if (viewId == R.id.fab) {
@@ -264,7 +263,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         Toolbar m = findViewById(R.id.toolbar);
         setSupportActionBar(m);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_view));
+        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_view));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         m.setNavigationOnClickListener(view -> {
@@ -274,8 +273,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
         MaterialButton delete = findViewById(R.id.btn_delete);
         MaterialButton cancel = findViewById(R.id.btn_cancel);
-        delete.setText(xB.b().a(getApplicationContext(), R.string.common_word_delete));
-        cancel.setText(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
+        delete.setText(getTranslatedString(R.string.common_word_delete));
+        cancel.setText(getTranslatedString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
@@ -348,12 +347,12 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         @Override
         public void b() {
             try {
-                publishProgress(xB.b().a(getApplicationContext(), R.string.common_message_progress));
+                publishProgress(getTranslatedString(R.string.common_message_progress));
                 m();
             } catch (Exception e) {
                 e.printStackTrace();
                 try {
-                    throw new By(xB.b().a(super.a, R.string.common_error_unknown));
+                    throw new By(getTranslatedString(R.string.common_error_unknown));
                 } catch (By ex) {
                     ex.printStackTrace();
                 }
@@ -371,7 +370,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         public b(FragmentManager fragmentManager) {
             super(fragmentManager);
-            f = new String[]{xB.b().a(getApplicationContext(), R.string.common_word_view).toUpperCase(), xB.b().a(getApplicationContext(), R.string.common_word_custom_view).toUpperCase()};
+            f = new String[]{getTranslatedString(R.string.common_word_view).toUpperCase(), getTranslatedString(R.string.common_word_custom_view).toUpperCase()};
         }
 
         @Override

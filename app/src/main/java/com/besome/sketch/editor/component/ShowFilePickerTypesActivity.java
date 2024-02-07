@@ -41,15 +41,15 @@ public class ShowFilePickerTypesActivity extends BaseDialogActivity implements V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        e(xB.b().a(this, R.string.component_file_picker_title_select_mime_type));
-        d(xB.b().a(getApplicationContext(), R.string.common_word_select));
-        b(xB.b().a(getApplicationContext(), R.string.common_word_cancel));
+        e(getTranslatedString(R.string.component_file_picker_title_select_mime_type));
+        d(getTranslatedString(R.string.common_word_select));
+        b(getTranslatedString(R.string.common_word_cancel));
         setContentView(R.layout.show_file_picker_types);
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-        ((RadioButton) findViewById(R.id.radio_all)).setText(xB.b().a(this, R.string.component_file_picker_title_select_mime_type_all_files));
-        ((RadioButton) findViewById(R.id.radio_image)).setText(xB.b().a(this, R.string.component_file_picker_title_select_mime_type_image_files));
-        ((RadioButton) findViewById(R.id.radio_audio)).setText(xB.b().a(this, R.string.component_file_picker_title_select_mime_type_audio_files));
-        ((RadioButton) findViewById(R.id.radio_text)).setText(xB.b().a(this, R.string.component_file_picker_title_select_mime_type_text_files));
+        ((RadioButton) findViewById(R.id.radio_all)).setText(getTranslatedString(R.string.component_file_picker_title_select_mime_type_all_files));
+        ((RadioButton) findViewById(R.id.radio_image)).setText(getTranslatedString(R.string.component_file_picker_title_select_mime_type_image_files));
+        ((RadioButton) findViewById(R.id.radio_audio)).setText(getTranslatedString(R.string.component_file_picker_title_select_mime_type_audio_files));
+        ((RadioButton) findViewById(R.id.radio_text)).setText(getTranslatedString(R.string.component_file_picker_title_select_mime_type_text_files));
         r.setOnClickListener(this);
         s.setOnClickListener(this);
     }

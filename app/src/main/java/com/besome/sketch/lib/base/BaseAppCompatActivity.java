@@ -19,6 +19,7 @@ import a.a.a.ZA;
 import a.a.a.Zo;
 import a.a.a._A;
 import a.a.a.lC;
+import a.a.a.xB;
 
 public class BaseAppCompatActivity extends AppCompatActivity {
 
@@ -110,6 +111,10 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         lC.a(getApplicationContext(), false);
         progressDialog = new _A(this);
         mAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    public final String getTranslatedString(int resId) {
+        return xB.b().a(getApplicationContext(), resId);
     }
 
     @Override
