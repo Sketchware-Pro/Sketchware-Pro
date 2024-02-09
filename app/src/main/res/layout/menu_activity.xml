@@ -12,7 +12,51 @@
         android:background="#ffeeeeee"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_improved" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff008dcd"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/ig_toolbar_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/arrow_back_white_48dp" />
+
+            <TextView
+                android:id="@+id/tx_toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:gravity="center|start"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="6dp"
+                android:text="Title"
+                android:textColor="@color/tool_bar_text_color"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ig_toolbar_load_file"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="9dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/add_file_48"
+                android:visibility="gone" />
+        </LinearLayout>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
