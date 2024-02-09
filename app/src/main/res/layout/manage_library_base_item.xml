@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,7 +18,8 @@
         <ImageView
             android:id="@+id/lib_icon"
             android:layout_width="28dp"
-            android:layout_height="28dp" />
+            android:layout_height="28dp"
+            tools:src="@drawable/widget_firebase" />
 
         <TextView
             android:id="@+id/tv_enable"
@@ -32,7 +34,8 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:textColor="#ffffffff"
-            android:textSize="10sp" />
+            android:textSize="11sp"
+            tools:text="Off" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,7 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ff757575"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="AppCompat and Design" />
 
         <TextView
             android:id="@+id/lib_desc"
@@ -55,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:textColor="@color/light_grey"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="Drawer Layout, Floating Action Button" />
     </LinearLayout>
 
     <ImageView
