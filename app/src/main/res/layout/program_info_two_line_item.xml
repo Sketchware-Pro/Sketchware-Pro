@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="60dp"
@@ -14,6 +15,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
+        tools:text="Some title"
         android:textColor="#ff757575"
         android:textSize="14sp" />
 
@@ -25,10 +27,12 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:gravity="start"
+        tools:text="This is a desc"
         android:textColor="#ffcccccc"
         android:textSize="12sp" />
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
