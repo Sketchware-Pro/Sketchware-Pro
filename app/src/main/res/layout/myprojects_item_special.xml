@@ -1,11 +1,13 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ElevatedItemWithoutShadow"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:layout_marginBottom="@dimen/card_view_margin8">
+    android:layout_marginBottom="@dimen/card_view_margin8"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
     <LinearLayout
         android:id="@+id/project_one"

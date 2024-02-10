@@ -314,9 +314,4 @@
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">false</item>
     </style>
-
-    <style name="ElevatedItemWithoutShadow" parent="Widget.Material3.CardView.Filled">
-        <item name="cardBackgroundColor">?attr/colorSurface</item>
-        <item name="cardElevation">@dimen/elevated_item_without_shadow_elevation</item>
-    </style>
 </resources>
