@@ -22,8 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
-
+import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -67,53 +66,11 @@ public class Tools extends Activity {
         setContentView(_base);
     }
 
-    private void makeup(View parent, int iconResourceId, String title, String subtitle) {
-        View inflate = getLayoutInflater().inflate(R.layout.manage_library_base_item, null);
-        ImageView icon = inflate.findViewById(R.id.lib_icon);
-        inflate.findViewById(R.id.tv_enable).setVisibility(View.GONE);
-        ((LinearLayout) icon.getParent()).setGravity(Gravity.CENTER);
-        icon.setImageResource(iconResourceId);
-        ((TextView) inflate.findViewById(R.id.lib_title)).setText(title);
-        ((TextView) inflate.findViewById(R.id.lib_desc)).setText(subtitle);
-        ((ViewGroup) parent).addView(inflate);
-    }
-
-    private CardView newCard(int width, int height, float weight) {
-        CardView cardView = new CardView(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height, weight);
-        layoutParams.setMargins(
-                (int) SketchwareUtil.getDip(4),
-                (int) SketchwareUtil.getDip(2),
-                (int) SketchwareUtil.getDip(4),
-                (int) SketchwareUtil.getDip(2)
-        );
-        cardView.setLayoutParams(layoutParams);
-        cardView.setPadding(
-                (int) SketchwareUtil.getDip(2),
-                (int) SketchwareUtil.getDip(2),
-                (int) SketchwareUtil.getDip(2),
-                (int) SketchwareUtil.getDip(2)
-        );
-        cardView.setCardBackgroundColor(Color.WHITE);
-        cardView.setRadius(SketchwareUtil.getDip(4));
-        return cardView;
-    }
-
-    private LinearLayout newLayout(int width, int height, float weight) {
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(width, height, weight));
-        linearLayout.setPadding(
-                (int) SketchwareUtil.getDip(1),
-                (int) SketchwareUtil.getDip(1),
-                (int) SketchwareUtil.getDip(1),
-                (int) SketchwareUtil.getDip(1)
-        );
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setColor(Color.WHITE);
-        linearLayout.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#64B5F6")}), gradientDrawable, null));
-        linearLayout.setClickable(true);
-        linearLayout.setFocusable(true);
-        return linearLayout;
+    private void makeup(LibraryItemView parent, int iconResourceId, String title, String description) {
+        parent.enabled.setVisibility(View.GONE);
+        parent.icon.setImageResource(iconResourceId);
+        parent.title.setText(title);
+        parent.description.setText(description);
     }
 
     private void newToolbar(View parent) {
@@ -191,75 +148,57 @@ public class Tools extends Activity {
     }
 
     private void setupViews() {
-        CardView blockManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout newLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        blockManager.addView(newLayout);
-        makeup(newLayout, R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor");
+        LibraryItemView blockManager = new LibraryItemView(this);
+        makeup(blockManager, R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor");
         base.addView(blockManager);
-        newLayout.setOnClickListener(new ActivityLauncher(
+        blockManager.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), BlocksManager.class)));
 
-        CardView blockSelectorManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout blockSelectorManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        blockSelectorManager.addView(blockSelectorManagerLayout);
-        makeup(blockSelectorManagerLayout, R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus");
+        LibraryItemView blockSelectorManager = new LibraryItemView(this);
+        makeup(blockSelectorManager, R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus");
         base.addView(blockSelectorManager);
-        blockSelectorManagerLayout.setOnClickListener(new ActivityLauncher(
+        blockSelectorManager.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), BlockSelectorActivity.class)));
 
-        CardView componentManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout componentManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        componentManager.addView(componentManagerLayout);
-        makeup(componentManagerLayout, R.drawable.collage_48, "Component manager", "Manage your own components");
+        LibraryItemView componentManager = new LibraryItemView(this);
+        makeup(componentManager, R.drawable.collage_48, "Component manager", "Manage your own components");
         base.addView(componentManager);
-        componentManagerLayout.setOnClickListener(new ActivityLauncher(
+        componentManager.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ManageCustomComponentActivity.class)));
 
-        CardView eventManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout eventManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        eventManager.addView(eventManagerLayout);
-        makeup(eventManagerLayout, R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events");
+        LibraryItemView eventManager = new LibraryItemView(this);
+        makeup(eventManager, R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events");
         base.addView(eventManager);
-        eventManagerLayout.setOnClickListener(new ActivityLauncher(
+        eventManager.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), EventsMaker.class)));
 
-        CardView localLibraryManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout localLibraryManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        localLibraryManager.addView(localLibraryManagerLayout);
-        makeup(localLibraryManagerLayout, R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries");
+        LibraryItemView localLibraryManager = new LibraryItemView(this);
+        makeup(localLibraryManager, R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries");
         base.addView(localLibraryManager);
-        localLibraryManagerLayout.setOnClickListener(new ActivityLauncher(
+        localLibraryManager.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ManageLocalLibraryActivity.class),
                 new Pair<>("sc_id", "system")));
 
-        CardView modSettings = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout modSettingsLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        modSettings.addView(modSettingsLayout);
-        makeup(modSettingsLayout, R.drawable.engineering_48, "Mod settings", "Change general mod settings");
+        LibraryItemView modSettings = new LibraryItemView(this);
+        makeup(modSettings, R.drawable.engineering_48, "Mod settings", "Change general mod settings");
         base.addView(modSettings);
-        modSettingsLayout.setOnClickListener(new ActivityLauncher(
+        modSettings.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ConfigActivity.class)));
 
-        CardView openWorkingDirectory = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout openWorkingDirectoryLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        openWorkingDirectory.addView(openWorkingDirectoryLayout);
-        makeup(openWorkingDirectoryLayout, R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it");
+        LibraryItemView openWorkingDirectory = new LibraryItemView(this);
+        makeup(openWorkingDirectory, R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it");
         base.addView(openWorkingDirectory);
-        openWorkingDirectoryLayout.setOnClickListener(v -> openWorkingDirectory());
+        openWorkingDirectory.setOnClickListener(v -> openWorkingDirectory());
 
-        CardView signApkFile = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout signApkFileLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        signApkFile.addView(signApkFileLayout);
-        makeup(signApkFileLayout, R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4");
+        LibraryItemView signApkFile = new LibraryItemView(this);
+        makeup(signApkFile, R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4");
         base.addView(signApkFile);
-        signApkFileLayout.setOnClickListener(v -> signApkFileDialog());
+        signApkFile.setOnClickListener(v -> signApkFileDialog());
 
-        CardView openLogcatReader = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
-        LinearLayout logcatReaderLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
-        openLogcatReader.addView(logcatReaderLayout);
-        makeup(logcatReaderLayout, R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader));
+        LibraryItemView openLogcatReader = new LibraryItemView(this);
+        makeup(openLogcatReader, R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader));
         base.addView(openLogcatReader);
-        logcatReaderLayout.setOnClickListener(new ActivityLauncher(
+        openLogcatReader.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), LogReaderActivity.class)));
     }
 
