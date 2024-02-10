@@ -109,8 +109,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
 
-            LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
-            makeup(linearLayout);
+            View linearLayout = convertView.findViewById(R.id.cus_attr_layout);
             ((ImageView) convertView.findViewById(R.id.cus_attr_btn)).setImageResource(R.drawable.ic_property_inject);
             ((TextView) convertView.findViewById(R.id.cus_attr_text)).setText(_data.get(position));
             linearLayout.setOnClickListener(v -> {

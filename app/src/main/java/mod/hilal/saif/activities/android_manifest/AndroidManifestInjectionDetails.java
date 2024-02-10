@@ -284,11 +284,10 @@ public class AndroidManifestInjectionDetails extends Activity {
                 convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
 
-            LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);
+            View root = convertView.findViewById(R.id.cus_attr_layout);
             TextView attribute = convertView.findViewById(R.id.cus_attr_text);
             ImageView options = convertView.findViewById(R.id.cus_attr_btn);
             options.setVisibility(View.GONE);
-            a(root, (int) getDip(4), (int) getDip(2));
 
             try {
                 SpannableString spannableString = new SpannableString((String) _data.get(position).get("value"));
@@ -299,9 +298,6 @@ public class AndroidManifestInjectionDetails extends Activity {
             } catch (Exception e) {
                 attribute.setText((String) _data.get(position).get("value"));
             }
-            attribute.setPadding((int) getDip(12), (int) getDip(12), (int) getDip(12), (int) getDip(12));
-            attribute.setTextSize(16);
-            root.setVisibility(View.VISIBLE);
 
             root.setOnClickListener(v -> showDial(position));
             root.setOnLongClickListener(v -> {

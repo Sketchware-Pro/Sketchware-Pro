@@ -460,16 +460,13 @@ public class AndroidManifestInjection extends AppCompatActivity {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
-            LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
+
+            View linearLayout = convertView.findViewById(R.id.cus_attr_layout);
             TextView textView = convertView.findViewById(R.id.cus_attr_text);
-            final ImageView imageView = convertView.findViewById(R.id.cus_attr_btn);
+            ImageView imageView = convertView.findViewById(R.id.cus_attr_btn);
+
             imageView.setVisibility(View.GONE);
-            a(linearLayout, (int) getDip(4), (int) getDip(2));
             textView.setText((String) list_map.get(position).get("act_name"));
-            textView.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-            textView.setTextSize(15);
-            textView.setTypeface(Typeface.DEFAULT);
-            linearLayout.setVisibility(View.VISIBLE);
             linearLayout.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);

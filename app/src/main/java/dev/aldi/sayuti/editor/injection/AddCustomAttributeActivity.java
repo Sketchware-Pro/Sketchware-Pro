@@ -166,16 +166,13 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
             }
 
-            LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);
             TextView injection = convertView.findViewById(R.id.cus_attr_text);
             ImageView options = convertView.findViewById(R.id.cus_attr_btn);
 
             options.setRotation(90);
-            makeup(root, 10, 5);
-            makeup(options, 100, 0);
 
             if (!injections.get(position).containsKey("type") || !activityInjections.get(position).get("type").toString().equals(widgetType)) {
-                root.setVisibility(View.GONE);
+                convertView.setVisibility(View.GONE);
             } else {
                 String value = activityInjections.get(position).get("value").toString();
                 SpannableString spannableString = new SpannableString(value);
@@ -183,7 +180,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannableString.setSpan(new ForegroundColorSpan(0xff45a245), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 injection.setText(spannableString);
-                root.setVisibility(View.VISIBLE);
+                convertView.setVisibility(View.VISIBLE);
             }
             options.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, options);
