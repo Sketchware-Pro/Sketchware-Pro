@@ -1,16 +1,16 @@
 package com.besome.sketch.lib.ui;
 
-import a.a.a.VA;
-import a.a.a.WA;
-import a.a.a.XA;
-import a.a.a.wB;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.google.android.material.textfield.TextInputLayout;
+
+import a.a.a.wB;
+import mod.hasrat.lib.BaseTextWatcher;
 
 public class EasyDeleteEditText extends RelativeLayout {
 
@@ -50,9 +50,14 @@ public class EasyDeleteEditText extends RelativeLayout {
         c = findViewById(2131230983);
         d = findViewById(2131230984);
         b.setVisibility(View.GONE);
-        b.setOnClickListener(new VA(this));
-        c.addTextChangedListener(new WA(this));
-        c.setOnFocusChangeListener(new XA(this));
+        b.setOnClickListener(view -> c.setText(""));
+        c.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                a();
+            }
+        });
+        c.setOnFocusChangeListener((v, hasFocus) -> a());
         a();
     }
 
@@ -64,7 +69,7 @@ public class EasyDeleteEditText extends RelativeLayout {
         return d;
     }
 
-    public void setHint(String var1) {
-        d.setHint(var1);
+    public void setHint(String txt) {
+        d.setHint(txt);
     }
 }
