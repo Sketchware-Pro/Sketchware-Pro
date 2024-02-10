@@ -3,7 +3,6 @@ package mod.hilal.saif.activities.android_manifest;
 import static mod.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -22,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,10 +51,9 @@ import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 
 @SuppressLint("SetTextI18n")
-public class AndroidManifestInjection extends Activity {
+public class AndroidManifestInjection extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> list_map = new ArrayList<>();
-    private ViewGroup base;
     private ListView act_list;
     private String sc_id;
     private String activityName;
@@ -62,15 +61,14 @@ public class AndroidManifestInjection extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_events);
-        RecyclerView dump = findViewById(R.id.list_events);
-        base = (ViewGroup) dump.getParent();
-        base.removeView(dump);
+        setContentView(R.layout.android_manifest_injection);
+
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
             sc_id = getIntent().getStringExtra("sc_id");
             activityName = getIntent().getStringExtra("file_name").replaceAll(".java", "");
         }
-        createToolbar(base);
+
+        setupCustomToolbar();
         checkAttrs();
         setupViews();
         refreshList();
@@ -108,9 +106,12 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void setupViews() {
+        LinearLayout content = findViewById(R.id.content);
+        LinearLayout cards = findViewById(R.id.cards);
+
         LibraryItemView application_card = new LibraryItemView(this);
         makeup(application_card, R.drawable.icons8_app_attrs, "Application", "Default properties for the app");
-        base.addView(application_card);
+        cards.addView(application_card);
         application_card.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
@@ -123,7 +124,7 @@ public class AndroidManifestInjection extends Activity {
         {
             LibraryItemView permission_card = new LibraryItemView(this);
             makeup(permission_card, R.drawable.event_on_signin_complete_48dp, "Permissions", "Add custom Permissions to the app");
-            base.addView(permission_card);
+            cards.addView(permission_card);
             permission_card.setOnClickListener(_view -> {
                 Intent inta = new Intent();
                 inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
@@ -137,13 +138,13 @@ public class AndroidManifestInjection extends Activity {
         {
             LibraryItemView permission_card = new LibraryItemView(this);
             makeup(permission_card, R.drawable.recycling_48, "Launcher Activity", "Change the default Launcher Activity");
-            base.addView(permission_card);
+            cards.addView(permission_card);
             permission_card.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
         }
 
         LibraryItemView allAct_card = new LibraryItemView(this);
         makeup(allAct_card, R.drawable.icons8_all_activities_attrs, "All Activities", "Add attributes for all Activities");
-        base.addView(allAct_card);
+        cards.addView(allAct_card);
         allAct_card.setOnClickListener(v -> {
             Intent inta = new Intent();
             inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
@@ -155,70 +156,13 @@ public class AndroidManifestInjection extends Activity {
 
         LibraryItemView appCom_card = new LibraryItemView(this);
         makeup(appCom_card, R.drawable.icons8_app_components, "App Components", "Add extra components");
-        base.addView(appCom_card);
+        cards.addView(appCom_card);
         appCom_card.setOnClickListener(v -> showAppComponentDialog());
 
-        LinearLayout sub_skin = newLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                0);
-        sub_skin.setBackgroundColor(0x00000000);
-        sub_skin.setPadding(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8));
-        sub_skin.setFocusable(false);
-        sub_skin.setGravity(Gravity.CENTER_VERTICAL);
-        TextView sub = newText("Activities:", 16, false, Color.GRAY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-        sub_skin.addView(sub);
-        base.addView(sub_skin);
-
-
-        LinearLayout bottom = new LinearLayout(this);
-        bottom.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                0,
-                1.0f));
-        bottom.setPadding(
-                (int) getDip(1),
-                0,
-                (int) getDip(1),
-                (int) getDip(1));
         act_list = new ListView(this);
-        act_list.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f));
+        act_list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         act_list.setDividerHeight(0);
-        bottom.addView(act_list);
-        base.addView(bottom);
-
-        TextView addnew = new TextView(getApplicationContext());
-        addnew.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) getDip(45),
-                0.0f));
-        ((LinearLayout.LayoutParams) addnew.getLayoutParams()).setMargins(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8));
-        addnew.setText("Add Activity");
-        addnew.setTextColor(Color.WHITE);
-        addnew.setPadding(
-                (int) getDip(50),
-                (int) getDip(8),
-                (int) getDip(50),
-                (int) getDip(8));
-        addnew.setGravity(Gravity.CENTER);
-        addnew.setBackgroundColor(0xff008dcd);
-        addnew.setTextSize(15);
-        addnew.setBackground(new DialogButtonGradientDrawable()
-                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-        addnew.setElevation((int) getDip(1));
-        base.addView(addnew);
-        addnew.setOnClickListener(v -> showAddActivityDialog());
+        content.addView(act_list);
     }
 
     private void showAppComponentDialog() {
@@ -237,7 +181,6 @@ public class AndroidManifestInjection extends Activity {
         intent.putExtra("title", "App Components");
         startActivity(intent);
     }
-
 
     private void showLauncherActDialog(String actnamr) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
@@ -267,7 +210,8 @@ public class AndroidManifestInjection extends Activity {
         create.show();
     }
 
-    private void showAddActivityDialog() {
+    // if you change method name, you need also change it in layout
+    public void showAddActivityDialog(View view) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
@@ -424,43 +368,12 @@ public class AndroidManifestInjection extends Activity {
         }
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private LinearLayout newLayout(int width, int height, float weight) {
-        LinearLayout temp_card = new LinearLayout(this);
-        temp_card.setLayoutParams(new LinearLayout.LayoutParams(width, height, weight));
-        temp_card.setPadding((int) getDip(1), (int) getDip(1), (int) getDip(1), (int) getDip(1));
-        //temp_card.setBackgroundColor(0x00ffffff);
-        GradientDrawable gd = new GradientDrawable();
-        gd.setColor(Color.WHITE);
-        RippleDrawable rpl = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor("#64B5F6")}), gd, null);
-        temp_card.setBackground(rpl);
-        temp_card.setClickable(true);
-        temp_card.setFocusable(true);
-        return temp_card;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private TextView newText(String str, float size, boolean is, int color, int width, int height, float weight) {
-        TextView temp_card = new TextView(this);
-        temp_card.setLayoutParams(new LinearLayout.LayoutParams(width, height, weight));
-        temp_card.setPadding((int) getDip(4), (int) getDip(4), (int) getDip(4), (int) getDip(4));
-        temp_card.setTextColor(color);
-        temp_card.setText(str);
-        temp_card.setTextSize(size);
-        if (is) {
-            temp_card.setTypeface(Typeface.DEFAULT_BOLD);
-        }
-        return temp_card;
-    }
-
-    private void createToolbar(View v) {
-        View toolbar = getLayoutInflater().inflate(R.layout.toolbar_improved, null);
-
-        ImageView _back = toolbar.findViewById(R.id.ig_toolbar_back);
+    private void setupCustomToolbar() {
+        ImageView _back = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(_back);
-        ImageView _quickSource = toolbar.findViewById(R.id.ig_toolbar_load_file);
+        ImageView _quickSource = findViewById(R.id.ig_toolbar_load_file);
 
-        TextView _title = toolbar.findViewById(R.id.tx_toolbar_title);
+        TextView _title = findViewById(R.id.tx_toolbar_title);
         _title.setText("AndroidManifest Manager");
         _back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
@@ -468,9 +381,6 @@ public class AndroidManifestInjection extends Activity {
         _quickSource.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(_quickSource);
         _quickSource.setOnClickListener((v1 -> showQuickManifestSourceDialog()));
-
-        v.setPadding(0, 0, 0, 0);
-        ((ViewGroup) v).addView(toolbar, 0);
     }
 
     private void showQuickManifestSourceDialog() {
