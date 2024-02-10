@@ -17,18 +17,17 @@ import a.a.a.xB;
 public class LibraryItemView extends FrameLayout {
     protected final Context context;
     protected MaterialCardView container;
-    protected ImageView icon;
-    protected TextView title;
-    protected TextView description;
-    protected TextView enabled;
+
+    public ImageView icon;
+    public TextView title;
+    public TextView description;
+    public TextView enabled;
 
     public LibraryItemView(Context context) {
         super(context);
         this.context = context;
-    }
 
-    public void a(int resLayout) {
-        wB.a(context, this, resLayout);
+        wB.a(context, this, R.layout.manage_library_base_item);
         container = findViewById(R.id.container);
         icon = findViewById(R.id.lib_icon);
         title = findViewById(R.id.lib_title);
