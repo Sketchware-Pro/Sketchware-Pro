@@ -1,8 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.google.android.material.textfield.TextInputLayout android:id="@id/easy_ti_input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
-        <EditText android:textSize="16.0sp" android:id="@id/easy_ed_input" android:layout_width="fill_parent" android:layout_height="40.0dip" android:lines="1" android:inputType="text" android:imeOptions="actionDone" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/easy_ti_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:id="@+id/easy_ed_input"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
-    <ImageView android:id="@id/img_delete" android:padding="4.0dip" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginTop="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/ic_delete_lighter_grey_circle_24dp" android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="4dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_delete_lighter_grey_circle_24dp" />
 </RelativeLayout>
