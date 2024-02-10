@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -107,12 +108,10 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void setupViews() {
-        CardView application_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-        LinearLayout application_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        application_card.addView(application_skin);
-        makeup(application_skin, R.drawable.icons8_app_attrs, "Application", "Default properties for the app");
+        LibraryItemView application_card = new LibraryItemView(this);
+        makeup(application_card, R.drawable.icons8_app_attrs, "Application", "Default properties for the app");
         base.addView(application_card);
-        application_skin.setOnClickListener(v -> {
+        application_card.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
             intent.putExtra("sc_id", sc_id);
@@ -122,12 +121,10 @@ public class AndroidManifestInjection extends Activity {
         });
 
         {
-            CardView permission_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-            LinearLayout permission_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
-            permission_card.addView(permission_skin);
-            makeup(permission_skin, R.drawable.event_on_signin_complete_48dp, "Permissions", "Add custom Permissions to the app");
+            LibraryItemView permission_card = new LibraryItemView(this);
+            makeup(permission_card, R.drawable.event_on_signin_complete_48dp, "Permissions", "Add custom Permissions to the app");
             base.addView(permission_card);
-            permission_skin.setOnClickListener(_view -> {
+            permission_card.setOnClickListener(_view -> {
                 Intent inta = new Intent();
                 inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
                 inta.putExtra("sc_id", sc_id);
@@ -138,20 +135,16 @@ public class AndroidManifestInjection extends Activity {
         }
 
         {
-            CardView permission_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-            LinearLayout permission_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
-            permission_card.addView(permission_skin);
-            makeup(permission_skin, R.drawable.recycling_48, "Launcher Activity", "Change the default Launcher Activity");
+            LibraryItemView permission_card = new LibraryItemView(this);
+            makeup(permission_card, R.drawable.recycling_48, "Launcher Activity", "Change the default Launcher Activity");
             base.addView(permission_card);
-            permission_skin.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
+            permission_card.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
         }
 
-        CardView allAct_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-        LinearLayout allAct_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        allAct_card.addView(allAct_skin);
-        makeup(allAct_skin, R.drawable.icons8_all_activities_attrs, "All Activities", "Add attributes for all Activities");
+        LibraryItemView allAct_card = new LibraryItemView(this);
+        makeup(allAct_card, R.drawable.icons8_all_activities_attrs, "All Activities", "Add attributes for all Activities");
         base.addView(allAct_card);
-        allAct_skin.setOnClickListener(v -> {
+        allAct_card.setOnClickListener(v -> {
             Intent inta = new Intent();
             inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
             inta.putExtra("sc_id", sc_id);
@@ -160,12 +153,10 @@ public class AndroidManifestInjection extends Activity {
             startActivity(inta);
         });
 
-        CardView appCom_card = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-        LinearLayout appCom_skin = newLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        appCom_card.addView(appCom_skin);
-        makeup(appCom_skin, R.drawable.icons8_app_components, "App Components", "Add extra components");
+        LibraryItemView appCom_card = new LibraryItemView(this);
+        makeup(appCom_card, R.drawable.icons8_app_components, "App Components", "Add extra components");
         base.addView(appCom_card);
-        appCom_skin.setOnClickListener(v -> showAppComponentDialog());
+        appCom_card.setOnClickListener(v -> showAppComponentDialog());
 
         LinearLayout sub_skin = newLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -434,18 +425,6 @@ public class AndroidManifestInjection extends Activity {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private CardView newCard(int width, int height, float weight) {
-        CardView temp_card = new CardView(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height, weight);
-        lp.setMargins((int) getDip(4), (int) getDip(2), (int) getDip(4), (int) getDip(2));
-        temp_card.setLayoutParams(lp);
-        temp_card.setPadding((int) getDip(2), (int) getDip(2), (int) getDip(2), (int) getDip(2));
-        temp_card.setCardBackgroundColor(0xFFFFFFFF);
-        temp_card.setRadius(getDip(4));
-        return temp_card;
-    }
-
-    @SuppressWarnings("SameParameterValue")
     private LinearLayout newLayout(int width, int height, float weight) {
         LinearLayout temp_card = new LinearLayout(this);
         temp_card.setLayoutParams(new LinearLayout.LayoutParams(width, height, weight));
@@ -536,20 +515,11 @@ public class AndroidManifestInjection extends Activity {
 
     }
 
-    private void makeup(View v, int icon, String title, String desc) {
-        View _view = getLayoutInflater().inflate(R.layout.manage_library_base_item, null);
-        ImageView _img = _view.findViewById(R.id.lib_icon);
-        TextView _title = _view.findViewById(R.id.lib_title);
-        TextView _desc = _view.findViewById(R.id.lib_desc);
-        TextView _un = _view.findViewById(R.id.tv_enable);
-
-        _un.setVisibility(View.GONE);
-        _img.setImageResource(icon);
-        ((LinearLayout) _img.getParent()).setGravity(Gravity.CENTER);
-        _title.setText(title);
-        _desc.setText(desc);
-
-        ((ViewGroup) v).addView(_view);
+    private void makeup(LibraryItemView parent, int icon, String title, String description) {
+        parent.enabled.setVisibility(View.GONE);
+        parent.icon.setImageResource(icon);
+        parent.title.setText(title);
+        parent.description.setText(description);
     }
 
     private class ListAdapter extends BaseAdapter {
