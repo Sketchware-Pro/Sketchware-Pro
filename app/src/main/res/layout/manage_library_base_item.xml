@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="16dp"
     android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="10dp"
     android:focusable="true"
     android:clickable="true"
     app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:minHeight="56dp"
         android:gravity="center"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">
@@ -54,8 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="17sp" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/lib_desc"
