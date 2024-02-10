@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@id/menu_publish_settings"
-        android:icon="@drawable/side_menu_setting_icon_over_white"
-        android:orderInCategory="1"
-        android:title="Settings"
-        app:showAsAction="always" />
-</menu>

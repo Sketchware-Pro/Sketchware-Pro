@@ -107,4 +107,9 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     public void m() {
         dialogTitleView.setVisibility(View.GONE);
     }
+
+    @Override
+    public void setContentView(View view) {
+        dialogContentView.addView(view);
+    }
 }

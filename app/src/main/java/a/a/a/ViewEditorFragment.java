@@ -20,6 +20,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.editor.PropertyActivity;
+import com.besome.sketch.editor.view.DraggingListener;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
@@ -89,9 +90,9 @@ public class ViewEditorFragment extends qA {
                 ViewEditorFragment.this.a(var1);
             }
         });
-        viewEditor.setOnDraggingListener(new _x() {
+        viewEditor.setOnDraggingListener(new DraggingListener() {
             @Override
-            public boolean a() {
+            public boolean isAdmobEnabled() {
                 return jC.c(sc_id).b().isEnabled();
             }
 
@@ -102,7 +103,7 @@ public class ViewEditorFragment extends qA {
             }
 
             @Override
-            public boolean c() {
+            public boolean isGoogleMapEnabled() {
                 return jC.c(sc_id).e().isEnabled();
             }
 

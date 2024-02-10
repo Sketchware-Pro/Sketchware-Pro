@@ -86,6 +86,10 @@ public class ProguardHandler {
                     "    @android.support.annotation.Keep <init>(...);\n" +
                     "}\n" +
                     "\n" +
+                    "-keepclassmembers class * {\n" +
+                    "    @android.webkit.JavascriptInterface <methods>;" +
+                    "}\n" +
+                    "\n" +
                     "-dontwarn android.arch.**\n" +
                     "-dontwarn android.lifecycle.**\n" +
                     "-keep class android.arch.** { *; }\n" +
