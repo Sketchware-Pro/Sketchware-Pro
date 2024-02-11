@@ -248,13 +248,12 @@ public class Tools extends Activity {
                 }
 
 
-
             });
             dialog.setTitle("Select the APK to sign");
             dialog.show();
         });
 
-        apkPathDialog.a(Helper.getResString(R.string.common_word_cancel), (dialogInterface, whichDialog) -> Helper.getDialogDismissListener(dialogInterface));
+        apkPathDialog.a(Helper.getResString(R.string.common_word_cancel), (dialogInterface, whichDialog) -> dialogInterface.dismiss());
 
         apkPathDialog.a(testkey_root);
         apkPathDialog.autoDismiss(false);
