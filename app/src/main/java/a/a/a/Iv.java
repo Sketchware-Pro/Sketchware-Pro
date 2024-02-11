@@ -3,6 +3,7 @@ package a.a.a;
 import android.media.MediaPlayer;
 
 import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
+import com.sketchware.remod.R;
 
 public class Iv implements MediaPlayer.OnPreparedListener {
     public final String a;
@@ -18,7 +19,7 @@ public class Iv implements MediaPlayer.OnPreparedListener {
         if (this.a == null) {
             return;
         }
-        AddSoundCollectionActivity.d(this.b).setImageResource(0x7f07026d);
+        AddSoundCollectionActivity.d(this.b).setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
         AddSoundCollectionActivity.d(this.b).setEnabled(true);
         AddSoundCollectionActivity.e(this.b).setMax(mediaPlayer.getDuration() / 100);
         AddSoundCollectionActivity.e(this.b).setProgress(0);
