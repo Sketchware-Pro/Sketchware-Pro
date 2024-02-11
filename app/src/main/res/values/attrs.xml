@@ -103,25 +103,4 @@
     <attr name="userInputSection" format="string" />
     <attr name="userInputTag" format="string" />
     <attr name="userInputValue" format="string" />
-
-    <attr name="colorAmber" format="color" />
-    <attr name="colorOnAmber" format="color" />
-    <attr name="colorAmberContainer" format="color" />
-    <attr name="colorOnAmberContainer" format="color" />
-    <attr name="harmonizeAmber" format="boolean" />
-    <attr name="colorCoolGreen" format="color" />
-    <attr name="colorOnCoolGreen" format="color" />
-    <attr name="colorCoolGreenContainer" format="color" />
-    <attr name="colorOnCoolGreenContainer" format="color" />
-    <attr name="harmonizeCoolGreen" format="boolean" />
-    <attr name="colorGreen" format="color" />
-    <attr name="colorOnGreen" format="color" />
-    <attr name="colorGreenContainer" format="color" />
-    <attr name="colorOnGreenContainer" format="color" />
-    <attr name="harmonizeGreen" format="boolean" />
-    <attr name="colorViolet" format="color" />
-    <attr name="colorOnViolet" format="color" />
-    <attr name="colorVioletContainer" format="color" />
-    <attr name="colorOnVioletContainer" format="color" />
-    <attr name="harmonizeViolet" format="boolean" />
 </resources>

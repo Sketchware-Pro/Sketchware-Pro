@@ -3,6 +3,7 @@ def analyticsEnabled = secrets != null
 
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
+apply plugin: "dev.rikka.tools.materialthemebuilder"
 
 if (analyticsEnabled) {
     apply plugin: "com.google.gms.google-services"
@@ -166,4 +167,34 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.3"
+}
+
+materialThemeBuilder {
+    themes {
+        sketchware {
+            primaryColor = "#008dcd"
+            lightThemeFormat = "%s.LightColorScheme"
+            lightThemeParent = "Theme.Material3.Light.NoActionBar"
+            darkThemeFormat = "%s.DarkColorScheme"
+            darkThemeParent = "Theme.Material3.Dark.NoActionBar"
+        }
+    }
+    extendedColors {
+        amber {
+            color = "#ffc107"
+            harmonize = true
+        }
+        coolGreen {
+            color = "#34bc7e"
+            harmonize = true
+        }
+        green {
+            color = "#26A59A"
+            harmonize = true
+        }
+        violet {
+            color = "#7a2e8c"
+            harmonize = true
+        }
+    }
 }
