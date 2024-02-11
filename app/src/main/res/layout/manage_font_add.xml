@@ -11,6 +11,7 @@
         android:id="@+id/font_preview_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="12dp"
         android:visibility="gone"
@@ -28,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="Font preview"
+                android:id="@+id/font_preview_title"
                 android:textColor="#ff7d7d7d"
                 android:textSize="14sp" />
 
@@ -44,6 +46,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/input_holder"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 

@@ -57,7 +57,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
         Intent intent = getIntent();
         sc_id = intent.getStringExtra("sc_id");
-        addOrAddedToCollection = findViewById(R.id.chk_collection);
+        addOrAddedToCollection = findViewById(R.id.add_to_collection_checkbox);
         selectFile = findViewById(R.id.select_file);
         fontPreviewText = findViewById(R.id.font_preview_txt);
         fontPreviewView = findViewById(R.id.font_preview_view);

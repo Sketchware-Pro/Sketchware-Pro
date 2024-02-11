@@ -3,16 +3,11 @@ package mod.hilal.saif.activities.tools;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -23,11 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageFontAddBinding;
 
 import java.io.File;
 
@@ -204,63 +199,65 @@ public class Tools extends Activity {
 
     private void signApkFileDialog() {
         aB apkPathDialog = new aB(this);
-        apkPathDialog.a(R.drawable.ic_apk_color_96dp);
-        apkPathDialog.b("Input APK");
+        apkPathDialog.b("Sign APK");
 
-        View testkey_root = getLayoutInflater().inflate(R.layout.manage_font_add, null, false);
-        TextView font_preview = testkey_root.findViewById(R.id.font_preview);
-        EasyDeleteEditText ed_input = testkey_root.findViewById(R.id.ed_input);
-        ImageView select_file = testkey_root.findViewById(R.id.select_file);
-        TextView tv_collection = testkey_root.findViewById(R.id.tv_collection);
-        CheckBox chk_collection = testkey_root.findViewById(R.id.chk_collection);
+        ManageFontAddBinding binding = ManageFontAddBinding.inflate(getLayoutInflater());
+        View testkey_root = binding.getRoot();
+        TextView font_preview = binding.fontPreviewTxt;
+        TextView font_preview_title = binding.fontPreviewTitle;
+        LinearLayout input_holder = binding.inputHolder;
+        CheckBox chk_collection = binding.addToCollectionCheckbox;
 
-        select_file.setOnClickListener(view -> {
+        font_preview_title.setText("Selected APK");
+        font_preview.setText("APK path will appear here");
+        binding.fontPreviewView.setVisibility(View.VISIBLE);
+        input_holder.setVisibility(View.GONE);
+        chk_collection.setVisibility(View.GONE);
+
+        apkPathDialog.b("Select", (dialogInterface, i) -> {
             DialogProperties properties = new DialogProperties();
             properties.selection_mode = DialogConfigs.SINGLE_MODE;
             properties.selection_type = DialogConfigs.FILE_SELECT;
             properties.extensions = new String[]{"apk"};
             FilePickerDialog dialog = new FilePickerDialog(this, properties);
-            dialog.setDialogSelectionListener(files -> ed_input.getEditText().setText(files[0]));
+            dialog.setDialogSelectionListener(files -> {
+                font_preview.setText(files[0]);
+
+                String input_apk_path = font_preview.getText().toString();
+                String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
+                String output_apk_path = new File(Environment.getExternalStorageDirectory(),
+                        "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
+
+                if (new File(output_apk_path).exists()) {
+                    aB confirmOverwrite = new aB(this);
+                    confirmOverwrite.a(R.drawable.color_save_as_new_96);
+                    confirmOverwrite.b("File exists");
+                    confirmOverwrite.a("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
+
+                    confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel),
+                            (d, which) -> Helper.getDialogDismissListener(d));
+                    confirmOverwrite.b("Overwrite", (d, which) -> {
+                        d.dismiss();
+                        signApkFileWithDialog(input_apk_path, output_apk_path, true,
+                                null, null, null, null);
+                    });
+                    confirmOverwrite.show();
+                } else {
+                    signApkFileWithDialog(input_apk_path, output_apk_path, true,
+                            null, null, null, null);
+                }
+
+
+
+            });
             dialog.setTitle("Select the APK to sign");
             dialog.show();
         });
 
-        font_preview.setText("Path of APK to sign");
-        font_preview.setVisibility(View.VISIBLE);
-        tv_collection.setVisibility(View.GONE);
-        chk_collection.setVisibility(View.GONE);
+        apkPathDialog.a(Helper.getResString(R.string.common_word_cancel), (dialogInterface, whichDialog) -> Helper.getDialogDismissListener(dialogInterface));
+
         apkPathDialog.a(testkey_root);
-
-        apkPathDialog.a(Helper.getResString(R.string.common_word_cancel),
-                (dialogInterface, whichDialog) -> Helper.getDialogDismissListener(dialogInterface));
-        apkPathDialog.b("Next", (dialogInterface, whichDialog) -> {
-            dialogInterface.dismiss();
-
-            String input_apk_path = ed_input.getEditText().getText().toString();
-            String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
-            String output_apk_path = new File(Environment.getExternalStorageDirectory(),
-                    "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
-
-            if (new File(output_apk_path).exists()) {
-                aB confirmOverwrite = new aB(this);
-                confirmOverwrite.a(R.drawable.color_save_as_new_96);
-                confirmOverwrite.b("File exists");
-                confirmOverwrite.a("An APK named " + output_apk_file_name + " already exists at " +
-                        "/Internal storage/sketchware/signed_apk/. Overwrite it?");
-
-                confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel),
-                        (d, which) -> Helper.getDialogDismissListener(d));
-                confirmOverwrite.b("Overwrite", (d, which) -> {
-                    d.dismiss();
-                    signApkFileWithDialog(input_apk_path, output_apk_path, true,
-                            null, null, null, null);
-                });
-                confirmOverwrite.show();
-            } else {
-                signApkFileWithDialog(input_apk_path, output_apk_path, true,
-                        null, null, null, null);
-            }
-        });
+        apkPathDialog.autoDismiss(false);
         apkPathDialog.show();
     }
 

@@ -803,4 +803,6 @@
     <item type="id" name="result_item_desc" />
     <item type="id" name="result_item_image" />
     <item type="id" name="result_item_label" />
+    <item type="id" name="font_preview_title" />
+    <item type="id" name="input_holder" />
 </resources>
