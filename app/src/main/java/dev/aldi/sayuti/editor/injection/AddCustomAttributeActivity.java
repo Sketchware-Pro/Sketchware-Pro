@@ -28,6 +28,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.remaker.view.CustomAttributeView;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
@@ -125,7 +126,17 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         private final ArrayList<HashMap<String, Object>> injections;
 
         public CustomAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            injections = arrayList;
+            injections = filterInjections(arrayList);
+        }
+
+        private ArrayList<HashMap<String, Object>> filterInjections(ArrayList<HashMap<String, Object>> arrayList) {
+            ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
+            for (HashMap<String, Object> injection : arrayList) {
+                if (injection.containsKey("type") && injection.get("type").toString().equals(widgetType)) {
+                    filteredList.add(injection);
+                }
+            }
+            return filteredList;
         }
 
         @Override
@@ -145,36 +156,26 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
-            }
+            CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            TextView injection = convertView.findViewById(R.id.cus_attr_text);
-            ImageView options = convertView.findViewById(R.id.cus_attr_btn);
+            String value = getItem(position).get("value").toString();
+            SpannableString spannableString = new SpannableString(value);
+            spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(0xff45a245), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            options.setRotation(90);
-
-            if (!injections.get(position).containsKey("type") || !activityInjections.get(position).get("type").toString().equals(widgetType)) {
-                convertView.setVisibility(View.GONE);
-            } else {
-                String value = activityInjections.get(position).get("value").toString();
-                SpannableString spannableString = new SpannableString(value);
-                spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new ForegroundColorSpan(0xff45a245), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                injection.setText(spannableString);
-                convertView.setVisibility(View.VISIBLE);
-            }
-            options.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, options);
+            attributeView.text.setText(spannableString);
+            attributeView.icon.setRotation(90);
+            attributeView.icon.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.icon);
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
                 popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == 0) {
                         dialog("edit", position);
                     } else {
-                        activityInjections.remove(position);
-                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
+                        injections.remove(position);
+                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(injections));
                         notifyDataSetChanged();
                         SketchwareUtil.toast("Deleted successfully");
                     }
@@ -182,7 +183,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 });
                 popupMenu.show();
             });
-            return convertView;
+
+            return attributeView;
         }
     }
 }

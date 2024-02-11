@@ -49,6 +49,7 @@ import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
+import mod.remaker.view.CustomAttributeView;
 
 @SuppressLint("SetTextI18n")
 public class AndroidManifestInjection extends AppCompatActivity {
@@ -444,17 +445,11 @@ public class AndroidManifestInjection extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
-            }
+            CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            View linearLayout = convertView.findViewById(R.id.cus_attr_layout);
-            TextView textView = convertView.findViewById(R.id.cus_attr_text);
-            ImageView imageView = convertView.findViewById(R.id.cus_attr_btn);
-
-            imageView.setVisibility(View.GONE);
-            textView.setText((String) list_map.get(position).get("act_name"));
-            linearLayout.setOnClickListener(v -> {
+            attributeView.icon.setVisibility(View.GONE);
+            attributeView.text.setText((String) list_map.get(position).get("act_name"));
+            attributeView.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
                 intent.putExtra("sc_id", sc_id);
@@ -462,7 +457,7 @@ public class AndroidManifestInjection extends AppCompatActivity {
                 intent.putExtra("type", "activity");
                 startActivity(intent);
             });
-            linearLayout.setOnLongClickListener(v -> {
+            attributeView.setOnLongClickListener(v -> {
                 new AlertDialog.Builder(AndroidManifestInjection.this)
                         .setTitle((String) _data.get(position).get("act_name"))
                         .setMessage("Delete all attributes related to this activity?")
@@ -472,7 +467,7 @@ public class AndroidManifestInjection extends AppCompatActivity {
                 return true;
             });
 
-            return convertView;
+            return attributeView;
         }
     }
 }
