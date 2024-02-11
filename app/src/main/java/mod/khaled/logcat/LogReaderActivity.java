@@ -124,6 +124,10 @@ public class LogReaderActivity extends AppCompatActivity {
         persistentBottomSheetBehavior.addBottomSheetCallback(createBottomSheetCallback());
 
         binding.optionsSheet.post(() -> {
+            if (persistentBottomSheetBehavior != null) {
+                persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+
             int state = persistentBottomSheetBehavior.getState();
             updateBackHandlingEnabled(state);
         });

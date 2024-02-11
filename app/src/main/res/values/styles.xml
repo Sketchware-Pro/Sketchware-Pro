@@ -7,8 +7,8 @@
     </style>
 
     <style name="AppTheme.Design.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="titleTextAppearance">@style/DesignToolbarTitleTextAppearance</item>
-        <item name="subtitleTextAppearance">@style/DesignToolbarSubtitleTextAppearance</item>
+        <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
     </style>
 
     <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">
@@ -233,17 +233,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="DesignToolbarTitleTextAppearance" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
-    </style>
-
-    <style name="DesignToolbarSubtitleTextAppearance" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:alpha">0.6</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ThemeOverlay.ToolbarMenu" parent="@style/ThemeOverlay.AppCompat.Light">

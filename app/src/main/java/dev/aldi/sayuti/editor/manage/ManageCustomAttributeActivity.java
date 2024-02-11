@@ -24,6 +24,7 @@ import java.util.List;
 import dev.aldi.sayuti.editor.injection.AddCustomAttributeActivity;
 import dev.aldi.sayuti.editor.injection.AppCompatInjection;
 import mod.hey.studios.util.Helper;
+import mod.remaker.view.CustomAttributeView;
 
 public class ManageCustomAttributeActivity extends AppCompatActivity {
 
@@ -68,18 +69,6 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         customAttributeLocations.add(type);
     }
 
-    private void makeup(View view) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setCornerRadii(new float[]{10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setElevation(5.0f);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
-    }
-
     private class CustomAdapter extends BaseAdapter {
 
         private final List<String> _data;
@@ -105,22 +94,20 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
-            }
+            CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            View linearLayout = convertView.findViewById(R.id.cus_attr_layout);
-            ((ImageView) convertView.findViewById(R.id.cus_attr_btn)).setImageResource(R.drawable.ic_property_inject);
-            ((TextView) convertView.findViewById(R.id.cus_attr_text)).setText(_data.get(position));
-            linearLayout.setOnClickListener(v -> {
+            attributeView.icon.setImageResource(R.drawable.ic_property_inject);
+            attributeView.text.setText(getItem(position));
+            attributeView.setOnClickListener(v -> {
                 Intent i = new Intent();
                 i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);
                 i.putExtra("sc_id", sc_id);
                 i.putExtra("file_name", xmlFilename);
-                i.putExtra("widget_type", _data.get(position).toLowerCase());
+                i.putExtra("widget_type", getItem(position).toLowerCase());
                 startActivity(i);
             });
-            return convertView;
+
+            return attributeView;
         }
     }
 }
