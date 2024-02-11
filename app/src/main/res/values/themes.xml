@@ -85,5 +85,10 @@
         <item name="colorGreenContainer">#72f7e9</item>
         <item name="colorOnGreenContainer">#00201d</item>
         <item name="harmonizeGreen">true</item>
+        <item name="colorViolet">#8a3e9c</item>
+        <item name="colorOnViolet">#ffffff</item>
+        <item name="colorVioletContainer">#fdd6ff</item>
+        <item name="colorOnVioletContainer">#340042</item>
+        <item name="harmonizeViolet">true</item>
     </style>
 </resources>

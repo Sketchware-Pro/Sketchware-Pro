@@ -16,8 +16,11 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -158,11 +161,15 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
+            int violet = getColor(attributeView, R.attr.colorViolet);
+            int onSurface = getColor(attributeView, R.attr.colorOnSurface);
+            int green = getColor(attributeView, R.attr.colorGreen);
+
             String value = getItem(position).get("value").toString();
             SpannableString spannableString = new SpannableString(value);
-            spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(0xff45a245), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(violet), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(onSurface), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(green), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             attributeView.text.setText(spannableString);
             attributeView.icon.setRotation(90);
@@ -185,6 +192,12 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             });
 
             return attributeView;
+        }
+
+        // todo: move that method to another class, maybe SkColors
+        // SkColors#getColor(View, int) ?????
+        private @ColorInt int getColor(View view, @AttrRes int resourceId) {
+            return MaterialColors.getColor(view, resourceId);
         }
     }
 }

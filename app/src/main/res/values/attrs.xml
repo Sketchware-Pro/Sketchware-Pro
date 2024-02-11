@@ -119,4 +119,9 @@
     <attr name="colorGreenContainer" format="color" />
     <attr name="colorOnGreenContainer" format="color" />
     <attr name="harmonizeGreen" format="boolean" />
+    <attr name="colorViolet" format="color" />
+    <attr name="colorOnViolet" format="color" />
+    <attr name="colorVioletContainer" format="color" />
+    <attr name="colorOnVioletContainer" format="color" />
+    <attr name="harmonizeViolet" format="boolean" />
 </resources>
