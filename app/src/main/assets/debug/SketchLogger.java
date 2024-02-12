@@ -16,65 +16,91 @@ public class SketchLogger {
      * <p>
      * Uses:
      * <br>
-     *  - "SketchLogger.broadcastLog(String)" to manually send a debug log that's then viewable in Logcat Reader
-     *  - "SketchLogger.stopLogging()" to stop logging
+     *  - "new SketchLogger(this).broadcastLog(String)" to manually send a debug log that's then viewable in Logcat Reader
+     *  - "new SketchLogger(this).stopLogging()" to stop logging
      */
 
-    private static Thread loggerThread = new Thread() {
-        @Override
-        public void run() {
-            isRunning = true;
+	private Context context;
+	private volatile boolean isRunning = false;
 
-            try {
-                Runtime.getRuntime().exec("logcat -c");
-                Process process = Runtime.getRuntime().exec("logcat");
+	public SketchLogger(Context context) {
+		this.context = context;
+	}
 
-                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                    String logTxt = bufferedReader.readLine();
-                    do {
-                        broadcastLog(logTxt);
-                    } while (isRunning && ((logTxt = bufferedReader.readLine()) != null));
+	public void startLogging() {
+		if (!isRunning) {
+			new TaskRunner().executeAsync(new AsyncTask(), data -> {
+				//System.out.println(data);
+			});
+		} else {
+			throw new IllegalStateException("Logger already running");
+		}
+	}
 
-                    // Thread got stopped, restart if not stopping wantedly
-                    if (isRunning) {
-                        broadcastLog("Logger got killed. Restarting.");
-                        startLogging();
-                    } else {
-                        broadcastLog("Logger stopped.");
-                    }
-                }
-            } catch (Exception e) {
-                broadcastLog(e.toString());
-            }
-        }
-    };
+	public void broadcastLog(String log) {
+		Intent intent = new Intent();
+		intent.setAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
+		intent.putExtra("log", log);
+		intent.putExtra("packageName", context.getPackageName());
+		context.sendBroadcast(intent);
+	}
 
-    private static volatile boolean isRunning = false;
+	public void stopLogging() {
+		if (isRunning) {
+			isRunning = false;
+			broadcastLog("Stopping logger by user request.");
+		} else {
+			throw new IllegalStateException("Logger not running");
+		}
+	}
 
-    public static void startLogging() {
-        if (!isRunning) {
-            loggerThread.start();
-        } else {
-            throw new IllegalStateException("Logger already running");
-        }
-    }
+	private class AsyncTask implements Callable<String> {
+		public AsyncTask() {
+		}
 
-    public static void broadcastLog(String log) {
-        Context context = SketchApplication.getContext();
+		@Override
+		public String call() {
+			isRunning = true;
+			try {
+				Runtime.getRuntime().exec("logcat -c");
+				Process process = Runtime.getRuntime().exec("logcat");
 
-        Intent intent = new Intent();
-        intent.setAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
-        intent.putExtra("log", log);
-        intent.putExtra("packageName", context.getPackageName());
-        context.sendBroadcast(intent);
-    }
+				try (BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(process.getInputStream()))) {
+					String logTxt = bufferedReader.readLine();
+					do {
+						broadcastLog(logTxt);
+					} while (isRunning && ((logTxt = bufferedReader.readLine()) != null));
 
-    public static void stopLogging() {
-        if (isRunning) {
-            isRunning = false;
-            broadcastLog("Stopping logger by user request.");
-        } else {
-            throw new IllegalStateException("Logger not running");
-        }
-    }
-}
+					if (isRunning) {
+						broadcastLog("Logger got killed. Restarting.");
+						startLogging();
+					} else {
+						broadcastLog("Logger stopped.");
+					}
+				}
+			} catch (Exception e) {
+				broadcastLog(e.toString());
+			}
+			return "";
+		}
+	}
+
+	private static class TaskRunner {
+		public interface Callback<T> {
+			void onComplete(T result);
+		}
+
+		public <T> void executeAsync(Callable<T> callable, Callback<T> callback) {
+			Executors.newSingleThreadExecutor().execute(() -> {
+				try {
+					final T result = callable.call();
+					new Handler(Looper.getMainLooper()).post(() -> {
+						callback.onComplete(result);
+					});
+				} catch (Exception e) {
+				}
+			});
+		}
+	}
+                                              }
