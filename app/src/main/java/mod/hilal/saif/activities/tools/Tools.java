@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static com.besome.sketch.editor.view.ViewEditor.shakeView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -10,7 +12,6 @@ import android.os.Environment;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -22,7 +23,7 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageFontAddBinding;
+import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 
 import java.io.File;
 
@@ -114,7 +115,7 @@ public class Tools extends Activity {
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
                             switch (which) {
-                                case 0:
+                                case 0 -> {
                                     Intent intent = new Intent(getApplicationContext(), ConfigActivity.isLegacyCeEnabled() ?
                                             SrcCodeEditorLegacy.class
                                             : mod.hey.studios.code.SrcCodeEditor.class);
@@ -122,17 +123,14 @@ public class Tools extends Activity {
                                     intent.putExtra("content", files[0]);
                                     intent.putExtra("xml", "");
                                     startActivity(intent);
-                                    break;
-
-                                case 1:
-                                    new AlertDialog.Builder(this)
-                                            .setTitle("Delete file?")
-                                            .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
-                                            .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
-                                                    FileUtil.deleteFile(files[0]))
-                                            .setNegativeButton(R.string.common_word_cancel, null)
-                                            .show();
-                                    break;
+                                }
+                                case 1 -> new AlertDialog.Builder(this)
+                                        .setTitle("Delete file?")
+                                        .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
+                                        .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
+                                                FileUtil.deleteFile(files[0]))
+                                        .setNegativeButton(R.string.common_word_cancel, null)
+                                        .show();
                             }
                             actionDialog.dismiss();
                         })
@@ -198,59 +196,56 @@ public class Tools extends Activity {
     }
 
     private void signApkFileDialog() {
+        final boolean[] isAPKSelected = {false};
         aB apkPathDialog = new aB(this);
-        apkPathDialog.b("Sign APK");
+        apkPathDialog.b("Sign APK with testkey");
 
-        ManageFontAddBinding binding = ManageFontAddBinding.inflate(getLayoutInflater());
+        DialogSelectApkToSignBinding binding = DialogSelectApkToSignBinding.inflate(getLayoutInflater());
         View testkey_root = binding.getRoot();
-        TextView font_preview = binding.fontPreviewTxt;
-        TextView font_preview_title = binding.fontPreviewTitle;
-        LinearLayout input_holder = binding.inputHolder;
-        CheckBox chk_collection = binding.addToCollectionCheckbox;
+        TextView apk_path_txt = binding.apkPathTxt;
 
-        font_preview_title.setText("Selected APK");
-        font_preview.setText("APK path will appear here");
-        binding.fontPreviewView.setVisibility(View.VISIBLE);
-        input_holder.setVisibility(View.GONE);
-        chk_collection.setVisibility(View.GONE);
-
-        apkPathDialog.b("Select", (dialogInterface, i) -> {
+        binding.selectFile.setOnClickListener(v -> {
             DialogProperties properties = new DialogProperties();
             properties.selection_mode = DialogConfigs.SINGLE_MODE;
             properties.selection_type = DialogConfigs.FILE_SELECT;
             properties.extensions = new String[]{"apk"};
             FilePickerDialog dialog = new FilePickerDialog(this, properties);
             dialog.setDialogSelectionListener(files -> {
-                font_preview.setText(files[0]);
+                isAPKSelected[0] = true;
+                apk_path_txt.setText(files[0]);
+            });
+            dialog.show();
+        });
 
-                String input_apk_path = font_preview.getText().toString();
-                String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
-                String output_apk_path = new File(Environment.getExternalStorageDirectory(),
-                        "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
+        apkPathDialog.b("Continue", (dialogInterface, i) -> {
+            if(!isAPKSelected[0]) {
+                SketchwareUtil.toast("Please select an APK file to sign", Toast.LENGTH_SHORT);
+                shakeView(binding.selectFile);
+                return;
+            }
+            String input_apk_path = apk_path_txt.getText().toString();
+            String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
+            String output_apk_path = new File(Environment.getExternalStorageDirectory(),
+                    "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
 
-                if (new File(output_apk_path).exists()) {
-                    aB confirmOverwrite = new aB(this);
-                    confirmOverwrite.a(R.drawable.color_save_as_new_96);
-                    confirmOverwrite.b("File exists");
-                    confirmOverwrite.a("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
+            if (new File(output_apk_path).exists()) {
+                aB confirmOverwrite = new aB(this);
+                confirmOverwrite.a(R.drawable.color_save_as_new_96);
+                confirmOverwrite.b("File exists");
+                confirmOverwrite.a("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
 
-                    confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel),
-                            (d, which) -> Helper.getDialogDismissListener(d));
-                    confirmOverwrite.b("Overwrite", (d, which) -> {
-                        d.dismiss();
-                        signApkFileWithDialog(input_apk_path, output_apk_path, true,
-                                null, null, null, null);
-                    });
-                    confirmOverwrite.show();
-                } else {
+                confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel),
+                        (d, which) -> Helper.getDialogDismissListener(d));
+                confirmOverwrite.b("Overwrite", (d, which) -> {
+                    d.dismiss();
                     signApkFileWithDialog(input_apk_path, output_apk_path, true,
                             null, null, null, null);
-                }
-
-
-            });
-            dialog.setTitle("Select the APK to sign");
-            dialog.show();
+                });
+                confirmOverwrite.show();
+            } else {
+                signApkFileWithDialog(input_apk_path, output_apk_path, true,
+                        null, null, null, null);
+            }
         });
 
         apkPathDialog.a(Helper.getResString(R.string.common_word_cancel), (dialogInterface, whichDialog) -> dialogInterface.dismiss());

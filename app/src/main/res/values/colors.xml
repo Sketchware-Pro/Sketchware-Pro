@@ -153,4 +153,8 @@
     <!--  main layouts  -->
     <color name="backgroundColor">#FFFFFF</color>
     <color name="dialogBackgroundColor">#FFFFFF</color>
+
+    <!--  views  -->
+    <color name="cardStrokeColor">#D1D1D1</color>
+
 </resources>

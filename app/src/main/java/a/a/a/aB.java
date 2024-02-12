@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -46,6 +48,7 @@ public class aB extends MaterialAlertDialogBuilder {
                         FrameLayout.LayoutParams.WRAP_CONTENT
                 )
         );
+        view.setPadding((int) getDip(24), (int) getDip(8), (int) getDip(24), (int) getDip(8));
         view.addView(customView);
         setView(view);
     }
