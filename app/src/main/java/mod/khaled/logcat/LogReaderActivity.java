@@ -1,7 +1,5 @@
 package mod.khaled.logcat;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.BackEventCompat;
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -25,9 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.elevation.SurfaceColors;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ActivityLogcatreaderBinding;
 import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
@@ -58,27 +54,27 @@ public class LogReaderActivity extends AppCompatActivity {
     private BottomSheetBehavior<View> persistentBottomSheetBehavior;
 
     private final OnBackPressedCallback persistentBottomSheetBackCallback =
-        new OnBackPressedCallback(/* enabled= */ false) {
-            @Override
-            public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
-                persistentBottomSheetBehavior.startBackProgress(backEvent);
-            }
-    
-            @Override
-            public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
-                persistentBottomSheetBehavior.updateBackProgress(backEvent);
-            }
-    
-            @Override
-            public void handleOnBackPressed() {
-                persistentBottomSheetBehavior.handleBackInvoked();
-            }
-    
-            @Override
-            public void handleOnBackCancelled() {
-                persistentBottomSheetBehavior.cancelBackProgress();
-            }
-        };
+            new OnBackPressedCallback(/* enabled= */ false) {
+                @Override
+                public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
+                    persistentBottomSheetBehavior.startBackProgress(backEvent);
+                }
+
+                @Override
+                public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
+                    persistentBottomSheetBehavior.updateBackProgress(backEvent);
+                }
+
+                @Override
+                public void handleOnBackPressed() {
+                    persistentBottomSheetBehavior.handleBackInvoked();
+                }
+
+                @Override
+                public void handleOnBackCancelled() {
+                    persistentBottomSheetBehavior.cancelBackProgress();
+                }
+            };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -188,24 +184,19 @@ public class LogReaderActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
         });
     }
 
     private void updateBackHandlingEnabled(int state) {
         switch (state) {
-            case BottomSheetBehavior.STATE_EXPANDED:
-            case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                persistentBottomSheetBackCallback.setEnabled(true);
-                break;
-            case BottomSheetBehavior.STATE_COLLAPSED:
-            case BottomSheetBehavior.STATE_HIDDEN:
-                persistentBottomSheetBackCallback.setEnabled(false);
-                break;
-            case BottomSheetBehavior.STATE_DRAGGING:
-            case BottomSheetBehavior.STATE_SETTLING:
-            default:
-                break;
+            case BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_HALF_EXPANDED ->
+                    persistentBottomSheetBackCallback.setEnabled(true);
+            case BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN ->
+                    persistentBottomSheetBackCallback.setEnabled(false);
+            default -> {
+            }
         }
     }
 
@@ -246,6 +237,11 @@ public class LogReaderActivity extends AppCompatActivity {
                     pkgFilter = dialogBinding.easyEdInput.getText().toString();
                     pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
                     binding.searchInput.setText(binding.searchInput.getText().toString());
+                })
+                .setNeutralButton("Reset", (dialog, which) -> {
+                    pkgFilter = "";
+                    pkgFilterList.clear();
+                    dialogBinding.easyEdInput.setText("");
                 })
                 .setNegativeButton("Cancel", null)
                 .create();
