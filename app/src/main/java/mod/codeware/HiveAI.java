@@ -1,8 +1,5 @@
 package mod.codeware;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,22 +11,17 @@ import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.sketchware.remod.R;
-
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class GenerativeAI {
+public class HiveAI {
     private final String apiKey = "AIzaSyB7PhMG67AJQi_EMC1WP5AJNCVsT4RqBqs";
     private static final String TAG = "GenerativeAI";
 
-    public void generate(Context context, String question) {
+    public void generate(String question, CodeHiveListener codeHiveListener) {
 
-        String prompt = "I will give you questions for java code for android. you give me the code without explanation or documentation. give code as simple statements unless i ask for function\n Question: " + question;
+        String prompt = "You are an experienced Android Java code generator, capable of providing professional and error-free code snippets. When asked for code, your responses should exclude any documentation or explanations, and instead focus on providing the requested functions or statements. Only give function if i asked, else give as statement. Code must not contains kotlin. Here's the question :" + question.trim();
 
         // For text-only input, use the gemini-pro model
         GenerativeModel gm = new GenerativeModel("gemini-pro",
@@ -37,7 +29,6 @@ public class GenerativeAI {
                 apiKey);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
-        Bitmap image = BitmapFactory.decodeResource(context.getResources(), R.drawable.abc_96_color);
 
         Content content = new Content.Builder()
                 .addText(prompt)
@@ -84,14 +75,17 @@ public class GenerativeAI {
         Futures.addCallback(response, new FutureCallback<>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
-                String resultText = result.getText();
-                Log.d(TAG, "onSuccess: " + resultText);
+                String code = result.getText();
+                assert code != null;
+                if (getFirstWord(code).contains("```")) {
+                    code = code.replace(getFirstWord(code), "");
+                }
+                codeHiveListener.onSuccess(code.replace("```", "").trim());
             }
 
             @Override
             public void onFailure(@NonNull Throwable t) {
                 t.printStackTrace();
-                Log.e(TAG, "onFailure: ", t);
             }
         }, executor);
 
@@ -120,5 +114,13 @@ public class GenerativeAI {
                 Log.d(TAG, "onComplete: ");
             }
         });*/
+    }
+
+    public String getFirstWord(String text) {
+        return text.split("\n")[0];
+    }
+
+    public interface CodeHiveListener {
+        void onSuccess(String resultText);
     }
 }

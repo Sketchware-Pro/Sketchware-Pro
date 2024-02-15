@@ -10,7 +10,7 @@ if (analyticsEnabled) {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
 
@@ -163,4 +163,11 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.3"
+
+    // add the dependency for the Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
+    // Required for one-shot operations (to use `ListenableFuture` from Reactive Streams)
+    implementation("com.google.guava:guava:31.0.1-android")
+    // Required for streaming operations (to use `Publisher` from Guava Android)
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
 }

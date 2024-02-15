@@ -34,6 +34,7 @@ import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.lC;
 import a.a.a.wB;
+import mod.codeware.HiveAI;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
@@ -83,6 +84,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
         myProjects.setAdapter(projectsAdapter);
         refreshProjectsList();
+
     }
 
     public void refreshProjectsList() {

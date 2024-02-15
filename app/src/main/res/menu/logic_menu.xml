@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/hive_generate_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_hive_24"
+        android:title="generate code"
+        app:showAsAction="always" />
     <item android:icon="@drawable/code_white_48" android:id="@id/menu_logic_showsource" android:orderInCategory="100" android:title="Show Source Code" app:showAsAction="always" />
     <item android:icon="@drawable/ic_undo_grey_48dp" android:id="@id/menu_logic_undo" android:orderInCategory="100" android:title="Undo" app:showAsAction="always" />
     <item android:icon="@drawable/ic_redo_grey_48dp" android:id="@id/menu_logic_redo" android:orderInCategory="100" android:title="Redo" app:showAsAction="always" />

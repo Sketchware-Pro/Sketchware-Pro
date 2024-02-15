@@ -22,6 +22,7 @@ import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,8 +33,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -72,6 +75,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import a.a.a.DB;
@@ -110,6 +114,7 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import mod.codeware.HiveAI;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -1979,9 +1984,62 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             undo();
         } else if (itemId == R.id.menu_logic_showsource) {
             showSourceCode();
+        } else if(itemId == R.id.hive_generate_code){
+            showGenerateCodeDialog();
         }
 
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void showGenerateCodeDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Generate code")
+                .setPositiveButton(R.string.common_word_close, null)
+                .create();
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.hive_generate_code_layout,null);
+
+        final ImageButton generateButton = dialogView.findViewById(R.id.generateButton);
+        final ProgressBar progressBar = dialogView.findViewById(R.id.progressBar);
+        final EditText question = dialogView.findViewById(R.id.question);
+
+        dialog.setView(dialogView,
+                (int) getDip(24),
+                (int) getDip(8),
+                (int) getDip(24),
+                (int) getDip(8));
+
+        final CodeEditor codeEditor = dialogView.findViewById(R.id.codeview);
+        codeEditor.setColorScheme(new EditorColorScheme());
+        codeEditor.setEditable(false);
+        codeEditor.setEditorLanguage(new JavaLanguage());
+        codeEditor.setText(Lx.j("code", false));
+        codeEditor.setTextSize(12);
+        codeEditor.setTypefaceText(Typeface.MONOSPACE);
+        codeEditor.setWordwrap(false);
+        codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
+
+        dialogView.findViewById(R.id.generateButton).setOnClickListener(v -> {
+            if (question.getText().toString().trim().isEmpty()){
+                question.setError("Please enter question");
+            }else{
+                generateButton.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                HiveAI hiveAI = new HiveAI();
+                hiveAI.generate(question.getText().toString(), resultText -> {
+                    runOnUiThread(() -> {
+                        codeEditor.setText(Lx.j(resultText, false));
+                        codeEditor.setVisibility(View.VISIBLE);
+                        generateButton.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    });
+                });
+            }
+
+        });
+
+        dialog.show();
     }
 
     @Override
