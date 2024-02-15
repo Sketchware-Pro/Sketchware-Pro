@@ -135,7 +135,7 @@
                     <EditText
                         android:id="@+id/ed_input"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
@@ -155,7 +155,7 @@
                     <EditText
                         android:id="@+id/ed_input_filename"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
@@ -175,7 +175,7 @@
                     <EditText
                         android:id="@+id/ed_input_firebase_path"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
@@ -212,7 +212,7 @@
                         <EditText
                             android:id="@+id/ed_input_file_picker"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="match_parent"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:lines="1"
