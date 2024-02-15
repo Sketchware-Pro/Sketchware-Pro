@@ -341,7 +341,6 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER));
         ComponentsHandler.add(componentList);
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE));
-        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_ONESIGNAL));
