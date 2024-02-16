@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.view;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.SelectableButtonBar;
+import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageScreenActivityAddTempBinding;
 
 import java.util.ArrayList;
@@ -173,30 +173,29 @@ public class AddViewActivity extends BaseDialogActivity {
     }
 
     @Override
-    @SuppressLint("ResourceType")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ManageScreenActivityAddTempBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        e(getTranslatedString(2131625299));
+        e(getTranslatedString(R.string.design_manager_view_title_add_view));
         Intent intent1 = getIntent();
         ArrayList<String> screenNames = intent1.getStringArrayListExtra("screen_names");
         requestCode = intent1.getIntExtra("request_code", 264);
         projectFileBean = intent1.getParcelableExtra("project_file");
         if (projectFileBean != null) {
-            e(getTranslatedString(2131625300));
+            e(getTranslatedString(R.string.design_manager_view_title_edit_view));
         }
 
-        binding.tvWarning.setVisibility(8);
-        binding.tvWarning.setText(getTranslatedString(2131625295));
-        binding.tiName.setHint(getTranslatedString(2131625293));
+        binding.tvWarning.setVisibility(View.GONE);
+        binding.tvWarning.setText(getTranslatedString(R.string.design_manager_view_message_slow_down));
+        binding.tiName.setHint(getTranslatedString(R.string.design_manager_view_hint_enter_view_name));
         binding.edName.setPrivateImeOptions("defaultInputmode=english;");
         featuresAdapter = new FeaturesAdapter();
-        binding.featureTypes.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
+        binding.featureTypes.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         binding.featureTypes.setHasFixedSize(true);
         binding.featureTypes.setAdapter(featuresAdapter);
-        binding.tvScreenOrientation.setText(getTranslatedString(2131625303));
-        binding.tvKeyboard.setText(getTranslatedString(2131625302));
+        binding.tvScreenOrientation.setText(getTranslatedString(R.string.design_manager_view_title_screen_orientation));
+        binding.tvKeyboard.setText(getTranslatedString(R.string.design_manager_view_title_keyboad_settings));
         binding.addViewTypeSelector.a(0, "Activity");
         binding.addViewTypeSelector.a(1, "Fragment");
         binding.addViewTypeSelector.a(2, "DialogFragment");
@@ -216,11 +215,11 @@ public class AddViewActivity extends BaseDialogActivity {
                 binding.activityPreview.animate().translationY((float) binding.imgKeyboard.getMeasuredHeight()).start();
             }
         });
-        d(getTranslatedString(2131624970));
-        b(getTranslatedString(2131624974));
+        d(getTranslatedString(R.string.common_word_add));
+        b(getTranslatedString(R.string.common_word_cancel));
 
         super.r.setOnClickListener(v -> {
-            int options = 1;
+            int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
             if (265 == requestCode) {
                 projectFileBean.orientation = binding.btnbarOrientation.getSelectedItemKey();
                 projectFileBean.keyboardSetting = binding.btnbarKeyboard.getSelectedItemKey();
@@ -240,11 +239,15 @@ public class AddViewActivity extends BaseDialogActivity {
                 Intent intent = new Intent();
                 intent.putExtra("project_file", projectFileBean);
                 setResult(-1, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279, new Object[0]), 0).show();
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), 0).show();
                 finish();
             } else if (isValid(nameValidator)) {
                 String var4 = binding.edName.getText().toString() + getSuffix(binding.addViewTypeSelector);
-                ProjectFileBean projectFileBean = new ProjectFileBean(0, var4, binding.btnbarOrientation.getSelectedItemKey(), binding.btnbarKeyboard.getSelectedItemKey(), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
+                ProjectFileBean projectFileBean = new ProjectFileBean(0, var4,
+                        binding.btnbarOrientation.getSelectedItemKey(),
+                        binding.btnbarKeyboard.getSelectedItemKey(),
+                        featureToolbar, !featureStatusBar,
+                        featureFab, featureDrawer);
                 Intent intent = new Intent();
                 intent.putExtra("project_file", projectFileBean);
                 if (P != null) {
@@ -264,12 +267,12 @@ public class AddViewActivity extends BaseDialogActivity {
             nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
             binding.edName.setText(projectFileBean.fileName);
             binding.edName.setEnabled(false);
-            binding.edName.setBackgroundResource(2131034318);
+            binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
-            binding.addViewTypeSelectorLayout.setVisibility(8);
+            binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
             binding.btnbarOrientation.setSelectedItemByKey(projectFileBean.orientation);
             binding.btnbarKeyboard.setSelectedItemByKey(projectFileBean.keyboardSetting);
-            super.r.setText(getTranslatedString(2131625031).toUpperCase());
+            super.r.setText(getTranslatedString(R.string.common_word_save).toUpperCase());
         } else {
             featureToolbar = true;
             featureStatusBar = true;
@@ -336,7 +339,7 @@ public class AddViewActivity extends BaseDialogActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup var1, int var2) {
-            @SuppressLint("ResourceType") View var3 = wB.a(var1.getContext(), 2131427556);
+            View var3 = wB.a(var1.getContext(), R.layout.manage_screen_activity_add_feature_item);
             var3.setLayoutParams(new ViewGroup.LayoutParams(-1, -2));
             return new ViewHolder(var3);
         }
@@ -347,17 +350,16 @@ public class AddViewActivity extends BaseDialogActivity {
             public TextView u;
             public CheckBox v;
 
-            @SuppressLint("ResourceType")
             public ViewHolder(View var2) {
                 super(var2);
-                t = var2.findViewById(2131231151);
-                u = var2.findViewById(2131232055);
-                v = var2.findViewById(2131230883);
+                t = var2.findViewById(R.id.img_icon);
+                u = var2.findViewById(R.id.tv_name);
+                v = var2.findViewById(R.id.checkbox);
                 v.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (!d) {
                         layoutPosition = getLayoutPosition();
                         FeatureItem item = featureItems.get(layoutPosition);
-                        binding.tvWarning.setVisibility(8);
+                        binding.tvWarning.setVisibility(View.GONE);
                         item.isEnabled = isChecked;
                         if (item.type == 2 || item.isEnabled) {
                             enableToolbar();
