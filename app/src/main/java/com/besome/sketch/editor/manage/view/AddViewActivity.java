@@ -44,47 +44,51 @@ public class AddViewActivity extends BaseDialogActivity {
     private ManageScreenActivityAddTempBinding binding;
 
     private void a(FeatureItem featureItem) {
-        int var2 = featureItem.type;
-        if (var2 != 0) {
-            if (var2 != 1) {
-                if (var2 != 2) {
-                    if (var2 == 3) {
-                        if (featureItem.isEnabled) {
-                            resetTranslationY(binding.previewFab);
-                        } else {
-                            slideOutVertically(binding.previewFab);
-                        }
+        int type = featureItem.type;
+        switch (type) {
+            case 0 -> {
+                if (featureItem.isEnabled) {
+                    resetTranslationY(binding.previewStatusbar);
+                    if (featureToolbar) {
+                        resetTranslationY(binding.previewToolbar);
                     }
-                } else if (featureItem.isEnabled) {
+                } else {
+                    slideInVertically(binding.previewStatusbar);
+                    if (featureToolbar) {
+                        binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
+                    } else {
+                        slideOutPreviewToolbar();
+                    }
+                }
+            }
+            case 1 -> {
+                if (featureItem.isEnabled) {
+                    if (!featureStatusBar) {
+                        binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
+                    } else {
+                        resetTranslationY(binding.previewToolbar);
+                    }
+                } else if (!featureStatusBar) {
+                    slideOutPreviewToolbar();
+                } else {
+                    slideInVertically(binding.previewToolbar);
+                }
+            }
+            case 2 -> {
+                if (featureItem.isEnabled) {
                     resetTranslationX(binding.previewDrawer);
                 } else {
                     slideOutHorizontally(binding.previewDrawer);
                 }
-            } else if (featureItem.isEnabled) {
-                if (!featureStatusBar) {
-                    binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
+            }
+            case 3 -> {
+                if (featureItem.isEnabled) {
+                    resetTranslationY(binding.previewFab);
                 } else {
-                    resetTranslationY(binding.previewToolbar);
+                    slideOutVertically(binding.previewFab);
                 }
-            } else if (!featureStatusBar) {
-                slideOutPreviewToolbar();
-            } else {
-                slideInVertically(binding.previewToolbar);
-            }
-        } else if (featureItem.isEnabled) {
-            resetTranslationY(binding.previewStatusbar);
-            if (featureToolbar) {
-                resetTranslationY(binding.previewToolbar);
-            }
-        } else {
-            slideInVertically(binding.previewStatusbar);
-            if (featureToolbar) {
-                binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
-            } else {
-                slideOutPreviewToolbar();
             }
         }
-
     }
 
     private boolean isValid(YB validator) {
@@ -116,7 +120,6 @@ public class AddViewActivity extends BaseDialogActivity {
                 break;
             }
         }
-
     }
 
     private void enableToolbar() {
@@ -186,7 +189,7 @@ public class AddViewActivity extends BaseDialogActivity {
 
         binding.tvWarning.setVisibility(8);
         binding.tvWarning.setText(getTranslatedString(2131625295));
-        binding.tiName.setHint(getTranslatedString( 2131625293));
+        binding.tiName.setHint(getTranslatedString(2131625293));
         binding.edName.setPrivateImeOptions("defaultInputmode=english;");
         featuresAdapter = new FeaturesAdapter();
         binding.featureTypes.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
