@@ -6,6 +6,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -109,7 +110,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         mAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
-    public final String getTranslatedString(int resId) {
+    public final String getTranslatedString(@StringRes int resId) {
         return xB.b().a(getApplicationContext(), resId);
     }
 

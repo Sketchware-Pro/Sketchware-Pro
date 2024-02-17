@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@id/layout_item" android:background="?selectableItemBackground" android:layout_width="fill_parent" android:layout_height="60.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="start" android:id="@id/tv_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_alignParentLeft="true" android:layout_alignParentStart="true" />
-    <TextView android:textSize="12.0sp" android:textColor="#ffcccccc" android:gravity="start" android:id="@id/tv_desc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_below="@id/tv_name" />
-    <View android:background="#ffc7c7c7" android:layout_width="fill_parent" android:layout_height="0.5dip" android:layout_alignParentBottom="true" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="?selectableItemBackground">
+
+    <TextView
+        android:id="@id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        tools:text="Some title"
+        android:textColor="#ff757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@id/tv_desc"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:gravity="start"
+        tools:text="This is a desc"
+        android:textColor="#ffcccccc"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffc7c7c7" />
 </RelativeLayout>

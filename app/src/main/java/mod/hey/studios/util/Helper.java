@@ -52,6 +52,12 @@ public class Helper {
         }
     }
 
+    public static ArrayList<String> createStringList(String... strings) {
+        ArrayList<String> result = new ArrayList<>();
+        Collections.addAll(result, strings);
+        return result;
+    }
+
     public static void setViewsVisibility(boolean hide, View... views) {
         for (View view : views) {
             if (view != null) {

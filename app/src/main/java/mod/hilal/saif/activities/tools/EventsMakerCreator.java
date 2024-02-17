@@ -3,15 +3,10 @@ package mod.hilal.saif.activities.tools;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.EventsCreatorBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,26 +25,18 @@ public class EventsMakerCreator extends Activity {
     private String _par;
     private String _spec;
     private String _var;
-    private MaterialButton cancel;
-    private EditText eventCode;
-    private EditText eventDesc;
-    private EditText eventIcon;
-    private TextInputLayout eventIconTil;
-    private EditText eventName;
-    private EditText eventParams;
-    private EditText eventSpec;
-    private EditText eventVar;
     private String event_name = "";
     private boolean isActivityEvent = false;
     private boolean isEdit = false;
     private String lisName;
-    private MaterialButton save;
-    private ImageView selectIcon;
+
+    private EventsCreatorBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.events_creator);
+        binding = EventsCreatorBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (getIntent().hasExtra("lis_name")) {
             lisName = getIntent().getStringExtra("lis_name");
             isActivityEvent = lisName.equals("");
@@ -74,63 +61,50 @@ public class EventsMakerCreator extends Activity {
     }
 
     private void fillUp() {
-        eventName.setText(_name);
-        eventVar.setText(_var);
-        eventIcon.setText(_icon);
-        eventDesc.setText(_desc);
-        eventParams.setText(_par);
-        eventSpec.setText(_spec);
-        eventCode.setText(_code);
+        binding.eventsCreatorEventname.setText(_name);
+        binding.eventsCreatorVarname.setText(_var);
+        binding.eventsCreatorIcon.setText(_icon);
+        binding.eventsCreatorDesc.setText(_desc);
+        binding.eventsCreatorParams.setText(_par);
+        binding.eventsCreatorSpec.setText(_spec);
+        binding.eventsCreatorCode.setText(_code);
     }
 
     private boolean filledIn() {
         if (isActivityEvent) {
-            return !eventName.getText().toString().isEmpty()
-                    && !eventSpec.getText().toString().isEmpty()
-                    && !eventCode.getText().toString().isEmpty();
+            return !binding.eventsCreatorEventname.getText().toString().isEmpty()
+                    && !binding.eventsCreatorSpec.getText().toString().isEmpty()
+                    && !binding.eventsCreatorCode.getText().toString().isEmpty();
         } else {
-            return !eventName.getText().toString().isEmpty()
-                    && !eventVar.getText().toString().isEmpty()
-                    && !eventIcon.getText().toString().isEmpty()
-                    && !eventSpec.getText().toString().isEmpty()
-                    && !eventCode.getText().toString().isEmpty();
+            return !binding.eventsCreatorEventname.getText().toString().isEmpty()
+                    && !binding.eventsCreatorVarname.getText().toString().isEmpty()
+                    && !binding.eventsCreatorIcon.getText().toString().isEmpty()
+                    && !binding.eventsCreatorSpec.getText().toString().isEmpty()
+                    && !binding.eventsCreatorCode.getText().toString().isEmpty();
         }
     }
 
     private void getViewsById() {
-        eventName = findViewById(R.id.events_creator_eventname);
-        eventVar = findViewById(R.id.events_creator_varname);
-        EditText eventListener = findViewById(R.id.events_creator_listenername);
-        ((View) eventListener.getParent().getParent()).setVisibility(View.GONE);
-        eventIcon = findViewById(R.id.events_creator_icon);
-        eventIconTil = findViewById(R.id.events_creator_icon_til);
-        eventDesc = findViewById(R.id.events_creator_desc);
-        eventParams = findViewById(R.id.events_creator_params);
-        eventSpec = findViewById(R.id.events_creator_spec);
-        eventCode = findViewById(R.id.events_creator_code);
-        selectIcon = findViewById(R.id.events_creator_chooseicon);
-        selectIcon.setImageResource(R.drawable.add_96_blue);
-        CheckBox check = findViewById(R.id.events_creator_checkbox);
-        check.setVisibility(View.GONE);
-        cancel = findViewById(R.id.events_creator_cancel);
-        save = findViewById(R.id.events_creator_save);
+        ((View) binding.eventsCreatorListenercode.getParent().getParent()).setVisibility(View.GONE);
+        binding.eventsCreatorChooseicon.setImageResource(R.drawable.add_96_blue);
+        binding.eventsCreatorCheckbox.setVisibility(View.GONE);
         if (isActivityEvent) {
-            eventVar.setText("");
-            ((View) eventVar.getParent().getParent()).setVisibility(View.GONE);
-            eventIcon.setText("2131165298");
-            ((View) eventIcon.getParent().getParent().getParent()).setVisibility(View.GONE);
+            binding.eventsCreatorVarname.setText("");
+            ((View) binding.eventsCreatorVarname.getParent().getParent()).setVisibility(View.GONE);
+            binding.eventsCreatorIcon.setText("2131165298");
+            ((View) binding.eventsCreatorIcon.getParent().getParent().getParent()).setVisibility(View.GONE);
         }
-        Helper.addClearErrorOnTextChangeTextWatcher(eventIconTil);
+        Helper.addClearErrorOnTextChangeTextWatcher(binding.eventsCreatorIconTil);
     }
 
     private void setupViews() {
-        cancel.setOnClickListener(Helper.getBackPressedClickListener(this));
-        save.setOnClickListener(v -> save());
-        selectIcon.setOnClickListener(v -> showIconSelectorDialog());
+        binding.eventsCreatorCancel.setOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.eventsCreatorSave.setOnClickListener(v -> save());
+        binding.eventsCreatorChooseicon.setOnClickListener(v -> showIconSelectorDialog());
     }
 
     private void showIconSelectorDialog() {
-        new IconSelectorDialog(this, eventIcon).show();
+        new IconSelectorDialog(this, binding.eventsCreatorIcon).show();
     }
 
     private void save() {
@@ -138,9 +112,9 @@ public class EventsMakerCreator extends Activity {
             SketchwareUtil.toast("Some required fields are empty!");
             return;
         }
-        if (!OldResourceIdMapper.isValidIconId(eventIcon.getText().toString())) {
-            eventIconTil.setError("Invalid icon ID");
-            eventIcon.requestFocus();
+        if (!OldResourceIdMapper.isValidIconId(binding.eventsCreatorIcon.getText().toString())) {
+            binding.eventsCreatorIconTil.setError("Invalid icon ID");
+            binding.eventsCreatorIcon.requestFocus();
             return;
         }
         ArrayList<HashMap<String, Object>> arrayList;
@@ -154,18 +128,18 @@ public class EventsMakerCreator extends Activity {
         if (isEdit) {
             hashMap = arrayList.get(figureP(_name));
         }
-        hashMap.put("name", eventName.getText().toString());
-        hashMap.put("var", eventVar.getText().toString());
+        hashMap.put("name", binding.eventsCreatorEventname.getText().toString());
+        hashMap.put("var", binding.eventsCreatorVarname.getText().toString());
         if (isActivityEvent) {
             hashMap.put("listener", "");
         } else {
             hashMap.put("listener", lisName);
         }
-        hashMap.put("icon", eventIcon.getText().toString());
-        hashMap.put("description", eventDesc.getText().toString());
-        hashMap.put("parameters", eventParams.getText().toString());
-        hashMap.put("code", eventCode.getText().toString());
-        hashMap.put("headerSpec", eventSpec.getText().toString());
+        hashMap.put("icon", binding.eventsCreatorIcon.getText().toString());
+        hashMap.put("description", binding.eventsCreatorDesc.getText().toString());
+        hashMap.put("parameters", binding.eventsCreatorParams.getText().toString());
+        hashMap.put("code", binding.eventsCreatorCode.getText().toString());
+        hashMap.put("headerSpec", binding.eventsCreatorSpec.getText().toString());
         if (!isEdit) {
             arrayList.add(hashMap);
         }
@@ -188,16 +162,14 @@ public class EventsMakerCreator extends Activity {
     }
 
     private void setToolbar() {
-        TextView tx_toolbar_title = findViewById(R.id.tx_toolbar_title);
         if (isEdit) {
-            tx_toolbar_title.setText(event_name);
+            binding.txToolbarTitle.setText(event_name);
         } else if (isActivityEvent) {
-            tx_toolbar_title.setText("Create a new Activity event");
+            binding.txToolbarTitle.setText("Create a new Activity event");
         } else {
-            tx_toolbar_title.setText(lisName + "Create a new event");
+            binding.txToolbarTitle.setText(lisName + "Create a new event");
         }
-        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
+        binding.igToolbarBack.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(binding.igToolbarBack);
     }
 }

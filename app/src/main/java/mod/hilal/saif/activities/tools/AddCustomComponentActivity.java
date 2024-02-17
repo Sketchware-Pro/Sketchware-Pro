@@ -9,9 +9,9 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageCustomComponentAddBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,37 +31,26 @@ import mod.jbk.util.OldResourceIdMapper;
 
 public class AddCustomComponentActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText componentName;
-    private EditText componentId;
-    private EditText componentIcon;
-    private EditText componentVarTypeName;
-    private EditText componentTypeName;
-    private EditText componentBuildClass;
-    private EditText componentTypeClass;
-    private EditText componentDesc;
-    private EditText componentDocUrl;
-    private EditText componentAddVar;
-    private EditText componentDefineAddVar;
-    private EditText componentImports;
-
     private boolean isEditMode = false;
     private int position = 0;
 
     private final String path = wq.getCustomComponent();
 
+    private ManageCustomComponentAddBinding binding;
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setContentView(R.layout.manage_custom_component_add);
+        binding = ManageCustomComponentAddBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         init();
     }
 
     private void init() {
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         if (getIntent().hasExtra("pos")) {
             isEditMode = true;
             position = getIntent().getIntExtra("pos", 0);
@@ -85,25 +74,13 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
     }
 
     private void getViewsById() {
-        componentName = findViewById(R.id.component_name);
-        componentId = findViewById(R.id.component_id);
-        componentIcon = findViewById(R.id.component_icon);
-        componentVarTypeName = findViewById(R.id.component_var_type_name);
-        componentTypeName = findViewById(R.id.component_type_name);
-        componentBuildClass = findViewById(R.id.component_build_class);
-        componentTypeClass = findViewById(R.id.component_type_class);
-        componentDesc = findViewById(R.id.component_description);
-        componentDocUrl = findViewById(R.id.component_doc_url);
-        componentAddVar = findViewById(R.id.component_add_var);
-        componentDefineAddVar = findViewById(R.id.component_def_add_var);
-        componentImports = findViewById(R.id.component_imports);
-        findViewById(R.id.btn_import).setOnClickListener(this);
-        findViewById(R.id.btn_save).setOnClickListener(this);
-        findViewById(R.id.pick).setOnClickListener(this);
+        binding.btnImport.setOnClickListener(this);
+        binding.btnSave.setOnClickListener(this);
+        binding.pick.setOnClickListener(this);
     }
 
     private void initializeHelper() {
-        componentName.addTextChangedListener(new ComponentHelper(new EditText[]{componentBuildClass, componentVarTypeName, componentTypeName, componentTypeClass}, componentTypeClass));
+        binding.componentName.addTextChangedListener(new ComponentHelper(new EditText[]{binding.componentBuildClass, binding.componentVarTypeName, binding.componentTypeName, binding.componentTypeClass}, binding.componentTypeClass));
     }
 
     @Override
@@ -111,11 +88,11 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
         int id = v.getId();
         if (id == R.id.btn_save) {
             if (!isImportantFieldsEmpty()) {
-                if (OldResourceIdMapper.isValidIconId(componentIcon.getText().toString())) {
+                if (OldResourceIdMapper.isValidIconId(binding.componentIcon.getText().toString())) {
                     save();
                 } else {
                     SketchwareUtil.toastError(Helper.getResString(R.string.invalid_icon_id));
-                    componentIcon.requestFocus();
+                    binding.componentIcon.requestFocus();
                 }
             } else {
                 SketchwareUtil.toastError(Helper.getResString(R.string.invalid_required_fields));
@@ -128,32 +105,32 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
     }
 
     private void setupViews(HashMap<String, Object> map) {
-        componentName.setText((String) map.get("name"));
-        componentId.setText((String) map.get("id"));
-        componentIcon.setText((String) map.get("icon"));
-        componentVarTypeName.setText((String) map.get("varName"));
-        componentTypeName.setText((String) map.get("typeName"));
-        componentBuildClass.setText((String) map.get("class"));
-        componentTypeClass.setText((String) map.get("buildClass"));
-        componentDesc.setText((String) map.get("description"));
-        componentDocUrl.setText((String) map.get("url"));
-        componentAddVar.setText((String) map.get("additionalVar"));
-        componentDefineAddVar.setText((String) map.get("defineAdditionalVar"));
-        componentImports.setText((String) map.get("imports"));
+        binding.componentName.setText((String) map.get("name"));
+        binding.componentId.setText((String) map.get("id"));
+        binding.componentIcon.setText((String) map.get("icon"));
+        binding.componentVarTypeName.setText((String) map.get("varName"));
+        binding.componentTypeName.setText((String) map.get("typeName"));
+        binding.componentBuildClass.setText((String) map.get("class"));
+        binding.componentTypeClass.setText((String) map.get("buildClass"));
+        binding.componentDescription.setText((String) map.get("description"));
+        binding.componentDocUrl.setText((String) map.get("url"));
+        binding.componentAddVar.setText((String) map.get("additionalVar"));
+        binding.componentDefAddVar.setText((String) map.get("defineAdditionalVar"));
+        binding.componentImports.setText((String) map.get("imports"));
     }
 
     private void showIconSelectorDialog() {
-        new IconSelectorDialog(this, componentIcon).show();
+        new IconSelectorDialog(this, binding.componentIcon).show();
     }
 
     private boolean isImportantFieldsEmpty() {
-        return componentName.getText().toString().isEmpty()
-                || componentId.getText().toString().isEmpty()
-                || componentIcon.getText().toString().isEmpty()
-                || componentTypeName.getText().toString().isEmpty()
-                || componentVarTypeName.getText().toString().isEmpty()
-                || componentTypeClass.getText().toString().isEmpty()
-                || componentBuildClass.getText().toString().isEmpty();
+        return binding.componentName.getText().toString().isEmpty()
+                || binding.componentId.getText().toString().isEmpty()
+                || binding.componentIcon.getText().toString().isEmpty()
+                || binding.componentTypeName.getText().toString().isEmpty()
+                || binding.componentVarTypeName.getText().toString().isEmpty()
+                || binding.componentTypeClass.getText().toString().isEmpty()
+                || binding.componentBuildClass.getText().toString().isEmpty();
     }
 
     private void save() {
@@ -165,18 +142,18 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
         if (isEditMode) {
             map = list.get(position);
         }
-        map.put("name", componentName.getText().toString());
-        map.put("id", componentId.getText().toString());
-        map.put("icon", componentIcon.getText().toString());
-        map.put("varName", componentVarTypeName.getText().toString());
-        map.put("typeName", componentTypeName.getText().toString());
-        map.put("buildClass", componentBuildClass.getText().toString());
-        map.put("class", componentTypeClass.getText().toString());
-        map.put("description", componentDesc.getText().toString());
-        map.put("url", componentDocUrl.getText().toString());
-        map.put("additionalVar", componentAddVar.getText().toString());
-        map.put("defineAdditionalVar", componentDefineAddVar.getText().toString());
-        map.put("imports", componentImports.getText().toString());
+        map.put("name", binding.componentName.getText().toString());
+        map.put("id", binding.componentId.getText().toString());
+        map.put("icon", binding.componentIcon.getText().toString());
+        map.put("varName", binding.componentVarTypeName.getText().toString());
+        map.put("typeName", binding.componentTypeName.getText().toString());
+        map.put("buildClass", binding.componentBuildClass.getText().toString());
+        map.put("class", binding.componentTypeClass.getText().toString());
+        map.put("description", binding.componentDescription.getText().toString());
+        map.put("url", binding.componentDocUrl.getText().toString());
+        map.put("additionalVar", binding.componentAddVar.getText().toString());
+        map.put("defineAdditionalVar", binding.componentDefAddVar.getText().toString());
+        map.put("imports", binding.componentImports.getText().toString());
         if (!isEditMode) {
             list.add(map);
         }

@@ -16,6 +16,7 @@ import a.a.a.Ss;
 import a.a.a.aB;
 import a.a.a.jC;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 
 public class ExtraMenuBlock {
 
@@ -29,17 +30,19 @@ public class ExtraMenuBlock {
         String menuName = ss.getMenuName();
         if (menuName.equals("LayoutParam")) {
             dialog.b("LayoutParams");
-            arrayList.add("MATCH_PARENT");
-            arrayList.add("WRAP_CONTENT");
+            arrayList.addAll(Helper.createStringList(
+                    "MATCH_PARENT",
+                    "WRAP_CONTENT"));
         }
         if (menuName.equals("Command")) {
             dialog.b("commands");
-            arrayList.add("insert");
-            arrayList.add("add");
-            arrayList.add("replace");
-            arrayList.add("find-replace");
-            arrayList.add("find-replace-first");
-            arrayList.add("find-replace-all");
+            arrayList.addAll(Helper.createStringList(
+                    "insert",
+                    "add", "replace",
+                    "find-replace",
+                    "find-replace-first",
+                    "find-replace-all"
+            ));
         }
         try {
             JSONArray jSONArray = new JSONArray(ExtraBlockFile.getMenuBlockFile());
