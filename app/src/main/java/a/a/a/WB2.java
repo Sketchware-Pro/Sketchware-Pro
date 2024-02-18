@@ -2,28 +2,31 @@ package a.a.a;
 
 import android.content.Context;
 import android.text.Spanned;
+
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class WB2 extends MB {
-    public String[] f;
-    public ArrayList<String> g;
+    public String[] reservedKeywords;
+    public ArrayList<String> fontNames;
     public String h;
-    public Pattern i;
+    public Pattern pattern;
 
-    public WB2(Context context, TextInputLayout textInputLayout, String[] strArr, ArrayList<String> arrayList) {
+    public WB2(Context context, TextInputLayout textInputLayout, String[] reservedKeywordsArr, ArrayList<String> arrayList) {
         super(context, textInputLayout);
-        this.i = Pattern.compile("^[a-z][a-z0-9_]*");
-        this.f = strArr;
-        this.g = arrayList;
+        this.pattern = Pattern.compile("^[a-z][a-z0-9_]*");
+        this.reservedKeywords = reservedKeywordsArr;
+        this.fontNames = arrayList;
     }
 
     public WB2(Context context, TextInputLayout textInputLayout, String[] strArr, ArrayList<String> arrayList, String str) {
         super(context, textInputLayout);
-        this.i = Pattern.compile("^[a-z][a-z0-9_]*");
-        this.f = strArr;
-        this.g = arrayList;
+        this.pattern = Pattern.compile("^[a-z][a-z0-9_]*");
+        this.reservedKeywords = strArr;
+        this.fontNames = arrayList;
         this.h = str;
     }
 
@@ -39,53 +42,53 @@ public class WB2 extends MB {
         int i4;
         String trim = charSequence.toString().trim();
         if (trim.length() < 3) {
-            ((MB) this).b.setErrorEnabled(true);
-            textInputLayout = ((MB) this).b;
-            a2 = xB.b().a(((MB) this).a, 0x7f0e05d9, new Object[]{3});
+            this.textInputLayout.setErrorEnabled(true);
+            textInputLayout = this.textInputLayout;
+            a2 = xB.b().a(this.context, R.string.invalid_value_min_lenth, 3);
         } else if (trim.length() > 70) {
-            ((MB) this).b.setErrorEnabled(true);
-            textInputLayout = ((MB) this).b;
-            a2 = xB.b().a(((MB) this).a, 0x7f0e05d8, new Object[]{70});
-        } else if (trim.equals("default_image") || "NONE".toLowerCase().equals(trim.toLowerCase()) || (!trim.equals(this.h) && this.g.indexOf(trim) >= 0)) {
-            ((MB) this).b.setErrorEnabled(true);
-            textInputLayout = ((MB) this).b;
-            a2 = xB.b().a(((MB) this).a, 0x7f0e03f6);
+            this.textInputLayout.setErrorEnabled(true);
+            textInputLayout = this.textInputLayout;
+            a2 = xB.b().a(this.context, R.string.invalid_value_max_lenth, 70);
+        } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(this.h) && this.fontNames.contains(trim))) {
+            this.textInputLayout.setErrorEnabled(true);
+            textInputLayout = this.textInputLayout;
+            a2 = xB.b().a(this.context, R.string.common_message_name_unavailable);
         } else {
-            String[] strArr = this.f;
+            String[] strArr = this.reservedKeywords;
             int length = strArr.length;
             int i5 = 0;
             while (true) {
                 if (i5 < length) {
                     if (charSequence.toString().equals(strArr[i5])) {
-                        ((MB) this).b.setErrorEnabled(true);
-                        textInputLayout = ((MB) this).b;
+                        this.textInputLayout.setErrorEnabled(true);
+                        textInputLayout = this.textInputLayout;
                         b = xB.b();
-                        context = ((MB) this).a;
-                        i4 = 0x7f0e0617;
+                        context = this.context;
+                        i4 = R.string.logic_editor_message_reserved_keywords;
                         break;
                     }
                     i5++;
                 } else if (Character.isLetter(charSequence.charAt(0))) {
-                    if (this.i.matcher(charSequence.toString()).matches()) {
-                        ((MB) this).b.setErrorEnabled(false);
-                        ((MB) this).d = true;
+                    if (this.pattern.matcher(charSequence.toString()).matches()) {
+                        this.textInputLayout.setErrorEnabled(false);
+                        this.isInputValid = true;
                         return;
                     }
-                    ((MB) this).b.setErrorEnabled(true);
-                    ((MB) this).b.setError(xB.b().a(((MB) this).a, 0x7f0e05dd));
-                    ((MB) this).d = false;
+                    this.textInputLayout.setErrorEnabled(true);
+                    this.textInputLayout.setError(xB.b().a(this.context, R.string.invalid_value_rule_4));
+                    this.isInputValid = false;
                     return;
                 } else {
-                    ((MB) this).b.setErrorEnabled(true);
-                    textInputLayout = ((MB) this).b;
+                    this.textInputLayout.setErrorEnabled(true);
+                    textInputLayout = this.textInputLayout;
                     b = xB.b();
-                    context = ((MB) this).a;
-                    i4 = 0x7f0e0619;
+                    context = this.context;
+                    i4 = R.string.logic_editor_message_variable_name_must_start_letter;
                 }
             }
             a2 = b.a(context, i4);
         }
         textInputLayout.setError(a2);
-        ((MB) this).d = false;
+        this.isInputValid = false;
     }
 }
