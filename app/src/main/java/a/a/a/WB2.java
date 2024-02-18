@@ -49,7 +49,7 @@ public class WB2 extends MB {
             this.textInputLayout.setErrorEnabled(true);
             textInputLayout = this.textInputLayout;
             a2 = xB.b().a(this.context, R.string.invalid_value_max_lenth, 70);
-        } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(this.h) && this.fontNames.contains(trim))) {
+        } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(this.h) && (fontNames != null && this.fontNames.contains(trim)))) {
             this.textInputLayout.setErrorEnabled(true);
             textInputLayout = this.textInputLayout;
             a2 = xB.b().a(this.context, R.string.common_message_name_unavailable);
