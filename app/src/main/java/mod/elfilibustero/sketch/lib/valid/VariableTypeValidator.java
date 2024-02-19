@@ -23,44 +23,44 @@ public class VariableTypeValidator extends MB {
         String reconsInput = String.join(" ", words);
 
         if (!variableType.equals(reconsInput)) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Extra spaces between or at the end are not allowed.");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Extra spaces between or at the end are not allowed.");
+            d = false;
             return;
         }
 
         if (!TextUtils.isEmpty(charSequence)) {
             if (!Character.isLetter(charSequence.charAt(0))) {
-                textInputLayout.setErrorEnabled(true);
-                textInputLayout.setError("Variable data type must start with a letter");
-                isInputValid = false;
+                b.setErrorEnabled(true);
+                b.setError("Variable data type must start with a letter");
+                d = false;
                 return;
             }
         }
 
         if (!isValidAngleBracket(variableType)) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Angle bracket not matched");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Angle bracket not matched");
+            d = false;
             return;
         }
 
         if (!isValidBoxBracket(variableType)) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Box bracket not matched");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Box bracket not matched");
+            d = false;
             return;
         }
 
         if (!PATTERN_TYPE.matcher(variableType).matches()) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Invalid variable data type");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Invalid variable data type");
+            d = false;
             return;
         }
-        textInputLayout.setErrorEnabled(false);
-        textInputLayout.setError(null);
-        isInputValid = true;
+        b.setErrorEnabled(false);
+        b.setError(null);
+        d = true;
     }
 
     public boolean isValid() {

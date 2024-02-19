@@ -36,21 +36,21 @@ public class MoreblockValidator extends MB {
         String name = charSequence.toString();
         int trimmedLength = name.trim().length();
         if (trimmedLength < 1) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError(xB.b().a(context, R.string.invalid_value_min_lenth, 1));
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
+            d = false;
         } else if (name.length() > 60) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError(xB.b().a(context, R.string.invalid_value_max_lenth, 60));
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 60));
+            d = false;
         } else {
             if (i != null && i.length() > 0 && name.equals(i)) {
-                textInputLayout.setErrorEnabled(false);
-                isInputValid = true;
+                b.setErrorEnabled(false);
+                d = true;
             } else if (registeredVariables.contains(name)) {
-                textInputLayout.setErrorEnabled(true);
-                textInputLayout.setError(xB.b().a(context, R.string.common_message_name_unavailable, 0));
-                isInputValid = false;
+                b.setErrorEnabled(true);
+                b.setError(xB.b().a(a, R.string.common_message_name_unavailable, 0));
+                d = false;
             } else {
                 boolean z = false;
                 for (String eventsName : eventNames) {
@@ -60,9 +60,9 @@ public class MoreblockValidator extends MB {
                     }
                 }
                 if (z) {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(Helper.getResString(R.string.common_message_name_unavailable));
-                    isInputValid = false;
+                    b.setErrorEnabled(true);
+                    b.setError(Helper.getResString(R.string.common_message_name_unavailable));
+                    d = false;
                     return;
                 }
                 boolean isReservedKeyUsed = false;
@@ -74,26 +74,26 @@ public class MoreblockValidator extends MB {
                 }
 
                 if (isReservedKeyUsed) {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(Helper.getResString(R.string.logic_editor_message_reserved_keywords));
-                    isInputValid = false;
+                    b.setErrorEnabled(true);
+                    b.setError(Helper.getResString(R.string.logic_editor_message_reserved_keywords));
+                    d = false;
                 } else if (!Character.isLetter(charSequence.charAt(0))) {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(Helper.getResString(R.string.logic_editor_message_variable_name_must_start_letter));
-                    isInputValid = false;
+                    b.setErrorEnabled(true);
+                    b.setError(Helper.getResString(R.string.logic_editor_message_variable_name_must_start_letter));
+                    d = false;
                 } else {
                     if (j.matcher(name).matches()) {
-                        textInputLayout.setErrorEnabled(false);
-                        isInputValid = true;
+                        b.setErrorEnabled(false);
+                        d = true;
                     } else {
-                        textInputLayout.setErrorEnabled(true);
-                        textInputLayout.setError(Helper.getResString(R.string.invalid_value_rule_3));
-                        isInputValid = false;
+                        b.setErrorEnabled(true);
+                        b.setError(Helper.getResString(R.string.invalid_value_rule_3));
+                        d = false;
                     }
                     if (name.trim().length() < 1) {
-                        textInputLayout.setErrorEnabled(true);
-                        textInputLayout.setError(xB.b().a(context, R.string.invalid_value_min_lenth, 1));
-                        isInputValid = false;
+                        b.setErrorEnabled(true);
+                        b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
+                        d = false;
                     }
                 }
             }

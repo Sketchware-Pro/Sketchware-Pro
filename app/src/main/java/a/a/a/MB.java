@@ -11,27 +11,27 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public abstract class MB implements TextWatcher, InputFilter {
 
-    public Context context;
-    public TextInputLayout textInputLayout;
-    public EditText editText;
-    public boolean isInputValid;
+    public Context a;
+    public TextInputLayout b;
+    public EditText c;
+    public boolean d;
     public int e;
 
     public MB(Context context, TextInputLayout textInputLayout) {
-        this.context = context;
-        this.textInputLayout = textInputLayout;
-        editText = textInputLayout.getEditText();
-        editText.setFilters(new InputFilter[]{this});
-        editText.addTextChangedListener(this);
+        a = context;
+        b = textInputLayout;
+        c = textInputLayout.getEditText();
+        c.setFilters(new InputFilter[]{this});
+        c.addTextChangedListener(this);
     }
 
     public String a() {
-        return editText.getText().toString();
+        return c.getText().toString();
     }
 
     public void a(String str) {
-        isInputValid = true;
-        editText.setText(str);
+        d = true;
+        c.setText(str);
     }
 
     @Override
@@ -46,13 +46,13 @@ public abstract class MB implements TextWatcher, InputFilter {
     @Override
     public void afterTextChanged(Editable editable) {
         if (editable.toString().isEmpty()) {
-            textInputLayout.setErrorEnabled(false);
+            b.setErrorEnabled(false);
         }
     }
 
     public boolean b() {
-        if (!isInputValid) editText.requestFocus();
-        return isInputValid;
+        if (!d) c.requestFocus();
+        return d;
     }
 
     @Override

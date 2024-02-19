@@ -27,9 +27,9 @@ public class VariableModifierValidator extends MB {
         String reconsInput = String.join(" ", words);
 
         if (!input.equals(reconsInput)) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Extra spaces between words or at the end are not allowed.");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Extra spaces between words or at the end are not allowed.");
+            d = false;
             return;
         }
         Set<String> usedModifiers = new HashSet<>();
@@ -37,29 +37,29 @@ public class VariableModifierValidator extends MB {
 
         for (String word : words) {
             if (!PATTERN_MODIFIER.matcher(word).matches()) {
-                textInputLayout.setErrorEnabled(true);
-                textInputLayout.setError("Invalid modifier: " + word);
-                isInputValid = false;
+                b.setErrorEnabled(true);
+                b.setError("Invalid modifier: " + word);
+                d = false;
                 return;
             }
             if (!usedModifiers.add(word)) {
-                textInputLayout.setErrorEnabled(true);
-                textInputLayout.setError("Duplicate modifier: " + word);
-                isInputValid = false;
+                b.setErrorEnabled(true);
+                b.setError("Duplicate modifier: " + word);
+                d = false;
                 return;
             }
             if (isAccessModifier(word)) {
                 if (hasAccessModifier) {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError("Access modifier can only set one of public / protected / private");
-                    isInputValid = false;
+                    b.setErrorEnabled(true);
+                    b.setError("Access modifier can only set one of public / protected / private");
+                    d = false;
                     return;
                 }
                 hasAccessModifier = true;
             }
         }
-        textInputLayout.setErrorEnabled(false);
-        isInputValid = true;
+        b.setErrorEnabled(false);
+        d = true;
     }
 
     private boolean isAccessModifier(String word) {

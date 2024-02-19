@@ -20,16 +20,16 @@ public class VersionNamePostfixValidator extends MB {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String se = s.toString();
         if (VERSION_NAME_POSTFIX_PATTERN.matcher(se).matches()) {
-            textInputLayout.setErrorEnabled(false);
-            isInputValid = true;
+            b.setErrorEnabled(false);
+            d = true;
         } else if (se.contains(" ")) {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Spaces aren't allowed to prevent crashes");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Spaces aren't allowed to prevent crashes");
+            d = false;
         } else {
-            textInputLayout.setErrorEnabled(true);
-            textInputLayout.setError("Only use letters (a-zA-Z), numbers and Special characters (_)");
-            isInputValid = false;
+            b.setErrorEnabled(true);
+            b.setError("Only use letters (a-zA-Z), numbers and Special characters (_)");
+            d = false;
         }
     }
 }
