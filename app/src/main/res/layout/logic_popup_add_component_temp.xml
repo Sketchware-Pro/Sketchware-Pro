@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
@@ -37,7 +38,8 @@
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/color_primary"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Component name" />
         </LinearLayout>
 
         <View
@@ -91,7 +93,8 @@
                         android:gravity="center"
                         android:lines="2"
                         android:textSize="12sp"
-                        android:visibility="invisible" />
+                        android:visibility="invisible"
+                        tools:text="Component Name" />
                 </LinearLayout>
 
                 <TextView
@@ -102,7 +105,8 @@
                     android:layout_marginTop="28dp"
                     android:layout_marginRight="16dp"
                     android:textColor="@color/grey"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="This is a simple description" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,7 +138,7 @@
                     <EditText
                         android:id="@+id/ed_input"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
@@ -149,12 +153,13 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="24dp"
                     android:importantForAutofill="noExcludeDescendants"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <EditText
                         android:id="@+id/ed_input_filename"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
@@ -169,12 +174,13 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="24dp"
                     android:importantForAutofill="noExcludeDescendants"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <EditText
                         android:id="@+id/ed_input_firebase_path"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
@@ -189,7 +195,8 @@
                     android:layout_marginRight="24dp"
                     android:textSize="12sp"
                     android:textStyle="italic"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <LinearLayout
                     android:id="@+id/layout_input_file_picker"
@@ -199,7 +206,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="24dp"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/ti_input_file_picker"
@@ -211,7 +219,7 @@
                         <EditText
                             android:id="@+id/ed_input_file_picker"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="match_parent"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:lines="1"
@@ -235,7 +243,8 @@
                     android:layout_marginRight="24dp"
                     android:textSize="12sp"
                     android:textStyle="italic"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </LinearLayout>
         </LinearLayout>
 

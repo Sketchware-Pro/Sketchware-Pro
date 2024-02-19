@@ -339,30 +339,19 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 return;
             }
         }
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("View");
-        arrayList.add("ViewGroup");
-        arrayList.add("LinearLayout");
-        arrayList.add("RelativeLayout");
-        arrayList.add("ScrollView");
-        arrayList.add("HorizontalScrollView");
-        arrayList.add("TextView");
-        arrayList.add("EditText");
-        arrayList.add("Button");
-        arrayList.add("RadioButton");
-        arrayList.add("CheckBox");
-        arrayList.add("Switch");
-        arrayList.add("ImageView");
-        arrayList.add("SeekBar");
-        arrayList.add("ListView");
-        arrayList.add("Spinner");
-        arrayList.add("WebView");
-        arrayList.add("MapView");
-        arrayList.add("ProgressBar");
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", "typeview");
         map.put("title", "select type :");
-        map.put("data", arrayList);
+        map.put("data", new ArrayList<>(Helper.createStringList(
+                "View", "ViewGroup",
+                "LinearLayout", "RelativeLayout",
+                "ScrollView", "HorizontalScrollView",
+                "TextView", "EditText", "Button",
+                "RadioButton", "CheckBox", "Switch",
+                "ImageView", "SeekBar", "ListView",
+                "Spinner", "WebView", "MapView",
+                "ProgressBar"
+        )));
         data.add(0, map);
         _refresh_display();
     }

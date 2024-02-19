@@ -15,12 +15,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.AddCustomAttributeBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,12 +33,14 @@ public class EventsMakerDetails extends Activity {
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
     private AlertDialog.Builder dia;
     private String lisName;
-    private ListView listView;
+
+    private AddCustomAttributeBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_custom_attribute);
+        binding = AddCustomAttributeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (getIntent().hasExtra("lis_name")) {
             lisName = getIntent().getStringExtra("lis_name");
         }
@@ -54,14 +55,12 @@ public class EventsMakerDetails extends Activity {
     }
 
     private void setupViews() {
-        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
-        fab.setOnClickListener(v -> {
+        binding.addAttrFab.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), EventsMakerCreator.class);
             intent.putExtra("lis_name", lisName);
             startActivity(intent);
         });
-        listView = findViewById(R.id.add_attr_listview);
         refreshList();
     }
 
@@ -87,8 +86,8 @@ public class EventsMakerDetails extends Activity {
                     listMap.add(events.get(i));
                 }
             }
-            listView.setAdapter(new ListAdapter(listMap));
-            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+            binding.addAttrListview.setAdapter(new ListAdapter(listMap));
+            ((BaseAdapter) binding.addAttrListview.getAdapter()).notifyDataSetChanged();
         }
     }
 
@@ -109,15 +108,13 @@ public class EventsMakerDetails extends Activity {
     }
 
     private void setToolbar() {
-        TextView tx_toolbar_title = findViewById(R.id.tx_toolbar_title);
         if (lisName.equals("")) {
-            tx_toolbar_title.setText("Activity events");
+            binding.txToolbarTitle.setText("Activity events");
         } else {
-            tx_toolbar_title.setText(lisName);
+            binding.txToolbarTitle.setText(lisName);
         }
-        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
+        binding.igToolbarBack.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(binding.igToolbarBack);
     }
 
     private class ListAdapter extends BaseAdapter {

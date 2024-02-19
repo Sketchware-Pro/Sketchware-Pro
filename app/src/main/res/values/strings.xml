@@ -1203,6 +1203,8 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_message_collection_name_conflict">There seems to be a naming conflict. Please make sure there are no duplicate names.</string>
     <string name="design_manager_message_collection_name_no_conflict">There were no naming conflicts</string>
     <string name="design_manager_message_edit_complete">Edit complete</string>
+    <string name="design_manager_message_invalid_font">Selected font is invalid</string>
+    <string name="design_manager_message_no_font_selected">You have to select a new font</string>
     <string name="design_manager_message_import_complete">Import complete</string>
     <string name="design_manager_sound_description_guide_add_sound">"Add background music
  or sound effects here"</string>

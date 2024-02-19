@@ -13,12 +13,15 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.StringRes;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.reflect.TypeToken;
 
@@ -51,6 +54,12 @@ public class Helper {
                 Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
             }
         }
+    }
+
+    public static ArrayList<String> createStringList(String... strings) {
+        ArrayList<String> result = new ArrayList<>();
+        Collections.addAll(result, strings);
+        return result;
     }
 
     public static void setViewsVisibility(boolean hide, View... views) {
@@ -91,6 +100,27 @@ public class Helper {
 
         view.setBackgroundResource(typedValue.resourceId);
         view.setClickable(true);
+    }
+
+    public static void addBasicTextChangedListener(TextInputEditText input, BasicTextChangedListener listener) {
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                listener.onTextChanged(s.toString());
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+    }
+
+    public interface BasicTextChangedListener {
+        void onTextChanged(String str);
     }
 
     public static void applyRippleToToolbarView(View view) {
