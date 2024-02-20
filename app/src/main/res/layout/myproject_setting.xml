@@ -1,51 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/contents" android:background="#ffffffff" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip">
-            <RelativeLayout android:id="@id/app_icon_layout" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                <View android:background="@drawable/circle_bg_grey" android:layout_width="56.0dip" android:layout_height="56.0dip" android:layout_centerInParent="true" android:contentDescription="@null" />
-                <com.besome.sketch.lib.ui.CircleImageView android:id="@id/app_icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:src="@drawable/default_icon" android:layout_centerInParent="true" android:contentDescription="@null" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/contents"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff"
+    android:orientation="vertical"
+    android:padding="16.0dip">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16.0dip"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@id/app_icon_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="56.0dip"
+                    android:layout_height="56.0dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle_bg_grey"
+                    android:contentDescription="@null" />
+
+                <com.besome.sketch.lib.ui.CircleImageView
+                    android:id="@id/app_icon"
+                    android:layout_width="48.0dip"
+                    android:layout_height="48.0dip"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/default_icon" />
             </RelativeLayout>
-            <TextView android:textSize="10.0sp" android:textColor="#ff606060" android:id="@id/tv_change_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_below="@id/app_icon" android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@id/tv_change_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/app_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8.0dip"
+                android:textColor="#ff606060"
+                android:text="Tap to change icon"
+                android:textSize="10.0sp" />
         </LinearLayout>
-        <com.google.android.material.textfield.TextInputLayout android:gravity="center" android:id="@id/ti_app_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip">
-            <EditText android:textSize="14.0sp" android:textColor="#ff535353" android:textColorHint="#ff8e8e8e" android:id="@id/et_app_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:inputType="text" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@id/ti_app_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16.0dip"
+            android:hint="Enter App Name"
+            android:gravity="center">
+
+            <EditText
+                android:id="@id/et_app_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16.0dip"
+                android:layout_marginRight="16.0dip"
+                android:inputType="text"
+                android:textColor="#ff535353"
+                android:textColorHint="#ff8e8e8e"
+                android:textSize="14.0sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:id="@id/basic" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip">
-            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip">
-                <LinearLayout android:gravity="center|right" android:orientation="horizontal" android:id="@id/advanced_setting" android:layout_width="fill_parent" android:layout_height="32.0dip" android:layout_marginTop="16.0dip" android:animateLayoutChanges="true">
-                    <TextView android:textSize="12.0sp" android:textColor="#ff757575" android:gravity="center" android:id="@id/tv_advanced_settings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="4.0dip" />
-                    <ImageView android:id="@id/icon" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/settings_filled_96" android:scaleType="fitCenter" android:contentDescription="@null" />
+
+    <LinearLayout
+        android:id="@id/basic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8.0dip"
+            android:layout_marginRight="8.0dip"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginRight="8.0dip"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@id/advanced_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="32.0dip"
+                    android:layout_marginTop="16.0dip"
+                    android:animateLayoutChanges="true"
+                    android:gravity="center|right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@id/tv_advanced_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4.0dip"
+                        android:gravity="center"
+                        android:text="Settings"
+                        android:textColor="#ff757575"
+                        android:textSize="12.0sp" />
+
+                    <ImageView
+                        android:id="@id/icon"
+                        android:layout_width="16.0dip"
+                        android:layout_height="16.0dip"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/settings_filled_96" />
                 </LinearLayout>
-                <LinearLayout android:orientation="vertical" android:id="@id/advanced_setting_layout" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
-                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                        <HorizontalScrollView android:background="@drawable/bg_outline" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:fillViewport="true" android:layout_weight="1.0">
-                            <LinearLayout android:orientation="horizontal" android:id="@id/layout_theme_colors" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:id="@id/advanced_setting_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8.0dip"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <HorizontalScrollView
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:background="@drawable/bg_outline"
+                            android:fillViewport="true"
+                            android:paddingTop="4.0dip"
+                            android:paddingBottom="4.0dip">
+
+                            <LinearLayout
+                                android:id="@id/layout_theme_colors"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal" />
                         </HorizontalScrollView>
-                        <ImageView android:id="@id/img_theme_color_help" android:padding="4.0dip" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/help_96_blue" />
+
+                        <ImageView
+                            android:id="@id/img_theme_color_help"
+                            android:layout_width="36.0dip"
+                            android:layout_height="36.0dip"
+                            android:layout_marginLeft="8.0dip"
+                            android:padding="4.0dip"
+                            android:src="@drawable/help_96_blue" />
                     </LinearLayout>
-                    <ImageView android:id="@id/img_color_guide" android:background="#ff000000" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/color_guide" />
-                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="4.0dip" android:paddingTop="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip">
-                        <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/package_96" android:scaleType="fitCenter" android:contentDescription="@null" />
-                        <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_package_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
-                            <EditText android:textSize="14.0sp" android:textColor="#ff535353" android:textColorHint="#ff8e8e8e" android:gravity="start|center" android:id="@id/et_package_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="text" />
+
+                    <ImageView
+                        android:id="@id/img_color_guide"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ff000000"
+                        android:src="@drawable/color_guide"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16.0dip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4.0dip"
+                        android:paddingTop="4.0dip"
+                        android:paddingRight="4.0dip">
+
+                        <ImageView
+                            android:layout_width="24.0dip"
+                            android:layout_height="24.0dip"
+                            android:layout_marginRight="4.0dip"
+                            android:contentDescription="@null"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/package_96" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@id/ti_package_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8.0dip"
+                            android:hint="Enter Package name"
+                            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                            <EditText
+                                android:id="@id/et_package_name"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="start|center"
+                                android:inputType="text"
+                                android:textColor="#ff535353"
+                                android:textColorHint="#ff8e8e8e"
+                                android:textSize="14.0sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="4.0dip" android:paddingTop="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
-                        <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/abc_96" android:scaleType="fitCenter" android:contentDescription="@null" />
-                        <com.google.android.material.textfield.TextInputLayout android:id="@id/ti_project_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
-                            <EditText android:textSize="14.0sp" android:textColor="#ff535353" android:textColorHint="#ff8e8e8e" android:gravity="start|center" android:id="@id/et_project_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="text" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8.0dip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4.0dip"
+                        android:paddingTop="4.0dip"
+                        android:paddingRight="4.0dip">
+
+                        <ImageView
+                            android:layout_width="24.0dip"
+                            android:layout_height="24.0dip"
+                            android:layout_marginRight="4.0dip"
+                            android:contentDescription="@null"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/abc_96" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@id/ti_project_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8.0dip"
+                            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                            <EditText
+                                android:id="@id/et_project_name"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="start|center"
+                                android:inputType="text"
+                                android:textColor="#ff535353"
+                                android:textColorHint="#ff8e8e8e"
+                                android:hint="Enter Project Name"
+                                android:textSize="14.0sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
-                        <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/code_96" android:scaleType="fitCenter" android:contentDescription="@null" />
-                        <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_outline" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="1.0">
-                            <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="center" android:id="@id/ver_code" android:background="?android:selectableItemBackground" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="1" android:layout_weight="1.0" />
-                            <View android:background="#ffc6c6c6" android:layout_width="1.0dip" android:layout_height="fill_parent" />
-                            <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="center" android:id="@id/ver_name" android:background="?android:selectableItemBackground" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="1.0" android:layout_weight="1.0" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8.0dip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4.0dip"
+                        android:paddingRight="4.0dip">
+
+                        <ImageView
+                            android:layout_width="24.0dip"
+                            android:layout_height="24.0dip"
+                            android:layout_marginRight="4.0dip"
+                            android:contentDescription="@null"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/code_96" />
+
+                        <LinearLayout
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8.0dip"
+                            android:layout_weight="1.0"
+                            android:background="@drawable/bg_outline"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@id/ver_code"
+                                android:layout_width="0.0dip"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1.0"
+                                android:background="?android:selectableItemBackground"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textColor="#ff757575"
+                                android:textSize="14.0sp" />
+
+                            <View
+                                android:layout_width="1.0dip"
+                                android:layout_height="fill_parent"
+                                android:background="#ffc6c6c6" />
+
+                            <TextView
+                                android:id="@id/ver_name"
+                                android:layout_width="0.0dip"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1.0"
+                                android:background="?android:selectableItemBackground"
+                                android:gravity="center"
+                                android:text="1.0"
+                                android:textColor="#ff757575"
+                                android:textSize="14.0sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

@@ -24,13 +24,14 @@
             <com.besome.sketch.editor.view.palette.PaletteWidget
                 android:id="@+id/palette_widget"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="visible"/>
 
             <com.besome.sketch.editor.view.palette.PaletteFavorite
                 android:id="@+id/palette_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </FrameLayout>
     </LinearLayout>
 

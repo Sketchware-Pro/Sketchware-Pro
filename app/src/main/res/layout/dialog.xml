@@ -22,6 +22,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
+                android:src="@drawable/plus"
                 android:scaleType="fitCenter" />
 
             <TextView
@@ -94,6 +95,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:text="No"
             android:textColor="@color/primary_text_default_material_dark"
             android:textSize="14sp" />
 
@@ -104,6 +106,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:text="Yes"
             android:textColor="@color/primary_text_default_material_dark"
             android:textSize="14sp" />
     </LinearLayout>

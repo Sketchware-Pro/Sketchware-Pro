@@ -229,7 +229,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (yB.a(projectMap, "custom_icon")) {
                 Uri uri;
                 String iconFolder = wq.e() + File.separator + scId;
-                if (Build.VERSION.SDK_INT >= 24) {
+                if (Build.VERSION.SDK_INT >= 26) {
                     String providerPath = activity.getPackageName() + ".provider";
                     uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
                 } else {
