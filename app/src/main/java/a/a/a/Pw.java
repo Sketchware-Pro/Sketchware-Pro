@@ -3,16 +3,18 @@ package a.a.a;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.PropertyPopupSelectorSingleBinding;
 
 import java.util.ArrayList;
 
@@ -21,16 +23,16 @@ import mod.hey.studios.util.Helper;
 @SuppressLint("ViewConstructor")
 public class Pw extends RelativeLayout implements View.OnClickListener {
 
-    private String a = "";
-    private String b = "";
-    private TextView c;
-    private TextView d;
-    private ImageView e;
+    private String key = "";
+    private String value = "";
+    private TextView tvName;
+    private TextView tvValue;
+    private ImageView imgLeftIcon;
     private int f;
-    private View g;
-    private View h;
-    private Kw k;
-    private ArrayList<ProjectFileBean> i;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private Kw propertyValueChangeListener;
+    private ArrayList<ProjectFileBean> customViews;
 
     public Pw(Context context, boolean idk) {
         super(context);
@@ -49,50 +51,50 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     private void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(c.getText().toString());
+        dialog.b(tvName.getText().toString());
         dialog.a(f);
-        View rootView = wB.a(getContext(), R.layout.property_popup_selector_single);
-        ViewGroup j = (ViewGroup) rootView.findViewById(R.id.rg_content);
-        j.addView(a("none"));
+        PropertyPopupSelectorSingleBinding propertyBinding = PropertyPopupSelectorSingleBinding.inflate(((Activity) getContext()).getLayoutInflater());
+        RadioGroup rgContent = propertyBinding.rgContent;
+        rgContent.addView(a("none"));
 
-        for (ProjectFileBean projectFileBean : i) {
+        for (ProjectFileBean projectFileBean : customViews) {
             RadioButton var4 = a(projectFileBean.fileName);
-            j.addView(var4);
+            propertyBinding.rgContent.addView(var4);
         }
 
-        ((RadioButton) j.getChildAt(0)).setChecked(true);
+        ((RadioButton) rgContent.getChildAt(0)).setChecked(true);
 
-        for (int i = 0, childCount = j.getChildCount(); i < childCount; i++) {
-            RadioButton radioButton = (RadioButton) j.getChildAt(i);
-            if (radioButton.getTag().toString().equals(b)) {
+        for (int i = 0, childCount = rgContent.getChildCount(); i < childCount; i++) {
+            RadioButton radioButton = (RadioButton) rgContent.getChildAt(i);
+            if (radioButton.getTag().toString().equals(value)) {
                 radioButton.setChecked(true);
             }
         }
 
-        dialog.a(rootView);
-        dialog.b(xB.b().a(getContext(), 2131625035), view -> {
-            for (int i = 0, childCount = j.getChildCount(); i < childCount; i++) {
-                RadioButton radioButton = (RadioButton) j.getChildAt(i);
+        dialog.a(propertyBinding.getRoot());
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), view -> {
+            for (int i = 0, childCount = rgContent.getChildCount(); i < childCount; i++) {
+                RadioButton radioButton = (RadioButton) rgContent.getChildAt(i);
                 if (radioButton.isChecked()) {
                     setValue(radioButton.getTag().toString());
                 }
             }
-            if (k != null) {
-                k.a(a, b);
+            if (propertyValueChangeListener != null) {
+                propertyValueChangeListener.a(key, value);
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void a(boolean var2) {
         wB.a(getContext(), this, R.layout.property_selector_item);
-        c = (TextView) findViewById(R.id.tv_name);
-        d = (TextView) findViewById(R.id.tv_value);
-        g = findViewById(R.id.property_item);
-        h = findViewById(R.id.property_menu_item);
-        e = (ImageView) findViewById(R.id.img_left_icon);
+        tvName = (TextView) findViewById(R.id.tv_name);
+        tvValue = (TextView) findViewById(R.id.tv_value);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
+        imgLeftIcon = (ImageView) findViewById(R.id.img_left_icon);
         if (var2) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -101,73 +103,63 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     }
 
     public String getKey() {
-        return a;
+        return key;
     }
 
     public String getValue() {
-        return b;
+        return value;
     }
 
     public void onClick(View var1) {
         if (!mB.a()) {
-            if ("property_custom_view_listview".equals(a)) {
+            if ("property_custom_view_listview".equals(key)) {
                 a();
             }
         }
     }
 
     public void setCustomView(ArrayList<ProjectFileBean> customView) {
-        i = customView;
+        customViews = customView;
     }
 
     public void setKey(String key) {
-        a = key;
+        this.key = key;
         int var2 = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (var2 > 0) {
-            c.setText(xB.b().a(getResources(), var2));
-            f = 2131165638;
-            if (h.getVisibility() == View.VISIBLE) {
+            tvName.setText(xB.b().a(getResources(), var2));
+            f = R.drawable.form_48;
+            if (propertyMenuItem.getVisibility() == View.VISIBLE) {
                 ImageView var3 = (ImageView) findViewById(R.id.img_icon);
                 TextView var4 = (TextView) findViewById(R.id.tv_title);
                 var3.setImageResource(f);
                 var4.setText(xB.b().a(getContext(), var2));
             } else {
-                e.setImageResource(f);
+                imgLeftIcon.setImageResource(f);
             }
         }
 
     }
 
     public void setOnPropertyValueChangeListener(Kw var1) {
-        k = var1;
+        propertyValueChangeListener = var1;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            g.setVisibility(View.GONE);
-            h.setVisibility(View.VISIBLE);
+            propertyItem.setVisibility(View.GONE);
+            propertyMenuItem.setVisibility(View.VISIBLE);
         } else {
-            g.setVisibility(View.VISIBLE);
-            h.setVisibility(View.GONE);
+            propertyItem.setVisibility(View.VISIBLE);
+            propertyMenuItem.setVisibility(View.GONE);
         }
 
     }
 
     public void setValue(String value) {
-        String var2;
-        label11:
-        {
-            if (value != null) {
-                var2 = value;
-                if (value.length() > 0) {
-                    break label11;
-                }
-            }
-
-            var2 = "none";
+        if (TextUtils.isEmpty(value)) {
+            value = "none";
         }
-
-        b = var2;
-        d.setText(var2);
+        this.value = value;
+        tvValue.setText(value);
     }
 }
