@@ -154,10 +154,10 @@ public class AddViewActivity extends BaseDialogActivity {
 
     private void initializeItems() {
         featureItems = new ArrayList<>();
-        featureItems.add(new FeatureItem(0, 2131165864, "StatusBar", featureStatusBar));
-        featureItems.add(new FeatureItem(1, 2131165872, "Toolbar", featureToolbar));
-        featureItems.add(new FeatureItem(2, 2131165737, "Drawer", featureDrawer));
-        featureItems.add(new FeatureItem(3, 2131165608, "FAB", featureFab));
+        featureItems.add(new FeatureItem(0, R.drawable.ic_statusbar_color_48dp, "StatusBar", featureStatusBar));
+        featureItems.add(new FeatureItem(1, R.drawable.ic_toolbar_color_48dp, "Toolbar", featureToolbar));
+        featureItems.add(new FeatureItem(2, R.drawable.ic_drawer_color_48dp, "Drawer", featureDrawer));
+        featureItems.add(new FeatureItem(3, R.drawable.fab_color, "FAB", featureFab));
         featuresAdapter.notifyDataSetChanged();
     }
 
@@ -254,7 +254,7 @@ public class AddViewActivity extends BaseDialogActivity {
                     intent.putExtra("preset_views", getPresetData(P));
                 }
                 setResult(-1, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625276, new Object[0]), 0).show();
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), 0).show();
                 finish();
             }
 
