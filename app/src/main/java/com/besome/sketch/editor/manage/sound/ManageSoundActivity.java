@@ -193,9 +193,5 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
             activityWeakReference.get().h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 }

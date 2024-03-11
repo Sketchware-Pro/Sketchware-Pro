@@ -192,9 +192,5 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             activity.get().h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 }

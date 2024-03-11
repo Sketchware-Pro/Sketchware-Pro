@@ -376,10 +376,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             activity.get().h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
 
         @Override
         public void b() {
