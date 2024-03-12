@@ -1,5 +1,6 @@
 package com.besome.sketch.tools;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -7,11 +8,10 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.QuizBean;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.QuizBoardBinding;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,58 +22,42 @@ import a.a.a.wB;
 
 public class QuizBoard extends LinearLayout implements View.OnClickListener {
 
-    public final int a = 15000;
-    public final int b = 250;
-    public final int c = 2000;
-    public TextView d;
-    public TextView e;
-    public RelativeLayout f;
-    public ImageView g;
-    public ImageView h;
-    public LinearLayout i;
-    public View j;
-    public View k;
-    public TextView l;
-    public TextView m;
-    public ImageView n;
-    public ImageView o;
-    public LinearLayout p;
-    public ArrayList<QuizBean> q;
-    public QuizBean r;
-    public a s;
+    private ArrayList<QuizBean> q;
+    private QuizBean r;
+    private a s;
+    private QuizBoardBinding quizBinding;
 
     public QuizBoard(Context var1) {
         super(var1);
-        a(var1);
+        initialize(var1);
     }
 
-    private void setData(QuizBean var1) {
-        r = var1;
-        e.setText(var1.question);
-        int var2 = var1.type;
+    private void setData(QuizBean quizBean) {
+        r = quizBean;
+        quizBinding.tvQuestion.setText(quizBean.question);
+        int var2 = quizBean.type;
         if (var2 == 1) {
-            f.setVisibility(View.VISIBLE);
-            g.setVisibility(View.VISIBLE);
-            h.setVisibility(View.VISIBLE);
-            mB.a(g, 1);
-            mB.a(h, 1);
-            g.setOnClickListener(this);
-            h.setOnClickListener(this);
-            i.setVisibility(View.GONE);
+            quizBinding.layoutAnswerOx.setVisibility(View.VISIBLE);
+            quizBinding.imgAnswerO.setVisibility(View.VISIBLE);
+            quizBinding.imgAnswerX.setVisibility(View.VISIBLE);
+            mB.a(quizBinding.imgAnswerO, 1);
+            mB.a(quizBinding.imgAnswerX, 1);
+            quizBinding.imgAnswerO.setOnClickListener(this);
+            quizBinding.imgAnswerX.setOnClickListener(this);
+            quizBinding.layoutAnswerAb.setVisibility(View.GONE);
         } else if (var2 == 2) {
-            i.setVisibility(View.VISIBLE);
-            j.setOnClickListener(this);
-            k.setOnClickListener(this);
-            l.setText(var1.answerA);
-            m.setText(var1.answerB);
-            f.setVisibility(View.GONE);
+            quizBinding.layoutAnswerAb.setVisibility(View.VISIBLE);
+            quizBinding.viewAnswerA.setOnClickListener(this);
+            quizBinding.viewAnswerB.setOnClickListener(this);
+            quizBinding.tvAnswerA.setText(quizBean.answerA);
+            quizBinding.tvAnswerB.setText(quizBean.answerB);
+            quizBinding.layoutAnswerOx.setVisibility(View.GONE);
         }
-
     }
 
     private void setTimeoutProgress(int var1) {
         int var2 = var1 / 250;
-        var1 = p.getChildCount();
+        var1 = quizBinding.timeoutBar.getChildCount();
 
         while (true) {
             --var1;
@@ -81,7 +65,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
                 return;
             }
 
-            p.getChildAt(var1).setBackgroundColor(0xffeeeeee);
+            quizBinding.timeoutBar.getChildAt(var1).setBackgroundColor(0xffeeeeee);
         }
     }
 
@@ -92,21 +76,9 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private void a(Context var1) {
+    private void initialize(Context var1) {
         wB.a(var1, this, R.layout.quiz_board);
-        d = (TextView) findViewById(R.id.tv_remaing_time);
-        e = (TextView) findViewById(R.id.tv_question);
-        p = (LinearLayout) findViewById(R.id.timeout_bar);
-        f = (RelativeLayout) findViewById(R.id.layout_answer_ox);
-        g = (ImageView) findViewById(R.id.img_answer_o);
-        h = (ImageView) findViewById(R.id.img_answer_x);
-        i = (LinearLayout) findViewById(R.id.layout_answer_ab);
-        j = findViewById(R.id.view_answer_a);
-        k = findViewById(R.id.view_answer_b);
-        l = (TextView) findViewById(R.id.tv_answer_a);
-        m = (TextView) findViewById(R.id.tv_answer_b);
-        n = (ImageView) findViewById(R.id.img_answer_a);
-        o = (ImageView) findViewById(R.id.img_answer_b);
+        quizBinding = QuizBoardBinding.inflate(((Activity) getContext()).getLayoutInflater(), this, true);
         g();
     }
 
@@ -122,27 +94,27 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     }
 
     public final void c() {
-        g.setOnClickListener((View.OnClickListener) null);
-        h.setOnClickListener((View.OnClickListener) null);
-        j.setOnClickListener((View.OnClickListener) null);
-        k.setOnClickListener((View.OnClickListener) null);
+        quizBinding.imgAnswerO.setOnClickListener((View.OnClickListener) null);
+        quizBinding.imgAnswerX.setOnClickListener((View.OnClickListener) null);
+        quizBinding.viewAnswerA.setOnClickListener((View.OnClickListener) null);
+        quizBinding.viewAnswerB.setOnClickListener((View.OnClickListener) null);
     }
 
     public final void d() {
-        g.setTranslationX(wB.a(getContext(), -50.0F));
-        g.setAlpha(1.0F);
-        g.setScaleX(0.9F);
-        g.setScaleY(0.9F);
-        h.setTranslationX(wB.a(getContext(), 50.0F));
-        h.setAlpha(1.0F);
-        h.setScaleX(0.9F);
-        h.setScaleY(0.9F);
-        n.setScaleX(0.0F);
-        n.setScaleY(0.0F);
-        n.setAlpha(0.0F);
-        o.setScaleX(0.0F);
-        o.setScaleY(0.0F);
-        o.setAlpha(0.0F);
+        quizBinding.imgAnswerO.setTranslationX(wB.a(getContext(), -50.0F));
+        quizBinding.imgAnswerO.setAlpha(1.0F);
+        quizBinding.imgAnswerO.setScaleX(0.9F);
+        quizBinding.imgAnswerO.setScaleY(0.9F);
+        quizBinding.imgAnswerX.setTranslationX(wB.a(getContext(), 50.0F));
+        quizBinding.imgAnswerX.setAlpha(1.0F);
+        quizBinding.imgAnswerX.setScaleX(0.9F);
+        quizBinding.imgAnswerX.setScaleY(0.9F);
+        quizBinding.imgAnswerA.setScaleX(0.0F);
+        quizBinding.imgAnswerA.setScaleY(0.0F);
+        quizBinding.imgAnswerA.setAlpha(0.0F);
+        quizBinding.imgAnswerB.setScaleX(0.0F);
+        quizBinding.imgAnswerB.setScaleY(0.0F);
+        quizBinding.imgAnswerB.setAlpha(0.0F);
     }
 
     public final void e() {
@@ -171,15 +143,15 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
                         break label32;
                     }
 
-                    mB.a(g, 0);
-                    mB.a(h, 1);
-                    h.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(1.0F).start();
-                    var3 = g;
+                    mB.a(quizBinding.imgAnswerO, 0);
+                    mB.a(quizBinding.imgAnswerX, 1);
+                    quizBinding.imgAnswerX.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(1.0F).start();
+                    var3 = quizBinding.imgAnswerO;
                 } else {
-                    mB.a(g, 1);
-                    mB.a(h, 0);
-                    g.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(1.0F).start();
-                    var3 = h;
+                    mB.a(quizBinding.imgAnswerO, 1);
+                    mB.a(quizBinding.imgAnswerX, 0);
+                    quizBinding.imgAnswerO.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(1.0F).start();
+                    var3 = quizBinding.imgAnswerX;
                 }
 
                 var4 = var3.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(0.0F);
@@ -194,9 +166,9 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
                         break label32;
                     }
 
-                    var3 = o;
+                    var3 = quizBinding.imgAnswerB;
                 } else {
-                    var3 = n;
+                    var3 = quizBinding.imgAnswerA;
                 }
 
                 var4 = var3.animate().scaleX(1.0F).scaleY(1.0F).alpha(1.0F);
@@ -244,11 +216,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         }
 
         public void onTick(long millisUntilFinished) {
-            (new Handler()).post(() -> {
-                if (d != null) {
-                    d.setText(String.valueOf(millisUntilFinished / 1000L + 1L));
-                }
-            });
+            (new Handler()).post(() -> quizBinding.tvRemaingTime.setText(String.valueOf(millisUntilFinished / 1000L + 1L)));
         }
     }
 }
