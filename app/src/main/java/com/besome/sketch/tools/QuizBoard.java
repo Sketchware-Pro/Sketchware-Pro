@@ -11,8 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.QuizBean;
-import com.sketchware.remod.R.id;
-import com.sketchware.remod.R.layout;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -53,21 +52,21 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         e.setText(var1.question);
         int var2 = var1.type;
         if (var2 == 1) {
-            f.setVisibility(0);
-            g.setVisibility(0);
-            h.setVisibility(0);
+            f.setVisibility(View.VISIBLE);
+            g.setVisibility(View.VISIBLE);
+            h.setVisibility(View.VISIBLE);
             mB.a(g, 1);
             mB.a(h, 1);
             g.setOnClickListener(this);
             h.setOnClickListener(this);
-            i.setVisibility(8);
+            i.setVisibility(View.GONE);
         } else if (var2 == 2) {
-            i.setVisibility(0);
+            i.setVisibility(View.VISIBLE);
             j.setOnClickListener(this);
             k.setOnClickListener(this);
             l.setText(var1.answerA);
             m.setText(var1.answerB);
-            f.setVisibility(8);
+            f.setVisibility(View.GONE);
         }
 
     }
@@ -82,40 +81,38 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
                 return;
             }
 
-            p.getChildAt(var1).setBackgroundColor(-1118482);
+            p.getChildAt(var1).setBackgroundColor(0xffeeeeee);
         }
     }
 
     public void a() {
-        a var1 = s;
-        if (var1 != null) {
-            var1.cancel();
+        if (s != null) {
+            s.cancel();
             s = null;
         }
-
     }
 
-    public final void a(Context var1) {
-        wB.a(var1, this, layout.quiz_board);
-        d = (TextView) findViewById(id.tv_remaing_time);
-        e = (TextView) findViewById(id.tv_question);
-        p = (LinearLayout) findViewById(id.timeout_bar);
-        f = (RelativeLayout) findViewById(id.layout_answer_ox);
-        g = (ImageView) findViewById(id.img_answer_o);
-        h = (ImageView) findViewById(id.img_answer_x);
-        i = (LinearLayout) findViewById(id.layout_answer_ab);
-        j = findViewById(id.view_answer_a);
-        k = findViewById(id.view_answer_b);
-        l = (TextView) findViewById(id.tv_answer_a);
-        m = (TextView) findViewById(id.tv_answer_b);
-        n = (ImageView) findViewById(id.img_answer_a);
-        o = (ImageView) findViewById(id.img_answer_b);
+    private void a(Context var1) {
+        wB.a(var1, this, R.layout.quiz_board);
+        d = (TextView) findViewById(R.id.tv_remaing_time);
+        e = (TextView) findViewById(R.id.tv_question);
+        p = (LinearLayout) findViewById(R.id.timeout_bar);
+        f = (RelativeLayout) findViewById(R.id.layout_answer_ox);
+        g = (ImageView) findViewById(R.id.img_answer_o);
+        h = (ImageView) findViewById(R.id.img_answer_x);
+        i = (LinearLayout) findViewById(R.id.layout_answer_ab);
+        j = findViewById(R.id.view_answer_a);
+        k = findViewById(R.id.view_answer_b);
+        l = (TextView) findViewById(R.id.tv_answer_a);
+        m = (TextView) findViewById(R.id.tv_answer_b);
+        n = (ImageView) findViewById(R.id.img_answer_a);
+        o = (ImageView) findViewById(R.id.img_answer_b);
         g();
     }
 
     public void b() {
-        ArrayList var2 = q;
-        if (var2 == null || var2.size() <= 0) {
+        ArrayList<QuizBean> var2 = q;
+        if (var2 == null || var2.isEmpty()) {
             q = tq.a();
         }
 
@@ -223,17 +220,13 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     public void onClick(View var1) {
         if (!mB.a()) {
             a();
-            switch (var1.getId()) {
-                case 2131231109:
-                case 2131231110:
-                case 2131232314:
-                case 2131232315:
-                    f();
-                default:
-                    if (r.type == 2) {
-                        var1.getId();
-                    }
-
+            int id = var1.getId();
+            if (id == R.id.img_answer_o || id == R.id.img_answer_x
+                    || id == R.id.view_answer_a || id == R.id.view_answer_b) {
+                f();
+            }
+            if (r.type == 2) {
+                var1.getId();
             }
         }
     }
