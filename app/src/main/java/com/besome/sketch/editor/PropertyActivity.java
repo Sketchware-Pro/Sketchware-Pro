@@ -66,6 +66,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public ro w;
 
 
+    @Override
     public void a(String var1, Object var2) {
     }
 
@@ -163,6 +164,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         finish();
     }
 
+    @Override
     public void onActivityResult(int var1, int var2, Intent var3) {
         super.onActivityResult(var1, var2, var3);
         if (var1 == 209 && var2 == -1 && jC.d(q) != null && var3 != null) {
@@ -176,11 +178,13 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
     }
 
+    @Override
     public void onBackPressed() {
         u.i(o);
         o();
     }
 
+    @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         setContentView(layout.property);
@@ -238,15 +242,18 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         super.j.h();
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu var1) {
         getMenuInflater().inflate(menu.property_menu, var1);
         return true;
     }
 
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem var1) {
         if (var1.getItemId() == id.menu_add_image_res) {
             p();
@@ -255,6 +262,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         return super.onOptionsItemSelected(var1);
     }
 
+    @Override
     public void onPostCreate(Bundle var1) {
         super.onPostCreate(var1);
         ViewPropertyItems var2 = new ViewPropertyItems(this);
@@ -263,6 +271,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         l();
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         if (!super.j()) {
@@ -277,6 +286,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         super.d.send((new HitBuilders.ScreenViewBuilder()).build());
     }
 
+    @Override
     public void onSaveInstanceState(Bundle var1) {
         var1.putString("sc_id", q);
         var1.putParcelable("project_file", n);
@@ -298,6 +308,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             c = var1;
         }
 
+        @Override
         public int getItemCount() {
             return c.s.size();
         }
@@ -346,6 +357,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             var1.t.setColorFilter(var5);
         }
 
+        @Override
         public a onCreateViewHolder(ViewGroup var1, int var2) {
             return new a(this, LayoutInflater.from(var1.getContext()).inflate(layout.common_category_triangle_item, var1, false));
         }
@@ -367,6 +379,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
                 var2.setOnClickListener(this);
             }
 
+            @Override
             public void onClick(View var1) {
                 if (!mB.a()) {
                     if (getLayoutPosition() != -1) {
