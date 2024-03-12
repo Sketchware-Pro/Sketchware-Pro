@@ -17,9 +17,7 @@ import com.sketchware.remod.R.layout;
 import java.util.ArrayList;
 import java.util.Random;
 
-import a.a.a.lI;
 import a.a.a.mB;
-import a.a.a.mI;
 import a.a.a.tq;
 import a.a.a.wB;
 
@@ -211,7 +209,10 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         }
 
         c();
-        (new Handler()).postDelayed(new lI(this), 2000L);
+        (new Handler()).postDelayed(() -> {
+            d();
+            b();
+        }, 2000L);
     }
 
     public void g() {
@@ -249,8 +250,12 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
             a.f();
         }
 
-        public void onTick(long var1) {
-            (new Handler()).post(new mI(this, var1));
+        public void onTick(long millisUntilFinished) {
+            (new Handler()).post(() -> {
+                if (d != null) {
+                    d.setText(String.valueOf(millisUntilFinished / 1000L + 1L));
+                }
+            });
         }
     }
 }
