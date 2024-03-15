@@ -35,8 +35,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     private void setData(QuizBean quizBean) {
         r = quizBean;
         quizBinding.tvQuestion.setText(quizBean.question);
-        int var2 = quizBean.type;
-        if (var2 == 1) {
+        if (quizBean.type == 1) {
             quizBinding.layoutAnswerOx.setVisibility(View.VISIBLE);
             quizBinding.imgAnswerO.setVisibility(View.VISIBLE);
             quizBinding.imgAnswerX.setVisibility(View.VISIBLE);
@@ -45,7 +44,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
             quizBinding.imgAnswerO.setOnClickListener(this);
             quizBinding.imgAnswerX.setOnClickListener(this);
             quizBinding.layoutAnswerAb.setVisibility(View.GONE);
-        } else if (var2 == 2) {
+        } else if (quizBean.type == 2) {
             quizBinding.layoutAnswerAb.setVisibility(View.VISIBLE);
             quizBinding.viewAnswerA.setOnClickListener(this);
             quizBinding.viewAnswerB.setOnClickListener(this);
@@ -83,21 +82,20 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     }
 
     public void b() {
-        ArrayList<QuizBean> var2 = q;
-        if (var2 == null || var2.isEmpty()) {
+        if (q == null || q.isEmpty()) {
             q = tq.a();
         }
 
         int var1 = (new Random()).nextInt(q.size());
-        setData((QuizBean) q.remove(var1));
+        setData(q.remove(var1));
         e();
     }
 
     public final void c() {
-        quizBinding.imgAnswerO.setOnClickListener((View.OnClickListener) null);
-        quizBinding.imgAnswerX.setOnClickListener((View.OnClickListener) null);
-        quizBinding.viewAnswerA.setOnClickListener((View.OnClickListener) null);
-        quizBinding.viewAnswerB.setOnClickListener((View.OnClickListener) null);
+        quizBinding.imgAnswerO.setOnClickListener(null);
+        quizBinding.imgAnswerX.setOnClickListener(null);
+        quizBinding.viewAnswerA.setOnClickListener(null);
+        quizBinding.viewAnswerB.setOnClickListener(null);
     }
 
     public final void d() {
@@ -124,7 +122,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         }
 
         s = null;
-        var1 = new a(this, 15000L, 250L);
+        var1 = new a(15000L, 250L);
         s = var1;
         var1.start();
     }
@@ -204,15 +202,13 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     }
 
     public class a extends CountDownTimer {
-        public final QuizBoard a;
 
-        public a(QuizBoard var1, long var2, long var4) {
+        public a(long var2, long var4) {
             super(var2, var4);
-            a = var1;
         }
 
         public void onFinish() {
-            a.f();
+            f();
         }
 
         public void onTick(long millisUntilFinished) {
