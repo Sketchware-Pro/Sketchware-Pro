@@ -76,9 +76,9 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private void initialize(Context var1) {
-        wB.a(var1, this, R.layout.quiz_board);
-        quizBinding = QuizBoardBinding.inflate(((Activity) getContext()).getLayoutInflater(), this, true);
+    private void initialize(Context context) {
+        wB.a(context, this, R.layout.quiz_board);
+        quizBinding = QuizBoardBinding.inflate(((Activity) context).getLayoutInflater(), this, true);
         g();
     }
 
