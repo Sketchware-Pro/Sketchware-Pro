@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -25,21 +25,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.CustomScrollView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.sketchware.remod.R.drawable;
-import com.sketchware.remod.R.id;
-import com.sketchware.remod.R.layout;
-import com.sketchware.remod.R.menu;
-import com.sketchware.remod.R.style;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 import a.a.a.Kw;
 import a.a.a.cC;
@@ -47,23 +42,19 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.ro;
 import a.a.a.tx;
-import a.a.a.zs;
+import mod.hey.studios.util.Helper;
 
 public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
-    public Toolbar k;
-    public LinearLayout l;
-    public CustomScrollView m;
-    public ProjectFileBean n;
-    public ViewBean o;
-    public boolean p;
-    public String q;
-    public LinearLayout r;
-    public ArrayList<Integer> s;
-    public RecyclerView t;
-    public ViewPropertyItems u;
-    public int v;
-    public ro w;
+    private final ArrayList<Integer> propertyGroups = new ArrayList<>();
+    private LinearLayout content;
+    private ProjectFileBean projectFileBean;
+    private ViewBean viewBean;
+    private boolean p;
+    private String sc_id;
+    private LinearLayout r;
+    private ViewPropertyItems propertyItems;
+    private int layoutPosition;
 
 
     @Override
@@ -71,107 +62,89 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     }
 
     public void l() {
-        u.setProjectFileBean(n);
-        u.a(q, o);
-        l.addView(u);
+        propertyItems.setProjectFileBean(projectFileBean);
+        propertyItems.a(sc_id, viewBean);
+        content.addView(propertyItems);
     }
 
-    public final void m() {
-        ArrayList var1 = jC.d(q).m();
-        tx var2;
-        if (!var1.contains(o.layout.backgroundResource)) {
-            o.layout.backgroundResource = null;
-            var2 = (tx) l.findViewWithTag("property_background_resource");
-            if (var2 != null) {
-                var2.setValue(o.layout.backgroundResource);
+    private void m() {
+        ArrayList<String> var1 = jC.d(sc_id).m();
+        tx resourceProperty;
+        if (!var1.contains(viewBean.layout.backgroundResource)) {
+            viewBean.layout.backgroundResource = null;
+            resourceProperty = content.findViewWithTag("property_background_resource");
+            if (resourceProperty != null) {
+                resourceProperty.setValue(viewBean.layout.backgroundResource);
             }
         }
 
-        ViewBean var6 = o;
-        if (var6.type == 6 && !var1.contains(var6.image.resName)) {
-            o.image.resName = "default_image";
-            var2 = (tx) l.findViewWithTag("property_image");
-            if (var2 != null) {
-                var2.setValue(o.image.resName);
+        if (viewBean.type == 6 && !var1.contains(viewBean.image.resName)) {
+            viewBean.image.resName = "default_image";
+            resourceProperty = content.findViewWithTag("property_image");
+            if (resourceProperty != null) {
+                resourceProperty.setValue(viewBean.image.resName);
             }
         }
 
-        Iterator var7 = jC.b(q).e().iterator();
-
-        String var3;
-        Iterator var8;
-        while (var7.hasNext()) {
-            var3 = (String) var7.next();
-            var8 = jC.a(q).d(var3).iterator();
-
-            while (var8.hasNext()) {
-                ViewBean var4 = (ViewBean) var8.next();
-                if (var4.type == 6 && !var1.contains(var4.image.resName)) {
-                    var4.image.resName = "default_image";
+        for (String fileName : jC.b(sc_id).e()) {
+            for (ViewBean bean : jC.a(sc_id).d(fileName)) {
+                if (bean.type == 6 && !var1.contains(bean.image.resName)) {
+                    bean.image.resName = "default_image";
                     p = true;
                 }
 
-                if (!var1.contains(var4.layout.backgroundResource)) {
-                    var4.layout.backgroundResource = null;
+                if (!var1.contains(bean.layout.backgroundResource)) {
+                    bean.layout.backgroundResource = null;
                     p = true;
                 }
             }
         }
 
-        var7 = jC.b(q).d().iterator();
-
-        while (var7.hasNext()) {
-            var3 = (String) var7.next();
-            Iterator var5 = jC.a(q).b(var3).entrySet().iterator();
-
-            while (var5.hasNext()) {
-                var8 = ((ArrayList) ((Map.Entry) var5.next()).getValue()).iterator();
-
-                while (var8.hasNext()) {
-                    BlockBean var9 = (BlockBean) var8.next();
-                    if ("setImage".equals(var9.opCode)) {
-                        if (!var1.contains(var9.parameters.get(1))) {
-                            var9.parameters.set(1, "default_image");
+        for (String fileName : jC.b(sc_id).d()) {
+            for (Map.Entry<String, ArrayList<BlockBean>> var4 : jC.a(sc_id).b(fileName).entrySet()) {
+                for (BlockBean bean : var4.getValue()) {
+                    if ("setImage".equals(bean.opCode)) {
+                        if (!var1.contains(bean.parameters.get(1))) {
+                            bean.parameters.set(1, "default_image");
                         }
-                    } else if ("setBgResource".equals(var9.opCode) && !var1.contains(var9.parameters.get(1))) {
-                        var9.parameters.set(1, "NONE");
+                    } else if ("setBgResource".equals(bean.opCode) && !var1.contains(bean.parameters.get(1))) {
+                        bean.parameters.set(1, "NONE");
                     }
                 }
             }
         }
-
     }
 
     public void n() {
-        r.setVisibility(8);
+        r.setVisibility(View.GONE);
     }
 
     public void o() {
-        ViewBean var1;
-        if (o.id.equals("_fab")) {
-            var1 = jC.a(q).h(n.getXmlName());
+        ViewBean viewBean;
+        if (this.viewBean.id.equals("_fab")) {
+            viewBean = jC.a(sc_id).h(projectFileBean.getXmlName());
         } else {
-            var1 = jC.a(q).c(n.getXmlName(), o.preId);
+            viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), this.viewBean.preId);
         }
 
-        cC.c(q).a(n.getXmlName(), var1.clone(), o);
-        var1.copy(o);
+        cC.c(sc_id).a(projectFileBean.getXmlName(), viewBean.clone(), this.viewBean);
+        viewBean.copy(this.viewBean);
         Intent var2 = new Intent();
-        var2.putExtra("view_id", o.id);
+        var2.putExtra("view_id", this.viewBean.id);
         var2.putExtra("is_edit_image", p);
-        var2.putExtra("bean", var1);
-        setResult(-1, var2);
+        var2.putExtra("bean", viewBean);
+        setResult(RESULT_OK, var2);
         finish();
     }
 
     @Override
-    public void onActivityResult(int var1, int var2, Intent var3) {
-        super.onActivityResult(var1, var2, var3);
-        if (var1 == 209 && var2 == -1 && jC.d(q) != null && var3 != null) {
-            String var4 = var3.getStringExtra("sc_id");
-            ArrayList var5 = var3.getParcelableArrayListExtra("result");
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 209 && resultCode == -1 && jC.d(sc_id) != null && data != null) {
+            String var4 = data.getStringExtra("sc_id");
+            ArrayList<ProjectResourceBean> result = data.getParcelableArrayListExtra("result");
             if (jC.d(var4) != null) {
-                jC.d(var4).b(var5);
+                jC.d(var4).b(result);
                 m();
             }
         }
@@ -180,232 +153,188 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
     @Override
     public void onBackPressed() {
-        u.i(o);
+        propertyItems.i(viewBean);
         o();
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
-        setContentView(layout.property);
-        if (!super.j()) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.property);
+        if (!j()) {
             finish();
         }
 
-        w = new ro(getApplicationContext());
-        Toolbar var2 = (Toolbar) findViewById(id.toolbar);
-        k = var2;
-        setSupportActionBar(var2);
-        findViewById(id.layout_main_logo).setVisibility(8);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        ro w = new ro(getApplicationContext());
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        k.setNavigationOnClickListener(new zs(this));
-        k.setPopupTheme(style.ThemeOverlay_ToolbarMenu);
-        ArrayList var4 = new ArrayList();
-        s = var4;
-        var4.add(1);
-        s.add(2);
-        s.add(3);
-        s.add(4);
-        RecyclerView var6 = (RecyclerView) findViewById(id.property_group_list);
-        t = var6;
-        var6.setHasFixedSize(true);
-        LinearLayoutManager var7 = new LinearLayoutManager(getApplicationContext(), 1, false);
-        t.setLayoutManager(var7);
-        t.setAdapter(new a(this));
-        m = (CustomScrollView) findViewById(id.scroll_view);
-        l = (LinearLayout) findViewById(id.content);
-        Parcelable var3;
-        if (var1 != null) {
-            q = var1.getString("sc_id");
-            n = (ProjectFileBean) var1.getParcelable("project_file");
-            var3 = var1.getParcelable("bean");
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
+        propertyGroups.add(1);
+        propertyGroups.add(2);
+        propertyGroups.add(3);
+        propertyGroups.add(4);
+        RecyclerView propertyGroupList = findViewById(R.id.property_group_list);
+        propertyGroupList.setHasFixedSize(true);
+        propertyGroupList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        propertyGroupList.setAdapter(new ItemAdapter());
+        content = findViewById(R.id.content);
+        if (savedInstanceState != null) {
+            sc_id = savedInstanceState.getString("sc_id");
+            projectFileBean = savedInstanceState.getParcelable("project_file");
+            viewBean = savedInstanceState.getParcelable("bean");
         } else {
-            q = getIntent().getStringExtra("sc_id");
-            n = (ProjectFileBean) getIntent().getParcelableExtra("project_file");
-            var3 = getIntent().getParcelableExtra("bean");
+            sc_id = getIntent().getStringExtra("sc_id");
+            projectFileBean = getIntent().getParcelableExtra("project_file");
+            viewBean = getIntent().getParcelableExtra("bean");
         }
 
-        o = (ViewBean) var3;
-        ActionBar var8 = getSupportActionBar();
-        String var5;
-        if (o.id.charAt(0) == '_') {
-            var5 = o.id.substring(1);
+        ActionBar actionBar = getSupportActionBar();
+        String viewId;
+        if (viewBean.id.charAt(0) == '_') {
+            viewId = viewBean.id.substring(1);
         } else {
-            var5 = o.id;
+            viewId = viewBean.id;
         }
 
-        var8.setTitle(var5);
-        LinearLayout var9 = (LinearLayout) findViewById(id.layout_ads);
-        r = var9;
-        var9.setVisibility(8);
-        super.j.h();
+        actionBar.setTitle(viewId);
+        r = findViewById(R.id.layout_ads);
+        findViewById(R.id.layout_ads).setVisibility(View.GONE);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu var1) {
-        getMenuInflater().inflate(menu.property_menu, var1);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.property_menu, menu);
         return true;
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem var1) {
-        if (var1.getItemId() == id.menu_add_image_res) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.menu_add_image_res) {
             p();
         }
 
-        return super.onOptionsItemSelected(var1);
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override
-    public void onPostCreate(Bundle var1) {
-        super.onPostCreate(var1);
-        ViewPropertyItems var2 = new ViewPropertyItems(this);
-        u = var2;
-        var2.setOrientation(1);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        propertyItems = new ViewPropertyItems(this);
+        propertyItems.setOrientation(LinearLayout.VERTICAL);
         l();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!j()) {
             finish();
         }
-
-        if (super.j.h()) {
-            n();
-        }
-
-        super.d.setScreenName(PropertyActivity.class.getSimpleName());
-        super.d.send((new HitBuilders.ScreenViewBuilder()).build());
+        n();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", q);
-        var1.putParcelable("project_file", n);
-        var1.putParcelable("bean", o);
-        super.onSaveInstanceState(var1);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        outState.putParcelable("project_file", projectFileBean);
+        outState.putParcelable("bean", viewBean);
+        super.onSaveInstanceState(outState);
     }
 
     public void p() {
         Intent var1 = new Intent(getApplicationContext(), ManageImageActivity.class);
-        var1.setFlags(536870912);
-        var1.putExtra("sc_id", q);
+        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        var1.putExtra("sc_id", sc_id);
         startActivityForResult(var1, 209);
     }
 
-    public class a extends RecyclerView.Adapter<a> {
-        public final PropertyActivity c;
-
-        public a(PropertyActivity var1) {
-            c = var1;
-        }
+    public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         @Override
         public int getItemCount() {
-            return c.s.size();
+            return propertyGroups.size();
         }
 
-        public void onBindViewHolder(a var1, int var2) {
-            (Integer) c.s.get(var2);
-            ViewPropertyAnimatorCompat var3;
-            ColorMatrix var4;
-            ColorMatrixColorFilter var5;
-            if (c.v == var2) {
-                var3 = ViewCompat.animate(var1.t);
-                var3.scaleX(1.1F);
-                var3.scaleY(1.1F);
-                var3.setDuration(300L);
-                var3.setInterpolator(new AccelerateInterpolator());
-                var3.start();
-                var3 = ViewCompat.animate(var1.t);
-                var3.scaleX(1.1F);
-                var3.scaleY(1.1F);
-                var3.setDuration(300L);
-                var3.setInterpolator(new AccelerateInterpolator());
-                var3.start();
-                var1.v.setVisibility(0);
-                var4 = new ColorMatrix();
-                var4.setSaturation(1.0F);
-                var5 = new ColorMatrixColorFilter(var4);
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ViewPropertyAnimatorCompat propertyAnimator;
+            ColorMatrix colorMatrix;
+            ColorMatrixColorFilter colorFilter;
+            if (layoutPosition == position) {
+                propertyAnimator = ViewCompat.animate(holder.imgIcon);
+                propertyAnimator.scaleX(1.1F);
+                propertyAnimator.scaleY(1.1F);
+                propertyAnimator.setDuration(300L);
+                propertyAnimator.setInterpolator(new AccelerateInterpolator());
+                propertyAnimator.start();
+                propertyAnimator = ViewCompat.animate(holder.imgIcon);
+                propertyAnimator.scaleX(1.1F);
+                propertyAnimator.scaleY(1.1F);
+                propertyAnimator.setDuration(300L);
+                propertyAnimator.setInterpolator(new AccelerateInterpolator());
+                propertyAnimator.start();
+                holder.pointerLeft.setVisibility(View.VISIBLE);
+                colorMatrix = new ColorMatrix();
+                colorMatrix.setSaturation(1.0F);
+                colorFilter = new ColorMatrixColorFilter(colorMatrix);
             } else {
-                var3 = ViewCompat.animate(var1.t);
-                var3.scaleX(1.0F);
-                var3.scaleY(1.0F);
-                var3.setDuration(300L);
-                var3.setInterpolator(new DecelerateInterpolator());
-                var3.start();
-                var3 = ViewCompat.animate(var1.t);
-                var3.scaleX(1.0F);
-                var3.scaleY(1.0F);
-                var3.setDuration(300L);
-                var3.setInterpolator(new DecelerateInterpolator());
-                var3.start();
-                var1.v.setVisibility(8);
-                var4 = new ColorMatrix();
-                var4.setSaturation(0.0F);
-                var5 = new ColorMatrixColorFilter(var4);
+                propertyAnimator = ViewCompat.animate(holder.imgIcon);
+                propertyAnimator.scaleX(1.0F);
+                propertyAnimator.scaleY(1.0F);
+                propertyAnimator.setDuration(300L);
+                propertyAnimator.setInterpolator(new DecelerateInterpolator());
+                propertyAnimator.start();
+                propertyAnimator = ViewCompat.animate(holder.imgIcon);
+                propertyAnimator.scaleX(1.0F);
+                propertyAnimator.scaleY(1.0F);
+                propertyAnimator.setDuration(300L);
+                propertyAnimator.setInterpolator(new DecelerateInterpolator());
+                propertyAnimator.start();
+                holder.pointerLeft.setVisibility(View.GONE);
+                colorMatrix = new ColorMatrix();
+                colorMatrix.setSaturation(0.0F);
+                colorFilter = new ColorMatrixColorFilter(colorMatrix);
             }
 
-            var1.t.setColorFilter(var5);
+            holder.imgIcon.setColorFilter(colorFilter);
         }
 
+        @NonNull
         @Override
-        public a onCreateViewHolder(ViewGroup var1, int var2) {
-            return new a(this, LayoutInflater.from(var1.getContext()).inflate(layout.common_category_triangle_item, var1, false));
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
         }
 
-        public class a extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public ImageView t;
-            public TextView u;
-            public View v;
-            public final a w;
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            public ImageView imgIcon;
+            public TextView tvName;
+            public View pointerLeft;
 
-            public a(a var1, View var2) {
-                super(var2);
-                w = var1;
-                t = (ImageView) var2.findViewById(id.img_icon);
-                u = (TextView) var2.findViewById(id.tv_name);
-                View var3 = var2.findViewById(id.pointer_left);
-                v = var3;
-                var3.setBackgroundResource(drawable.triangle_point_left_primary);
-                var2.setOnClickListener(this);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                imgIcon = itemView.findViewById(R.id.img_icon);
+                tvName = itemView.findViewById(R.id.tv_name);
+                pointerLeft = itemView.findViewById(R.id.pointer_left);
+                pointerLeft.setBackgroundResource(R.drawable.triangle_point_left_primary);
+                itemView.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View var1) {
                 if (!mB.a()) {
                     if (getLayoutPosition() != -1) {
-                        int var2 = getLayoutPosition();
-                        a var4 = w;
-                        int var3 = var4.c.v;
-                        if (var2 != var3) {
-                            var4.notifyItemChanged(var3);
-                            w.c.v = getLayoutPosition();
-                            var4 = w;
-                            var4.notifyItemChanged(var4.c.v);
-                            var2 = (Integer) w.c.s.get(w.c.v);
-                            if (var2 != 1) {
-                                if (var2 != 2) {
-                                    if (var2 != 3) {
-                                        if (var2 == 4) {
-                                            w.c.u.f(w.c.o);
-                                        }
-                                    } else {
-                                        w.c.u.h(w.c.o);
-                                    }
-                                } else {
-                                    w.c.u.g(w.c.o);
-                                }
-                            } else {
-                                w.c.u.d(w.c.o);
+                        if (getLayoutPosition() != layoutPosition) {
+                            notifyItemChanged(layoutPosition);
+                            layoutPosition = getLayoutPosition();
+                            notifyItemChanged(layoutPosition);
+                            switch (propertyGroups.get(layoutPosition)) {
+                                case 1 -> propertyItems.d(viewBean);
+                                case 2 -> propertyItems.g(viewBean);
+                                case 3 -> propertyItems.h(viewBean);
+                                case 4 -> propertyItems.f(viewBean);
                             }
                         }
                     }
