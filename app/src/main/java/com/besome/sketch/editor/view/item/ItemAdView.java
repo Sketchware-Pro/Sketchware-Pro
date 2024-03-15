@@ -9,6 +9,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.sketchware.remod.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -31,12 +32,12 @@ public class ItemAdView extends LinearLayout implements sy {
     private void initialize(Context context) {
         paddingFactor = wB.a(context, 1.0F);
         paint = new Paint(1);
-        paint.setColor(-1785080368);
+        paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
         imgView = new ImageView(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, -2);
         imgView.setLayoutParams(layoutParams);
-        imgView.setImageResource(2131165302);
+        imgView.setImageResource(R.drawable.admob_banner);
         imgView.setScaleType(ScaleType.FIT_XY);
         imgView.setPadding(0, 0, 0, 0);
         addView(imgView);
@@ -69,17 +70,17 @@ public class ItemAdView extends LinearLayout implements sy {
     public void setAdSize(String adSize) {
         switch (adSize) {
             case "BANNER", "SMART_BANNER" -> {
-                imgView.setImageResource(2131165302);
+                imgView.setImageResource(R.drawable.admob_banner);
                 imgView.getLayoutParams().width = (int) (paddingFactor * 320.0F);
                 imgView.getLayoutParams().height = (int) (paddingFactor * 50.0F);
             }
             case "MEDIUM_RECTANGLE" -> {
-                imgView.setImageResource(2131165304);
+                imgView.setImageResource(R.drawable.admob_medium_banner);
                 imgView.getLayoutParams().width = (int) (paddingFactor * 300.0F);
                 imgView.getLayoutParams().height = (int) (paddingFactor * 250.0F);
             }
             case "LARGE_BANNER" -> {
-                imgView.setImageResource(2131165303);
+                imgView.setImageResource(R.drawable.admob_large_banner);
                 imgView.getLayoutParams().width = (int) (paddingFactor * 320.0F);
                 imgView.getLayoutParams().height = (int) (paddingFactor * 100.0F);
             }

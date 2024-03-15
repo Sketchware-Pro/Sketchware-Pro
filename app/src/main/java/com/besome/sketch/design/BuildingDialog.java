@@ -23,7 +23,7 @@ public class BuildingDialog extends Dialog {
         setContentView(R.layout.build_progress_msg_box);
 
         LinearLayout quizLayout = findViewById(R.id.layout_quiz);
-        quizBoard = new QuizBoard(getContext());
+        quizBoard = new QuizBoard(context);
         quizLayout.addView(quizBoard);
         setTitle(Helper.getResString(R.string.common_message_progress));
         tvProgress = findViewById(R.id.tv_progress);

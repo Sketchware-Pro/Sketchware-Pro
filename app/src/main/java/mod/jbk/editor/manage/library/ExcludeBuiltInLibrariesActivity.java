@@ -326,10 +326,6 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
             saveConfig(activity.get().sc_id, activity.get().isExcludingEnabled, activity.get().excludedLibraries);
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 
     private static class BuiltInLibraryAdapter extends RecyclerView.Adapter<BuiltInLibraryAdapter.ViewHolder> {

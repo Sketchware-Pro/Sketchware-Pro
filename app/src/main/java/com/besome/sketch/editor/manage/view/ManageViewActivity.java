@@ -359,10 +359,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             }
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 
     public class b extends FragmentPagerAdapter {

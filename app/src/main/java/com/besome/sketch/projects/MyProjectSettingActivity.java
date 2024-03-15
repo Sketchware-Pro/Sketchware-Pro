@@ -581,10 +581,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 
     private void animateLayoutChanges(View view) {
