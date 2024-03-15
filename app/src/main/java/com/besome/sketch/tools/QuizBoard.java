@@ -27,9 +27,9 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     private a s;
     private QuizBoardBinding quizBinding;
 
-    public QuizBoard(Context var1) {
-        super(var1);
-        initialize(var1);
+    public QuizBoard(Context context) {
+        super(context);
+        initialize(context);
     }
 
     private void setData(QuizBean quizBean) {
