@@ -640,9 +640,5 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 }

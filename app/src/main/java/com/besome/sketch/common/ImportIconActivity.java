@@ -358,10 +358,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             activity.get().h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 
     private static class IconColorChangedIconLoader extends MA {
@@ -401,9 +397,5 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             activity.get().h();
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 }

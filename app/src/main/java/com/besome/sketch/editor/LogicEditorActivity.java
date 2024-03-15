@@ -2520,10 +2520,5 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             publishProgress("Now saving..");
             activity.get().E();
         }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
     }
 }

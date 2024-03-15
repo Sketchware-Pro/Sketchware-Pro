@@ -899,21 +899,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             activity.get().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-
         @Override // android.os.AsyncTask
         public void onProgressUpdate(String... strArr) {
             super.onProgressUpdate(strArr);
             // Update the ProgressDialog's text
             activity.get().a(strArr[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            b(s);
         }
 
         /**
