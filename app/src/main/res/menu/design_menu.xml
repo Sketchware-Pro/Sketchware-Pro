@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/selector_save" android:id="@id/design_option_menu_title_save_project" android:orderInCategory="110" android:title="@string/design_option_menu_title_save_project" app:showAsAction="always" />
-    <item android:icon="@drawable/selector_ic_more_white_24" android:id="@id/design_actionbar_titleopen_drawer" android:orderInCategory="110" android:title="@string/design_option_menu_title_save_project" app:showAsAction="always" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@id/design_option_menu_title_save_project"
+        android:icon="@drawable/selector_save"
+        android:orderInCategory="110"
+        android:title="@string/design_option_menu_title_save_project"
+        app:showAsAction="always" />
+    <item
+        android:id="@id/design_actionbar_titleopen_drawer"
+        android:icon="@drawable/selector_ic_more_white_24"
+        android:orderInCategory="110"
+        android:title="@string/common_word_drawer"
+        app:showAsAction="always" />
 </menu>
