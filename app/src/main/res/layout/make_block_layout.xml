@@ -311,10 +311,12 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ti_parameter"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1.0"
+                        android:hint="Parameter: m.name"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
@@ -333,6 +335,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1.0"
+                        android:hint="Variable name"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText

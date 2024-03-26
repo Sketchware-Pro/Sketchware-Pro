@@ -70,6 +70,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
+                .setCancelable(false)
                 .create();
         EditText editText = view.findViewById(R.id.ed_input);
         CheckBox skipDownloadingDependencies = view.findViewById(R.id.checkbox);
