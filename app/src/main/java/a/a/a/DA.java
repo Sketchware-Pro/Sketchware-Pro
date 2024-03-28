@@ -2,6 +2,8 @@ package a.a.a;
 
 import androidx.core.content.ContextCompat;
 
+import com.sketchware.remod.R;
+
 public abstract class DA extends qA {
     public DA() {
     }
@@ -29,11 +31,11 @@ public abstract class DA extends qA {
     public void d(int var1) {
         if (!Sp.a) {
             aB dialog = new aB(super.a);
-            dialog.b(xB.b().a(getContext(), 2131624962));
-            dialog.a(2131165391);
-            dialog.a(xB.b().a(getContext(), 2131624960));
-            dialog.b(xB.b().a(getContext(), 2131625010), new xA(this, var1, dialog));
-            dialog.a(xB.b().a(getContext(), 2131624974), new yA(this, dialog));
+            dialog.b(xB.b().a(getContext(), R.string.common_message_permission_title_storage));
+            dialog.a(R.drawable.break_warning_96_red);
+            dialog.a(xB.b().a(getContext(), R.string.common_message_permission_storage));
+            dialog.b(xB.b().a(getContext(), R.string.common_word_ok), new xA(this, var1, dialog));
+            dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), new yA(this, dialog));
             dialog.setOnDismissListener(new zA(this));
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
@@ -47,11 +49,11 @@ public abstract class DA extends qA {
     public void e(int var1) {
         if (!Sp.a) {
             aB dialog = new aB(super.a);
-            dialog.b(xB.b().a(getContext(), 2131624962));
-            dialog.a(2131165391);
-            dialog.a(xB.b().a(getContext(), 2131624961));
-            dialog.b(xB.b().a(getContext(), 2131625036), new AA(this, var1, dialog));
-            dialog.a(xB.b().a(getContext(), 2131624974), new BA(this, dialog));
+            dialog.b(xB.b().a(getContext(), R.string.common_message_permission_title_storage));
+            dialog.a(R.drawable.break_warning_96_red);
+            dialog.a(xB.b().a(getContext(), R.string.common_message_permission_storage1));
+            dialog.b(xB.b().a(getContext(), R.string.common_word_settings), new AA(this, var1, dialog));
+            dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), new BA(this, dialog));
             dialog.setOnDismissListener(new CA(this));
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
