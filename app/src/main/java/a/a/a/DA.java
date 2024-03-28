@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package a.a.a;
 
 import androidx.core.content.ContextCompat;
@@ -12,9 +7,9 @@ public abstract class DA extends qA {
     }
 
     public boolean a(int var1) {
-        boolean var2 = this.c();
+        boolean var2 = c();
         if (!var2) {
-            this.d(var1);
+            d(var1);
         }
 
         return var2;
@@ -25,23 +20,24 @@ public abstract class DA extends qA {
     public abstract void c(int var1);
 
     public boolean c() {
-        return ContextCompat.checkSelfPermission(this.getContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && ContextCompat.checkSelfPermission(this.getContext(), "android.permission.READ_EXTERNAL_STORAGE") == 0;
+        return ContextCompat.checkSelfPermission(getContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0
+                && ContextCompat.checkSelfPermission(getContext(), "android.permission.READ_EXTERNAL_STORAGE") == 0;
     }
 
     public abstract void d();
 
     public void d(int var1) {
         if (!Sp.a) {
-            aB var2 = new aB(super.a);
-            var2.b(xB.b().a(this.getContext(), 2131624962));
-            var2.a(2131165391);
-            var2.a(xB.b().a(this.getContext(), 2131624960));
-            var2.b(xB.b().a(this.getContext(), 2131625010), new xA(this, var1, var2));
-            var2.a(xB.b().a(this.getContext(), 2131624974), new yA(this, var2));
-            var2.setOnDismissListener(new zA(this));
-            var2.setCancelable(false);
-            var2.setCanceledOnTouchOutside(false);
-            var2.show();
+            aB dialog = new aB(super.a);
+            dialog.b(xB.b().a(getContext(), 2131624962));
+            dialog.a(2131165391);
+            dialog.a(xB.b().a(getContext(), 2131624960));
+            dialog.b(xB.b().a(getContext(), 2131625010), new xA(this, var1, dialog));
+            dialog.a(xB.b().a(getContext(), 2131624974), new yA(this, dialog));
+            dialog.setOnDismissListener(new zA(this));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
             Sp.a = true;
         }
     }
@@ -50,31 +46,28 @@ public abstract class DA extends qA {
 
     public void e(int var1) {
         if (!Sp.a) {
-            aB var2 = new aB(super.a);
-            var2.b(xB.b().a(this.getContext(), 2131624962));
-            var2.a(2131165391);
-            var2.a(xB.b().a(this.getContext(), 2131624961));
-            var2.b(xB.b().a(this.getContext(), 2131625036), new AA(this, var1, var2));
-            var2.a(xB.b().a(this.getContext(), 2131624974), new BA(this, var2));
-            var2.setOnDismissListener(new CA(this));
-            var2.setCancelable(false);
-            var2.setCanceledOnTouchOutside(false);
-            var2.show();
+            aB dialog = new aB(super.a);
+            dialog.b(xB.b().a(getContext(), 2131624962));
+            dialog.a(2131165391);
+            dialog.a(xB.b().a(getContext(), 2131624961));
+            dialog.b(xB.b().a(getContext(), 2131625036), new AA(this, var1, dialog));
+            dialog.a(xB.b().a(getContext(), 2131624974), new BA(this, dialog));
+            dialog.setOnDismissListener(new CA(this));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
             Sp.a = true;
         }
     }
 
-    public void onRequestPermissionsResult(int var1, String[] var2, int[] var3) {
-        int var4 = var2.length;
-
-        for (int var5 = 0; var5 < var4; ++var5) {
-            if ("android.permission.WRITE_EXTERNAL_STORAGE".equals(var2[var5])) {
-                if (var3.length <= 0 || var3[0] != 0 || var3[1] != 0) {
-                    this.e(var1);
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        for (String permission : permissions) {
+            if ("android.permission.WRITE_EXTERNAL_STORAGE".equals(permission)) {
+                if (grantResults.length == 0 || grantResults[0] != 0 || grantResults[1] != 0) {
+                    e(requestCode);
                     break;
                 }
-
-                this.b(var1);
+                b(requestCode);
             }
         }
 
