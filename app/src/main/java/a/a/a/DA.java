@@ -1,5 +1,6 @@
 package a.a.a;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.sketchware.remod.R;
@@ -79,7 +80,8 @@ public abstract class DA extends qA {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, @NonNull int[] grantResults) {
         for (String permission : permissions) {
             if ("android.permission.WRITE_EXTERNAL_STORAGE".equals(permission)) {
                 if (grantResults.length == 0 || grantResults[0] != 0 || grantResults[1] != 0) {
