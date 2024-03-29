@@ -34,9 +34,18 @@ public abstract class DA extends qA {
             dialog.b(xB.b().a(getContext(), R.string.common_message_permission_title_storage));
             dialog.a(R.drawable.break_warning_96_red);
             dialog.a(xB.b().a(getContext(), R.string.common_message_permission_storage));
-            dialog.b(xB.b().a(getContext(), R.string.common_word_ok), new xA(this, var1, dialog));
-            dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), new yA(this, dialog));
-            dialog.setOnDismissListener(new zA(this));
+            dialog.b(xB.b().a(getContext(), R.string.common_word_ok), view -> {
+                if (!mB.a()) {
+                    requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE",
+                            "android.permission.READ_EXTERNAL_STORAGE"}, var1);
+                    dialog.dismiss();
+                }
+            });
+            dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), view -> {
+                d();
+                dialog.dismiss();
+            });
+            dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
@@ -52,9 +61,17 @@ public abstract class DA extends qA {
             dialog.b(xB.b().a(getContext(), R.string.common_message_permission_title_storage));
             dialog.a(R.drawable.break_warning_96_red);
             dialog.a(xB.b().a(getContext(), R.string.common_message_permission_storage1));
-            dialog.b(xB.b().a(getContext(), R.string.common_word_settings), new AA(this, var1, dialog));
-            dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), new BA(this, dialog));
-            dialog.setOnDismissListener(new CA(this));
+            dialog.b(xB.b().a(getContext(), R.string.common_word_settings), view -> {
+                if (!mB.a()) {
+                    c(var1);
+                    dialog.dismiss();
+                }
+            });
+            dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), view -> {
+                e();
+                dialog.dismiss();
+            });
+            dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
