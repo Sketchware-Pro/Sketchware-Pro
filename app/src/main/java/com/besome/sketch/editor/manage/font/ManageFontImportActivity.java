@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -248,9 +247,6 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         if (!super.j()) {
             finish();
         }
-
-        super.d.setScreenName(ManageFontImportActivity.class.getSimpleName());
-        super.d.send((new HitBuilders.ScreenViewBuilder()).build());
     }
 
     public final void p() {
