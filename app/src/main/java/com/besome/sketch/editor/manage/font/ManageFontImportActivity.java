@@ -55,14 +55,11 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     }
 
     public final boolean b(String var1) {
-        Iterator<ProjectResourceBean> var2 = u.iterator();
-
-        do {
-            if (!var2.hasNext()) {
+        for (ProjectResourceBean resourceBean : u) {
+            if (!resourceBean.resName.equals(var1)) {
                 return false;
             }
-        } while (!var2.next().resName.equals(var1));
-
+        }
         return true;
     }
 
@@ -75,51 +72,41 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     public final ArrayList<String> l() {
         ArrayList<String> var1 = new ArrayList<>();
         var1.add("app_icon");
-        Iterator<ProjectResourceBean> var2 = v.iterator();
-
-        while (var2.hasNext()) {
-            var1.add(var2.next().resName);
+        for (ProjectResourceBean projectResourceBean : v) {
+            var1.add(projectResourceBean.resName);
         }
-
         return var1;
     }
 
     public final ArrayList<String> m() {
-        ArrayList var1 = new ArrayList();
+        ArrayList<String> var1 = new ArrayList<>();
         var1.add("app_icon");
-        Iterator var2 = u.iterator();
 
-        while (var2.hasNext()) {
-            var1.add(((ProjectResourceBean) var2.next()).resName);
+        for (ProjectResourceBean projectResourceBean : u) {
+            var1.add(projectResourceBean.resName);
         }
-
         return var1;
     }
 
     public final boolean n() {
-        ArrayList var1 = new ArrayList();
-        Iterator var2 = v.iterator();
-
-        while (var2.hasNext()) {
-            ProjectResourceBean var3 = (ProjectResourceBean) var2.next();
+        ArrayList<String> var1 = new ArrayList<>();
+        for (ProjectResourceBean var3 : v) {
             if (var3.isDuplicateCollection) {
                 var1.add(var3.resName);
             }
         }
 
-        if (var1.size() > 0) {
+        if (!var1.isEmpty()) {
             String var8 = xB.b().a(getApplicationContext(), 2131624950);
-            Iterator var4 = var1.iterator();
+            Iterator<String> var4 = var1.iterator();
 
             String var6;
             StringBuilder var7;
             for (var6 = ""; var4.hasNext(); var6 = var7.toString()) {
-                String var5 = (String) var4.next();
+                String var5 = var4.next();
                 String var9 = var6;
-                if (var6.length() > 0) {
-                    String var10 = var6 +
-                            ", ";
-                    var9 = var10;
+                if (!var6.isEmpty()) {
+                    var9 = var6 + ", ";
                 }
 
                 var7 = new StringBuilder();
@@ -128,10 +115,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             }
 
             Context var12 = getApplicationContext();
-            String var11 = var8 +
-                    "\n[" +
-                    var6 +
-                    "]";
+            String var11 = var8 + "\n[" + var6 + "]";
             bB.a(var12, var11, 1).show();
             return true;
         } else {
@@ -250,13 +234,13 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     }
 
     public final void p() {
-        ArrayList var1 = new ArrayList();
-        ArrayList var2 = new ArrayList();
-        Iterator var3 = v.iterator();
+        ArrayList<ProjectResourceBean> var1 = new ArrayList<>();
+        ArrayList<ProjectResourceBean> var2 = new ArrayList<>();
+        Iterator<ProjectResourceBean> var3 = v.iterator();
 
         ProjectResourceBean var4;
         while (var3.hasNext()) {
-            var4 = (ProjectResourceBean) var3.next();
+            var4 = var3.next();
             if (b(var4.resName)) {
                 var4.isDuplicateCollection = true;
                 var1.add(var4);
@@ -266,24 +250,20 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             }
         }
 
-        if (var1.size() > 0) {
+        if (!var1.isEmpty()) {
             bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625277), 1).show();
         } else {
             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625278), 0).show();
         }
 
-        v = new ArrayList();
-        Iterator var5 = var1.iterator();
+        v = new ArrayList<>();
 
-        while (var5.hasNext()) {
-            var4 = (ProjectResourceBean) var5.next();
+        for (ProjectResourceBean projectResourceBean : var1) {
+            var4 = projectResourceBean;
             v.add(var4);
         }
 
-        Iterator var7 = var2.iterator();
-
-        while (var7.hasNext()) {
-            ProjectResourceBean var6 = (ProjectResourceBean) var7.next();
+        for (ProjectResourceBean var6 : var2) {
             v.add(var6);
         }
 
