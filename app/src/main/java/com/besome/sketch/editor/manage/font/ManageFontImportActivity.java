@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import a.a.a.QB;
-import a.a.a.Tt;
-import a.a.a.Ut;
 import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.xB;
@@ -210,7 +208,15 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         q.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
         z = new QB(getApplicationContext(), q.getTextInputLayout(), uq.b, m(), l());
         s = findViewById(R.id.chk_samename);
-        s.setOnCheckedChangeListener(new Tt(this));
+        s.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                z.c(null);
+                z.a(v.size());
+            } else {
+                z.c(v.get(x).resName);
+                z.a(1);
+            }
+        });
         y = findViewById(R.id.btn_decide);
         y.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         y.setOnClickListener(this);
@@ -311,7 +317,23 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
                 u = var2.findViewById(R.id.img_conflict);
                 v = var2.findViewById(R.id.img);
                 w = var2.findViewById(R.id.tv_name);
-                v.setOnClickListener(new Ut(this, var1));
+                v.setOnClickListener(view -> {
+                    if (!a.a.a.mB.a()) {
+                        ManageFontImportActivity.this.x = getLayoutPosition();
+                        f(ManageFontImportActivity.this.x);
+                        l.setText(String.valueOf(getLayoutPosition() + 1));
+                        r.setText(ManageFontImportActivity.this.v.get(getLayoutPosition()).resName);
+                        if (s.isChecked()) {
+                            z.c(null);
+                            z.a(ManageFontImportActivity.this.v.size());
+                        } else {
+                            z.c(ManageFontImportActivity.this.v.get(getLayoutPosition()).resName);
+                            z.a(1);
+                        }
+
+                        ManageFontImportActivity.this.t.notifyDataSetChanged();
+                    }
+                });
             }
         }
     }
