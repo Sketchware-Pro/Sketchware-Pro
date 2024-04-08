@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,9 +52,6 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     public Button y;
     public QB z;
 
-    public ManageFontImportActivity() {
-    }
-
     public final boolean b(String var1) {
         for (ProjectResourceBean resourceBean : u) {
             if (!resourceBean.resName.equals(var1)) {
@@ -66,7 +64,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     public final void f(int var1) {
         String var2 = v.get(var1).resFullName;
         A.setTypeface(Typeface.createFromFile(var2));
-        A.setText(xB.b().a(getApplicationContext(), 2131625256));
+        A.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_description_example_sentence));
     }
 
     public final ArrayList<String> l() {
@@ -97,7 +95,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         }
 
         if (!var1.isEmpty()) {
-            String var8 = xB.b().a(getApplicationContext(), 2131624950);
+            String var8 = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
             Iterator<String> var4 = var1.iterator();
 
             String var6;
@@ -134,9 +132,9 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
 
     public void onClick(View var1) {
         int var2 = var1.getId();
-        if (var2 != 2131230816) {
-            if (var2 != 2131231113) {
-                if (var2 == 2131232151 && !n()) {
+        if (var2 != R.id.btn_decide) {
+            if (var2 != R.id.img_backbtn) {
+                if (var2 == R.id.tv_sendbtn && !n()) {
                     Intent var5 = new Intent();
                     var5.putParcelableArrayListExtra("results", v);
                     setResult(-1, var5);
@@ -184,39 +182,39 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             finish();
         }
 
-        setContentView(2131427522);
-        k = findViewById(2131231113);
+        setContentView(R.layout.manage_font_import);
+        k = findViewById(R.id.img_backbtn);
         k.setOnClickListener(this);
-        l = findViewById(2131231930);
-        m = findViewById(2131232258);
-        n = findViewById(2131232151);
-        n.setText(xB.b().a(getApplicationContext(), 2131625002).toUpperCase());
+        l = findViewById(R.id.tv_currentnum);
+        m = findViewById(R.id.tv_totalnum);
+        n = findViewById(R.id.tv_sendbtn);
+        n.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
         n.setOnClickListener(this);
-        o = findViewById(2131232138);
-        o.setText(xB.b().a(getApplicationContext(), 2131625262));
+        o = findViewById(R.id.tv_samename);
+        o.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_title_apply_same_naming));
         t = new a(this);
-        p = findViewById(2131231662);
+        p = findViewById(R.id.recycler_list);
         p.setHasFixedSize(true);
         p.setAdapter(t);
-        LinearLayoutManager var2 = new LinearLayoutManager(getApplicationContext(), 0, false);
+        LinearLayoutManager var2 = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
         p.setLayoutManager(var2);
         u = getIntent().getParcelableArrayListExtra("project_fonts");
         v = getIntent().getParcelableArrayListExtra("selected_collections");
         w = v.size();
         l.setText(String.valueOf(1));
         m.setText(String.valueOf(w));
-        q = findViewById(2131230990);
+        q = findViewById(R.id.ed_input);
         r = q.getEditText();
         r.setText(v.get(0).resName);
         r.setPrivateImeOptions("defaultInputmode=english;");
-        q.setHint(xB.b().a(this, 2131625259));
+        q.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
         z = new QB(getApplicationContext(), q.getTextInputLayout(), uq.b, m(), l());
-        s = findViewById(2131230892);
+        s = findViewById(R.id.chk_samename);
         s.setOnCheckedChangeListener(new Tt(this));
-        y = findViewById(2131230816);
-        y.setText(xB.b().a(getApplicationContext(), 2131625255));
+        y = findViewById(R.id.btn_decide);
+        y.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         y.setOnClickListener(this);
-        A = findViewById(2131231793);
+        A = findViewById(R.id.text_font);
     }
 
     public void onPostCreate(Bundle var1) {
@@ -251,9 +249,9 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         }
 
         if (!var1.isEmpty()) {
-            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625277), 1).show();
+            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), 1).show();
         } else {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625278), 0).show();
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), 0).show();
         }
 
         v = new ArrayList<>();
@@ -266,7 +264,6 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         for (ProjectResourceBean var6 : var2) {
             v.add(var6);
         }
-
     }
 
     public class a extends RecyclerView.Adapter<a> {
@@ -282,23 +279,22 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
 
         public void onBindViewHolder(a var1, int var2) {
             if (c.v.get(var2).isDuplicateCollection) {
-                var1.u.setImageResource(2131165704);
+                var1.u.setImageResource(R.drawable.ic_cancel_48dp);
             } else {
-                var1.u.setImageResource(2131165801);
+                var1.u.setImageResource(R.drawable.ic_ok_48dp);
             }
 
             if (var2 == c.x) {
-                var1.v.setBackgroundResource(2131165348);
+                var1.v.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
             } else {
-                var1.v.setBackgroundResource(2131165345);
+                var1.v.setBackgroundResource(R.drawable.bg_outline);
             }
-
-            var1.v.setImageResource(2131165755);
+            var1.v.setImageResource(R.drawable.ic_font_48dp);
             var1.w.setText(c.v.get(var2).resName);
         }
 
         public a onCreateViewHolder(ViewGroup var1, int var2) {
-            return new a(this, LayoutInflater.from(var1.getContext()).inflate(2131427530, var1, false));
+            return new a(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_import_list_item, var1, false));
         }
 
         public class a extends RecyclerView.ViewHolder {
@@ -311,10 +307,10 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             public a(a var1, View var2) {
                 super(var2);
                 x = var1;
-                t = var2.findViewById(2131231359);
-                u = var2.findViewById(2131231126);
-                v = var2.findViewById(2131231102);
-                w = var2.findViewById(2131232055);
+                t = var2.findViewById(R.id.layout_item);
+                u = var2.findViewById(R.id.img_conflict);
+                v = var2.findViewById(R.id.img);
+                w = var2.findViewById(R.id.tv_name);
                 v.setOnClickListener(new Ut(this, var1));
             }
         }
