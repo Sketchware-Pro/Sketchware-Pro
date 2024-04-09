@@ -132,7 +132,7 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:8.0.40"
-    implementation "com.github.Iyxan23:zipalign-java:1.1.1"
+    implementation "com.github.Iyxan23:zipalign-java:1.1.2"
 
     implementation "com.google.code.gson:gson:2.10.1"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"

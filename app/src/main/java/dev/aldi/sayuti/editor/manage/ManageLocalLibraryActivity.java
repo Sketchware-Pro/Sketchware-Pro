@@ -86,6 +86,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
+                .setCancelable(false)
                 .create();
         downloadButton.setOnClickListener(v1 -> {
             String url = Objects.requireNonNull(dependencyInput.getText()).toString();
