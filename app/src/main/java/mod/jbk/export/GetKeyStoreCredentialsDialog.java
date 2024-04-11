@@ -44,8 +44,8 @@ public class GetKeyStoreCredentialsDialog {
         dialog.a(iconResourceId);
         dialog.b(title);
         dialog.a(noticeText);
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
-        dialog.b(Helper.getResString(R.string.common_word_next), (d, which) -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_next), v -> {
             if (mode == SigningMode.OWN_KEY_STORE) {
                 // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
                 if (new File(wq.j()).exists()) {
@@ -70,7 +70,7 @@ public class GetKeyStoreCredentialsDialog {
                     }
 
                     if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
-                        d.dismiss();
+                        dialog.dismiss();
 
                         receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString(),
                                 password.getText().toString(), alias.getText().toString(), password.getText().toString()));
@@ -79,10 +79,10 @@ public class GetKeyStoreCredentialsDialog {
                     SketchwareUtil.toastError("Keystore not found");
                 }
             } else if (mode == SigningMode.TESTKEY) {
-                d.dismiss();
+                dialog.dismiss();
                 receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString()));
             } else if (mode == SigningMode.DONT_SIGN) {
-                d.dismiss();
+                dialog.dismiss();
                 receiver.gotCredentials(null);
             }
         });

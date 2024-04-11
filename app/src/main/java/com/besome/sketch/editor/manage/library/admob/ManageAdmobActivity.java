@@ -271,14 +271,14 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(Helper.getResString(R.string.design_library_admob_dialog_description_confirm_uncheck));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             if (!mB.a()) {
                 admobLibraryBean.useYn = "N";
                 libSwitch.setChecked(false);
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -287,15 +287,15 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         dialog.a(R.drawable.chrome_96);
         dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
         dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

@@ -50,8 +50,8 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
         dialog.a(R.drawable.ic_detail_setting_48dp);
         dialog.setCancelable(false);
         dialog.a(Helper.getResString(R.string.preset_setting_edit_warning));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> close());
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> close());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

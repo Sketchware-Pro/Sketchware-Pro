@@ -175,14 +175,14 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         dialog.a(R.drawable.rollback_96);
         dialog.b(Helper.getResString(R.string.common_word_reset));
         dialog.a("Reset excluded built-in libraries? This action cannot be undone.");
-        dialog.b(Helper.getResString(R.string.common_word_reset), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
             saveConfig(sc_id, false, Collections.emptyList());
             enabled.setChecked(false);
             excludedLibraries = Collections.emptyList();
             refreshPreview();
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -291,10 +291,10 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         adapter.setHasStableIds(true);
         list.setAdapter(adapter);
         dialog.a(list);
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
-        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             excludedLibraries = adapter.getSelectedBuiltInLibraries();
-            d.dismiss();
+            dialog.dismiss();
             refreshPreview();
         });
         dialog.show();

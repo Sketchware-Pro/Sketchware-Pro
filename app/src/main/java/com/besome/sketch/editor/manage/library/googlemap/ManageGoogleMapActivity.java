@@ -56,15 +56,15 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         dialog.a(R.drawable.chrome_96);
         dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
         dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -151,13 +151,13 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         dialog.a(R.drawable.delete_96);
         dialog.a(Helper.getResString(R.string.design_library_message_confirm_uncheck_google_map));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             libSwitch.setChecked(false);
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
             libSwitch.setChecked(true);
-            d.dismiss();
+            dialog.dismiss();
         });
         dialog.show();
     }

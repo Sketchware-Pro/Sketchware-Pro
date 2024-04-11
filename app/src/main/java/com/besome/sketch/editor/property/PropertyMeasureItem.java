@@ -189,7 +189,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             tv_input_dp.setTextColor(0xffdddddd);
         }
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             int checkedRadioButtonId = rg_width_height.getCheckedRadioButtonId();
 
             if (checkedRadioButtonId == R.id.rb_matchparent) {
@@ -204,9 +204,9 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, measureValue);
             }
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

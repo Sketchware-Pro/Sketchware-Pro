@@ -26,7 +26,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         aB dialog = new aB(this);
         dialog.a(R.drawable.chrome_96);
         dialog.a(Helper.getResString(R.string.design_library_appcompat_need_firebase_disable));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -36,13 +36,13 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         dialog.a(R.drawable.delete_96);
         dialog.a(Helper.getResString(R.string.design_library_message_confirm_uncheck_appcompat_and_design));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             libSwitch.setChecked(false);
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
             libSwitch.setChecked(true);
-            d.dismiss();
+            dialog.dismiss();
         });
         dialog.show();
     }

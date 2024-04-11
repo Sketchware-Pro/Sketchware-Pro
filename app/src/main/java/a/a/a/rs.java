@@ -262,16 +262,16 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(requireContext(), a2.findViewById(R.id.ti_input), Pp.h().g());
         aBVar.a(a2);
-        aBVar.b(xB.b().a(requireContext(), R.string.common_word_save), (d, which) -> {
+        aBVar.b(xB.b().a(requireContext(), R.string.common_word_save), v -> {
             if (nb.b()) {
                 saveMoreBlockToCollection(editText.getText().toString(), moreBlocks.get(moreBlockPosition));
                 mB.a(requireContext(), editText);
-                d.dismiss();
+                aBVar.dismiss();
             }
         });
-        aBVar.a(xB.b().a(requireContext(), R.string.common_word_cancel), (d, which) -> {
+        aBVar.a(xB.b().a(requireContext(), R.string.common_word_cancel), v -> {
             mB.a(requireContext(), editText);
-            d.dismiss();
+            aBVar.dismiss();
         });
         aBVar.show();
     }

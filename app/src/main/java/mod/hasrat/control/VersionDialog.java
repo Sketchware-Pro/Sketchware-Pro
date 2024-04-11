@@ -33,7 +33,7 @@ public class VersionDialog {
             binding.versionName2.setText(activity.binding.verName.getText().toString().split(" ")[1]);
 
         dialog.a(binding.getRoot());
-        dialog.b(activity.getString(R.string.common_word_save), (d, which) -> {
+        dialog.b(activity.getString(R.string.common_word_save), v -> {
             final String verCode = binding.versionCode.getText().toString();
             final String verName = binding.versionName1.getText().toString();
             final String verNamePostfix = binding.versionName2.getText().toString();
@@ -56,12 +56,12 @@ public class VersionDialog {
             if (!mB.a() && validVerCode && validVerName) {
                 activity.binding.verCode.setText(verCode);
                 activity.binding.verName.setText(verNamePostfix.length() > 0 ? (verName + " " + verNamePostfix) : verName);
-                d.dismiss();
+                dialog.dismiss();
             }
         });
 
         binding.versionName2.addTextChangedListener(new VersionNamePostfixValidator(activity, binding.tilVersionNameExtra));
-        dialog.a(activity.getString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(activity.getString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

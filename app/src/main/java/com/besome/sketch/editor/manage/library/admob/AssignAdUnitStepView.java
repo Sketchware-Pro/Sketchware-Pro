@@ -63,7 +63,7 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
         }
 
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -77,9 +77,9 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
                     break;
                 }
             }
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

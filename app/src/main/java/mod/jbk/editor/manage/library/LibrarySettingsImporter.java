@@ -83,18 +83,18 @@ public class LibrarySettingsImporter {
             });
         }).start();
         dialog.a(root);
-        dialog.b(xB.b().a(activity, R.string.common_word_select), (d, which) -> {
+        dialog.b(xB.b().a(activity, R.string.common_word_select), v -> {
             if (!mB.a()) {
                 if (adapter.selectedProjectIndex >= 0) {
                     var settings = (ProjectLibraryBean) projects.get(adapter.selectedProjectIndex).get("settings");
                     for (var listener : onProjectSelectedListeners) {
                         listener.accept(settings);
                     }
-                    d.dismiss();
+                    dialog.dismiss();
                 }
             }
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

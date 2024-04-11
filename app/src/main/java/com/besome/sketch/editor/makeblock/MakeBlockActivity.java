@@ -31,14 +31,14 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         dialog.b(Helper.getResString(R.string.logic_editor_more_block_dialog_message_confirm_goback));
         dialog.a(R.drawable.exit_96);
         dialog.a(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
-        dialog.b(Helper.getResString(R.string.common_word_goback), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_goback), v -> {
             if (!mB.a()) {
-                d.dismiss();
+                dialog.dismiss();
                 finish();
             }
 
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

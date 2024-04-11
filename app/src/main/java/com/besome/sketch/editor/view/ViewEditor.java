@@ -683,12 +683,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
         aBVar.a(R.drawable.high_priority_96_red);
         aBVar.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), (d, which) -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             Rp.h().a(str, true);
             setFavoriteData(Rp.h().f());
-            d.dismiss();
+            aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

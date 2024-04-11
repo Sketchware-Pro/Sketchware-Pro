@@ -199,7 +199,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             radioButton.setChecked(true);
         }
         aBVar.a(a3);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_select), (d, which) -> {
+        aBVar.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             for (int i = 0; i < tx.this.i.getChildCount(); i++) {
                 RadioButton child = (RadioButton) tx.this.i.getChildAt(i);
                 if (child.isChecked()) {
@@ -210,11 +210,11 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     break;
                 }
             }
-            d.dismiss();
+            aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
         RadioButton finalRadioButton = radioButton;
-        aBVar.create().setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
+        aBVar.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
         aBVar.show();
     }
 

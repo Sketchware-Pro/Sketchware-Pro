@@ -10,8 +10,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageCustomComponentAddBinding;
@@ -178,13 +176,8 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                     d.dismiss();
                 });
         dialog.setTitle(Helper.getResString(R.string.common_word_import));
-        dialog.setIcon(R.drawable.file_48_blue);
-        ((MaterialAlertDialogBuilder) dialog).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface d) {
-                dialog.backPressed(d);
-            }
-        });
+        dialog.a(R.drawable.file_48_blue);
+        dialog.setOnDismissListener(d -> dialog.backPressed(d));
         dialog.init();
         dialog.show();
     }
@@ -214,7 +207,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                 choiceToImport.set(position);
             });
             dialog.a(listView);
-            dialog.b(Helper.getResString(R.string.common_word_import), (d, which) -> {
+            dialog.b(Helper.getResString(R.string.common_word_import), v -> {
                 int position = choiceToImport.get();
                 var component = components.get(position);
                 if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -222,9 +215,9 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                 } else {
                     SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
                 }
-                d.dismiss();
+                dialog.dismiss();
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
             dialog.show();
         } else {
             var component = components.get(0);

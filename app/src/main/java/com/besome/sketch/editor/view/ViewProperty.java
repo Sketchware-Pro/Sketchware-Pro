@@ -175,7 +175,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         NB validator = new NB(getContext(), view.findViewById(R.id.ti_input), Rp.h().g());
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = editText.getText().toString();
                 ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
@@ -203,10 +203,10 @@ public class ViewProperty extends LinearLayout implements Kw {
                     propertyListener.a();
                 }
                 bB.a(getContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

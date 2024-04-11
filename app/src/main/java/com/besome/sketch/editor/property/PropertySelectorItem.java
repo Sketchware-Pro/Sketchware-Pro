@@ -165,7 +165,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
         }
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
                 RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -175,9 +175,9 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, value);
             }
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

@@ -130,7 +130,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(R.string.common_word_add), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), v -> {
             String variableModifier = modifier.getText().toString().trim();
             String variableType = type.getText().toString().trim();
             String variableName = name.getText().toString().trim();
@@ -171,9 +171,9 @@ public class LogicClickListener implements View.OnClickListener {
                 variable += " = " + variableInitializer;
             }
             logicEditor.b(6, variable.trim());
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -224,13 +224,13 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.a(recyclerView);
-        dialog.b(Helper.getResString(R.string.common_word_remove), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_remove), v -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.m(item.text);
                 }
             }
-            d.dismiss();
+            dialog.dismiss();
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
@@ -258,7 +258,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(R.string.common_word_add), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), v -> {
             String variableType = type.getText().toString();
             String variableName = name.getText().toString();
 
@@ -284,10 +284,10 @@ public class LogicClickListener implements View.OnClickListener {
 
             if (validType && validName && validator.b()) {
                 logicEditor.a(4, variableType + " " + variableName + " = new ArrayList<>()");
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -325,15 +325,15 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.a(recyclerView);
-        dialog.b(Helper.getResString(R.string.common_word_remove), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_remove), v -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.l(item.text);
                 }
             }
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

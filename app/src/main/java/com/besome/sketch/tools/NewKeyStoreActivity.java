@@ -56,9 +56,9 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
             dialog.a(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
         }
 
-        dialog.b(Helper.getResString(R.string.common_word_close), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_close), v -> {
             if (!mB.a()) {
-                d.dismiss();
+                dialog.dismiss();
                 if (success) {
                     Intent intent = new Intent();
                     intent.putExtra("pwd", password);

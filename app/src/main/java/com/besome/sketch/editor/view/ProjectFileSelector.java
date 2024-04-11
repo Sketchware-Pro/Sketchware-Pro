@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -234,8 +233,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
                         currentXmlFileName = projectFileBean.getXmlName();
                     }
                     selectedFileChangeListener.a(1, projectFileBean);
-                    AlertDialog d = availableFilesDialog.create();
-                    d.dismiss();
+                    availableFilesDialog.dismiss();
                 });
             }
         }

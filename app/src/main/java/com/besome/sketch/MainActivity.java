@@ -243,16 +243,16 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     "and it's important to know them all if you want your projects to still work.\n" +
                     "You can view all changes whenever you want at the updated About Sketchware Pro screen.");
 
-            dialog.b("View", (d, which) -> {
-                d.dismiss();
+            dialog.b("View", v -> {
+                dialog.dismiss();
                 Intent launcher = new Intent(this, AboutModActivity.class);
                 launcher.putExtra("select", "majorChanges");
                 startActivity(launcher);
             });
-            dialog.a("Close", (d, which) -> Helper.getDialogDismissListener(d));
-            dialog.configureDefaultButton("Never show again", (d, which) -> {
+            dialog.a("Close", v -> Helper.getDialogDismissListener(dialog));
+            dialog.configureDefaultButton("Never show again", v -> {
                 ConfigActivity.setSetting(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER, true);
-                d.dismiss();
+                dialog.dismiss();
             });
             dialog.show();
         }
@@ -308,12 +308,12 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                 dialog.a("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
                         "taking ages to build projects. Don't worry, we can't do more to storage than " +
                         "with current granted permissions.");
-                dialog.b(Helper.getResString(R.string.common_word_settings), (d, which) -> {
+                dialog.b(Helper.getResString(R.string.common_word_settings), v -> {
                     FileUtil.requestAllFilesAccessPermission(this);
-                    d.dismiss();
+                    dialog.dismiss();
                 });
-                dialog.a("Skip", (d, which) -> Helper.getDialogDismissListener(d));
-                dialog.configureDefaultButton("Don't show anymore", (d, which) -> {
+                dialog.a("Skip", v -> Helper.getDialogDismissListener(dialog));
+                dialog.configureDefaultButton("Don't show anymore", v -> {
                     try {
                         if (!optOutFile.createNewFile())
                             throw new IOException("Failed to create file " + optOutFile);
@@ -321,7 +321,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                         Log.e("MainActivity", "Error while trying to create " +
                                 "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
                     }
-                    d.dismiss();
+                    dialog.dismiss();
                 });
                 dialog.show();
             }
@@ -333,8 +333,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
         dialog.a(R.drawable.color_about_96);
         dialog.a(Helper.getResString(R.string.common_message_permission_need_load_project));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> {
-            d.dismiss();
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
+            dialog.dismiss();
             ActivityCompat.requestPermissions(this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -348,8 +348,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         dialog.b(Helper.getResString(R.string.common_message_insufficient_storage_space_title));
         dialog.a(R.drawable.high_priority_96_red);
         dialog.a(Helper.getResString(R.string.common_message_insufficient_storage_space));
-        dialog.b(Helper.getResString(R.string.common_word_ok),
-                (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

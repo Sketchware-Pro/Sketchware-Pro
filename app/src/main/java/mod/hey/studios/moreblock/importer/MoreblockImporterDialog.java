@@ -114,17 +114,17 @@ public class MoreblockImporterDialog extends aB {
         lw.setAdapter(la);
 
         a(ln);
-        b(act.getString(R.string.common_word_select), (d, which) -> {
+        b(act.getString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
                 SketchwareUtil.toastError("Select a more block");
             } else {
                 callback.onSelected(selectedBean);
-                d.dismiss();
+                dismiss();
             }
         });
-        a(act.getString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        a(act.getString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(this));
     }
 
     public interface CallBack {

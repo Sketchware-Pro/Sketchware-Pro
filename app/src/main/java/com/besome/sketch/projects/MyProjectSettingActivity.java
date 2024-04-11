@@ -353,14 +353,14 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 picker.setValue(projectVersionNameSecondPart);
             }
         });
-        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a()) {
                 binding.verCode.setText(String.valueOf(versionCodePicker.getValue()));
                 binding.verName.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -396,12 +396,12 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.b(Helper.getResString(R.string.common_word_settings));
         dialog.a(R.drawable.default_icon);
         dialog.a(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
-        dialog.b(Helper.getResString(R.string.common_word_reset), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
             binding.appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -488,7 +488,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(R.drawable.break_warning_96_red);
         dialog.a(Helper.getResString(R.string.myprojects_settings_message_package_rename));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

@@ -112,16 +112,16 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         TB validator = new TB(context, view.findViewById(R.id.ti_input), 0, 999);
         validator.a(String.valueOf(value));
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(Integer.parseInt(input.getText().toString()));
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);
                 }
-                d.dismiss();
+                dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

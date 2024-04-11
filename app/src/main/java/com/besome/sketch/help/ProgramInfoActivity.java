@@ -73,16 +73,16 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         ((RadioButton) rootView.findViewById(R.id.rb_all)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings_data));
         ((RadioButton) rootView.findViewById(R.id.rb_only_config)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings));
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_yes), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_yes), v -> {
             if (!mB.a()) {
                 int buttonId = radioGroup.getCheckedRadioButtonId();
                 boolean resetOnlySettings = buttonId != R.id.rb_all;
-                d.dismiss();
+                dialog.dismiss();
                 setResult(RESULT_OK, getIntent().putExtra("onlyConfig", resetOnlySettings));
                 finish();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

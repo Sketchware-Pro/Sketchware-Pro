@@ -167,12 +167,12 @@ public class SketchwareUtil {
         dialog.b("Couldn't get " + componentLabel);
         dialog.a("Failed to parse " + componentLabel + " from file " + json + ". Fix by renaming old file to " + json.getName() + ".bak? " +
                 "If not, no " + componentLabel + " will be used.");
-        dialog.b("Rename", (d, which) -> {
+        dialog.b("Rename", v -> {
             FileUtil.renameFile(json.getAbsolutePath(), json.getAbsolutePath() + ".bak");
             afterRenameLogic.accept(null);
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -194,9 +194,9 @@ public class SketchwareUtil {
         scrollView.addView(errorMessageThingy);
 
         dialog.a(scrollView);
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
-                d.dismiss();
+                dialog.dismiss();
             }
         });
         dialog.show();

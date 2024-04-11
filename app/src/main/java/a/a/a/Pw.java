@@ -72,7 +72,7 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         }
 
         dialog.a(propertyBinding.getRoot());
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), (d, which) -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             for (int i = 0, childCount = rgContent.getChildCount(); i < childCount; i++) {
                 RadioButton radioButton = (RadioButton) rgContent.getChildAt(i);
 
@@ -83,9 +83,9 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
             if (propertyValueChangeListener != null) {
                 propertyValueChangeListener.a(key, value);
             }
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

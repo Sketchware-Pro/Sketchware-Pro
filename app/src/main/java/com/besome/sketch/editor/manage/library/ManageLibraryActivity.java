@@ -333,7 +333,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         dialog.a(R.drawable.widget_firebase);
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(Helper.getResString(R.string.design_library_firebase_message_need_compat));
-        dialog.b(Helper.getResString(R.string.common_word_ok), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

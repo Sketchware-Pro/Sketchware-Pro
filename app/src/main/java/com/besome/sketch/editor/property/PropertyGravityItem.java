@@ -138,7 +138,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             }
         }
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_select), (d, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             int value = chk_left.isChecked() ? Gravity.LEFT : Gravity.NO_GRAVITY;
             if (chk_right.isChecked()) {
                 value |= Gravity.RIGHT;
@@ -159,9 +159,9 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, gravityValue);
             }
-            d.dismiss();
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), (d, which) -> Helper.getDialogDismissListener(d));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }
