@@ -1,8 +1,10 @@
 <lint>
     <issue id="ContentDescription" severity="ignore" />
     <issue id="RtlHardcoded" severity="ignore" />
-    <issue id="RtlSymmetry" severity="ignore"/>
-    <issue id="HardcodedText" severity="ignore"/>
-    <issue id="Autofill" severity="ignore"/>
-    <issue id="UseCompoundDrawables" severity="ignore"/>
+    <issue id="RtlSymmetry" severity="ignore" />
+    <issue id="HardcodedText" severity="ignore" />
+    <issue id="Autofill" severity="ignore" />
+    <issue id="UseCompoundDrawables" severity="ignore" />
+    <issue id="NotifyDataSetChanged" severity="ignore" />
+    <issue id="HardcodedText" severity="ignore" />
 </lint>

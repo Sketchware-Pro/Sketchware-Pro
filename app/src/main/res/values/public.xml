@@ -13,7 +13,6 @@
     <public name="activity_0110" id="0x7f070063" type="drawable" />
     <public name="activity_preset_1" id="0x7f07006d" type="drawable" />
     <public name="activity_preset_4" id="0x7f070070" type="drawable" />
-    <public name="bg_outline" id="0x7f0700a1" type="drawable" />
     <public name="bg_outline_album" id="0x7f0700a2" type="drawable" />
     <public name="bg_outline_dark_yellow" id="0x7f0700a4" type="drawable" />
     <public name="block_96_white" id="0x7f0700bf" type="drawable" />
@@ -21,25 +20,20 @@
     <public name="bookmark_48_white" id="0x7f0700c3" type="drawable" />
     <public name="border_top_corner_grey_no_stroke" id="0x7f0700cb" type="drawable" />
     <public name="border_top_corner_white_no_stroke" id="0x7f0700ce" type="drawable" />
-    <public name="break_warning_96_red" id="0x7f0700cf" type="drawable" />
     <public name="checked_grey_32" id="0x7f0700e4" type="drawable" />
     <public name="checked_white_32" id="0x7f0700e6" type="drawable" />
     <public name="copy_48_gray" id="0x7f070142" type="drawable" />
     <public name="copy_48_white" id="0x7f070143" type="drawable" />
     <public name="default_album_art_200dp" id="0x7f070150" type="drawable" />
     <public name="delete_96" id="0x7f070154" type="drawable" />
-    <public name="fab_color" id="0x7f0701a8" type="drawable" />
     <public name="ic_bookmark_red_48dp" id="0x7f070204" type="drawable" />
     <public name="ic_cancel_48dp" id="0x7f070208" type="drawable" />
     <public name="ic_checkmark_green_48dp" id="0x7f07020b" type="drawable" />
-    <public name="ic_drawer_color_48dp" id="0x7f070229" type="drawable" />
     <public name="ic_font_48dp" id="0x7f07023b" type="drawable" />
     <public name="ic_ok_48dp" id="0x7f070269" type="drawable" />
     <public name="ic_pause_circle_outline_black_36dp" id="0x7f07026d" type="drawable" />
     <public name="ic_play_circle_outline_black_36dp" id="0x7f070274" type="drawable" />
     <public name="ic_remove_grey600_24dp" id="0x7f070287" type="drawable" />
-    <public name="ic_statusbar_color_48dp" id="0x7f0702a8" type="drawable" />
-    <public name="ic_toolbar_color_48dp" id="0x7f0702b0" type="drawable" />
     <public name="ic_trashcan_white_48dp" id="0x7f0702b3" type="drawable" />
     <public name="icon_delete" id="0x7f0702c8" type="drawable" />
     <public name="progressbar_circle_48dp" id="0x7f070350" type="drawable" />
@@ -54,32 +48,11 @@
     <public name="selector_btnbar_center" id="0x7f07037b" type="drawable" />
     <public name="selector_btnbar_left" id="0x7f07037c" type="drawable" />
     <public name="selector_btnbar_right" id="0x7f07037d" type="drawable" />
-    <public name="triangle_point_left_primary" id="0x7f0703fc" type="drawable" />
-    <public name="widget_admob" id="0x7f07041a" type="drawable" />
-    <public name="widget_button" id="0x7f07041d" type="drawable" />
-    <public name="widget_calendarview" id="0x7f07041f" type="drawable" />
-    <public name="widget_check_box" id="0x7f070421" type="drawable" />
-    <public name="widget_edit_text" id="0x7f070422" type="drawable" />
-    <public name="widget_google_map" id="0x7f070427" type="drawable" />
-    <public name="widget_horizontalscrollview" id="0x7f07042a" type="drawable" />
-    <public name="widget_image_view" id="0x7f07042d" type="drawable" />
-    <public name="widget_linear_horizontal" id="0x7f07042f" type="drawable" />
-    <public name="widget_linear_vertical" id="0x7f070430" type="drawable" />
-    <public name="widget_list_view" id="0x7f070431" type="drawable" />
-    <public name="widget_progress_bar" id="0x7f070437" type="drawable" />
-    <public name="widget_scrollview" id="0x7f07043a" type="drawable" />
-    <public name="widget_seek_bar" id="0x7f07043b" type="drawable" />
-    <public name="widget_spinner" id="0x7f070440" type="drawable" />
-    <public name="widget_switch" id="0x7f070441" type="drawable" />
-    <public name="widget_text_view" id="0x7f070443" type="drawable" />
-    <public name="widget_web_view" id="0x7f070446" type="drawable" />
     <public name="add_button" id="0x7f080023" type="id" />
     <public name="btn_cancel" id="0x7f08005a" type="id" />
     <public name="btn_decide" id="0x7f080060" type="id" />
     <public name="btn_delete" id="0x7f080061" type="id" />
     <public name="btn_import" id="0x7f080070" type="id" />
-    <public name="btnbar_keyboard" id="0x7f080090" type="id" />
-    <public name="btnbar_orientation" id="0x7f080091" type="id" />
     <public name="button_bar" id="0x7f080093" type="id" />
     <public name="cancel_button" id="0x7f080095" type="id" />
     <public name="category_list" id="0x7f08009c" type="id" />
@@ -88,40 +61,26 @@
     <public name="chk_samename" id="0x7f0800ac" type="id" />
     <public name="chk_select" id="0x7f0800ad" type="id" />
     <public name="color_list" id="0x7f0800b9" type="id" />
-    <public name="common_dialog_cancel_button" id="0x7f0800bd" type="id" />
-    <public name="common_dialog_ok_button" id="0x7f0800c2" type="id" />
     <public name="container" id="0x7f0800d3" type="id" />
     <public name="content" id="0x7f0800d4" type="id" />
     <public name="current_time" id="0x7f0800d9" type="id" />
     <public name="delete_img_container" id="0x7f0800ef" type="id" />
-    <public name="easy_ed_input" id="0x7f080107" type="id" />
-    <public name="easy_ti_input" id="0x7f080108" type="id" />
     <public name="ed_input" id="0x7f08010e" type="id" />
     <public name="ed_input_api_key" id="0x7f08010f" type="id" />
     <public name="ed_input_app_id" id="0x7f080110" type="id" />
     <public name="ed_input_project_id" id="0x7f080117" type="id" />
     <public name="ed_input_storage_url" id="0x7f08011b" type="id" />
-    <public name="ed_name" id="0x7f08011f" type="id" />
     <public name="empty_message" id="0x7f080129" type="id" />
     <public name="et_custom_color" id="0x7f080132" type="id" />
     <public name="event_list" id="0x7f080146" type="id" />
     <public name="events_preview" id="0x7f080149" type="id" />
     <public name="fab" id="0x7f08014e" type="id" />
-    <public name="feature_types" id="0x7f080150" type="id" />
     <public name="file_length" id="0x7f080151" type="id" />
     <public name="file_name" id="0x7f080153" type="id" />
     <public name="font_list" id="0x7f08015c" type="id" />
-    <public name="font_preview" id="0x7f08015d" type="id" />
-    <public name="header_icon" id="0x7f080167" type="id" />
-    <public name="header_line" id="0x7f080168" type="id" />
-    <public name="header_name" id="0x7f080169" type="id" />
     <public name="img" id="0x7f08017e" type="id" />
     <public name="img_activity" id="0x7f080180" type="id" />
     <public name="img_album" id="0x7f080182" type="id" />
-    <public name="img_answer_a" id="0x7f080183" type="id" />
-    <public name="img_answer_b" id="0x7f080184" type="id" />
-    <public name="img_answer_o" id="0x7f080185" type="id" />
-    <public name="img_answer_x" id="0x7f080186" type="id" />
     <public name="img_backbtn" id="0x7f080189" type="id" />
     <public name="img_conflict" id="0x7f080196" type="id" />
     <public name="img_delete" id="0x7f08019c" type="id" />
@@ -131,7 +90,6 @@
     <public name="img_font" id="0x7f0801aa" type="id" />
     <public name="img_horizontal" id="0x7f0801ae" type="id" />
     <public name="img_icon" id="0x7f0801af" type="id" />
-    <public name="img_keyboard" id="0x7f0801b2" type="id" />
     <public name="img_notallowed" id="0x7f0801bb" type="id" />
     <public name="img_play" id="0x7f0801bd" type="id" />
     <public name="img_preset_setting" id="0x7f0801c0" type="id" />
@@ -144,9 +102,6 @@
     <public name="iv_copy" id="0x7f0801fb" type="id" />
     <public name="iv_detail" id="0x7f0801fd" type="id" />
     <public name="iv_trash" id="0x7f080201" type="id" />
-    <public name="layout_ads" id="0x7f08024e" type="id" />
-    <public name="layout_answer_ab" id="0x7f080251" type="id" />
-    <public name="layout_answer_ox" id="0x7f080252" type="id" />
     <public name="layout_btn_group" id="0x7f080257" type="id" />
     <public name="layout_check" id="0x7f08025b" type="id" />
     <public name="layout_color_item" id="0x7f08025e" type="id" />
@@ -162,38 +117,22 @@
     <public name="layout_img_inform" id="0x7f08027a" type="id" />
     <public name="layout_img_modify" id="0x7f08027b" type="id" />
     <public name="layout_item" id="0x7f08027f" type="id" />
-    <public name="layout_main_logo" id="0x7f08028a" type="id" />
     <public name="layout_switch" id="0x7f0802b0" type="id" />
     <public name="lib_switch" id="0x7f0802c5" type="id" />
     <public name="list_activities" id="0x7f0802d2" type="id" />
     <public name="list_xml" id="0x7f0802ef" type="id" />
     <public name="ll_img_event" id="0x7f0802f3" type="id" />
-    <public name="menu_add_image_res" id="0x7f080308" type="id" />
     <public name="menu_font_delete" id="0x7f080316" type="id" />
     <public name="moreblock_layout" id="0x7f08033b" type="id" />
     <public name="play" id="0x7f08036f" type="id" />
-    <public name="pointer_left" id="0x7f080370" type="id" />
-    <public name="preview_drawer" id="0x7f080371" type="id" />
-    <public name="preview_fab" id="0x7f080372" type="id" />
-    <public name="preview_keyboard" id="0x7f080373" type="id" />
-    <public name="preview_statusbar" id="0x7f080374" type="id" />
-    <public name="preview_toolbar" id="0x7f080375" type="id" />
-    <public name="prog_box" id="0x7f080376" type="id" />
-    <public name="property_group_list" id="0x7f080389" type="id" />
     <public name="recycler_list" id="0x7f0803ae" type="id" />
     <public name="rg" id="0x7f0803b3" type="id" />
     <public name="scroll_view" id="0x7f0803cc" type="id" />
     <public name="seek" id="0x7f0803dc" type="id" />
     <public name="select_file" id="0x7f0803de" type="id" />
-    <public name="text_font" id="0x7f080431" type="id" />
     <public name="ti_custom_color" id="0x7f08043f" type="id" />
-    <public name="ti_name" id="0x7f080451" type="id" />
-    <public name="timeout_bar" id="0x7f08045c" type="id" />
-    <public name="toolbar" id="0x7f080467" type="id" />
     <public name="tv_add_color" id="0x7f080478" type="id" />
     <public name="tv_add_photo" id="0x7f080479" type="id" />
-    <public name="tv_answer_a" id="0x7f08047f" type="id" />
-    <public name="tv_answer_b" id="0x7f080480" type="id" />
     <public name="tv_api_key" id="0x7f080483" type="id" />
     <public name="tv_app_id" id="0x7f080488" type="id" />
     <public name="tv_category" id="0x7f080496" type="id" />
@@ -214,16 +153,11 @@
     <public name="tv_font_preview" id="0x7f0804ed" type="id" />
     <public name="tv_guide" id="0x7f0804fd" type="id" />
     <public name="tv_imgcnt" id="0x7f080504" type="id" />
-    <public name="tv_keyboard" id="0x7f080514" type="id" />
     <public name="tv_linked_filename" id="0x7f080520" type="id" />
     <public name="tv_name" id="0x7f080537" type="id" />
-    <public name="tv_progress" id="0x7f080557" type="id" />
     <public name="tv_project_id" id="0x7f080559" type="id" />
-    <public name="tv_question" id="0x7f080566" type="id" />
-    <public name="tv_remaing_time" id="0x7f08057a" type="id" />
     <public name="tv_samename" id="0x7f08058a" type="id" />
     <public name="tv_screen_name" id="0x7f080590" type="id" />
-    <public name="tv_screen_orientation" id="0x7f080591" type="id" />
     <public name="tv_sendbtn" id="0x7f080597" type="id" />
     <public name="tv_sep" id="0x7f080598" type="id" />
     <public name="tv_storage_url" id="0x7f0805b5" type="id" />
@@ -235,15 +169,8 @@
     <public name="tv_title_project_id" id="0x7f0805e8" type="id" />
     <public name="tv_title_storage_url" id="0x7f0805f1" type="id" />
     <public name="tv_totalnum" id="0x7f080602" type="id" />
-    <public name="tv_warning" id="0x7f08061d" type="id" />
-    <public name="view_answer_a" id="0x7f08063a" type="id" />
-    <public name="view_answer_b" id="0x7f08063b" type="id" />
-    <public name="add_view_type_selector" id="0x7f0806fa" type="id" />
-    <public name="add_view_type_selector_layout" id="0x7f0806fb" type="id" />
     <public name="color_picker_item" id="0x7f0b002f" type="layout" />
-    <public name="common_category_triangle_item" id="0x7f0b0031" type="layout" />
     <public name="dummy" id="0x7f0b0053" type="layout" />
-    <public name="easy_delete_edittext" id="0x7f0b0054" type="layout" />
     <public name="file_selector_popup_select_xml" id="0x7f0b005b" type="layout" />
     <public name="file_selector_popup_select_xml_activity_item" id="0x7f0b005c" type="layout" />
     <public name="fr_logic_list_category_icon_item" id="0x7f0b0064" type="layout" />
@@ -253,8 +180,6 @@
     <public name="fr_manage_view_list" id="0x7f0b0072" type="layout" />
     <public name="logic_editor_top_menu" id="0x7f0b00a5" type="layout" />
     <public name="logic_popup_add_event" id="0x7f0b00a8" type="layout" />
-    <public name="manage_font_add" id="0x7f0b00c1" type="layout" />
-    <public name="manage_font_import" id="0x7f0b00c2" type="layout" />
     <public name="manage_font_list_item" id="0x7f0b00c4" type="layout" />
     <public name="manage_image_add" id="0x7f0b00c6" type="layout" />
     <public name="manage_image_import" id="0x7f0b00c7" type="layout" />
@@ -262,32 +187,17 @@
     <public name="manage_library_firebase_preview" id="0x7f0b00d5" type="layout" />
     <public name="manage_library_firebase_project_settings" id="0x7f0b00d6" type="layout" />
     <public name="manage_library_firebase_storage_url_settings" id="0x7f0b00d8" type="layout" />
-    <public name="manage_screen_activity_add_feature_item" id="0x7f0b00e4" type="layout" />
-    <public name="manage_screen_activity_add_temp" id="0x7f0b00e5" type="layout" />
     <public name="manage_sound_add" id="0x7f0b00ed" type="layout" />
     <public name="manage_sound_import" id="0x7f0b00ee" type="layout" />
     <public name="manage_view_custom_list_item" id="0x7f0b00f2" type="layout" />
-    <public name="middle_line_header" id="0x7f0b00f4" type="layout" />
-    <public name="progress_msg_box" id="0x7f0b0120" type="layout" />
-    <public name="property" id="0x7f0b012b" type="layout" />
     <public name="property_popup_selector_color" id="0x7f0b0139" type="layout" />
-    <public name="quiz_board" id="0x7f0b0160" type="layout" />
     <public name="manage_font_menu" id="0x7f0c000d" type="menu" />
-    <public name="property_menu" id="0x7f0c0015" type="menu" />
     <public name="collection_duplicated_name" id="0x7f0e03c7" type="string" />
     <public name="collection_failed_to_copy" id="0x7f0e03c8" type="string" />
     <public name="collection_no_exist_file" id="0x7f0e03c9" type="string" />
     <public name="common_error_activity_not_found" id="0x7f0e03cb" type="string" />
-    <public name="common_error_an_error_occurred" id="0x7f0e03cc" type="string" />
-    <public name="common_error_failed_to_connect_server" id="0x7f0e03d0" type="string" />
-    <public name="common_message_check_network" id="0x7f0e03e4" type="string" />
     <public name="common_message_complete_delete" id="0x7f0e03e7" type="string" />
-    <public name="common_message_loading" id="0x7f0e03f5" type="string" />
     <public name="common_message_name_unavailable" id="0x7f0e03f6" type="string" />
-    <public name="common_message_permission_storage" id="0x7f0e0400" type="string" />
-    <public name="common_message_permission_storage1" id="0x7f0e0401" type="string" />
-    <public name="common_message_permission_title_storage" id="0x7f0e0402" type="string" />
-    <public name="common_message_progress" id="0x7f0e0403" type="string" />
     <public name="common_word_add" id="0x7f0e040a" type="string" />
     <public name="common_word_cancel" id="0x7f0e040e" type="string" />
     <public name="common_word_choose" id="0x7f0e0410" type="string" />
@@ -298,10 +208,8 @@
     <public name="common_word_detail" id="0x7f0e041d" type="string" />
     <public name="common_word_import" id="0x7f0e042a" type="string" />
     <public name="common_word_import_count" id="0x7f0e042b" type="string" />
-    <public name="common_word_ok" id="0x7f0e0432" type="string" />
     <public name="common_word_preview" id="0x7f0e0437" type="string" />
     <public name="common_word_save" id="0x7f0e0447" type="string" />
-    <public name="common_word_settings" id="0x7f0e044c" type="string" />
     <public name="common_word_view" id="0x7f0e0456" type="string" />
     <public name="design_library_firebase_message_not_input_text" id="0x7f0e0508" type="string" />
     <public name="design_library_firebase_title_api_key" id="0x7f0e050f" type="string" />
@@ -312,11 +220,6 @@
     <public name="design_manager_change_name_button" id="0x7f0e0527" type="string" />
     <public name="design_manager_font_description_example_sentence" id="0x7f0e0528" type="string" />
     <public name="design_manager_font_description_guide_add_font" id="0x7f0e0529" type="string" />
-    <public name="design_manager_font_description_look_like_this" id="0x7f0e052a" type="string" />
-    <public name="design_manager_font_hint_enter_font_name" id="0x7f0e052b" type="string" />
-    <public name="design_manager_font_title_add_font" id="0x7f0e052d" type="string" />
-    <public name="design_manager_font_title_apply_same_naming" id="0x7f0e052e" type="string" />
-    <public name="design_manager_font_title_edit_font_name" id="0x7f0e0530" type="string" />
     <public name="design_manager_image_hint_enter_image_name" id="0x7f0e0534" type="string" />
     <public name="design_manager_image_title_add_image" id="0x7f0e0538" type="string" />
     <public name="design_manager_image_title_apply_same_naming" id="0x7f0e0539" type="string" />
@@ -332,15 +235,8 @@
     <public name="design_manager_sound_title_apply_same_naming" id="0x7f0e0544" type="string" />
     <public name="design_manager_sound_title_edit_sound_name" id="0x7f0e0546" type="string" />
     <public name="design_manager_title_add_to_collection" id="0x7f0e0549" type="string" />
-    string/design_manager_view_description_guide_create_custom_view =
-    0x7f0e054b
-    <public name="design_manager_view_hint_enter_view_name" id="0x7f0e054d" type="string" />
+    <public name="design_manager_view_description_guide_create_custom_view" id="0x7f0e054b" type="string" />
     <public name="design_manager_view_message_no_view" id="0x7f0e054e" type="string" />
-    <public name="design_manager_view_message_slow_down" id="0x7f0e054f" type="string" />
-    <public name="design_manager_view_title_add_view" id="0x7f0e0553" type="string" />
-    <public name="design_manager_view_title_edit_view" id="0x7f0e0554" type="string" />
-    <public name="design_manager_view_title_keyboad_settings" id="0x7f0e0556" type="string" />
-    <public name="design_manager_view_title_screen_orientation" id="0x7f0e0557" type="string" />
     <public name="event_message_new_event" id="0x7f0e0573" type="string" />
     <public name="event_message_new_events" id="0x7f0e0574" type="string" />
     <public name="event_message_no_avail_events" id="0x7f0e0575" type="string" />
@@ -362,5 +258,4 @@
     <public name="picker_color_title_delete_all_custom_color" id="0x7f0e071b" type="string" />
     <public name="picker_color_title_delete_custom_color" id="0x7f0e071c" type="string" />
     <public name="root_spec_common_when" id="0x7f0e082a" type="string" />
-    <public name="ThemeOverlay.ToolbarMenu" id="0x7f0f019e" type="style" />
 </resources>
