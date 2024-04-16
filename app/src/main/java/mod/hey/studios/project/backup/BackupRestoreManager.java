@@ -114,7 +114,7 @@ public class BackupRestoreManager {
             dialog.dismiss();
             doBackup(sc_id, project_name);
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

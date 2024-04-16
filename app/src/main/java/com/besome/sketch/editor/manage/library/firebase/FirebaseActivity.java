@@ -261,7 +261,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 dialog.dismiss();
             }
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

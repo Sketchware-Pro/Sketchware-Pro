@@ -451,7 +451,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.a("This Sketchware Pro version doesn't support building AABs as it must work on " +
                         "Android 7.1.1 and earlier. Use Sketchware Pro " + BuildConfig.VERSION_NAME_WITHOUT_FLAVOR + "-" +
                         BuildConfig.FLAVOR_NAME_WITH_AABS + " instead.");
-                dialog.b(Helper.getResString(R.string.common_word_close), view -> Helper.getDialogDismissListener(dialog));
+                dialog.b(Helper.getResString(R.string.common_word_close), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             } else {
                 GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
@@ -927,7 +927,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.b("Finished exporting AAB");
                 dialog.a("You can find the generated, signed AAB file at:\n" +
                         "/Internal storage/sketchware/signed_aab/" + aabFilename);
-                dialog.b(Helper.getResString(R.string.common_word_ok), v -> Helper.getDialogDismissListener(dialog));
+                dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             }
         }

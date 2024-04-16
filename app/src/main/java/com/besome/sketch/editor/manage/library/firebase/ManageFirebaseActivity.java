@@ -106,7 +106,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
             startActivity(intent);
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

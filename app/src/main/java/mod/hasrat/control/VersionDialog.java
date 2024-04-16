@@ -61,7 +61,7 @@ public class VersionDialog {
         });
 
         binding.versionName2.addTextChangedListener(new VersionNamePostfixValidator(activity, binding.tilVersionNameExtra));
-        dialog.a(activity.getString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(activity.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

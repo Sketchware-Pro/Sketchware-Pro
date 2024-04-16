@@ -94,7 +94,7 @@ public class LibrarySettingsImporter {
                 }
             }
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

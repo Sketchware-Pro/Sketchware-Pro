@@ -182,7 +182,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
             refreshPreview();
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -291,7 +291,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         adapter.setHasStableIds(true);
         list.setAdapter(adapter);
         dialog.a(list);
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             excludedLibraries = adapter.getSelectedBuiltInLibraries();
             dialog.dismiss();

@@ -124,7 +124,7 @@ public class MoreblockImporterDialog extends aB {
                 dismiss();
             }
         });
-        a(act.getString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(this));
+        a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
     }
 
     public interface CallBack {

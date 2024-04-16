@@ -688,7 +688,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             setFavoriteData(Rp.h().f());
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

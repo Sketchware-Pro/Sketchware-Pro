@@ -173,7 +173,7 @@ public class LogicClickListener implements View.OnClickListener {
             logicEditor.b(6, variable.trim());
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -287,7 +287,7 @@ public class LogicClickListener implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -333,7 +333,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

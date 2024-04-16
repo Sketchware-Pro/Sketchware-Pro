@@ -85,7 +85,7 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

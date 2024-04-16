@@ -212,7 +212,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             }
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         RadioButton finalRadioButton = radioButton;
         aBVar.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
         aBVar.show();

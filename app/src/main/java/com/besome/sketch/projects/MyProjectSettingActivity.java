@@ -360,7 +360,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -401,7 +401,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             projectHasCustomIcon = false;
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -488,7 +488,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(R.drawable.break_warning_96_red);
         dialog.a(Helper.getResString(R.string.myprojects_settings_message_package_rename));
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

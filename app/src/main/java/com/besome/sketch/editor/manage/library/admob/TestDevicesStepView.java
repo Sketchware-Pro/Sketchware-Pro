@@ -155,7 +155,7 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
                 edDeviceId.requestFocus();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -170,7 +170,7 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

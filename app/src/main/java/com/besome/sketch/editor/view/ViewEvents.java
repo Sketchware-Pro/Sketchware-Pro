@@ -140,7 +140,7 @@ public class ViewEvents extends LinearLayout {
                         eventBean.isSelected = false;
                         eventAdapter.notifyItemChanged(position);
                     });
-                    dialog.a(Helper.getResString(R.string.common_word_cancel), view -> Helper.getDialogDismissListener(dialog));
+                    dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
                     dialog.show();
                     return true;
                 });

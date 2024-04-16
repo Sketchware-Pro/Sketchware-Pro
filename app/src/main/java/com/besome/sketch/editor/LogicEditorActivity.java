@@ -296,7 +296,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 aBVar.dismiss();
             }
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -333,7 +333,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 dialog.dismiss();
             }
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -370,7 +370,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -404,7 +404,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -729,7 +729,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             dialog.dismiss();
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -775,7 +775,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, text);
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1284,7 +1284,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 aBVar.dismiss();
             }
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1304,7 +1304,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, editText.getText().toString());
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1397,7 +1397,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             dialog.dismiss();
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -1435,7 +1435,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, editText.getText().toString());
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1554,7 +1554,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             dialog.dismiss();
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -1690,7 +1690,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, checkedRadioButton.getText().toString());
             dialog.dismiss();
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(dialog));
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -1740,7 +1740,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -1791,7 +1791,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             O.a(str);
             aBVar.dismiss();
         });
-        aBVar.a(getTranslatedString(R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

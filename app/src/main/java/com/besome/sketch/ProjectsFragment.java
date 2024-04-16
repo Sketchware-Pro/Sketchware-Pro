@@ -270,7 +270,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             dialog.dismiss();
             refreshProjectsList();
         });
-        dialog.a("Cancel", v -> Helper.getDialogDismissListener(dialog));
+        dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

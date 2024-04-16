@@ -119,7 +119,7 @@ public class SketchFilePickerDialog extends aB {
                 }
             }
         });
-        a("Cancel", v -> Helper.getDialogDismissListener(this));
+        a("Cancel", Helper.getDialogDismissListener(this));
     }
 
     private void loadFiles(File directory, List<File> fileList, FileAdapter adapter) {

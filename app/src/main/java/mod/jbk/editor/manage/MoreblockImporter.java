@@ -183,7 +183,7 @@ public class MoreblockImporter {
             createEvent(moreBlock);
             aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(activity, R.string.common_word_cancel), v -> Helper.getDialogDismissListener(aBVar));
+        aBVar.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
