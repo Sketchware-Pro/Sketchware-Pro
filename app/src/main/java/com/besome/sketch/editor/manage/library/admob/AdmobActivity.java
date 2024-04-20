@@ -7,16 +7,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageLibraryAdmobBinding;
 
 import a.a.a.GB;
 import a.a.a.Uu;
@@ -29,79 +24,70 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 
 public class AdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    private TextView nextStep;
-    private ImageView back;
-    private TextView stepTitle;
-    private TextView stepDescription;
-    private LinearLayout stepContainer;
     private String[] stepTitles;
     private String[] stepDescriptions;
     private int stepPosition = 0;
     private Uu step;
     private ProjectLibraryBean adMobSettings;
-    private Button goToDocumentation;
-    private Button importFromOtherProject;
     private String sc_id;
-    private CardView goToConsole;
-    private TextView previousStep;
-    private TextView topTitle;
+    private ManageLibraryAdmobBinding binding;
 
     private void showStep(int position) {
         if (position == 4) {
-            topTitle.setText(Helper.getResString(R.string.common_word_review));
-            nextStep.setText(Helper.getResString(R.string.common_word_save));
+            binding.tvToptitle.setText(Helper.getResString(R.string.common_word_review));
+            binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_save));
         } else {
-            topTitle.setText(xB.b().a(this, R.string.common_word_step, position + 1));
-            nextStep.setText(Helper.getResString(R.string.common_word_next));
+            binding.tvToptitle.setText(xB.b().a(this, R.string.common_word_step, position + 1));
+            binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_next));
         }
 
         if (position == 0) {
-            back.setVisibility(View.VISIBLE);
-            previousStep.setVisibility(View.GONE);
+            binding.imgBackbtn.setVisibility(View.VISIBLE);
+            binding.tvPrevbtn.setVisibility(View.GONE);
         } else {
-            back.setVisibility(View.GONE);
-            previousStep.setVisibility(View.VISIBLE);
+            binding.imgBackbtn.setVisibility(View.GONE);
+            binding.tvPrevbtn.setVisibility(View.VISIBLE);
         }
 
-        stepTitle.setText(stepTitles[position]);
-        stepDescription.setText(stepDescriptions[position]);
-        stepContainer.removeAllViews();
+        binding.tvStepTitle.setText(stepTitles[position]);
+        binding.tvStepDesc.setText(stepDescriptions[position]);
+        binding.layoutContainer.removeAllViews();
         switch (position) {
             case 0:
                 AddAppIdStepView addAppIdStep = new AddAppIdStepView(this);
-                stepContainer.addView(addAppIdStep);
+                binding.layoutContainer.addView(addAppIdStep);
                 addAppIdStep.setData(adMobSettings);
                 step = addAppIdStep;
                 break;
 
             case 1:
-                goToConsole.setVisibility(View.GONE);
+                binding.cvConsole.setVisibility(View.GONE);
                 AddAdUnitStepView addAdUnitsStep = new AddAdUnitStepView(this);
-                stepContainer.addView(addAdUnitsStep);
+                binding.layoutContainer.addView(addAdUnitsStep);
                 addAdUnitsStep.setData(adMobSettings);
                 step = addAdUnitsStep;
                 break;
 
             case 2:
-                goToConsole.setVisibility(View.GONE);
+                binding.cvConsole.setVisibility(View.GONE);
                 AssignAdUnitStepView assignAdUnitsStep = new AssignAdUnitStepView(this);
-                stepContainer.addView(assignAdUnitsStep);
+                binding.layoutContainer.addView(assignAdUnitsStep);
                 assignAdUnitsStep.setData(adMobSettings);
                 step = assignAdUnitsStep;
                 break;
 
             case 3:
-                goToConsole.setVisibility(View.GONE);
+                binding.cvConsole.setVisibility(View.GONE);
                 TestDevicesStepView testDevicesStep = new TestDevicesStepView(this);
-                stepContainer.addView(testDevicesStep);
+                binding.layoutContainer.addView(testDevicesStep);
                 testDevicesStep.setData(adMobSettings);
                 step = testDevicesStep;
                 break;
 
             case 4:
-                goToConsole.setVisibility(View.GONE);
+                binding.cvConsole.setVisibility(View.GONE);
                 ReviewStepView reviewStep = new ReviewStepView(this);
-                stepContainer.addView(reviewStep);
+                binding.layoutContainer.addView(reviewStep);
                 reviewStep.setData(adMobSettings);
                 step = reviewStep;
                 break;
@@ -110,15 +96,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         if (step.getDocUrl().isEmpty()) {
-            goToDocumentation.setVisibility(View.GONE);
+            binding.btnOpenDoc.setVisibility(View.GONE);
         } else {
-            goToDocumentation.setVisibility(View.VISIBLE);
+            binding.btnOpenDoc.setVisibility(View.VISIBLE);
         }
 
         if (position > 0) {
-            importFromOtherProject.setVisibility(View.GONE);
+            binding.btnImport.setVisibility(View.GONE);
         } else {
-            importFromOtherProject.setVisibility(View.VISIBLE);
+            binding.btnImport.setVisibility(View.VISIBLE);
         }
     }
 
@@ -156,15 +142,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.btn_open_doc) {
+        if (id == binding.btnOpenDoc.getId()) {
             goToDocumentation();
-        } else if (id == R.id.cv_console) {
+        } else if (id == binding.cvConsole.getId()) {
             goToConsole();
-        } else if (id == R.id.tv_nextbtn) {
+        } else if (id == binding.tvNextbtn.getId()) {
             nextStep();
-        } else if (id == R.id.tv_prevbtn) {
+        } else if (id == binding.tvPrevbtn.getId()) {
             onBackPressed();
-        } else if (id == R.id.btn_import) {
+        } else if (id == binding.btnImport.getId()) {
             LibrarySettingsImporter importer = new LibrarySettingsImporter(sc_id, iC::b);
             importer.addOnProjectSelectedListener(settings -> {
                 adMobSettings = settings;
@@ -202,7 +188,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
-        setContentView(R.layout.manage_library_admob);
+        binding = ManageLibraryAdmobBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");
         } else {
@@ -223,30 +210,18 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 Helper.getResString(R.string.design_library_admob_setting_step4_desc),
                 Helper.getResString(R.string.design_library_admob_setting_step5_desc)
         };
-        goToConsole = findViewById(R.id.cv_console);
-        goToConsole.setOnClickListener(this);
-        TextView goToConsole = findViewById(R.id.tv_goto_console);
-        goToConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
-        previousStep = findViewById(R.id.tv_prevbtn);
-        previousStep.setText(Helper.getResString(R.string.common_word_prev));
-        previousStep.setOnClickListener(this);
-        ImageView icon = findViewById(R.id.icon);
-        icon.setImageResource(R.drawable.widget_admob);
-        topTitle = findViewById(R.id.tv_toptitle);
-        nextStep = findViewById(R.id.tv_nextbtn);
-        nextStep.setText(Helper.getResString(R.string.common_word_next));
-        nextStep.setOnClickListener(this);
-        back = findViewById(R.id.img_backbtn);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        stepTitle = findViewById(R.id.tv_step_title);
-        stepDescription = findViewById(R.id.tv_step_desc);
-        goToDocumentation = findViewById(R.id.btn_open_doc);
-        goToDocumentation.setText(Helper.getResString(R.string.common_word_go_to_documentation));
-        goToDocumentation.setOnClickListener(this);
-        importFromOtherProject = findViewById(R.id.btn_import);
-        importFromOtherProject.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
-        importFromOtherProject.setOnClickListener(this);
-        stepContainer = findViewById(R.id.layout_container);
+        binding.cvConsole.setOnClickListener(this);
+        binding.tvGotoConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
+        binding.tvPrevbtn.setText(Helper.getResString(R.string.common_word_prev));
+        binding.tvPrevbtn.setOnClickListener(this);
+        binding.icon.setImageResource(R.drawable.widget_admob);
+        binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_next));
+        binding.tvNextbtn.setOnClickListener(this);
+        binding.imgBackbtn.setOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.btnOpenDoc.setText(Helper.getResString(R.string.common_word_go_to_documentation));
+        binding.btnOpenDoc.setOnClickListener(this);
+        binding.btnImport.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
+        binding.btnImport.setOnClickListener(this);
     }
 
     @Override

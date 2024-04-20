@@ -24,10 +24,10 @@ import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.textfield.TextInputEditText;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -270,10 +270,9 @@ public class Tools extends Activity {
 
         View testkey_root = getLayoutInflater().inflate(R.layout.manage_font_add, null, false);
         TextView font_preview = testkey_root.findViewById(R.id.font_preview);
-        EasyDeleteEditText ed_input = testkey_root.findViewById(R.id.ed_input);
+        TextInputEditText ed_input = testkey_root.findViewById(R.id.ed_input);
         ImageView select_file = testkey_root.findViewById(R.id.select_file);
-        TextView tv_collection = testkey_root.findViewById(R.id.tv_collection);
-        CheckBox chk_collection = testkey_root.findViewById(R.id.chk_collection);
+        CheckBox chk_collection = testkey_root.findViewById(R.id.add_to_collection_checkbox);
 
         select_file.setOnClickListener(view -> {
             DialogProperties properties = new DialogProperties();
@@ -281,14 +280,13 @@ public class Tools extends Activity {
             properties.selection_type = DialogConfigs.FILE_SELECT;
             properties.extensions = new String[]{"apk"};
             FilePickerDialog dialog = new FilePickerDialog(this, properties);
-            dialog.setDialogSelectionListener(files -> ed_input.getEditText().setText(files[0]));
+            dialog.setDialogSelectionListener(files -> ed_input.setText(files[0]));
             dialog.setTitle("Select the APK to sign");
             dialog.show();
         });
 
         font_preview.setText("Path of APK to sign");
         font_preview.setVisibility(View.VISIBLE);
-        tv_collection.setVisibility(View.GONE);
         chk_collection.setVisibility(View.GONE);
         apkPathDialog.a(testkey_root);
 
@@ -297,7 +295,7 @@ public class Tools extends Activity {
         apkPathDialog.b("Next", next -> {
             apkPathDialog.dismiss();
 
-            String input_apk_path = ed_input.getEditText().getText().toString();
+            String input_apk_path = ed_input.getText().toString();
             String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
             String output_apk_path = new File(Environment.getExternalStorageDirectory(),
                     "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
