@@ -319,7 +319,7 @@ public class ConfigActivity extends AppCompatActivity {
       inputText.setText(getBackupFileName());
        AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
        .setView(dialogBinding.getRoot())
-            .setTitle("Backup directory)
+            .setTitle("Backup directory")
             .setMessage("Directory inside /Internal storage/, e.g. sketchware/backups")
             .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
             .setPositiveButton(R.string.common_word_save, null)
