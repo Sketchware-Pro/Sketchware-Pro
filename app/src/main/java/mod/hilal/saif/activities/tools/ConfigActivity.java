@@ -472,9 +472,9 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void applyDesign(View view) {
-        /*Helper.applyRippleEffect(view, Color.parseColor("#dbedf5"), DEFAULT_BACKGROUND_COLOR);
+        //Helper.applyRippleEffect(view, Color.parseColor("#dbedf5"), DEFAULT_BACKGROUND_COLOR);
         view.setClickable(true);
-        view.setFocusable(true);*/
+        view.setFocusable(true);
     }
 
     private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
@@ -625,7 +625,7 @@ public class ConfigActivity extends AppCompatActivity {
             switchView.setChecked(defaultValue);
             FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
         }
-        applyDesign(preferenceRoot);
+        applyDesign(preferenceRootCard);
     }
 
     private void addTextInputPreference(String title, String subtitle, View.OnClickListener listener) {
@@ -708,7 +708,7 @@ public class ConfigActivity extends AppCompatActivity {
         textContainer.addView(subtitleView);
 
         preferenceRoot.setOnClickListener(listener);
-        applyDesign(preferenceRoot);
+        applyDesign(preferenceRootCard);
     }
 
     private void restoreDefaultSettings() {
