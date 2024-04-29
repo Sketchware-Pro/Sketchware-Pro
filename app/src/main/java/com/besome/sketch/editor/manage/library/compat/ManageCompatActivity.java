@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -18,7 +20,7 @@ import mod.hey.studios.util.Helper;
 
 public class ManageCompatActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    private Switch libSwitch;
+    private MaterialSwitch libSwitch;
     private ProjectLibraryBean compatLibraryBean;
     private ProjectLibraryBean firebaseLibraryBean;
 
