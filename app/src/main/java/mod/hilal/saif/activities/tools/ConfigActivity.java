@@ -38,7 +38,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.abdroid.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
