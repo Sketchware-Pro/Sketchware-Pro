@@ -675,7 +675,7 @@ public class ConfigActivity extends AppCompatActivity {
     
     public void cardStyle(View view) {
        GradientDrawable trindade_view = new GradientDrawable();         
-       trindade_view.setColor(Color.parseColor(DEFAULT_BACKGROUND_COLOR));
+       trindade_view.setColor(DEFAULT_BACKGROUND_COLOR);
        trindade_view.setCornerRadii(new float[] { 15, 15, 15, 15, 15, 15, 15, 15 });
        ColorStateList colorStateListview = new ColorStateList(new int[][]{new int[]{}},new int[]{0xFF616161});
        RippleDrawable rippleDrawableview = new RippleDrawable(colorStateListview, trindade_view, null);
