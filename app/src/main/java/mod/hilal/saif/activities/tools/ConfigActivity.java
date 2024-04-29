@@ -476,7 +476,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(4)
         );
         titleView.setText(title);
-        titleView.//setTextColor(Color.parseColor("#616161"));
+ //       titleView.//setTextColor(Color.parseColor("#616161"));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -486,7 +486,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.//setTextColor(Color.parseColor("#616161"));
+   //     subtitleView.//setTextColor(Color.parseColor("#616161"));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
@@ -517,7 +517,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(8),
                 dpToPx(8)
         );
-        switchView.//setTextColor(Color.parseColor("#616161"));
+   //     switchView.//setTextColor(Color.parseColor("#616161"));
         switchView.setTextSize(12);
         switchContainer.addView(switchView);
 
@@ -595,7 +595,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         titleView.setText(title);
-        titleView.//setTextColor(Color.parseColor("#616161"));
+        //titleView.setTextColor(Color.parseColor("#616161"));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -605,7 +605,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.//setTextColor(Color.parseColor("#616161"));
+        //subtitleView.setTextColor(Color.parseColor("#616161"));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
