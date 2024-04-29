@@ -79,6 +79,7 @@ public class ConfigActivity extends AppCompatActivity {
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
     public static final String SETTING_APP_THEME = "Sketchware-Default";
+    private int selected = 0;
     private int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     
     private LinearLayout root;
@@ -383,7 +384,6 @@ public class ConfigActivity extends AppCompatActivity {
    }
    
    public void appThemeDialog(){
-        int selected = 0;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle("Application Theme");
         final CharSequence[] items = themes.toArray(new String[themes.size()]);
