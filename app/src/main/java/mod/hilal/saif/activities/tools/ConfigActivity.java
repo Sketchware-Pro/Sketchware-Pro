@@ -78,7 +78,7 @@ public class ConfigActivity extends AppCompatActivity {
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-    public static final String SETTING_APP_THEME = "Sketchware-Default";
+    public static final String SETTING_APP_THEME = "sketchware-theme-trindade";
     private int selected = 0;
     private int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     
