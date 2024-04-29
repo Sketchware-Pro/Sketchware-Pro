@@ -22,6 +22,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 
+import android.content.DialogInterface;
+import android.view.WindowManager;
+import android.widget.Button;
+import androidx.appcompat.app.AlertDialog;
+import com.google.gson.Gson;
+import java.util.Map;
+import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
+import com.sketchware.remod.databinding.DialogInputLayoutBinding;
+import com.sketchware.remod.databinding.ManageFileBinding;
+import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+import mod.agus.jcoderz.lib.FileUtil;
+import mod.hilal.saif.util.SketchwareUtil;
+
 import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.materialswitch.MaterialSwitch;
