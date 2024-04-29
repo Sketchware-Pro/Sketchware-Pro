@@ -11,6 +11,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
+
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -27,7 +30,7 @@ import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 
 public class ManageGoogleMapActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private String sc_id;
-    private Switch libSwitch;
+    private MaterialSwitch libSwitch;
     private EditText editApiKey;
     private ProjectLibraryBean googleMapLibraryBean;
 
