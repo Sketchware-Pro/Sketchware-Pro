@@ -26,7 +26,7 @@
             android:textColor="@color/scolor_red_02"
             android:textSize="12sp" />
 
-        <Switch
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@id/lib_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             android:background="@drawable/bg_round_light_grey"
             android:gravity="center_vertical"
             ndroid:padding="4dp"
-            "
+            
             android:textSize="14sp" />
 
         <LinearLayout
