@@ -61,7 +61,7 @@ import mod.jbk.util.LogUtil;
 
 public class ConfigActivity extends AppCompatActivity {
 
-    /* Material Design 3 by Aquiles Trindade on *29/04/2024* */
+    /* Material Design 3 by Aquiles Trindade on *29/04/2026* */
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
@@ -409,38 +409,6 @@ public class ConfigActivity extends AppCompatActivity {
                 false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
-                  /*  final LinearLayout container = new LinearLayout(this);
-                    container.setPadding(
-                            (int) getDip(20),
-                            (int) getDip(8),
-                            (int) getDip(20),
-                            0);
-
-                    final TextInputLayout tilBackupDirectory = new TextInputLayout(this);
-                    tilBackupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
-                    tilBackupDirectory.setHint("Backup directory");
-                    tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
-                    container.addView(tilBackupDirectory);
-
-                    final EditText backupDirectory = new EditText(this);
-                    backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT));
-                    backupDirectory.setTextSize(14.0f);
-                    backupDirectory.setText(getBackupPath());
-                    tilBackupDirectory.addView(backupDirectory);
-
-                    new AlertDialog.Builder(this)
-                            .setTitle("Backup directory")
-                            .setView(container)
-                            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
-                                ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
-                                SketchwareUtil.toast("Saved");
-                            })
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
-                            .show();*/
                             backupDirectoryDialog();
                 });
         addSwitchPreference("Use legacy Code Editor",
@@ -472,9 +440,12 @@ public class ConfigActivity extends AppCompatActivity {
                 false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
-                   
-                            backupFormatDialog();
+                        backupFormatDialog();
                   });
+        addPreference("Application theme",
+                "Change the application's theme, and make it your own!", v ->{
+                        SketchwareUtil.toastError("Under development...");
+                 });
     }
 
     private void applyDesign(View view) {
@@ -611,6 +582,66 @@ public class ConfigActivity extends AppCompatActivity {
             FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
         }
     }
+    
+    public void addPreference(String title, String subtitle, View.OnClickListener listener) {
+       LinearLayout preferenceRoot = new LinearLayout(this);
+        LinearLayout.LayoutParams preferenceRootParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.0f
+        );
+        preferenceRootParams.bottomMargin = dpToPx(4);
+        preferenceRoot.setLayoutParams(preferenceRootParams);
+        preferenceRoot.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
+        preferenceRoot.setPadding(
+                dpToPx(4),
+                dpToPx(4),
+                dpToPx(4),
+                dpToPx(4)
+        );
+        /* Android Studio complained about this in the original XML files */
+        preferenceRoot.setBaselineAligned(false);
+        cardStyle(preferenceRoot);
+        root.addView(preferenceRoot);
+
+        LinearLayout textContainer = new LinearLayout(this);
+        textContainer.setLayoutParams(new LinearLayout.LayoutParams(
+                dpToPx(0),
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1.0f
+        ));
+        textContainer.setOrientation(LinearLayout.VERTICAL);
+        textContainer.setPadding(
+                dpToPx(8),
+                dpToPx(8),
+                dpToPx(8),
+                dpToPx(8)
+        );
+        preferenceRoot.addView(textContainer);
+
+        TextView titleView = new TextView(this);
+        titleView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        titleView.setText(title);
+        //titleView.setTextColor(Color.parseColor("#616161"));
+        titleView.setTextSize(16);
+        textContainer.addView(titleView);
+
+        TextView subtitleView = new TextView(this);
+        subtitleView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        subtitleView.setText(subtitle);
+        //subtitleView.setTextColor(Color.parseColor("#616161"));
+        subtitleView.setTextSize(12);
+        textContainer.addView(subtitleView);
+
+        preferenceRoot.setOnClickListener(listener);
+    }
 
     private void addTextInputPreference(String title, String subtitle, View.OnClickListener listener) {
     
@@ -676,15 +707,15 @@ public class ConfigActivity extends AppCompatActivity {
     
     public void cardStyle(View view) {
         LinearLayout.MarginLayoutParams layoutParams = (LinearLayout.MarginLayoutParams) view.getLayoutParams();
-        int leftMargin = 8;
-        int topMargin = 2;
-        int rightMargin = 5;
-        int bottomMargin = 8;
+        int leftMargin = 10;
+        int topMargin = 4;
+        int rightMargin = 10;
+        int bottomMargin = 4;
         layoutParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
         view.setLayoutParams(layoutParams);
         GradientDrawable trindade_view = new GradientDrawable();         
         trindade_view.setColor(DEFAULT_BACKGROUND_COLOR);
-        trindade_view.setCornerRadii(new float[] { 24, 24, 24, 24, 24, 24, 24, 24 });
+        trindade_view.setCornerRadii(new float[] { 26, 26, 26, 26, 26, 26, 26, 26 });
         ColorStateList colorStateListview = new ColorStateList(new int[][]{new int[]{}},new int[]{0xFF616161});
         RippleDrawable rippleDrawableview = new RippleDrawable(colorStateListview, trindade_view, null);
         view.setBackground(rippleDrawableview);
