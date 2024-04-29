@@ -53,11 +53,22 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-
-    private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
+    private int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
+    
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
+    
+    public static int getColorFromStyle(Context context, int styleID, int attributeID) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attributeID, typedValue, true);
+        return typedValue.data;
+    }
 
+    public void setDefaultBackgroundColor(Context context) {
+        DEFAULT_BACKGROUND_COLOR = getColorFromStyle(context, R.style.AppTheme, R.attr.colorBackground);
+    }
+       
+    
     public static String getBackupPath() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             HashMap<String, Object> settings = readSettings();
@@ -249,6 +260,7 @@ public class ConfigActivity extends Activity {
         } else {
             restoreDefaultSettings();
         }
+        setDefaultBackgroundColor(this);
         initialize();
     }
 
@@ -464,7 +476,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(4)
         );
         titleView.setText(title);
-        titleView.setTextColor(Color.parseColor("#616161"));
+        titleView.//setTextColor(Color.parseColor("#616161"));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -474,7 +486,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(Color.parseColor("#bdbdbd"));
+        subtitleView.//setTextColor(Color.parseColor("#616161"));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
@@ -505,7 +517,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(8),
                 dpToPx(8)
         );
-        switchView.setTextColor(Color.parseColor("#000000"));
+        switchView.//setTextColor(Color.parseColor("#616161"));
         switchView.setTextSize(12);
         switchContainer.addView(switchView);
 
@@ -583,7 +595,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         titleView.setText(title);
-        titleView.setTextColor(Color.parseColor("#616161"));
+        titleView.//setTextColor(Color.parseColor("#616161"));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -593,7 +605,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(Color.parseColor("#bdbdbd"));
+        subtitleView.//setTextColor(Color.parseColor("#616161"));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
