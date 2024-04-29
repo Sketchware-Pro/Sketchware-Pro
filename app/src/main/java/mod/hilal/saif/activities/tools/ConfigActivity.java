@@ -251,6 +251,52 @@ public class ConfigActivity extends AppCompatActivity {
                 throw new IllegalArgumentException("Unknown key '" + key + "'!");
         }
     }
+    
+    public void backupDialog() {
+    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+    EditText inputText = dialogBinding.inputText;
+
+    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this)
+            .setView(dialogBinding.getRoot())
+            .setTitle("Backup filename format")
+            .setMessage("This defines how SWB backup files get named.\n" +
+                        "Available variables:\n" +
+                        " - $projectName - Project name\n" +
+                        " - $versionCode - App version code\n" +
+                        " - $versionName - App version name\n" +
+                        " - $pkgName - App package name\n" +
+                        " - $timeInMs - Time during backup in milliseconds\n" +
+                        "\n" +
+                        "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
+                        "$time(yyyy-MM-dd'T'HHmmss)\n")
+            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+            .setPositiveButton(R.string.common_word_save, null)
+            .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
+                setting_map.remove(SETTING_BACKUP_FILENAME);
+                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                SketchwareUtil.toast("Reset to default complete.");
+            })
+            .create();
+
+    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+
+    dialog.setOnShowListener(dialogInterface -> {
+        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+        positiveButton.setOnClickListener(view -> {
+            // onClickOK
+            setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+            SketchwareUtil.toast("Saved");
+            dialog.dismiss();
+        });
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        inputText.requestFocus();
+    });
+
+    dialog.show();
+}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -373,7 +419,7 @@ public class ConfigActivity extends AppCompatActivity {
                 false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
-                    final LinearLayout container = new LinearLayout(this);
+                   /* final LinearLayout container = new LinearLayout(this);
                     container.setPadding(
                             (int) getDip(20),
                             (int) getDip(8),
@@ -419,8 +465,9 @@ public class ConfigActivity extends AppCompatActivity {
                                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                                 SketchwareUtil.toast("Reset to default complete.");
                             })
-                            .show();
-                });
+                            .show();*/
+                            backupDialog();
+                  });
     }
 
     private void applyDesign(View view) {
