@@ -314,9 +314,7 @@ public class ConfigActivity extends AppCompatActivity {
     });
 
     dialog.show();
-}
-}
-
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
