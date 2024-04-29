@@ -78,7 +78,7 @@ public class ConfigActivity extends AppCompatActivity {
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-    public static final String SETTING_APP_THEME = "sketchware-theme-trindade";
+    public static final String SETTING_APP_THEME = "sketchware-theme";
     private int selected = 0;
     private int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     
@@ -209,7 +209,7 @@ public class ConfigActivity extends AppCompatActivity {
                 }
             }
         }
-        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)";
+        return "Sketchware-Default";
     }
 
     public static void setSetting(String key, Object value) {
@@ -391,7 +391,7 @@ public class ConfigActivity extends AppCompatActivity {
 			selected = w;
 	    });	
 	    dialog.setPositiveButton("OK", (dd, ww) -> {
-	          saveThemePreference();
+	          saveThemePreference(selected);
         });
         dialog.setNegativeButton("Cancel", (ddd, www) ->{
              //
