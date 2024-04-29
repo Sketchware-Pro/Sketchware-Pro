@@ -391,7 +391,7 @@ public class ConfigActivity extends AppCompatActivity {
 			selected = w;
 	    });	
 	    dialog.setPositiveButton("OK", (dd, ww) -> {
-	          //
+	          saveThemePreference();
         });
         dialog.setNegativeButton("Cancel", (ddd, www) ->{
              //
@@ -406,7 +406,7 @@ public class ConfigActivity extends AppCompatActivity {
            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
            SketchwareUtil.toast("Saved");
            SketchwareUtil.toast("Restart to apply the changes.");
-        } //more themes....
+        } 
     }
 
     private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
@@ -419,7 +419,7 @@ public class ConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             setting_map = readSettings();
-            if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS)) {
+            if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS) || !setting_map.containsKey(SETTING_APP_THEME)) {
                 restoreDefaultSettings();
             }
         } else {
