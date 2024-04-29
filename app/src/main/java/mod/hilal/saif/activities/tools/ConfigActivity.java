@@ -2,10 +2,11 @@ package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
+import mod.SketchwareUtil;
 
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -33,11 +34,11 @@ import com.sketchware.remod.databinding.DialogInputLayoutBinding;
 import com.sketchware.remod.databinding.ManageFileBinding;
 import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hilal.saif.util.SketchwareUtil;
 
 import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.abdroid.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
