@@ -270,7 +270,7 @@ public class ConfigActivity extends AppCompatActivity {
     DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
     EditText inputText = dialogBinding.inputText;
 
-    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this)
+    AlertDialog dialog = new MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.getRoot())
             .setTitle("Backup filename format")
             .setMessage("This defines how SWB backup files get named.\n" +
@@ -284,17 +284,13 @@ public class ConfigActivity extends AppCompatActivity {
                         "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
                         "$time(yyyy-MM-dd'T'HHmmss)\n")
             .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
-                setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                SketchwareUtil.toast("Saved");
-                dialog.dismiss();
-            })
+            .setPositiveButton(R.string.common_word_save, null)
             .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
                 setting_map.remove(SETTING_BACKUP_FILENAME);
                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                 SketchwareUtil.toast("Reset to default complete.");
-            });
+            })
+            .create();
 
     dialogBinding.chipGroupTypes.setVisibility(View.GONE);
 
@@ -314,7 +310,7 @@ public class ConfigActivity extends AppCompatActivity {
     });
 
     dialog.show();
-    }
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
