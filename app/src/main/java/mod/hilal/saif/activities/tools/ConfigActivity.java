@@ -53,6 +53,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -81,7 +82,8 @@ public class ConfigActivity extends AppCompatActivity {
     
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
-    
+    private ArrayList<String> themes = new ArrayList<>();
+        
     public static int getColorFromStyle(Context context, int styleID, int attributeID) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attributeID, typedValue, true);
@@ -145,6 +147,7 @@ public class ConfigActivity extends AppCompatActivity {
         }
         return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)";
     }
+    
 
     public static boolean isLegacyCeEnabled() {
         /* The legacy Code Editor is specifically opt-in */
@@ -186,6 +189,25 @@ public class ConfigActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+    
+    public static String getAppTheme() {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            if (settings.containsKey(SETTING_APP_THEME)) {
+                Object value = settings.get(SETTING_APP_THEME);
+                if (value instanceof String) {
+                    return (String) value;
+                } else {
+                    SketchwareUtil.toastError("Detected invalid preference "
+                                    + "for app theme. Restoring defaults",
+                            Toast.LENGTH_LONG);
+                    settings.remove(SETTING_APP_THEME);
+                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+                }
+            }
+        }
+        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)";
     }
 
     public static void setSetting(String key, Object value) {
@@ -237,6 +259,7 @@ public class ConfigActivity extends AppCompatActivity {
                 SETTING_USE_NEW_VERSION_CONTROL,
                 SETTING_USE_ASD_HIGHLIGHTER,
                 SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                SETTING_APP_THEME,
                 SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH);
 
         for (String key : keys) {
@@ -267,6 +290,9 @@ public class ConfigActivity extends AppCompatActivity {
 
             case SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH:
                 return "/.sketchware/resources/block/My Block/block.json";
+                
+            case SETTING APP_THEME:
+                return "Sketchware-Default";    
 
             default:
                 throw new IllegalArgumentException("Unknown key '" + key + "'!");
@@ -274,10 +300,10 @@ public class ConfigActivity extends AppCompatActivity {
     }
     
     public void backupFormatDialog() {
-    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-    EditText inputText = dialogBinding.inputText;
-    inputText.setText(getBackupFileName());
-    AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+         DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+         EditText inputText = dialogBinding.inputText;
+         inputText.setText(getBackupFileName());
+         AlertDialog dialog = new MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.getRoot())
             .setTitle("Backup filename format")
             .setMessage("This defines how SWB backup files get named.\n" +
@@ -299,56 +325,92 @@ public class ConfigActivity extends AppCompatActivity {
             })
             .create();
 
-    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+         dialogBinding.chipGroupTypes.setVisibility(View.GONE);
 
-    dialog.setOnShowListener(dialogInterface -> {
-        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+         dialog.setOnShowListener(dialogInterface -> {
+             Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+             
+             positiveButton.setOnClickListener(view -> {
+                  setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
+                  FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                  SketchwareUtil.toast("Saved");
+                  dialog.dismiss();
+             });
 
-        positiveButton.setOnClickListener(view -> {
-            // onClickOK
-            setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-            SketchwareUtil.toast("Saved");
-            dialog.dismiss();
-        });
+             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+             inputText.requestFocus();
+         });
 
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        inputText.requestFocus();
-    });
-
-    dialog.show();
+          dialog.show();
    } 
    
    public void backupDirectoryDialog() {
-      DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-      EditText inputText = dialogBinding.inputText;
-      inputText.setText(getBackupPath());
-       AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
-       .setView(dialogBinding.getRoot())
+        DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+        EditText inputText = dialogBinding.inputText;
+        inputText.setText(getBackupPath());
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
+            .setView(dialogBinding.getRoot())
             .setTitle("Backup directory")
             .setMessage("Directory inside /Internal storage/, e.g. sketchware/backups")
             .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
             .setPositiveButton(R.string.common_word_save, null)
             .create();
 
-    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+        dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
-    dialog.setOnShowListener(dialogInterface -> {
-        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                 setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
+                 SketchwareUtil.toast("Saved");
+                 dialog.dismiss();
+            });
 
-        positiveButton.setOnClickListener(view -> {
-            // onClickOK
-            setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
-            SketchwareUtil.toast("Saved");
-            dialog.dismiss();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            inputText.requestFocus();
         });
 
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        inputText.requestFocus();
-    });
-
-    dialog.show();
+         dialog.show();
    }
+   
+   public void appThemes(){
+      addTheme("Sketchware-Default");
+   }
+   
+   public void addTheme(String themeName){
+        themes.add(themeName);
+   }
+   
+   public void appThemeDialog(){
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle("Application Theme");
+        final CharSequence[] items = themes.toArray(new String[themes.size()]);
+	    dialog.setSingleChoiceItems(items, (int) themeSelected, (dd, ww) -> {
+			themeSelected = which;
+	    });	
+	    dialog.setPositiveButton("OK", (d,w) -> {
+	          //
+        });
+        dialog.setNegativeButton("Cancel", (d, w) ->{
+             //
+        });
+	    dialog.show();
+    }
+    
+    public void saveThemePreference(int pos){
+        if(pos = 0){
+           //Theme Default
+           setting_map.put(SETTING_APP_THEME, themes.get((int)(pos)));
+           FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+           SketchwareUtil.toast("Saved");
+           SketchwareUtil.toast("Restart to apply the changes.");
+        } //more themes....
+    }
+
+    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
+        addSwitchPreference(title, subtitle, keyName, defaultValue, null);
+    }
+   
    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -361,8 +423,13 @@ public class ConfigActivity extends AppCompatActivity {
         } else {
             restoreDefaultSettings();
         }
-        setDefaultBackgroundColor(this);
+        trindadeJnitialize();
         initialize();
+    }
+    
+    public void trindadeInitialize(){
+        setDefaultBackgroundColor(this);
+        appThemes();
     }
 
     @SuppressLint("SetTextI18n")
@@ -444,20 +511,10 @@ public class ConfigActivity extends AppCompatActivity {
                   });
         addPreference("Application theme",
                 "Change the application's theme, and make it your own!", v ->{
-                        SketchwareUtil.toastError("Under development...");
+                        appThemeDialog();
                  });
     }
-
-    private void applyDesign(View view) {
-        Helper.applyRippleEffect(view, Color.parseColor("#dbedf5"), DEFAULT_BACKGROUND_COLOR);
-        view.setClickable(true);
-        view.setFocusable(true);
-    }
-
-    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
-        addSwitchPreference(title, subtitle, keyName, defaultValue, null);
-    }
-
+    
     private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
     
         
