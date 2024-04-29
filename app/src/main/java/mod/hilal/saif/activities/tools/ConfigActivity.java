@@ -4,6 +4,10 @@ import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 import mod.SketchwareUtil;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.RippleDrawable;
+import android.graphics.drawable.GradientDrawable;
+
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
@@ -484,28 +488,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
     
-        CardView preferenceRootCard = new CardView(this);
-        LinearLayout.LayoutParams preferenceRootCardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.0f
-        );
-        preferenceRootCardParams.setMargins(8,0,8,0);
-        preferenceRootCard.setElevation(0f);
-        preferenceRootCard.setLayoutParams(preferenceRootCardParams);
-        preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         
-        preferenceRootCard.setPadding(
-                dpToPx(4),
-                dpToPx(4),
-                dpToPx(4),
-                dpToPx(4)
-        );
-        /* Android Studio complained about this in the original XML files */
-        
-        root.addView(preferenceRootCard);
-    
-    
         LinearLayout preferenceRoot = new LinearLayout(this);
         preferenceRoot.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -522,7 +505,8 @@ public class ConfigActivity extends AppCompatActivity {
         );
         /* Android Studio complained about that inside the original XML */
         preferenceRoot.setBaselineAligned(false);
-        preferenceRootCard.addView(preferenceRoot);
+        cardStyle(preferenceRoot)
+        root.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
         textContainer.setLayoutParams(new LinearLayout.LayoutParams(
@@ -625,31 +609,10 @@ public class ConfigActivity extends AppCompatActivity {
             switchView.setChecked(defaultValue);
             FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
         }
-        applyDesign(preferenceRootCard);
     }
 
     private void addTextInputPreference(String title, String subtitle, View.OnClickListener listener) {
     
-        CardView preferenceRootCard = new CardView(this);
-        LinearLayout.LayoutParams preferenceRootCardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.0f
-        );
-        preferenceRootCardParams.setMargins(8,0,8,0);
-        preferenceRootCard.setElevation(0f);
-        preferenceRootCard.setLayoutParams(preferenceRootCardParams);
-        preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-        
-        preferenceRootCard.setPadding(
-                dpToPx(4),
-                dpToPx(4),
-                dpToPx(4),
-                dpToPx(4)
-        );
-        /* Android Studio complained about this in the original XML files */
-        
-        root.addView(preferenceRootCard);
     
         LinearLayout preferenceRoot = new LinearLayout(this);
         LinearLayout.LayoutParams preferenceRootParams = new LinearLayout.LayoutParams(
@@ -669,7 +632,8 @@ public class ConfigActivity extends AppCompatActivity {
         );
         /* Android Studio complained about this in the original XML files */
         preferenceRoot.setBaselineAligned(false);
-        preferenceRootCard.addView(preferenceRoot);
+        cardStyle(preferenceRoot)
+        root.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
         textContainer.setLayoutParams(new LinearLayout.LayoutParams(
@@ -707,7 +671,15 @@ public class ConfigActivity extends AppCompatActivity {
         textContainer.addView(subtitleView);
 
         preferenceRoot.setOnClickListener(listener);
-        applyDesign(preferenceRootCard);
+    }
+    
+    public void cardStyle(View view) {
+       GradientDrawable trindade_view = new GradientDrawable();         
+       trindade_view.setColor(Color.parseColor(DEFAULT_BACKGROUND_COLOR));
+       trindade_view.setCornerRadii(new float[] { 15, 15, 15, 15, 15, 15, 15, 15 });
+       ColorStateList colorStateListview = new ColorStateList(new int[][]{new int[]{}},new int[]{0xFF616161});
+       RippleDrawable rippleDrawableview = new RippleDrawable(colorStateListview, trindade_view, null);
+       view.setBackground(rippleDrawableview);
     }
 
     private void restoreDefaultSettings() {
