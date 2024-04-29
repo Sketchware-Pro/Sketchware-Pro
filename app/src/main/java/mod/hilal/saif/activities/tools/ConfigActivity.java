@@ -383,16 +383,17 @@ public class ConfigActivity extends AppCompatActivity {
    }
    
    public void appThemeDialog(){
+        int selected = 0;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle("Application Theme");
         final CharSequence[] items = themes.toArray(new String[themes.size()]);
-	    dialog.setSingleChoiceItems(items, (int) themeSelected, (dd, ww) -> {
-			themeSelected = which;
+	    dialog.setSingleChoiceItems(items, (int) selected, (d, w) -> {
+			selected = w;
 	    });	
-	    dialog.setPositiveButton("OK", (d,w) -> {
+	    dialog.setPositiveButton("OK", (dd, ww) -> {
 	          //
         });
-        dialog.setNegativeButton("Cancel", (d, w) ->{
+        dialog.setNegativeButton("Cancel", (ddd, www) ->{
              //
         });
 	    dialog.show();
@@ -424,7 +425,7 @@ public class ConfigActivity extends AppCompatActivity {
         } else {
             restoreDefaultSettings();
         }
-        trindadeJnitialize();
+        trindadeInitialize();
         initialize();
     }
     
