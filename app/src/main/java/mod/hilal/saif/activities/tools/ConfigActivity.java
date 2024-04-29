@@ -473,7 +473,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void applyDesign(View view) {
-        //Helper.applyRippleEffect(view, Color.parseColor("#dbedf5"), DEFAULT_BACKGROUND_COLOR);
+        Helper.applyRippleEffect(view, Color.parseColor("#dbedf5"), DEFAULT_BACKGROUND_COLOR);
         view.setClickable(true);
         view.setFocusable(true);
     }
@@ -490,9 +490,8 @@ public class ConfigActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
         );
-        preferenceRootCardParams.bottomMargin = dpToPx(4);
-        preferenceRootCardParams.rightMargin = 5;
-        preferenceRootCardParams.leftMargin = 5;
+        preferenceRootCardParams.setMargins(8,0,8,0);
+        preferenceRootCard.setElevation(0f);
         preferenceRootCard.setLayoutParams(preferenceRootCardParams);
         preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         
@@ -637,9 +636,8 @@ public class ConfigActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
         );
-        preferenceRootCardParams.bottomMargin = dpToPx(4);
-        preferenceRootCardParams.rightMargin = 5;
-        preferenceRootCardParams.leftMargin = 5;
+        preferenceRootCardParams.setMargins(8,0,8,0);
+        preferenceRootCard.setElevation(0f);
         preferenceRootCard.setLayoutParams(preferenceRootCardParams);
         preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         
