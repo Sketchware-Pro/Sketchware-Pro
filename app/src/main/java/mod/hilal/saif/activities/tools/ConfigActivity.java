@@ -284,13 +284,17 @@ public class ConfigActivity extends AppCompatActivity {
                         "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
                         "$time(yyyy-MM-dd'T'HHmmss)\n")
             .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-            .setPositiveButton(R.string.common_word_save, null)
+            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
+                setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
+                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                SketchwareUtil.toast("Saved");
+                dialog.dismiss();
+            })
             .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
                 setting_map.remove(SETTING_BACKUP_FILENAME);
                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                 SketchwareUtil.toast("Reset to default complete.");
-            })
-            .create();
+            });
 
     dialogBinding.chipGroupTypes.setVisibility(View.GONE);
 
@@ -310,6 +314,7 @@ public class ConfigActivity extends AppCompatActivity {
     });
 
     dialog.show();
+}
 }
 
     @Override
