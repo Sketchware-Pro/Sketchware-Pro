@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.sketchware.remod.R;
 
 import a.a.a.mB;
@@ -26,7 +26,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
 
     private void addPreference(int key, int resName, int resDescription, boolean value) {
         View switchLayout = LayoutInflater.from(this).inflate(R.layout.switch_layout, null);
-        SwitchMaterial materialSwitch = switchLayout.findViewById(R.id.material_switch);
+        MaterialSwitch materialSwitch = switchLayout.findViewById(R.id.material_switch);
         materialSwitch.setChecked(value);
         materialSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (key == 0) {
