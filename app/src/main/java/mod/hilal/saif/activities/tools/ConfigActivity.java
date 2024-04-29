@@ -4,7 +4,7 @@ import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import android.content.Context;
 
 import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
@@ -39,7 +40,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
-public class ConfigActivity extends Activity {
+public class ConfigActivity extends AppCompatActivity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
@@ -508,7 +509,7 @@ public class ConfigActivity extends Activity {
         );
         preferenceRoot.addView(switchContainer);
 
-        Switch switchView = new Switch(this);
+        MaterialSwitch switchView = new MaterialSwitch(this);
         switchView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
