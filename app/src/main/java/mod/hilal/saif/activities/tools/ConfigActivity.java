@@ -400,7 +400,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
     
     public void saveThemePreference(int pos){
-        if(pos = 0){
+        if(pos == 0){
            //Theme Default
            setting_map.put(SETTING_APP_THEME, themes.get((int)(pos)));
            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
