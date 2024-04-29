@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.materialswitch.MaterialSwitch;
+
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -49,7 +51,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         }
     });
 
-    private Switch libSwitch;
+    private MaterialSwitch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
     private TextView tvApiKey;

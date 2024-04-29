@@ -33,7 +33,7 @@
                 android:textSize="14sp"
                 tools:text="@string/design_library_settings_title_enabled" />
 
-            <Switch
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switch_lib"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:textColor="#ff757575"
+                        
                         android:textSize="14sp"
                         tools:text="@string/design_library_google_maps_description_operate_normally" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#ff4d4d4d"
+                        
                         android:textSize="14sp"
                         android:textStyle="bold"
                         tools:text="@string/design_library_google_map_title_api_key" />

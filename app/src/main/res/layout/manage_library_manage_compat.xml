@@ -34,7 +34,7 @@
                 android:textSize="14sp"
                 tools:text="@string/design_library_settings_title_enabled" />
 
-            <Switch
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/lib_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:textColor="#ff757575"
+                
                 android:textSize="14sp"
                 tools:text="@string/design_library_appcompat_description" />
         </LinearLayout>
