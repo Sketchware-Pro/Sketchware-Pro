@@ -124,4 +124,5 @@
     <attr name="colorVioletContainer" format="color" />
     <attr name="colorOnVioletContainer" format="color" />
     <attr name="harmonizeViolet" format="boolean" />
+    <attr name="colorBackground" format="color" />
 </resources>
