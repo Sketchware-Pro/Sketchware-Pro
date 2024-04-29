@@ -61,6 +61,8 @@ import mod.jbk.util.LogUtil;
 
 public class ConfigActivity extends AppCompatActivity {
 
+    /* Material Design 3 by Aquiles Trindade on *29/04/2024* */
+
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
@@ -321,7 +323,6 @@ public class ConfigActivity extends AppCompatActivity {
       DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
       EditText inputText = dialogBinding.inputText;
       inputText.setText(getBackupPath());
-      inputText.setText(getBackupFileName());
        AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
        .setView(dialogBinding.getRoot())
             .setTitle("Backup directory")
@@ -674,12 +675,19 @@ public class ConfigActivity extends AppCompatActivity {
     }
     
     public void cardStyle(View view) {
-       GradientDrawable trindade_view = new GradientDrawable();         
-       trindade_view.setColor(DEFAULT_BACKGROUND_COLOR);
-       trindade_view.setCornerRadii(new float[] { 15, 15, 15, 15, 15, 15, 15, 15 });
-       ColorStateList colorStateListview = new ColorStateList(new int[][]{new int[]{}},new int[]{0xFF616161});
-       RippleDrawable rippleDrawableview = new RippleDrawable(colorStateListview, trindade_view, null);
-       view.setBackground(rippleDrawableview);
+        LinearLayout.MarginLayoutParams layoutParams = (LinearLayout.MarginLayoutParams) view.getLayoutParams();
+        int leftMargin = 8;
+        int topMargin = 2;
+        int rightMargin = 5;
+        int bottomMargin = 8;
+        layoutParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+        view.setLayoutParams(layoutParams);
+        GradientDrawable trindade_view = new GradientDrawable();         
+        trindade_view.setColor(DEFAULT_BACKGROUND_COLOR);
+        trindade_view.setCornerRadii(new float[] { 24, 24, 24, 24, 24, 24, 24, 24 });
+        ColorStateList colorStateListview = new ColorStateList(new int[][]{new int[]{}},new int[]{0xFF616161});
+        RippleDrawable rippleDrawableview = new RippleDrawable(colorStateListview, trindade_view, null);
+        view.setBackground(rippleDrawableview);
     }
 
     private void restoreDefaultSettings() {
