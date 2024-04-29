@@ -7,6 +7,7 @@ import mod.SketchwareUtil;
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView; 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -319,7 +320,7 @@ public class ConfigActivity extends AppCompatActivity {
       inputText.setText(getBackupFileName());
        AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
        .setView(dialogBinding.getRoot())
-            .setTitle("Backup directory")
+            .setTitle("Backup directory)
             .setMessage("Directory inside /Internal storage/, e.g. sketchware/backups")
             .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
             .setPositiveButton(R.string.common_word_save, null)
@@ -332,7 +333,7 @@ public class ConfigActivity extends AppCompatActivity {
 
         positiveButton.setOnClickListener(view -> {
             // onClickOK
-            ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
+            setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
             SketchwareUtil.toast("Saved");
             dialog.dismiss();
         });
@@ -492,7 +493,7 @@ public class ConfigActivity extends AppCompatActivity {
         preferenceRootCardParams.bottomMargin = dpToPx(4);
         preferenceRootCardParams.rightMargin = 5;
         preferenceRootCardParams.leftMargin = 5;
-        preferenceRootCard.setLayoutParams(preferenceRootCardCardParams);
+        preferenceRootCard.setLayoutParams(preferenceRootCardParams);
         preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         preferenceRootCard.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRootCard.setPadding(
@@ -639,7 +640,7 @@ public class ConfigActivity extends AppCompatActivity {
         preferenceRootCardParams.bottomMargin = dpToPx(4);
         preferenceRootCardParams.rightMargin = 5;
         preferenceRootCardParams.leftMargin = 5;
-        preferenceRootCard.setLayoutParams(preferenceRootCardCardParams);
+        preferenceRootCard.setLayoutParams(preferenceRootCardParams);
         preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         preferenceRootCard.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRootCard.setPadding(
