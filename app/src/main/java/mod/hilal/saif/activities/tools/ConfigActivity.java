@@ -495,7 +495,7 @@ public class ConfigActivity extends AppCompatActivity {
         preferenceRootCardParams.leftMargin = 5;
         preferenceRootCard.setLayoutParams(preferenceRootCardParams);
         preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-        preferenceRootCard.setOrientation(LinearLayout.HORIZONTAL);
+        
         preferenceRootCard.setPadding(
                 dpToPx(4),
                 dpToPx(4),
@@ -503,7 +503,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(4)
         );
         /* Android Studio complained about this in the original XML files */
-        preferenceRootCard.setBaselineAligned(false);
+        
         root.addView(preferenceRootCard);
     
     
@@ -642,7 +642,7 @@ public class ConfigActivity extends AppCompatActivity {
         preferenceRootCardParams.leftMargin = 5;
         preferenceRootCard.setLayoutParams(preferenceRootCardParams);
         preferenceRootCard.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-        preferenceRootCard.setOrientation(LinearLayout.HORIZONTAL);
+        
         preferenceRootCard.setPadding(
                 dpToPx(4),
                 dpToPx(4),
@@ -650,7 +650,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(4)
         );
         /* Android Studio complained about this in the original XML files */
-        preferenceRootCard.setBaselineAligned(false);
+        
         root.addView(preferenceRootCard);
     
         LinearLayout preferenceRoot = new LinearLayout(this);
