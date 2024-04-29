@@ -505,7 +505,7 @@ public class ConfigActivity extends AppCompatActivity {
         );
         /* Android Studio complained about that inside the original XML */
         preferenceRoot.setBaselineAligned(false);
-        cardStyle(preferenceRoot)
+        cardStyle(preferenceRoot);
         root.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
@@ -632,7 +632,7 @@ public class ConfigActivity extends AppCompatActivity {
         );
         /* Android Studio complained about this in the original XML files */
         preferenceRoot.setBaselineAligned(false);
-        cardStyle(preferenceRoot)
+        cardStyle(preferenceRoot);
         root.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
