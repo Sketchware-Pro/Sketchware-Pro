@@ -17,8 +17,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
+import android.util.TypedValue;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Context;
 
 import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
