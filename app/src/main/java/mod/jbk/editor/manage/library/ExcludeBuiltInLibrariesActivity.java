@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sketchware.remod.R;
@@ -54,7 +54,7 @@ import mod.jbk.util.LogUtil;
 public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ExcludeBuiltInLibraries";
 
-    private Switch enabled;
+    private MaterialSwitch enabled;
     private TextView preview;
     private String sc_id;
     private boolean isExcludingEnabled;
@@ -104,6 +104,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         k();
         try {
             new Handler(Looper.myLooper()).postDelayed(() ->

@@ -1,4 +1,6 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="64dp"
@@ -6,8 +8,7 @@
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
-    android:background="@color/transparent"
-    android:elevation="4dp">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +32,8 @@
             android:alpha="0.8"
             android:background="@drawable/circle_bg_dark_grey_alpha"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/img_delete"
@@ -74,14 +76,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:textColor="#ff404040"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="main" />
 
                 <TextView
                     android:id="@+id/tv_activity_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#ff9a9a9a"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    tools:text="MainActivity.java" />
             </LinearLayout>
 
             <ImageView
@@ -93,4 +97,4 @@
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -19,6 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:splitMotionEvents="false"
+                tools:itemCount="4"
                 tools:listitem="@layout/common_category_triangle_item" />
         </LinearLayout>
 
@@ -58,6 +59,7 @@
                 android:paddingBottom="80dp"
                 android:scrollbars="vertical"
                 android:splitMotionEvents="false"
+                tools:itemCount="5"
                 tools:listitem="@layout/fr_logic_list_item" />
         </LinearLayout>
     </LinearLayout>

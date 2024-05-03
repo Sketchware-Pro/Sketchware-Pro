@@ -37,11 +37,11 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textColor="@color/scolor_red_02"
+                android:textColor="?colorError"
                 android:textSize="14sp"
                 tools:text="@string/design_library_settings_title_enabled" />
 
-            <Switch
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/lib_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_marginTop="8dp"
             android:gravity="left"
             android:padding="8dp"
-            android:textColor="@color/scolor_red_01"
+            android:textColor="?colorError"
             android:textSize="12sp"
             tools:text="@string/design_library_message_slow_down_compilation_time" />
     </LinearLayout>

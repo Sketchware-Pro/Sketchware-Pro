@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff5f5f5"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -19,15 +19,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                app:cardElevation="4dp"
+                app:contentPadding="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@id/icon_apk"
@@ -46,7 +47,8 @@
                         android:layout_toRightOf="@id/icon_apk"
                         android:textColor="@color/scolor_black_01"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="Sign APK" />
 
                     <Button
                         android:id="@id/btn_sign_apk"
@@ -128,17 +130,19 @@
                             app:lottie_loop="true" />
                     </LinearLayout>
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                app:cardElevation="4dp"
+                app:contentPadding="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="8dp">
+                    >
 
                     <ImageView
                         android:id="@id/icon_src"
@@ -242,7 +246,7 @@
                             android:textSize="12sp" />
                     </LinearLayout>
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

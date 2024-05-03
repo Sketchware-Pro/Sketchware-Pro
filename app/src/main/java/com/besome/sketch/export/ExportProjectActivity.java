@@ -32,6 +32,7 @@ import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
 
@@ -235,7 +236,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     }
 
     private void initializeAppBundleExportViews() {
-        CardView exportAppBundleRoot = new CardView(this);
+        MaterialCardView exportAppBundleRoot = new MaterialCardView(this);
         {
             FrameLayout.LayoutParams exportAppBundleRootParams = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -246,6 +247,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     (int) getDip(8),
                     (int) getDip(8)
             );
+            exportAppBundleRoot.setElevation(getDip(4));
             exportAppBundleRoot.setLayoutParams(exportAppBundleRootParams);
         }
 
