@@ -201,7 +201,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         admobLibraryBean = getIntent().getParcelableExtra("admob");
         binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
         binding.tvTitleBanner.setText(Helper.getResString(R.string.design_library_admob_title_banner));
-        binding.tvTitleBanner.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvTitleBannerName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         binding.tvTitleBannerId.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
         binding.tvTitleInter.setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
         binding.tvTitleInterName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
