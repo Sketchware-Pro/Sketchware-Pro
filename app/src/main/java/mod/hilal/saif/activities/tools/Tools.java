@@ -218,7 +218,7 @@ public class Tools extends Activity {
         });
 
         apkPathDialog.b("Continue", v -> {
-            if(!isAPKSelected[0]) {
+            if (!isAPKSelected[0]) {
                 SketchwareUtil.toast("Please select an APK file to sign", Toast.LENGTH_SHORT);
                 shakeView(binding.selectFile);
                 return;
