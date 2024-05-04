@@ -53,6 +53,8 @@ import mod.ilyasse.activities.about.AboutModActivity;
 import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
+import mod.trindade.dev.theme.AppTheme;
+
 
 public class MainActivity extends BasePermissionAppCompatActivity {
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
@@ -139,8 +141,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme_Main);
-        EdgeToEdge.enable(this);
+        AppTheme appThemeHelper = new AppTheme(this);
+        setTheme(appThemeHelper.getMainTheme());
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();
