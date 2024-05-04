@@ -16,6 +16,9 @@ import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
 import com.sketchware.remod.R;
 
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.appbar.AppBarLayout;
+
 import a.a.a.GB;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
@@ -27,9 +30,9 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.system_info);
+        setContentView(R.layout.base_activity);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,7 +41,7 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) onBackPressed();
         });
-        content = findViewById(R.id.content);
+        content = findViewById(R.id.root);
         addApiLevelInfo();
         addAndroidVersionNameInfo();
         addScreenResolutionInfo();
