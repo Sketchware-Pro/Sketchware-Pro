@@ -1,0 +1,8 @@
+<resources>
+    <style name="Platform.V27.AppTheme.Red" parent="Platform.V23.AppTheme.Red">
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="Platform.AppTheme.Red" parent="Platform.V27.AppTheme.Red" />
+</resources>
