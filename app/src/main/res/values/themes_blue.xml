@@ -1,0 +1,102 @@
+<resources>
+    <style name="AppTheme" parent="Platform.AppTheme">
+        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
+        <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
+        <item name="collapsingToolbarLayoutLargeStyle">@style/AppTheme.CollapsingToolbar</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+    </style>
+
+    <style name="AppTheme.Main">
+        <item name="navigationViewStyle">@style/MainDrawer</item>
+    </style>
+
+    <style name="AppTheme.Design">
+        <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+        <item name="toolbarStyle">@style/AppTheme.Design.Toolbar</item>
+    </style>
+
+    <style name="AppTheme.Starting">
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
+
+    <style name="Platform.V21.AppTheme" parent="Base.AppTheme">
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+    </style>
+
+    <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />
+
+    <style name="Base.AppTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_blue_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_blue_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_blue_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_blue_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_blue_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_blue_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_blue_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_blue_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_blue_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_blue_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_blue_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_blue_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_blue_error</item>
+        <item name="colorOnError">@color/md_theme_blue_onError</item>
+        <item name="colorErrorContainer">@color/md_theme_blue_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/md_theme_blue_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_blue_background</item>
+        <item name="colorOnBackground">@color/md_theme_blue_onBackground</item>
+        <item name="colorSurface">@color/md_theme_blue_surface</item>
+        <item name="colorOnSurface">@color/md_theme_blue_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_blue_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_blue_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_blue_outline</item>
+        <item name="colorOutlineVariant">@color/md_theme_blue_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/md_theme_blue_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_blue_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_blue_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/md_theme_blue_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_blue_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_blue_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_blue_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/md_theme_blue_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_blue_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_blue_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_blue_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/md_theme_blue_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_blue_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_blue_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_blue_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/md_theme_blue_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/md_theme_blue_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_blue_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_blue_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/md_theme_blue_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_blue_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_blue_surfaceContainerHighest</item>
+        <item name="colorAmber">#785900</item>
+        <item name="colorOnAmber">#ffffff</item>
+        <item name="colorAmberContainer">#ffdf9e</item>
+        <item name="colorOnAmberContainer">#261a00</item>
+        <item name="harmonizeAmber">true</item>
+        <item name="colorCoolGreen">#006d44</item>
+        <item name="colorOnCoolGreen">#ffffff</item>
+        <item name="colorCoolGreenContainer">#7afbb7</item>
+        <item name="colorOnCoolGreenContainer">#002111</item>
+        <item name="harmonizeCoolGreen">true</item>
+        <item name="colorGreen">#006a62</item>
+        <item name="colorOnGreen">#ffffff</item>
+        <item name="colorGreenContainer">#72f7e9</item>
+        <item name="colorOnGreenContainer">#00201d</item>
+        <item name="harmonizeGreen">true</item>
+        <item name="colorViolet">#8a3e9c</item>
+        <item name="colorOnViolet">#ffffff</item>
+        <item name="colorVioletContainer">#fdd6ff</item>
+        <item name="colorOnVioletContainer">#340042</item>
+        <item name="harmonizeViolet">true</item>
+    </style>
+</resources>

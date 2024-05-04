@@ -1,0 +1,51 @@
+<resources>
+    <style name="AppTheme.Red.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
+        <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance</item>
+        <item name="expandedTitleTextAppearance">@style/MaterialToolbarTextExpandedAppearance</item>
+        <item name="titleCollapseMode">scale</item>
+    </style>
+
+    <style name="AppTheme.Red.Design.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
+    </style>
+
+    <style name="AppTheme.Red.Check.White" parent="Base.Widget.Material3.CompoundButton.CheckBox">
+        <item name="colorControlActivated">@color/color_chk_white_highlight</item>
+        <item name="colorControlNormal">@color/color_chk_white_normal</item>
+    </style>
+
+    <style name="AppTheme.Red.Et" parent="@style/AppTheme.Red">
+        <item name="colorControlHighlight">@android:color/transparent</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="colorPrimary">#ff212121</item>
+        <item name="colorPrimaryDark">#ff000000</item>
+    </style>
+
+    <style name="Theme.Red.AppCompat.Light.NoActionBar.FullScreen" parent="@style/AppTheme.Red">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Red.AppCompat.Light.NoActionBar.Translucent" parent="@style/AppTheme.Red">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Red.AppCompat.Light.NoActionBar.Translucent.FullScreen" parent="@style/AppTheme.Red">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>
