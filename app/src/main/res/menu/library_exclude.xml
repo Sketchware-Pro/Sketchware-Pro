@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@id/reset"
-        android:icon="@drawable/ic_reset_24.xml"
+        android:icon="@drawable/ic_reset_24"
         android:orderInCategory="1"
         android:title="Reset"
         app:showAsAction="always" />
