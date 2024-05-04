@@ -21,7 +21,9 @@ import a.a.a._A;
 import a.a.a.lC;
 import a.a.a.xB;
 
-public class BaseAppCompatActivity extends AppCompatActivity {
+import mod.trindade.dev.theme.ThemedActivity;
+
+public class BaseAppCompatActivity extends ThemedActivity {
 
     public FirebaseAnalytics mAnalytics;
 
