@@ -27,6 +27,9 @@ import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 
 import java.io.File;
 
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.appbar.AppBarLayout;
+
 import a.a.a.aB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
@@ -36,30 +39,23 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
+import mod.trindade.dev.theme.AppTheme;
+import mod.trindade.dev.theme.ThemedActivity;   
 
-public class Tools extends Activity {
+public class Tools extends ThemedActivity {
 
     private LinearLayout base;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout.LayoutParams _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        LinearLayout _base = new LinearLayout(this);
-        _base.setOrientation(LinearLayout.VERTICAL);
-        _base.setLayoutParams(_lp);
-        newToolbar(_base);
-        ScrollView _scroll = new ScrollView(this);
-
-        base = new LinearLayout(this);
-        base.setOrientation(LinearLayout.VERTICAL);
-        base.setLayoutParams(_lp);
-        _scroll.setLayoutParams(_lp);
-        _scroll.addView(base);
-        _base.addView(_scroll);
+        setContentView(R.layout.base_activity);
+        base = findViewById(R.id.root);
+        MaterialToolbar materialToolbar = findViewById(R.id.toolbar);        
+        materialToolbar.setNavigationIcon(R.drawable.ic_back);
+        materialToolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        materialToolbar.setTitle("Tools");
         setupViews();
-        setContentView(_base);
     }
 
     private void makeup(LibraryItemView parent, int iconResourceId, String title, String description) {
@@ -218,7 +214,7 @@ public class Tools extends Activity {
         });
 
         apkPathDialog.b("Continue", v -> {
-            if (!isAPKSelected[0]) {
+            if(!isAPKSelected[0]) {
                 SketchwareUtil.toast("Please select an APK file to sign", Toast.LENGTH_SHORT);
                 shakeView(binding.selectFile);
                 return;
