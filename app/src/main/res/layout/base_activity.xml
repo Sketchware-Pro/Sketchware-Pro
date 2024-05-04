@@ -43,6 +43,11 @@
               android:layout_width="match_parent"
               android:id="@+id/root"
               android:layout_height="match_parent">
+
+            <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+                
              </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
