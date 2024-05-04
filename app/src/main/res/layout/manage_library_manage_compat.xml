@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:padding="12dp"
-            android:background="@color/colorBackground"
+            
             android:orientation="vertical" >   
             
         <LinearLayout
