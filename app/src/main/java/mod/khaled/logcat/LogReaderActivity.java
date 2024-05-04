@@ -39,8 +39,9 @@ import java.util.regex.Pattern;
 import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
+import mod.trindade.dev.theme.ThemedActivity; 
 
-public class LogReaderActivity extends AppCompatActivity {
+public class LogReaderActivity extends ThemedActivity {
 
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
