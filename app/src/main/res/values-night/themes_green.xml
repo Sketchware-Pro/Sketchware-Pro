@@ -1,0 +1,79 @@
+<resources>
+    <style name="Platform.V21.AppTheme.Green" parent="Base.AppTheme.Green">
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Platform.AppTheme.Green" parent="Platform.V21.AppTheme.Green" />
+
+    <style name="Base.AppTheme.Green" parent="Theme.Material3.Dark.NoActionBar">
+    <!-- green theme -->
+        <item name="colorPrimary">@color/md_theme_green_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_green_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_green_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_green_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_green_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_green_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_green_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_green_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_green_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_green_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_green_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_green_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_green_error</item>
+        <item name="colorOnError">@color/md_theme_green_onError</item>
+        <item name="colorErrorContainer">@color/md_theme_green_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/md_theme_green_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_green_background</item>
+        <item name="colorOnBackground">@color/md_theme_green_onBackground</item>
+        <item name="colorSurface">@color/md_theme_green_surface</item>
+        <item name="colorOnSurface">@color/md_theme_green_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_green_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_green_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_green_outline</item>
+        <item name="colorOutlineVariant">@color/md_theme_green_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/md_theme_green_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_green_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_green_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/md_theme_green_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_green_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_green_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_green_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/md_theme_green_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_green_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_green_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_green_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/md_theme_green_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_green_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_green_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_green_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/md_theme_green_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/md_theme_green_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_green_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_green_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/md_theme_green_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_green_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_green_surfaceContainerHighest</item>
+    <!-- default colors -->    
+        <item name="colorAmber">#fabd00</item>
+        <item name="colorOnAmber">#3f2e00</item>
+        <item name="colorAmberContainer">#5b4300</item>
+        <item name="colorOnAmberContainer">#ffdf9e</item>
+        <item name="harmonizeAmber">true</item>
+        <item name="colorCoolGreen">#5cde9c</item>
+        <item name="colorOnCoolGreen">#003921</item>
+        <item name="colorCoolGreenContainer">#005232</item>
+        <item name="colorOnCoolGreenContainer">#7afbb7</item>
+        <item name="harmonizeCoolGreen">true</item>
+        <item name="colorGreen">#51dbcd</item>
+        <item name="colorOnGreen">#003733</item>
+        <item name="colorGreenContainer">#00504a</item>
+        <item name="colorOnGreenContainer">#72f7e9</item>
+        <item name="harmonizeGreen">true</item>
+        <item name="colorViolet">#f4aeff</item>
+        <item name="colorOnViolet">#550069</item>
+        <item name="colorVioletContainer">#6f2382</item>
+        <item name="colorOnVioletContainer">#fdd6ff</item>
+        <item name="harmonizeViolet">true</item>
+    </style>
+</resources>
