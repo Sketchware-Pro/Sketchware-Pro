@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="?attr/colorBackground"
     android:layout_height="match_parent">
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:padding="12dp"
+            android:background="?attr/colorBackground"
             android:orientation="vertical" >   
             
         <LinearLayout
