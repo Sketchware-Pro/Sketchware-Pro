@@ -67,8 +67,6 @@ import mod.trindade.dev.theme.AppTheme;
  
 public class ConfigActivity extends ThemedActivity {
 
-    /* Material Design 3 by Aquiles Trindade on *29/04/2026* */
-
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
