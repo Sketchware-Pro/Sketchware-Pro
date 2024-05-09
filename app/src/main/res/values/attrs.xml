@@ -1,13 +1,4 @@
 <resources>
-    <attr name="adSize" format="string" />
-    <attr name="adSizes" format="string" />
-    <attr name="adUnitId" format="string" />
-    <attr name="allowShortcuts" format="boolean" />
-    <attr name="buttonSize" format="reference">
-        <enum name="icon_only" value="2" />
-        <enum name="standard" value="0" />
-        <enum name="wide" value="1" />
-    </attr>
     <attr name="circleCrop" format="boolean" />
     <attr name="circle_color" format="color" />
     <attr name="circle_fill" format="color" />
@@ -15,11 +6,6 @@
     <attr name="circle_stroke_width" format="dimension" />
     <attr name="circle_x_radius" format="dimension" />
     <attr name="circle_y_radius" format="dimension" />
-    <attr name="colorScheme" format="reference">
-        <enum name="auto" value="2" />
-        <enum name="dark" value="0" />
-        <enum name="light" value="1" />
-    </attr>
     <attr name="contentProviderUri" format="string" />
     <attr name="corpusId" format="string" />
     <attr name="corpusVersion" format="string" />
@@ -28,14 +14,6 @@
     <attr name="defaultIntentData" format="string" />
     <attr name="documentMaxAgeSecs" format="integer" />
     <attr name="end_angle" format="float" />
-    <attr name="featureType">
-        <enum name="demote_common_words" value="2" />
-        <enum name="demote_rfc822_hostnames" value="3" />
-        <enum name="index_entity_types" value="6" />
-        <enum name="match_global_nicknames" value="1" />
-        <enum name="omnibox_title_section" value="5" />
-        <enum name="omnibox_url_section" value="4" />
-    </attr>
     <attr name="imageAspectRatio" format="float" />
     <attr name="imageAspectRatioAdjust">
         <enum name="adjust_height" value="2" />
@@ -62,7 +40,6 @@
     <attr name="pointer_radius" format="dimension" />
     <attr name="progress" format="integer" />
     <attr name="schemaOrgProperty" format="string" />
-    <attr name="schemaOrgType" format="string" />
     <attr name="scopeUris" format="reference|string" />
     <attr name="searchEnabled" format="boolean" />
     <attr name="searchLabel" format="string" />
@@ -74,20 +51,6 @@
         <enum name="rfc822" value="2" />
         <enum name="url" value="3" />
     </attr>
-    <attr name="sectionId" format="string" />
-    <attr name="sectionType">
-        <enum name="icon_uri" value="2" />
-        <enum name="intent_action" value="3" />
-        <enum name="intent_activity" value="8" />
-        <enum name="intent_data" value="4" />
-        <enum name="intent_data_id" value="5" />
-        <enum name="intent_extra_data" value="6" />
-        <enum name="large_icon_uri" value="7" />
-        <enum name="text1" value="0" />
-        <enum name="text2" value="1" />
-        <enum name="thing_proto" value="9" />
-    </attr>
-    <attr name="sectionWeight" format="integer" />
     <attr name="semanticallySearchable" format="boolean" />
     <attr name="settingsDescription" format="string" />
     <attr name="sourceClass">
