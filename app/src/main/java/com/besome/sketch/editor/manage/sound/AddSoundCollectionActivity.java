@@ -9,7 +9,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -18,9 +17,8 @@ import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageSoundAddBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,27 +42,19 @@ import a.a.a.xB;
 import a.a.a.yy;
 
 public class AddSoundCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
-    public TextInputEditText inputAudioName;
-    public TextInputLayout inputLayoutAudioName;
-    public TextView filename;
-    public TextView audioCurrentTime;
-    public TextView audioLengthText;
-    public ImageView albumImage;
-    public ImageView playAudioBtn;
+
     public MediaPlayer G;
     public TimerTask I;
-    public SeekBar audioSeekBar;
     public WB M;
     public ArrayList<ProjectResourceBean> N;
     public String t;
-    public MaterialCardView playerControlLayout;
-    public LinearLayout x;
-    public MaterialCardView selectAudioBtn;
     public boolean u;
     public Timer H = new Timer();
     public Uri K;
     public boolean L;
     public ProjectResourceBean O;
+
+    private ManageSoundAddBinding binding;
 
     public void finish() {
         Timer timer = H;
@@ -98,14 +88,14 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
         H.cancel();
         G.pause();
-        playAudioBtn.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+        binding.play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
     public void onActivityResult(int i, int i2, Intent intent) {
         MaterialCardView relativeLayout;
         Uri data;
         super.onActivityResult(i, i2, intent);
-        if (i == 218 && (relativeLayout = selectAudioBtn) != null) {
+        if (i == 218 && (relativeLayout = binding.selectFile) != null) {
             relativeLayout.setEnabled(true);
             if (i2 != -1 || (data = intent.getData()) == null) {
                 return;
@@ -130,13 +120,13 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             r();
             return;
         }
-        if (id == R.id.play) {
+        if (id == binding.play.getId()) {
             q();
             return;
         }
-        if (id == R.id.select_file) {
+        if (id == binding.selectFile.getId()) {
             if (!u) {
-                selectAudioBtn.setEnabled(false);
+                binding.selectFile.setEnabled(false);
                 p();
             }
         }
@@ -145,7 +135,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
-        setContentView(R.layout.manage_sound_add);
+        binding = ManageSoundAddBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         d(xB.b().a(this, R.string.common_word_save));
         b(xB.b().a(this, R.string.common_word_cancel));
         Intent intent = getIntent();
@@ -155,30 +146,19 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         if (O != null) {
             u = true;
         }
-        filename = findViewById(R.id.file_name);
-        audioCurrentTime = findViewById(R.id.current_time);
-        audioLengthText = findViewById(R.id.file_length);
-        playerControlLayout = findViewById(R.id.layout_control);
-        x = findViewById(R.id.layout_guide);
-        selectAudioBtn = findViewById(R.id.select_file);
-        playAudioBtn = findViewById(R.id.play);
-        albumImage = findViewById(R.id.img_album);
-        audioSeekBar = findViewById(R.id.seek);
-        playerControlLayout.setVisibility(View.GONE);
-        inputAudioName = findViewById(R.id.ed_input);
-        inputLayoutAudioName = findViewById(R.id.ti_input);
-        inputAudioName.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
-        M = new WB(this, inputLayoutAudioName, uq.b, n());
-        playAudioBtn.setEnabled(false);
-        playAudioBtn.setOnClickListener(this);
-        audioSeekBar.setOnSeekBarChangeListener(new Hv(this));
-        selectAudioBtn.setOnClickListener(this);
+        binding.layoutControl.setVisibility(View.GONE);
+        binding.edInput.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
+        M = new WB(this, binding.tiInput, uq.b, n());
+        binding.play.setEnabled(false);
+        binding.play.setOnClickListener(this);
+        binding.seek.setOnSeekBarChangeListener(new Hv(this));
+        binding.selectFile.setOnClickListener(this);
         this.r.setOnClickListener(this);
         this.s.setOnClickListener(this);
         if (u) {
             e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
-            M = new WB(this, inputLayoutAudioName, uq.b, n(), O.resName);
-            inputAudioName.setText(O.resName);
+            M = new WB(this, binding.tiInput, uq.b, n(), O.resName);
+            binding.edInput.setText(O.resName);
             f(a(O));
         }
     }
@@ -207,14 +187,14 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
         G.start();
         s();
-        playAudioBtn.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+        binding.play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
     }
 
     public final void r() {
         char c;
         if (a(M)) {
             if (!u) {
-                String obj = inputAudioName.getText().toString();
+                String obj = binding.edInput.getText().toString();
                 String a = HB.a(this, K);
                 if (a == null) {
                     return;
@@ -261,7 +241,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
 
                 }
             } else {
-                Qp.g().a(O, inputAudioName.getText().toString(), true);
+                Qp.g().a(O, binding.edInput.getText().toString(), true);
                 bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
             }
             finish();
@@ -295,9 +275,9 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             G.setDataSource(this, Uri.parse(str));
             G.prepare();
             L = true;
-            a(str, albumImage);
-            playerControlLayout.setVisibility(View.VISIBLE);
-            x.setVisibility(View.GONE);
+            a(str, binding.imgAlbum);
+            binding.layoutControl.setVisibility(View.VISIBLE);
+            binding.layoutGuide.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -322,24 +302,24 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             G.setDataSource(this, uri);
             G.prepare();
             L = true;
-            a(HB.a(this, K), albumImage);
-            playerControlLayout.setVisibility(View.VISIBLE);
-            x.setVisibility(View.GONE);
+            a(HB.a(this, K), binding.imgAlbum);
+            binding.layoutControl.setVisibility(View.VISIBLE);
+            binding.layoutGuide.setVisibility(View.GONE);
             try {
-                if (inputAudioName.getText() == null || inputAudioName.getText().length() <= 0) {
+                if (binding.edInput.getText() == null || binding.edInput.getText().length() <= 0) {
                     int lastIndexOf = a.lastIndexOf("/");
                     int lastIndexOf2 = a.lastIndexOf(".");
                     if (lastIndexOf2 <= 0) {
                         lastIndexOf2 = a.length();
                     }
-                    inputAudioName.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
+                    binding.edInput.setText(a.substring(lastIndexOf + 1, lastIndexOf2));
                 }
             } catch (Exception ignored) {
             }
         } catch (Exception e) {
             L = false;
-            playerControlLayout.setVisibility(View.GONE);
-            x.setVisibility(View.VISIBLE);
+            binding.layoutControl.setVisibility(View.GONE);
+            binding.layoutGuide.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
@@ -372,29 +352,29 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     }
 
     public static ImageView d(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.playAudioBtn;
+        return addSoundCollectionActivity.binding.play;
     }
 
     public static SeekBar e(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.audioSeekBar;
+        return addSoundCollectionActivity.binding.seek;
     }
 
     public static TextView f(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.audioLengthText;
+        return addSoundCollectionActivity.binding.fileLength;
     }
 
     public static TextView g(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.filename;
+        return addSoundCollectionActivity.binding.fileName;
     }
 
     public static TextView h(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.audioCurrentTime;
+        return addSoundCollectionActivity.binding.currentTime;
     }
 
     public boolean a(WB wb) {
         if (wb.b()) {
             if ((!L || K == null) && !u) {
-                selectAudioBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+                binding.selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
                 return false;
             }
             return true;
