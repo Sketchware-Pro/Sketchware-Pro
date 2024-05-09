@@ -11,13 +11,13 @@
         android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@id/ti_input"
+            android:id="@+id/ti_input"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:importantForAutofill="noExcludeDescendants">
 
             <EditText
-                android:id="@id/et_input"
+                android:id="@+id/et_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"

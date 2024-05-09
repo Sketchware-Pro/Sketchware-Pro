@@ -5,18 +5,18 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@id/header_icon"
+        android:id="@+id/header_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <TextView
-        android:id="@id/header_name"
+        android:id="@+id/header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <View
-        android:id="@id/header_line"
+        android:id="@+id/header_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="8dp"

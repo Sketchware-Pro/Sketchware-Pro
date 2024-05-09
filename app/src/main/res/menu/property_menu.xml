@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:support="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@id/menu_add_image_res"
+        android:id="@+id/menu_add_image_res"
         android:icon="@drawable/icon_image_white_96"
         android:orderInCategory="100"
         android:title="@string/design_actionbar_title_manager_image"

@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/container"
+    android:id="@+id/container"
     android:layout_width="308dp"
     android:layout_height="88dp"
     android:layout_marginVertical="4dp"
@@ -17,7 +17,7 @@
         android:background="@color/lighter_grey">
 
         <ImageView
-            android:id="@id/img_edit"
+            android:id="@+id/img_edit"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
             android:src="@drawable/ic_edit_grey600_24dp" />
 
         <ImageView
-            android:id="@id/img_view"
+            android:id="@+id/img_view"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerInParent="true" />
@@ -42,7 +42,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@id/tv_filename"
+            android:id="@+id/tv_filename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -51,7 +51,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@id/tv_linked_filename"
+            android:id="@+id/tv_linked_filename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -72,7 +72,7 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@id/img_preset_setting"
+            android:id="@+id/img_preset_setting"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"

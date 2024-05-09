@@ -20,7 +20,7 @@
         android:paddingBottom="8dp">
 
         <ImageView
-            android:id="@id/img_backbtn"
+            android:id="@+id/img_backbtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
@@ -29,7 +29,7 @@
             android:src="@drawable/ic_arrow_left_primary_48dp" />
 
         <TextView
-            android:id="@id/tv_prevbtn"
+            android:id="@+id/tv_prevbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -40,7 +40,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@id/tv_toptitle"
+            android:id="@+id/tv_toptitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -49,7 +49,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@id/tv_nextbtn"
+            android:id="@+id/tv_nextbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -60,7 +60,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@id/layout_step_guide"
+        android:id="@+id/layout_step_guide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -69,12 +69,12 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@id/icon"
+            android:id="@+id/icon"
             android:layout_width="32dp"
             android:layout_height="32dp" />
 
         <TextView
-            android:id="@id/tv_step_title"
+            android:id="@+id/tv_step_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -83,7 +83,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@id/tv_step_desc"
+            android:id="@+id/tv_step_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -92,7 +92,7 @@
             android:textSize="12sp" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@id/cv_console"
+            android:id="@+id/cv_console"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -103,7 +103,7 @@
             app:cardElevation="2dp">
 
             <LinearLayout
-                android:id="@id/ll_goto_console"
+                android:id="@+id/ll_goto_console"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -116,7 +116,7 @@
                     android:src="@drawable/chrome_96" />
 
                 <TextView
-                    android:id="@id/tv_goto_console"
+                    android:id="@+id/tv_goto_console"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -147,7 +147,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@id/layout_container"
+                android:id="@+id/layout_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical" />
@@ -155,14 +155,14 @@
     </ScrollView>
 
     <Button
-        android:id="@id/btn_import"
+        android:id="@+id/btn_import"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp" />
 
     <Button
-        android:id="@id/btn_open_doc"
+        android:id="@+id/btn_open_doc"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

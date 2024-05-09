@@ -14,7 +14,7 @@
         app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <CheckBox
-            android:id="@id/checkbox_content"
+            android:id="@+id/checkbox_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

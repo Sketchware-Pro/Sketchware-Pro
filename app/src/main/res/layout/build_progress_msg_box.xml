@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@id/layout_quiz"
+        android:id="@+id/layout_quiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffffff"
@@ -35,7 +35,7 @@
             android:background="@drawable/circle_bg_white">
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@id/animation_view"
+                android:id="@+id/animation_view"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -47,7 +47,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@id/tv_progress"
+            android:id="@+id/tv_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start|center"

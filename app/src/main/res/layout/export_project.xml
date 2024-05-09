@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@id/icon_apk"
+                        android:id="@+id/icon_apk"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_alignParentLeft="true"
@@ -39,19 +39,19 @@
                         android:src="@drawable/ic_apk_color_48dp" />
 
                     <TextView
-                        android:id="@id/title_sign_apk"
+                        android:id="@+id/title_sign_apk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@id/icon_apk"
+                        android:layout_toRightOf="@+id/icon_apk"
                         android:textColor="@color/scolor_black_01"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="Sign APK" />
 
                     <Button
-                        android:id="@id/btn_sign_apk"
+                        android:id="@+id/btn_sign_apk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -67,7 +67,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@id/layout_apk_path"
+                            android:id="@+id/layout_apk_path"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
@@ -86,7 +86,7 @@
                                     android:src="@drawable/ic_folder_48dp" />
 
                                 <TextView
-                                    android:id="@id/title_apk_path"
+                                    android:id="@+id/title_apk_path"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
@@ -108,7 +108,7 @@
                                     android:layout_height="match_parent">
 
                                     <TextView
-                                        android:id="@id/tv_apk_path"
+                                        android:id="@+id/tv_apk_path"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:gravity="center_vertical"
@@ -122,7 +122,7 @@
                         </LinearLayout>
 
                         <com.airbnb.lottie.LottieAnimationView
-                            android:id="@id/loading_sign_apk"
+                            android:id="@+id/loading_sign_apk"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             app:lottie_autoPlay="false"
@@ -145,7 +145,7 @@
                     >
 
                     <ImageView
-                        android:id="@id/icon_src"
+                        android:id="@+id/icon_src"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_alignParentLeft="true"
@@ -153,18 +153,18 @@
                         android:src="@drawable/android_icon" />
 
                     <TextView
-                        android:id="@id/title_export_src"
+                        android:id="@+id/title_export_src"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@id/icon_src"
+                        android:layout_toRightOf="@+id/icon_src"
                         android:textColor="@color/scolor_black_01"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@id/btn_export_src"
+                        android:id="@+id/btn_export_src"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -173,7 +173,7 @@
                         android:textSize="14sp" />
 
                     <com.airbnb.lottie.LottieAnimationView
-                        android:id="@id/loading_export_src"
+                        android:id="@+id/loading_export_src"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginTop="40dp"
@@ -182,7 +182,7 @@
                         app:lottie_loop="true" />
 
                     <LinearLayout
-                        android:id="@id/layout_export_src"
+                        android:id="@+id/layout_export_src"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
@@ -203,7 +203,7 @@
                                 android:src="@drawable/ic_folder_48dp" />
 
                             <TextView
-                                android:id="@id/title_src_path"
+                                android:id="@+id/title_src_path"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
@@ -225,7 +225,7 @@
                                 android:layout_height="match_parent">
 
                                 <TextView
-                                    android:id="@id/tv_src_path"
+                                    android:id="@+id/tv_src_path"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="center_vertical"
@@ -238,7 +238,7 @@
                         </LinearLayout>
 
                         <Button
-                            android:id="@id/btn_send_src"
+                            android:id="@+id/btn_send_src"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_gravity="right"

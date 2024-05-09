@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/layout_item"
+    android:id="@+id/layout_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -13,20 +13,20 @@
         android:layout_height="52dp">
 
         <ImageView
-            android:id="@id/img"
+            android:id="@+id/img"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true" />
 
         <ImageView
-            android:id="@id/img_conflict"
+            android:id="@+id/img_conflict"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <TextView
-        android:id="@id/tv_name"
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

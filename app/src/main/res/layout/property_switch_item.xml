@@ -4,31 +4,31 @@
     android:background="?selectableItemBackground">
 
     <TextView
-        android:id="@id/tv_name"
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/switch_value"
+        android:layout_toLeftOf="@+id/switch_value"
         android:textColor="#ff868686"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@id/tv_desc"
+        android:id="@+id/tv_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_name"
+        android:layout_below="@+id/tv_name"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
-        android:layout_toLeftOf="@id/switch_value"
+        android:layout_toLeftOf="@+id/switch_value"
         android:textColor="#ff606060"
         android:textSize="14sp" />
 
     <Switch
-        android:id="@id/switch_value"
+        android:id="@+id/switch_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

@@ -1,5 +1,5 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@id/progressshape">
+    <item android:id="@+id/progressshape">
         <clip>
             <shape android:shape="rectangle">
                 <size android:height="8dp" />

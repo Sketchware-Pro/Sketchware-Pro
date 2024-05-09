@@ -11,7 +11,7 @@
         <include layout="@layout/toolbar" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@id/tab_layout"
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -19,14 +19,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@id/view_pager"
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
-        android:id="@id/layout_ads"
+        android:id="@+id/layout_ads"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

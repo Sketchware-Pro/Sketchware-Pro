@@ -27,7 +27,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@id/tv_guide"
+                        android:id="@+id/tv_guide"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -39,7 +39,7 @@
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@id/font_list"
+                        android:id="@+id/font_list"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginTop="2dp"
@@ -51,7 +51,7 @@
             </ScrollView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@id/fab"
+                android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
@@ -63,7 +63,7 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
-            android:id="@id/layout_btn_group"
+            android:id="@+id/layout_btn_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -73,7 +73,7 @@
             android:visibility="gone">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@id/btn_cancel"
+                android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -82,7 +82,7 @@
                 app:backgroundTint="?colorAccent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@id/btn_delete"
+                android:id="@+id/btn_delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -92,7 +92,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@id/btn_import"
+        android:id="@+id/btn_import"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -1,11 +1,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/code_editor_layoutScrollView"
+    android:id="@+id/code_editor_layoutScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <mod.hey.studios.lib.code_editor.CodeEditorEditText
-        android:id="@id/code_editor_edittext"
+        android:id="@+id/code_editor_edittext"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"

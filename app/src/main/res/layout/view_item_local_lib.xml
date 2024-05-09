@@ -19,7 +19,7 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@id/checkbox_content"
+                android:id="@+id/checkbox_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -29,7 +29,7 @@
                 tools:text="com.sketchware.pro:1.0.0" />
 
             <ImageView
-                android:id="@id/img_delete"
+                android:id="@+id/img_delete"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"

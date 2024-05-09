@@ -4,12 +4,12 @@
     android:background="?selectableItemBackground">
 
     <RelativeLayout
-        android:id="@id/property_item"
+        android:id="@+id/property_item"
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
         <ImageView
-            android:id="@id/img_left_icon"
+            android:id="@+id/img_left_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
@@ -19,7 +19,7 @@
             android:layout_marginRight="8dp" />
 
         <TextView
-            android:id="@id/tv_name"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -29,17 +29,17 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@id/tv_value"
+            android:id="@+id/tv_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
+            android:layout_below="@+id/tv_name"
             android:layout_marginStart="40dp"
             android:paddingRight="60dp"
             android:textColor="#ff9a9a9a"
             android:textSize="14sp" />
 
         <View
-            android:id="@id/view_color"
+            android:id="@+id/view_color"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_alignParentRight="true"

@@ -8,7 +8,7 @@
     android:paddingBottom="8dp">
 
     <LinearLayout
-        android:id="@id/layout_delete"
+        android:id="@+id/layout_delete"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="2dp"
@@ -19,7 +19,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@id/iv_trash"
+            android:id="@+id/iv_trash"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="4dp"
@@ -27,7 +27,7 @@
             android:src="@drawable/icon_delete" />
 
         <TextView
-            android:id="@id/tv_delete"
+            android:id="@+id/tv_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
@@ -35,7 +35,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@id/layout_copy"
+        android:id="@+id/layout_copy"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="2dp"
@@ -46,7 +46,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@id/iv_copy"
+            android:id="@+id/iv_copy"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="4dp"
@@ -54,7 +54,7 @@
             android:src="@drawable/ic_content_paste_grey600_24dp" />
 
         <TextView
-            android:id="@id/tv_copy"
+            android:id="@+id/tv_copy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
@@ -62,7 +62,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@id/layout_favorite"
+        android:id="@+id/layout_favorite"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="2dp"
@@ -73,7 +73,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@id/iv_bookmark"
+            android:id="@+id/iv_bookmark"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="4dp"
@@ -81,7 +81,7 @@
             android:src="@drawable/ic_bookmark_red_48dp" />
 
         <TextView
-            android:id="@id/tv_favorite"
+            android:id="@+id/tv_favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
@@ -89,7 +89,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@id/layout_detail"
+        android:id="@+id/layout_detail"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="2dp"
@@ -100,7 +100,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@id/iv_detail"
+            android:id="@+id/iv_detail"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="4dp"
@@ -108,7 +108,7 @@
             android:src="@drawable/more_block_96dp" />
 
         <TextView
-            android:id="@id/tv_detail"
+            android:id="@+id/tv_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"

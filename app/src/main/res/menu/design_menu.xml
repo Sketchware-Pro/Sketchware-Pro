@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@id/design_option_menu_title_save_project"
+        android:id="@+id/design_option_menu_title_save_project"
         android:icon="@drawable/selector_save_tinted"
         android:orderInCategory="110"
         android:title="@string/design_option_menu_title_save_project"
         app:showAsAction="always" />
 
     <item
-        android:id="@id/design_actionbar_titleopen_drawer"
+        android:id="@+id/design_actionbar_titleopen_drawer"
         android:icon="@drawable/selector_ic_more_tinted_24"
         android:orderInCategory="110"
         android:title="@string/design_option_menu_title_save_project"

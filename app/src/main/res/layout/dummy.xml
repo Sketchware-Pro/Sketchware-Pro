@@ -3,14 +3,14 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@id/layout_dummy"
+        android:id="@+id/layout_dummy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="invisible">
 
         <ImageView
-            android:id="@id/img_notallowed"
+            android:id="@+id/img_notallowed"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:contentDescription="@null"
@@ -18,7 +18,7 @@
             android:src="@drawable/ico_notallowed" />
 
         <ImageView
-            android:id="@id/img_dummy"
+            android:id="@+id/img_dummy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"

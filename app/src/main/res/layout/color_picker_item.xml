@@ -1,19 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/layout_color_item"
+    android:id="@+id/layout_color_item"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp">
 
     <TextView
-        android:id="@id/tv_color_name"
+        android:id="@+id/tv_color_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="8dp" />
 
     <TextView
-        android:id="@id/tv_color_code"
+        android:id="@+id/tv_color_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -21,7 +21,7 @@
         android:padding="8dp" />
 
     <ImageView
-        android:id="@id/img_selector"
+        android:id="@+id/img_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

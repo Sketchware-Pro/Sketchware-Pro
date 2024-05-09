@@ -17,13 +17,13 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@id/ti_all"
+                android:id="@+id/ti_all"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="noExcludeDescendants">
 
                 <EditText
-                    android:id="@id/et_all"
+                    android:id="@+id/et_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="ALL"
@@ -40,7 +40,7 @@
         </LinearLayout>
 
         <CheckBox
-            android:id="@id/chk_pty_all"
+            android:id="@+id/chk_pty_all"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -73,13 +73,13 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@id/ti_left"
+                    android:id="@+id/ti_left"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
-                        android:id="@id/et_left"
+                        android:id="@+id/et_left"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="left"
@@ -102,13 +102,13 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@id/ti_right"
+                    android:id="@+id/ti_right"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
-                        android:id="@id/et_right"
+                        android:id="@+id/et_right"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="right"
@@ -139,13 +139,13 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@id/ti_top"
+                    android:id="@+id/ti_top"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
-                        android:id="@id/et_top"
+                        android:id="@+id/et_top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="top"
@@ -168,13 +168,13 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@id/ti_bottom"
+                    android:id="@+id/ti_bottom"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
-                        android:id="@id/et_bottom"
+                        android:id="@+id/et_bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="bottom"

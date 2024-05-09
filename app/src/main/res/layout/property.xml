@@ -13,11 +13,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/layout_ads"
+            android:layout_above="@+id/layout_ads"
             android:orientation="horizontal">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@id/property_group_list"
+                android:id="@+id/property_group_list"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#ffffffff"
@@ -30,12 +30,12 @@
                 android:background="#ff008dcd" />
 
             <com.besome.sketch.lib.ui.CustomScrollView
-                android:id="@id/scroll_view"
+                android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@id/content"
+                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
@@ -43,7 +43,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@id/layout_ads"
+            android:id="@+id/layout_ads"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

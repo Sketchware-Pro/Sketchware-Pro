@@ -6,7 +6,7 @@
     android:translationY="-1dp">
 
     <TextView
-        android:id="@id/tv_name"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -18,7 +18,7 @@
         android:textSize="13sp" />
 
     <ImageView
-        android:id="@id/img_add"
+        android:id="@+id/img_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

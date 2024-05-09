@@ -17,7 +17,7 @@
         android:paddingBottom="8dp">
 
         <ImageView
-            android:id="@id/img_backbtn"
+            android:id="@+id/img_backbtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
@@ -31,7 +31,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@id/tv_currentnum"
+                android:id="@+id/tv_currentnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffffff"
@@ -47,7 +47,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@id/tv_totalnum"
+                android:id="@+id/tv_totalnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffffff"
@@ -55,7 +55,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@id/tv_sendbtn"
+            android:id="@+id/tv_sendbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -66,7 +66,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@id/recycler_list"
+        android:id="@+id/recycler_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -88,13 +88,13 @@
                 android:layout_gravity="center">
 
                 <ImageView
-                    android:id="@id/img_album"
+                    android:id="@+id/img_album"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true" />
 
                 <ImageView
-                    android:id="@id/img_play"
+                    android:id="@+id/img_play"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_centerInParent="true"
@@ -115,26 +115,26 @@
                     android:orientation="horizontal">
 
                     <CheckBox
-                        android:id="@id/chk_samename"
+                        android:id="@+id/chk_samename"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@id/tv_samename"
+                        android:id="@+id/tv_samename"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <com.besome.sketch.lib.ui.EasyDeleteEditText
-                    android:id="@id/ed_input"
+                    android:id="@+id/ed_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp" />
 
                 <Button
-                    android:id="@id/btn_decide"
+                    android:id="@+id/btn_decide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"

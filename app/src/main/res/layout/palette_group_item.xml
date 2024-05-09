@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/group_item"
+    android:id="@+id/group_item"
     android:layout_width="match_parent"
     android:layout_height="24dp"
     android:background="@drawable/selector_palette_tab_round"
@@ -8,7 +8,7 @@
     android:padding="4dp">
 
     <ImageView
-        android:id="@id/img_group"
+        android:id="@+id/img_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerInside" />

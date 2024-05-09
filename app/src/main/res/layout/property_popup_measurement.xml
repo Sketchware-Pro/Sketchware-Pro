@@ -8,7 +8,7 @@
         android:orientation="horizontal">
 
         <RadioGroup
-            android:id="@id/rg_width_height"
+            android:id="@+id/rg_width_height"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -17,21 +17,21 @@
             android:orientation="vertical">
 
             <RadioButton
-                android:id="@id/rb_matchparent"
+                android:id="@+id/rb_matchparent"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp" />
 
             <RadioButton
-                android:id="@id/rb_wrapcontent"
+                android:id="@+id/rb_wrapcontent"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp" />
 
             <RadioButton
-                android:id="@id/rb_directinput"
+                android:id="@+id/rb_directinput"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
@@ -47,7 +47,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@id/tv_matchparent"
+                android:id="@+id/tv_matchparent"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
@@ -56,7 +56,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@id/tv_wrapcontent"
+                android:id="@+id/tv_wrapcontent"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
@@ -65,20 +65,20 @@
                 android:textSize="16sp" />
 
             <LinearLayout
-                android:id="@id/direct_input"
+                android:id="@+id/direct_input"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@id/ti_input"
+                    android:id="@+id/ti_input"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:importantForAutofill="noExcludeDescendants">
 
                     <EditText
-                        android:id="@id/ed_input"
+                        android:id="@+id/ed_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
@@ -90,7 +90,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@id/tv_input_dp"
+                    android:id="@+id/tv_input_dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

@@ -30,13 +30,13 @@
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@id/ti_custom_color"
+                android:id="@+id/ti_custom_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="noExcludeDescendants">
 
                 <EditText
-                    android:id="@id/et_custom_color"
+                    android:id="@+id/et_custom_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="1"
@@ -45,7 +45,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@id/tv_custom_color"
+            android:id="@+id/tv_custom_color"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
@@ -53,7 +53,7 @@
             android:background="#fff6f6f6" />
 
         <TextView
-            android:id="@id/tv_add_color"
+            android:id="@+id/tv_add_color"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
@@ -64,7 +64,7 @@
     </LinearLayout>
 
     <HorizontalScrollView
-        android:id="@id/layout_hsv_color"
+        android:id="@+id/layout_hsv_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -72,7 +72,7 @@
         android:paddingRight="8dp">
 
         <LinearLayout
-            android:id="@id/layout_color_title"
+            android:id="@+id/layout_color_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -81,7 +81,7 @@
     </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@id/color_list"
+        android:id="@+id/color_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

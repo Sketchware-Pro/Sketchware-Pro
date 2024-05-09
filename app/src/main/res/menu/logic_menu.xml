@@ -1,25 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@id/menu_logic_showsource"
+        android:id="@+id/menu_logic_showsource"
         android:icon="@drawable/ic_code_24"
         android:orderInCategory="100"
         android:title="Show Source Code"
         app:showAsAction="always" />
     <item
-        android:id="@id/menu_logic_undo"
+        android:id="@+id/menu_logic_undo"
         android:icon="@drawable/ic_undo_24"
         android:orderInCategory="100"
         android:title="Undo"
         app:showAsAction="always" />
     <item
-        android:id="@id/menu_logic_redo"
+        android:id="@+id/menu_logic_redo"
         android:icon="@drawable/ic_redo_24"
         android:orderInCategory="100"
         android:title="Redo"
         app:showAsAction="always" />
     <item
-        android:id="@id/menu_block_helper"
+        android:id="@+id/menu_block_helper"
         android:icon="@drawable/ic_bookmark_24"
         android:orderInCategory="100"
         app:showAsAction="always"

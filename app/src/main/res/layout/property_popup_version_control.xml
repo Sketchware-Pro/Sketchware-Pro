@@ -14,7 +14,7 @@
         android:padding="4dp">
 
         <TextView
-            android:id="@id/tv_code"
+            android:id="@+id/tv_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -22,7 +22,7 @@
             android:textSize="12dp" />
 
         <NumberPicker
-            android:id="@id/version_code"
+            android:id="@+id/version_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="false"
@@ -37,7 +37,7 @@
         android:padding="4dp">
 
         <TextView
-            android:id="@id/tv_name"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -50,7 +50,7 @@
             android:orientation="horizontal">
 
             <NumberPicker
-                android:id="@id/version_name1"
+                android:id="@+id/version_name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -66,7 +66,7 @@
                 android:textSize="18dp" />
 
             <NumberPicker
-                android:id="@id/version_name2"
+                android:id="@+id/version_name2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"

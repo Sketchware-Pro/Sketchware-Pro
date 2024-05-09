@@ -8,7 +8,7 @@
     android:paddingBottom="8dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@id/file_list"
+        android:id="@+id/file_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"

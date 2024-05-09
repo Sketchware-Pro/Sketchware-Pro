@@ -42,7 +42,7 @@
                 tools:text="@string/design_library_settings_title_enabled" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@id/lib_switch"
+                android:id="@+id/lib_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

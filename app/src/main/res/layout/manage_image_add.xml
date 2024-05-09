@@ -21,13 +21,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@id/tv_desc"
+                    android:id="@+id/tv_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_camera_primary_48dp" />
 
                 <TextView
-                    android:id="@id/tv_add_photo"
+                    android:id="@+id/tv_add_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -36,14 +36,14 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@id/img_selected"
+                android:id="@+id/img_selected"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:scaleType="fitCenter" />
 
             <LinearLayout
-                android:id="@id/layout_img_inform"
+                android:id="@+id/layout_img_inform"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:layout_alignParentBottom="true"
@@ -54,7 +54,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@id/tv_imgcnt"
+                    android:id="@+id/tv_imgcnt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
@@ -67,7 +67,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@id/layout_img_modify"
+            android:id="@+id/layout_img_modify"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -76,7 +76,7 @@
             android:visibility="gone">
 
             <ImageView
-                android:id="@id/img_rotate"
+                android:id="@+id/img_rotate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -85,7 +85,7 @@
                 android:src="@drawable/ic_rotate_right_white_48dp" />
 
             <ImageView
-                android:id="@id/img_horizontal"
+                android:id="@+id/img_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -94,7 +94,7 @@
                 android:src="@drawable/ic_flip_vertical_white_48dp" />
 
             <ImageView
-                android:id="@id/img_vertical"
+                android:id="@+id/img_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -111,7 +111,7 @@
             android:orientation="vertical">
 
             <com.besome.sketch.lib.ui.EasyDeleteEditText
-                android:id="@id/ed_input"
+                android:id="@+id/ed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -123,13 +123,13 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@id/chk_collection"
+                    android:id="@+id/chk_collection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="0dp" />
 
                 <TextView
-                    android:id="@id/tv_collection"
+                    android:id="@+id/tv_collection"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

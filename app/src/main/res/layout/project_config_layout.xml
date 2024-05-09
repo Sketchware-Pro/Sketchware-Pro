@@ -13,7 +13,7 @@
         android:paddingBottom="10dp">
 
         <LinearLayout
-            android:id="@id/project_config_pref_layout"
+            android:id="@+id/project_config_pref_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
