@@ -56,13 +56,9 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     private ManageSoundAddBinding binding;
 
     public void finish() {
-        Timer timer = H;
-        if (timer != null) {
-            timer.cancel();
-        }
-        MediaPlayer mediaPlayer = G;
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
+        if (H != null) H.cancel();
+        if (G != null) {
+            if (G.isPlaying()) {
                 G.stop();
             }
             G.release();
@@ -71,7 +67,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         super.finish();
     }
 
-    public final ArrayList<String> n() {
+    private ArrayList<String> getResourceNames() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
         for (ProjectResourceBean projectResourceBean : N) {
@@ -80,11 +76,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         return arrayList;
     }
 
-    public final void o() {
-        MediaPlayer mediaPlayer = G;
-        if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
-            return;
-        }
+    private void o() {
+        if (G == null || !G.isPlaying()) return;
         H.cancel();
         G.pause();
         binding.play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
@@ -147,7 +140,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
         binding.layoutControl.setVisibility(View.GONE);
         binding.edInput.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
-        M = new WB(this, binding.tiInput, uq.b, n());
+        M = new WB(this, binding.tiInput, uq.b, getResourceNames());
         binding.play.setEnabled(false);
         binding.play.setOnClickListener(this);
         binding.seek.setOnSeekBarChangeListener(new Hv(this));
@@ -156,7 +149,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         this.s.setOnClickListener(this);
         if (u) {
             e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
-            M = new WB(this, binding.tiInput, uq.b, n(), O.resName);
+            M = new WB(this, binding.tiInput, uq.b, getResourceNames(), O.resName);
             binding.edInput.setText(O.resName);
             f(a(O));
         }
@@ -167,13 +160,13 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         o();
     }
 
-    public final void p() {
+    private void p() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("audio/*");
         startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 218);
     }
 
-    public final void q() {
+    private void q() {
         if (G.isPlaying()) {
             o();
             return;
@@ -183,7 +176,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         binding.play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
     }
 
-    public final void r() {
+    private void r() {
         char c;
         if (a(M)) {
             if (!u) {
@@ -241,17 +234,17 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    public final void s() {
+    private void s() {
         H = new Timer();
         I = new Ov(this);
         H.schedule(I, 100L, 100L);
     }
 
-    public final String a(ProjectResourceBean projectResourceBean) {
+    private String a(ProjectResourceBean projectResourceBean) {
         return wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + O.resFullName;
     }
 
-    public final void f(String str) {
+    private void f(String str) {
         try {
             if (G != null) {
                 if (I != null) {
@@ -276,7 +269,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    public final void a(Uri uri) {
+    private void a(Uri uri) {
         String a = HB.a(this, uri);
         K = uri;
         try {
@@ -317,7 +310,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    public final void a(String str, ImageView imageView) {
+    private void a(String str, ImageView imageView) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(str);
