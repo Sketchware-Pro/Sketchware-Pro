@@ -14,8 +14,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.beans.SelectableBean;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.analytics.HitBuilders;
@@ -62,11 +60,11 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     public MaterialCardView playerControlLayout;
     public LinearLayout x;
     public MaterialCardView selectAudioBtn;
-    public boolean u = false;
+    public boolean u;
     public Timer H = new Timer();
-    public Uri K = null;
-    public boolean L = false;
-    public ProjectResourceBean O = null;
+    public Uri K;
+    public boolean L;
+    public ProjectResourceBean O;
 
     public void finish() {
         Timer timer = H;
@@ -175,8 +173,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         playAudioBtn.setOnClickListener(this);
         audioSeekBar.setOnSeekBarChangeListener(new Hv(this));
         selectAudioBtn.setOnClickListener(this);
-        ((BaseDialogActivity) this).r.setOnClickListener(this);
-        ((BaseDialogActivity) this).s.setOnClickListener(this);
+        this.r.setOnClickListener(this);
+        this.s.setOnClickListener(this);
         if (u) {
             e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
             M = new WB(this, inputLayoutAudioName, uq.b, n(), O.resName);
@@ -192,8 +190,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
 
     public void onResume() {
         super.onResume();
-        ((BaseAppCompatActivity) this).d.setScreenName(AddSoundCollectionActivity.class.getSimpleName().toString());
-        ((BaseAppCompatActivity) this).d.send(new HitBuilders.ScreenViewBuilder().build());
+        this.d.setScreenName(AddSoundCollectionActivity.class.getSimpleName());
+        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public final void p() {
@@ -222,8 +220,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                     return;
                 }
                 ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a);
-                ((SelectableBean) projectResourceBean).savedPos = 1;
-                ((SelectableBean) projectResourceBean).isNew = true;
+                projectResourceBean.savedPos = 1;
+                projectResourceBean.isNew = true;
                 try {
                     Qp.g().a(t, projectResourceBean);
                     bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
