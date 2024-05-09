@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageSoundAddBinding;
@@ -166,12 +165,6 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     public void onPause() {
         super.onPause();
         o();
-    }
-
-    public void onResume() {
-        super.onResume();
-        this.d.setScreenName(AddSoundCollectionActivity.class.getSimpleName());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public final void p() {
