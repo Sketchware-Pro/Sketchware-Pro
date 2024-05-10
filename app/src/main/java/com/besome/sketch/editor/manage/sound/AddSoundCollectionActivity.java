@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageSoundAddBinding;
@@ -25,13 +27,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import a.a.a.HB;
-import a.a.a.Hv;
-import a.a.a.Iv;
-import a.a.a.Jv;
-import a.a.a.Kv;
-import a.a.a.Lv;
-import a.a.a.Mv;
-import a.a.a.Ov;
 import a.a.a.Qp;
 import a.a.a.WB;
 import a.a.a.bB;
@@ -143,7 +138,30 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         M = new WB(this, binding.tiInput, uq.b, getResourceNames());
         binding.play.setEnabled(false);
         binding.play.setOnClickListener(this);
-        binding.seek.setOnSeekBarChangeListener(new Hv(this));
+        binding.seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (G == null || !G.isPlaying() || H == null) return;
+                H.cancel();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (G != null) {
+                    G.seekTo(seekBar.getProgress() * 100);
+                    if (G.isPlaying()) {
+                        s();
+                        return;
+                    }
+                    return;
+                }
+                seekBar.setProgress(0);
+            }
+        });
         binding.selectFile.setOnClickListener(this);
         this.r.setOnClickListener(this);
         this.s.setOnClickListener(this);
@@ -236,7 +254,20 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
 
     private void s() {
         H = new Timer();
-        I = new Ov(this);
+        I = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(() -> {
+                    if (G == null) {
+                        H.cancel();
+                        return;
+                    }
+                    int currentPosition = G.getCurrentPosition() / 100;
+                    binding.currentTime.setText(String.format("%02d : %02d", currentPosition / 60, currentPosition % 60));
+                    binding.seek.setProgress(currentPosition / 100);
+                });
+            }
+        };
         H.schedule(I, 100L, 100L);
     }
 
@@ -256,8 +287,22 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             }
             G = new MediaPlayer();
             G.setAudioStreamType(3);
-            G.setOnPreparedListener(new Kv(this));
-            G.setOnCompletionListener(new Lv(this));
+            G.setOnPreparedListener(mediaPlayer -> {
+                binding.play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                binding.play.setEnabled(true);
+                binding.seek.setMax(mediaPlayer.getDuration() / 100);
+                binding.seek.setProgress(0);
+                int duration = mediaPlayer.getDuration() / 100;
+                binding.fileLength.setText(String.format("%02d : %02d", duration / 60, duration % 60));
+                G.start();
+                s();
+            });
+            G.setOnCompletionListener(mediaPlayer -> {
+                H.cancel();
+                binding.play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+                binding.seek.setProgress(0);
+                binding.currentTime.setText("00 : 00");
+            });
             G.setDataSource(this, Uri.parse(str));
             G.prepare();
             L = true;
@@ -283,8 +328,24 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             }
             G = new MediaPlayer();
             G.setAudioStreamType(3);
-            G.setOnPreparedListener(new Iv(this, a));
-            G.setOnCompletionListener(new Jv(this));
+            G.setOnPreparedListener(mediaPlayer -> {
+                if (a == null) return;
+                binding.play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                binding.play.setEnabled(true);
+                binding.seek.setMax(mediaPlayer.getDuration() / 100);
+                binding.seek.setProgress(0);
+                int duration = mediaPlayer.getDuration() / 100;
+                binding.fileLength.setText(String.format("%02d : %02d", duration / 60, duration % 60));
+                binding.fileName.setText(a.substring(a.lastIndexOf("/") + 1));
+                mediaPlayer.start();
+                s();
+            });
+            G.setOnCompletionListener(mediaPlayer -> {
+                H.cancel();
+                binding.play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+                binding.seek.setProgress(0);
+                binding.currentTime.setText("00 : 00");
+            });
             G.setDataSource(this, uri);
             G.prepare();
             L = true;
@@ -315,7 +376,12 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         try {
             mediaMetadataRetriever.setDataSource(str);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new Mv(this, imageView));
+                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        imageView.setImageDrawable(glideDrawable);
+                    }
+                });
             } else {
                 imageView.setImageResource(R.drawable.default_album_art_200dp);
             }
@@ -323,38 +389,6 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         } catch (Exception ignored) {
             imageView.setImageResource(R.drawable.default_album_art_200dp);
         }
-    }
-
-    public static MediaPlayer a(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.G;
-    }
-
-    public static Timer b(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.H;
-    }
-
-    public static void c(AddSoundCollectionActivity addSoundCollectionActivity) {
-        addSoundCollectionActivity.s();
-    }
-
-    public static ImageView d(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.binding.play;
-    }
-
-    public static SeekBar e(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.binding.seek;
-    }
-
-    public static TextView f(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.binding.fileLength;
-    }
-
-    public static TextView g(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.binding.fileName;
-    }
-
-    public static TextView h(AddSoundCollectionActivity addSoundCollectionActivity) {
-        return addSoundCollectionActivity.binding.currentTime;
     }
 
     public boolean a(WB wb) {
