@@ -7,29 +7,27 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageLibraryAdmobPreviewBinding;
-
-import java.util.ArrayList;
+import com.sketchware.remod.databinding.ManageLibrarySettingAdmobTestDeviceItemBinding;
 
 import a.a.a.Uu;
 import a.a.a.gB;
+import mod.hasrat.lib.CommonViewBindingAdapter;
 import mod.hey.studios.util.Helper;
 
 public class ReviewStepView extends LinearLayout implements Uu {
 
     private TestDevicesAdapter adapter;
-    private ArrayList<AdTestDeviceBean> testDevices = new ArrayList<>();
     private ManageLibraryAdmobPreviewBinding binding;
 
     public ReviewStepView(Context context) {
@@ -128,38 +126,22 @@ public class ReviewStepView extends LinearLayout implements Uu {
         setBannerDetails(projectLibraryBean.reserved1);
         setInterstitialDetails(projectLibraryBean.reserved2);
         setRewardedAdDetails(projectLibraryBean.reserved3);
-        testDevices = projectLibraryBean.testDevices;
-        adapter.notifyDataSetChanged();
+        adapter.setItems(projectLibraryBean.testDevices);
     }
 
-    public class TestDevicesAdapter extends RecyclerView.Adapter<TestDevicesAdapter.ViewHolder> {
+    public static class TestDevicesAdapter extends CommonViewBindingAdapter<AdTestDeviceBean> {
 
-        @Override
-        public int getItemCount() {
-            return testDevices.size();
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            viewHolder.deviceId.setText(testDevices.get(position).deviceId);
-        }
-
-        @Override
         @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
+        @Override
+        public ViewBinding getViewBinding(LayoutInflater inflater, ViewGroup parent) {
+            return ManageLibrarySettingAdmobTestDeviceItemBinding.inflate(inflater, parent, false);
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
-
-            public final TextView deviceId;
-            public final ImageView delete;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                deviceId = itemView.findViewById(R.id.tv_device_id);
-                delete = itemView.findViewById(R.id.img_delete);
-                delete.setVisibility(View.GONE);
+        @Override
+        public void onBindView(@NonNull ViewBinding binding, int position) {
+            if (binding instanceof ManageLibrarySettingAdmobTestDeviceItemBinding testDeviceBinding) {
+                testDeviceBinding.tvDeviceId.setText(getItem(position).deviceId);
+                testDeviceBinding.imgDelete.setVisibility(View.GONE);
             }
         }
     }
