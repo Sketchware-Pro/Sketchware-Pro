@@ -41,6 +41,11 @@
         <item name="textAllCaps">true</item>
     </style>
 
+    <style name="DialogAnimation">
+       <item name="android:windowEnterAnimation">@anim/m3_motion_fade_enter</item>
+       <item name="android:windowExitAnimation">@anim/m3_motion_fade_exit</item>
+    </style>
+
     <style name="MainDrawer" parent="Widget.Material3.NavigationView">
         <item name="dividerInsetEnd">@dimen/main_drawer_horizontal_padding</item>
         <item name="dividerInsetStart">@dimen/main_drawer_horizontal_padding</item>
