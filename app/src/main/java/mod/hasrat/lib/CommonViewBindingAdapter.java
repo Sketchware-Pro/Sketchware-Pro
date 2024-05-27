@@ -9,24 +9,25 @@ import androidx.viewbinding.ViewBinding;
 
 import java.util.ArrayList;
 
-public abstract class CommonViewBindingAdapter<T> extends RecyclerView.Adapter<CommonViewBindingAdapter.ViewHolder> {
+public abstract class CommonViewBindingAdapter<T, V extends ViewBinding>
+        extends RecyclerView.Adapter<CommonViewBindingAdapter.BindingViewHolder<V>> {
 
     private ArrayList<T> items = new ArrayList<>();
 
     @NonNull
-    public abstract ViewBinding getViewBinding(LayoutInflater inflater, ViewGroup parent);
+    public abstract V createBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
-    public abstract void onBindView(@NonNull ViewBinding binding, int position);
+    public abstract void bind(@NonNull V binding, int position);
 
     @NonNull
     @Override
-    public final ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(getViewBinding(LayoutInflater.from(parent.getContext()), parent));
+    public final BindingViewHolder<V> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new BindingViewHolder<>(createBinding(LayoutInflater.from(parent.getContext()), parent));
     }
 
     @Override
-    public final void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        onBindView(holder.binding, position);
+    public final void onBindViewHolder(@NonNull BindingViewHolder<V> holder, int position) {
+        bind(holder.binding, position);
     }
 
     @Override
@@ -43,11 +44,10 @@ public abstract class CommonViewBindingAdapter<T> extends RecyclerView.Adapter<C
         return items.get(position);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class BindingViewHolder<V extends ViewBinding> extends RecyclerView.ViewHolder {
+        public V binding;
 
-        public ViewBinding binding;
-
-        public ViewHolder(@NonNull ViewBinding binding) {
+        public BindingViewHolder(@NonNull V binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

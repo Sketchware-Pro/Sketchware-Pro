@@ -129,20 +129,18 @@ public class ReviewStepView extends LinearLayout implements Uu {
         adapter.setItems(projectLibraryBean.testDevices);
     }
 
-    public static class TestDevicesAdapter extends CommonViewBindingAdapter<AdTestDeviceBean> {
+    public static class TestDevicesAdapter extends CommonViewBindingAdapter<AdTestDeviceBean, ManageLibrarySettingAdmobTestDeviceItemBinding> {
 
         @NonNull
         @Override
-        public ViewBinding getViewBinding(LayoutInflater inflater, ViewGroup parent) {
+        public ManageLibrarySettingAdmobTestDeviceItemBinding createBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
             return ManageLibrarySettingAdmobTestDeviceItemBinding.inflate(inflater, parent, false);
         }
 
         @Override
-        public void onBindView(@NonNull ViewBinding binding, int position) {
-            if (binding instanceof ManageLibrarySettingAdmobTestDeviceItemBinding testDeviceBinding) {
-                testDeviceBinding.tvDeviceId.setText(getItem(position).deviceId);
-                testDeviceBinding.imgDelete.setVisibility(View.GONE);
-            }
+        public void bind(@NonNull ManageLibrarySettingAdmobTestDeviceItemBinding binding, int position) {
+            binding.tvDeviceId.setText(getItem(position).deviceId);
+            binding.imgDelete.setVisibility(View.GONE);
         }
     }
 }
