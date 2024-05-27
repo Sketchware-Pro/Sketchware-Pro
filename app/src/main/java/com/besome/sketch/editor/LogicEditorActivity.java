@@ -1953,24 +1953,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logic_menu, menu);
-        menu.findItem(R.id.menu_block_helper).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FF4D4D")));
         menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         if (M == null) {
             return true;
         }
         if (bC.d(B).g(s())) {
-            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_redo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_redo).setEnabled(false);
         }
         if (bC.d(B).h(s())) {
-            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8812f")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(true);
         } else {
-            menu.findItem(R.id.menu_logic_undo).setIconTintList(ColorStateList.valueOf(Color.parseColor("#FFBEBEBE")));
             menu.findItem(R.id.menu_logic_undo).setEnabled(false);
         }
         return true;
