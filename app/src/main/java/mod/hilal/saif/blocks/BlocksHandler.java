@@ -1367,7 +1367,7 @@ public class BlocksHandler {
         hashMap.put("code", "%s.setAnimation(%s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.lottie settAnimationFromAsset %s");
+        hashMap.put("spec", "%m.lottie setAnimationFromAsset %s");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -1880,7 +1880,7 @@ public class BlocksHandler {
         hashMap.put("code", "getLifecycle().addObserver(%1$s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.youtubeview geLifecycle");
+        hashMap.put("spec", "%m.youtubeview getLifecycle");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
