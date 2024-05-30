@@ -9,7 +9,7 @@ configurations.implementation {
 
 dependencies {
     implementation 'com.github.marschall:zipfilesystem-standalone:1.0.1'
-    compileOnly 'androidx.annotation:annotation:1.4.0'
+    compileOnly 'androidx.annotation:annotation:1.8.0'
     implementation 'io.github.itsaky:nb-javac-android:17.0.0.1'
     implementation project(path: ':jaxp:xml')
     implementation project(path: ':jaxp:internal')
