@@ -85,11 +85,11 @@ public class CollectErrorActivity extends Activity {
                     String stackTrace = error;
                     String webhookContent;
                     int i = 0;
-                    do { /*
-//                        int maxLength = i == 0 ?
-//                                2000 - deviceInfo.length() - 5 /* \n```\n */ - 3 /* ``` */
-//                                : 2000 - 5 /* \n```\n */ - 3 /* ``` */;
-/*                        webhookContent = i == 0 ? deviceInfo : "";
+                    do { 
+                        int maxLength = i == 0 ?
+                                2000 - deviceInfo.length() - 8
+                                : 2000 - 8;
+                        webhookContent = i == 0 ? deviceInfo : "";
                         webhookContent += "\n```\n";
 
                         if (stackTrace.length() > maxLength) {
