@@ -38,10 +38,10 @@ jobs:
     name: Build minApi26 debug APK
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: temurin
@@ -54,15 +54,16 @@ jobs:
         run: |
           printf 'GOOGLE_SERVICES_JSON<<EOF\n%s\nEOF\n' "$JSON_CONTENT" >> $GITHUB_ENV
 
-      - name: Build debug APK
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assembleMinApi26Debug
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         env:
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
+      - name: Build debug APK
+        run: gradle assembleMinApi26Debug
+
       - name: Upload debug APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apk-minApi26-debug
           path: app/build/outputs/apk/minApi26/debug
@@ -71,10 +72,10 @@ jobs:
     name: Build minApi21 debug APK
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: temurin
@@ -87,15 +88,16 @@ jobs:
         run: |
           printf 'GOOGLE_SERVICES_JSON<<EOF\n%s\nEOF\n' "$JSON_CONTENT" >> $GITHUB_ENV
 
-      - name: Build debug APK
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assembleMinApi21Debug
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         env:
           CRASH_REPORT_WEBHOOK_URL: ${{ secrets.CRASH_REPORT_WEBHOOK_URL }}
 
+      - name: Build debug APK
+        run: gradle assembleMinApi21Debug
+
       - name: Upload debug APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apk-minApi21-debug
           path: app/build/outputs/apk/minApi21/debug
