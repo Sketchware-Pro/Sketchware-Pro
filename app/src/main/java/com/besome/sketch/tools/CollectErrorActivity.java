@@ -3,6 +3,7 @@ package com.besome.sketch.tools;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -43,7 +44,7 @@ public class CollectErrorActivity extends Activity {
                     .setMessage("An error occurred while running Sketchware Pro. " +
                             "Do you want to report this error log so that we can fix it? " +
                             "No personal information will be included.")
-                    .setPositiveButton("Send", null)
+                    .setPositiveButton("Copy", null)
                     .setNegativeButton("Cancel", (dialogInterface, which) -> finish())
                     .setNeutralButton("Show error", null) // null to set proper onClick listeners later without dismissing the AlertDialog
                     .show();
@@ -73,17 +74,22 @@ public class CollectErrorActivity extends Activity {
                         + "SDK version: " + Build.VERSION.SDK_INT + "\n"
                         + "Brand: " + Build.BRAND + "\n"
                         + "Manufacturer: " + Build.MANUFACTURER + "\n"
-                        + "Model: " + Build.MODEL + "\n";
+                        + "Model: " + Build.MODEL;
 
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE); 
+                ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + error + "\n```");
+                clipboard.setPrimaryClip(clip);
+                runOnUiThread(() -> SketchwareUtil.toast("Copied", Toast.LENGTH_LONG));
+/*
                 new Thread(() -> {
                     String stackTrace = error;
                     String webhookContent;
                     int i = 0;
-                    do {
-                        int maxLength = i == 0 ?
-                                2000 - deviceInfo.length() - 5 /* \n```\n */ - 3 /* ``` */
-                                : 2000 - 5 /* \n```\n */ - 3 /* ``` */;
-                        webhookContent = i == 0 ? deviceInfo : "";
+                    do { /*
+//                        int maxLength = i == 0 ?
+//                                2000 - deviceInfo.length() - 5 /* \n```\n */ - 3 /* ``` */
+//                                : 2000 - 5 /* \n```\n */ - 3 /* ``` */;
+/*                        webhookContent = i == 0 ? deviceInfo : "";
                         webhookContent += "\n```\n";
 
                         if (stackTrace.length() > maxLength) {
@@ -115,6 +121,7 @@ public class CollectErrorActivity extends Activity {
                         runOnUiThread(() -> SketchwareUtil.toast("Sending crash logs…", Toast.LENGTH_LONG));
                     }
                 }).start();
+*/
             });
         }
     }
