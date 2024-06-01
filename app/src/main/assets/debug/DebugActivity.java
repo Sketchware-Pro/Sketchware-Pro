@@ -35,7 +35,7 @@ public class DebugActivity extends Activity {
         String madeErrorMessage = "";
 
         if (intent != null) {
-            errorMessage = intent.getStringExtra("error");
+            errorMessage = intent.getStringExtra("stacktrace");
 
             String[] split = errorMessage.split("\n");
             //errorMessage = split[0];
