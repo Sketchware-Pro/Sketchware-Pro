@@ -39,7 +39,7 @@ public class DebugActivity extends Activity {
         String madeErrorMessage = "";
 
         if (intent != null) {
-            errorMessage = intent.getStringExtra("stacktrace");
+            errorMessage = intent.getStringExtra("error");
 
             String[] split = errorMessage.split("\n");
             //errorMessage = split[0];
@@ -65,20 +65,17 @@ public class DebugActivity extends Activity {
         }
 
         setTitle(getTitle() + " Crashed");
-        setContentView(contentView(this, madeErrorMessage));
-    }
 
-    View contentView(Context context, String errorMessage) {
-        TextView error = new TextView(context);
-        error.setText(errorMessage);
+        TextView error = new TextView(this);
+        error.setText(madeErrorMessage);
         error.setTextIsSelectable(true);
 
-        HorizontalScrollView hscroll = new HorizontalScrollView(context);
-        ScrollView vscroll = new ScrollView(context);
+        HorizontalScrollView hscroll = new HorizontalScrollView(this);
+        ScrollView vscroll = new ScrollView(this);
 
         hscroll.addView(vscroll);
         vscroll.addView(error);
 
-        return hscroll;
+        setContentView(hscroll);
     }
 }
