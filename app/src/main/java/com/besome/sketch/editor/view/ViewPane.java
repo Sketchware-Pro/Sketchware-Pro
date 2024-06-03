@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
@@ -53,6 +54,7 @@ import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,6 +90,8 @@ import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
 import mod.agus.jcoderz.editor.view.item.ItemSearchView;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
+import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
+import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
 
 @SuppressLint({"RtlHardcoded", "DiscouragedApi"})
@@ -846,7 +850,25 @@ public class ViewPane extends RelativeLayout {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
         }
         textView.setText(str);
-        textView.setTypeface(null, viewBean.text.textType);
+        String textFont = new InjectAttributeHandler(viewBean).getAttributeValueOf("fontFamily");
+        if (textFont != null && textFont.length() > 0) {
+            if (textFont.startsWith("@font/")) {
+                textFont = textFont.substring(6);
+                String textFontPath =
+                        new ResourceUtil(sc_id, "font").getResourcePathFromName(textFont);
+                textView.setTypeface(
+                        textFontPath != null
+                                        && textFontPath.length() > 0
+                                        && new File(textFontPath).exists()
+                                ? Typeface.createFromFile(textFontPath)
+                                : null,
+                        viewBean.text.textType);
+            } else {
+                textView.setTypeface(null, viewBean.text.textType);
+            }
+        } else {
+            textView.setTypeface(null, viewBean.text.textType);
+        }
         textView.setTextColor(viewBean.text.textColor);
         textView.setTextSize(viewBean.text.textSize);
         textView.setLines(viewBean.text.line);
