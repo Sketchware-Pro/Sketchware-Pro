@@ -720,7 +720,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
 
             String aabFilename = getCorrectResultFilename(project_metadata.projectName + ".aab");
-            if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(),"sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
+            if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(), "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
                 aB dialog = new aB(activity.get());
                 dialog.a(R.drawable.open_box_48);
                 dialog.b("Finished exporting AAB");
