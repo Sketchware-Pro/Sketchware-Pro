@@ -130,7 +130,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private DB r;
     private DB t;
     private Button buildSettings;
-    private Button runProject;
+    private static Button runProject;
     private ProjectFileSelector projectFileSelector;
     private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
@@ -1133,11 +1133,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             if (!dialog.isCancelableOnBackPressed()) {
                                 dialog.setIsCancelableOnBackPressed(true);
                                 maybeShow();
-                                publishProgress("Canceling build...");
                                 canceled = true;
                             }
                             dialog.show();
                         }
+                        runProject.setText("Canceling build...");
+                        publishProgress("Canceling build...");
+                        cancelDialog.dismiss();
                         dialog.dismiss();
                     });
 
