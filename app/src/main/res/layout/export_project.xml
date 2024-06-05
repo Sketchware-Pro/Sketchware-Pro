@@ -17,66 +17,69 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardElevation="4dp"
-                app:contentPadding="8dp">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+                app:cardElevation="0dp"
+                app:contentPadding="14dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/icon_apk"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:src="@drawable/ic_apk_color_48dp" />
-
-                    <TextView
-                        android:id="@+id/title_sign_apk"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/icon_apk"
-                        android:textColor="@color/scolor_black_01"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="Sign APK" />
+                        android:layout_marginBottom="14dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sign_apk_ic"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_apk_color_48dp" />
+
+                        <TextView
+                            android:id="@+id/sign_apk_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:text="@string/myprojects_export_project_button_sign_apk"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <Button
-                        android:id="@+id/btn_sign_apk"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/sign_apk_button"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginBottom="16dp"
+                        android:text="@string/myprojects_export_project_button_sign_apk"
                         android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginBottom="8dp"
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/layout_apk_path"
+                            android:id="@+id/sign_apk_output_stage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="24dp"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -86,20 +89,17 @@
                                     android:src="@drawable/ic_folder_48dp" />
 
                                 <TextView
-                                    android:id="@+id/title_apk_path"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
+                                    android:text="@string/myprojects_export_project_title_local_path"
                                     android:textSize="14sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="24dp"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginRight="16dp"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/bg_round_light_grey"
                                 android:orientation="horizontal">
 
@@ -108,13 +108,12 @@
                                     android:layout_height="match_parent">
 
                                     <TextView
-                                        android:id="@+id/tv_apk_path"
+                                        android:id="@+id/sign_apk_output_path"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:gravity="center_vertical"
                                         android:lines="1"
-                                        android:paddingLeft="8dp"
-                                        android:paddingRight="8dp"
+                                        android:padding="8dp"
                                         android:textColor="@color/scolor_black_01"
                                         android:textSize="13sp" />
                                 </HorizontalScrollView>
@@ -122,130 +121,181 @@
                         </LinearLayout>
 
                         <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/loading_sign_apk"
+                            android:id="@+id/sign_apk_loading_anim"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             app:lottie_autoPlay="false"
                             app:lottie_fileName="anim/loading_simple_gray.json"
                             app:lottie_loop="true" />
                     </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardElevation="4dp"
-                app:contentPadding="8dp">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+                app:cardElevation="0dp"
+                app:contentPadding="14dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-
-                    <ImageView
-                        android:id="@+id/icon_src"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:src="@drawable/android_icon" />
-
-                    <TextView
-                        android:id="@+id/title_export_src"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/icon_src"
-                        android:textColor="@color/scolor_black_01"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btn_export_src"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="48dp"
-                        android:layout_marginBottom="16dp"
-                        android:textSize="14sp" />
-
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/loading_export_src"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="40dp"
-                        app:lottie_autoPlay="false"
-                        app:lottie_fileName="anim/loading_simple_gray.json"
-                        app:lottie_loop="true" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/layout_export_src"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="14dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/export_source_ic"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/android_icon" />
+
+                        <TextView
+                            android:id="@+id/export_source_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:text="@string/myprojects_export_project_title_export_src"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/export_source_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/myprojects_export_project_button_export_src"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:id="@+id/export_source_output_stage"
                             android:layout_width="match_parent"
-                            android:layout_height="24dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_folder_48dp" />
-
-                            <TextView
-                                android:id="@+id/title_src_path"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="8dp"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                                android:layout_marginBottom="8dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="24dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginRight="16dp"
-                            android:background="@drawable/bg_round_light_grey"
-                            android:orientation="horizontal">
-
-                            <HorizontalScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_folder_48dp" />
 
                                 <TextView
-                                    android:id="@+id/tv_src_path"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center_vertical"
-                                    android:lines="1"
-                                    android:paddingLeft="8dp"
-                                    android:paddingRight="8dp"
-                                    android:textColor="@color/scolor_black_01"
-                                    android:textSize="13sp" />
-                            </HorizontalScrollView>
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:text="@string/myprojects_export_project_title_local_path"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_round_light_grey"
+                                android:orientation="horizontal">
+
+                                <HorizontalScrollView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@+id/export_source_output_path"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:lines="1"
+                                        android:padding="8dp"
+                                        android:textColor="@color/scolor_black_01"
+                                        android:textSize="13sp" />
+                                </HorizontalScrollView>
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/export_source_send_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="14dp"
+                                android:text="@string/myprojects_export_project_button_send_src_zip"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/btn_send_src"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="16dp"
-                            android:textSize="12sp" />
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/export_source_loading_anim"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            app:lottie_autoPlay="false"
+                            app:lottie_fileName="anim/loading_simple_gray.json"
+                            app:lottie_loop="true" />
                     </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+                app:cardElevation="0dp"
+                app:contentPadding="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/export_aab_ic"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/open_box_48" />
+
+                        <TextView
+                            android:id="@+id/export_aab_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:text="Export AAB (Android App Bundle)"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/export_aab_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Export AAB"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>

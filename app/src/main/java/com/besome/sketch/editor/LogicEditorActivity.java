@@ -111,6 +111,7 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -2446,7 +2447,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         String code = new Fx(M.getActivityName(), yq.N, "", o.getBlocks()).a();
 
         CodeEditor codeEditor = new CodeEditor(this);
-        codeEditor.setColorScheme(new EditorColorScheme());
         codeEditor.setEditable(false);
         codeEditor.setEditorLanguage(new JavaLanguage());
         codeEditor.setText(Lx.j(code, false));
@@ -2454,6 +2454,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
         codeEditor.setWordwrap(false);
         codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            Configuration configuration = getResources().getConfiguration();
+            boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
+            if (isDarkTheme) {
+                codeEditor.setColorScheme( new SchemeDarcula());
+            } else {
+                codeEditor.setColorScheme( new EditorColorScheme());
+            }
+        } else {
+            codeEditor.setColorScheme( new EditorColorScheme());
+        }
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setTitle("Source code")
