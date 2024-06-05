@@ -322,7 +322,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (v.getId() == R.id.btn_execute) {
                 new BuildAsyncTask(this).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, buildSettings);
+                PopupMenu popupMenu = new PopupMenu(this, buildSettings, 0, R.attr.popupMenuStyle, R.style.Widget_Material3_PopupMenu);
                 Menu menu = popupMenu.getMenu();
 
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
