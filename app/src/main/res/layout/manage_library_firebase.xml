@@ -3,61 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#ffffffff"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_height"
-        android:background="#ffffffff"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="8dp"
-        android:paddingLeft="14dp"
-        android:paddingTop="8dp"
-        android:paddingRight="14dp"
-        android:paddingBottom="8dp">
-
-        <ImageView
-            android:id="@+id/img_backbtn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:padding="2dp"
-            android:src="@drawable/ic_arrow_left_primary_48dp" />
-
-        <TextView
-            android:id="@+id/tv_prevbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/color_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_toptitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/color_primary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_nextbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/color_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:id="@+id/layout_step_guide"
@@ -78,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="#ff212121"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -88,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"
-            android:textColor="#ff4d4d4d"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="12sp" />
 
         <com.google.android.material.card.MaterialCardView
@@ -96,11 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_margin="2dp"
-            android:background="?selectableItemBackground"
             android:clickable="true"
-            android:focusable="true"
-            app:cardElevation="2dp">
+            android:focusable="true">
 
             <LinearLayout
                 android:id="@+id/ll_goto_console"
@@ -167,7 +112,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp" />
 </LinearLayout>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <LinearLayout
             android:id="@+id/layout_switch"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="?attr/materialCardViewFilledStyle"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="?attr/materialCardViewFilledStyle"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -234,7 +234,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="?attr/materialCardViewFilledStyle"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -326,7 +326,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="?attr/materialCardViewFilledStyle"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -413,7 +413,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialCardViewFilledStyle"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_test_device"

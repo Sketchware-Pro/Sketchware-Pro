@@ -201,17 +201,25 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.manage_firebase_menu, menu);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Help").setIcon(getDrawable(R.drawable.help_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Config").setIcon(getDrawable(R.drawable.settings_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int itemId = menuItem.getItemId();
-        if (itemId == R.id.menu_firebase_help) {
-            openDoc();
-        } else if (itemId == R.id.menu_firebase_settings) {
-            toFirebaseActivity();
+        String title = menuItem.getTitle().toString();
+        switch (title) {
+            case "Help":
+                openDoc();
+                break;
+
+            case "Config":
+                toFirebaseActivity();
+                break;
+
+            default:
+                return false;
         }
         return super.onOptionsItemSelected(menuItem);
     }
