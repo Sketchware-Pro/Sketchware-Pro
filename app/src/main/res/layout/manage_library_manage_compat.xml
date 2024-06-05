@@ -19,36 +19,43 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/layout_switch"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            style="?attr/materialCardViewFilledStyle"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
-            <TextView
-                android:id="@+id/tv_enable"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout_switch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="?colorError"
-                android:textSize="14sp"
-                tools:text="@string/design_library_settings_title_enabled" />
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/lib_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginLeft="8dp"
-                android:clickable="false" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_enable"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="?colorControlNormal"
+                    android:textSize="18sp"
+                    tools:text="@string/design_library_settings_title_enabled" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/lib_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="8dp"
+                    android:clickable="false" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,7 +89,7 @@
             android:gravity="left"
             android:padding="8dp"
             android:textColor="?colorError"
-            android:textSize="12sp"
+            android:textSize="14sp"
             tools:text="@string/design_library_message_slow_down_compilation_time" />
     </LinearLayout>
 </LinearLayout>

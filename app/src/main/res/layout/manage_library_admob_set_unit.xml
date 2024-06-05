@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardElevation="5dp">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="#ff404040"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -98,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="#ff404040"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -117,7 +118,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardElevation="5dp">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -179,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="#ff404040"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -205,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="#ff404040"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -224,7 +226,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardElevation="5dp">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -286,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="#ff404040"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -312,7 +315,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="#ff404040"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
