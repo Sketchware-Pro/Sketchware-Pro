@@ -10,6 +10,7 @@ import com.android.tools.r8.OutputMode
 import com.google.gson.Gson
 import mod.agus.jcoderz.dx.command.dexer.Main
 import mod.agus.jcoderz.lib.FileUtil
+import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.util.Helper
 import mod.jbk.build.BuiltInLibraries
 import org.cosmic.ide.dependency.resolver.api.Artifact
@@ -33,6 +34,7 @@ class DependencyResolver(
     private val artifactId: String,
     private val version: String,
     private val skipDependencies: Boolean,
+    private val buildSettings: BuildSettings
 ) {
     companion object {
         private val DEFAULT_REPOS = """
@@ -138,11 +140,20 @@ class DependencyResolver(
             dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
                 .toMutableList()
 
-        val dependencyClasspath = mutableListOf(
-            BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath().resolve("android.jar"),
+        val dependencyClasspath = mutableListOf<Path>(
             BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath()
                 .resolve("core-lambda-stubs.jar"),
+            Paths.get(buildSettings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
+                .resolve("android").absolutePath))
         )
+
+        val classpath = buildSettings.getValue(BuildSettings.SETTING_CLASSPATH, "")
+
+        classpath.split(":").forEach {
+            if (it.isEmpty()) return@forEach
+
+            dependencyClasspath.add(Paths.get(it))
+        }
 
         // download all the dependencies
         latestDeps.forEach { artifact ->
