@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,8 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
         rect = new Rect();
 
         setDrawingCacheEnabled(true);
+        setFocusable(false);
+        setClickable(false);
         var menu = getMenu();
         menu.add(Menu.NONE, 1, Menu.NONE, "Home")
             .setIcon(R.drawable.ic_home);
@@ -84,5 +87,10 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return true;
     }
 }
