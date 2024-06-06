@@ -434,7 +434,8 @@ public class ViewPane extends RelativeLayout {
                     ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
             }
-            ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+            if (classInfo.b("CircleImageView")) updateCircleImageView((ItemCircleImageView) view, injectHandler);
+            else ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
         }
         if (classInfo.a("CompoundButton")) {
             ((CompoundButton) view).setChecked(viewBean.checked != 0);
@@ -895,6 +896,18 @@ public class ViewPane extends RelativeLayout {
         cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
         cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
         cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
+    }
+
+    private void updateCircleImageView(ItemCircleImageView imageView, InjectAttributeHandler handler) {
+        String borderColor = handler.getAttributeValueOf("civ_border_color");
+        String backgroundColor = handler.getAttributeValueOf("civ_circle_background_color");
+        String borderWidth = handler.getAttributeValueOf("civ_border_width");
+        String borderOverlay = handler.getAttributeValueOf("civ_border_overlay");
+
+        imageView.setBorderColor(PropertiesUtil.isHexColor(borderColor) ? PropertiesUtil.parseColor(borderColor) : 0xff008dcd);
+        imageView.setCircleBackgroundColor(PropertiesUtil.isHexColor(backgroundColor) ? PropertiesUtil.parseColor(backgroundColor) : 0xff008dcd);
+        imageView.setBorderWidth(PropertiesUtil.resolveSize(borderWidth, 3));
+        imageView.setBorderOverlay(Boolean.parseBoolean(TextUtils.isEmpty(borderOverlay) ? "false" : borderOverlay));
     }
 
     private String extractAttrValue(String line, String attrbute) {
