@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 import android.widget.SearchView;
 
 import com.besome.sketch.beans.ViewBean;
@@ -30,6 +31,9 @@ public class ItemSearchView extends SearchView implements sy {
         rect = new Rect();
         setDrawingCacheEnabled(true);
         setFocusable(false);
+        setFocusableInTouchMode(false);
+        setIconifiedByDefault(false);
+        setClickable(false);
         background = getBackground();
     }
 
@@ -83,5 +87,10 @@ public class ItemSearchView extends SearchView implements sy {
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding(left * paddingFactor, top * paddingFactor, right * paddingFactor, paddingFactor * bottom);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return true;
     }
 }
