@@ -66,7 +66,6 @@ import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
 import a.a.a.zB;
-import dev.aldi.sayuti.editor.view.ExtraViewPane;
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemBottomNavigationView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
@@ -315,7 +314,6 @@ public class ViewPane extends RelativeLayout {
         ImageBean imageBean;
         String str;
         var injectHandler = new InjectAttributeHandler(viewBean);
-        ExtraViewPane.a(view, viewBean, this, resourcesManager);
         if (viewBean.id.charAt(0) == '_') {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
