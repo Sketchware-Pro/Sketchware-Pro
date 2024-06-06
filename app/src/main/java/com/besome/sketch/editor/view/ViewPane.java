@@ -417,10 +417,10 @@ public class ViewPane extends RelativeLayout {
                 }
             }
         }
-        if (classInfo.b("EditText")) {
+        if (classInfo.a("EditText")) {
             updateEditText((EditText) view, viewBean);
         }
-        if (classInfo.b("ImageView")) {
+        if (classInfo.a("ImageView")) {
             if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                 ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
             } else if (viewBean.image.resName.equals("default_image")) {
