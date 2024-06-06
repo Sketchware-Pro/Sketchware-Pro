@@ -53,6 +53,7 @@ import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -465,6 +466,9 @@ public class ViewPane extends RelativeLayout {
                     viewBean.layout.paddingRight,
                     viewBean.layout.paddingBottom);
             updateCardView(cardView, injectHandler);
+        }
+        if (classInfo.b("TabLayout")) {
+            updateTabLayout((ItemTabLayout) view, injectHandler);
         }
         if (classInfo.b("SignInButton")) {
             ItemSignInButton button = (ItemSignInButton) view;
@@ -911,6 +915,33 @@ public class ViewPane extends RelativeLayout {
         imageView.setCircleBackgroundColor(PropertiesUtil.isHexColor(backgroundColor) ? PropertiesUtil.parseColor(backgroundColor) : 0xff008dcd);
         imageView.setBorderWidth(PropertiesUtil.resolveSize(borderWidth, 3));
         imageView.setBorderOverlay(Boolean.parseBoolean(TextUtils.isEmpty(borderOverlay) ? "false" : borderOverlay));
+    }
+
+    private void updateTabLayout(ItemTabLayout tabLayout, InjectAttributeHandler handler) {
+        String gravity = handler.getAttributeValueOf("tabGravity");
+        String mode = handler.getAttributeValueOf("tabMode");
+        String indicatorHeight = handler.getAttributeValueOf("tabIndicatorHeight");
+        String indicatorColor = handler.getAttributeValueOf("tabIndicatorColor");
+        String textColor = handler.getAttributeValueOf("tabTextColor");
+        String selectedTextColor = handler.getAttributeValueOf("tabSelectedTextColor");
+
+        tabLayout.setTabGravity(switch (gravity) {
+            case "fill" -> TabLayout.GRAVITY_FILL;
+            case "center" -> TabLayout.GRAVITY_CENTER;
+            case "start" -> TabLayout.GRAVITY_START;
+            default -> TabLayout.GRAVITY_FILL;
+        });
+        tabLayout.setTabMode(switch (mode) {
+            case "auto" -> TabLayout.MODE_AUTO;
+            case "fixed" -> TabLayout.MODE_FIXED;
+            case "scrollable" -> TabLayout.MODE_SCROLLABLE;
+            default -> TabLayout.MODE_FIXED;
+        });
+        tabLayout.setSelectedTabIndicatorHeight(PropertiesUtil.resolveSize(indicatorHeight, 3));
+        tabLayout.setSelectedTabIndicatorColor(PropertiesUtil.isHexColor(indicatorColor) ? PropertiesUtil.parseColor(indicatorColor) : 0xffffc107);
+        int tabTextColor = PropertiesUtil.isHexColor(textColor) ? PropertiesUtil.parseColor(textColor) : 0xff57beee;
+        int tabSelectedTextColor = PropertiesUtil.isHexColor(selectedTextColor) ? PropertiesUtil.parseColor(selectedTextColor) : Color.WHITE;
+        tabLayout.setTabTextColors(tabTextColor, tabSelectedTextColor);
     }
 
     private String extractAttrValue(String line, String attrbute) {
