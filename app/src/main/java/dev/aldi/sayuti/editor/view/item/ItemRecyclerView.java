@@ -4,10 +4,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ViewBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -84,5 +91,53 @@ public class ItemRecyclerView extends RecyclerView implements sy {
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
+    }
+
+    private static class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.ViewHolder> {
+
+        private List<String> dataList;
+
+        private int layout;
+
+        public SimpleAdapter(int layout) {
+            dataList = new ArrayList<>();
+            this.layout = layout;
+        }
+
+        public void setItemList(List<String> newList) {
+            dataList = newList;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder hodler, int position) {
+            hodler.bind(dataList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return dataList.size();
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private TextView textView;
+
+            ViewHolder(View view) {
+                super(view);
+                textView = itemView.findViewById(android.R.id.text1);
+            }
+
+            void bind(String itemText) {
+                if (textView != null) {
+                    textView.setText(itemText);
+                }
+            }
+        }
     }
 }
