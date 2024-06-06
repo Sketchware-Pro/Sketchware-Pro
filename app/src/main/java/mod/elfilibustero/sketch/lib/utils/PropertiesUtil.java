@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,5 +64,11 @@ public class PropertiesUtil {
         }
 
         return null;
+    }
+
+    public static List<String> generateItems(String prefix, int itemCount) {
+        return IntStream.rangeClosed(1, itemCount)
+                .mapToObj(i -> prefix + " " + i)
+                .collect(Collectors.toList());
     }
 }
