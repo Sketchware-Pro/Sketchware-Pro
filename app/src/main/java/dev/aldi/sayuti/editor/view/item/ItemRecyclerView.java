@@ -9,17 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.EditorListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
+
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemRecyclerView extends RecyclerView implements sy {
+public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem {
 
     private final Paint paint;
     private final Rect rect;
@@ -27,6 +31,8 @@ public class ItemRecyclerView extends RecyclerView implements sy {
     private boolean hasSelection;
     private boolean hasFixed;
     private ViewBean viewBean;
+
+    private SimpleAdapter adapter;
 
     public ItemRecyclerView(Context context) {
         super(context);
@@ -37,6 +43,20 @@ public class ItemRecyclerView extends RecyclerView implements sy {
         paint.setStrokeWidth(wB.a(getContext(), 2.0f));
         rect = new Rect();
         setDrawingCacheEnabled(true);
+        setLayoutManager(new LinearLayoutManager(context));
+        setListItem(android.R.layout.simple_list_item_1);
+    }
+
+    @Override
+    public void setListItem(int layout) {
+        adapter = new SimpleAdapter(layout);
+        setAdapter(adapter);
+        setItemCount(3);
+    }
+
+    @Override
+    public void setItemCount(int count) {
+        adapter.setItemList(PropertiesUtil.generateItems("Recycler item", count));
     }
 
     @Override
