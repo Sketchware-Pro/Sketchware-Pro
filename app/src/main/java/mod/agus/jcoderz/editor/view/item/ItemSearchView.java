@@ -5,14 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.widget.EditText;
+import android.widget.SearchView;
 
 import com.besome.sketch.beans.ViewBean;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemSearchView extends EditText implements sy {
+public class ItemSearchView extends SearchView implements sy {
 
     private final Paint paint;
     private final int paddingFactor;
