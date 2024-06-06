@@ -1,15 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
-    android:layout_width="308dp"
-    android:layout_height="88dp"
+    android:layout_width="wrap_content"
+    android:layout_height="90dp"
+    android:minWidth="275dp"
+    android:maxWidth="325dp"
     android:layout_marginVertical="4dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="horizontal"
-    android:padding="3dp">
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="80dp"

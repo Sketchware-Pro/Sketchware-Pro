@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -20,7 +21,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+
 import com.android.annotations.NonNull;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -32,12 +39,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import a.a.a.mB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
-public class ConfigActivity extends Activity {
+public class ConfigActivity extends AppCompatActivity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
@@ -53,10 +61,38 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-
-    private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
-    private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
+
+    private LinearLayout content;
+    private NestedScrollView contentLayout;
+    private com.google.android.material.appbar.AppBarLayout appBarLayout;
+    private com.google.android.material.appbar.MaterialToolbar topAppBar;
+    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.prefences_content_appbar);
+
+        content = findViewById(R.id.content);
+        topAppBar = findViewById(R.id.topAppBar);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        contentLayout = findViewById(R.id.contentLayout);
+        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+
+        topAppBar.setTitle("Mod Settings");
+        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
+
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            setting_map = readSettings();
+            if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS)) {
+                restoreDefaultSettings();
+            }
+        } else {
+            restoreDefaultSettings();
+        }
+        initialize();
+    }
 
     public static String getBackupPath() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
@@ -90,7 +126,6 @@ public class ConfigActivity extends Activity {
             return toReturnAndSetIfNotFound;
         }
     }
-
 
     public static String getBackupFileName() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
@@ -238,50 +273,8 @@ public class ConfigActivity extends Activity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            setting_map = readSettings();
-            if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS)) {
-                restoreDefaultSettings();
-            }
-        } else {
-            restoreDefaultSettings();
-        }
-        initialize();
-    }
-
     @SuppressLint("SetTextI18n")
     private void initialize() {
-        root = new LinearLayout(this);
-        root.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-        root.setOrientation(LinearLayout.VERTICAL);
-
-        ScrollView _scroll = new ScrollView(this);
-        LinearLayout.LayoutParams _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        _scroll.setLayoutParams(_lp);
-
-        LinearLayout _base = new LinearLayout(this);
-        _base.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-        _base.setOrientation(LinearLayout.VERTICAL);
-        _base.setLayoutParams(_lp);
-
-        View toolbar = getLayoutInflater().inflate(R.layout.toolbar_improved, root, false);
-        _base.addView(toolbar);
-        _base.addView(_scroll);
-        _scroll.addView(root);
-        setContentView(_base);
-
-        ImageView toolbar_back = toolbar.findViewById(R.id.ig_toolbar_back);
-        TextView toolbar_title = toolbar.findViewById(R.id.tx_toolbar_title);
-        toolbar_back.setClickable(true);
-        toolbar_back.setFocusable(true);
-        Helper.applyRippleToToolbarView(toolbar_back);
-        toolbar_back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar_title.setText("Mod settings");
-
         addSwitchPreference("Built-in blocks",
                 "May slow down loading blocks in Logic Editor.",
                 SETTING_SHOW_BUILT_IN_BLOCKS,
@@ -409,7 +402,6 @@ public class ConfigActivity extends Activity {
     }
 
     private void applyDesign(View view) {
-        Helper.applyRippleEffect(view, Color.parseColor("#dbedf5"), DEFAULT_BACKGROUND_COLOR);
         view.setClickable(true);
         view.setFocusable(true);
     }
@@ -425,17 +417,16 @@ public class ConfigActivity extends Activity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
         ));
-        preferenceRoot.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(
+                dpToPx(8),
                 dpToPx(4),
                 dpToPx(4),
-                dpToPx(4),
-                dpToPx(4)
+                dpToPx(8)
         );
         /* Android Studio complained about that inside the original XML */
         preferenceRoot.setBaselineAligned(false);
-        root.addView(preferenceRoot);
+        content.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
         textContainer.setLayoutParams(new LinearLayout.LayoutParams(
@@ -450,6 +441,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(8),
                 dpToPx(8)
         );
+        textContainer.setGravity(Gravity.CENTER_VERTICAL);
         preferenceRoot.addView(textContainer);
 
         TextView titleView = new TextView(this);
@@ -464,7 +456,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(4)
         );
         titleView.setText(title);
-        titleView.setTextColor(Color.parseColor("#616161"));
+        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -474,7 +466,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(Color.parseColor("#bdbdbd"));
+        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
@@ -494,7 +486,7 @@ public class ConfigActivity extends Activity {
         );
         preferenceRoot.addView(switchContainer);
 
-        Switch switchView = new Switch(this);
+        MaterialSwitch switchView = new MaterialSwitch(this);
         switchView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -550,17 +542,16 @@ public class ConfigActivity extends Activity {
         );
         preferenceRootParams.bottomMargin = dpToPx(4);
         preferenceRoot.setLayoutParams(preferenceRootParams);
-        preferenceRoot.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(
-                dpToPx(4),
+                dpToPx(8),
                 dpToPx(4),
                 dpToPx(4),
                 dpToPx(4)
         );
         /* Android Studio complained about this in the original XML files */
         preferenceRoot.setBaselineAligned(false);
-        root.addView(preferenceRoot);
+        content.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
         textContainer.setLayoutParams(new LinearLayout.LayoutParams(
@@ -575,6 +566,7 @@ public class ConfigActivity extends Activity {
                 dpToPx(8),
                 dpToPx(8)
         );
+        textContainer.setGravity(Gravity.CENTER_VERTICAL);
         preferenceRoot.addView(textContainer);
 
         TextView titleView = new TextView(this);
@@ -583,7 +575,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         titleView.setText(title);
-        titleView.setTextColor(Color.parseColor("#616161"));
+        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -593,7 +585,7 @@ public class ConfigActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(Color.parseColor("#bdbdbd"));
+        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 

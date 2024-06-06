@@ -2,8 +2,7 @@
     <stroke
         android:width="0dp"
         android:color="#ffffffff" />
-    <solid android:color="#ffeeeeee" />
+    <solid android:color="@color/view_property_tab_deactive" />
     <corners
-        android:topLeftRadius="4dp"
-        android:topRightRadius="4dp" />
+        android:radius="300dp"/>
 </shape>

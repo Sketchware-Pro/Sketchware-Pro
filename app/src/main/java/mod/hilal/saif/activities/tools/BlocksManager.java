@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -55,14 +56,28 @@ public class BlocksManager extends AppCompatActivity {
     private String blocks_dir = "";
     private String pallet_dir = "";
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
-    private ListView listview1;
-    private LinearLayout card2;
-    private TextView card2_sub;
+
+    private TextView recycle_sub;
+    private ListView list_pallete;
+    private ImageView recycle_icon;
+    private LinearLayout background;
+    private LinearLayout recycle_bin;
+    private com.google.android.material.card.MaterialCardView recycle_bin_card;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.blocks_manager);
+
+        fab = findViewById(R.id.fab);
+        background = findViewById(R.id.background);
+        recycle_bin = findViewById(R.id.recycle_bin);
+        recycle_sub = findViewById(R.id.recycle_sub);
+        recycle_icon = findViewById(R.id.recycle_icon);
+        list_pallete = findViewById(R.id.list_pallete);
+        recycle_bin_card = findViewById(R.id.recycle_bin_card);
+
         initialize();
         initializeLogic();
     }
@@ -76,20 +91,16 @@ public class BlocksManager extends AppCompatActivity {
 
     private void initialize() {
         FloatingActionButton _fab = findViewById(R.id.fab);
-        listview1 = findViewById(R.id.list_pallete);
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        TextView title = findViewById(R.id.tx_toolbar_title);
-        ImageView settings = findViewById(R.id.ig_toolbar_load_file);
-        card2 = findViewById(R.id.recycle_bin);
-        card2_sub = findViewById(R.id.recycle_sub);
 
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
-        title.setText("Block manager");
-        settings.setVisibility(View.VISIBLE);
-        settings.setImageResource(R.drawable.settings_96_white);
-        Helper.applyRippleToToolbarView(settings);
-        settings.setOnClickListener(v -> {
+        Toolbar toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.toolbar_improved, background, false);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Block Manager");
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+        ((ViewGroup) background).addView(toolbar, 0);
+
+        recycle_icon.setOnClickListener(v -> {
             aB dialog = new aB(this);
             dialog.a(R.drawable.ic_folder_48dp);
             dialog.b("Block configuration");
@@ -158,7 +169,7 @@ public class BlocksManager extends AppCompatActivity {
     private void initializeLogic() {
         _readSettings();
         _refresh_list();
-        _recycleBin(card2);
+        _recycleBin(recycle_bin_card);
     }
 
     @Override
@@ -224,12 +235,12 @@ public class BlocksManager extends AppCompatActivity {
             pallet_listmap = new ArrayList<>();
         }
 
-        Parcelable savedState = listview1.onSaveInstanceState();
-        listview1.setAdapter(new PaletteAdapter(pallet_listmap));
-        ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
-        listview1.onRestoreInstanceState(savedState);
+        Parcelable savedState = list_pallete.onSaveInstanceState();
+        list_pallete.setAdapter(new PaletteAdapter(pallet_listmap));
+        ((BaseAdapter) list_pallete.getAdapter()).notifyDataSetChanged();
+        list_pallete.onRestoreInstanceState(savedState);
 
-        card2_sub.setText("Blocks: " + (long) (_getN(-1)));
+        recycle_sub.setText("Blocks: " + (long) (_getN(-1)));
     }
 
     private double _getN(final double _p) {
@@ -246,25 +257,24 @@ public class BlocksManager extends AppCompatActivity {
         if (_p > 0) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + -1));
 
-            Parcelable savedState = listview1.onSaveInstanceState();
+            Parcelable savedState = list_pallete.onSaveInstanceState();
             FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _swapRelatedBlocks(_p + 9, _p + 8);
             _readSettings();
             _refresh_list();
-            listview1.onRestoreInstanceState(savedState);
+            list_pallete.onRestoreInstanceState(savedState);
         }
     }
 
     private void _recycleBin(final View _v) {
-        _a(_v);
-        card2.setOnClickListener(v -> {
+        recycle_bin_card.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
             intent.putExtra("position", "-1");
             intent.putExtra("dirB", blocks_dir);
             intent.putExtra("dirP", pallet_dir);
             startActivity(intent);
         });
-        card2.setOnLongClickListener(v -> {
+        recycle_bin_card.setOnLongClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Recycle bin")
                     .setMessage("Are you sure you want to empty the recycle bin? " +
@@ -280,12 +290,12 @@ public class BlocksManager extends AppCompatActivity {
         if (_p < (pallet_listmap.size() - 1)) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + 1));
             {
-                Parcelable savedState = listview1.onSaveInstanceState();
+                Parcelable savedState = list_pallete.onSaveInstanceState();
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                 _swapRelatedBlocks(_p + 9, _p + 10);
                 _readSettings();
                 _refresh_list();
-                listview1.onRestoreInstanceState(savedState);
+                list_pallete.onRestoreInstanceState(savedState);
             }
         }
     }
@@ -510,14 +520,15 @@ public class BlocksManager extends AppCompatActivity {
                 convertView = _inflater.inflate(R.layout.pallet_customview, parent, false);
             }
 
-            final LinearLayout background = convertView.findViewById(R.id.background);
-            final LinearLayout color = convertView.findViewById(R.id.color);
-            final TextView title = convertView.findViewById(R.id.title);
             final TextView sub = convertView.findViewById(R.id.sub);
+            final TextView title = convertView.findViewById(R.id.title);
+            final LinearLayout color = convertView.findViewById(R.id.color);
+            final LinearLayout background = convertView.findViewById(R.id.background);
+            final com.google.android.material.card.MaterialCardView background_card = convertView.findViewById(R.id.background_card);
 
             title.setText(pallet_listmap.get(position).get("name").toString());
             sub.setText("Blocks: " + (long) (_getN(position + 9)));
-            card2_sub.setText("Blocks: " + (long) (_getN(-1)));
+            recycle_sub.setText("Blocks: " + (long) (_getN(-1)));
 
             int backgroundColor;
             String paletteColorValue = (String) palettes.get(position).get("color");
@@ -529,8 +540,7 @@ public class BlocksManager extends AppCompatActivity {
             }
             color.setBackgroundColor(backgroundColor);
 
-            _a(background);
-            background.setOnLongClickListener(v -> {
+            background_card.setOnLongClickListener(v -> {
                 final String moveUp = "Move up";
                 final String moveDown = "Move down";
                 final String edit = "Edit";
@@ -595,7 +605,7 @@ public class BlocksManager extends AppCompatActivity {
                 return true;
             });
 
-            background.setOnClickListener(v -> {
+            background_card.setOnClickListener(v -> {
                 Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
                 intent.putExtra("position", String.valueOf((long) (position + 9)));
                 intent.putExtra("dirB", blocks_dir);

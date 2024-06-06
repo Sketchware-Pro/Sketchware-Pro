@@ -4,7 +4,10 @@ import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -28,6 +35,7 @@ import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 import java.io.File;
 
 import a.a.a.aB;
+import a.a.a.mB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import mod.SketchwareUtil;
@@ -37,48 +45,28 @@ import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
 
-public class Tools extends Activity {
+public class Tools extends AppCompatActivity {
 
-    private LinearLayout base;
+    private LinearLayout content;
+    private NestedScrollView contentLayout;
+    private com.google.android.material.appbar.AppBarLayout appBarLayout;
+    private com.google.android.material.appbar.MaterialToolbar topAppBar;
+    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout.LayoutParams _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        LinearLayout _base = new LinearLayout(this);
-        _base.setOrientation(LinearLayout.VERTICAL);
-        _base.setLayoutParams(_lp);
-        newToolbar(_base);
-        ScrollView _scroll = new ScrollView(this);
+        setContentView(R.layout.prefences_content_appbar);
 
-        base = new LinearLayout(this);
-        base.setOrientation(LinearLayout.VERTICAL);
-        base.setLayoutParams(_lp);
-        _scroll.setLayoutParams(_lp);
-        _scroll.addView(base);
-        _base.addView(_scroll);
+        content = findViewById(R.id.content);
+        topAppBar = findViewById(R.id.topAppBar);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        contentLayout = findViewById(R.id.contentLayout);
+        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+
+        topAppBar.setTitle("Tools");
+        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
         setupViews();
-        setContentView(_base);
-    }
-
-    private void makeup(LibraryItemView parent, int iconResourceId, String title, String description) {
-        parent.enabled.setVisibility(View.GONE);
-        parent.icon.setImageResource(iconResourceId);
-        parent.title.setText(title);
-        parent.description.setText(description);
-    }
-
-    private void newToolbar(View parent) {
-        View toolbar = getLayoutInflater().inflate(R.layout.toolbar_improved, null);
-        ((TextView) toolbar.findViewById(R.id.tx_toolbar_title)).setText("Tools");
-        ImageView back = toolbar.findViewById(R.id.ig_toolbar_back);
-
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
-
-        parent.setPadding(0, 0, 0, 0);
-        ((ViewGroup) parent).addView(toolbar, 0);
     }
 
     private void openWorkingDirectory() {
@@ -141,58 +129,25 @@ public class Tools extends Activity {
     }
 
     private void setupViews() {
-        LibraryItemView blockManager = new LibraryItemView(this);
-        makeup(blockManager, R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor");
-        base.addView(blockManager);
-        blockManager.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), BlocksManager.class)));
+        createToolsView(R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor", content, new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class)));
+        createToolsView(R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus", content, new ActivityLauncher(new Intent(getApplicationContext(), BlockSelectorActivity.class)));
+        createToolsView(R.drawable.collage_48, "Component manager", "Manage your own components", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class)));
+        createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, new ActivityLauncher(new Intent(getApplicationContext(), EventsMaker.class)));
+        createToolsView(R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")));
+        createToolsView(R.drawable.engineering_48, "Mod settings", "Change general mod settings", content, new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class)));
+        createToolsView(R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", content, v -> openWorkingDirectory());
+        createToolsView(R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", content, v -> signApkFileDialog());
+        createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)));
+    }
 
-        LibraryItemView blockSelectorManager = new LibraryItemView(this);
-        makeup(blockSelectorManager, R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus");
-        base.addView(blockSelectorManager);
-        blockSelectorManager.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), BlockSelectorActivity.class)));
-
-        LibraryItemView componentManager = new LibraryItemView(this);
-        makeup(componentManager, R.drawable.collage_48, "Component manager", "Manage your own components");
-        base.addView(componentManager);
-        componentManager.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), ManageCustomComponentActivity.class)));
-
-        LibraryItemView eventManager = new LibraryItemView(this);
-        makeup(eventManager, R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events");
-        base.addView(eventManager);
-        eventManager.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), EventsMaker.class)));
-
-        LibraryItemView localLibraryManager = new LibraryItemView(this);
-        makeup(localLibraryManager, R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries");
-        base.addView(localLibraryManager);
-        localLibraryManager.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), ManageLocalLibraryActivity.class),
-                new Pair<>("sc_id", "system")));
-
-        LibraryItemView modSettings = new LibraryItemView(this);
-        makeup(modSettings, R.drawable.engineering_48, "Mod settings", "Change general mod settings");
-        base.addView(modSettings);
-        modSettings.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), ConfigActivity.class)));
-
-        LibraryItemView openWorkingDirectory = new LibraryItemView(this);
-        makeup(openWorkingDirectory, R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it");
-        base.addView(openWorkingDirectory);
-        openWorkingDirectory.setOnClickListener(v -> openWorkingDirectory());
-
-        LibraryItemView signApkFile = new LibraryItemView(this);
-        makeup(signApkFile, R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4");
-        base.addView(signApkFile);
-        signApkFile.setOnClickListener(v -> signApkFileDialog());
-
-        LibraryItemView openLogcatReader = new LibraryItemView(this);
-        makeup(openLogcatReader, R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader));
-        base.addView(openLogcatReader);
-        openLogcatReader.setOnClickListener(new ActivityLauncher(
-                new Intent(getApplicationContext(), LogReaderActivity.class)));
+    private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener) {
+        LibraryItemView item = new LibraryItemView(this);
+        item.enabled.setVisibility(View.GONE);
+        item.icon.setImageResource(icon);
+        item.title.setText(title);
+        item.description.setText(desc);
+        toView.addView(item);
+        item.setOnClickListener(listener);
     }
 
     private void signApkFileDialog() {
@@ -254,9 +209,7 @@ public class Tools extends Activity {
         apkPathDialog.show();
     }
 
-    private void signApkFileWithDialog(String inputApkPath, String outputApkPath, boolean useTestkey,
-                                       String keyStorePath, String keyStorePassword, String keyStoreKeyAlias,
-                                       String keyPassword) {
+    private void signApkFileWithDialog(String inputApkPath, String outputApkPath, boolean useTestkey, String keyStorePath, String keyStorePassword, String keyStoreKeyAlias, String keyPassword) {
         View building_root = getLayoutInflater().inflate(R.layout.build_progress_msg_box, null, false);
         LinearLayout layout_quiz = building_root.findViewById(R.id.layout_quiz);
         TextView tv_progress = building_root.findViewById(R.id.tv_progress);
@@ -316,7 +269,6 @@ public class Tools extends Activity {
     }
 
     private class ActivityLauncher implements View.OnClickListener {
-
         private final Intent launchIntent;
         private Pair<String, String> optionalExtra;
 

@@ -8,6 +8,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,6 +20,9 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatCallback;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +56,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 
-public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     private static final String TAG = "ExcludeBuiltInLibraries";
 
     private MaterialSwitch enabled;
@@ -75,16 +80,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
             sc_id = savedInstanceState.getString("sc_id");
         }
 
-        TextView title = findViewById(R.id.tx_toolbar_title);
-        title.setText("Exclude built-in libraries");
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
-        ImageView reset = findViewById(R.id.ig_toolbar_load_file);
-        reset.setImageResource(R.drawable.ic_restore_white);
-        reset.setVisibility(View.VISIBLE);
-        reset.setOnClickListener(this);
-        Helper.applyRippleToToolbarView(reset);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Exclude built-in libraries");
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
         TextView enable = findViewById(R.id.tv_enable);
         enable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
@@ -94,12 +95,29 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         label.setText("Excluded built-in libraries");
 
         LinearLayout excludedLibraries = findViewById(R.id.item);
-        excludedLibraries.setOnClickListener(this);
+        excludedLibraries.setOnClickListener(v -> showSelectBuiltInLibrariesDialog());
         LinearLayout enabledContainer = findViewById(R.id.layout_switch);
-        enabledContainer.setOnClickListener(this);
+        enabledContainer.setOnClickListener(v -> enabled.setChecked(!enabled.isChecked()));
         enabled = findViewById(R.id.lib_switch);
         enabled.setOnCheckedChangeListener((buttonView, isChecked) -> isExcludingEnabled = isChecked);
         preview = findViewById(R.id.item_desc);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Restore").setIcon(getDrawable(R.drawable.history_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+        String title = menuItem.getTitle().toString();
+        if (title.equals("Restore")) {
+            showResetDialog();
+        } else {
+            return false;
+        }
+        return false;
     }
 
     @Override
@@ -131,19 +149,6 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity imple
         outState.putBoolean("isExcludingEnabled", isExcludingEnabled);
         outState.putParcelableArrayList("excludedLibraryNames", new ArrayList<>(excludedLibraries));
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-
-        if (id == R.id.item) {
-            showSelectBuiltInLibrariesDialog();
-        } else if (id == R.id.layout_switch) {
-            enabled.setChecked(!enabled.isChecked());
-        } else if (id == R.id.ig_toolbar_load_file) {
-            showResetDialog();
-        }
     }
 
     @Override

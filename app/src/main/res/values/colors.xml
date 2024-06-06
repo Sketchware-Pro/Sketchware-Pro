@@ -59,6 +59,8 @@
     <color name="monokia_pro_purple">#ffab9df2</color>
     <color name="monokia_pro_grey">#ff727072</color>
     <color name="colorBottomBarSW">#ff008dcd</color>
+    <color name="color_text_onSurface">#1A1C1E</color>
+    <color name="color_text_onSurfaceVariant">#41474D</color>
 
     <color name="seed">#008dcd</color>
     <color name="md_theme_light_primary">#006493</color>
@@ -156,5 +158,14 @@
 
     <!--  views  -->
     <color name="cardStrokeColor">#D1D1D1</color>
+
+    <color name="view_property_background_color">#ffffff</color>
+    <color name="view_property_tab_active">#ff0084c2</color>
+    <color name="view_property_tab_deactive">#30008dcd</color>
+    <color name="view_property_tab_active_text">#ffffffff</color>
+    <color name="view_property_tab_deactive_text">#ff000000</color>
+    <color name="view_property_grid_background">#30008dcd</color>
+    <color name="view_property_grid_see_all_background">#ff008dcd</color>
+    <color name="view_property_spinner_filter">#ff000000</color>
 
 </resources>

@@ -1,18 +1,11 @@
 package dev.aldi.sayuti.editor.manage;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +16,6 @@ import java.util.List;
 
 import dev.aldi.sayuti.editor.injection.AddCustomAttributeActivity;
 import dev.aldi.sayuti.editor.injection.AppCompatInjection;
-import mod.hey.studios.util.Helper;
 import mod.remaker.view.CustomAttributeView;
 
 public class ManageCustomAttributeActivity extends AppCompatActivity {
@@ -32,17 +24,23 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
     private String sc_id = "";
     private String xmlFilename = "";
 
+    private ListView manage_attr_listview;
+    private com.google.android.material.appbar.AppBarLayout appBarLayout;
+    private com.google.android.material.appbar.MaterialToolbar topAppBar;
+    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_custom_attribute);
 
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("AppCompat Injection Manager");
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
+        topAppBar = findViewById(R.id.topAppBar);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+        manage_attr_listview = findViewById(R.id.manage_attr_listview);
 
-        ListView listView = findViewById(R.id.manage_attr_listview);
+        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
+
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -53,7 +51,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
             addType("FloatingActionButton");
             addType("DrawerLayout");
             addType("NavigationDrawer");
-            listView.setAdapter(new CustomAdapter(customAttributeLocations));
+            manage_attr_listview.setAdapter(new CustomAdapter(customAttributeLocations));
         } else {
             finish();
         }

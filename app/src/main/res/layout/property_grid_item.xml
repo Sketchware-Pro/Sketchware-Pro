@@ -1,23 +1,23 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/property_menu_item"
     android:layout_width="74dp"
     android:layout_height="74dp"
     android:layout_margin="4dp"
-    android:visibility="gone"
-    card:cardCornerRadius="8dp">
+    style="?attr/materialCardViewFilledStyle"
+    app:cardBackgroundColor="@color/view_property_grid_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_round"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_icon"
             android:layout_width="24dp"
-            android:layout_height="24dp" />
+            android:layout_height="24dp"
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -29,7 +29,7 @@
             android:paddingHorizontal="4dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:textColor="#ff7d7d7d"
+            android:textColor="?colorControlNormal"
             android:textSize="10sp" />
 
         <TextView
@@ -45,4 +45,4 @@
             android:textSize="10sp"
             android:visibility="gone" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

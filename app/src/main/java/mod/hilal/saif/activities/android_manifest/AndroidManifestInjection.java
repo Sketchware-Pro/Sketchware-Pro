@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -348,18 +351,28 @@ public class AndroidManifestInjection extends AppCompatActivity {
     }
 
     private void setupCustomToolbar() {
-        ImageView _back = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(_back);
-        ImageView _quickSource = findViewById(R.id.ig_toolbar_load_file);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("AndroidManifest Manager");
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Show Manifest Source").setIcon(getDrawable(R.drawable.ic_code_24)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
 
-        TextView _title = findViewById(R.id.tx_toolbar_title);
-        _title.setText("AndroidManifest Manager");
-        _back.setOnClickListener(Helper.getBackPressedClickListener(this));
-
-        _quickSource.setImageResource(R.drawable.code_white_48);
-        _quickSource.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(_quickSource);
-        _quickSource.setOnClickListener((v1 -> showQuickManifestSourceDialog()));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        String title = menuItem.getTitle().toString();
+        if (title.equals("Show Manifest Source")) {
+            showQuickManifestSourceDialog();
+        } else {
+            return false;
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     private void showQuickManifestSourceDialog() {
@@ -423,7 +436,6 @@ public class AndroidManifestInjection extends AppCompatActivity {
     }
 
     private class ListAdapter extends BaseAdapter {
-
         private final ArrayList<HashMap<String, Object>> _data;
 
         public ListAdapter(ArrayList<HashMap<String, Object>> data) {

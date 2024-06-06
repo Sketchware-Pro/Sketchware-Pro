@@ -229,7 +229,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_admob_help) {
             o();
