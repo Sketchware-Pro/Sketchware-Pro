@@ -4,17 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ViewBean;
-
-import java.util.Arrays;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemRecyclerView extends ListView implements sy {
+public class ItemRecyclerView extends RecyclerView implements sy {
 
     private final Paint paint;
     private final Rect rect;
@@ -29,10 +27,7 @@ public class ItemRecyclerView extends ListView implements sy {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0f));
         rect = new Rect();
-
         setDrawingCacheEnabled(true);
-        setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1,
-                Arrays.asList("RecyclerView item 1", "RecyclerView item 2", "RecyclerView item 3")));
     }
 
     @Override
