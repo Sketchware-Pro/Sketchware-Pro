@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -91,6 +92,7 @@ import mod.agus.jcoderz.editor.view.item.ItemSearchView;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
+import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
 
@@ -312,6 +314,7 @@ public class ViewPane extends RelativeLayout {
     private void b(View view, ViewBean viewBean) {
         ImageBean imageBean;
         String str;
+        var injectHandler = new InjectAttributeHandler(viewBean);
         ExtraViewPane.a(view, viewBean, this, resourcesManager);
         if (viewBean.id.charAt(0) == '_') {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -453,11 +456,13 @@ public class ViewPane extends RelativeLayout {
             ((ItemAdView) view).setAdSize(viewBean.adSize);
         }
         if (classInfo.b("CardView")) {
-            ((ItemCardView) view).setContentPadding(
+            var cardView = (ItemCardView) view;
+            cardView.setContentPadding(
                     viewBean.layout.paddingLeft,
                     viewBean.layout.paddingTop,
                     viewBean.layout.paddingRight,
                     viewBean.layout.paddingBottom);
+            updateCardView(cardView, injectHandler);
         }
         if (classInfo.b("SignInButton")) {
             ItemSignInButton button = (ItemSignInButton) view;
@@ -878,6 +883,20 @@ public class ViewPane extends RelativeLayout {
     private void updateEditText(EditText editText, ViewBean viewBean) {
         editText.setHint(viewBean.text.hint);
         editText.setHintTextColor(viewBean.text.hintColor);
+    }
+
+    private void updateCardView(ItemCardView cardView, InjectAttributeHandler handler) {
+        String cardElevation = handler.getAttributeValueOf("cardElevation");
+        String cardCornerRadius = handler.getAttributeValueOf("cardCornerRadius");
+        String compatPadding = handler.getAttributeValueOf("cardUseCompatPadding");
+        String strokeColor = handler.getAttributeValueOf("strokeColor");
+        String strokeWidth = handler.getAttributeValueOf("strokeWidth");
+
+        cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
+        cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
+        cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
+        cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
+        cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
     }
 
     private String extractAttrValue(String line, String attrbute) {
