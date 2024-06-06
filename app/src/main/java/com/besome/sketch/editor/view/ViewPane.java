@@ -511,6 +511,22 @@ public class ViewPane extends RelativeLayout {
             }
         }
         view.setVisibility(VISIBLE);
+        if (view instanceof EditorListItem listItem) {
+            String listitem = injectHandler.getAttributeValueOf("listitem");
+            String itemCount = injectHandler.getAttributeValueOf("itemCount");
+            if (!TextUtils.isEmpty(listitem)) {
+                //lmao use simple_list_item_1 for now
+                listItem.setListItem(android.R.layout.simple_list_item_1);
+            }
+            if (!TextUtils.isEmpty(itemCount)) {
+                if (TextUtils.isEmpty(listitem)) {
+                    try {
+                        listItem.setItemCount(Integer.parseInt(itemCount));
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
     }
 
     public sy a(String str) {
