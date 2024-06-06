@@ -23,6 +23,8 @@ public class ItemRecyclerView extends RecyclerView implements sy {
 
     public ItemRecyclerView(Context context) {
         super(context);
+        setMinimumWidth((int) wB.a(context, 32.0F));
+        setMinimumHeight((int) wB.a(context, 32.0F));
         paddingFactor = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0f));
