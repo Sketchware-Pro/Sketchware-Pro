@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,6 +53,7 @@ import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -65,7 +67,6 @@ import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
 import a.a.a.zB;
-import dev.aldi.sayuti.editor.view.ExtraViewPane;
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemBottomNavigationView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
@@ -91,6 +92,7 @@ import mod.agus.jcoderz.editor.view.item.ItemSearchView;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
+import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
 
@@ -312,7 +314,7 @@ public class ViewPane extends RelativeLayout {
     private void b(View view, ViewBean viewBean) {
         ImageBean imageBean;
         String str;
-        ExtraViewPane.a(view, viewBean, this, resourcesManager);
+        var injectHandler = new InjectAttributeHandler(viewBean);
         if (viewBean.id.charAt(0) == '_') {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -416,10 +418,13 @@ public class ViewPane extends RelativeLayout {
                 }
             }
         }
-        if (classInfo.b("EditText")) {
+        if (classInfo.a("EditText")) {
             updateEditText((EditText) view, viewBean);
         }
-        if (classInfo.b("ImageView")) {
+        if (classInfo.b("SearchView")) {
+            ((EditText) view).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.search_icon_grey, 0);
+        }
+        if (classInfo.a("ImageView")) {
             if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                 ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
             } else if (viewBean.image.resName.equals("default_image")) {
@@ -433,7 +438,8 @@ public class ViewPane extends RelativeLayout {
                     ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
             }
-            ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+            if (classInfo.b("CircleImageView")) updateCircleImageView((ItemCircleImageView) view, injectHandler);
+            else ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
         }
         if (classInfo.a("CompoundButton")) {
             ((CompoundButton) view).setChecked(viewBean.checked != 0);
@@ -453,11 +459,16 @@ public class ViewPane extends RelativeLayout {
             ((ItemAdView) view).setAdSize(viewBean.adSize);
         }
         if (classInfo.b("CardView")) {
-            ((ItemCardView) view).setContentPadding(
+            var cardView = (ItemCardView) view;
+            cardView.setContentPadding(
                     viewBean.layout.paddingLeft,
                     viewBean.layout.paddingTop,
                     viewBean.layout.paddingRight,
                     viewBean.layout.paddingBottom);
+            updateCardView(cardView, injectHandler);
+        }
+        if (classInfo.b("TabLayout")) {
+            updateTabLayout((ItemTabLayout) view, injectHandler);
         }
         if (classInfo.b("SignInButton")) {
             ItemSignInButton button = (ItemSignInButton) view;
@@ -878,6 +889,59 @@ public class ViewPane extends RelativeLayout {
     private void updateEditText(EditText editText, ViewBean viewBean) {
         editText.setHint(viewBean.text.hint);
         editText.setHintTextColor(viewBean.text.hintColor);
+    }
+
+    private void updateCardView(ItemCardView cardView, InjectAttributeHandler handler) {
+        String cardElevation = handler.getAttributeValueOf("cardElevation");
+        String cardCornerRadius = handler.getAttributeValueOf("cardCornerRadius");
+        String compatPadding = handler.getAttributeValueOf("cardUseCompatPadding");
+        String strokeColor = handler.getAttributeValueOf("strokeColor");
+        String strokeWidth = handler.getAttributeValueOf("strokeWidth");
+
+        cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
+        cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
+        cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
+        cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
+        cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
+    }
+
+    private void updateCircleImageView(ItemCircleImageView imageView, InjectAttributeHandler handler) {
+        String borderColor = handler.getAttributeValueOf("civ_border_color");
+        String backgroundColor = handler.getAttributeValueOf("civ_circle_background_color");
+        String borderWidth = handler.getAttributeValueOf("civ_border_width");
+        String borderOverlay = handler.getAttributeValueOf("civ_border_overlay");
+
+        imageView.setBorderColor(PropertiesUtil.isHexColor(borderColor) ? PropertiesUtil.parseColor(borderColor) : 0xff008dcd);
+        imageView.setCircleBackgroundColor(PropertiesUtil.isHexColor(backgroundColor) ? PropertiesUtil.parseColor(backgroundColor) : 0xff008dcd);
+        imageView.setBorderWidth(PropertiesUtil.resolveSize(borderWidth, 3));
+        imageView.setBorderOverlay(Boolean.parseBoolean(TextUtils.isEmpty(borderOverlay) ? "false" : borderOverlay));
+    }
+
+    private void updateTabLayout(ItemTabLayout tabLayout, InjectAttributeHandler handler) {
+        String gravity = handler.getAttributeValueOf("tabGravity");
+        String mode = handler.getAttributeValueOf("tabMode");
+        String indicatorHeight = handler.getAttributeValueOf("tabIndicatorHeight");
+        String indicatorColor = handler.getAttributeValueOf("tabIndicatorColor");
+        String textColor = handler.getAttributeValueOf("tabTextColor");
+        String selectedTextColor = handler.getAttributeValueOf("tabSelectedTextColor");
+
+        tabLayout.setTabGravity(switch (gravity) {
+            case "fill" -> TabLayout.GRAVITY_FILL;
+            case "center" -> TabLayout.GRAVITY_CENTER;
+            case "start" -> TabLayout.GRAVITY_START;
+            default -> TabLayout.GRAVITY_FILL;
+        });
+        tabLayout.setTabMode(switch (mode) {
+            case "auto" -> TabLayout.MODE_AUTO;
+            case "fixed" -> TabLayout.MODE_FIXED;
+            case "scrollable" -> TabLayout.MODE_SCROLLABLE;
+            default -> TabLayout.MODE_FIXED;
+        });
+        tabLayout.setSelectedTabIndicatorHeight(PropertiesUtil.resolveSize(indicatorHeight, 3));
+        tabLayout.setSelectedTabIndicatorColor(PropertiesUtil.isHexColor(indicatorColor) ? PropertiesUtil.parseColor(indicatorColor) : 0xffffc107);
+        int tabTextColor = PropertiesUtil.isHexColor(textColor) ? PropertiesUtil.parseColor(textColor) : 0xff57beee;
+        int tabSelectedTextColor = PropertiesUtil.isHexColor(selectedTextColor) ? PropertiesUtil.parseColor(selectedTextColor) : Color.WHITE;
+        tabLayout.setTabTextColors(tabTextColor, tabSelectedTextColor);
     }
 
     private String extractAttrValue(String line, String attrbute) {
