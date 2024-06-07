@@ -32,6 +32,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.item.ItemAdView;
+import com.besome.sketch.editor.view.item.ItemBottomNavigationView;
 import com.besome.sketch.editor.view.item.ItemButton;
 import com.besome.sketch.editor.view.item.ItemCalendarView;
 import com.besome.sketch.editor.view.item.ItemCardView;
@@ -44,6 +45,8 @@ import com.besome.sketch.editor.view.item.ItemLinearLayout;
 import com.besome.sketch.editor.view.item.ItemListView;
 import com.besome.sketch.editor.view.item.ItemMapView;
 import com.besome.sketch.editor.view.item.ItemProgressBar;
+import com.besome.sketch.editor.view.item.ItemRecyclerView;
+import com.besome.sketch.editor.view.item.ItemSearchView;
 import com.besome.sketch.editor.view.item.ItemSeekBar;
 import com.besome.sketch.editor.view.item.ItemSignInButton;
 import com.besome.sketch.editor.view.item.ItemSpinner;
@@ -68,14 +71,12 @@ import a.a.a.ty;
 import a.a.a.wB;
 import a.a.a.zB;
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
-import dev.aldi.sayuti.editor.view.item.ItemBottomNavigationView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 import dev.aldi.sayuti.editor.view.item.ItemCodeView;
 import dev.aldi.sayuti.editor.view.item.ItemLottieAnimation;
 import dev.aldi.sayuti.editor.view.item.ItemMaterialButton;
 import dev.aldi.sayuti.editor.view.item.ItemOTPView;
 import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
-import dev.aldi.sayuti.editor.view.item.ItemRecyclerView;
 import dev.aldi.sayuti.editor.view.item.ItemViewPager;
 import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
 import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
@@ -88,7 +89,6 @@ import mod.agus.jcoderz.editor.view.item.ItemGridView;
 import mod.agus.jcoderz.editor.view.item.ItemMultiAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.item.ItemRadioButton;
 import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
-import mod.agus.jcoderz.editor.view.item.ItemSearchView;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
@@ -421,9 +421,6 @@ public class ViewPane extends RelativeLayout {
         if (classInfo.a("EditText")) {
             updateEditText((EditText) view, viewBean);
         }
-        if (classInfo.b("SearchView")) {
-            ((EditText) view).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.search_icon_grey, 0);
-        }
         if (classInfo.a("ImageView")) {
             if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                 ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
@@ -514,6 +511,22 @@ public class ViewPane extends RelativeLayout {
             }
         }
         view.setVisibility(VISIBLE);
+        if (view instanceof EditorListItem listItem) {
+            String listitem = injectHandler.getAttributeValueOf("listitem");
+            String itemCount = injectHandler.getAttributeValueOf("itemCount");
+            if (!TextUtils.isEmpty(listitem)) {
+                //lmao use simple_list_item_1 for now
+                listItem.setListItem(android.R.layout.simple_list_item_1);
+            }
+            if (!TextUtils.isEmpty(itemCount)) {
+                if (TextUtils.isEmpty(listitem)) {
+                    try {
+                        listItem.setItemCount(Integer.parseInt(itemCount));
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
     }
 
     public sy a(String str) {
