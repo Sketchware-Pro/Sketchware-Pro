@@ -165,5 +165,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
 
+    implementation 'androidx.preference:preference:1.2.1'
+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.3"
 }
