@@ -1,0 +1,18 @@
+<resources>
+    <style name="Preference.AppTheme" parent="Preference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="Preference.AppTheme.SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+        <item name="android:widgetLayout">@layout/preference_widget_switch</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="PreferenceThemeOverlay.AppTheme" parent="PreferenceThemeOverlay">
+        <item name="android:scrollbars">none</item>
+        <item name="preferenceStyle">@style/Preference.AppTheme</item>
+        <item name="switchPreferenceCompatStyle">@style/Preference.AppTheme.SwitchPreferenceCompat</item>
+    </style>
+</resources>
