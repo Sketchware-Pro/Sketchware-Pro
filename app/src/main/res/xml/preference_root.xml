@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:icon="@drawable/ic_developer_mode_24"
+        android:key="mod"
+        android:summary="Change general mod settings"
+        android:title="Mod settings" />
+
+</PreferenceScreen>
