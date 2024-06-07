@@ -154,7 +154,7 @@ class DependencyResolver(
             BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath()
                 .resolve("core-lambda-stubs.jar"),
             Paths.get(buildSettings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
-                .resolve("android").absolutePath))
+                .resolve("android.jar").absolutePath))
         )
 
         val classpath = buildSettings.getValue(BuildSettings.SETTING_CLASSPATH, "")
