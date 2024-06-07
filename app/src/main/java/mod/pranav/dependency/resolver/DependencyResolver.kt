@@ -26,6 +26,7 @@ import java.util.zip.ZipFile
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 import kotlinx.coroutines.runBlocking
+import okhttp3.internal.immutableListOf
 import org.cosmic.ide.dependency.resolver.eventReciever
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -150,12 +151,18 @@ class DependencyResolver(
             dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
                 .toMutableList()
 
-        val dependencyClasspath = mutableListOf<Path>(
+        val libraryJars = immutableListOf(
             BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath()
                 .resolve("core-lambda-stubs.jar"),
-            Paths.get(buildSettings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
-                .resolve("android.jar").absolutePath))
+            Paths.get(
+                buildSettings.getValue(
+                    BuildSettings.SETTING_ANDROID_JAR_PATH,
+                    BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
+                        .resolve("android.jar").absolutePath
+                )
+            )
         )
+        val dependencyClasspath = mutableListOf<Path>()
 
         val classpath = buildSettings.getValue(BuildSettings.SETTING_CLASSPATH, "")
 
@@ -233,7 +240,7 @@ class DependencyResolver(
             }
             callback.dexing(artifact)
             try {
-                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) })
+                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) }, libraryJars)
                 callback.onResolutionComplete(artifact)
             } catch (e: Exception) {
                 callback.dexingFailed(artifact, e)
@@ -280,13 +287,14 @@ class DependencyResolver(
         }
     }
 
-    private fun compileJar(jarFile: Path, jars: List<Path>) {
+    private fun compileJar(jarFile: Path, jars: List<Path>, libraryJars: List<Path>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             D8.run(
                 D8Command.builder()
                     .setIntermediate(true)
                     .setMode(CompilationMode.RELEASE)
                     .addProgramFiles(jarFile)
+                    .addLibraryFiles(libraryJars)
                     .addClasspathFiles(jars)
                     .setOutput(jarFile.parent, OutputMode.DexIndexed)
                     .build()
