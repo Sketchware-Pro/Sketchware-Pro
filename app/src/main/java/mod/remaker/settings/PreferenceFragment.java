@@ -30,8 +30,21 @@ public abstract class PreferenceFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         PreferenceFragmentBinding binding = PreferenceFragmentBinding.inflate(inflater, container, false);
+        PreferenceContentFragment contentFragment = getContentFragment();
+
         binding.toolbar.setTitle(getTitle(getContext()));
 
+        if (contentFragment != null) {
+            getChildFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .add(binding.preferenceContentContainer.getId(), contentFragment)
+                .commit();
+        }
+
         return binding.getRoot();
+    }
+
+    protected PreferenceContentFragment getContentFragment() {
+        return null;
     }
 }
