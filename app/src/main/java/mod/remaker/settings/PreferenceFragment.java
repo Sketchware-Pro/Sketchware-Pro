@@ -34,6 +34,7 @@ public abstract class PreferenceFragment extends Fragment {
         PreferenceContentFragment contentFragment = getContentFragment();
 
         binding.appBarLayout.setLiftOnScrollTargetViewId(getScrollTargetViewId());
+        binding.toolbar.setNavigationOnClickListener(this::onNavigationBackClick);
         binding.toolbar.setTitle(getTitle(getContext()));
 
         if (contentFragment != null) {
@@ -52,5 +53,14 @@ public abstract class PreferenceFragment extends Fragment {
 
     protected @IdRes int getScrollTargetViewId() {
         return androidx.preference.R.id.recycler_view;
+    }
+
+    protected void onNavigationBackClick(View v) {
+        int backStackEntryCount = getParentFragmentManager().getBackStackEntryCount();
+        if (backStackEntryCount > 0) {
+            getParentFragmentManager().popBackStack();
+        } else {
+            getActivity().finish();
+        }
     }
 }
