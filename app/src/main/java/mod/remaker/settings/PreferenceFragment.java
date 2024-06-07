@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public abstract class PreferenceFragment extends Fragment {
         PreferenceFragmentBinding binding = PreferenceFragmentBinding.inflate(inflater, container, false);
         PreferenceContentFragment contentFragment = getContentFragment();
 
+        binding.appBarLayout.setLiftOnScrollTargetViewId(getScrollTargetViewId());
         binding.toolbar.setTitle(getTitle(getContext()));
 
         if (contentFragment != null) {
@@ -46,5 +48,9 @@ public abstract class PreferenceFragment extends Fragment {
 
     protected PreferenceContentFragment getContentFragment() {
         return null;
+    }
+
+    protected @IdRes int getScrollTargetViewId() {
+        return androidx.preference.R.id.recycler_view;
     }
 }
