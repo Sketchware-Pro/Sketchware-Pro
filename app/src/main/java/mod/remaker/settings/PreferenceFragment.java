@@ -11,11 +11,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.PreferenceFragmentBinding;
 
 public abstract class PreferenceFragment extends Fragment {
     protected abstract String getTitle(Context context);
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+        setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
