@@ -159,8 +159,14 @@ public class ConfigActivity extends Activity {
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
     }
 
+    public static void removeSetting(String key) {
+        HashMap<String, Object> settings = readSettings();
+        settings.remove(key);
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+    }
+
     @NonNull
-    private static HashMap<String, Object> readSettings() {
+    public static HashMap<String, Object> readSettings() {
         HashMap<String, Object> settings;
 
         if (SETTINGS_FILE.exists()) {
