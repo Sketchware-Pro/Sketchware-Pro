@@ -32,6 +32,11 @@ public abstract class PreferenceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         PreferenceFragmentBinding binding = PreferenceFragmentBinding.inflate(inflater, container, false);
         PreferenceContentFragment contentFragment = getContentFragment();
+        View contentView = getContentView(inflater, container);
+
+        if (contentFragment != null && contentView != null) {
+            throw new IllegalStateException("You can't have a content fragment and view at the same time.");
+        }
 
         binding.appBarLayout.setLiftOnScrollTargetViewId(getScrollTargetViewId());
         binding.toolbar.setNavigationOnClickListener(this::onNavigationBackClick);
@@ -44,10 +49,22 @@ public abstract class PreferenceFragment extends Fragment {
                 .commit();
         }
 
+        if (contentView != null) {
+            if (contentView.getParent() != null) {
+                ViewGroup parent = (ViewGroup) contentView.getParent();
+                parent.removeView(contentView);
+            }
+            binding.preferenceContentContainer.addView(contentView);
+        }
+
         return binding.getRoot();
     }
 
     protected PreferenceContentFragment getContentFragment() {
+        return null;
+    }
+
+    protected View getContentView(LayoutInflater inflater, ViewGroup container) {
         return null;
     }
 

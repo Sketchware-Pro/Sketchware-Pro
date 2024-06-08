@@ -31,7 +31,7 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.fragment.app.FragmentContainerView
+    <FrameLayout
         android:id="@+id/preference_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
