@@ -1,5 +1,6 @@
 package mod.remaker.settings.fragment;
 
+import static mod.hilal.saif.activities.tools.ConfigActivity.SETTING_BACKUP_DIRECTORY;
 import static mod.hilal.saif.activities.tools.ConfigActivity.SETTING_BACKUP_FILENAME;
 import static mod.hilal.saif.activities.tools.ConfigActivity.SETTING_RESET_BACKUP_FILENAME_FORMAT;
 import static mod.hilal.saif.activities.tools.ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 
 import mod.SketchwareUtil;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.remaker.settings.ExperimentalSettingsActivity;
 import mod.remaker.settings.PreferenceContentFragment;
 import mod.remaker.settings.PreferenceFragment;
 
@@ -42,10 +44,14 @@ public class ModSettingsFragment extends PreferenceFragment {
 
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
+            String key = preference.getKey();
             if (preference instanceof SwitchPreferenceCompat switchPreference) {
-                ConfigActivity.setSetting(preference.getKey(), switchPreference.isChecked());
+                ConfigActivity.setSetting(key, switchPreference.isChecked());
             }
-            if (preference.getKey().equals(SETTING_RESET_BACKUP_FILENAME_FORMAT)) {
+            if (key.equals(SETTING_BACKUP_DIRECTORY)) {
+                switchFragment(new ChangeBackupDirectoryFragment());
+            }
+            if (key.equals(SETTING_RESET_BACKUP_FILENAME_FORMAT)) {
                 ConfigActivity.removeSetting(SETTING_BACKUP_FILENAME);
                 SketchwareUtil.toast("Reset to default value complete.");
             }
@@ -83,6 +89,12 @@ public class ModSettingsFragment extends PreferenceFragment {
                 if (!shell.isRoot()) {
                     preference.setVisible(false);
                 }
+            }
+        }
+
+        private void switchFragment(PreferenceFragment fragment) {
+            if (fragment != null && getActivity() instanceof ExperimentalSettingsActivity activity) {
+                activity.switchFragment(fragment, true);
             }
         }
     }
