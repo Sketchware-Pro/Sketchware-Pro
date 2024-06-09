@@ -2,12 +2,14 @@ package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
+import static mod.remaker.settings.model.BackupDirectory.DEFAULT_BACKUP_DIRECTORY;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +25,14 @@ import android.widget.Toast;
 import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -36,12 +41,14 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
+import mod.remaker.settings.model.BackupDirectory;
 
 public class ConfigActivity extends Activity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
+    public static final String SETTING_BACKUP_DIRECTORIES = "backup-dirs";
     public static final String SETTING_ROOT_AUTO_INSTALL_PROJECTS = "root-auto-install-projects";
     public static final String SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING = "root-auto-open-after-installing";
     public static final String SETTING_BACKUP_FILENAME = "backup-filename";
@@ -59,6 +66,41 @@ public class ConfigActivity extends Activity {
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
 
+    public static List<BackupDirectory> getCustomBackupDirectories() {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            List<BackupDirectory> backupDirectories = new ArrayList<>();
+            backupDirectories.add(DEFAULT_BACKUP_DIRECTORY);
+
+            JsonObject object = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), JsonObject.class);
+            JsonArray array = object.getAsJsonArray(SETTING_BACKUP_DIRECTORIES);
+
+            if (array != null && array.size() != 0) {
+                for (int i = 0; i < array.size(); i++) {
+                    File directoryFile = new File(array.get(i).getAsString());
+                    BackupDirectory directory = new BackupDirectory(directoryFile.getName(), directoryFile.getAbsolutePath());
+                    backupDirectories.add(directory);
+                }
+            }
+
+            return backupDirectories;
+        }
+
+        return new ArrayList<>(Arrays.asList(DEFAULT_BACKUP_DIRECTORY));
+    }
+
+    public static BackupDirectory getCurrentCustomBackupDirectory() {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            String path = getBackupPath();
+            File dir = new File(path);
+            return new BackupDirectory(dir.getName(), path);
+        }
+        return DEFAULT_BACKUP_DIRECTORY;
+    }
+
+    public static boolean isCurrentBackupDirectory(BackupDirectory directory) {
+        return getCurrentCustomBackupDirectory().equals(directory);
+    }
+
     public static String getBackupPath() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             HashMap<String, Object> settings = readSettings();
@@ -75,7 +117,7 @@ public class ConfigActivity extends Activity {
                 }
             }
         }
-        return "/.sketchware/backups/";
+        return DEFAULT_BACKUP_DIRECTORY.path();
     }
 
     public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
@@ -229,7 +271,7 @@ public class ConfigActivity extends Activity {
                 return false;
 
             case SETTING_BACKUP_DIRECTORY:
-                return "/.sketchware/backups/";
+                return new File(Environment.getExternalStorageDirectory(), "/.sketchware/backups/").getAbsolutePath();
 
             case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING:
                 return true;

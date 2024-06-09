@@ -3,11 +3,26 @@ package mod.remaker.settings.model;
 import static mod.hilal.saif.activities.tools.ConfigActivity.SETTING_BACKUP_DIRECTORY;
 import static mod.hilal.saif.activities.tools.ConfigActivity.getDefaultValue;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil.ItemCallback;
+
 import java.util.Objects;
 
 public record BackupDirectory(String name, String path) {
     public static final BackupDirectory DEFAULT_BACKUP_DIRECTORY =
         new BackupDirectory("Default directory", (String) getDefaultValue(SETTING_BACKUP_DIRECTORY));
+
+    public static ItemCallback<BackupDirectory> DIFF_CALLBACK = new ItemCallback<BackupDirectory>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull BackupDirectory oldItem, @NonNull BackupDirectory newItem) {
+            return oldItem.name().equals(newItem.name()) && oldItem.path().equals(newItem.path());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull BackupDirectory oldItem, @NonNull BackupDirectory newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 
     @Override
     public boolean equals(Object o) {
