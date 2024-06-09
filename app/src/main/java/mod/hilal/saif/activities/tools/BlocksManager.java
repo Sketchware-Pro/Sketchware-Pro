@@ -14,6 +14,7 @@ import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -100,69 +102,6 @@ public class BlocksManager extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
         ((ViewGroup) background).addView(toolbar, 0);
 
-        recycle_icon.setOnClickListener(v -> {
-            aB dialog = new aB(this);
-            dialog.a(R.drawable.ic_folder_48dp);
-            dialog.b("Block configuration");
-
-            LinearLayout.LayoutParams defaultParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            LinearLayout customView = new LinearLayout(this);
-            customView.setLayoutParams(defaultParams);
-            customView.setOrientation(LinearLayout.VERTICAL);
-
-            TextInputLayout tilPalettesPath = new TextInputLayout(this);
-            tilPalettesPath.setLayoutParams(defaultParams);
-            tilPalettesPath.setOrientation(LinearLayout.VERTICAL);
-            tilPalettesPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-            tilPalettesPath.setHint("JSON file with palettes");
-            customView.addView(tilPalettesPath);
-
-            EditText palettesPath = new EditText(this);
-            palettesPath.setLayoutParams(defaultParams);
-            palettesPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-            palettesPath.setTextSize(14);
-            palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-            tilPalettesPath.addView(palettesPath);
-
-            TextInputLayout tilBlocksPath = new TextInputLayout(this);
-            tilBlocksPath.setLayoutParams(defaultParams);
-            tilBlocksPath.setOrientation(LinearLayout.VERTICAL);
-            tilBlocksPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-            tilBlocksPath.setHint("JSON file with blocks");
-            customView.addView(tilBlocksPath);
-
-            EditText blocksPath = new EditText(this);
-            blocksPath.setLayoutParams(defaultParams);
-            blocksPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-            blocksPath.setTextSize(14);
-            blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-            tilBlocksPath.addView(blocksPath);
-
-            dialog.a(customView);
-            dialog.b(Helper.getResString(R.string.common_word_save), view -> {
-                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                        palettesPath.getText().toString());
-                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
-                        blocksPath.getText().toString());
-
-                _readSettings();
-                _refresh_list();
-                dialog.dismiss();
-            });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-            dialog.configureDefaultButton("Defaults", view -> {
-                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                        ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
-                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
-                        ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH));
-
-                _readSettings();
-                _refresh_list();
-                dialog.dismiss();
-            });
-            dialog.show();
-        });
-
         _fab.setOnClickListener(v -> showPaletteDialog(false, null, null, null, null));
     }
 
@@ -180,6 +119,26 @@ public class BlocksManager extends AppCompatActivity {
         _refresh_list();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Settings").setIcon(getDrawable(R.drawable.settings_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+        String title = menuItem.getTitle().toString();
+        switch (title) {
+            case "Settings":
+                showBlockConfigurationDialog();
+                break;
+
+            default:
+                return false;
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
     private void _a(final View _view) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
@@ -190,6 +149,69 @@ public class BlocksManager extends AppCompatActivity {
             _view.setClickable(true);
             _view.setFocusable(true);
         }
+    }
+
+    private void showBlockConfigurationDialog() {
+        aB dialog = new aB(this);
+        dialog.a(R.drawable.ic_folder_48dp);
+        dialog.b("Block configuration");
+
+        LinearLayout.LayoutParams defaultParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout customView = new LinearLayout(this);
+        customView.setLayoutParams(defaultParams);
+        customView.setOrientation(LinearLayout.VERTICAL);
+
+        TextInputLayout tilPalettesPath = new TextInputLayout(this);
+        tilPalettesPath.setLayoutParams(defaultParams);
+        tilPalettesPath.setOrientation(LinearLayout.VERTICAL);
+        tilPalettesPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        tilPalettesPath.setHint("JSON file with palettes");
+        customView.addView(tilPalettesPath);
+
+        EditText palettesPath = new EditText(this);
+        palettesPath.setLayoutParams(defaultParams);
+        palettesPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+        palettesPath.setTextSize(14);
+        palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
+        tilPalettesPath.addView(palettesPath);
+
+        TextInputLayout tilBlocksPath = new TextInputLayout(this);
+        tilBlocksPath.setLayoutParams(defaultParams);
+        tilBlocksPath.setOrientation(LinearLayout.VERTICAL);
+        tilBlocksPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        tilBlocksPath.setHint("JSON file with blocks");
+        customView.addView(tilBlocksPath);
+
+        EditText blocksPath = new EditText(this);
+        blocksPath.setLayoutParams(defaultParams);
+        blocksPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
+        blocksPath.setTextSize(14);
+        blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
+        tilBlocksPath.addView(blocksPath);
+
+        dialog.a(customView);
+        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
+            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                    palettesPath.getText().toString());
+            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+                    blocksPath.getText().toString());
+
+            _readSettings();
+            _refresh_list();
+            dialog.dismiss();
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.configureDefaultButton("Defaults", view -> {
+            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                    ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
+            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+                    ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH));
+
+            _readSettings();
+            _refresh_list();
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     private void _readSettings() {
