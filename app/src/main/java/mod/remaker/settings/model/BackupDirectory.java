@@ -15,7 +15,7 @@ public record BackupDirectory(String name, String path) {
     public static ItemCallback<BackupDirectory> DIFF_CALLBACK = new ItemCallback<BackupDirectory>() {
         @Override
         public boolean areItemsTheSame(@NonNull BackupDirectory oldItem, @NonNull BackupDirectory newItem) {
-            return oldItem.name().equals(newItem.name()) && oldItem.path().equals(newItem.path());
+            return oldItem.name().equals(newItem.name());
         }
 
         @Override
@@ -29,7 +29,7 @@ public record BackupDirectory(String name, String path) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BackupDirectory directory = (BackupDirectory) o;
-        return Objects.equals(name, directory.name) && Objects.equals(path, directory.path);
+        return Objects.equals(name, directory.name);
     }
 
     @Override
