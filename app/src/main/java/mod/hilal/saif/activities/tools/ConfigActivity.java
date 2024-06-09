@@ -88,6 +88,23 @@ public class ConfigActivity extends Activity {
         return new ArrayList<>(Arrays.asList(DEFAULT_BACKUP_DIRECTORY));
     }
 
+    public static void addCustomBackupDirectory(BackupDirectory directory) {
+        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            return;
+        }
+
+        JsonObject object = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), JsonObject.class);
+        JsonArray array = object.getAsJsonArray(SETTING_BACKUP_DIRECTORIES);
+        if (array == null) {
+            array = new JsonArray();
+        }
+
+        array.add(directory.path());
+        object.add(SETTING_BACKUP_DIRECTORIES, array);
+
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(object));
+    }
+
     public static BackupDirectory getCurrentCustomBackupDirectory() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             String path = getBackupPath();

@@ -24,6 +24,8 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.remaker.settings.ExperimentalSettingsActivity;
 import mod.remaker.settings.PreferenceContentFragment;
 import mod.remaker.settings.PreferenceFragment;
+import mod.remaker.settings.fragment.ChangeBackupDirectoryFragment.BackupDirectorySelectListener;
+import mod.remaker.settings.model.BackupDirectory;
 
 public class ModSettingsFragment extends PreferenceFragment {
     @Override
@@ -36,7 +38,16 @@ public class ModSettingsFragment extends PreferenceFragment {
         return new ModSettingsFragmentContent();
     }
 
-    public static class ModSettingsFragmentContent extends PreferenceContentFragment {
+    public static class ModSettingsFragmentContent extends PreferenceContentFragment implements BackupDirectorySelectListener {
+        private Preference backupPreference;
+
+        @Override
+        public void onDirectorySelect(BackupDirectory directory) {
+            if (backupPreference != null) {
+                backupPreference.setSummary(directory.path());
+            }
+        }
+
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
             setPreferencesFromResource(R.xml.preference_mod, rootKey);
@@ -49,7 +60,9 @@ public class ModSettingsFragment extends PreferenceFragment {
                 ConfigActivity.setSetting(key, switchPreference.isChecked());
             }
             if (key.equals(SETTING_BACKUP_DIRECTORY)) {
-                switchFragment(new ChangeBackupDirectoryFragment());
+                ChangeBackupDirectoryFragment fragment = new ChangeBackupDirectoryFragment();
+                fragment.setOnBackupDirectorySelectListener(this);
+                switchFragment(fragment);
             }
             if (key.equals(SETTING_RESET_BACKUP_FILENAME_FORMAT)) {
                 ConfigActivity.removeSetting(SETTING_BACKUP_FILENAME);
@@ -89,6 +102,11 @@ public class ModSettingsFragment extends PreferenceFragment {
                 if (!shell.isRoot()) {
                     preference.setVisible(false);
                 }
+            }
+
+            if (key.equals(SETTING_BACKUP_DIRECTORY)) {
+                backupPreference = preference;
+                backupPreference.setSummary(ConfigActivity.getBackupPath());
             }
         }
 
