@@ -218,10 +218,10 @@ public class ViewPane extends RelativeLayout {
     public View b(ViewBean viewBean) {
         View item = switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
-                    ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
-                    ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
-                    ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
-                    ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(getContext());
+                 ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
+                 ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
+                 ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
+                 ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(getContext());
             case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> new ItemCardView(getContext());
             case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW ->
                     new ItemHorizontalScrollView(getContext());
@@ -427,8 +427,11 @@ public class ViewPane extends RelativeLayout {
                     ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
             }
-            if (classInfo.b("CircleImageView")) updateCircleImageView((ItemCircleImageView) view, injectHandler);
-            else ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+            if (classInfo.b("CircleImageView")) {
+                updateCircleImageView((ItemCircleImageView) view, injectHandler);
+            } else {
+                ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+            }
         }
         if (classInfo.a("CompoundButton")) {
             ((CompoundButton) view).setChecked(viewBean.checked != 0);
@@ -874,8 +877,8 @@ public class ViewPane extends RelativeLayout {
                         new ResourceUtil(sc_id, "font").getResourcePathFromName(textFont);
                 textView.setTypeface(
                         textFontPath != null
-                                        && textFontPath.length() > 0
-                                        && new File(textFontPath).exists()
+                                && textFontPath.length() > 0
+                                && new File(textFontPath).exists()
                                 ? Typeface.createFromFile(textFontPath)
                                 : null,
                         viewBean.text.textType);
