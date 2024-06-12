@@ -17,7 +17,7 @@ import mod.jbk.util.LogUtil;
 
 public class InjectAttributeHandler {
 
-    private ViewBean viewBean;
+    private final ViewBean viewBean;
 
     public InjectAttributeHandler(ViewBean viewBean) {
         this.viewBean = viewBean;
