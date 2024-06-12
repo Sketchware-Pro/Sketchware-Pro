@@ -5,24 +5,23 @@ import android.text.TextUtils;
 import android.util.Pair;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PropertiesUtil {
 
-    private static final String HEX_COLOR_PATTERN =
-            "^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+    public static final Pattern COLOR_PATTERN = Pattern.compile("(#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
+    public static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+    public static final Pattern UNIT_PATTERN = Pattern.compile("(-?\\d+)(dp|sp|px|mm|pt|in)$");
+    public static final Pattern PREFIX_PATTERN = Pattern.compile("([@?][^/]+/)(.*)");
 
     public static boolean isHexColor(String color) {
         if (TextUtils.isEmpty(color)) {
             return false;
         }
-
-        Pattern pattern = Pattern.compile(HEX_COLOR_PATTERN);
-        Matcher matcher = pattern.matcher(color);
-
+        Matcher matcher = HEX_COLOR_PATTERN.matcher(color);
         return matcher.matches();
     }
 
@@ -41,24 +40,17 @@ public class PropertiesUtil {
     }
 
     public static Pair<String, String> getUnitOrPrefix(String value) {
-        Pattern prefixPattern = Pattern.compile("([@?][^/]+/)(.*)");
-
-        Pattern unitPattern = Pattern.compile("(-?\\d+)(dp|sp|px|mm|pt|in)$");
-
-        Pattern hexColorPattern =
-                Pattern.compile("(#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
-
-        Matcher prefixMatcher = prefixPattern.matcher(value);
+        Matcher prefixMatcher = PREFIX_PATTERN.matcher(value);
         if (prefixMatcher.find()) {
             return Pair.create(prefixMatcher.group(1), prefixMatcher.group(2));
         }
 
-        Matcher unitMatcher = unitPattern.matcher(value);
+        Matcher unitMatcher = UNIT_PATTERN.matcher(value);
         if (unitMatcher.find()) {
             return Pair.create(unitMatcher.group(2), unitMatcher.group(1));
         }
 
-        Matcher hexColorMatcher = hexColorPattern.matcher(value);
+        Matcher hexColorMatcher = COLOR_PATTERN.matcher(value);
         if (hexColorMatcher.find()) {
             return Pair.create(hexColorMatcher.group(1), hexColorMatcher.group(2));
         }
