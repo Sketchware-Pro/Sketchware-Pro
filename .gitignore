@@ -24,6 +24,8 @@ local.properties
 # Log Files
 *.log
 
+# Patch Files
+*.patch
 # Android Studio Navigation editor temp files
 .navigation/
 
@@ -40,6 +42,7 @@ captures/
 .idea/shelf/
 .idea/sonarlint/issuestore/
 .idea/sonarlint/securityhotspotstore/
+.idea/appInsightsSettings.xml
 .idea/assetWizardSettings.xml
 .idea/compiler.xml
 .idea/deploymentTargetDropDown.xml
@@ -53,6 +56,8 @@ captures/
 .idea/tasks.xml
 .idea/vcs.xml
 .idea/workspace.xml
+.idea/deploymentTargetSelector.xml
+.idea/other.xml
 
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
