@@ -7,6 +7,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.card.MaterialCardView;
 
@@ -16,9 +18,9 @@ import a.a.a.wB;
 
 public class ItemCardView extends MaterialCardView implements sy, ty {
 
-    private ViewBean viewBean = null;
-    private boolean isSelected = false;
-    private boolean isFixed = false;
+    private ViewBean viewBean;
+    private boolean isSelected;
+    private boolean isFixed;
     private Paint paint;
     private Drawable mBackground;
     private final Rect rect = new Rect();
@@ -76,7 +78,7 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (isSelected) {
             paint.setColor(0x9599D5D0);
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
@@ -117,7 +119,10 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
 
     @Override
     public void setContentPadding(int left, int top, int right, int bottom) {
-        super.setContentPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
+        super.setContentPadding((int) wB.a(getContext(), (float) left),
+                (int) wB.a(getContext(), (float) top),
+                (int) wB.a(getContext(), (float) right),
+                (int) wB.a(getContext(), (float) bottom));
     }
 
     public void setFixed(boolean fixed) {

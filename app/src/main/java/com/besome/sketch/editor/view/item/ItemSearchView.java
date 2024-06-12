@@ -1,46 +1,40 @@
-package dev.aldi.sayuti.editor.view.item;
+package com.besome.sketch.editor.view.item;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
+import android.widget.SearchView;
 
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemBottomNavigationView extends LinearLayout implements sy {
+public class ItemSearchView extends SearchView implements sy {
 
     private final Paint paint;
+    private final int paddingFactor;
+    private final Drawable background;
     private final Rect rect;
-    private final float paddingFactor;
     private ViewBean viewBean;
     private boolean hasSelection;
-    private boolean hasFixed;
+    private boolean isFixed;
 
-    public ItemBottomNavigationView(Context context) {
+    public ItemSearchView(Context context) {
         super(context);
-        paddingFactor = wB.a(context, 1.0f);
+        paddingFactor = (int) wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
         rect = new Rect();
-
         setDrawingCacheEnabled(true);
-        ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageResource(R.drawable.item_bottom_view);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setPadding(0, 0, 0, 0);
-        addView(imageView);
-        setGravity(Gravity.CENTER);
+        setFocusable(false);
+        setFocusableInTouchMode(false);
+        setIconifiedByDefault(false);
+        setClickable(false);
+        background = getBackground();
     }
 
     @Override
@@ -55,11 +49,11 @@ public class ItemBottomNavigationView extends LinearLayout implements sy {
 
     @Override
     public boolean getFixed() {
-        return hasFixed;
+        return isFixed;
     }
 
     public void setFixed(boolean z) {
-        hasFixed = z;
+        isFixed = z;
     }
 
     public boolean getSelection() {
@@ -82,7 +76,21 @@ public class ItemBottomNavigationView extends LinearLayout implements sy {
     }
 
     @Override
+    public void setBackgroundColor(int i) {
+        if (i == 0xffffff) {
+            setBackground(background);
+        } else {
+            super.setBackgroundColor(i);
+        }
+    }
+
+    @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
+        super.setPadding(left * paddingFactor, top * paddingFactor, right * paddingFactor, paddingFactor * bottom);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return true;
     }
 }

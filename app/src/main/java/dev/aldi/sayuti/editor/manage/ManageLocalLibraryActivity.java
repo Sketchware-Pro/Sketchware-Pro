@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
@@ -47,6 +48,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     private static String local_libs_path = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
+    private BuildSettings buildSettings;
 
     private ManageLocallibrariesBinding binding;
 
@@ -63,6 +65,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         initButtons();
         if (getIntent().hasExtra("sc_id")) {
             String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
+            buildSettings = new BuildSettings(sc_id);
             notAssociatedWithProject = sc_id.equals("system");
             local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         }
@@ -107,7 +110,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             var group = parts[0];
             var artifact = parts[1];
             var version = parts[2];
-            var resolver = new DependencyResolver(group, artifact, version, dialogBinding.skipSubDependenciesCheckBox.isChecked());
+            var resolver = new DependencyResolver(group, artifact, version, dialogBinding.skipSubDependenciesCheckBox.isChecked(), buildSettings);
             var handler = new Handler(Looper.getMainLooper());
 
             class SetTextRunnable implements Runnable {
