@@ -10,8 +10,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.beans.ResourceBean;
 
 public class ResourceUtil {
-    private String sc_id;
-    private String resFolder;
+    private final String sc_id;
+    private final String resFolder;
 
     public ResourceUtil(String sc_id, String resFolder) {
         this.sc_id = sc_id;
