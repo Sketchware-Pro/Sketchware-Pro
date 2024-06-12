@@ -100,8 +100,8 @@ import mod.hey.studios.util.ProjectFile;
 public class ViewPane extends RelativeLayout {
 
     private ViewGroup rootLayout;
-    private int b;
-    private ArrayList<Object[]> c;
+    private int b = 99;
+    private ArrayList<Object[]> c = new ArrayList<>();
     private Object[] d;
     private TextView e;
     private kC resourcesManager;
@@ -109,19 +109,11 @@ public class ViewPane extends RelativeLayout {
 
     public ViewPane(Context context) {
         super(context);
-        rootLayout = null;
-        b = 99;
-        c = new ArrayList<>();
-        d = null;
         initialize();
     }
 
     public ViewPane(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        rootLayout = null;
-        b = 99;
-        c = new ArrayList<>();
-        d = null;
         initialize();
     }
 
@@ -939,7 +931,6 @@ public class ViewPane extends RelativeLayout {
         String selectedTextColor = handler.getAttributeValueOf("tabSelectedTextColor");
 
         tabLayout.setTabGravity(switch (gravity) {
-            case "fill" -> TabLayout.GRAVITY_FILL;
             case "center" -> TabLayout.GRAVITY_CENTER;
             case "start" -> TabLayout.GRAVITY_START;
             default -> TabLayout.GRAVITY_FILL;
