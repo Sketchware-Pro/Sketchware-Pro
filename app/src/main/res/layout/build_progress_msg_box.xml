@@ -1,13 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="24dp"
-    android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp"
-    android:background="?colorSurfaceContainer"
-    android:orientation="vertical">
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="?colorSurfaceContainer"
+    app:strokeWidth="0dp">
+
 
     <LinearLayout
         android:id="@+id/layout_quiz"
@@ -18,13 +19,11 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dip"
-        android:background="?attr/colorPrimary" />
+        android:layout_height="0.5dip" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
