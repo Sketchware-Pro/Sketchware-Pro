@@ -1,4 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="While you wait..."
-            android:textColor="@color/color_primary"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
 
         <TextView
@@ -24,13 +27,6 @@
             android:animateLayoutChanges="true"
             android:background="@drawable/circle_bg"
             android:gravity="center"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
-            android:textColor="#ffffffff"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -40,9 +36,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:paddingHorizontal="8dp">
 
         <ImageView
             android:layout_width="18dp"
@@ -54,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textColor="@color/scolor_black_02"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -81,7 +74,7 @@
                 android:id="@+id/img_answer_o"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:background="@drawable/bg_outline"
                 android:src="@drawable/answer_o" />
 
@@ -89,9 +82,11 @@
                 android:id="@+id/img_answer_x"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:background="@drawable/bg_outline"
-                android:src="@drawable/answer_x" />
+                android:src="@drawable/answer_x"
+                android:layout_toEndOf="@id/img_answer_o"
+                android:layout_marginStart="16dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -100,17 +95,22 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="vertical">
+            
+          <com.google.android.material.card.MaterialCardView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginHorizontal="8dp"
+             android:layout_marginTop="8dp"
+             app:cardBackgroundColor="?colorSurfaceContainerHigh"
+             app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/view_answer_a"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:background="@drawable/bg_outline"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:paddingHorizontal="8dp">
 
                 <TextView
                     android:id="@+id/tv_answer_a"
@@ -118,8 +118,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:textColor="@color/scolor_black_02" />
+                    android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/img_answer_a"
@@ -127,18 +126,23 @@
                     android:layout_height="32dp"
                     android:src="@drawable/ok_48" />
             </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+          
+          <com.google.android.material.card.MaterialCardView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginHorizontal="8dp"
+             android:layout_marginTop="8dp"
+             app:cardBackgroundColor="?colorSurfaceContainerHigh"
+             app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/view_answer_b"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/bg_outline"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:paddingHorizontal="8dp">
 
                 <TextView
                     android:id="@+id/tv_answer_b"
@@ -146,8 +150,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:textColor="@color/scolor_black_02" />
+                    android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/img_answer_b"
@@ -155,6 +158,7 @@
                     android:layout_height="32dp"
                     android:src="@drawable/ok_48" />
             </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
