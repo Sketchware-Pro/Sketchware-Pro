@@ -6,25 +6,25 @@
     android:layout_marginHorizontal="24dp"
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"
+    android:background="?colorSurfaceContainer"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layout_quiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
         android:orientation="vertical"
         android:padding="8dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dip"
-        android:background="@color/scolor_blue_01" />
+        android:background="?attr/colorPrimary" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/scolor_blue_01"
+        android:background="?attr/colorPrimary"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -55,7 +55,6 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/common_message_loading"
-            android:textColor="#ffffffff"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="While you wait..."
-            android:textColor="@color/color_primary"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
 
         <TextView
@@ -30,7 +30,6 @@
             android:paddingTop="4dp"
             android:paddingRight="8dp"
             android:paddingBottom="4dp"
-            android:textColor="#ffffffff"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -54,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textColor="@color/scolor_black_02"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -118,8 +116,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:textColor="@color/scolor_black_02" />
+                    android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/img_answer_a"
@@ -146,8 +143,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:textColor="@color/scolor_black_02" />
+                    android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/img_answer_b"
