@@ -89,7 +89,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
-                .setCancelable(false)
+                .setCancelable(true)
                 .create();
         downloadButton.setOnClickListener(v1 -> {
             String url = Objects.requireNonNull(dependencyInput.getText()).toString();
@@ -106,6 +106,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             downloadButton.setEnabled(false);
             dependencyInput.setEnabled(false);
             downloadButton.setText("Downloading...");
+            dialog.setCancelable(false);
 
             var group = parts[0];
             var artifact = parts[1];
