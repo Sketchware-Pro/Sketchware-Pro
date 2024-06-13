@@ -27,12 +27,6 @@
             android:animateLayoutChanges="true"
             android:background="@drawable/circle_bg"
             android:gravity="center"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -42,9 +36,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:paddingHorizontal="8dp">
 
         <ImageView
             android:layout_width="18dp"
@@ -82,7 +74,7 @@
                 android:id="@+id/img_answer_o"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:background="@drawable/bg_outline"
                 android:src="@drawable/answer_o" />
 
@@ -90,9 +82,11 @@
                 android:id="@+id/img_answer_x"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:background="@drawable/bg_outline"
-                android:src="@drawable/answer_x" />
+                android:src="@drawable/answer_x"
+                android:layout_toEndOf="@id/img_answer_o"
+                android:layout_marginStart="16dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -116,9 +110,7 @@
                 android:layout_height="36dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:paddingHorizontal="8dp">
 
                 <TextView
                     android:id="@+id/tv_answer_a"
@@ -148,12 +140,9 @@
                 android:id="@+id/view_answer_b"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:layout_marginTop="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:paddingHorizontal="8dp">
 
                 <TextView
                     android:id="@+id/tv_answer_b"
