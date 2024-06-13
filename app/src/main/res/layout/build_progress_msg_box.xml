@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp"
     app:cardBackgroundColor="?colorSurfaceContainer"
     app:strokeWidth="0dp">
 
