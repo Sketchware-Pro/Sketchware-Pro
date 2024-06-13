@@ -32,7 +32,7 @@ public class ViewEditorFragment extends qA {
 
     private ProjectFileBean projectFileBean;
     private ViewEditor viewEditor;
-    private boolean k = false;
+    private boolean isFabEnabled = false;
     private ViewProperty viewProperty;
     private ObjectAnimator n;
     private ObjectAnimator o;
@@ -65,7 +65,7 @@ public class ViewEditorFragment extends qA {
             invalidateOptionsMenu();
         });
         viewProperty.setOnEventClickListener(eventBean -> toLogicEditorActivity(eventBean.targetId, eventBean.eventName, eventBean.eventName));
-        viewProperty.setOnPropertyTargetChangeListener(viewEditor::a);
+        viewProperty.setOnPropertyTargetChangeListener(viewEditor::updateSelection);
         viewEditor.setOnWidgetSelectedListener(new cy() {
             @Override
             public void a() {
@@ -119,7 +119,7 @@ public class ViewEditorFragment extends qA {
 
     public void a(ProjectFileBean projectFileBean) {
         this.projectFileBean = projectFileBean;
-        k = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
+        isFabEnabled = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
         viewEditor.a(sc_id, projectFileBean);
         viewEditor.h();
         viewProperty.a(sc_id, this.projectFileBean);
@@ -128,9 +128,9 @@ public class ViewEditorFragment extends qA {
         invalidateOptionsMenu();
     }
 
-    private void a(ViewBean var1) {
-        viewEditor.k();
-        if (k) viewEditor.a(var1);
+    private void a(ViewBean viewBean) {
+        viewEditor.removeFab();
+        if (isFabEnabled) viewEditor.addFab(viewBean);
     }
 
     private void a(String viewId) {
@@ -424,7 +424,7 @@ public class ViewEditorFragment extends qA {
                 for (ViewBean viewBean : jC.a(sc_id).d(projectFileBean.getXmlName())) {
                     c(viewBean);
                 }
-                if (k) {
+                if (isFabEnabled) {
                     c(jC.a(sc_id).h(projectFileBean.getXmlName()));
                 }
             }

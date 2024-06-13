@@ -184,13 +184,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void j() {
-        viewPane.d();
+        viewPane.clearViewPane();
         l();
         i();
     }
 
-    public void k() {
-        viewPane.e();
+    public void removeFab() {
+        viewPane.removeFabView();
     }
 
     public void l() {
@@ -261,7 +261,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                     b(false);
                     dummyView.setDummyVisibility(View.GONE);
-                    viewPane.b();
+                    viewPane.clearViews();
                     s.removeCallbacks(ea);
                     t = false;
                     return true;
@@ -286,14 +286,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 if (b(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
                     boolean isNotIcon = !isViewAnIconBase(r);
-                    int i = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
+                    int width = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
                             ViewGroup.LayoutParams.MATCH_PARENT : I);
-                    int i2 = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
+                    int height = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
                             ViewGroup.LayoutParams.MATCH_PARENT : J);
-                    viewPane.a((int) motionEvent.getRawX(), (int) motionEvent.getRawY(), i, i2);
+                    viewPane.updateView((int) motionEvent.getRawX(), (int) motionEvent.getRawY(), width, height);
                 } else {
                     dummyView.setAllow(false);
-                    viewPane.a(true);
+                    viewPane.resetView(true);
                 }
                 return true;
             }
@@ -306,7 +306,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
             dummyView.setDummyVisibility(View.GONE);
             r = null;
-            viewPane.b();
+            viewPane.clearViews();
             s.removeCallbacks(ea);
             return true;
         } else {
@@ -324,7 +324,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     deleteWidgetFromCollection(collectionWidget.getName());
                     break lol;
                 }
-                viewPane.a(false);
+                viewPane.resetView(false);
                 if (r instanceof uy uyVar) {
                     ArrayList<ViewBean> arrayList = new ArrayList<>();
                     oB oBVar = new oB();
@@ -404,7 +404,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             b(false);
             dummyView.setDummyVisibility(View.GONE);
             r = null;
-            viewPane.b();
+            viewPane.clearViews();
             s.removeCallbacks(ea);
             t = false;
             return true;
@@ -563,7 +563,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void d(ViewBean viewBean) {
-        viewPane.f(viewBean);
+        viewPane.removeView(viewBean);
     }
 
     private void e() {
@@ -614,28 +614,28 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (isViewAnIconBase(r)) {
             if (r instanceof uy) {
                 b(true);
-                viewPane.e(null);
+                viewPane.addRootLayout(null);
             } else {
                 b(false);
-                viewPane.e(null);
+                viewPane.addRootLayout(null);
             }
         } else {
             r.setVisibility(View.GONE);
             b(true);
-            viewPane.e(((sy) r).getBean());
+            viewPane.addRootLayout(((sy) r).getBean());
         }
         if (b(u, v)) {
             dummyView.setAllow(true);
             boolean isNotIcon = !isViewAnIconBase(r);
-            int i = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
+            int width = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
                     ViewGroup.LayoutParams.MATCH_PARENT : I);
-            int i2 = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
+            int height = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
                     ViewGroup.LayoutParams.MATCH_PARENT : J);
-            viewPane.a((int) u, (int) v, i, i2);
+            viewPane.updateView((int) u, (int) v, width, height);
             return;
         }
         dummyView.setAllow(false);
-        viewPane.a(true);
+        viewPane.resetView(true);
     }
 
     public sy b(ViewBean viewBean, boolean z) {
@@ -648,9 +648,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return viewPane.d(viewBean);
     }
 
-    public sy b(ViewBean viewBean) {
-        View itemView = viewPane.b(viewBean);
-        viewPane.a(itemView);
+    public sy createAndAddView(ViewBean viewBean) {
+        View itemView = viewPane.createItemView(viewBean);
+        viewPane.addViewAndUpdateIndex(itemView);
         String generatedId = wq.b(viewBean.type);
         if (viewBean.id.indexOf(generatedId) == 0 && viewBean.id.length() > generatedId.length()) {
             try {
@@ -730,12 +730,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         } else {
             l.setText(projectFileBean.getXmlName());
         }
-        k();
+        removeFab();
         if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
             S = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR);
             T = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN);
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-                a(jC.a(str).h(projectFileBean.getXmlName()));
+                addFab(jC.a(str).h(projectFileBean.getXmlName()));
             }
         } else {
             S = false;
@@ -747,17 +747,17 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public void a(String str) {
+    public void updateSelection(String tag) {
         sy syVar;
-        sy a2 = viewPane.a(str);
-        if (a2 == null || (syVar = H) == a2) {
+        sy itemView = viewPane.findItemViewByTag(tag);
+        if (itemView == null || (syVar = H) == itemView) {
             return;
         }
         if (syVar != null) {
             syVar.setSelection(false);
         }
-        a2.setSelection(true);
-        H = a2;
+        itemView.setSelection(true);
+        H = itemView;
     }
 
     private void a() {
@@ -910,9 +910,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         sy syVar = null;
         for (ViewBean view : arrayList) {
             if (arrayList.indexOf(view) == 0) {
-                syVar = b(view);
+                syVar = createAndAddView(view);
             } else {
-                b(view);
+                createAndAddView(view);
             }
         }
         return syVar;
@@ -925,7 +925,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 O.a();
             }
         }
-        return b(viewBean);
+        return createAndAddView(viewBean);
     }
 
     public void a(ArrayList<ViewBean> arrayList) {
@@ -933,12 +933,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             return;
         }
         for (ViewBean view : arrayList) {
-            b(view);
+            createAndAddView(view);
         }
     }
 
-    public void a(ViewBean viewBean) {
-        viewPane.a(viewBean).setOnTouchListener(this);
+    public void addFab(ViewBean viewBean) {
+        viewPane.addFab(viewBean).setOnTouchListener(this);
     }
 
     public void a(sy syVar, boolean z) {

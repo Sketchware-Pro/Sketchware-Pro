@@ -104,6 +104,7 @@ public class ViewPane extends RelativeLayout {
     private ArrayList<Object[]> c = new ArrayList<>();
     private Object[] d;
     private TextView e;
+    private TextView highlightedTextView;
     private kC resourcesManager;
     private String sc_id;
 
@@ -120,28 +121,31 @@ public class ViewPane extends RelativeLayout {
     private void initialize() {
         setBackgroundColor(Color.WHITE);
         addRootLayout();
-        c();
+        initTextView();
     }
 
     public void b() {
         a(true);
         c = new ArrayList<>();
+    public void clearViews() {
+        resetView(true);
         ((ty) rootLayout).setChildScrollEnabled(true);
     }
 
-    private void c() {
-        e = new TextView(getContext());
-        e.setBackgroundResource(R.drawable.highlight);
-        e.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+    private void initTextView() {
+        highlightedTextView = new TextView(getContext());
+        highlightedTextView.setBackgroundResource(R.drawable.highlight);
+        highlightedTextView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        e.setVisibility(GONE);
+        highlightedTextView.setVisibility(GONE);
     }
 
-    public void d() {
+    public void clearViewPane() {
         rootLayout.removeAllViews();
     }
 
-    public void e() {
+    public void removeFabView() {
         View findViewWithTag = findViewWithTag("_fab");
         if (findViewWithTag == null) {
             return;
@@ -149,7 +153,7 @@ public class ViewPane extends RelativeLayout {
         removeView(findViewWithTag);
     }
 
-    public void f(ViewBean viewBean) {
+    public void removeView(ViewBean viewBean) {
         ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.parent);
         viewGroup.removeView(rootLayout.findViewWithTag(viewBean.id));
         if (viewGroup instanceof ty) {
@@ -169,7 +173,7 @@ public class ViewPane extends RelativeLayout {
         } else {
             findViewWithTag = rootLayout.findViewWithTag(viewBean.id);
         }
-        b(findViewWithTag, viewBean);
+        updateItemView(findViewWithTag, viewBean);
         return (sy) findViewWithTag;
     }
 
@@ -187,10 +191,10 @@ public class ViewPane extends RelativeLayout {
             ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.preParent);
             viewGroup.removeView(findViewWithTag);
             ((ty) viewGroup).a();
-            a(findViewWithTag);
+            addViewAndUpdateIndex(findViewWithTag);
         } else if (viewBean.index != viewBean.preIndex) {
             ((ViewGroup) rootLayout.findViewWithTag(viewBean.parent)).removeView(findViewWithTag);
-            a(findViewWithTag);
+            addViewAndUpdateIndex(findViewWithTag);
         }
         viewBean.preId = "";
         viewBean.preIndex = -1;
@@ -203,19 +207,22 @@ public class ViewPane extends RelativeLayout {
     public void e(ViewBean viewBean) {
         d = null;
         c(viewBean);
+    public void addRootLayout(ViewBean viewBean) {
+        a(viewBean, (ItemLinearLayout) rootLayout);
         ((ty) rootLayout).setChildScrollEnabled(false);
     }
 
-    private int b(View view) {
-        int i = 0;
-        while (view != null && view != rootLayout) {
-            i++;
-            view = (View) view.getParent();
+    private int calculateViewDepth(View view) {
+        View currentView = view;
+        int depth = 0;
+        while (currentView != null && currentView != rootLayout) {
+            depth++;
+            currentView = (View) currentView.getParent();
         }
-        return i * 2;
+        return depth * 2;
     }
 
-    public View b(ViewBean viewBean) {
+    public View createItemView(ViewBean viewBean) {
         View item = switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
                  ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
@@ -277,12 +284,8 @@ public class ViewPane extends RelativeLayout {
         item.setId(++b);
         item.setTag(viewBean.id);
         ((sy) item).setBean(viewBean);
-        b(item, viewBean);
+        updateItemView(item, viewBean);
         return item;
-    }
-
-    private void c(ViewBean viewBean) {
-        a(viewBean, (ItemLinearLayout) rootLayout);
     }
 
     public void setScId(String str) {
@@ -296,14 +299,14 @@ public class ViewPane extends RelativeLayout {
         layoutBean.height = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutBean.orientation = LinearLayout.VERTICAL;
         viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
-        View b = b(viewBean);
-        ((ItemLinearLayout) b).setFixed(true);
-        rootLayout = (ViewGroup) b;
+        View rootView = createItemView(viewBean);
+        ((ItemLinearLayout) rootView).setFixed(true);
+        rootLayout = (ViewGroup) rootView;
         rootLayout.setBackgroundColor(0xffeeeeee);
-        addView(b);
+        addView(rootView);
     }
 
-    private void b(View view, ViewBean viewBean) {
+    private void updateItemView(View view, ViewBean viewBean) {
         ImageBean imageBean;
         String str;
         var injectHandler = new InjectAttributeHandler(viewBean);
@@ -524,7 +527,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public sy a(String str) {
+    public sy findItemViewByTag(String str) {
         View findViewWithTag;
         if (str.charAt(0) == '_') {
             findViewWithTag = findViewWithTag(str);
@@ -577,7 +580,7 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    public View a(ViewBean viewBean) {
+    public View addFab(ViewBean viewBean) {
         View findViewWithTag = findViewWithTag("_fab");
         if (findViewWithTag != null) {
             return findViewWithTag;
@@ -602,18 +605,21 @@ public class ViewPane extends RelativeLayout {
             itemFloatingActionButton.setBean(viewBean);
         }
         addView(itemFloatingActionButton);
-        b(itemFloatingActionButton, itemFloatingActionButton.getBean());
+        updateItemView(itemFloatingActionButton, itemFloatingActionButton.getBean());
         return itemFloatingActionButton;
     }
 
     public void a(boolean z) {
         e.setVisibility(View.GONE);
         ViewParent parent = e.getParent();
+    public void resetView(boolean shouldClearViewInfo) {
+        ViewParent parent = highlightedTextView.getParent();
         if (parent != null) {
-            ((ViewGroup) parent).removeView(e);
+            ((ViewGroup) parent).removeView(highlightedTextView);
         }
         if (z) {
             d = null;
+        if (shouldClearViewInfo) {
         }
     }
 
@@ -625,15 +631,20 @@ public class ViewPane extends RelativeLayout {
             a(true);
             ViewGroup viewGroup = (ViewGroup) a2[1];
             viewGroup.addView(e, (Integer) a2[2]);
+    public void updateView(int x, int y, int width, int height) {
+            resetView(true);
+            resetView(true);
+            ViewGroup viewGroup = (ViewGroup) viewInfo.getView();
             if (viewGroup instanceof LinearLayout) {
-                e.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+                highlightedTextView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             } else if (viewGroup instanceof FrameLayout) {
-                e.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+                highlightedTextView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
             } else {
-                e.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+                highlightedTextView.setLayoutParams(new LayoutParams(width, height));
             }
             e.setVisibility(View.VISIBLE);
             d = a2;
+            highlightedTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -661,7 +672,7 @@ public class ViewPane extends RelativeLayout {
         int linearLayoutX = linearLayoutLocation[0];
         int var7;
         int linearLayoutY = linearLayoutLocation[1];
-        a(new Rect(linearLayoutX, linearLayoutY, (int) (linearLayout.getWidth() * getScaleX()) + linearLayoutX, (int) (linearLayout.getHeight() * getScaleY()) + linearLayoutY), linearLayout, -1, b(linearLayout));
+        addViewInfo(new Rect(linearLayoutX, linearLayoutY, (int) (linearLayout.getWidth() * getScaleX()) + linearLayoutX, (int) (linearLayout.getHeight() * getScaleY()) + linearLayoutY), linearLayout, -1, calculateViewDepth(linearLayout));
         var4 = linearLayoutY + (int) (linearLayout.getPaddingTop() * getScaleY());
         var7 = linearLayoutX + (int) (linearLayout.getPaddingLeft() * getScaleX());
         int var8 = 0;
@@ -683,19 +694,19 @@ public class ViewPane extends RelativeLayout {
                                 if (i == 0) {
                                     int x = childLocation[0] - (int) (leftMargin * getScaleX());
                                     int y = linearLayoutLocation[1];
-                                    a(new Rect(var7, y, x, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, 0, b(linearLayout) + 1);
+                                    addViewInfo(new Rect(var7, y, x, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, 0, calculateViewDepth(linearLayout) + 1);
                                     var7 = x;
                                 }
 
                                 var4 = (int) ((leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
                                 var7 = var8 + 1;
-                                a(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                addViewInfo(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
                                 var8 = y;
                             } else if (horizontalLinearLayoutGravity == Gravity.RIGHT) {
                                 int x = childLocation[0];
                                 int y = linearLayoutLocation[1];
-                                a(new Rect(var7, y, x - (int) (leftMargin * getScaleX()), (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                addViewInfo(new Rect(var7, y, x - (int) (leftMargin * getScaleX()), (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
                                 var4 = (int) ((childLocation[0] + child.getMeasuredWidth() + rightMargin) * getScaleX());
                                 var7 = var8 + 1;
                                 var8 = y;
@@ -703,7 +714,7 @@ public class ViewPane extends RelativeLayout {
                                 var4 = (int) ((leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
                                 int y = linearLayoutLocation[1];
                                 var7 = var8 + 1;
-                                a(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, b(linearLayout) + 1);
+                                addViewInfo(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
                                 var8 = y;
                             }
                         } else {
@@ -713,21 +724,21 @@ public class ViewPane extends RelativeLayout {
                                 if (i == 0) {
                                     int x = linearLayoutLocation[0];
                                     int y = childLocation[1] - (int) (topMargin * getScaleY());
-                                    a(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y), linearLayout, 0, b(linearLayout) + 1);
+                                    addViewInfo(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y), linearLayout, 0, calculateViewDepth(linearLayout) + 1);
                                     var4 = y;
                                 }
 
                                 int bottom = var4 + (int) ((topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 int x = linearLayoutLocation[0];
                                 int top = var8 + 1;
-                                a(new Rect(x, top, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, bottom), linearLayout, var8, b(linearLayout) + 1);
+                                addViewInfo(new Rect(x, top, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, bottom), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
                                 var8 = bottom;
                                 var7 = top;
                                 var4 = x;
                             } else if (verticalLinearLayoutGravity == Gravity.BOTTOM) {
                                 int x = linearLayoutLocation[0];
                                 int y = childLocation[1];
-                                a(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y - (int) (topMargin * getScaleY())), linearLayout, var8, b(linearLayout) + 1);
+                                addViewInfo(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y - (int) (topMargin * getScaleY())), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
                                 ++var8;
                                 var4 = x;
                                 var7 = (int) ((childLocation[1] + child.getMeasuredHeight() + bottomMargin) * getScaleY());
@@ -736,7 +747,7 @@ public class ViewPane extends RelativeLayout {
                             } else {
                                 var7 = var4 + (int) ((topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
                                 int x = linearLayoutLocation[0];
-                                a(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, var7), linearLayout, var8, b(linearLayout) + 1);
+                                addViewInfo(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, var7), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
                                 var4 = x;
                                 ++var8;
                                 break label62;
@@ -796,15 +807,20 @@ public class ViewPane extends RelativeLayout {
             viewGroup.getLocationOnScreen(viewLocationOnScreen);
             int xCoordinate = viewLocationOnScreen[0];
             int yCoordinate = viewLocationOnScreen[1];
-            a(new Rect(xCoordinate, yCoordinate, ((int) (viewGroup.getWidth() * getScaleX())) + xCoordinate, ((int) (viewGroup.getHeight() * getScaleY())) + yCoordinate), viewGroup, -1, b(viewGroup));
+            addViewInfo(new Rect(xCoordinate, yCoordinate,
+                            ((int) (viewGroup.getWidth() * getScaleX())) + xCoordinate,
+                            ((int) (viewGroup.getHeight() * getScaleY())) + yCoordinate),
+                    viewGroup, -1, calculateViewDepth(viewGroup)
+            );
         }
     }
 
     private void a(Rect rect, View view, int i, int i2) {
         c.add(new Object[]{rect, view, i, i2});
+    private void addViewInfo(Rect rect, View view, int i, int i2) {
     }
 
-    public void a(View view) {
+    public void addViewAndUpdateIndex(View view) {
         ViewBean bean = ((sy) view).getBean();
         ViewGroup viewGroup = rootLayout.findViewWithTag(bean.parent);
         viewGroup.addView(view, bean.index);
