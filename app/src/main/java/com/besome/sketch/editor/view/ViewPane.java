@@ -99,9 +99,8 @@ public class ViewPane extends RelativeLayout {
 
     private ViewGroup rootLayout;
     private int b = 99;
-    private ArrayList<Object[]> c = new ArrayList<>();
-    private Object[] d;
-    private TextView e;
+    private ArrayList<ViewInfo> viewInfos = new ArrayList<>();
+    private ViewInfo viewInfo;
     private TextView highlightedTextView;
     private kC resourcesManager;
     private String sc_id;
@@ -122,11 +121,9 @@ public class ViewPane extends RelativeLayout {
         initTextView();
     }
 
-    public void b() {
-        a(true);
-        c = new ArrayList<>();
     public void clearViews() {
         resetView(true);
+        viewInfos = new ArrayList<>();
         ((ty) rootLayout).setChildScrollEnabled(true);
     }
 
@@ -202,10 +199,8 @@ public class ViewPane extends RelativeLayout {
         return (sy) findViewWithTag;
     }
 
-    public void e(ViewBean viewBean) {
-        d = null;
-        c(viewBean);
     public void addRootLayout(ViewBean viewBean) {
+        viewInfo = null;
         a(viewBean, (ItemLinearLayout) rootLayout);
         ((ty) rootLayout).setChildScrollEnabled(false);
     }
@@ -539,31 +534,31 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void a(ViewBean viewBean, int i, int i2) {
-        if (d != null) {
-            View view = (View) d[1];
+        if (viewInfo != null) {
+            View view = viewInfo.getView();
             if (view instanceof LinearLayout) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = (Integer) d[2];
+                viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
-                viewBean.parentType = 0;
+                viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
             } else if (view instanceof ItemVerticalScrollView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = (Integer) d[2];
+                viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
                 viewBean.layout.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemHorizontalScrollView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = (Integer) d[2];
+                viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemCardView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = (Integer) d[2];
+                viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
@@ -607,32 +602,25 @@ public class ViewPane extends RelativeLayout {
         return itemFloatingActionButton;
     }
 
-    public void a(boolean z) {
-        e.setVisibility(View.GONE);
-        ViewParent parent = e.getParent();
     public void resetView(boolean shouldClearViewInfo) {
+        highlightedTextView.setVisibility(View.GONE);
         ViewParent parent = highlightedTextView.getParent();
         if (parent != null) {
             ((ViewGroup) parent).removeView(highlightedTextView);
         }
-        if (z) {
-            d = null;
         if (shouldClearViewInfo) {
+            viewInfo = null;
         }
     }
 
-    public void a(int x, int y, int width, int height) {
-        Object[] a2 = a(x, y);
-        if (a2 == null) {
-            a(true);
-        } else if (d != a2) {
-            a(true);
-            ViewGroup viewGroup = (ViewGroup) a2[1];
-            viewGroup.addView(e, (Integer) a2[2]);
     public void updateView(int x, int y, int width, int height) {
+        ViewInfo viewInfo = getViewInfo(x, y);
+        if (viewInfo == null) {
             resetView(true);
+        } else if (this.viewInfo != viewInfo) {
             resetView(true);
             ViewGroup viewGroup = (ViewGroup) viewInfo.getView();
+            viewGroup.addView(highlightedTextView, viewInfo.getIndex());
             if (viewGroup instanceof LinearLayout) {
                 highlightedTextView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             } else if (viewGroup instanceof FrameLayout) {
@@ -640,24 +628,21 @@ public class ViewPane extends RelativeLayout {
             } else {
                 highlightedTextView.setLayoutParams(new LayoutParams(width, height));
             }
-            e.setVisibility(View.VISIBLE);
-            d = a2;
             highlightedTextView.setVisibility(View.VISIBLE);
+            this.viewInfo = viewInfo;
         }
     }
 
-    private Object[] a(int x, int y) {
-        Object[] objArr = null;
-        int i3 = -1;
-        for (int i4 = 0; i4 < c.size(); i4++) {
-            Object[] objArr2 = c.get(i4);
-            Rect rect = (Rect) objArr2[0];
-            if (x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom && i3 < (Integer) objArr2[3]) {
-                i3 = (Integer) objArr2[3];
-                objArr = objArr2;
+    private ViewInfo getViewInfo(int x, int y) {
+        ViewInfo result = null;
+        int highestPriority = -1;
+        for (ViewInfo viewInfo : viewInfos) {
+            if (viewInfo.getRect().contains(x, y) && highestPriority < viewInfo.getDepth()) {
+                highestPriority = viewInfo.getDepth();
+                result = viewInfo;
             }
         }
-        return objArr;
+        return result;
     }
 
     private void a(ViewBean view, ItemLinearLayout linearLayout) {
@@ -813,9 +798,8 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
-    private void a(Rect rect, View view, int i, int i2) {
-        c.add(new Object[]{rect, view, i, i2});
     private void addViewInfo(Rect rect, View view, int i, int i2) {
+        viewInfos.add(new ViewInfo(rect, view, i, i2));
     }
 
     public void addViewAndUpdateIndex(View view) {
@@ -968,5 +952,36 @@ public class ViewPane extends RelativeLayout {
     private String extractAttrValue(String line, String attrbute) {
         Matcher matcher = Pattern.compile("=\"([^\"]*)\"").matcher(line);
         return matcher.find() ? matcher.group(1) : "";
+    }
+
+    private static class ViewInfo {
+
+        private final Rect rect;
+        private final View view;
+        private final int index;
+        private final int depth;
+
+        public ViewInfo(Rect rect, View view, int index, int depth) {
+            this.rect = rect;
+            this.view = view;
+            this.index = index;
+            this.depth = depth;
+        }
+
+        public Rect getRect() {
+            return rect;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public View getView() {
+            return view;
+        }
+
+        public int getDepth() {
+            return depth;
+        }
     }
 }
