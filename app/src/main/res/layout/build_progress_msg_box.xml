@@ -56,4 +56,4 @@
             android:text="@string/common_message_loading"
             android:textSize="12sp" />
     </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
