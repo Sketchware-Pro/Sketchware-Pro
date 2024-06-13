@@ -1,254 +1,262 @@
 {
-  "discordInviteLink": "https://discord.gg/kq39yhT4rX",
-  "moddersteam": [
-    {
-      "modder_username": "Jbk0",
-      "modder_description": "Main modder",
-      "modder_img": "https://avatars.githubusercontent.com/u/40118124",
-      "isTitled": true,
-      "isMainModder": true,
-      "isActive": true,
-      "title": "Main modders"
-    },
-    {
-      "modder_username": "Hasrat",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
-      "isTitled": false,
-      "isMainModder": true,
-      "isActive": true,
-      "title": null
-    },
-    {
-      "modder_username": "Agus JCoderz",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
-      "isTitled": false,
-      "isMainModder": true,
-      "isActive": false,
-      "title": null
-    },
-    {
-      "modder_username": "Hilal Saif",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/uAudAvd.jpg",
-      "isTitled": false,
-      "isMainModder": true,
-      "isActive": false,
-      "title": null
-    },
-    {
-      "modder_username": "Aldi Sayuti",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/08zcyKH.png",
-      "isTitled": false,
-      "isMainModder": true,
-      "isActive": false,
-      "title": null
-    },
-    {
-      "modder_username": "Mike Anderson",
-      "modder_description": "Main modder",
-      "modder_img": "https://i.imgur.com/c5Vetpo.jpg",
-      "isTitled": false,
-      "isMainModder": true,
-      "isActive": false,
-      "title": null
-    },
-      {
-      "modder_username": "Elfilibusterismo",
-      "modder_description": "Implemented search in the Import Icon activity",
-      "modder_img": "https://avatars.githubusercontent.com/u/113604229",
-      "isTitled": true,
-      "isMainModder": false,
-      "title": "Special Thanks"
-    },
-    {
-      "modder_username": "IndoSW",
-      "modder_description": "Direct Source Code Editor",
-      "modder_img": "https://i.imgur.com/mthq123.jpg",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Rayen Sbai",
-      "modder_description": "Minor helping",
-      "modder_img": "https://i.imgur.com/G7F3evT.jpg",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Tyron",
-      "modder_description": "Easier restoring of projects, kotlinc port to Android",
-      "modder_img": "https://i.imgur.com/gP8jauO.png",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Ilyasse",
-      "modder_description": "Hello hello hello...",
-      "modder_img": "https://i.imgur.com/i8PHDA7.png",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Iyxan23",
-      "modder_description": "btw i use arch",
-      "modder_img": "https://i.imgur.com/gOopPZT.png",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Raival",
-      "modder_description": "Improved pretty-print in Code Editor, replaceable generated files feature",
-      "modder_img": "https://avatars.githubusercontent.com/u/81700082",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Khaled",
-      "modder_description": "sussy baka UwU",
-      "modder_img": "https://avatars.githubusercontent.com/u/74397286",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Zirus",
-      "modder_description": "Backup dialog design improvement",
-      "modder_img": "https://avatars.githubusercontent.com/u/70142054",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Pranav Purwar",
-      "modder_description": "Visit my best work: https://rb.gy/enaq3a",
-      "modder_img": "https://avatars.githubusercontent.com/u/75154889",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "lahds14",
-      "modder_description": "breathe air!",
-      "modder_img": "https://c.tenor.com/RiwhlBfA1PMAAAAC/gravity-falls-cropped.gif",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "NiceSapien",
-      "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
-      "modder_img": "https://avatars.githubusercontent.com/u/71333407",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "HAKANKOKCU",
-      "modder_description": "Fixed image issue for old Android versions in the \"About Sketchware Pro\" screen. Also please visit: https://tbudgie.netlify.app",
-      "modder_img": "https://avatars.githubusercontent.com/u/103432992",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    }
-  ],
-  "changelog": [
-    {
-      "title": "Sketchware Pro v6.4.0 test build 05",
-      "description": "We've made a few changes to the Logic Editor. Please make sure to make a backup of your entire .sketchware folder before you try this beta out! There might be bugs in the editor, and they could corrupt your projects. Please check in the Issues section (https://github.com/Sketchware-Pro/Sketchware-Pro/issues) before you report any.\n\nHighlighted features\n - Java 1.9, 10, and 11 compile support! This only works in minApi26 builds though. Thanks to @PranavPurwar for the contribution!\n - Syntax highlighting for Kotlin and even XML files.\n - When Sketchware Pro crashes, you can now send the error message to us. It's fully optional though, so please make sure to send them if you want to help us fix bugs!\n - New features using root access: Auto-installing of projects, and also launching of projects if auto-install is enabled and worked.\n - You can now use e.g. `tools:replace=\\\"android:id\\\"` in a View's inject property to remove `android:id` from its XML code. This is a replacement for XML Command Blocks that change tiny things like these.\n\nOther new features/improvements\n - New instructions on setting a custom return type when creating a new More Block.\n - Kotlinc updated to v1.7.10\n - Improved confirmation dialog when about to delete all attributes of an Activity in AndroidManifest Manager.\n - Upgrades to r8 v3.3.75.\n - When using the force darken apps Developer setting, the Layout Editor preview won't be darkened too, as it changes how the app really looks.\n - Icons available in the Import Icon activity now get extracted to the cache dir, not /Internal storage/.sketchware/…. This improves performance on Android 11+ devices, and allows easily freeing up space taken by those temporary files.\n - The FAB in the About Sketchware Pro screen got updated to match Discord's new style.\n - More build progress when exporting a project.\n - Kotlin files in Java/Kotlin Manager now have an icon.\n - Projects can now be exported and then signed using testkey.\n - An easy way to restore defaults on corrupted parts, such as Custom Blocks. It works by just renaming the broken file. This currently works for Custom Repositories in Local library Downloader, Custom Blocks and Palettes in Block Manager, and Block Selector Menu Manager.\n - Injections made in AppCompat Injection Manager are now cached to improve performance.\n - The default android.jar was upgraded to SDK version 33, r02\n - The version name in Program information is now selectable.\n - Update to bundletool v1.11.3\n - Update to sora-editor v0.17.2\n - Update of the built-in material library for projects to v1.6.1\n - Update of Firebase Database to v19.3.1\n\nFixes\n - Projects using e.g. the Google Maps library work again.\n - Projects don't crash anymore due to SketchLogger if debug logging is enabled.\n - Sometimes even in release builds debug logs were enabled. That has been fixed.\n - Adding new AdMob ad unit IDs works again.\n - In the About Sketchware Pro screen only the latest version in Changelog is marked blue, like it always should have been.\n - FragmentAdapter Components can be used in Fragment Activities too now.\n - Having a very large compile error won't crash the app anymore. This is a bug even present in v6.3.0 fix1.\n - Switching apps while generating a source preview of a file in DesignActivity won't crash the app anymore.\n - Some ProGuard classpath errors were fixed.\n - The known ProGuard bug from v6.4.0-rc04 was fixed.\n - The AndroidManifest.xml preview in AndroidManifest Manager contained XML Command Blocks applied more than once sometimes. Fixed now.\n - Some fixes to projects exported to Android Studio.\n - Exporting an AAB won't fail with a StackOverflowException anymore.\n - Activities which already have `android:exported` set by injections in AndroidManifest Manager won't get duplicate `android:export` properties when targeting SDK version 31 and higher anymore.\n - Using 1+ Dynamic Link Components and targeting SDK version 31 and higher won't add a duplicate property to AndroidManifest.xml anymore.\n -\n - Custom Components can share names with built-in types and get its imports too, back to how it used to be in v6.3.0 fix1 and earlier.\n - Fixes picking a Font sometimes corrupting it, and making the Font unusable in the app.\n - Picking a Sound in Sound Manager won't crash on some Android versions anymore. This is a bug even present in vanilla Sketchware.\n - The Import AdMob details from another project Button works now. This is also a vanilla Sketchware bug.\n - When a Font can't be previewed in the Logic Editor, the app won't crash now. This is another vanilla Sketchware bug.\n - The app won't crash on null Custom Events and Components anymore.\n - Component descriptions can be changed using strings.xml again. This is a regression even in v6.3.0 fix1.\n - Some Custom Block Palette color parsing fixes in Block Manager.\n - Importing Custom Blocks into a Palette works again.\n - Hopefully a fix for some files being compressed in AABs even though they shouldn't be, for example sounds.\n - The default project backup filename format now contains two-digit months all the time.\n - Local library Downloader extracts android.jar if needed automatically, without failing without telling why exactly.\n - After creating a new Custom Listener, you don't have to restart the app anymore for it to be recognized by Sketchware Pro.\n - Disabling a Local library for a project should work in all cases now.\n - The file /Internal storage/.sketchware/data/system/local_library won't be created anymore if opening Local library Manager from Developer Tools.\n - Having e.g. `@color/white` as border color in a CircleImageView won't show up the false-positive invalid background color toast anymore. If the color really is invalid though, the app will also tell the CircleImageView's ID. A typo in the error message was also fixed.\n - The orientation and weightSum property were not are applied in XML to RadioGroups and other Views, even though they were shown in the Properties of the View. This is a bug present even in v6.3.0 fix1, but has now been fixed.\n - The Logcat Reader button in Developer Tools now actually works.\n - SketchApplication.java is not generated anymore if a custom application class is in use.\n - SketchLogger.java automatically tries to use the custom application class now. The class needs a static method `getContext()` returning `android.content.Context` to work though.\n - ProGuard should work on API levels < 24 again.\n - Trying to get data from Firebase Database with ProGuard enabled didn't work out-of-the-box, it crashed at runtime. Now it works, by adding ProGuard rules to built-in library Gson.\n - Importing a More Block with a custom return type from Collections won't break its return type anymore. Checking for duplicated names was fixed too.\n - Spaces in More Block names are disallowed again, as they cannot be compiled.\n\nFull Changelog: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-rc04...v6.4.0-rc05",
-      "releaseDate": 1667602800000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 test build 04",
-      "description": "The most significant new feature of this release is Kotlin code support! PR #247 was finally merged into main. Compiling Kotlin code still needs an Android 8+ device though, so only the -minApi26 version supports Kotlin.\n\nFeatures\n - Reading debug logs from projects. A new activity for that, the Logcat Reader, was added, and to start seeing logs there, run your project and open the Logcat Reader in Sketchware Pro.\n - Symbol pair auto-completion in the code editor can now be turned off.\n - Upgrade to sora-editor v0.14.0.\n - Upgrade to Iyxan23/zipalign-java:96fd6b30c928015847264b27b0d2dd407f3e8895.\n - Some performance improvements to the DEX merging step.\n - Using resource strings in the text and hint property of Views now works! Set e.g. `@string/greeting` as text or hint, and the View code will use the resource string, not escape the @.\n - You can now tweak the filename of SWB backups.\n\nFixes\n - Custom Variables are shown in the Variable Palette and can also be removed again.\n - The aligning APK step was entirely removed after pressing the Run button, as only exports to e.g. Google Play need alignment.\n - The crash after the Aligning APK… step was fixed.\n - Downloading Local libraries won't crash the app anymore.\n - Fonts added via the Font Manager now actually work at runtime. You'll have to remove old fonts and add them again though.\n - A Custom Block Palette having an invalid color won't crash the app anymore.\n - RadioButtons' checked property now work.\n - Built-in Menu Blocks work again!\n - Zooming in code in e.g. the source code preview, or in general, in dialogs where sora-editor is used will zoom into the code editor content, not the activity content.\n - Trying to remove a Variable or List used in another Event will show an error message again.\n\nNew in version with Kotlin support\n - Java Manager was renamed to Java/Kotlin Manager. It can also create and import new Kotlin classes.\n - Obviously, Kotlin compiling!\n\nKnown issues/bugs\nBefore reporting any issues, please first check here if they're not already known, or already were reported in another Issue.\n\n - Java/Kotlin Manager has no icon for Kotlin source code files.\n - There's no Kotlin syntax highlighting available in the code editor.\n - Adding new AdMob units doesn't work. See issue #490 for details on that bug.\n - ProGuard somehow renaming R classes to `r`.\n",
-      "releaseDate": 1657014000000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 test build 03",
-      "description": "This is just a quick bug fix release with some other minor improvements.\n\nFeatures\n\n - Importing google-services.json downloaded from Firebase Console directly instead of entering Firebase data manually.\n\nFixes\n\n - Component fields getting duplicated was fixed.\n - APK aligning failing due to dynamically linked zipalign binaries was fixed too!\n - Adding a RewardedVideoAd Component is not possible anymore when not having AdMob enabled.\n - Projects using OneSignal won't have to rely on e.g. XML Command Blocks to work (/ at least get installed) on Android 12 when also targeting that Android version.\n - When exporting a signed AAB or APK, the file gets signed first, then zipaligned. Apparently that's what you should do now: https://cdn.discordapp.com/attachments/827528331721048084/975379539075166238/unknown.png\n - The context menu in Java Manager or App Components shouldn't be weirdly dark with dark text anymore.\n - A typo in the onScrollChanged Event label was fixed at last.\n - Projects using Glide should no longer crash at runtime.\n - Clearing the app cache will no longer make compiling projects not work anymore until you clear the app's data.\n - Some other compiling assets that need to be extracted will also be extracted to the cache directory, just like e.g. built-in libraries' DEX files.\n - Built-in Extra Blocks can now be overridden using Custom Blocks again.\n\nMajor thanks\n\nWe'd like to thank @Iyxan23 for implementing zipalign in Java, started by Sketchware Pro needing an alternative method to align ZIP archives. The library can be found here: https://github.com/Iyxan23/zipalign-java. Thank you for making v6.4.0-rc03's release that quickly possible!\n\nFull Changelog\nYou can find it here: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-rc02...v6.4.0-rc03",
-      "releaseDate": 1652721660000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 test build 02",
-      "description": "Features\n\n - Built-in library upgrades, as well as finally changing their internal names to mention the actual library name in e.g. dexs.zip.\n - Views can now have an orientation of \"none\", which removes the property `android:orientation=\"…\"` from Views' XML code entirely, all without any Command Blocks.\n - APKs now get aligned using `zipalign` before getting signed.\n - Quick AndroidManifest.xml viewer in AndroidManifest Manager\n - AndroidManifest Manager will now use the new code editor if not disabled in Mod Settings for App Components.\n - Upgrade of code editor library to upstream sora-editor v0.11.1\n - When exporting an APK / AAB, you can now also decide to not sign the APK / AAB. They will get a different output name, though.\n - Sometimes directories or files needed for compiling get deleted. Sketchware Pro now detects and tells you about that. If it's directories, you can create them with a single click.\n - The Source Code Viewer got improved. It now uses the new code editor library to show code, and launching it is instant. It generates the project's code asynchronized so that the UI doesn't hang anymore.\n - `${applicationId}` in AndroidManifest.xml will now automatically get replaced with the project's package name.\n - R8 was updated to v3.3.28.\n - A new barebones splash screen that only waits until the system's ready to open MainActivity.\n\nFixes\n\n - App doesn't crash without access to storage anymore.\n - Resource Manager doesn't crash on older Android versions anymore.\n - BottomNavigationView's onNavigationItemSelected Event works again.\n - Showing a file's source quickly now works for XML files, including changes made via Command Blocks.\n - You can clear the saved last compile error again.\n - Projects can have the `<queries>` tag in AndroidManifest.xml again.\n - The blue \"[ViewPager] setFragmentAdapter [FragmentAdapter] TabCount (number)\" Block works again.\n - If a wrong key store password was entered while signing an APK or AAB, you will now be told about that instead of getting an endless progress bar.\n - You can't add more DynamicLink Components if Firebase is not enabled.\n - The InterstitialAd Block to show an ad doesn't crash projects at runtime anymore if used outside of the onAdLoaded Event / the ad hasn't been loaded yet.\n - While creating DEX files out of project files, d8 now knows about used libraries' JAR paths. That allows it to desugar default methods into code if targetting older Android versions, and makes for example the exoplayer library work when used.\n - Adding fonts via Font Manager should now work on all Android versions again. Sound Manager following soon.\n - The built-in library localbroadcastmanager-1.0.0's DEX file now actually contains its classes.\n - The RewardedVideoAd Component got updated to work with the updated AdMob built-in library version. You will have to migrate Events to new ones over. (too many, lol)\n\nChanges that aren't features or fixes\n\n - Resource Block Selector Menus have been deprecated / removed. Use the Code Editor option instead.\n - The Language Settings menu from the main drawer has been removed as it's not working anymore.\n\nUpdate on Sketchware Pro's build system\n\n - We've migrated to Android Studio fully now. This means that it's even easier to contribute to Sketchware Pro!\n - Unfortunately, that also forces us to release two APKs from now on. We're releasing an APK with support for Android 5 and higher but without AAB output support, and one with support for only Android 8 and above devices, but because of that, with the AAB output feature. You can check the APK's minimum SDK version (21 for no AAB output support, 26 for with), or the version name to find out which version an APK is.\n\nFull Changelog\n\n - You can find it here: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-rc01...v6.4.0-rc02",
-      "releaseDate": 1652545500000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 test build 01",
-      "description": "What's new?\n\n - AdMob Interstitial Ads (yet again). This time, you can start using Events just like with v6.3.0 fix1 and vanilla Sketchware.\n - Quick Previews of XML files! This was surprisingly hard to implement, as far as I can remember.\n - A much better \"About Sketchware Pro\" screen, containing expandable Sketchware Pro version changelogs, and a work-in-progress tab to view Major Changes made to Sketchware Pro since v6.3.0 fix1.\n - Generated AABs containing generated ProGuard mappings if those were enabled. Useful when uploading your AAB to Google Play.\n - The screen staying turned on while exporting a project. You can now finally leave Sketchware Pro working while resting.\n - Images imported in Resource Manager and Asset Manager show previews now!\n - Improvements to the Compile Log screen: It now has a toolbar, and features display options. Also, the last compile error will open there too, now.\n - Being able to restore multiple SWBs at once. Every backup has its own \"restore embedded Local libraries?\" dialog, by the way.\n - Backing up projects now backs them up into a folder with the name of the project. Inside that folder, the backups of that project will be stored.\n - An updated version of the built-in Material Design Components / part of AppCompat for projects, which allows your projects to have a Material You style! That is completely optional though, and to apply that, you need to currently mess around with Resource Manager.\n - ProGuard v7.1.1 in Sketchware Pro. Major upgrade is it being able to process Java 11 Local libraries.\n - A ScrollView in Mod Settings and the Tools screen. Some small-display devices will benefit from this.\n\nWhat got fixed?\n\n - Custom Listeners not getting added to generated code. This explains the issues of v6.4.0 Beta 6 with many WebView-using projects, for example.\n - Exporting a project to Android Studio failing with \"file not found\" errors. What a difference simple \"folder exists?\" checks can make.\n - Some devices having issues extracting built-in libraries, which explains the \"…/res: No such file or directory.\" errors when projects are at AAPT2.\n - Views, such as TextInputLayout, in Lists' Custom Views (e.g. RecyclerView), causing errors at runtime. This needed a patch to vanilla Sketchware's default generated Adapter code.\n - AndroidManifest.xml injections after the default AppTheme not getting applied.\n - Using multiple FragmentAdapter Components in a single Activity should be fine now, and its corresponding Block got changed too. Make sure to replace the current one with the updated one, or else no Adapter will be set.\n - SearchView's onQueryText* Events should not throw compile errors anymore.\n - AdMob AdViews not properly working. Note that now they show test ads when running your project, and only real ads when you export your project, just like Interstitial Ads!\n - Some AABs containing invalidly compressed files, most often videos or sounds in assets / res/raw-[config].\n - Exported AABs not containing non-class files from Local and built-in Libraries' JARs. Now they do.\n\nWhat else got changed?\n\n - The app's icon is now Christmas-styled. 🎄\n - As announced, Direct Source Code Editor got removed. See https://discord.com/channels/790686719753846785/790749749522464779/908817727878201424 for the announcement again.\n - /Internal storage/.sketchware/debug.txt now contains information about the used Sketchware Pro version. That'll probably be useful for saving time while investigating issues.\n - DEX files don't get merged into just few ones anymore starting with this version when just running the project, not exporting it. That'll save some precious time of yours.\n\nFull changelog: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-beta.6...v6.4.0-rc01",
-      "releaseDate": 1640385540000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 Beta 6",
-      "description": "Sketchware Pro v6.4.0 Beta 6\nThe first Sketchware Pro release at its GitHub repository has arrived! Before you go test it out though, be sure to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\nWhat's new?\n - (Minor) The default generated FileUtil.java file now contains the method copyDir(String, String).\n - Cached Custom Components, which make Sketchware Pro work much smoother. From now on, you have to open Component manager to refresh Custom Components though.\n - More than a single decimal in project's version name, version name and extra is now a \" \". (If using advanced version control dialog)\n - The green \"add source directly\" block is now available in the default Import Event if you open the Operator palette.\n - Some improvements to exporting a project to Android Studio: It now includes imported Java files, resources, assets, and native libraries.\n - Improvements to the Local library downloader, now you can have custom repositories it looks up. The default one will automatically get generated during the first time at /Internal storage/.sketchware/libs/repositories.json.\n - (Might be removed later) Adding tools:remove=\"orientation\" into any View's inject attribute will remove the android:orientation attribute of it.\n - (WIP) Built-in AdMob fixes! You'll have to completely rework ads, but at least they kind of work now. You will need all 4 new blocks, find more about them at the GitHub release page. Support for onAdShown and onAdClosed is coming soon. There's still a catch: You need to use an XML Command Block in AndroidManifest.xml to set your correct app ID there. Again, find more details on that at the GitHub release page.\n\nWhat's been fixed?\n - The app complaining for no reason about any List in Logic Editor\n - Merging DEX files while building a project taking ages\n - Generated AABs not including Native libraries\n - General compiling failing on some devices due to the removal of the android:largeHeap=\"true\" attribute in Sketchware Pro's AndroidManifest.xml",
-      "releaseDate": 1632686940000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 Public Beta 5",
-      "description": "After quite some time, here's another Public Beta!\nI'd say there's quite many new features, so you should definitely read the entire changelog! If some bugs are found, please send bug reports in the Discord server into #swpro-beta, at best, attach the file /Internal storage/.sketchware/debug.txt as well.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Complete support for replaceable generated files! Now even SketchApplication.java should be customizable.\n - Removed TabLayout in MainActivity, as the recommended channels section was removed recently.\n - Invalid Custom Blocks' generated code won't stop compiling anymore.\n - Improved Event source code viewer by using the Code Editor to display the source.\n - Improved formatting improvements of generated files. Please check your multi-line Command Blocks, and edit if necessary.\n - You can edit values/secrets.xml and xml/provider_paths.xml as well with XML Command Blocks now! Use values/secrets.xml and xml/provider_paths.xml as filenames.\n - Quick Source Viewer of an Activity. Just click the button next to RUN and select \"Show source code\".\n - Compile error message and Last compile error have monospaced messages now. Compile error message is also horizontally scrollable now, which also finally fixes wrong code error location pointers from ecj.\n - (Under-the-hood) Updated compiler libraries dx and r8/d8, as well as the Code Editor!\n - Finally correct open source licenses for new stuff added with Sketchware Pro.\n - (HUGE PERFORMANCE BOOST) Cached Custom Components! This makes drag-and-dropping blocks smooth as normal on Android 11+ devices, but requires you to restart Sketchware Pro if you add/change Custom Components.\n - (Possibly incomplete) JKS signing of any APK in Tools.\n\nWhat's been fixed?\n - Crashes on pre-API 23 devices in Java Manager, Asset Manager, etc.\n - \"Change language\" dialog appearing every launch on non-English or Korean display language devices.\n - Some issues of \"Can't toast on a thread that has not called Looper.prepare()\", you can view reports of that in /Internal storage/.sketchware/debug.txt now.\n - Duplicated BluetoothConnect.java in Source Code Viewer\n - AAPT/AAPT2 binaries not getting extracted on 64-bit x86 devices, for example, emulators.\n - Some NPEs in La/a/a/Dp;->j()V if an extracted asset changed while not regularly compiling a project.\n - NPEs (and possibly ClassCastExceptions) while compiling if an invalid enabled Local library configuration was found. The app tries to toast a message, but sometimes that doesn't work.",
-      "releaseDate": 1630020720000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 Public Beta 4",
-      "description": "Sketchware Pro v6.4.0 Public Beta 4\nA new Beta build just got released! Still not many features again, but some refinements and bug fixes, like the one about Glide. If some bugs are found, please send reports in the Discord server into #swpro-beta.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Updated Create project backup dialog to fit better to Sketchware.\n - Support for scrolling in Build Settings and Project Configuration.\n - Automatic classpath-added directory for all projects: Find it in /Internal storage/.sketchware/data/<project ID>/files/classpath/.\n - AAPT2 as Resource Processor by default, and also, AAPT being removed. Its logic and binaries are still there for now.\n - Custom versions of generated files, such as FileUtil.java! Just create a file in a Manager named exactly as the one you want to replace, for example FileUtil.java in Java Manager or main.xml in Resource Manager at res/layout/.\n - (Under-the-hood) Speed improvements, as String#format(String, Object...) calls have been converted to \" + \"/StringBuilder + StringBuilder#append(String) in many code-generating classes.\n\nWhat's been fixed?\n - All new Local library Manager issues, as we've temporarily reverted it back to almost-v6.3.0 fix1 logic\n - A Glide artefact not getting added to the APK, that'd cause ClassDefNotFoundExceptions for com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider\n - New projects having 1.0.0 as Version Name\n - Extra Firebase Auth listener fields (ergo those not in vanilla Sketchware) not being added to Activities using a Firebase Auth Component\n\nKnown issues\n - No new ones! :DD\n\nImportant Firebase Database note\nAs it seems that not many people have read Public Beta 1's changelog, we'll just tell it again:\n - Firebase Database storage locations have been updated, and also in Sketchware Pro projects. You have to reconfigure the library for each project, and now, use the full Database URL without https:// at the start and / at the end as the Project ID. Example: whatever-default-rtdb.asia-southeast1.firebasedatabase.app\n\nLink\n > Find it in our Discord server. You can get the invite link to it by clicking on the purple \"Join our Discord server\" button.",
-      "releaseDate": 1628364840000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 Public Beta 3",
-      "description": "It's time for another major bugfix build! Now built projects should finally be working completely!\nThis build has an important fix for Android 11+ devices with Scoped storage enabled, so build time should be much shorter now.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Android 11 storage change, which requires new special access. You should see the dialog either on startup or the 2nd one after granting storage permissions.\n - Removed Tutorials tab from MainActivity. It was empty anyway.\n\nWhat's been fixed?\n - Projects using an image load from URL or in general the Glide library should work again when trying to load GIFs. (49f3daf4638e8f56588e808030ad029afcbba04b)\n - \"About modders\" shouldn't crash anymore on devices without a browser. (6475fce889c9e19904ea9fc04cb70b2a4b876f46)\n - Projects using the built-in OneSignal component shouldn't fail at AndroidManifest.xml anymore! (5131e811f3a0e472f9dc3df2115cabcea4a295d0)\n - (Minor) repeat for (N) (variable name) block should now use a correct spec, re-place it from the blocks menu to update its spec. (11699ad0fddbdf7bc9d4fb407734fc87e38c9a95)\n - (Major) AAPT2 bug not creating its compiled built-in libraries resources directory. (0639250498189a2ff5b12c1fc239a3ea40b3a223)\n - Local library Manager shouldn't crash anymore while scrolling/refreshing libraries. (6bed60b3b3e98e0c27545ca8d792533ea43cf00e)\n(Last update: 2021-07-28T00:01:??Z+0200)\n\nKnown issues\n - Projects still using AAPT and with AppCompat turned on won't compile. That's an issue of some built-in libraries and AAPT being old/deprecated. It'll be removed until stable v6.4.0.\n - Local library Manager doesn't enable/disable libraries unless you leave the screen before the list item gets invisible.",
-      "releaseDate": 1627423320000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 Public Beta 2",
-      "description": "Sketchware Pro v6.4.0 Public Beta 2\nHi again everyone, we've made another public beta build of Sketchware Pro v6.4.0! This one contains a lot of bug fixes, which (finally) produces working apps!\nAnyway, there's not too many new features, and you'll find them later.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Added signing algorithm input texts in both Signed APK and Signed AAB builder.\n- Rename local libraries now with ease! (Unstable, might break currently in use libraries.)\n- Swipe-to-refresh gesture in Local library Manager. (Unstable, might crash the activity.)\n- Updated experimental Java class renaming in Java Manager.\n- Install a previously built APK with ease! See the button next to RUN in DesignActivity.\n\nWhat's been fixed?\n - Command blocks work again! 🎉\n- Build Settings doesn't show unused output format setting anymore.\n- The app now warns you when trying to export an AAB on a not-Android 8+ device.\n- Exporting a project shouldn't crash Sketchware Pro anymore. Note that it still misses imported resources!\n - DEX files get merged properly again, finally usable projects again!\n- DesignActivity and ExportProjectActivity don't crash on pre-API 23 devices anymore.\n\nKnown issues\n - Local library Manager might crash when refreshing libraries often, also sometimes turning them on or off might not work.\n(Last update: 2021-07-23T16:06:??Z+0200)",
-      "releaseDate": 1627049160000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.4.0 Public Beta 1",
-      "description": "This is the first public beta version of Sketchware Pro v6.4.0!\nIt's recommended to back up /Internal storage/.sketchware/ in case any bug ✨magically✨ messes anything up.\n\nNew stuff:\n - Added a popup/warning about beta versions. This was necessary to make builds public.\n - A subtitle in DesignActivity showing the current project's sc_id.\n - A button while (trying) to close a project to cancel closing it.\n - Updated built-in libraries, details at our GitHub repository.\n - Added some necessary built-in blocks for OtpView and SignInButton.\n - (Experimental) Java class renaming which renames the class in the file itself.\n - New blocks to add permission requests before onCreate.\n - Another way to add custom variables (this and permission request blocks thanks to Main modder Hasrat!)\n\nFixed things:\n - Launching the app for the first time shouldn't open VideoGuideActivity, henceforth also stop crashing on some emulators.\n - Using too large jdk.zip/rt.jar while only core-lambda-stubs.jar was needed.\n - Clicking on WRAP_CONTENT option's text while editing a view's measures should select WRAP_CONTENT now.\n - Fix the \"ages\" old bug of adding Activity Events in Event Manager not working.\n\nNoteworthy change:\n - Firebase Database storage locations have been updated, also in Sketchware Pro projects. You'll have to reconfigure it for each project, and now use the full URL without https:// at the start and / at the end. Example: whatever-default-rtdb.asia-southeast1.firebasedatabase.app\n\nKnown issues:\n - (Critical) Command Blocks aren't working.\n - Build Settings still shows up AAB output, even if it won't work. Use the button in \"Export project\" instead.\n - Signing an APK with a JKS keystore \"can't find the file\".\n - The app crashes when trying to export an AAB or sign an APK file from Developer Tools when not running on an Android 8+ device.\n - Exporting a project to Android Studio crashes Sketchware Pro.\n\nIf you've found any bugs, please report them on our Discord server!",
-      "releaseDate": 1626380940000,
-      "isBeta": true,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware Pro v6.3.0 Fix1",
-      "description": "- Added new options in command blocks (find-replace, find-replace-first (regex √), find-replace-all (regex √))\n- Fixed command blocks bug (not being able to replace the first line)\n- Enabled debug.txt by default\n- Fixed the D8 bug with projects (classnotfoundexception)\n- Fixed the Dx bug in library downloader\n- Fixed the crashing while scrolling in ASD code editor, disabled overscrolling\n- Added a menu option to disable auto complete in code editor\n- Added a menu option to paste text in code editor\n- Added \"change backup dir\" in mod configuration\n- Added \"use legacy code editor\" in mod configuration\n- Fixed the order of projects with sc_id>=1000 [sketchware bug]\n- Fixed restoring projects with sc_id >=1000\n- Some backup/restore fixes\n- Some code corrections.",
-      "isBeta": false,
-      "isTitled": true
-    },
-    {
-      "title": "Sketchware PRO V6.3.0",
-      "description": "- Added \"Build Settings\" located right next to the Run button, which includes options that lets you:\n- Switch between Java7 and Java8 (enable D8 to be able to compile Java8)\n- Switch between Dx and D8\n- Use custom android.jar, custom classpath\n- Disable warnings in compile log\n\n- Added Command Blocks:\n- You can add, insert or replace any part of java/xml code with new one using these. These blocks can be used anywhere in your logic editor, there is no specific place (event) for them. They can be used to achieve tasks such as:\n- Remove onActivityResult entirely, or change its code, or add more codes to it.\n- Implement interfaces in your activity (remove/change any part of code that sketchware automatically generates.\n- Modify any part of root layout, add multiple fabs, change coordinatorLayout to FrameLayout, RelativeLayout. Change the order of root layout..\n- Inject codes in onCreate or anywhere you like... etc (supports all Java files and XML files. including AndroidManifest, styles, colors and strings.xml).\n\n\n- Changed the built-in Code Editor to a super optimized one. this new one has features such as:\n- Auto completion, various themes, pinch-to-zoom, undo-redo, find&replace etc.\n- Added built-in Backup/Restore feature that provides a function to back up your project (.swb), along with the local libs and custom blocks you used.\n- Updated android.jar to API 30.\n- Local Library improvements.. now, in your local libs you can:\n- Use assets, proguard rules, native libs, multiple dex files, Java8 libraries.\n- Library Downloader can now download Java8 libraries.\n- Added ProGuard Full Mode (includes local libs in ProGuarding process)\n- Added Custom Blocks analyzer dialog that shows you the custom blocks you used in your project.\n- New Block system optimizations. Custom blocks are noticeably faster now. Also fixed the crashing bug that happens when one leaves some of the parameters empty.\n- Assets, Resource and Nativelib managers improvements.\n- Now you can navigate directly to Developer Tools from LogicEditorActivity.\n- Added import/export for components, events and blocks menus.\n- Improved import/export blocks.\n- Added uppercase support for view IDs. Now you can use IDs like \"mTextView\".\n- Added searching feature in Moreblock Importer dialog. Also fixed the critical lags there.\n- Fixed Change launcher activity bug.\n- Fixed duplicated imports.\n- Fixed some bugs and added some improvements to blocks, events and components managers.\n- Fixed block selector menu bug.\n- Added BottomSheetDialogFragment (add _bottomdialog_fragment to the end of the title when creating an Activity. requires appcompat to work.)\n- Fixed many bugs, added many features, spent many hours :)",
-      "isBeta": false,
-      "isTitled": true
-    }
-  ]
+    "discordInviteLink": "https://discord.gg/kq39yhT4rX",
+    "moddersteam": [{
+            "modder_username": "Jbk0",
+            "modder_description": "Main modder",
+            "modder_img": "https://avatars.githubusercontent.com/u/40118124",
+            "isTitled": true,
+            "isMainModder": true,
+            "isActive": true,
+            "title": "Main modders"
+        },
+        {
+            "modder_username": "Hasrat",
+            "modder_description": "Main modder",
+            "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": true,
+            "title": null
+        },
+        {
+            "modder_username": "Agus JCoderz",
+            "modder_description": "Main modder",
+            "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": false,
+            "title": null
+        },
+        {
+            "modder_username": "Hilal Saif",
+            "modder_description": "Main modder",
+            "modder_img": "https://i.imgur.com/uAudAvd.jpg",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": false,
+            "title": null
+        },
+        {
+            "modder_username": "Aldi Sayuti",
+            "modder_description": "Main modder",
+            "modder_img": "https://i.imgur.com/08zcyKH.png",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": false,
+            "title": null
+        },
+        {
+            "modder_username": "Mike Anderson",
+            "modder_description": "Main modder",
+            "modder_img": "https://i.imgur.com/c5Vetpo.jpg",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": false,
+            "title": null
+        },
+        {
+            "modder_username": "Remaker",
+            "modder_description": "Main modder",
+            "modder_img": "https://avatars.githubusercontent.com/u/95296093",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": true,
+            "title": null
+        },
+        {
+            "modder_username": "Elfilibusterismo",
+            "modder_description": "Main modder",
+            "modder_img": "https://avatars.githubusercontent.com/u/113604229",
+            "isTitled": false,
+            "isMainModder": true,
+            "isActive": true,
+            "title": null
+        },
+        {
+            "modder_username": "IndoSW",
+            "modder_description": "Direct Source Code Editor",
+            "modder_img": "https://i.imgur.com/mthq123.jpg",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Rayen Sbai",
+            "modder_description": "Minor helping",
+            "modder_img": "https://i.imgur.com/G7F3evT.jpg",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Tyron",
+            "modder_description": "Easier restoring of projects, kotlinc port to Android",
+            "modder_img": "https://i.imgur.com/gP8jauO.png",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Ilyasse",
+            "modder_description": "Hello hello hello...",
+            "modder_img": "https://i.imgur.com/i8PHDA7.png",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Iyxan23",
+            "modder_description": "btw i use arch",
+            "modder_img": "https://i.imgur.com/gOopPZT.png",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Raival",
+            "modder_description": "Improved pretty-print in Code Editor, replaceable generated files feature",
+            "modder_img": "https://avatars.githubusercontent.com/u/81700082",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Khaled",
+            "modder_description": "sussy baka UwU",
+            "modder_img": "https://avatars.githubusercontent.com/u/74397286",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Zirus",
+            "modder_description": "Backup dialog design improvement",
+            "modder_img": "https://avatars.githubusercontent.com/u/70142054",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "Pranav Purwar",
+            "modder_description": "Visit my best work: https://rb.gy/enaq3a",
+            "modder_img": "https://avatars.githubusercontent.com/u/75154889",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "lahds14",
+            "modder_description": "breathe air!",
+            "modder_img": "https://c.tenor.com/RiwhlBfA1PMAAAAC/gravity-falls-cropped.gif",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "NiceSapien",
+            "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
+            "modder_img": "https://avatars.githubusercontent.com/u/71333407",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        },
+        {
+            "modder_username": "HAKANKOKCU",
+            "modder_description": "Fixed image issue for old Android versions in the \"About Sketchware Pro\" screen. Also please visit: https://tbudgie.netlify.app",
+            "modder_img": "https://avatars.githubusercontent.com/u/103432992",
+            "isTitled": false,
+            "isMainModder": false,
+            "title": null
+        }
+    ],
+    "changelog": [{
+            "title": "Sketchware Pro v6.4.0 test build 05",
+            "description": "We've made a few changes to the Logic Editor. Please make sure to make a backup of your entire .sketchware folder before you try this beta out! There might be bugs in the editor, and they could corrupt your projects. Please check in the Issues section (https://github.com/Sketchware-Pro/Sketchware-Pro/issues) before you report any.\n\nHighlighted features\n - Java 1.9, 10, and 11 compile support! This only works in minApi26 builds though. Thanks to @PranavPurwar for the contribution!\n - Syntax highlighting for Kotlin and even XML files.\n - When Sketchware Pro crashes, you can now send the error message to us. It's fully optional though, so please make sure to send them if you want to help us fix bugs!\n - New features using root access: Auto-installing of projects, and also launching of projects if auto-install is enabled and worked.\n - You can now use e.g. `tools:replace=\\\"android:id\\\"` in a View's inject property to remove `android:id` from its XML code. This is a replacement for XML Command Blocks that change tiny things like these.\n\nOther new features/improvements\n - New instructions on setting a custom return type when creating a new More Block.\n - Kotlinc updated to v1.7.10\n - Improved confirmation dialog when about to delete all attributes of an Activity in AndroidManifest Manager.\n - Upgrades to r8 v3.3.75.\n - When using the force darken apps Developer setting, the Layout Editor preview won't be darkened too, as it changes how the app really looks.\n - Icons available in the Import Icon activity now get extracted to the cache dir, not /Internal storage/.sketchware/…. This improves performance on Android 11+ devices, and allows easily freeing up space taken by those temporary files.\n - The FAB in the About Sketchware Pro screen got updated to match Discord's new style.\n - More build progress when exporting a project.\n - Kotlin files in Java/Kotlin Manager now have an icon.\n - Projects can now be exported and then signed using testkey.\n - An easy way to restore defaults on corrupted parts, such as Custom Blocks. It works by just renaming the broken file. This currently works for Custom Repositories in Local library Downloader, Custom Blocks and Palettes in Block Manager, and Block Selector Menu Manager.\n - Injections made in AppCompat Injection Manager are now cached to improve performance.\n - The default android.jar was upgraded to SDK version 33, r02\n - The version name in Program information is now selectable.\n - Update to bundletool v1.11.3\n - Update to sora-editor v0.17.2\n - Update of the built-in material library for projects to v1.6.1\n - Update of Firebase Database to v19.3.1\n\nFixes\n - Projects using e.g. the Google Maps library work again.\n - Projects don't crash anymore due to SketchLogger if debug logging is enabled.\n - Sometimes even in release builds debug logs were enabled. That has been fixed.\n - Adding new AdMob ad unit IDs works again.\n - In the About Sketchware Pro screen only the latest version in Changelog is marked blue, like it always should have been.\n - FragmentAdapter Components can be used in Fragment Activities too now.\n - Having a very large compile error won't crash the app anymore. This is a bug even present in v6.3.0 fix1.\n - Switching apps while generating a source preview of a file in DesignActivity won't crash the app anymore.\n - Some ProGuard classpath errors were fixed.\n - The known ProGuard bug from v6.4.0-rc04 was fixed.\n - The AndroidManifest.xml preview in AndroidManifest Manager contained XML Command Blocks applied more than once sometimes. Fixed now.\n - Some fixes to projects exported to Android Studio.\n - Exporting an AAB won't fail with a StackOverflowException anymore.\n - Activities which already have `android:exported` set by injections in AndroidManifest Manager won't get duplicate `android:export` properties when targeting SDK version 31 and higher anymore.\n - Using 1+ Dynamic Link Components and targeting SDK version 31 and higher won't add a duplicate property to AndroidManifest.xml anymore.\n -\n - Custom Components can share names with built-in types and get its imports too, back to how it used to be in v6.3.0 fix1 and earlier.\n - Fixes picking a Font sometimes corrupting it, and making the Font unusable in the app.\n - Picking a Sound in Sound Manager won't crash on some Android versions anymore. This is a bug even present in vanilla Sketchware.\n - The Import AdMob details from another project Button works now. This is also a vanilla Sketchware bug.\n - When a Font can't be previewed in the Logic Editor, the app won't crash now. This is another vanilla Sketchware bug.\n - The app won't crash on null Custom Events and Components anymore.\n - Component descriptions can be changed using strings.xml again. This is a regression even in v6.3.0 fix1.\n - Some Custom Block Palette color parsing fixes in Block Manager.\n - Importing Custom Blocks into a Palette works again.\n - Hopefully a fix for some files being compressed in AABs even though they shouldn't be, for example sounds.\n - The default project backup filename format now contains two-digit months all the time.\n - Local library Downloader extracts android.jar if needed automatically, without failing without telling why exactly.\n - After creating a new Custom Listener, you don't have to restart the app anymore for it to be recognized by Sketchware Pro.\n - Disabling a Local library for a project should work in all cases now.\n - The file /Internal storage/.sketchware/data/system/local_library won't be created anymore if opening Local library Manager from Developer Tools.\n - Having e.g. `@color/white` as border color in a CircleImageView won't show up the false-positive invalid background color toast anymore. If the color really is invalid though, the app will also tell the CircleImageView's ID. A typo in the error message was also fixed.\n - The orientation and weightSum property were not are applied in XML to RadioGroups and other Views, even though they were shown in the Properties of the View. This is a bug present even in v6.3.0 fix1, but has now been fixed.\n - The Logcat Reader button in Developer Tools now actually works.\n - SketchApplication.java is not generated anymore if a custom application class is in use.\n - SketchLogger.java automatically tries to use the custom application class now. The class needs a static method `getContext()` returning `android.content.Context` to work though.\n - ProGuard should work on API levels < 24 again.\n - Trying to get data from Firebase Database with ProGuard enabled didn't work out-of-the-box, it crashed at runtime. Now it works, by adding ProGuard rules to built-in library Gson.\n - Importing a More Block with a custom return type from Collections won't break its return type anymore. Checking for duplicated names was fixed too.\n - Spaces in More Block names are disallowed again, as they cannot be compiled.\n\nFull Changelog: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-rc04...v6.4.0-rc05",
+            "releaseDate": 1667602800000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 test build 04",
+            "description": "The most significant new feature of this release is Kotlin code support! PR #247 was finally merged into main. Compiling Kotlin code still needs an Android 8+ device though, so only the -minApi26 version supports Kotlin.\n\nFeatures\n - Reading debug logs from projects. A new activity for that, the Logcat Reader, was added, and to start seeing logs there, run your project and open the Logcat Reader in Sketchware Pro.\n - Symbol pair auto-completion in the code editor can now be turned off.\n - Upgrade to sora-editor v0.14.0.\n - Upgrade to Iyxan23/zipalign-java:96fd6b30c928015847264b27b0d2dd407f3e8895.\n - Some performance improvements to the DEX merging step.\n - Using resource strings in the text and hint property of Views now works! Set e.g. `@string/greeting` as text or hint, and the View code will use the resource string, not escape the @.\n - You can now tweak the filename of SWB backups.\n\nFixes\n - Custom Variables are shown in the Variable Palette and can also be removed again.\n - The aligning APK step was entirely removed after pressing the Run button, as only exports to e.g. Google Play need alignment.\n - The crash after the Aligning APK… step was fixed.\n - Downloading Local libraries won't crash the app anymore.\n - Fonts added via the Font Manager now actually work at runtime. You'll have to remove old fonts and add them again though.\n - A Custom Block Palette having an invalid color won't crash the app anymore.\n - RadioButtons' checked property now work.\n - Built-in Menu Blocks work again!\n - Zooming in code in e.g. the source code preview, or in general, in dialogs where sora-editor is used will zoom into the code editor content, not the activity content.\n - Trying to remove a Variable or List used in another Event will show an error message again.\n\nNew in version with Kotlin support\n - Java Manager was renamed to Java/Kotlin Manager. It can also create and import new Kotlin classes.\n - Obviously, Kotlin compiling!\n\nKnown issues/bugs\nBefore reporting any issues, please first check here if they're not already known, or already were reported in another Issue.\n\n - Java/Kotlin Manager has no icon for Kotlin source code files.\n - There's no Kotlin syntax highlighting available in the code editor.\n - Adding new AdMob units doesn't work. See issue #490 for details on that bug.\n - ProGuard somehow renaming R classes to `r`.\n",
+            "releaseDate": 1657014000000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 test build 03",
+            "description": "This is just a quick bug fix release with some other minor improvements.\n\nFeatures\n\n - Importing google-services.json downloaded from Firebase Console directly instead of entering Firebase data manually.\n\nFixes\n\n - Component fields getting duplicated was fixed.\n - APK aligning failing due to dynamically linked zipalign binaries was fixed too!\n - Adding a RewardedVideoAd Component is not possible anymore when not having AdMob enabled.\n - Projects using OneSignal won't have to rely on e.g. XML Command Blocks to work (/ at least get installed) on Android 12 when also targeting that Android version.\n - When exporting a signed AAB or APK, the file gets signed first, then zipaligned. Apparently that's what you should do now: https://cdn.discordapp.com/attachments/827528331721048084/975379539075166238/unknown.png\n - The context menu in Java Manager or App Components shouldn't be weirdly dark with dark text anymore.\n - A typo in the onScrollChanged Event label was fixed at last.\n - Projects using Glide should no longer crash at runtime.\n - Clearing the app cache will no longer make compiling projects not work anymore until you clear the app's data.\n - Some other compiling assets that need to be extracted will also be extracted to the cache directory, just like e.g. built-in libraries' DEX files.\n - Built-in Extra Blocks can now be overridden using Custom Blocks again.\n\nMajor thanks\n\nWe'd like to thank @Iyxan23 for implementing zipalign in Java, started by Sketchware Pro needing an alternative method to align ZIP archives. The library can be found here: https://github.com/Iyxan23/zipalign-java. Thank you for making v6.4.0-rc03's release that quickly possible!\n\nFull Changelog\nYou can find it here: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-rc02...v6.4.0-rc03",
+            "releaseDate": 1652721660000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 test build 02",
+            "description": "Features\n\n - Built-in library upgrades, as well as finally changing their internal names to mention the actual library name in e.g. dexs.zip.\n - Views can now have an orientation of \"none\", which removes the property `android:orientation=\"…\"` from Views' XML code entirely, all without any Command Blocks.\n - APKs now get aligned using `zipalign` before getting signed.\n - Quick AndroidManifest.xml viewer in AndroidManifest Manager\n - AndroidManifest Manager will now use the new code editor if not disabled in Mod Settings for App Components.\n - Upgrade of code editor library to upstream sora-editor v0.11.1\n - When exporting an APK / AAB, you can now also decide to not sign the APK / AAB. They will get a different output name, though.\n - Sometimes directories or files needed for compiling get deleted. Sketchware Pro now detects and tells you about that. If it's directories, you can create them with a single click.\n - The Source Code Viewer got improved. It now uses the new code editor library to show code, and launching it is instant. It generates the project's code asynchronized so that the UI doesn't hang anymore.\n - `${applicationId}` in AndroidManifest.xml will now automatically get replaced with the project's package name.\n - R8 was updated to v3.3.28.\n - A new barebones splash screen that only waits until the system's ready to open MainActivity.\n\nFixes\n\n - App doesn't crash without access to storage anymore.\n - Resource Manager doesn't crash on older Android versions anymore.\n - BottomNavigationView's onNavigationItemSelected Event works again.\n - Showing a file's source quickly now works for XML files, including changes made via Command Blocks.\n - You can clear the saved last compile error again.\n - Projects can have the `<queries>` tag in AndroidManifest.xml again.\n - The blue \"[ViewPager] setFragmentAdapter [FragmentAdapter] TabCount (number)\" Block works again.\n - If a wrong key store password was entered while signing an APK or AAB, you will now be told about that instead of getting an endless progress bar.\n - You can't add more DynamicLink Components if Firebase is not enabled.\n - The InterstitialAd Block to show an ad doesn't crash projects at runtime anymore if used outside of the onAdLoaded Event / the ad hasn't been loaded yet.\n - While creating DEX files out of project files, d8 now knows about used libraries' JAR paths. That allows it to desugar default methods into code if targetting older Android versions, and makes for example the exoplayer library work when used.\n - Adding fonts via Font Manager should now work on all Android versions again. Sound Manager following soon.\n - The built-in library localbroadcastmanager-1.0.0's DEX file now actually contains its classes.\n - The RewardedVideoAd Component got updated to work with the updated AdMob built-in library version. You will have to migrate Events to new ones over. (too many, lol)\n\nChanges that aren't features or fixes\n\n - Resource Block Selector Menus have been deprecated / removed. Use the Code Editor option instead.\n - The Language Settings menu from the main drawer has been removed as it's not working anymore.\n\nUpdate on Sketchware Pro's build system\n\n - We've migrated to Android Studio fully now. This means that it's even easier to contribute to Sketchware Pro!\n - Unfortunately, that also forces us to release two APKs from now on. We're releasing an APK with support for Android 5 and higher but without AAB output support, and one with support for only Android 8 and above devices, but because of that, with the AAB output feature. You can check the APK's minimum SDK version (21 for no AAB output support, 26 for with), or the version name to find out which version an APK is.\n\nFull Changelog\n\n - You can find it here: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-rc01...v6.4.0-rc02",
+            "releaseDate": 1652545500000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 test build 01",
+            "description": "What's new?\n\n - AdMob Interstitial Ads (yet again). This time, you can start using Events just like with v6.3.0 fix1 and vanilla Sketchware.\n - Quick Previews of XML files! This was surprisingly hard to implement, as far as I can remember.\n - A much better \"About Sketchware Pro\" screen, containing expandable Sketchware Pro version changelogs, and a work-in-progress tab to view Major Changes made to Sketchware Pro since v6.3.0 fix1.\n - Generated AABs containing generated ProGuard mappings if those were enabled. Useful when uploading your AAB to Google Play.\n - The screen staying turned on while exporting a project. You can now finally leave Sketchware Pro working while resting.\n - Images imported in Resource Manager and Asset Manager show previews now!\n - Improvements to the Compile Log screen: It now has a toolbar, and features display options. Also, the last compile error will open there too, now.\n - Being able to restore multiple SWBs at once. Every backup has its own \"restore embedded Local libraries?\" dialog, by the way.\n - Backing up projects now backs them up into a folder with the name of the project. Inside that folder, the backups of that project will be stored.\n - An updated version of the built-in Material Design Components / part of AppCompat for projects, which allows your projects to have a Material You style! That is completely optional though, and to apply that, you need to currently mess around with Resource Manager.\n - ProGuard v7.1.1 in Sketchware Pro. Major upgrade is it being able to process Java 11 Local libraries.\n - A ScrollView in Mod Settings and the Tools screen. Some small-display devices will benefit from this.\n\nWhat got fixed?\n\n - Custom Listeners not getting added to generated code. This explains the issues of v6.4.0 Beta 6 with many WebView-using projects, for example.\n - Exporting a project to Android Studio failing with \"file not found\" errors. What a difference simple \"folder exists?\" checks can make.\n - Some devices having issues extracting built-in libraries, which explains the \"…/res: No such file or directory.\" errors when projects are at AAPT2.\n - Views, such as TextInputLayout, in Lists' Custom Views (e.g. RecyclerView), causing errors at runtime. This needed a patch to vanilla Sketchware's default generated Adapter code.\n - AndroidManifest.xml injections after the default AppTheme not getting applied.\n - Using multiple FragmentAdapter Components in a single Activity should be fine now, and its corresponding Block got changed too. Make sure to replace the current one with the updated one, or else no Adapter will be set.\n - SearchView's onQueryText* Events should not throw compile errors anymore.\n - AdMob AdViews not properly working. Note that now they show test ads when running your project, and only real ads when you export your project, just like Interstitial Ads!\n - Some AABs containing invalidly compressed files, most often videos or sounds in assets / res/raw-[config].\n - Exported AABs not containing non-class files from Local and built-in Libraries' JARs. Now they do.\n\nWhat else got changed?\n\n - The app's icon is now Christmas-styled. 🎄\n - As announced, Direct Source Code Editor got removed. See https://discord.com/channels/790686719753846785/790749749522464779/908817727878201424 for the announcement again.\n - /Internal storage/.sketchware/debug.txt now contains information about the used Sketchware Pro version. That'll probably be useful for saving time while investigating issues.\n - DEX files don't get merged into just few ones anymore starting with this version when just running the project, not exporting it. That'll save some precious time of yours.\n\nFull changelog: https://github.com/Sketchware-Pro/Sketchware-Pro/compare/v6.4.0-beta.6...v6.4.0-rc01",
+            "releaseDate": 1640385540000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 Beta 6",
+            "description": "Sketchware Pro v6.4.0 Beta 6\nThe first Sketchware Pro release at its GitHub repository has arrived! Before you go test it out though, be sure to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\nWhat's new?\n - (Minor) The default generated FileUtil.java file now contains the method copyDir(String, String).\n - Cached Custom Components, which make Sketchware Pro work much smoother. From now on, you have to open Component manager to refresh Custom Components though.\n - More than a single decimal in project's version name, version name and extra is now a \" \". (If using advanced version control dialog)\n - The green \"add source directly\" block is now available in the default Import Event if you open the Operator palette.\n - Some improvements to exporting a project to Android Studio: It now includes imported Java files, resources, assets, and native libraries.\n - Improvements to the Local library downloader, now you can have custom repositories it looks up. The default one will automatically get generated during the first time at /Internal storage/.sketchware/libs/repositories.json.\n - (Might be removed later) Adding tools:remove=\"orientation\" into any View's inject attribute will remove the android:orientation attribute of it.\n - (WIP) Built-in AdMob fixes! You'll have to completely rework ads, but at least they kind of work now. You will need all 4 new blocks, find more about them at the GitHub release page. Support for onAdShown and onAdClosed is coming soon. There's still a catch: You need to use an XML Command Block in AndroidManifest.xml to set your correct app ID there. Again, find more details on that at the GitHub release page.\n\nWhat's been fixed?\n - The app complaining for no reason about any List in Logic Editor\n - Merging DEX files while building a project taking ages\n - Generated AABs not including Native libraries\n - General compiling failing on some devices due to the removal of the android:largeHeap=\"true\" attribute in Sketchware Pro's AndroidManifest.xml",
+            "releaseDate": 1632686940000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 Public Beta 5",
+            "description": "After quite some time, here's another Public Beta!\nI'd say there's quite many new features, so you should definitely read the entire changelog! If some bugs are found, please send bug reports in the Discord server into #swpro-beta, at best, attach the file /Internal storage/.sketchware/debug.txt as well.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Complete support for replaceable generated files! Now even SketchApplication.java should be customizable.\n - Removed TabLayout in MainActivity, as the recommended channels section was removed recently.\n - Invalid Custom Blocks' generated code won't stop compiling anymore.\n - Improved Event source code viewer by using the Code Editor to display the source.\n - Improved formatting improvements of generated files. Please check your multi-line Command Blocks, and edit if necessary.\n - You can edit values/secrets.xml and xml/provider_paths.xml as well with XML Command Blocks now! Use values/secrets.xml and xml/provider_paths.xml as filenames.\n - Quick Source Viewer of an Activity. Just click the button next to RUN and select \"Show source code\".\n - Compile error message and Last compile error have monospaced messages now. Compile error message is also horizontally scrollable now, which also finally fixes wrong code error location pointers from ecj.\n - (Under-the-hood) Updated compiler libraries dx and r8/d8, as well as the Code Editor!\n - Finally correct open source licenses for new stuff added with Sketchware Pro.\n - (HUGE PERFORMANCE BOOST) Cached Custom Components! This makes drag-and-dropping blocks smooth as normal on Android 11+ devices, but requires you to restart Sketchware Pro if you add/change Custom Components.\n - (Possibly incomplete) JKS signing of any APK in Tools.\n\nWhat's been fixed?\n - Crashes on pre-API 23 devices in Java Manager, Asset Manager, etc.\n - \"Change language\" dialog appearing every launch on non-English or Korean display language devices.\n - Some issues of \"Can't toast on a thread that has not called Looper.prepare()\", you can view reports of that in /Internal storage/.sketchware/debug.txt now.\n - Duplicated BluetoothConnect.java in Source Code Viewer\n - AAPT/AAPT2 binaries not getting extracted on 64-bit x86 devices, for example, emulators.\n - Some NPEs in La/a/a/Dp;->j()V if an extracted asset changed while not regularly compiling a project.\n - NPEs (and possibly ClassCastExceptions) while compiling if an invalid enabled Local library configuration was found. The app tries to toast a message, but sometimes that doesn't work.",
+            "releaseDate": 1630020720000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 Public Beta 4",
+            "description": "Sketchware Pro v6.4.0 Public Beta 4\nA new Beta build just got released! Still not many features again, but some refinements and bug fixes, like the one about Glide. If some bugs are found, please send reports in the Discord server into #swpro-beta.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Updated Create project backup dialog to fit better to Sketchware.\n - Support for scrolling in Build Settings and Project Configuration.\n - Automatic classpath-added directory for all projects: Find it in /Internal storage/.sketchware/data/<project ID>/files/classpath/.\n - AAPT2 as Resource Processor by default, and also, AAPT being removed. Its logic and binaries are still there for now.\n - Custom versions of generated files, such as FileUtil.java! Just create a file in a Manager named exactly as the one you want to replace, for example FileUtil.java in Java Manager or main.xml in Resource Manager at res/layout/.\n - (Under-the-hood) Speed improvements, as String#format(String, Object...) calls have been converted to \" + \"/StringBuilder + StringBuilder#append(String) in many code-generating classes.\n\nWhat's been fixed?\n - All new Local library Manager issues, as we've temporarily reverted it back to almost-v6.3.0 fix1 logic\n - A Glide artefact not getting added to the APK, that'd cause ClassDefNotFoundExceptions for com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider\n - New projects having 1.0.0 as Version Name\n - Extra Firebase Auth listener fields (ergo those not in vanilla Sketchware) not being added to Activities using a Firebase Auth Component\n\nKnown issues\n - No new ones! :DD\n\nImportant Firebase Database note\nAs it seems that not many people have read Public Beta 1's changelog, we'll just tell it again:\n - Firebase Database storage locations have been updated, and also in Sketchware Pro projects. You have to reconfigure the library for each project, and now, use the full Database URL without https:// at the start and / at the end as the Project ID. Example: whatever-default-rtdb.asia-southeast1.firebasedatabase.app\n\nLink\n > Find it in our Discord server. You can get the invite link to it by clicking on the purple \"Join our Discord server\" button.",
+            "releaseDate": 1628364840000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 Public Beta 3",
+            "description": "It's time for another major bugfix build! Now built projects should finally be working completely!\nThis build has an important fix for Android 11+ devices with Scoped storage enabled, so build time should be much shorter now.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Android 11 storage change, which requires new special access. You should see the dialog either on startup or the 2nd one after granting storage permissions.\n - Removed Tutorials tab from MainActivity. It was empty anyway.\n\nWhat's been fixed?\n - Projects using an image load from URL or in general the Glide library should work again when trying to load GIFs. (49f3daf4638e8f56588e808030ad029afcbba04b)\n - \"About modders\" shouldn't crash anymore on devices without a browser. (6475fce889c9e19904ea9fc04cb70b2a4b876f46)\n - Projects using the built-in OneSignal component shouldn't fail at AndroidManifest.xml anymore! (5131e811f3a0e472f9dc3df2115cabcea4a295d0)\n - (Minor) repeat for (N) (variable name) block should now use a correct spec, re-place it from the blocks menu to update its spec. (11699ad0fddbdf7bc9d4fb407734fc87e38c9a95)\n - (Major) AAPT2 bug not creating its compiled built-in libraries resources directory. (0639250498189a2ff5b12c1fc239a3ea40b3a223)\n - Local library Manager shouldn't crash anymore while scrolling/refreshing libraries. (6bed60b3b3e98e0c27545ca8d792533ea43cf00e)\n(Last update: 2021-07-28T00:01:??Z+0200)\n\nKnown issues\n - Projects still using AAPT and with AppCompat turned on won't compile. That's an issue of some built-in libraries and AAPT being old/deprecated. It'll be removed until stable v6.4.0.\n - Local library Manager doesn't enable/disable libraries unless you leave the screen before the list item gets invisible.",
+            "releaseDate": 1627423320000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 Public Beta 2",
+            "description": "Sketchware Pro v6.4.0 Public Beta 2\nHi again everyone, we've made another public beta build of Sketchware Pro v6.4.0! This one contains a lot of bug fixes, which (finally) produces working apps!\nAnyway, there's not too many new features, and you'll find them later.\nIt's recommended to back up your .sketchware folder in case any bug ✨magically✨ messes anything up.\n\nWhat's new?\n - Added signing algorithm input texts in both Signed APK and Signed AAB builder.\n- Rename local libraries now with ease! (Unstable, might break currently in use libraries.)\n- Swipe-to-refresh gesture in Local library Manager. (Unstable, might crash the activity.)\n- Updated experimental Java class renaming in Java Manager.\n- Install a previously built APK with ease! See the button next to RUN in DesignActivity.\n\nWhat's been fixed?\n - Command blocks work again! 🎉\n- Build Settings doesn't show unused output format setting anymore.\n- The app now warns you when trying to export an AAB on a not-Android 8+ device.\n- Exporting a project shouldn't crash Sketchware Pro anymore. Note that it still misses imported resources!\n - DEX files get merged properly again, finally usable projects again!\n- DesignActivity and ExportProjectActivity don't crash on pre-API 23 devices anymore.\n\nKnown issues\n - Local library Manager might crash when refreshing libraries often, also sometimes turning them on or off might not work.\n(Last update: 2021-07-23T16:06:??Z+0200)",
+            "releaseDate": 1627049160000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.4.0 Public Beta 1",
+            "description": "This is the first public beta version of Sketchware Pro v6.4.0!\nIt's recommended to back up /Internal storage/.sketchware/ in case any bug ✨magically✨ messes anything up.\n\nNew stuff:\n - Added a popup/warning about beta versions. This was necessary to make builds public.\n - A subtitle in DesignActivity showing the current project's sc_id.\n - A button while (trying) to close a project to cancel closing it.\n - Updated built-in libraries, details at our GitHub repository.\n - Added some necessary built-in blocks for OtpView and SignInButton.\n - (Experimental) Java class renaming which renames the class in the file itself.\n - New blocks to add permission requests before onCreate.\n - Another way to add custom variables (this and permission request blocks thanks to Main modder Hasrat!)\n\nFixed things:\n - Launching the app for the first time shouldn't open VideoGuideActivity, henceforth also stop crashing on some emulators.\n - Using too large jdk.zip/rt.jar while only core-lambda-stubs.jar was needed.\n - Clicking on WRAP_CONTENT option's text while editing a view's measures should select WRAP_CONTENT now.\n - Fix the \"ages\" old bug of adding Activity Events in Event Manager not working.\n\nNoteworthy change:\n - Firebase Database storage locations have been updated, also in Sketchware Pro projects. You'll have to reconfigure it for each project, and now use the full URL without https:// at the start and / at the end. Example: whatever-default-rtdb.asia-southeast1.firebasedatabase.app\n\nKnown issues:\n - (Critical) Command Blocks aren't working.\n - Build Settings still shows up AAB output, even if it won't work. Use the button in \"Export project\" instead.\n - Signing an APK with a JKS keystore \"can't find the file\".\n - The app crashes when trying to export an AAB or sign an APK file from Developer Tools when not running on an Android 8+ device.\n - Exporting a project to Android Studio crashes Sketchware Pro.\n\nIf you've found any bugs, please report them on our Discord server!",
+            "releaseDate": 1626380940000,
+            "isBeta": true,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware Pro v6.3.0 Fix1",
+            "description": "- Added new options in command blocks (find-replace, find-replace-first (regex √), find-replace-all (regex √))\n- Fixed command blocks bug (not being able to replace the first line)\n- Enabled debug.txt by default\n- Fixed the D8 bug with projects (classnotfoundexception)\n- Fixed the Dx bug in library downloader\n- Fixed the crashing while scrolling in ASD code editor, disabled overscrolling\n- Added a menu option to disable auto complete in code editor\n- Added a menu option to paste text in code editor\n- Added \"change backup dir\" in mod configuration\n- Added \"use legacy code editor\" in mod configuration\n- Fixed the order of projects with sc_id>=1000 [sketchware bug]\n- Fixed restoring projects with sc_id >=1000\n- Some backup/restore fixes\n- Some code corrections.",
+            "isBeta": false,
+            "isTitled": true
+        },
+        {
+            "title": "Sketchware PRO V6.3.0",
+            "description": "- Added \"Build Settings\" located right next to the Run button, which includes options that lets you:\n- Switch between Java7 and Java8 (enable D8 to be able to compile Java8)\n- Switch between Dx and D8\n- Use custom android.jar, custom classpath\n- Disable warnings in compile log\n\n- Added Command Blocks:\n- You can add, insert or replace any part of java/xml code with new one using these. These blocks can be used anywhere in your logic editor, there is no specific place (event) for them. They can be used to achieve tasks such as:\n- Remove onActivityResult entirely, or change its code, or add more codes to it.\n- Implement interfaces in your activity (remove/change any part of code that sketchware automatically generates.\n- Modify any part of root layout, add multiple fabs, change coordinatorLayout to FrameLayout, RelativeLayout. Change the order of root layout..\n- Inject codes in onCreate or anywhere you like... etc (supports all Java files and XML files. including AndroidManifest, styles, colors and strings.xml).\n\n\n- Changed the built-in Code Editor to a super optimized one. this new one has features such as:\n- Auto completion, various themes, pinch-to-zoom, undo-redo, find&replace etc.\n- Added built-in Backup/Restore feature that provides a function to back up your project (.swb), along with the local libs and custom blocks you used.\n- Updated android.jar to API 30.\n- Local Library improvements.. now, in your local libs you can:\n- Use assets, proguard rules, native libs, multiple dex files, Java8 libraries.\n- Library Downloader can now download Java8 libraries.\n- Added ProGuard Full Mode (includes local libs in ProGuarding process)\n- Added Custom Blocks analyzer dialog that shows you the custom blocks you used in your project.\n- New Block system optimizations. Custom blocks are noticeably faster now. Also fixed the crashing bug that happens when one leaves some of the parameters empty.\n- Assets, Resource and Nativelib managers improvements.\n- Now you can navigate directly to Developer Tools from LogicEditorActivity.\n- Added import/export for components, events and blocks menus.\n- Improved import/export blocks.\n- Added uppercase support for view IDs. Now you can use IDs like \"mTextView\".\n- Added searching feature in Moreblock Importer dialog. Also fixed the critical lags there.\n- Fixed Change launcher activity bug.\n- Fixed duplicated imports.\n- Fixed some bugs and added some improvements to blocks, events and components managers.\n- Fixed block selector menu bug.\n- Added BottomSheetDialogFragment (add _bottomdialog_fragment to the end of the title when creating an Activity. requires appcompat to work.)\n- Fixed many bugs, added many features, spent many hours :)",
+            "isBeta": false,
+            "isTitled": true
+        }
+    ]
 }
