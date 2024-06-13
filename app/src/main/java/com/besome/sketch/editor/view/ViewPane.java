@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -96,7 +95,6 @@ import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
 
-@SuppressLint({"RtlHardcoded", "DiscouragedApi"})
 public class ViewPane extends RelativeLayout {
 
     private ViewGroup rootLayout;
