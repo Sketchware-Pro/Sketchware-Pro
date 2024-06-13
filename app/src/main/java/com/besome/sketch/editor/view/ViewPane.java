@@ -304,7 +304,7 @@ public class ViewPane extends RelativeLayout {
         String str;
         var injectHandler = new InjectAttributeHandler(viewBean);
         if (viewBean.id.charAt(0) == '_') {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+            LayoutParams layoutParams = new LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
@@ -580,7 +580,7 @@ public class ViewPane extends RelativeLayout {
         }
         ItemFloatingActionButton itemFloatingActionButton = new ItemFloatingActionButton(getContext());
         itemFloatingActionButton.setTag("_fab");
-        itemFloatingActionButton.setLayoutParams(new RelativeLayout.LayoutParams(
+        itemFloatingActionButton.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         itemFloatingActionButton.setMainColor(ProjectFile.getColor(sc_id, "color_accent"));
