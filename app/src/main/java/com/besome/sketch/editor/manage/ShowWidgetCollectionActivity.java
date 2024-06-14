@@ -29,7 +29,6 @@ import a.a.a.kC;
 import a.a.a.mB;
 import a.a.a.sy;
 import a.a.a.wq;
-import a.a.a.xB;
 
 public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private String widgetName;
@@ -124,8 +123,8 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     }
 
     private sy loadView(ViewBean view) {
-        View v = viewPane.b(view);
-        viewPane.a(v);
+        View v = viewPane.createItemView(view);
+        viewPane.addViewAndUpdateIndex(v);
         return (sy) v;
     }
 }
