@@ -27,6 +27,7 @@
             android:animateLayoutChanges="true"
             android:background="@drawable/circle_bg"
             android:gravity="center"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="10sp" />
     </LinearLayout>
 
