@@ -4,12 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,11 +37,11 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
         setClickable(false);
         var menu = getMenu();
         menu.add(Menu.NONE, 1, Menu.NONE, "Home")
-            .setIcon(R.drawable.ic_home);
+                .setIcon(R.drawable.ic_home);
         menu.add(Menu.NONE, 2, Menu.NONE, "Chat")
-            .setIcon(R.drawable.ic_chat);
+                .setIcon(R.drawable.ic_chat);
         menu.add(Menu.NONE, 3, Menu.NONE, "Profile")
-            .setIcon(R.drawable.ic_profile);
+                .setIcon(R.drawable.ic_profile);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (hasSelection) {
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
             canvas.drawRect(rect, paint);
@@ -86,7 +84,10 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
+        super.setPadding((int) (left * paddingFactor),
+                (int) (top * paddingFactor),
+                (int) (right * paddingFactor),
+                (int) (bottom * paddingFactor));
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -117,7 +118,7 @@ public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem
 
         private List<String> dataList;
 
-        private int layout;
+        private final int layout;
 
         public SimpleAdapter(int layout) {
             dataList = new ArrayList<>();
@@ -129,6 +130,7 @@ public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem
             notifyDataSetChanged();
         }
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
@@ -136,8 +138,8 @@ public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder hodler, int position) {
-            hodler.bind(dataList.get(position));
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.bind(dataList.get(position));
         }
 
         @Override
@@ -146,7 +148,7 @@ public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            private TextView textView;
+            private final TextView textView;
 
             ViewHolder(View view) {
                 super(view);
