@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,21 +40,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.WB;
+import a.a.a.iB;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
+import a.a.a.xB;
 
-public class ImportIconActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    private static final int ICON_COLOR_BLACK = 0;
-    private static final int ICON_COLOR_GREY = 1;
-    private static final int ICON_COLOR_WHITE = 2;
-
+public class ImportIconActivity extends BaseAppCompatActivity {
+    
     private final OnBackPressedCallback searchViewCloser = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -68,10 +70,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     };
 
     private RecyclerView iconsList;
-    private Button showBlackIcons;
-    private Button showGreyIcons;
-    private Button showWhiteIcons;
-    private EditText iconName;
+    private String iconName;
     private WB iconNameValidator;
     private MenuItem search;
     private SearchView searchView;
@@ -83,7 +82,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private ArrayList<Pair<String, String>> icons = new ArrayList<>();
 
     private int getGridLayoutColumnCount() {
-        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 60;
+       return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
     }
 
     private boolean doExtractedIconsExist() {
@@ -94,31 +93,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         KB.a(this, "icons" + File.separator + "icon_pack.zip", wq.getExtractedIconPackStoreLocation());
     }
 
-    @Override
-    public void onClick(View v) {
-        if (!mB.a()) {
-            int id = v.getId();
-
-            if (id == R.id.btn_accept) {
-                if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
-                    Intent intent = new Intent();
-                    intent.putExtra("iconName", iconName.getText().toString());
-                    intent.putExtra("iconPath", adapter.getCurrentList().get(adapter.selectedIconPosition).second);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
-            } else if (id == R.id.btn_black) {
-                setIconColor(ICON_COLOR_BLACK);
-            } else if (id == R.id.btn_cancel) {
-                setResult(Activity.RESULT_CANCELED);
-                finish();
-            } else if (id == R.id.btn_grey) {
-                setIconColor(ICON_COLOR_GREY);
-            } else if (id == R.id.btn_white) {
-                setIconColor(ICON_COLOR_WHITE);
-            }
-        }
-    }
+    
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -147,31 +122,12 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         });
 
         ArrayList<String> alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
-        Button save = findViewById(R.id.btn_accept);
-        save.setText(getTranslatedString(R.string.common_word_accept));
-        Button cancel = findViewById(R.id.btn_cancel);
-        cancel.setText(getTranslatedString(R.string.common_word_cancel));
-        save.setOnClickListener(this);
-        cancel.setOnClickListener(this);
 
         iconsList = findViewById(R.id.image_list);
         iconsList.setHasFixedSize(true);
         iconsList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
         adapter = new IconAdapter();
         iconsList.setAdapter(adapter);
-        showBlackIcons = findViewById(R.id.btn_black);
-        showGreyIcons = findViewById(R.id.btn_grey);
-        showWhiteIcons = findViewById(R.id.btn_white);
-        showBlackIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_black));
-        showGreyIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_grey));
-        showWhiteIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_white));
-        showBlackIcons.setOnClickListener(this);
-        showGreyIcons.setOnClickListener(this);
-        showWhiteIcons.setOnClickListener(this);
-        iconName = findViewById(R.id.ed_input);
-        ((TextInputLayout) findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.design_manager_icon_hint_enter_icon_name));
-        iconNameValidator = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, alreadyAddedImageNames);
-        iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();
         new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
     }
@@ -208,37 +164,17 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     private void setIconName(int iconPosition) {
-        iconName.setText(adapter.getCurrentList().get(iconPosition).first);
+        iconName=(adapter.getCurrentList().get(iconPosition).first);
     }
 
-    private void setIconColor(int colorType) {
-        if (iconType != colorType) {
-            iconType = colorType;
-            if (colorType == ICON_COLOR_BLACK) {
-                showBlackIcons.setBackgroundColor(0xff33b8f5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == ICON_COLOR_GREY) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xff33b8f5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == ICON_COLOR_WHITE) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xff33b8f5);
-            }
-            new IconColorChangedIconLoader(this).execute();
-        }
+    private void setIconColor() {
+           new IconColorChangedIconLoader(this).execute();
     }
 
     private void listIcons() {
         icons = new ArrayList<>();
-        String color = switch (iconType) {
-            case ICON_COLOR_BLACK -> "black";
-            case ICON_COLOR_GREY -> "grey";
-            case ICON_COLOR_WHITE -> "white";
-            default -> "black";
-        };
+        String color =  "grey";
+            
         String iconFolderName = "icon_" + color;
         String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
@@ -282,14 +218,12 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final RelativeLayout background;
-            public final TextView name;
+            public final LinearLayout background;
             public final ImageView icon;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 background = itemView.findViewById(R.id.icon_bg);
-                name = itemView.findViewById(R.id.tv_icon_name);
                 icon = itemView.findViewById(R.id.img);
                 icon.setOnClickListener(v -> {
                     if (!mB.a()) {
@@ -305,16 +239,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (position != selectedIconPosition) {
-                if (iconType == ICON_COLOR_WHITE) {
-                    holder.background.setBackgroundColor(0xffbdbdbd);
-                } else {
-                    holder.background.setBackgroundColor(Color.WHITE);
-                }
-            } else {
-                holder.background.setBackgroundColor(0xffffccbc);
-            }
-            holder.name.setText(getItem(position).first);
+            
             Glide.with(ImportIconActivity.this)
                     .load(getItem(position).second)
                     .into(holder.icon);
@@ -340,7 +265,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            activity.setIconColor(ICON_COLOR_BLACK);
+            activity.setIconColor();
         }
 
         @Override
@@ -372,7 +297,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            activity.iconName.setText("");
             int oldPosition = activity.adapter.selectedIconPosition;
             activity.adapter.selectedIconPosition = -1;
             activity.adapter.notifyItemChanged(oldPosition);

@@ -1,35 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/icon_bg"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
-    android:layout_margin="2dp"
-    android:background="#ffffffff"
-    android:gravity="center">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"
+     android:gravity="center"
+     android:layout_margin="8dp"
+     android:padding="24dp"
+     android:orientation="vertical"
+     android:id="@+id/icon_bg">
 
     <ImageView
-        android:id="@+id/img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+         android:layout_height="80dp"
+         android:layout_width="80dp"
+         android:scaleType="centerCrop"
+         android:padding="16dp"
+         android:id="@+id/img" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="18dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:alpha="0.8"
-        android:background="#ff606060"
-        android:orientation="horizontal"
-        android:visibility="invisible">
 
-        <TextView
-            android:id="@+id/tv_icon_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center|left"
-            android:textColor="#fff5f5f5"
-            android:textSize="14sp" />
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
