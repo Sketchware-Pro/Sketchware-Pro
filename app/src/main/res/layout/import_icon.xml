@@ -6,28 +6,14 @@
      android:layout_height="match_parent"
      android:layout_width="match_parent">
 
-     <com.google.android.material.appbar.AppBarLayout
-         android:layout_height="wrap_content"
+    <include
+         layout="@layout/toolbar"
+         app:layout_constraintTop_toTopOf="parent"
          android:layout_width="match_parent"
-         android:fitsSystemWindows="true"
-         android:id="@+id/appBarLayout">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-             android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-             android:layout_width="match_parent"
-             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-             android:fitsSystemWindows="true"
-             android:id="@+id/collapsingToolbar">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                 android:layout_height="?attr/actionBarSize"
-                 android:layout_width="match_parent"
-                 app:layout_collapseMode="pin"
-                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                 android:id="@+id/toolbar" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
+         android:layout_height="wrap_content"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         android:id="@+id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
          android:layout_height="0dp"

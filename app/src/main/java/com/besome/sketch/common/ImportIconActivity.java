@@ -1,9 +1,9 @@
 package com.besome.sketch.common;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -13,14 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DiffUtil;
@@ -30,9 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.sketchware.remod.R;
 
+
+import com.sketchware.remod.databinding.DialogSaveIconBinding;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -40,19 +41,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.WB;
-import a.a.a.iB;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
-import a.a.a.xB;
+
+import com.sketchware.remod.databinding.DialogFilterIconsLayoutBinding;
 
 public class ImportIconActivity extends BaseAppCompatActivity {
     
@@ -75,6 +74,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private MenuItem search;
     private SearchView searchView;
     private IconAdapter adapter = null;
+    private ArrayList<String> alreadyAddedImageNames;
+    
     /**
      * Current icons' color, where 0 stands for black, 1 for grey, and 2 for white.
      */
@@ -121,7 +122,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             }
         });
 
-        ArrayList<String> alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
+        alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         iconsList = findViewById(R.id.image_list);
         iconsList.setHasFixedSize(true);
@@ -129,6 +130,10 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         adapter = new IconAdapter();
         iconsList.setAdapter(adapter);
         k();
+        
+        ExtendedFloatingActionButton filterIconsButton = findViewById(R.id.filterIconsButton);
+        filterIconsButton.setOnClickListener(v -> showFilterDialog());
+        
         new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
     }
 
@@ -181,8 +186,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             iconFiles.map(Path::getFileName)
                     .map(Path::toString)
                     .forEach(iconName -> icons.add(new Pair<>(
-                            iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
-                            Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
+                            iconName,
+                            Paths.get(iconPackStoreLocation,iconFolderName, iconName).toString()
                     )));
         } catch (IOException e) {
             e.printStackTrace();
@@ -197,6 +202,59 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             }
         }
         adapter.submitList(filteredIcons);
+    }
+    
+       private void showFilterDialog() {
+        DialogFilterIconsLayoutBinding dialogBinding = DialogFilterIconsLayoutBinding.inflate(getLayoutInflater());
+        
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Filter Icons")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Apply", null)
+                .create();
+
+        dialog.setView(dialogBinding.getRoot());
+        dialog.show();
+
+    }
+    
+    private void showSaveDialog(int iconPosition){
+        DialogSaveIconBinding dialogBinding = DialogSaveIconBinding.inflate(getLayoutInflater());
+        
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Save")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Save", null)
+                .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
+                    Intent intent = new Intent();
+                    intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
+                    intent.putExtra("iconPath", adapter.getCurrentList().get(adapter.selectedIconPosition).second);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }else{
+                    return;
+                }
+                dialogInterface.dismiss();
+            });
+        });
+
+        Glide.with(ImportIconActivity.this)
+                    .load(adapter.getCurrentList().get(iconPosition).second)
+                    .into(dialogBinding.icon);
+        
+        iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
+        String filenameWithoutExtension = iconName.substring(0, iconName.lastIndexOf('.'));
+        dialogBinding.inputText.setText(filenameWithoutExtension);
+        dialog.setView(dialogBinding.getRoot());
+        dialog.show();
     }
 
     private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
@@ -227,11 +285,10 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 icon = itemView.findViewById(R.id.img);
                 icon.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        int lastSelectedPosition = selectedIconPosition;
                         selectedIconPosition = getLayoutPosition();
-                        notifyItemChanged(selectedIconPosition);
-                        notifyItemChanged(lastSelectedPosition);
                         setIconName(selectedIconPosition);
+                        showSaveDialog(selectedIconPosition);
+                        
                     }
                 });
             }
@@ -239,6 +296,20 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            
+           /* String svgFilePath = getItem(position).second;
+            Log.d("nethical",svgFilePath);
+            AssetManager assetManager = getAssets();
+            // Load and display SVG from external file
+            try {
+                SVG svg = SVG.getFromAsset(assetManager,svgFilePath);
+                if (svg != null) {
+                    PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+                    holder.icon.setImageDrawable(drawable);
+                }
+            } catch (IOException|SVGParseException e) {
+                e.printStackTrace();
+            }*/
             
             Glide.with(ImportIconActivity.this)
                     .load(getItem(position).second)
