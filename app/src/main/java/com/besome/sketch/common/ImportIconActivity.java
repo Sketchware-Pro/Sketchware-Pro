@@ -26,6 +26,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import coil.ComponentRegistry;
+import coil.ImageLoader;
+import coil.decode.SvgDecoder;
+import coil.request.ImageRequest;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -178,9 +182,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
     private void listIcons() {
         icons = new ArrayList<>();
-        String color =  "grey";
-            
-        String iconFolderName = "icon_" + color;
+        
+        String iconFolderName = "filled";
         String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
             iconFiles.map(Path::getFileName)
@@ -246,15 +249,34 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             });
         });
 
-        Glide.with(ImportIconActivity.this)
-                    .load(adapter.getCurrentList().get(iconPosition).second)
-                    .into(dialogBinding.icon);
+        loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second);
         
         iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
         String filenameWithoutExtension = iconName.substring(0, iconName.lastIndexOf('.'));
         dialogBinding.inputText.setText(filenameWithoutExtension);
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
+    }
+    
+        private void loadImage(ImageView imageView, String filePath) {
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            ImageLoader imageLoader = new ImageLoader.Builder(this)
+                .components(new ComponentRegistry.Builder()
+                    .add(new SvgDecoder.Factory())
+                    .build())
+                .build();
+            
+            ImageRequest request = new ImageRequest.Builder(this)
+                .data(file)
+                .target(imageView)
+                .build();
+    
+            imageLoader.enqueue(request);
+    }  else {
+            // Handle the case where the file doesn't exist
+        }
     }
 
     private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
@@ -296,24 +318,10 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            String filePath = getItem(position).second; // Adjust according to your data structure
+            loadImage(holder.icon, filePath);
             
-           /* String svgFilePath = getItem(position).second;
-            Log.d("nethical",svgFilePath);
-            AssetManager assetManager = getAssets();
-            // Load and display SVG from external file
-            try {
-                SVG svg = SVG.getFromAsset(assetManager,svgFilePath);
-                if (svg != null) {
-                    PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-                    holder.icon.setImageDrawable(drawable);
-                }
-            } catch (IOException|SVGParseException e) {
-                e.printStackTrace();
-            }*/
             
-            Glide.with(ImportIconActivity.this)
-                    .load(getItem(position).second)
-                    .into(holder.icon);
         }
 
         @Override
