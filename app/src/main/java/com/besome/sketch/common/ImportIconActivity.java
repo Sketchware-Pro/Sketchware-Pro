@@ -45,6 +45,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import a.a.a.KB;
@@ -56,6 +57,7 @@ import a.a.a.uq;
 import a.a.a.wq;
 
 import com.sketchware.remod.databinding.DialogFilterIconsLayoutBinding;
+import mod.nethical.svg.SvgUtils;
 
 public class ImportIconActivity extends BaseAppCompatActivity {
     
@@ -79,13 +81,17 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private SearchView searchView;
     private IconAdapter adapter = null;
     private ArrayList<String> alreadyAddedImageNames;
-    
+    private SvgUtils svgUtils;
     /**
      * Current icons' color, where 0 stands for black, 1 for grey, and 2 for white.
      */
     private int iconType = -1;
-    private ArrayList<Pair<String, String>> icons = new ArrayList<>();
+    private List<Pair<String, String>> allIconPaths;
+    private List<Pair<String, String>> icons;
+    private final int ITEMS_PER_PAGE = 20;
+    private int currentPage = 0;
 
+    
     private int getGridLayoutColumnCount() {
        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
     }
@@ -137,6 +143,20 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         
         ExtendedFloatingActionButton filterIconsButton = findViewById(R.id.filterIconsButton);
         filterIconsButton.setOnClickListener(v -> showFilterDialog());
+        svgUtils = new SvgUtils(this);
+        
+        iconsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == icons.size() - 1) {
+                    // Reached the end, load more items
+                    loadMoreItems();
+                }
+            }
+        });
         
         new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
     }
@@ -181,30 +201,57 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     }
 
     private void listIcons() {
-        icons = new ArrayList<>();
+        allIconPaths = new ArrayList<>();
         
         String iconFolderName = "filled";
         String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
             iconFiles.map(Path::getFileName)
                     .map(Path::toString)
-                    .forEach(iconName -> icons.add(new Pair<>(
+                    .forEach(iconName -> allIconPaths.add(new Pair<>(
                             iconName,
-                            Paths.get(iconPackStoreLocation,iconFolderName, iconName).toString()
+                            Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
                     )));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        icons = new ArrayList<>();
+        loadMoreItems(); // Load the first chunk of items
+    }
+    
+    private void loadMoreItems() {
+        int start = currentPage * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, allIconPaths.size());
+
+        if (start < end) {
+            List<Pair<String, String>> newItems = allIconPaths.subList(start, end);
+            icons.addAll(newItems);
+            adapter.submitList(new ArrayList<>(icons));
+            currentPage++;
+        }
     }
 
-    private void filterIcons(String query) {
-        var filteredIcons = new ArrayList<Pair<String, String>>(icons.size());
-        for (Pair<String, String> icon : icons) {
+        private void filterIcons(String query) {
+        if(query.length()==0){
+            icons.clear();
+            currentPage = 0;
+            loadMoreItems();
+            return;
+        }
+        if(query.length()<3){
+            return;
+        }
+        
+        var filteredIcons = new ArrayList<Pair<String, String>>(allIconPaths.size());
+        for (Pair<String, String> icon : allIconPaths) {
             if (icon.first.toLowerCase().contains(query.toLowerCase())) {
                 filteredIcons.add(icon);
             }
         }
-        adapter.submitList(filteredIcons);
+        icons.clear();
+        icons.addAll(filteredIcons);
+        adapter.submitList(new ArrayList<>(icons));
     }
     
        private void showFilterDialog() {
@@ -249,7 +296,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             });
         });
 
-        loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second);
+        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second);
         
         iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
         String filenameWithoutExtension = iconName.substring(0, iconName.lastIndexOf('.'));
@@ -258,27 +305,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         dialog.show();
     }
     
-        private void loadImage(ImageView imageView, String filePath) {
-        File file = new File(filePath);
-
-        if (file.exists()) {
-            ImageLoader imageLoader = new ImageLoader.Builder(this)
-                .components(new ComponentRegistry.Builder()
-                    .add(new SvgDecoder.Factory())
-                    .build())
-                .build();
-            
-            ImageRequest request = new ImageRequest.Builder(this)
-                .data(file)
-                .target(imageView)
-                .build();
-    
-            imageLoader.enqueue(request);
-    }  else {
-            // Handle the case where the file doesn't exist
-        }
-    }
-
     private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
         private static final DiffUtil.ItemCallback<Pair<String, String>> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
             @Override
@@ -319,9 +345,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String filePath = getItem(position).second; // Adjust according to your data structure
-            loadImage(holder.icon, filePath);
-            
-            
+            svgUtils.loadImage(holder.icon, filePath);
         }
 
         @Override

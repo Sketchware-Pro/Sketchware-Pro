@@ -12,9 +12,9 @@
     <ImageView
          android:layout_height="80dp"
          android:layout_width="80dp"
-         android:scaleType="centerCrop"
+         android:scaleType="centerInside"
          android:padding="16dp"
+         android:tint="@color/grey"
          android:id="@+id/img" />
-
 
 </LinearLayout>
