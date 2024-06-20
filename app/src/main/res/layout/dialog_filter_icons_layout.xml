@@ -60,7 +60,7 @@
          app:chipSpacingVertical="-5dp"
          app:singleSelection="true"
          android:layout_marginHorizontal="2dp"
-         app:checkedChip="@+id/chip_outlined"
+         app:checkedChip="@+id/chip_filled"
          app:selectionRequired="true"
          android:id="@+id/chipGroupStyle">
 
@@ -73,22 +73,10 @@
         <com.google.android.material.chip.Chip
              android:layout_height="wrap_content"
              android:layout_width="wrap_content"
-             android:id="@+id/chip_rounded"
-             android:text="Rounded" />
-
-        <com.google.android.material.chip.Chip
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"
-             android:id="@+id/chip_sharp"
-             android:text="Sharp" />
+             android:id="@+id/chip_filled"
+             android:text="Filled" />
 
     </com.google.android.material.chip.ChipGroup>
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-         android:layout_height="wrap_content"
-         android:layout_width="wrap_content"
-         android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="2dp"
-         android:text="Fill Icons" />
 
 </LinearLayout>

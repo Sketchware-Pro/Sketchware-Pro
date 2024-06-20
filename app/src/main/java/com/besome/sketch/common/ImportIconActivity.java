@@ -83,8 +83,11 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private ArrayList<String> alreadyAddedImageNames;
     private SvgUtils svgUtils;
     /**
-     * Current icons' color, where 0 stands for black, 1 for grey, and 2 for white.
+     * Current icons' style where 0 stands for filled and 1 stands for outlind
      */
+    private final static int OUTLINE_ICONS = 0;
+    private final static int FILLED_ICONS = 1;
+    
     private int iconType = -1;
     private List<Pair<String, String>> allIconPaths;
     private List<Pair<String, String>> icons;
@@ -204,7 +207,11 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private void listIcons() {
         allIconPaths = new ArrayList<>();
         
-        String iconFolderName = "filled";
+        String iconFolderName = switch (iconType){
+            case FILLED_ICONS -> "filled";
+            case OUTLINE_ICONS -> "outline";
+            default -> "filled";
+        };
         String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
             iconFiles.map(Path::getFileName)
@@ -266,6 +273,30 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 .create();
 
         dialog.setView(dialogBinding.getRoot());
+        
+        dialog.setOnShowListener(dialogInterface -> {
+            
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                int checkedChipId = dialogBinding.chipGroupStyle.getCheckedChipId();
+                if(checkedChipId==R.id.chip_outlined && iconType!=OUTLINE_ICONS){
+                    iconType = OUTLINE_ICONS;
+                    icons.clear();
+                    allIconPaths.clear();
+                    listIcons();       
+                }
+                if(checkedChipId==R.id.chip_outlined && iconType!=FILLED_ICONS){
+                   iconType = FILLED_ICONS;
+                    icons.clear();
+                    allIconPaths.clear();
+                    listIcons();              
+                }
+                dialogInterface.dismiss();
+                return;               
+                
+            });
+        });
+
         dialog.show();
 
     }
