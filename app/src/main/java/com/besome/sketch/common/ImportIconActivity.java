@@ -120,6 +120,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.import_icon);
 
+        svgUtils = new SvgUtils(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
@@ -143,7 +144,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         
         ExtendedFloatingActionButton filterIconsButton = findViewById(R.id.filterIconsButton);
         filterIconsButton.setOnClickListener(v -> showFilterDialog());
-        svgUtils = new SvgUtils(this);
+        
         
         iconsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
