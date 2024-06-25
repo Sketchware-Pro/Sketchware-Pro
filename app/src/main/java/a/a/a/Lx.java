@@ -1544,6 +1544,7 @@ public class Lx {
                 "buildscript {\r\n" +
                 "    repositories {\r\n" +
                 "        google()\r\n" +
+                "        mavenCentral()\r\n" +
                 "        jcenter()\r\n" +
                 "    }\r\n" +
                 "    dependencies {\r\n" +
@@ -1557,11 +1558,12 @@ public class Lx {
                 "allprojects {\r\n" +
                 "    repositories {\r\n" +
                 "        google()\r\n" +
+                "        mavenCentral()\r\n" +
                 "        jcenter()\r\n" +
                 "    }\r\n" +
                 "}\r\n" +
                 "\r\n" +
-                "task clean(type: Delete) {\r\n" +
+                "tasks.register(\"clean\", Delete) {\r\n" +
                 "    delete rootProject.buildDir\r\n" +
                 "}\r\n";
     }
