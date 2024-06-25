@@ -304,7 +304,7 @@ public class yq {
      */
     public void h() {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
-                Lx.getBuildGradleString(28, 21, 28, N));
+                Lx.getBuildGradleString(28, 21, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28"), N));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
         fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("3.4.2", "4.3.3"));
     }

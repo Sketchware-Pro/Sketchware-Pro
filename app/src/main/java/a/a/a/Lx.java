@@ -29,7 +29,7 @@ public class Lx {
     /**
      * @return Content of a <code>build.gradle</code> file for the module ':app', with indentation
      */
-    public static String getBuildGradleString(int compileSdkVersion, int minSdkVersion, int targetSdkVersion, jq metadata) {
+    public static String getBuildGradleString(int compileSdkVersion, int minSdkVersion, String targetSdkVersion, jq metadata) {
         String content = "plugins {\r\n" +
                 "id 'com.android.application'\r\n" +
                 "}\r\n" +
