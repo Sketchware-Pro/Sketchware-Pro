@@ -35,7 +35,7 @@ public class Lx {
                 "}\r\n" +
                 "\r\n" +
                 "android {\r\n" +
-                "compileSdkVersion " + compileSdkVersion + "\r\n" +
+                "compileSdk " + compileSdkVersion + "\r\n" +
                 "\r\n";
         if (new BuildSettings(metadata.sc_id)
                 .getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
@@ -45,6 +45,7 @@ public class Lx {
         }
         content += "defaultConfig {\r\n" +
                 "applicationId \"" + metadata.packageName + "\"\r\n" +
+                "namespace \"" + metadata.packageName + "\"\r\n" +
                 "minSdkVersion " + minSdkVersion + "\r\n" +
                 "targetSdkVersion " + targetSdkVersion + "\r\n" +
                 "versionCode " + metadata.versionCode + "\r\n" +
