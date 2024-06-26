@@ -70,8 +70,7 @@ public class BackupFactory {
     }
 
     public static String getBackupDir() {
-        return new File(Environment.getExternalStorageDirectory(), ConfigActivity.getBackupPath())
-                .getAbsolutePath();
+        return ConfigActivity.getBackupPath();
     }
 
     private static File getAllLocalLibsDir() {

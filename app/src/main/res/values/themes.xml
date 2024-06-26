@@ -4,6 +4,7 @@
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/AppTheme.CollapsingToolbar</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.AppTheme</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
 
         <item name="fontFamily">@font/gilroy</item>

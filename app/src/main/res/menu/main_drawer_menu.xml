@@ -30,6 +30,11 @@
         android:icon="@drawable/ic_key_24"
         android:title="Create Release Keystore" />
 
+    <item
+        android:id="@+id/experimental_settings"
+        android:icon="@drawable/ic_experiment_24"
+        android:title="Experimental Settings" />
+
     <item android:title="Related links">
         <menu>
             <item

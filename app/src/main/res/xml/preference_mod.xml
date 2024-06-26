@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="built-in-blocks"
+        android:summary="May slow down loading blocks in Logic Editor."
+        android:title="Built-in blocks" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="always-show-blocks"
+        android:summary="All variable blocks will be visible, even if you don't have variables for them."
+        android:title="Show all variable blocks" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="show-every-single-block"
+        android:summary="Every single available block will be shown. Will slow down opening palettes!"
+        android:title="Show all blocks of palettes" />
+
+    <Preference
+        android:key="backup-dir"
+        android:summary="The default directory is /Internal storage/.sketchware/backups/."
+        android:title="Backup directory" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="legacy-ce"
+        android:summary="Enables old Code Editor from v6.2.0."
+        android:title="Use legacy Code Editor" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="root-auto-install-projects"
+        android:summary="Automatically installs project APKs after building using root access."
+        android:title="Install projects with root access" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="root-auto-open-after-installing"
+        android:summary="Opens projects automatically after auto-installation using root."
+        android:title="Launch projects after installing" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="use-new-version-control"
+        android:summary="Enables custom version code and name for projects."
+        android:title="Use new Version Control" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="use-asd-highlighter"
+        android:summary="Enables syntax highlighting while editing blocks' text parameters."
+        android:title="Enable block text input highlighting" />
+
+    <EditTextPreference
+        android:key="backup-filename"
+        android:summary="Defines how SWB backup files get named."
+        android:title="Backup filename format" />
+
+    <Preference
+        android:key="reset-backup-filename"
+        android:summary="Sets default value for backup filename format"
+        android:title="Reset backup filename format" />
+
+</PreferenceScreen>

@@ -311,6 +311,10 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
+        <activity
+            android:name="mod.remaker.settings.ExperimentalSettingsActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
