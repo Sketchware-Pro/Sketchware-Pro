@@ -161,9 +161,10 @@ public class ViewPane extends RelativeLayout {
 
     public sy g(ViewBean viewBean) {
         View findViewWithTag;
-        String str = viewBean.preId;
-        if (str != null && str.length() > 0 && !viewBean.preId.equals(viewBean.id)) {
-            rootLayout.findViewWithTag(viewBean.preId).setTag(viewBean.id);
+        String preId = viewBean.preId;
+        if (preId != null && preId.length() > 0 && !preId.equals(viewBean.id)) {
+            View preView = rootLayout.findViewWithTag(preId);
+            if (preView != null) preView.setTag(viewBean.id);
             viewBean.preId = "";
         }
         if (viewBean.id.charAt(0) == '_') {
