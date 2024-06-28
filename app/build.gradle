@@ -10,7 +10,7 @@ if (analyticsEnabled) {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
 
@@ -97,6 +97,10 @@ android {
         viewBinding true
         buildConfig true
     }
+
+    configurations.implementation {
+        exclude group: 'javax.inject', module: 'javax.inject'
+    }
 }
 
 dependencies {
@@ -144,13 +148,13 @@ dependencies {
     minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
     minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
-    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
     minApi26Implementation "org.eclipse.jdt:ecj:3.26.0"
 
-    minApi26Implementation project(path: ":kotlinc")
+    minApi26Implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
 
@@ -162,5 +166,5 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.3"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.4"
 }
