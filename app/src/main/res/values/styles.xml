@@ -1,7 +1,8 @@
 <resources>
 
     <style name="AppTheme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
-        <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance</item>
+        <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance
+        </item>
         <item name="expandedTitleTextAppearance">@style/MaterialToolbarTextExpandedAppearance</item>
         <item name="titleCollapseMode">scale</item>
     </style>
@@ -291,6 +292,21 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="ViewEditorTheme" parent="Base.Theme.MaterialComponents.Light">
+    <style name="ViewEditorTheme" parent="Base.Theme.MaterialComponents.Light" />
+
+    <!--  bottom sheet style  -->
+    <style name="BottomSheetCardStyle" parent="">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
+
+    <style name="BottomSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/design_bottom_sheet_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
+    </style>
+
 </resources>

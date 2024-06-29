@@ -1,12 +1,13 @@
 package com.besome.sketch.tools;
 
+import static com.besome.sketch.beans.QuizBean.QUIZ_ANSWER_A;
+import static com.besome.sketch.beans.QuizBean.QUIZ_TRUE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.QuizBean;
@@ -18,12 +19,11 @@ import java.util.Random;
 
 import a.a.a.mB;
 import a.a.a.tq;
-import a.a.a.wB;
 
 public class QuizBoard extends LinearLayout implements View.OnClickListener {
 
     private ArrayList<QuizBean> q;
-    private QuizBean r;
+    private QuizBean quizBean;
     private a s;
     private QuizBoardBinding quizBinding;
 
@@ -33,7 +33,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     }
 
     private void setData(QuizBean quizBean) {
-        r = quizBean;
+        this.quizBean = quizBean;
         quizBinding.tvQuestion.setText(quizBean.question);
         if (quizBean.type == 1) {
             quizBinding.layoutAnswerOx.setVisibility(View.VISIBLE);
@@ -90,28 +90,41 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         e();
     }
 
-    public final void c() {
+    public final void invalidateClickListeners() {
         quizBinding.imgAnswerO.setOnClickListener(null);
         quizBinding.imgAnswerX.setOnClickListener(null);
         quizBinding.viewAnswerA.setOnClickListener(null);
         quizBinding.viewAnswerB.setOnClickListener(null);
     }
 
-    public final void d() {
-        quizBinding.imgAnswerO.setTranslationX(wB.a(getContext(), -50.0F));
-        quizBinding.imgAnswerO.setAlpha(1.0F);
-        quizBinding.imgAnswerO.setScaleX(0.9F);
-        quizBinding.imgAnswerO.setScaleY(0.9F);
-        quizBinding.imgAnswerX.setTranslationX(wB.a(getContext(), 50.0F));
-        quizBinding.imgAnswerX.setAlpha(1.0F);
-        quizBinding.imgAnswerX.setScaleX(0.9F);
-        quizBinding.imgAnswerX.setScaleY(0.9F);
-        quizBinding.imgAnswerA.setScaleX(0.0F);
-        quizBinding.imgAnswerA.setScaleY(0.0F);
-        quizBinding.imgAnswerA.setAlpha(0.0F);
-        quizBinding.imgAnswerB.setScaleX(0.0F);
-        quizBinding.imgAnswerB.setScaleY(0.0F);
-        quizBinding.imgAnswerB.setAlpha(0.0F);
+    public final void resetQuizViews() {
+        quizBinding.imgAnswerO.setVisibility(View.VISIBLE);
+        quizBinding.imgAnswerX.setVisibility(View.VISIBLE);
+        quizBinding.separator.setVisibility(View.VISIBLE);
+
+        quizBinding.imgAnswerA.setVisibility(View.GONE);
+        quizBinding.imgAnswerB.setVisibility(View.GONE);
+    }
+
+    private void setXOResult(int answer) {
+        if (answer == QUIZ_TRUE) {
+            mB.a(quizBinding.imgAnswerO, 1);
+            mB.a(quizBinding.imgAnswerX, 0);
+            quizBinding.imgAnswerX.setVisibility(View.GONE);
+        } else {
+            mB.a(quizBinding.imgAnswerO, 0);
+            mB.a(quizBinding.imgAnswerX, 1);
+            quizBinding.imgAnswerO.setVisibility(View.GONE);
+        }
+        quizBinding.separator.setVisibility(View.GONE);
+    }
+
+    private void setABResult(int answer) {
+        if (answer == QUIZ_ANSWER_A) {
+            quizBinding.imgAnswerA.setVisibility(View.VISIBLE);
+        } else {
+            quizBinding.imgAnswerB.setVisibility(View.VISIBLE);
+        }
     }
 
     public final void e() {
@@ -127,62 +140,24 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
     }
 
     public void f() {
-        label32:
-        {
-            QuizBean var2 = r;
-            int var1 = var2.type;
-            ImageView var3;
-            ViewPropertyAnimator var4;
-            if (var1 == 1) {
-                var1 = var2.answer;
-                if (var1 != 0) {
-                    if (var1 != 1) {
-                        break label32;
-                    }
+        QuizBean quizBean = this.quizBean;
+        int quizType = quizBean.type;
 
-                    mB.a(quizBinding.imgAnswerO, 0);
-                    mB.a(quizBinding.imgAnswerX, 1);
-                    quizBinding.imgAnswerX.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(1.0F).start();
-                    var3 = quizBinding.imgAnswerO;
-                } else {
-                    mB.a(quizBinding.imgAnswerO, 1);
-                    mB.a(quizBinding.imgAnswerX, 0);
-                    quizBinding.imgAnswerO.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(1.0F).start();
-                    var3 = quizBinding.imgAnswerX;
-                }
-
-                var4 = var3.animate().scaleX(1.0F).scaleY(1.0F).translationX(0.0F).alpha(0.0F);
-            } else {
-                if (var1 != 2) {
-                    break label32;
-                }
-
-                var1 = var2.answer;
-                if (var1 != 0) {
-                    if (var1 != 1) {
-                        break label32;
-                    }
-
-                    var3 = quizBinding.imgAnswerB;
-                } else {
-                    var3 = quizBinding.imgAnswerA;
-                }
-
-                var4 = var3.animate().scaleX(1.0F).scaleY(1.0F).alpha(1.0F);
-            }
-
-            var4.start();
+        if (quizType == 1) {
+            setXOResult(quizBean.answer);
+        } else {
+            setABResult(quizBean.answer);
         }
 
-        c();
+        invalidateClickListeners();
         (new Handler()).postDelayed(() -> {
-            d();
+            resetQuizViews();
             b();
-        }, 2000L);
+        }, 2000); // ask next question after 2 secs
     }
 
     public void g() {
-        d();
+        resetQuizViews();
         b();
     }
 
@@ -190,18 +165,16 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         if (!mB.a()) {
             a();
             int id = var1.getId();
-            if (id == R.id.img_answer_o || id == R.id.img_answer_x
-                    || id == R.id.view_answer_a || id == R.id.view_answer_b) {
+            if (id == R.id.img_answer_o || id == R.id.img_answer_x || id == R.id.view_answer_a || id == R.id.view_answer_b) {
                 f();
             }
-            if (r.type == 2) {
+            if (quizBean.type == 2) {
                 var1.getId();
             }
         }
     }
 
     public class a extends CountDownTimer {
-
         public a(long var2, long var4) {
             super(var2, var4);
         }

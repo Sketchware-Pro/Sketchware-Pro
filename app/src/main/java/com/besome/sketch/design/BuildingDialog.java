@@ -24,12 +24,14 @@ public class BuildingDialog extends Dialog {
 
         LinearLayout quizLayout = findViewById(R.id.layout_quiz);
         quizBoard = new QuizBoard(context);
-        quizLayout.addView(quizBoard);
+        quizLayout.addView(quizBoard, 0);
         setTitle(Helper.getResString(R.string.common_message_progress));
         tvProgress = findViewById(R.id.tv_progress);
         tvProgress.setText(Helper.getResString(R.string.common_message_loading));
         super.setCanceledOnTouchOutside(false);
         super.setCancelable(true);
+
+        getWindow().getAttributes().windowAnimations = R.style.BottomSheetAnimation;
     }
 
     public void setProgress(String text) {
