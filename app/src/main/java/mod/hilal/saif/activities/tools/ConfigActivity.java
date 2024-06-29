@@ -5,7 +5,6 @@ import static mod.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,10 +19,14 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
+import android.content.DialogInterface;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.app.AlertDialog;
 
 import com.android.annotations.NonNull;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -33,6 +36,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.topjohnwu.superuser.Shell;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
 
 import java.io.File;
 import java.util.Arrays;
@@ -289,38 +294,30 @@ public class ConfigActivity extends AppCompatActivity {
                 false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
-                    final LinearLayout container = new LinearLayout(this);
-                    container.setPadding(
-                            (int) getDip(20),
-                            (int) getDip(8),
-                            (int) getDip(20),
-                            0);
-
-                    final TextInputLayout tilBackupDirectory = new TextInputLayout(this);
-                    tilBackupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
-                    tilBackupDirectory.setHint("Backup directory");
-                    tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
-                    container.addView(tilBackupDirectory);
-
-                    final EditText backupDirectory = new EditText(this);
-                    backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT));
-                    backupDirectory.setTextSize(14.0f);
-                    backupDirectory.setText(getBackupPath());
-                    tilBackupDirectory.addView(backupDirectory);
-
-                    new AlertDialog.Builder(this)
-                            .setTitle("Backup directory")
-                            .setView(container)
-                            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
-                                ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
-                                SketchwareUtil.toast("Saved");
-                            })
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
-                            .show();
+                   DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                      EditText inputText = dialogBinding.inputText;
+                      inputText.setText(getBackupPath());
+                      AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
+                           .setView(dialogBinding.getRoot())
+                           .setTitle("Backup directory")
+                           .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
+                           .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                           .setPositiveButton(R.string.common_word_save, null)
+                           .create();
+                      
+                      dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+                      dialog.setOnShowListener(dialogInterface -> {
+                            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                            positiveButton.setOnClickListener(view -> {
+                                 setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
+                                 SketchwareUtil.toast("Saved");
+                                 dialog.dismiss();
+                            });
+                            
+                            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                            inputText.requestFocus();
+                      });
+                      dialog.show();
                 });
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
@@ -351,19 +348,14 @@ public class ConfigActivity extends AppCompatActivity {
                 false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
-                    final LinearLayout container = new LinearLayout(this);
-                    container.setPadding(
-                            (int) getDip(20),
-                            (int) getDip(8),
-                            (int) getDip(20),
-                            0);
-
-                    final TextInputLayout tilBackupFormat = new TextInputLayout(this);
-                    tilBackupFormat.setLayoutParams(new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
-                    tilBackupFormat.setHint("Format");
-                    tilBackupFormat.setHelperText("This defines how SWB backup files get named.\n" +
+                   DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                   EditText inputText = dialogBinding.inputText;
+                   inputText.setText(getBackupFileName());
+                   
+                   AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                      .setView(dialogBinding.getRoot())
+                      .setTitle("Backup filename format")
+                      .setMessage("This defines how SWB backup files get named.\n" +
                             "Available variables:\n" +
                             " - $projectName - Project name\n" +
                             " - $versionCode - App version code\n" +
@@ -372,32 +364,28 @@ public class ConfigActivity extends AppCompatActivity {
                             " - $timeInMs - Time during backup in milliseconds\n" +
                             "\n" +
                             "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
-                            "$time(yyyy-MM-dd'T'HHmmss)\n");
-                    container.addView(tilBackupFormat);
-
-                    final EditText backupFilename = new EditText(this);
-                    backupFilename.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT));
-                    backupFilename.setTextSize(14.0f);
-                    backupFilename.setText(getBackupFileName());
-                    tilBackupFormat.addView(backupFilename);
-
-                    new AlertDialog.Builder(this)
-                            .setTitle("Backup filename format")
-                            .setView(container)
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
-                            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
-                                setting_map.put(SETTING_BACKUP_FILENAME, backupFilename.getText().toString());
-                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                                SketchwareUtil.toast("Saved");
-                            })
-                            .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
-                                setting_map.remove(SETTING_BACKUP_FILENAME);
-                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                                SketchwareUtil.toast("Reset to default complete.");
-                            })
-                            .show();
+                            "$time(yyyy-MM-dd'T'HHmmss)\n")
+                      .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                      .setPositiveButton(R.string.common_word_save, null)
+                      .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
+                           setting_map.remove(SETTING_BACKUP_FILENAME);
+                           FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                           SketchwareUtil.toast("Reset to default complete.");
+                      }).create();
+                      
+                   dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+                   dialog.setOnShowListener(dialogInterface -> {
+                         Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                         positiveButton.setOnClickListener(view -> {
+                              setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
+                              FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                              SketchwareUtil.toast("Saved");
+                              dialog.dismiss();
+                         });
+                         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                         inputText.requestFocus();
+                   });
+                   dialog.show();
                 });
     }
 
