@@ -1,12 +1,10 @@
-<com.google.android.material.card.MaterialCardView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="24dp"
+    android:layout_gravity="bottom"
     app:cardBackgroundColor="?colorSurfaceContainer"
+    app:shapeAppearanceOverlay="@style/BottomSheetCardStyle"
     app:strokeWidth="0dp">
 
     <LinearLayout
@@ -18,41 +16,48 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dip" />
+            android:layout_height="0.5dp" />
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="8dp"
-                android:background="@drawable/circle_bg_white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animation_view"
+                <RelativeLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerCrop"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="anim/guide_create.json"
-                    app:lottie_imageAssetsFolder="lottie"
-                    app:lottie_loop="true" />
-            </RelativeLayout>
+                    android:layout_margin="8dp"
+                    android:background="@drawable/circle_bg_white">
 
-            <TextView
-                android:id="@+id/tv_progress"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start|center"
-                android:paddingHorizontal="16dp"
-                android:text="@string/common_message_loading"
-                android:textSize="12sp" />
-        </LinearLayout>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animation_view"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="anim/guide_create.json"
+                        app:lottie_imageAssetsFolder="lottie"
+                        app:lottie_loop="true" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start|center"
+                    android:paddingHorizontal="16dp"
+                    android:text="@string/common_message_loading"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
