@@ -1,14 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
-    android:orientation="vertical"
-    android:theme="@style/AppTheme">
+    android:orientation="vertical">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#fff5f5f5"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
@@ -58,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/color_primary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -84,7 +81,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_rectangle_white"
                 android:orientation="vertical">
 
                 <TextView
@@ -95,7 +91,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="8dp"
                     android:text="Select Moreblock type"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -168,7 +164,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="8dp"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -229,7 +225,6 @@
                 android:layout_marginVertical="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_rectangle_white"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingBottom="8dp">
@@ -275,7 +270,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
                 android:text="Custom parameter"
-                android:textColor="@color/color_primary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -285,7 +280,6 @@
                 android:layout_marginVertical="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_rectangle_white"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingBottom="8dp">
