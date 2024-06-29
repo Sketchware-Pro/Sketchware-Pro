@@ -1,39 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="wrap_content"
-    android:layout_height="84dp"
-    android:background="?selectableItemBackground"
-    android:gravity="center"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
     android:minWidth="96dp"
-    android:orientation="vertical">
+    android:minHeight="74dp"
+    style="?attr/materialCardViewFilledStyle"
+    app:cardBackgroundColor="@color/view_property_grid_background">
 
-    <RelativeLayout
-        android:layout_width="48dp"
-        android:layout_height="40dp">
-
-        <ImageView
-            android:id="@+id/img_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerInParent="true" />
-
-        <ImageView
-            android:id="@+id/img_used_event"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_add_green_circle_24dp" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_title"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:lines="1"
-        android:paddingHorizontal="4dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:textColor="#ff7d7d7d"
-        android:textSize="12sp" />
-</LinearLayout>
+        android:minWidth="96dp"
+        android:minHeight="74dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/img_used_event"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_add_green_circle_24dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:paddingHorizontal="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="?colorControlNormal"
+            android:textSize="12sp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -212,7 +212,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_add_image_res) {
             p();
         }

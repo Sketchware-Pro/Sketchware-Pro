@@ -130,7 +130,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private DB r;
     private DB t;
     private Button buildSettings;
-    private Button runProject;
+    private static Button runProject;
     private ProjectFileSelector projectFileSelector;
     private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
@@ -322,7 +322,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (v.getId() == R.id.btn_execute) {
                 new BuildAsyncTask(this).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, buildSettings);
+                PopupMenu popupMenu = new PopupMenu(this, buildSettings, 0, R.attr.popupMenuStyle, R.style.Widget_Material3_PopupMenu);
                 Menu menu = popupMenu.getMenu();
 
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
@@ -491,7 +491,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
             if (!drawer.isDrawerOpen(GravityCompat.END)) {
@@ -1133,11 +1133,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             if (!dialog.isCancelableOnBackPressed()) {
                                 dialog.setIsCancelableOnBackPressed(true);
                                 maybeShow();
-                                publishProgress("Canceling build...");
                                 canceled = true;
                             }
                             dialog.show();
                         }
+                        runProject.setText("Canceling build...");
+                        publishProgress("Canceling build...");
+                        cancelDialog.dismiss();
                         dialog.dismiss();
                     });
 
