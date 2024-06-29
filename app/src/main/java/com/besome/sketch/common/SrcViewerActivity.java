@@ -1,5 +1,7 @@
 package com.besome.sketch.common;
 
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -26,8 +28,14 @@ import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.yq;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+import io.github.rosemoe.sora.widget.schemes.SchemeEclipse;
+import io.github.rosemoe.sora.widget.schemes.SchemeGitHub;
+import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX;
+import io.github.rosemoe.sora.widget.schemes.SchemeVS2019;
 import mod.hey.studios.util.Helper;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
@@ -141,10 +149,30 @@ public class SrcViewerActivity extends AppCompatActivity {
 
     private void setCorrectCodeEditorLanguage() {
         if (currentPageFileName.endsWith(".xml")) {
-            codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                Configuration configuration = getResources().getConfiguration();
+                boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
+                if (isDarkTheme) {
+                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+                } else {
+                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                }
+            } else {
+                codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+            }
             codeViewer.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
         } else {
-            codeViewer.setColorScheme(new EditorColorScheme());
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                Configuration configuration = getResources().getConfiguration();
+                boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
+                if (isDarkTheme) {
+                    codeViewer.setColorScheme( new SchemeDarcula());
+                } else {
+                    codeViewer.setColorScheme( new EditorColorScheme());
+                }
+            } else {
+                codeViewer.setColorScheme( new EditorColorScheme());
+            }
             codeViewer.setEditorLanguage(new JavaLanguage());
         }
     }

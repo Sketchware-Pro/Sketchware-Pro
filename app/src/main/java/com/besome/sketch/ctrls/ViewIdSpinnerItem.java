@@ -35,7 +35,7 @@ public class ViewIdSpinnerItem extends LinearLayout {
             a(false, 0xffff5555, 0xfff8f820);
         } else {
             name.setText(text);
-            a(true, 0xff757575, 0xffffffff);
+            a(true, getResources().getColor(R.color.view_property_spinner_filter), getResources().getColor(R.color.view_property_spinner_filter));
         }
 
         icon.setImageResource(iconResId);

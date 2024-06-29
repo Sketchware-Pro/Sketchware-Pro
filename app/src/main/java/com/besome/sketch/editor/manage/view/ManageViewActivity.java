@@ -304,7 +304,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_screen_delete) {
             a(!selecting);
         }
