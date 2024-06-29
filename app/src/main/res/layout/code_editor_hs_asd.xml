@@ -10,7 +10,7 @@
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="?colorBackground"
+        android:background="?android:atrr/colorBackground"
         android:paddingLeft="4dp"
         android:paddingRight="4dp">
 
