@@ -5,13 +5,11 @@
     android:layout_marginTop="16dp"
     android:layout_marginBottom="16dp"
     android:animateLayoutChanges="true"
-    android:background="#ffffffff"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
         android:orientation="vertical">
 
         <LinearLayout
@@ -36,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:textColor="@color/color_primary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Component name" />
@@ -45,7 +43,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/color_secondary" />
+            android:background="?attr/colorSecondary" />
     </LinearLayout>
 
     <RelativeLayout
@@ -123,7 +121,6 @@
                     android:layout_marginLeft="28dp"
                     android:layout_marginRight="24dp"
                     android:gravity="left"
-                    android:textColor="#ffff0000"
                     android:textSize="12sp" />
 
                 <com.google.android.material.textfield.TextInputLayout

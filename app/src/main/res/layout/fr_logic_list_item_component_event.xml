@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:gravity="center"
-            android:textColor="#ff7d7d7d"
             android:textSize="12sp"
             tools:text="onChildAdded" />
     </LinearLayout>
