@@ -8,7 +8,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Gravity;
@@ -30,6 +29,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -61,22 +61,16 @@ public class BlocksManager extends AppCompatActivity {
 
     private TextView recycle_sub;
     private ListView list_pallete;
-    private ImageView recycle_icon;
     private LinearLayout background;
-    private LinearLayout recycle_bin;
-    private com.google.android.material.card.MaterialCardView recycle_bin_card;
-    private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
+    private MaterialCardView recycle_bin_card;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.blocks_manager);
 
-        fab = findViewById(R.id.fab);
         background = findViewById(R.id.background);
-        recycle_bin = findViewById(R.id.recycle_bin);
         recycle_sub = findViewById(R.id.recycle_sub);
-        recycle_icon = findViewById(R.id.recycle_icon);
         list_pallete = findViewById(R.id.list_pallete);
         recycle_bin_card = findViewById(R.id.recycle_bin_card);
 
@@ -100,7 +94,7 @@ public class BlocksManager extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
-        ((ViewGroup) background).addView(toolbar, 0);
+        background.addView(toolbar, 0);
 
         _fab.setOnClickListener(v -> showPaletteDialog(false, null, null, null, null));
     }
@@ -128,13 +122,10 @@ public class BlocksManager extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         String title = menuItem.getTitle().toString();
-        switch (title) {
-            case "Settings":
-                showBlockConfigurationDialog();
-                break;
-
-            default:
-                return false;
+        if (title.equals("Settings")) {
+            showBlockConfigurationDialog();
+        } else {
+            return false;
         }
         return super.onOptionsItemSelected(menuItem);
     }
@@ -144,11 +135,9 @@ public class BlocksManager extends AppCompatActivity {
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setColor(Color.parseColor("#ffffff"));
         RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        if (Build.VERSION.SDK_INT >= 21) {
-            _view.setBackground(rippleDrawable);
-            _view.setClickable(true);
-            _view.setFocusable(true);
-        }
+        _view.setBackground(rippleDrawable);
+        _view.setClickable(true);
+        _view.setFocusable(true);
     }
 
     private void showBlockConfigurationDialog() {
