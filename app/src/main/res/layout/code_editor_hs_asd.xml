@@ -8,9 +8,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#ff303030"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="?colorBackground"
         android:paddingLeft="4dp"
         android:paddingRight="4dp">
 
@@ -26,7 +26,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Code Editor"
-                android:textColor="#ffffffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -34,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UTF-8"
-                android:textColor="#ffbdbdbd"
                 android:textSize="11sp" />
         </LinearLayout>
 
@@ -44,8 +42,7 @@
             android:layout_height="38dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_undo_24"
-            app:tint="#FFFFFFFF" />
+            android:src="@drawable/ic_undo_24" />
 
         <ImageView
             android:id="@+id/menu_view_redo"
@@ -54,8 +51,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_redo_24"
-            app:tint="#FFFFFFFF" />
+            android:src="@drawable/ic_redo_24"/>
 
         <ImageView
             android:id="@+id/save"
@@ -64,8 +60,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_save_24"
-            app:tint="#FFFFFFFF" />
+            android:src="@drawable/ic_save_24"/>
 
         <ImageView
             android:id="@+id/more"
@@ -74,8 +69,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_morevert_24"
-            app:tint="#FFFFFFFF" />
+            android:src="@drawable/ic_morevert_24" />
     </LinearLayout>
 
     <io.github.rosemoe.sora.widget.CodeEditor
