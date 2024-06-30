@@ -1,11 +1,11 @@
 package <?package_name?>;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class DebugActivity extends Activity {
@@ -60,17 +60,18 @@ public class DebugActivity extends Activity {
             }
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("An error occurred")
-                .setMessage(madeErrorMessage)
-                .setPositiveButton("End Application", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .create();
-        dialog.show();
-        ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
+        setTitle(getTitle() + " Crashed");
+
+        TextView error = new TextView(this);
+        error.setText(madeErrorMessage);
+        error.setTextIsSelectable(true);
+
+        HorizontalScrollView hscroll = new HorizontalScrollView(this);
+        ScrollView vscroll = new ScrollView(this);
+
+        hscroll.addView(vscroll);
+        vscroll.addView(error);
+
+        setContentView(hscroll);
     }
 }
