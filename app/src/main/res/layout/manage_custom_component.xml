@@ -17,9 +17,7 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:popupTheme="@style/ThemeOverlay.ToolbarMenu"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_height="wrap_content"   
                 app:layout_collapseMode="parallax"
                 app:title="@string/developer_tools_component_manager"/>
         </com.google.android.material.appbar.AppBarLayout>
