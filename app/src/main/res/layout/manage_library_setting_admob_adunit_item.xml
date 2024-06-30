@@ -17,7 +17,7 @@
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ff000000"
+            android:textColor="?colorControlNormal"
             android:textSize="12sp"
             tools:text="&lt;Ad Unit name&gt;" />
 

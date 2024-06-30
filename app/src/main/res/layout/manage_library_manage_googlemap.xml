@@ -13,35 +13,43 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/layout_switch"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingVertical="8dp">
+            style="?attr/materialCardViewFilledStyle"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-            <TextView
-                android:id="@+id/tv_enable"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout_switch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/scolor_red_02"
-                android:textSize="14sp"
-                tools:text="@string/design_library_settings_title_enabled" />
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Switch
-                android:id="@+id/switch_lib"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginLeft="8dp"
-                android:clickable="false" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_enable"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="?colorControlNormal"
+                    android:textSize="18sp"
+                    tools:text="@string/design_library_settings_title_enabled" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/lib_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="8dp"
+                    android:clickable="false" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -80,8 +88,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -96,31 +104,37 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#ff4d4d4d"
+                        android:textColor="?colorControlNormal"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         tools:text="@string/design_library_google_map_title_api_key" />
                 </LinearLayout>
 
-                <androidx.core.widget.NestedScrollView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:fillViewport="true"
-                    android:gravity="center">
+                    style="?attr/materialCardViewFilledStyle"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-                    <EditText
-                        android:id="@+id/ed_api_key"
+                    <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_round_light_grey"
-                        android:gravity="center_vertical"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:padding="8dp"
-                        android:textSize="14sp" />
-                </androidx.core.widget.NestedScrollView>
+                        android:layout_height="wrap_content"
+                        android:fillViewport="true"
+                        android:gravity="center">
+
+                        <EditText
+                            android:id="@+id/ed_api_key"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:gravity="center_vertical"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:padding="14dp"
+                            android:textSize="14sp" />
+                    </androidx.core.widget.NestedScrollView>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
         </ScrollView>

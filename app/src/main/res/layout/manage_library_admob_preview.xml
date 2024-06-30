@@ -2,39 +2,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <LinearLayout
-        android:id="@+id/layout_switch"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="?selectableItemBackground"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-        <TextView
-            android:id="@+id/tv_enable"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/layout_switch"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="?colorError"
-            android:textSize="14sp"
-            tools:text="@string/design_library_settings_title_enabled" />
+            android:background="?selectableItemBackground"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="6dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/lib_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="8dp"
-            android:clickable="false" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_enable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="?colorControlNormal"
+                android:textSize="18sp"
+                tools:text="@string/design_library_settings_title_enabled" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/lib_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="8dp"
+                android:clickable="false" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,18 +58,19 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="12dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -102,13 +111,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -123,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:textColor="#ff4d4d4d"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="@string/design_library_admob_title_banner" />
@@ -132,13 +141,14 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -151,7 +161,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:textColor="#ff404040"
+                            android:textColor="?colorControlNormal"
                             android:textSize="14sp"
                             tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -174,7 +184,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:textColor="#ff404040"
+                            android:textColor="?colorControlNormal"
                             android:textSize="14sp"
                             tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -193,13 +203,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -214,7 +224,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:textColor="#ff4d4d4d"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="@string/design_library_admob_title_interstitial" />
@@ -223,13 +233,14 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -242,7 +253,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:textColor="#ff404040"
+                            android:textColor="?colorControlNormal"
                             android:textSize="14sp"
                             tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -265,7 +276,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:textColor="#ff404040"
+                            android:textColor="?colorControlNormal"
                             android:textSize="14sp"
                             tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -284,13 +295,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -306,7 +317,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Rewarded Ad"
-                    android:textColor="#ff4d4d4d"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -314,13 +325,14 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -334,7 +346,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:text="Ad Name : "
-                            android:textColor="#ff404040"
+                            android:textColor="?colorControlNormal"
                             android:textSize="14sp" />
 
                         <TextView
@@ -357,7 +369,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:text="Ad Unit ID : "
-                            android:textColor="#ff404040"
+                            android:textColor="?colorControlNormal"
                             android:textSize="14sp" />
 
                         <TextView
@@ -375,8 +387,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -391,7 +403,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="#ff4d4d4d"
+                android:textColor="?colorControlNormal"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="@string/design_library_admob_dialog_set_test_device_title" />
@@ -400,13 +412,14 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp">
+            style="?attr/materialCardViewFilledStyle"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_test_device"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
+                android:padding="14dp"
                 tools:listitem="@layout/manage_library_setting_admob_test_device_item" />
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

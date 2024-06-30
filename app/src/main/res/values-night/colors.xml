@@ -1,4 +1,9 @@
 <resources>
+    <color name="color_accent">#ff008dcd</color>
+
+    <color name="color_text_onSurface">#E2E2E5</color>
+    <color name="color_text_onSurfaceVariant">#C1C7CE</color>
+
     <!--  input layout  -->
     <color name="inputLayoutBackgroundColor">#2e2e2e</color>
     <color name="inputLayoutStrokeColor">#505050</color>
@@ -9,4 +14,13 @@
 
     <!--  views  -->
     <color name="cardStrokeColor">#2E2E2E</color>
+
+    <color name="view_property_background_color">#292929</color>
+    <color name="view_property_tab_active">#525252</color>
+    <color name="view_property_tab_deactive">#60525252</color>
+    <color name="view_property_tab_active_text">#ffffffff</color>
+    <color name="view_property_tab_deactive_text">#ffffffff</color>
+    <color name="view_property_grid_background">#60525252</color>
+    <color name="view_property_spinner_filter">#ffffffff</color>
+
 </resources>

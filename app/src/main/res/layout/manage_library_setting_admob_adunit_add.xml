@@ -7,15 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="24dp">
+        android:padding="14dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="24dp"
             android:importantForAutofill="noExcludeDescendants"
             tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_name">
 
@@ -33,9 +30,7 @@
             android:id="@+id/ti_adunit_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginTop="14dp"
             android:importantForAutofill="noExcludeDescendants"
             tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_id">
 

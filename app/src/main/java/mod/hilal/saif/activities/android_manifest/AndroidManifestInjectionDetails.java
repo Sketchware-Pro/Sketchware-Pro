@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -109,12 +108,10 @@ public class AndroidManifestInjectionDetails extends Activity {
         gradientDrawable.setCornerRadii(new float[]{(float) i2, (float) i2, (float) i2 / 2, (float) i2 / 2, (float) i2, (float) i2, (float) i2 / 2, (float) i2 / 2});
         gradientDrawable.setColor(Color.parseColor("#ffffff"));
         RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        if (Build.VERSION.SDK_INT >= 21) {
-            view.setElevation((float) i3);
-            view.setBackground(rippleDrawable);
-            view.setClickable(true);
-            view.setFocusable(true);
-        }
+        view.setElevation((float) i3);
+        view.setBackground(rippleDrawable);
+        view.setClickable(true);
+        view.setFocusable(true);
     }
 
     private void showDial(int pos) {
@@ -221,24 +218,12 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void setToolbar() {
-        String str = "";
-        switch (type) {
-            case "all":
-                str = "Attributes for all activities";
-                break;
-
-            case "application":
-                str = "Application Attributes";
-                break;
-
-            case "permission":
-                str = "Application Permissions";
-                break;
-
-            default:
-                str = activityName;
-                break;
-        }
+        String str = switch (type) {
+            case "all" -> "Attributes for all activities";
+            case "application" -> "Application Attributes";
+            case "permission" -> "Application Permissions";
+            default -> activityName;
+        };
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText(str);
         ViewGroup par = (ViewGroup) findViewById(R.id.tx_toolbar_title).getParent();
         ImageView _img = findViewById(R.id.ig_toolbar_back);

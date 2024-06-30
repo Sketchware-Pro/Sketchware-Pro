@@ -95,7 +95,6 @@ public class aB extends Dialog {
 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-
         {
             LayoutParams attributes = getWindow().getAttributes();
             attributes.width = ViewGroup.LayoutParams.MATCH_PARENT;

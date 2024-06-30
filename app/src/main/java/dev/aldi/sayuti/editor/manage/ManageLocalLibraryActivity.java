@@ -89,7 +89,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
-                .setCancelable(false)
+                .setCancelable(true)
                 .create();
         downloadButton.setOnClickListener(v1 -> {
             String url = Objects.requireNonNull(dependencyInput.getText()).toString();
@@ -106,6 +106,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             downloadButton.setEnabled(false);
             dependencyInput.setEnabled(false);
             downloadButton.setText("Downloading...");
+            dialog.setCancelable(false);
 
             var group = parts[0];
             var artifact = parts[1];
@@ -138,12 +139,14 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                             downloadButton.setText("Download");
                             downloadButton.setEnabled(true);
                             dependencyInput.setEnabled(true);
+                            dialog.setCancelable(true);
                         });
                     }
 
                     @Override
                     public void dexing(@NonNull String dep) {
                         handler.post(new SetTextRunnable("Dexing dependency \"" + dep + "\"..."));
+                        dialog.setCancelable(false);
                     }
 
                     @Override
@@ -163,11 +166,13 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                     @Override
                     public void downloading(@NonNull String dep) {
                         handler.post(new SetTextRunnable("Downloading \"" + dep + "\"..."));
+                        dialog.setCancelable(false);
                     }
 
                     @Override
                     public void startResolving(@NonNull String dep) {
                         handler.post(new SetTextRunnable("Searching for dependency \"" + dep + "\"..."));
+                        dialog.setCancelable(false);
                     }
 
                     @Override
@@ -192,6 +197,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                             downloadButton.setEnabled(true);
                             dependencyInput.setEnabled(true);
                             dialogBinding.progressText.setText("Dependency \"" + dep + "\" not found");
+                            dialog.setCancelable(true);
                         });
                     }
 
@@ -201,6 +207,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                         downloadButton.setText("Download");
                         downloadButton.setEnabled(true);
                         dependencyInput.setEnabled(true);
+                        dialog.setCancelable(true);
                     }
 
                     @Override

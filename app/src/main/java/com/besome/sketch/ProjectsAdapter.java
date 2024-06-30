@@ -36,12 +36,15 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import a.a.a.ZA;
+import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
+import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final ProjectsFragment projectsFragment;
@@ -258,14 +261,27 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         case 1 -> backupProject(projectMap);
                         case 2 -> toExportProjectActivity(projectMap);
                         case 3 -> {
-                            projectMap.put("confirmation", true);
-                            holder.setAnimateNextTransformation(true);
-                            notifyItemChanged(holder.getLayoutPosition());
+                            {
+                                aB dialog = new aB(projectsFragment.requireActivity());
+                                dialog.a(R.drawable.icon_delete);
+                                dialog.b(Helper.getResString(R.string.delete_project_dialog_title));
+                                dialog.a(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
+
+                                dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
+                                    deleteProject(holder.getLayoutPosition());
+                                    notifyItemChanged(holder.getLayoutPosition());
+                                    dialog.dismiss();
+                                });
+                                dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+                                dialog.show();
+                            }
                         }
                         case 4 -> showProjectSettingDialog(projectMap);
                     }
                 } else if (v.getId() == R.id.confirm_yes) {
-                    deleteProject(holder.getLayoutPosition());
+                    projectMap.put("confirmation", true);
+                    holder.setAnimateNextTransformation(true);
+                    notifyItemChanged(holder.getLayoutPosition());
                 } else if (v.getId() == R.id.confirm_no) {
                     projectMap.put("confirmation", false);
                     holder.setAnimateNextTransformation(true);

@@ -1,4 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="While you wait..."
-            android:textColor="@color/color_primary"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
 
         <TextView
@@ -24,14 +26,9 @@
             android:animateLayoutChanges="true"
             android:background="@drawable/circle_bg"
             android:gravity="center"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
-            android:textColor="#ffffffff"
-            android:textSize="10sp" />
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="11sp"
+            tools:text="15" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,10 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="18dp"
@@ -54,8 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textColor="@color/scolor_black_02"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="Can we use Ketchup on Pizza?" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,9 +57,10 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:orientation="horizontal"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -73,88 +68,109 @@
             android:id="@+id/layout_answer_ox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:gravity="center"
-            android:padding="8dp"
-            android:visibility="visible">
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/img_answer_o"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
+                android:layout_toStartOf="@+id/separator"
                 android:background="@drawable/bg_outline"
                 android:src="@drawable/answer_o" />
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="25dp" />
 
             <ImageView
                 android:id="@+id/img_answer_x"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center"
+                android:layout_toEndOf="@+id/separator"
                 android:background="@drawable/bg_outline"
                 android:src="@drawable/answer_x" />
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layout_answer_ab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            tools:layout_below="@id/layout_answer_ox">
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/view_answer_a"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_outline"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?colorSurfaceContainerHigh"
+                app:strokeWidth="0dp">
 
-                <TextView
-                    android:id="@+id/tv_answer_a"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:textColor="@color/scolor_black_02" />
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
-                <ImageView
-                    android:id="@+id/img_answer_a"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ok_48" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_answer_a"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        tools:text="Yes" />
 
-            <LinearLayout
+                    <ImageView
+                        android:id="@+id/img_answer_a"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ok_48"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/view_answer_b"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/bg_outline"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_answer_a"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?colorSurfaceContainerHigh"
+                app:strokeWidth="0dp">
 
-                <TextView
-                    android:id="@+id/tv_answer_b"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:textColor="@color/scolor_black_02" />
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
-                <ImageView
-                    android:id="@+id/img_answer_b"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ok_48" />
-            </LinearLayout>
-        </LinearLayout>
-    </FrameLayout>
+                    <TextView
+                        android:id="@+id/tv_answer_b"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        tools:text="No" />
+
+                    <ImageView
+                        android:id="@+id/img_answer_b"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ok_48"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

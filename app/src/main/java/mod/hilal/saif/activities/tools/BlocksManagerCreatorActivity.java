@@ -25,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -84,8 +85,14 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+
+
         ScrollView scrollView = findViewById(R.id.scroll_view);
-        pageTitle = findViewById(R.id.tx_toolbar_title);
         TextInputLayout nameLayout = findViewById(R.id.name_lay);
         name = findViewById(R.id.name);
         LinearLayout selectType = findViewById(R.id.select_type);
@@ -102,10 +109,6 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         MaterialButton cancel = findViewById(R.id.cancel);
         MaterialButton save = findViewById(R.id.save);
         LinearLayout reset = findViewById(R.id.reset);
-
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back);
 
         name.addTextChangedListener(new BaseTextWatcher() {
             @Override
@@ -233,7 +236,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
         cancel.setOnClickListener(Helper.getBackPressedClickListener(this));
         save.setOnClickListener(v -> {
-            if (type.getText().toString().equals("")) {
+            if (type.getText().toString().isEmpty()) {
                 type.setText(" ");
             }
             if (mode.equals("add")) {
@@ -348,14 +351,14 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         if (mode.equals("add")) {
             blockPosition = Integer.parseInt(getIntent().getStringExtra("pallet"));
             colour.setText(palletColour);
-            pageTitle.setText("Add a new block");
+            getSupportActionBar().setTitle("Add a new block");
             return;
         }
         blockPosition = Integer.parseInt(getIntent().getStringExtra("pos"));
         colour.setText(palletColour);
-        pageTitle.setText("Insert block");
+        getSupportActionBar().setTitle("Insert block");
         if (mode.equals("edit")) {
-            pageTitle.setText("Edit block");
+            getSupportActionBar().setTitle("Edit block");
             fillUpInputs(blockPosition);
         }
     }
