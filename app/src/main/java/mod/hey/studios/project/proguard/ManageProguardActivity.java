@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.sketchware.remod.R;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
