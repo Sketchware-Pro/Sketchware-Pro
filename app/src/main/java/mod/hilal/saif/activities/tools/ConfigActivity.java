@@ -408,7 +408,7 @@ public class ConfigActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
         );
-        preferenceRootParams.bottomMargin = lastItem ? dpToPx(10) : dpToPx(4);
+        preferenceRootParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(4);
         preferenceRoot.setLayoutParams(preferenceRootParams);
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(
@@ -534,7 +534,7 @@ public class ConfigActivity extends AppCompatActivity {
                 0.0f
         );
         
-        preferenceRootParams.bottomMargin = lastItem ? dpToPx(10) : dpToPx(4);
+        preferenceRootParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(4);
         
         preferenceRoot.setLayoutParams(preferenceRootParams);
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
