@@ -24,9 +24,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="#fff6f6f6"
                     android:gravity="center"
-                    android:textColor="#ff7d7d7d"
                     android:textSize="14sp"
                     android:visibility="gone" />
 
@@ -36,7 +34,6 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
-                    android:background="#fff5f5f5"
                     android:scrollbars="vertical"
                     android:splitMotionEvents="false" />
             </LinearLayout>
@@ -55,7 +52,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:background="#ffffffff"
             android:orientation="horizontal"
             android:padding="4dp"
             android:visibility="gone">
