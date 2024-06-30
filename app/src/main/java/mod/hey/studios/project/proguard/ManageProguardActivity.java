@@ -61,7 +61,7 @@ public class ManageProguardActivity extends AppCompatActivity implements View.On
             }
         }
 
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder bld = new MaterialAlertDialogBuilder(this);
         bld.setTitle("Select Local libraries");
         bld.setMultiChoiceItems(libraries, enabledLibraries, (dialog, which, isChecked) -> enabledLibraries[which] = isChecked);
         bld.setPositiveButton(R.string.common_word_save, (dialog, which) -> {
@@ -73,10 +73,8 @@ public class ManageProguardActivity extends AppCompatActivity implements View.On
                     finalList.add(libraries[i]);
                 }
             }
-
+            
             pg.setProguardFMLibs(finalList);
-
-            dialog.dismiss();
         });
         bld.setNegativeButton(R.string.common_word_cancel, null);
         bld.create().show();
