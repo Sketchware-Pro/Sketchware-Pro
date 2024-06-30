@@ -11,10 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import com.sketchware.remod.R;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +26,9 @@ import mod.hey.studios.util.Helper;
 public class ManageProguardActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ProguardHandler pg;
-    private SwitchCompat sw_pg_enabled;
-    private SwitchCompat sw_pg_debug;
-    private SwitchCompat r8_enabled;
+    private MaterialSwitch sw_pg_enabled;
+    private MaterialSwitch sw_pg_debug;
+    private MaterialSwitch r8_enabled;
 
     @Override
     public void onClick(View v) {
