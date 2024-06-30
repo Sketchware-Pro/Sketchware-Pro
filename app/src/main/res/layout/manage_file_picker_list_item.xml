@@ -12,7 +12,8 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="2dp"
         android:elevation="8dp"
-        app:cardBackgroundColor="#fff5f5f5">
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +37,6 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="16dp"
                     android:singleLine="true"
-                    android:textColor="#ff404040"
                     android:textSize="16sp" />
 
                 <FrameLayout
