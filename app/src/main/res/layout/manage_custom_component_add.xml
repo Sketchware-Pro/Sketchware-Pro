@@ -15,8 +15,7 @@
             android:layout_height="wrap_content"
             android:popupTheme="@style/ThemeOverlay.ToolbarMenu"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_collapseMode="parallax"
-            app:titleTextAppearance="@style/ToolbarTextAppearance" />
+            app:layout_collapseMode="parallax" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
