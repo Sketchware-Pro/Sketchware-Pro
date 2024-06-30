@@ -25,6 +25,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.activity.EdgeToEdge;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AlertDialog;
 
@@ -76,6 +77,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prefences_content_appbar);
 
@@ -283,15 +285,15 @@ public class ConfigActivity extends AppCompatActivity {
         addSwitchPreference("Built-in blocks",
                 "May slow down loading blocks in Logic Editor.",
                 SETTING_SHOW_BUILT_IN_BLOCKS,
-                false);
+                false, false);
         addSwitchPreference("Show all variable blocks",
                 "All variable blocks will be visible, even if you don't have variables for them.",
                 SETTING_ALWAYS_SHOW_BLOCKS,
-                false);
+                false, false);
         addSwitchPreference("Show all blocks of palettes",
                 "Every single available block will be shown. Will slow down opening palettes!",
                 SETTING_SHOW_EVERY_SINGLE_BLOCK,
-                false);
+                false, false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
@@ -318,11 +320,11 @@ public class ConfigActivity extends AppCompatActivity {
                             inputText.requestFocus();
                       });
                       dialog.show();
-                });
+                }, false);
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
                 SETTING_LEGACY_CODE_EDITOR,
-                false);
+                false, false);
         addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
                 SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
             if (isChecked) {
@@ -333,19 +335,19 @@ public class ConfigActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        }, false);
         addSwitchPreference("Launch projects after installing",
                 "Opens projects automatically after auto-installation using root.",
                 SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
-                true);
+                true, false);
         addSwitchPreference("Use new Version Control",
                 "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
-                false);
+                false, false);
         addSwitchPreference("Enable block text input highlighting",
                 "Enables syntax highlighting while editing blocks' text parameters.",
                 SETTING_USE_ASD_HIGHLIGHTER,
-                false);
+                false, false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
@@ -386,7 +388,7 @@ public class ConfigActivity extends AppCompatActivity {
                          inputText.requestFocus();
                    });
                    dialog.show();
-                });
+                }, true);
     }
 
     private void applyDesign(View view) {
@@ -394,17 +396,20 @@ public class ConfigActivity extends AppCompatActivity {
         view.setFocusable(true);
     }
 
-    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
-        addSwitchPreference(title, subtitle, keyName, defaultValue, null);
+    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, boolean lastItem) {
+        addSwitchPreference(title, subtitle, keyName, defaultValue, null, lastItem);
     }
 
-    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
+    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener, boolean lastItem) {
         LinearLayout preferenceRoot = new LinearLayout(this);
-        preferenceRoot.setLayoutParams(new LinearLayout.LayoutParams(
+        
+        LinearLayout.LayoutParams preferenceRootParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
-        ));
+        );
+        preferenceRootParams.bottomMargin = lastItem ? dpToPx(10) : dpToPx(4);
+        preferenceRoot.setLayoutParams(preferenceRootParams);
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(
                 dpToPx(8),
@@ -521,14 +526,16 @@ public class ConfigActivity extends AppCompatActivity {
         applyDesign(preferenceRoot);
     }
 
-    private void addTextInputPreference(String title, String subtitle, View.OnClickListener listener) {
+    private void addTextInputPreference(String title, String subtitle, View.OnClickListener listener, boolean lastItem) {
         LinearLayout preferenceRoot = new LinearLayout(this);
         LinearLayout.LayoutParams preferenceRootParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.0f
         );
-        preferenceRootParams.bottomMargin = dpToPx(4);
+        
+        preferenceRootParams.bottomMargin = lastItem ? dpToPx(10) : dpToPx(4);
+        
         preferenceRoot.setLayoutParams(preferenceRootParams);
         preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
         preferenceRoot.setPadding(

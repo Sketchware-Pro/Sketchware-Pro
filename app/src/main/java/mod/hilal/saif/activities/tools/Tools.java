@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.github.angads25.filepicker.model.DialogConfigs;
@@ -55,6 +56,7 @@ public class Tools extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prefences_content_appbar);
 
