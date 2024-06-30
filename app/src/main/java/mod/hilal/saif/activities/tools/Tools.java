@@ -142,7 +142,7 @@ public class Tools extends AppCompatActivity {
         createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)));
     }
 
-    private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener) {
+    private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener, boolean lastItem) {
         LibraryItemView item = new LibraryItemView(this);
         item.enabled.setVisibility(View.GONE);
         item.icon.setImageResource(icon);
@@ -150,6 +150,13 @@ public class Tools extends AppCompatActivity {
         item.description.setText(desc);
         toView.addView(item);
         item.setOnClickListener(listener);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
+             LinearLayout.LayoutParams.MATCH_PARENT,
+             LinearLayout.LayoutParams.WRAP_CONTENT,
+             0.0f
+        );
+        itemParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(0);
+        item.setLayoutParams(itemParams);
     }
 
     private void signApkFileDialog() {
