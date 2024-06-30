@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
 import static com.besome.sketch.editor.view.ViewEditor.shakeView;
+import static mod.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
 import android.app.AlertDialog;
