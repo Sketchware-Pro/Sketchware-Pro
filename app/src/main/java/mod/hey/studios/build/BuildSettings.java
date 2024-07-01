@@ -1,9 +1,11 @@
 package mod.hey.studios.build;
 
+import java.io.Serializable;
+
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.ProjectSettings;
 
-public class BuildSettings extends ProjectSettings {
+public class BuildSettings extends ProjectSettings implements Serializable {
 
     public static final String SETTING_ANDROID_JAR_PATH = "android_jar";
     public static final String SETTING_CLASSPATH = "classpath";

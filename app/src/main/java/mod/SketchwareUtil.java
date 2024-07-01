@@ -11,15 +11,9 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 
 import java.io.BufferedOutputStream;
@@ -33,7 +27,6 @@ import java.util.function.Consumer;
 
 import a.a.a.aB;
 import a.a.a.bB;
-import a.a.a.mB;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
@@ -177,28 +170,11 @@ public class SketchwareUtil {
     }
 
     public static void showAnErrorOccurredDialog(Activity activity, String errorMessage) {
-        aB dialog = new aB(activity);
-        dialog.a(R.drawable.break_warning_96_red);
-        dialog.b(Helper.getResString(R.string.common_error_an_error_occurred));
-
-        ScrollView scrollView = new ScrollView(activity);
-        scrollView.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        TextView errorMessageThingy = new TextView(activity);
-        errorMessageThingy.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        errorMessageThingy.setText(errorMessage);
-        scrollView.addView(errorMessageThingy);
-
-        dialog.a(scrollView);
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
-            if (!mB.a()) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
+        builder.setTitle(Helper.getResString(R.string.common_error_an_error_occurred));
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton("Okay", null);
+        builder.show();
     }
 }

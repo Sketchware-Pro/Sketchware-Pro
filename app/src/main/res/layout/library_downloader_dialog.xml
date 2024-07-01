@@ -1,6 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
     android:padding="4dp">
 
@@ -32,14 +34,48 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/progressText"
+        android:id="@+id/hintText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="10dp"
-        android:paddingVertical="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/local_library_manager_dependency_info"
         android:textSize="14sp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/downloadProgressCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="14dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:text="@string/local_library_manager_download_status"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/downloadStatusTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                android:singleLine="true"
+                tools:text="Downloading dependencies..." />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <CheckBox
         android:id="@+id/skipSubDependenciesCheckBox"
@@ -54,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/common_word_download" />
 </LinearLayout>
