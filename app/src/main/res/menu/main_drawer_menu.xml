@@ -21,7 +21,7 @@
         android:title="Create keystore" />
 
     <item
-        android:id="@+id/dev_tools"
+        android:id="@+id/app_settings"
         android:icon="@drawable/ic_settings_24"
         android:title="Settings" />
 

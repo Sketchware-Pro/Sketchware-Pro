@@ -24,6 +24,7 @@ import com.besome.sketch.help.SystemSettingActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 
@@ -40,10 +41,10 @@ import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
 import mod.trindadedev.settings.appearance.AppearanceActivity;
 
-public class Tools extends AppCompatActivity {
+public class AppSettings extends AppCompatActivity {
 
     private LinearLayout content;
-    private com.google.android.material.appbar.MaterialToolbar topAppBar;
+    private MaterialToolbar topAppBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -295,7 +295,7 @@
             android:name="mod.hilal.saif.activities.tools.EventsMakerDetails"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.Tools"
+            android:name="mod.hilal.saif.activities.tools.AppSettings"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.ilyasse.activities.about.AboutModActivity"
