@@ -2156,9 +2156,10 @@ Please try again later"</string>
     <string name="local_library_manager">Local library Manager</string>
     <string name="local_library_manager_download">Download a library</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
-    <string name="local_library_manager_dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+    <string name="local_library_manager_dependency_info">You can find the dependency of a library in GitHub, typically in the Readme file.</string>
     <string name="local_library_manager_no_libraries_title">No Local libraries available</string>
     <string name="local_library_manager_no_libraries_body">You don\'t have any Local libraries yet, try downloading one.</string>
+    <string name="local_library_manager_download_status">Download status</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
 
 

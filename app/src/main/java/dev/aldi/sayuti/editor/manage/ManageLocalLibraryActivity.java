@@ -3,9 +3,6 @@ package dev.aldi.sayuti.editor.manage;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -20,29 +17,21 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import com.sketchware.remod.databinding.LibraryDownloaderDialogBinding;
 import com.sketchware.remod.databinding.ManageLocallibrariesBinding;
 import com.sketchware.remod.databinding.ViewItemLocalLibBinding;
-
-import org.cosmic.ide.dependency.resolver.api.Artifact;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
-import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
-import mod.pranav.dependency.resolver.DependencyResolver;
 
 public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
     private boolean notAssociatedWithProject = false;
@@ -52,7 +41,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
     private BuildSettings buildSettings;
 
-    private final Gson gson = new Gson();
     private ManageLocallibrariesBinding binding;
 
     @Override
@@ -84,171 +72,17 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     @Override
     @SuppressLint("SetTextI18n")
     public void onClick(View v) {
-        var dialogBinding = LibraryDownloaderDialogBinding.inflate(getLayoutInflater());
-        View view = dialogBinding.getRoot();
 
-        var downloadButton = dialogBinding.downloadButton;
-        var dependencyInput = dialogBinding.dependencyInput;
-
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setView(view)
-                .setCancelable(true)
-                .create();
-
-        downloadButton.setOnClickListener(v1 -> {
-            String url = Objects.requireNonNull(dependencyInput.getText()).toString();
-            if (url.isEmpty()) {
-                SketchwareUtil.toastError("Please enter a dependency");
-                return;
-            }
-            var parts = url.split(":");
-            if (parts.length != 3) {
-                SketchwareUtil.toastError("Invalid dependency format");
-                return;
-            }
-
-            downloadButton.setEnabled(false);
-            dependencyInput.setEnabled(false);
-            downloadButton.setText("Downloading...");
-            dialogBinding.progressText.setText("Looking for dependency...");
-            dialog.setCancelable(false);
-
-            var group = parts[0];
-            var artifact = parts[1];
-            var version = parts[2];
-            var resolver = new DependencyResolver(group, artifact, version, dialogBinding.skipSubDependenciesCheckBox.isChecked(), buildSettings);
-            var handler = new Handler(Looper.getMainLooper());
-
-            class SetTextRunnable implements Runnable {
-                private final String message;
-
-                SetTextRunnable(String message) {
-                    this.message = message;
-                }
-
-                @Override
-                public void run() {
-                    dialogBinding.progressText.setText(message);
-                }
-            }
-
-            Executors.newSingleThreadExecutor().execute(() -> {
-                BuiltInLibraries.maybeExtractAndroidJar(progress -> handler.post(new SetTextRunnable(progress)));
-                BuiltInLibraries.maybeExtractCoreLambdaStubsJar();
-
-                resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
-                    @Override
-                    public void onResolving(@NonNull Artifact artifact, @NonNull Artifact dependency) {
-                        handler.post(new SetTextRunnable("Resolving " + dependency + " for " + artifact + "..."));
-                    }
-
-                    @Override
-                    public void onResolutionComplete(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency " + dep + " resolved"));
-                    }
-
-                    @Override
-                    public void onArtifactFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Found " + dep + " in " + dep.getRepository().getName()));
-                    }
-
-                    @Override
-                    public void onArtifactNotFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency " + dep + " not found"));
-                        downloadButton.setText("Download");
-                        downloadButton.setEnabled(true);
-                        dependencyInput.setEnabled(true);
-                        dialog.setCancelable(true);
-                    }
-
-                    @Override
-                    public void onSkippingResolution(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Skipping resolution for " + dep));
-                    }
-
-                    @Override
-                    public void onVersionNotFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Version not available for " + dep));
-                    }
-
-                    @Override
-                    public void onDependenciesNotFound(@NonNull Artifact dep) {
-                        handler.post(() -> {
-                            new SetTextRunnable("Dependencies not found for \"" + dep + "\"");
-                        });
-                    }
-
-                    @Override
-                    public void onInvalidScope(@NonNull Artifact dep, @NonNull String scope) {
-                        handler.post(new SetTextRunnable("Invalid scope for " + dep + ": " + scope));
-                    }
-
-                    @Override
-                    public void invalidPackaging(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Invalid packaging for dependency " + dep));
-                    }
-
-
-                    @Override
-                    public void onDownloadStart(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Downloading dependency " + dep + "..."));
-                    }
-
-                    @Override
-                    public void onDownloadEnd(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency downloaded successfully"));
-                    }
-
-                    @Override
-                    public void onDownloadError(@NonNull Artifact dep, @NonNull Throwable e) {
-                        handler.post(() -> {
-                            downloadButton.setText("Download");
-                            downloadButton.setEnabled(true);
-                            dependencyInput.setEnabled(true);
-                            dialog.setCancelable(true);
-                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this, "Downloading dependency '" + dep + "' failed: " + Log.getStackTraceString(e));
-                        });
-                    }
-
-                    @Override
-                    public void unzipping(@NonNull Artifact artifact) {
-                        handler.post(new SetTextRunnable("Unzipping dependency " + artifact));
-                    }
-
-                    @Override
-                    public void dexing(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dexing dependency " + dep));
-                    }
-
-                    @Override
-                    public void dexingFailed(@NonNull Artifact dependency, @NonNull Exception e) {
-                        handler.post(() -> {
-                            downloadButton.setText("Download");
-                            downloadButton.setEnabled(true);
-                            dependencyInput.setEnabled(true);
-                            dialog.setCancelable(true);
-                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this, "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
-                        });
-                    }
-
-                    @Override
-                    public void onTaskCompleted(@NonNull List<String> dependencies) {
-                        handler.post(() -> {
-                            dialog.dismiss();
-                            if (!notAssociatedWithProject) {
-                                new SetTextRunnable("Adding dependencies to project...").run();
-                                var fileContent = FileUtil.readFile(local_lib_file);
-                                var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
-                                enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toUnmodifiableList()));
-                                FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
-                            }
-                            loadFiles();
-                        });
-                    }
-                });
-            });
-        });
-        dialog.show();
+        LibraryDownloaderDialogFragment dialogFragment = new LibraryDownloaderDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
+        bundle.putSerializable("buildSettings", buildSettings);
+        bundle.putString("local_lib_file", local_lib_file);
+        dialogFragment.setArguments(bundle);
+        if (getSupportFragmentManager().findFragmentByTag("library_downloader_dialog") != null)
+            return;
+        dialogFragment.setListener(this::loadFiles);
+        dialogFragment.show(getSupportFragmentManager(), "library_downloader_dialog");
     }
 
     private void loadFiles() {
@@ -396,7 +230,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             return localLibraries.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        static class ViewHolder extends RecyclerView.ViewHolder {
             private final ViewItemLocalLibBinding listBinding;
 
             public ViewHolder(@NonNull ViewItemLocalLibBinding listBinding) {
