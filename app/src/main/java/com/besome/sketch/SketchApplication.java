@@ -41,8 +41,6 @@ public class SketchApplication extends Application {
                         System.exit(1);
                     }
                 });
-            if (uncaughtExceptionHandler != null) {
-                uncaughtExceptionHandler.uncaughtException(thread, throwable);
             }
         });
         super.onCreate();
