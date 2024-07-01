@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
 import android.util.Log;
+import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
 
