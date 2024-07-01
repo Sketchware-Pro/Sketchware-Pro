@@ -309,7 +309,10 @@
         <activity
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
-
+            
+        <activity
+            android:name="mod.trindadedev.settings.appearance.AppearanceActivity" />
+            
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
