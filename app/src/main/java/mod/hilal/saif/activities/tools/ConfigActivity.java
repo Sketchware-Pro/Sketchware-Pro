@@ -296,30 +296,30 @@ public class ConfigActivity extends AppCompatActivity {
                 false, false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
-                   DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-                      EditText inputText = dialogBinding.inputText;
-                      inputText.setText(getBackupPath());
-                      AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
-                           .setView(dialogBinding.getRoot())
-                           .setTitle("Backup directory")
-                           .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
-                           .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                           .setPositiveButton(R.string.common_word_save, null)
-                           .create();
+                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                    EditText inputText = dialogBinding.inputText;
+                    inputText.setText(getBackupPath());
+                    AlertDialog dialog = new MaterialAlertDialogBuilder(this) 
+                            .setView(dialogBinding.getRoot())
+                            .setTitle("Backup directory")
+                            .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
+                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                            .setPositiveButton(R.string.common_word_save, null)
+                            .create();
                       
-                      dialogBinding.chipGroupTypes.setVisibility(View.GONE);
-                      dialog.setOnShowListener(dialogInterface -> {
-                            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                            positiveButton.setOnClickListener(view -> {
-                                 setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
-                                 SketchwareUtil.toast("Saved");
-                                 dialog.dismiss();
-                            });
+                    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
+                    dialog.setOnShowListener(dialogInterface -> {
+                          Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                          positiveButton.setOnClickListener(view -> {
+                                setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
+                                SketchwareUtil.toast("Saved");
+                                dialog.dismiss();
+                          });
                             
-                            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                            inputText.requestFocus();
-                      });
-                      dialog.show();
+                          dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                          inputText.requestFocus();
+                    });
+                    dialog.show();
                 }, false);
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
