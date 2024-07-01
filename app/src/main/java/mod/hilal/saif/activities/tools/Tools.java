@@ -3,31 +3,24 @@ package mod.hilal.saif.activities.tools;
 import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 import static mod.SketchwareUtil.dpToPx;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.NestedScrollView;
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
+import com.besome.sketch.help.SystemSettingActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -37,7 +30,6 @@ import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 import java.io.File;
 
 import a.a.a.aB;
-import a.a.a.mB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import mod.SketchwareUtil;
@@ -51,10 +43,7 @@ import mod.trindadedev.settings.appearance.AppearanceActivity;
 public class Tools extends AppCompatActivity {
 
     private LinearLayout content;
-    private NestedScrollView contentLayout;
-    private com.google.android.material.appbar.AppBarLayout appBarLayout;
     private com.google.android.material.appbar.MaterialToolbar topAppBar;
-    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,11 +53,8 @@ public class Tools extends AppCompatActivity {
 
         content = findViewById(R.id.content);
         topAppBar = findViewById(R.id.topAppBar);
-        appBarLayout = findViewById(R.id.appBarLayout);
-        contentLayout = findViewById(R.id.contentLayout);
-        collapsingToolbar = findViewById(R.id.collapsingToolbar);
 
-        topAppBar.setTitle("Tools");
+        topAppBar.setTitle("Settings");
         topAppBar.setNavigationOnClickListener(view -> onBackPressed());
         setupViews();
     }
@@ -142,7 +128,8 @@ public class Tools extends AppCompatActivity {
         createToolsView(R.drawable.icon_pallete, getString(R.string.appearance), getString(R.string.appearance_description), content, new ActivityLauncher(new Intent(getApplicationContext(), AppearanceActivity.class)), false);
         createToolsView(R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", content, v -> openWorkingDirectory(), false);
         createToolsView(R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", content, v -> signApkFileDialog(), false);
-        createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), true);
+        createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
+        createToolsView(R.drawable.ic_settings_24, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
     }
 
     private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener, boolean lastItem) {
@@ -154,9 +141,9 @@ public class Tools extends AppCompatActivity {
         toView.addView(item);
         item.setOnClickListener(listener);
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
-             LinearLayout.LayoutParams.MATCH_PARENT,
-             LinearLayout.LayoutParams.WRAP_CONTENT,
-             0.0f
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.0f
         );
         itemParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(0);
         item.setLayoutParams(itemParams);
