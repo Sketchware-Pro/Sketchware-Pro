@@ -1,14 +1,10 @@
 package com.besome.sketch;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
 import android.util.Log;
-
-import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.material.color.DynamicColors;
@@ -41,8 +37,7 @@ public class SketchApplication extends Application {
                         System.exit(1);
                     }
                 });
-            }
-        });
+
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
