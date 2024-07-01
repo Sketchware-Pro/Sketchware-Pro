@@ -28,7 +28,7 @@ public class SketchApplication extends Application {
                 new Thread.UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread thread, Throwable throwable) {
-                        Intent intent = new Intent(getApplicationContext(), DebugActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), CollectErrorActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.putExtra("error", Log.getStackTraceString(throwable));
                         startActivity(intent);
