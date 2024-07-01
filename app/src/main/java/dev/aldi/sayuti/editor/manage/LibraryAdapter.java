@@ -52,7 +52,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
     private BuildSettings buildSettings;
 
-    private final Gson gson = new Gson();
     private ManageLocallibrariesBinding binding;
 
     @Override
@@ -94,7 +93,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                 .setView(view)
                 .setCancelable(true)
                 .create();
-
         downloadButton.setOnClickListener(v1 -> {
             String url = Objects.requireNonNull(dependencyInput.getText()).toString();
             if (url.isEmpty()) {
@@ -110,7 +108,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             downloadButton.setEnabled(false);
             dependencyInput.setEnabled(false);
             downloadButton.setText("Downloading...");
-            dialogBinding.progressText.setText("Looking for dependency...");
             dialog.setCancelable(false);
 
             var group = parts[0];
@@ -138,97 +135,46 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
                 resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
                     @Override
-                    public void onResolving(@NonNull Artifact artifact, @NonNull Artifact dependency) {
-                        handler.post(new SetTextRunnable("Resolving " + dependency + " for " + artifact + "..."));
-                    }
-
-                    @Override
-                    public void onResolutionComplete(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency " + dep + " resolved"));
-                    }
-
-                    @Override
-                    public void onArtifactFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Found " + dep + " in " + dep.getRepository().getName()));
-                    }
-
-                    @Override
-                    public void onArtifactNotFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency " + dep + " not found"));
-                        downloadButton.setText("Download");
-                        downloadButton.setEnabled(true);
-                        dependencyInput.setEnabled(true);
-                        dialog.setCancelable(true);
-                    }
-
-                    @Override
-                    public void onSkippingResolution(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Skipping resolution for " + dep));
-                    }
-
-                    @Override
-                    public void onVersionNotFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Version not available for " + dep));
-                    }
-
-                    @Override
-                    public void onDependenciesNotFound(@NonNull Artifact dep) {
+                    public void invalidPackaging(@NonNull String dep) {
                         handler.post(() -> {
-                            new SetTextRunnable("Dependencies not found for \"" + dep + "\"");
-                        });
-                    }
-
-                    @Override
-                    public void onInvalidScope(@NonNull Artifact dep, @NonNull String scope) {
-                        handler.post(new SetTextRunnable("Invalid scope for " + dep + ": " + scope));
-                    }
-
-                    @Override
-                    public void invalidPackaging(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Invalid packaging for dependency " + dep));
-                    }
-
-
-                    @Override
-                    public void onDownloadStart(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Downloading dependency " + dep + "..."));
-                    }
-
-                    @Override
-                    public void onDownloadEnd(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency downloaded successfully"));
-                    }
-
-                    @Override
-                    public void onDownloadError(@NonNull Artifact dep, @NonNull Throwable e) {
-                        handler.post(() -> {
+                            new SetTextRunnable("Invalid packaging for dependency \"" + dep + "\"");
                             downloadButton.setText("Download");
                             downloadButton.setEnabled(true);
                             dependencyInput.setEnabled(true);
                             dialog.setCancelable(true);
-                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this, "Downloading dependency '" + dep + "' failed: " + Log.getStackTraceString(e));
                         });
                     }
 
                     @Override
-                    public void unzipping(@NonNull Artifact artifact) {
-                        handler.post(new SetTextRunnable("Unzipping dependency " + artifact));
-                    }
-
-                    @Override
-                    public void dexing(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dexing dependency " + dep));
+                    public void dexing(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Dexing dependency \"" + dep + "\"..."));
+                        dialog.setCancelable(false);
                     }
 
                     @Override
                     public void dexingFailed(@NonNull Artifact dependency, @NonNull Exception e) {
                         handler.post(() -> {
-                            downloadButton.setText("Download");
-                            downloadButton.setEnabled(true);
-                            dependencyInput.setEnabled(true);
-                            dialog.setCancelable(true);
-                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this, "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
+                            dialog.dismiss();
+                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this,
+                                    "Dexing dependency \"" + dependency + "\" failed: " + Log.getStackTraceString(e));
                         });
+                    }
+
+                    @Override
+                    public void log(@NonNull String msg) {
+                        handler.post(new SetTextRunnable(msg));
+                    }
+
+                    @Override
+                    public void downloading(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Downloading \"" + dep + "\"..."));
+                        dialog.setCancelable(false);
+                    }
+
+                    @Override
+                    public void startResolving(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Searching for dependency \"" + dep + "\"..."));
+                        dialog.setCancelable(false);
                     }
 
                     @Override
@@ -245,6 +191,34 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                             loadFiles();
                         });
                     }
+<<<<<<< HEAD
+
+                    @Override
+                    public void onDependencyNotFound(@NonNull String dep) {
+                        handler.post(() -> {
+                            downloadButton.setText("Download");
+                            downloadButton.setEnabled(true);
+                            dependencyInput.setEnabled(true);
+                            dialogBinding.progressText.setText("Dependency \"" + dep + "\" not found");
+                            dialog.setCancelable(true);
+                        });
+                    }
+
+                    @Override
+                    public void onDependencyResolveFailed(@NonNull Exception e) {
+                        handler.post(new SetTextRunnable(e.getMessage()));
+                        downloadButton.setText("Download");
+                        downloadButton.setEnabled(true);
+                        dependencyInput.setEnabled(true);
+                        dialog.setCancelable(true);
+                    }
+
+                    @Override
+                    public void onDependencyResolved(@NonNull String dep) {
+                        handler.post(new SetTextRunnable("Dependency \"" + dep + "\" resolved"));
+                    }
+=======
+>>>>>>> main
                 });
             });
         });
@@ -262,7 +236,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                 project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
             }
         }
-        ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
         arrayList.sort(String.CASE_INSENSITIVE_ORDER);
 
@@ -280,8 +253,6 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         binding.librariesList.setLayoutManager(new LinearLayoutManager(this));
         binding.librariesList.setAdapter(new LibraryAdapter(localLibraryNames));
     }
-
-    public static HashMap<String, Object> createLibraryMap(String name) {
         String configPath = local_libs_path + name + "/config";
         String resPath = local_libs_path + name + "/res";
         String jarPath = local_libs_path + name + "/classes.jar";
