@@ -10,7 +10,7 @@
     android:focusable="true"
     android:clickable="true"
     style="?attr/materialCardViewFilledStyle"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
     <LinearLayout
         android:layout_width="match_parent"

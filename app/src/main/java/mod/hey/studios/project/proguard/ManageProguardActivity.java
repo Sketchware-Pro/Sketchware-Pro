@@ -11,10 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import com.sketchware.remod.R;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +27,9 @@ import mod.hey.studios.util.Helper;
 public class ManageProguardActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ProguardHandler pg;
-    private SwitchCompat sw_pg_enabled;
-    private SwitchCompat sw_pg_debug;
-    private SwitchCompat r8_enabled;
+    private MaterialSwitch sw_pg_enabled;
+    private MaterialSwitch sw_pg_debug;
+    private MaterialSwitch r8_enabled;
 
     @Override
     public void onClick(View v) {
@@ -60,7 +62,7 @@ public class ManageProguardActivity extends AppCompatActivity implements View.On
             }
         }
 
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder bld = new MaterialAlertDialogBuilder(this);
         bld.setTitle("Select Local libraries");
         bld.setMultiChoiceItems(libraries, enabledLibraries, (dialog, which, isChecked) -> enabledLibraries[which] = isChecked);
         bld.setPositiveButton(R.string.common_word_save, (dialog, which) -> {
@@ -72,10 +74,8 @@ public class ManageProguardActivity extends AppCompatActivity implements View.On
                     finalList.add(libraries[i]);
                 }
             }
-
+            
             pg.setProguardFMLibs(finalList);
-
-            dialog.dismiss();
         });
         bld.setNegativeButton(R.string.common_word_cancel, null);
         bld.create().show();

@@ -295,7 +295,7 @@
             android:name="mod.hilal.saif.activities.tools.EventsMakerDetails"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.Tools"
+            android:name="mod.hilal.saif.activities.tools.AppSettings"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.ilyasse.activities.about.AboutModActivity"
@@ -309,7 +309,10 @@
         <activity
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
-
+            
+        <activity
+            android:name="mod.trindadedev.settings.appearance.AppearanceActivity" />
+            
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />

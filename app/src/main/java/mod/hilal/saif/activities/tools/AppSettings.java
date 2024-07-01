@@ -1,41 +1,36 @@
 package mod.hilal.saif.activities.tools;
 
 import static com.besome.sketch.editor.view.ViewEditor.shakeView;
+import static mod.SketchwareUtil.dpToPx;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.NestedScrollView;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
+import com.besome.sketch.help.SystemSettingActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 
 import java.io.File;
 
 import a.a.a.aB;
-import a.a.a.mB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import mod.SketchwareUtil;
@@ -44,27 +39,23 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
+import mod.trindadedev.settings.appearance.AppearanceActivity;
 
-public class Tools extends AppCompatActivity {
+public class AppSettings extends AppCompatActivity {
 
     private LinearLayout content;
-    private NestedScrollView contentLayout;
-    private com.google.android.material.appbar.AppBarLayout appBarLayout;
-    private com.google.android.material.appbar.MaterialToolbar topAppBar;
-    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
+    private MaterialToolbar topAppBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prefences_content_appbar);
 
         content = findViewById(R.id.content);
         topAppBar = findViewById(R.id.topAppBar);
-        appBarLayout = findViewById(R.id.appBarLayout);
-        contentLayout = findViewById(R.id.contentLayout);
-        collapsingToolbar = findViewById(R.id.collapsingToolbar);
 
-        topAppBar.setTitle("Tools");
+        topAppBar.setTitle("Settings");
         topAppBar.setNavigationOnClickListener(view -> onBackPressed());
         setupViews();
     }
@@ -129,18 +120,20 @@ public class Tools extends AppCompatActivity {
     }
 
     private void setupViews() {
-        createToolsView(R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor", content, new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class)));
-        createToolsView(R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus", content, new ActivityLauncher(new Intent(getApplicationContext(), BlockSelectorActivity.class)));
-        createToolsView(R.drawable.collage_48, "Component manager", "Manage your own components", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class)));
-        createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, new ActivityLauncher(new Intent(getApplicationContext(), EventsMaker.class)));
-        createToolsView(R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")));
-        createToolsView(R.drawable.engineering_48, "Mod settings", "Change general mod settings", content, new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class)));
-        createToolsView(R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", content, v -> openWorkingDirectory());
-        createToolsView(R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", content, v -> signApkFileDialog());
-        createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)));
+        createToolsView(R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor", content, new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class)), false);
+        createToolsView(R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus", content, new ActivityLauncher(new Intent(getApplicationContext(), BlockSelectorActivity.class)), false);
+        createToolsView(R.drawable.collage_48, "Component manager", "Manage your own components", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class)), false);
+        createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, new ActivityLauncher(new Intent(getApplicationContext(), EventsMaker.class)), false);
+        createToolsView(R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")), false);
+        createToolsView(R.drawable.engineering_48, "Mod settings", "Change general mod settings", content, new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class)), false);
+        createToolsView(R.drawable.icon_pallete, getString(R.string.appearance), getString(R.string.appearance_description), content, new ActivityLauncher(new Intent(getApplicationContext(), AppearanceActivity.class)), false);
+        createToolsView(R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", content, v -> openWorkingDirectory(), false);
+        createToolsView(R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", content, v -> signApkFileDialog(), false);
+        createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
+        createToolsView(R.drawable.ic_settings_24, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
     }
 
-    private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener) {
+    private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener, boolean lastItem) {
         LibraryItemView item = new LibraryItemView(this);
         item.enabled.setVisibility(View.GONE);
         item.icon.setImageResource(icon);
@@ -148,6 +141,13 @@ public class Tools extends AppCompatActivity {
         item.description.setText(desc);
         toView.addView(item);
         item.setOnClickListener(listener);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.0f
+        );
+        itemParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(0);
+        item.setLayoutParams(itemParams);
     }
 
     private void signApkFileDialog() {

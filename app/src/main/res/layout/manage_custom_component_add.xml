@@ -2,7 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:importantForAutofill="noExcludeDescendants">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,12 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?colorPrimary"
-            android:popupTheme="@style/ThemeOverlay.ToolbarMenu"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_collapseMode="parallax"
-            app:titleTextAppearance="@style/ToolbarTextAppearance"
-            app:titleTextColor="@android:color/white" />
+            app:layout_collapseMode="parallax" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -59,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_name"
-                        android:textColor="#4D4D4D"
+                        
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -95,7 +89,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_id"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -131,7 +124,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_icon"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -183,7 +175,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_var_type_name"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -219,7 +210,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_type_name"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -255,7 +245,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_build_class"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -291,7 +280,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_type_class"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -315,7 +303,7 @@
                     android:layout_marginBottom="8dp"
                     android:padding="8dp"
                     android:text="Optional"
-                    android:textColor="#F44336"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -336,7 +324,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_description"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -369,7 +356,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_url"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -405,7 +391,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_add_var"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -425,7 +410,6 @@
                     android:layout_gravity="right"
                     android:layout_marginBottom="8dp"
                     android:text="(### -&gt; variable name)"
-                    android:textColor="#9A9A9A"
                     android:textSize="12sp" />
 
                 <LinearLayout
@@ -446,7 +430,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_define_add_var"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -467,7 +450,6 @@
                     android:layout_gravity="right"
                     android:layout_marginBottom="8dp"
                     android:text="(### -&gt; variable name)"
-                    android:textColor="#9A9A9A"
                     android:textSize="12sp" />
 
                 <LinearLayout
@@ -488,7 +470,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="@string/developer_tools_component_imports"
-                        android:textColor="#4D4D4D"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>

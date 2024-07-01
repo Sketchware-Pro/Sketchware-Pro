@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
 
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -41,6 +42,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         binding = ManageCustomComponentAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
