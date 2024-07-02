@@ -1896,6 +1896,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (!super.isStoragePermissionGranted()) {
             finish();
         }
+        PaletteSelector.ResetSavedInfo();
         Parcelable parcelable;
         if (savedInstanceState == null) {
             B = getIntent().getStringExtra("sc_id");
