@@ -2177,6 +2177,7 @@ Please try again later"</string>
     
     <string name="use_legacy_code_editor_title">Use legacy Code Editor</string>
     <string name="use_legacy_code_editor_message">Enables old Code Editor from v6.2.0.</string>
+    <string name="signatures_title">Signatures</string>
     
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
