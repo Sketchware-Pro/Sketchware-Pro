@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/preferenceThemeContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/toggleThemes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/themeLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appearance_theme_light" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/themeSystem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appearance_theme_system" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/themeDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appearance_theme_dark" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package mod.trindadedev.settings.appearance.theme.manage;
+package mod.trindadedev.manage.theme;
 
 import android.content.Context;
 import android.content.SharedPreferences;

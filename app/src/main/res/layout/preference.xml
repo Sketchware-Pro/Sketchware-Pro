@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/preference"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/preferenceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="0dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"/>
+
+    <TextView
+        android:id="@+id/preferenceDescription"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/preferenceGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginLeft="8dp"
+        android:id="@+id/preferenceGroupTitle"
+        android:text="preference group content" />
+
+    <LinearLayout
+        android:id="@+id/preferenceGroupContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+</LinearLayout>

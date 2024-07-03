@@ -13,7 +13,7 @@ import com.besome.sketch.tools.CollectErrorActivity;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.material.color.DynamicColors;
 
-import mod.trindadedev.settings.appearance.theme.manage.ThemeManager;
+import mod.trindadedev.manage.theme.ThemeManager;
 
 public class SketchApplication extends Application {
 

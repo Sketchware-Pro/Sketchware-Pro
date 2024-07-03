@@ -321,10 +321,6 @@ public class ConfigActivity extends AppCompatActivity {
                     });
                     dialog.show();
                 }, false);
-        addSwitchPreference("Use legacy Code Editor",
-                "Enables old Code Editor from v6.2.0.",
-                SETTING_LEGACY_CODE_EDITOR,
-                false, false);
         addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
                 SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
             if (isChecked) {

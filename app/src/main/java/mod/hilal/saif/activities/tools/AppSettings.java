@@ -39,7 +39,7 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.settings.appearance.AppearanceActivity;
+import mod.trindadedev.ui.settings.appearance.AppearanceActivity;
 
 public class AppSettings extends AppCompatActivity {
 

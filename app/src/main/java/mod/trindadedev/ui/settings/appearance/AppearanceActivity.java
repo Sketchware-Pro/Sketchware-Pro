@@ -1,4 +1,4 @@
-package mod.trindadedev.settings.appearance;
+package mod.trindadedev.ui.settings.appearance;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
