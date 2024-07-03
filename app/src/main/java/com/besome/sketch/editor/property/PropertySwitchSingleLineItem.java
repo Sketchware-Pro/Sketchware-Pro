@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.sketchware.remod.R;
 
 import a.a.a.Kw;
@@ -21,7 +22,7 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
     private String key = "";
     private boolean value = false;
     private TextView tvName;
-    private Switch switchValue;
+    private MaterialSwitch switchValue;
     private ImageView imgLeftIcon;
     private int icon;
     private View propertyItem;

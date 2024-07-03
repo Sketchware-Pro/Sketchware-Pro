@@ -154,6 +154,7 @@
 
     <!--  main layouts  -->
     <color name="backgroundColor">#FFFFFF</color>
+    <color name="backgroundOpenColor">#F5F5F5</color>
     <color name="dialogBackgroundColor">#FFFFFF</color>
 
     <!--  views  -->

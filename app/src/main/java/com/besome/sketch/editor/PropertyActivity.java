@@ -47,15 +47,17 @@ import mod.hey.studios.util.Helper;
 public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
     private final ArrayList<Integer> propertyGroups = new ArrayList<>();
-    private LinearLayout content;
     private ProjectFileBean projectFileBean;
     private ViewBean viewBean;
+    private ViewPropertyItems propertyItems;
     private boolean p;
     private String sc_id;
-    private LinearLayout r;
-    private ViewPropertyItems propertyItems;
     private int layoutPosition;
 
+    private LinearLayout content;
+    private LinearLayout layout_ads;
+    private com.besome.sketch.lib.ui.CustomScrollView scroll_view;
+    private androidx.recyclerview.widget.RecyclerView property_group_list;
 
     @Override
     public void a(String var1, Object var2) {
@@ -116,7 +118,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     }
 
     public void n() {
-        r.setVisibility(View.GONE);
+        layout_ads.setVisibility(View.GONE);
     }
 
     public void o() {
@@ -161,27 +163,35 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.property);
+
+		content = findViewById(R.id.content);
+		layout_ads = findViewById(R.id.layout_ads);
+		scroll_view = findViewById(R.id.scroll_view);
+		property_group_list = findViewById(R.id.property_group_list);
+
         if (!j()) {
             finish();
         }
 
         ro w = new ro(getApplicationContext());
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.edit_view_properties_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
+
         propertyGroups.add(1);
         propertyGroups.add(2);
         propertyGroups.add(3);
         propertyGroups.add(4);
-        RecyclerView propertyGroupList = findViewById(R.id.property_group_list);
-        propertyGroupList.setHasFixedSize(true);
-        propertyGroupList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-        propertyGroupList.setAdapter(new ItemAdapter());
-        content = findViewById(R.id.content);
+
+        property_group_list.setHasFixedSize(true);
+        property_group_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        property_group_list.setAdapter(new ItemAdapter());
+
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");
             projectFileBean = savedInstanceState.getParcelable("project_file");
@@ -192,7 +202,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             viewBean = getIntent().getParcelableExtra("bean");
         }
 
-        ActionBar actionBar = getSupportActionBar();
         String viewId;
         if (viewBean.id.charAt(0) == '_') {
             viewId = viewBean.id.substring(1);
@@ -200,9 +209,8 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             viewId = viewBean.id;
         }
 
-        actionBar.setTitle(viewId);
-        r = findViewById(R.id.layout_ads);
-        findViewById(R.id.layout_ads).setVisibility(View.GONE);
+        toolbar.setSubtitle(viewId);
+        layout_ads.setVisibility(View.GONE);
     }
 
     @Override
@@ -216,7 +224,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         if (menuItem.getItemId() == R.id.menu_add_image_res) {
             p();
         }
-
         return super.onOptionsItemSelected(menuItem);
     }
 
