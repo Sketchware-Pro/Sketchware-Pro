@@ -2168,7 +2168,7 @@ Please try again later"</string>
     <string name="appearance_theme_system">System default</string>
     <string name="appearance_theme_light">Light theme</string>
     <string name="appearance_theme_dark">Dark theme</string>
-    
+    <string name="appearance_theme_use_dynamic">Use dynamic theme</string>
     <string name="appearance_editors">Editors</string>
     <string name="appearance_editors_code_editor_title">Code editor version</string>
     <string name="appearance_editors_code_editor_description">Change the version of the code editor and the appearance changes along with it!</string>

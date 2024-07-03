@@ -1,5 +1,7 @@
 package com.besome.sketch;
 
+import static mod.SketchwareUtil.toastError;
+
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -49,7 +51,13 @@ public class SketchApplication extends Application {
             }
         });
         super.onCreate();
-        DynamicColors.applyToActivitiesIfAvailable(this);
-        ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
+        try {
+            if (ThemeManager.isUseDynamic(this)) {
+                DynamicColors.applyToActivitiesIfAvailable(this);
+            }
+            ThemeManager.applyTheme(this, ThemeManager.getThemeInt(this));
+        } catch (Exception e) {
+            toastError(e.getMessage(), 4000);
+        }
     }
 }

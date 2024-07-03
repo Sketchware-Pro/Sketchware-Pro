@@ -22,6 +22,8 @@ import android.widget.Toast;
 import android.widget.Button;
 import android.content.DialogInterface;
 import android.view.WindowManager;
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -415,6 +417,11 @@ public class ConfigActivity extends AppCompatActivity {
         );
         /* Android Studio complained about that inside the original XML */
         preferenceRoot.setBaselineAligned(false);
+        
+        TypedValue outValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+        preferenceRoot.setBackgroundResource(outValue.resourceId);
+        
         content.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);
@@ -542,6 +549,11 @@ public class ConfigActivity extends AppCompatActivity {
         );
         /* Android Studio complained about this in the original XML files */
         preferenceRoot.setBaselineAligned(false);
+        
+        TypedValue outValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+        preferenceRoot.setBackgroundResource(outValue.resourceId);
+        
         content.addView(preferenceRoot);
 
         LinearLayout textContainer = new LinearLayout(this);

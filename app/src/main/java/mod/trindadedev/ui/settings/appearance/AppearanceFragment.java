@@ -1,7 +1,5 @@
 package mod.trindadedev.ui.settings.appearance;
 
-import static mod.SketchwareUtil.toast;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,30 +39,28 @@ public class AppearanceFragment extends Fragment {
         setupViews(requireContext());
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(getActivity()));
         binding.topAppBar.setTitle(getString(R.string.appearance));
-        
-        switch (ThemeManager.getCurrentTheme(requireContext())) {
-            case ThemeManager.THEME_LIGHT:
-                skThemeBinding.toggleThemes.check(R.id.themeLight);
-                break;
-            case ThemeManager.THEME_DARK:
-                skThemeBinding.toggleThemes.check(R.id.themeDark);
-                break;
-            default:
-                skThemeBinding.toggleThemes.check(R.id.themeSystem);
-                break;
+
+        int theme = ThemeManager.getThemeInt(requireContext());
+        if (theme == ThemeManager.THEME_LIGHT) {
+            skThemeBinding.toggleThemes.check(R.id.themeLight);
+        } else if (theme == ThemeManager.THEME_DARK) {
+            skThemeBinding.toggleThemes.check(R.id.themeDark);
+        } else {
+            skThemeBinding.toggleThemes.check(R.id.themeSystem);
         }
 
         skThemeBinding.toggleThemes.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId != View.NO_ID) {
-                if (checkedId == R.id.themeLight) {
+            switch (checkedId) {
+                case R.id.themeLight:
                     ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT);
-                } else if (checkedId == R.id.themeSystem) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                } else if (checkedId == R.id.themeDark) {
+                    break;
+                case R.id.themeDark:
                     ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
-                } else {
+                    break;
+                case R.id.themeSystem:
+                default:
                     ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                }
+                    break;
             }
         });
     }
@@ -77,6 +73,13 @@ public class AppearanceFragment extends Fragment {
          skThemeBinding = PreferenceSketchwareThemeBinding.inflate(LayoutInflater.from(context), themePreferenceGroup, false);
          themePreferenceGroup.addPreference(skThemeBinding.getRoot());
          
+         skThemeBinding.preferenceSwitchDynamic.setChecked(ThemeManager.isUseDynamic(context));
+         
+         skThemeBinding.preferenceSwitchDynamicContent.setOnClickListener(v -> {
+             skThemeBinding.preferenceSwitchDynamic.setChecked(!skThemeBinding.preferenceSwitchDynamic.isChecked());
+             ThemeManager.useDynamicColors(context, skThemeBinding.preferenceSwitchDynamic.isChecked());
+         });
+         
          // Editor-related preferences
          PreferenceGroup editorsPreferenceGroup = new PreferenceGroup(context, getString(R.string.appearance_editors));
          binding.content.addView(editorsPreferenceGroup);
@@ -85,14 +88,9 @@ public class AppearanceFragment extends Fragment {
          codeEditorVersionPreference.addPopupMenuItem(getString(R.string.appearance_editors_code_editor_legacy));
          codeEditorVersionPreference.addPopupMenuItem(getString(R.string.appearance_editors_code_editor_default));
          codeEditorVersionPreference.setMenuListener(item -> {
-             String itemName = item.getTitle().toString();
-             if (itemName.equals(getString(R.string.appearance_editors_code_editor_default))) {
-                 ConfigActivity.setSetting(ConfigActivity.SETTING_LEGACY_CODE_EDITOR, false);
-                 return true;
-             } else {
-                 ConfigActivity.setSetting(ConfigActivity.SETTING_LEGACY_CODE_EDITOR, true);
-                 return true;
-             }
+             boolean isLegacy = item.getTitle().toString().equals(getString(R.string.appearance_editors_code_editor_legacy));
+             ConfigActivity.setSetting(ConfigActivity.SETTING_LEGACY_CODE_EDITOR, isLegacy);
+             return true;
          });
          
          editorsPreferenceGroup.addPreference(codeEditorVersionPreference);

@@ -94,6 +94,7 @@
                                     android:layout_marginLeft="8dp"
                                     android:text="@string/myprojects_export_project_title_local_path"
                                     android:textSize="14sp"
+                                    android:textColor="?attr/colorPrimary"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
