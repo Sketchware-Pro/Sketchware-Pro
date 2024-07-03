@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
@@ -30,11 +29,11 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.CustomScrollView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 import a.a.a.Kw;
 import a.a.a.cC;
@@ -55,9 +54,9 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     private int layoutPosition;
 
     private LinearLayout content;
-    private LinearLayout layout_ads;
-    private com.besome.sketch.lib.ui.CustomScrollView scroll_view;
-    private androidx.recyclerview.widget.RecyclerView property_group_list;
+    private LinearLayout layoutAds;
+    private CustomScrollView scrollView;
+    private RecyclerView propertyGroupList;
 
     @Override
     public void a(String var1, Object var2) {
@@ -118,7 +117,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     }
 
     public void n() {
-        layout_ads.setVisibility(View.GONE);
+        layoutAds.setVisibility(View.GONE);
     }
 
     public void o() {
@@ -165,9 +164,9 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         setContentView(R.layout.property);
 
 		content = findViewById(R.id.content);
-		layout_ads = findViewById(R.id.layout_ads);
-		scroll_view = findViewById(R.id.scroll_view);
-		property_group_list = findViewById(R.id.property_group_list);
+        layoutAds = findViewById(R.id.layout_ads);
+		scrollView = findViewById(R.id.scroll_view);
+		propertyGroupList = findViewById(R.id.property_group_list);
 
         if (!j()) {
             finish();
@@ -188,9 +187,9 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         propertyGroups.add(3);
         propertyGroups.add(4);
 
-        property_group_list.setHasFixedSize(true);
-        property_group_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-        property_group_list.setAdapter(new ItemAdapter());
+        propertyGroupList.setHasFixedSize(true);
+        propertyGroupList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        propertyGroupList.setAdapter(new ItemAdapter());
 
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");
@@ -210,7 +209,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         }
 
         toolbar.setSubtitle(viewId);
-        layout_ads.setVisibility(View.GONE);
+        layoutAds.setVisibility(View.GONE);
     }
 
     @Override
