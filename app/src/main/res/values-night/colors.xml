@@ -10,6 +10,7 @@
 
     <!--  main layouts  -->
     <color name="backgroundColor">#1C1C1C</color>
+    <color name="backgroundOpenColor">#252729</color>
     <color name="dialogBackgroundColor">#2E2E2E</color>
 
     <!--  views  -->

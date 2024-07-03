@@ -2206,6 +2206,7 @@ Please try again later"</string>
     <string name="src_code_editor_unsaved_changes_dialog_warning_message">You have unsaved changes. Are you sure you want to exit?</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>
     <string name="review_firebase_config_title">Review</string>
+    <string name="edit_view_properties_title">Edit Properties</string>
 
 
 </resources>
