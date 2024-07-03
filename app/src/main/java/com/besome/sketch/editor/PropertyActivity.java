@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
@@ -30,11 +29,11 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.CustomScrollView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 import a.a.a.Kw;
 import a.a.a.cC;
@@ -47,15 +46,17 @@ import mod.hey.studios.util.Helper;
 public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
     private final ArrayList<Integer> propertyGroups = new ArrayList<>();
-    private LinearLayout content;
     private ProjectFileBean projectFileBean;
     private ViewBean viewBean;
+    private ViewPropertyItems propertyItems;
     private boolean p;
     private String sc_id;
-    private LinearLayout r;
-    private ViewPropertyItems propertyItems;
     private int layoutPosition;
 
+    private LinearLayout content;
+    private LinearLayout layoutAds;
+    private CustomScrollView scrollView;
+    private RecyclerView propertyGroupList;
 
     @Override
     public void a(String var1, Object var2) {
@@ -116,7 +117,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     }
 
     public void n() {
-        r.setVisibility(View.GONE);
+        layoutAds.setVisibility(View.GONE);
     }
 
     public void o() {
@@ -161,27 +162,35 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.property);
+
+	content = findViewById(R.id.content);
+	layoutAds = findViewById(R.id.layout_ads);
+	scrollView = findViewById(R.id.scroll_view);
+	propertyGroupList = findViewById(R.id.property_group_list);
+
         if (!j()) {
             finish();
         }
 
         ro w = new ro(getApplicationContext());
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.edit_view_properties_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
+
         propertyGroups.add(1);
         propertyGroups.add(2);
         propertyGroups.add(3);
         propertyGroups.add(4);
-        RecyclerView propertyGroupList = findViewById(R.id.property_group_list);
+
         propertyGroupList.setHasFixedSize(true);
         propertyGroupList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         propertyGroupList.setAdapter(new ItemAdapter());
-        content = findViewById(R.id.content);
+
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");
             projectFileBean = savedInstanceState.getParcelable("project_file");
@@ -192,7 +201,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             viewBean = getIntent().getParcelableExtra("bean");
         }
 
-        ActionBar actionBar = getSupportActionBar();
         String viewId;
         if (viewBean.id.charAt(0) == '_') {
             viewId = viewBean.id.substring(1);
@@ -200,9 +208,8 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             viewId = viewBean.id;
         }
 
-        actionBar.setTitle(viewId);
-        r = findViewById(R.id.layout_ads);
-        findViewById(R.id.layout_ads).setVisibility(View.GONE);
+        toolbar.setSubtitle(viewId);
+        layoutAds.setVisibility(View.GONE);
     }
 
     @Override
@@ -216,7 +223,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         if (menuItem.getItemId() == R.id.menu_add_image_res) {
             p();
         }
-
         return super.onOptionsItemSelected(menuItem);
     }
 
