@@ -3,12 +3,13 @@ package mod.trindadedev.ui.preferences;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.FrameLayout;
 import android.view.LayoutInflater;
 
 import com.sketchware.remod.databinding.PreferenceGroupBinding;
 
-public class PreferenceGroup extends FrameLayout {
+public class PreferenceGroup extends LinearLayout {
     public Context context;
     public PreferenceGroupBinding binding;
 

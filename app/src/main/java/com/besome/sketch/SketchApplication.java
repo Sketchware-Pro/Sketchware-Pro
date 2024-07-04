@@ -13,7 +13,6 @@ import android.util.Log;
 import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.material.color.DynamicColors;
 
 import mod.trindadedev.manage.theme.ThemeManager;
 
@@ -52,10 +51,8 @@ public class SketchApplication extends Application {
         });
         super.onCreate();
         try {
-            if (ThemeManager.isUseDynamic(this)) {
-                DynamicColors.applyToActivitiesIfAvailable(this);
-            }
-            ThemeManager.applyTheme(this, ThemeManager.getThemeInt(this));
+            ThemeManager.applyTheme(this, this);
+            ThemeManager.applyTheme(this, ThemeManager.getSketchwareTheme(this));
         } catch (Exception e) {
             toastError(e.getMessage(), 4000);
         }

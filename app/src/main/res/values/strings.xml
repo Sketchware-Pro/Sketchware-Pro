@@ -2171,9 +2171,14 @@ Please try again later"</string>
     <string name="appearance_theme_use_dynamic">Use dynamic theme</string>
     <string name="appearance_editors">Editors</string>
     <string name="appearance_editors_code_editor_title">Code editor version</string>
-    <string name="appearance_editors_code_editor_description">Change the version of the code editor and the appearance changes along with it!</string>
+    <string name="appearance_editors_code_editor_description">Change the version of the code editor and the appearance changes along with it.</string>
     <string name="appearance_editors_code_editor_legacy">Legacy 6.2.0 Code Editor</string>
     <string name="appearance_editors_code_editor_default">Default Code Editor</string>
+    
+    <string name="appearance_viewpane">View Pane Appearance</string>
+    <string name="appearance_viewpane_description">Change the appearance of the layout editor.</string>
+    <string name="appearance_viewpane_theme">View Pane Style</string>
+    <string name="appearance_viewpane_theme_description">Use Material Design 3 in Layout View</string>
     
     <string name="use_legacy_code_editor_title">Use legacy Code Editor</string>
     <string name="use_legacy_code_editor_message">Enables old Code Editor from v6.2.0.</string>
