@@ -292,7 +292,8 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="ViewEditorTheme" parent="Base.Theme.MaterialComponents.Light" />
+    <style name="ViewEditorThemeMd2" parent="Base.Theme.MaterialComponents.Light" />
+    <style name="ViewEditorThemeMd3" parent="Base.Theme.Material3.Light" />
 
     <!--  bottom sheet style  -->
     <style name="BottomSheetCardStyle" parent="">

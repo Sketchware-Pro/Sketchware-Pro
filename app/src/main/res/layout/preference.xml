@@ -16,12 +16,14 @@
         android:paddingTop="0dp"
         android:paddingBottom="4dp"
         android:paddingStart="0dp"
+        android:textColor="?attr/colorOnSurface"
         android:paddingEnd="0dp"/>
 
     <TextView
         android:id="@+id/preferenceDescription"
         android:layout_width="wrap_content"
         android:textSize="12sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

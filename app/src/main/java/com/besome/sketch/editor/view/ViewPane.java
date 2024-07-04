@@ -12,7 +12,6 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +94,7 @@ import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
+import mod.trindadedev.manage.theme.ThemeManager;
 
 public class ViewPane extends RelativeLayout {
 
@@ -118,7 +118,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void initialize() {
-        context = new ContextThemeWrapper(getContext(), R.style.ViewEditorTheme);
+        context = ThemeManager.viewPaneContextWrapper(getContext());
         setBackgroundColor(Color.WHITE);
         addRootLayout();
         initTextView();
