@@ -2180,9 +2180,41 @@ Please try again later"</string>
     <string name="appearance_viewpane_theme">View Pane Style</string>
     <string name="appearance_viewpane_theme_description">Use Material Design 3 in Layout View</string>
     
+    <!-- mod settings screen -->
+    <string name="mod_settings">Mod Settings</string>
     <string name="use_legacy_code_editor_title">Use legacy Code Editor</string>
     <string name="use_legacy_code_editor_message">Enables old Code Editor from v6.2.0.</string>
+    <string name="built_in_blocks">Built-in blocks</string>
+    <string name="built_in_blocks_summary">May slow down loading blocks in Logic Editor.</string>
+    <string name="show_all_variable_blocks">Show all variable blocks</string>
+    <string name="show_all_variable_blocks_summary">All variable blocks will be visible, even if you dont have variables for them.</string>
+    <string name="show_all_blocks_of_palettes">Show all blocks of palettes</string>
+    <string name="show_all_blocks_of_palettes_summary">Every single available block will be shown. Will slow down opening palettes!</string>
+    <string name="backup_directory">Backup directory</string>
+    <string name="backup_directory_summary">The default directory is /Internal storage/.sketchware/backups/.</string>
+    <string name="backup_directory_help">Directory inside /Internal storage/, e.g. .sketchware/backups</string>
+    <string name="install_projects_with_root_access">Install projects with root access</string>
+    <string name="install_projects_with_root_access_summary">Automatically installs project APKs after building using root access.</string>
+    <string name="root_access_error">Couldnt acquire root access</string>
+    <string name="launch_projects_after_installing">Launch projects after installing</string>
+    <string name="launch_projects_after_installing_summary">Opens projects automatically after auto-installation using root.</string>
+    <string name="use_new_version_control">Use new Version Control</string>
+    <string name="use_new_version_control_summary">Enables custom version code and name for projects.</string>
+    <string name="enable_block_text_input_highlighting">Enable block text input highlighting</string>
+    <string name="enable_block_text_input_highlighting_summary">Enables syntax highlighting while editing blocks text parameters.</string>
+    <string name="backup_filename_format">Backup filename format</string>
+    <string name="backup_filename_format_summary">Default is "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)"</string>
     <string name="signatures_title">Signatures</string>
+    <string name="reset_to_default_complete">Reset to default complete.</string>
+    <string name="detected_invalid_prefs">Detected invalid preference </string>
+    <string name="detected_invalid_prefs_reset">Detected invalid preference. Restoring defaults</string>
+    <string name="detected_invalid_prefs_msg">for backup directory. Restoring defaults</string>
+    <string name="error_to_parse_settings">Couldnt parse Mod Settings! Restoring defaults.</string>
+    <string name="detected_invalid_value">Detected invalid value for preference \"</string>
+    <string name="restoring_to_default">\". Restoring defaults</string>
+    <string name="detected_invalid_prefs_backup_filename">for backup filename. Restoring defaults</string>
+    <string name="detected_invalid_prefs_legacy">Detected invalid preference for legacy</string>
+    <string name="detected_invalid_prefs_code_editor"> Code Editor. Restoring defaults</string>
     
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
