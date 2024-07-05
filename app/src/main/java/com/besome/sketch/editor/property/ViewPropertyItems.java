@@ -62,7 +62,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         label.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
         label.setGravity(Gravity.CENTER);
         label.setPadding(8, 8, 8, 8);
-        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         label.setText(xB.b().a(getContext(), R.string.design_property_recent_message_nodata));
         addView(label);
     }
@@ -112,8 +112,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_ime_option" -> c(property, bean.text.imeOption);
             case "property_image" -> b(property, bean.image.resName, true);
             case "property_scale_type" -> d(property, bean.image.scaleType);
-            case "property_background_resource" ->
-                    b(property, bean.layout.backgroundResource, false);
+            case "property_background_resource" -> b(property, bean.layout.backgroundResource, false);
             case "property_background_color" -> a(property, bean.layout.backgroundColor);
             case "property_enabled" -> e(property, bean.enabled);
             case "property_rotate" -> b(property, String.valueOf(bean.image.rotate));

@@ -6,14 +6,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-import androidx.appcompat.widget.AppCompatButton;
-
 import com.besome.sketch.beans.ViewBean;
+import com.google.android.material.button.MaterialButton;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemMaterialButton extends AppCompatButton implements sy {
+public class ItemMaterialButton extends MaterialButton implements sy {
 
     private final Paint paint;
     private final float paddingFactor;
@@ -86,4 +85,5 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
+
 }
