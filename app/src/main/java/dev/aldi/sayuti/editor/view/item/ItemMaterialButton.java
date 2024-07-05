@@ -4,20 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.content.res.ColorStateList;
-
-import androidx.appcompat.widget.AppCompatButton;
 
 import com.besome.sketch.beans.ViewBean;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.button.MaterialButton;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemMaterialButton extends AppCompatButton implements sy {
+public class ItemMaterialButton extends MaterialButton implements sy {
 
     private final Paint paint;
     private final float paddingFactor;
@@ -26,7 +21,6 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
-    private int color;
 
     public ItemMaterialButton(Context context) {
         super(context);
@@ -85,7 +79,6 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
         } else {
             super.setBackgroundColor(color);
         }
-        this.color = color;
     }
 
     @Override
@@ -93,13 +86,4 @@ public class ItemMaterialButton extends AppCompatButton implements sy {
         super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
 
-    public void setCornerRadius(float cornerRadius) {
-        ShapeAppearanceModel shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setAllCornerSizes(cornerRadius)
-                .build();
-        
-        MaterialShapeDrawable shapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-        setBackground(shapeDrawable);
-        shapeDrawable.setFillColor(ColorStateList.valueOf(color));
-    }
 }
