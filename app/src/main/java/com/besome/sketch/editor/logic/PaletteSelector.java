@@ -197,12 +197,12 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         final EditText searchValue = inflate.findViewById(R.id.edittext_search_value);
         final TextInputLayout searchInputLayout = inflate.findViewById(R.id.textInputLayout_search);
 
-        dialogTitle.setText("Search in Palettes");
-        btnSearch.setText("Search");
-        btnRestore.setText("Restore");
-        btnCancel.setText("Cancel");
+        dialogTitle.setText(Helper.getResString(R.string.search_in_palettes));
+        btnSearch.setText(Helper.getResString(R.string.common_word_search));
+        btnRestore.setText(Helper.getResString(R.string.common_word_restore));
+        btnCancel.setText(Helper.getResString(R.string.common_word_cancel));
 
-        String errorMessage = "Nothing found,\nplease try again with something else";
+        String errorMessage = Helper.getResString(R.string.search_error_msg);
 
         if (SPSaveSearchMainData.contains("type")) {
             searchValue.setText(SPSaveSearchMainData.getString("value", ""));
@@ -245,7 +245,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         btnSearch.setOnClickListener(v -> {
             if (!IsLoadStarted && validateSearch(searchValue.getText().toString(), searchInputLayout, errorMessage)) {
                 IsLoadStarted = true;
-                btnSearch.setText("Searching...");
+                btnSearch.setText(Helper.getResString(R.string.searching));
                 SPSaveSearchMainData.edit()
                         .putString("value", searchValue.getText().toString().trim())
                         .apply();
@@ -257,7 +257,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         btnRestore.setOnClickListener(v -> {
             if (!IsLoadStarted) {
                 IsLoadStarted = true;
-                btnRestore.setText("Restoring...");
+                btnRestore.setText(Helper.getResString(R.string.restoring));
                 ResetSavedInfo();
                 SearchTask searchTask = new SearchTask(dialog, "");
                 searchTask.execute();
