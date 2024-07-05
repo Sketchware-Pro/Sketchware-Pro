@@ -951,10 +951,12 @@ public class ViewPane extends RelativeLayout {
         int tabSelectedTextColor = PropertiesUtil.isHexColor(selectedTextColor) ? PropertiesUtil.parseColor(selectedTextColor) : Color.WHITE;
         tabLayout.setTabTextColors(tabTextColor, tabSelectedTextColor);
     }
-    
+
     private void updateMaterialButton(ItemMaterialButton materialButton, InjectAttributeHandler handler) {
-         String radius = handler.getAttributeValueOf("cornerRadius");
-         materialButton.setCornerRadius(PropertiesUtil.resolveSize(radius, 8));
+        String radius = handler.getAttributeValueOf("cornerRadius");
+        String stroke = handler.getAttributeValueOf("strokeWidth");
+        materialButton.setStrokeWidth(PropertiesUtil.resolveSize(stroke, 0));
+        materialButton.setCornerRadius(PropertiesUtil.resolveSize(radius, 8));
     }
 
     private String extractAttrValue(String line, String attrbute) {
