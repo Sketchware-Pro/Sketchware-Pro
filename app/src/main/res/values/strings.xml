@@ -2151,9 +2151,10 @@ Please try again later"</string>
     <string name="local_library_manager_download_status">Download status</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
     <string name="signatures_title">Signatures</string>
+    
+    <!-- appearance -->
     <string name="appearance">Appearance</string>
     <string name="appearance_description">Change the appearance of the Sketchware and make it your own!</string>
-    
     <string name="appearance_theme">Sketchware Theme</string>
     <string name="appearance_theme_system">System default</string>
     <string name="appearance_theme_light">Light theme</string>
@@ -2164,7 +2165,6 @@ Please try again later"</string>
     <string name="appearance_editors_code_editor_description">Change the version of the code editor and the appearance changes along with it.</string>
     <string name="appearance_editors_code_editor_legacy">Legacy 6.2.0 Code Editor</string>
     <string name="appearance_editors_code_editor_default">Default Code Editor</string>
-    
     <string name="appearance_viewpane">View Pane Appearance</string>
     <string name="appearance_viewpane_description">Change the appearance of the layout editor.</string>
     <string name="appearance_viewpane_theme">View Pane Style</string>
@@ -2194,7 +2194,6 @@ Please try again later"</string>
     <string name="enable_block_text_input_highlighting_summary">Enables syntax highlighting while editing blocks text parameters.</string>
     <string name="backup_filename_format">Backup filename format</string>
     <string name="backup_filename_format_summary">Default is "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)"</string>
-    <string name="signatures_title">Signatures</string>
     <string name="reset_to_default_complete">Reset to default complete.</string>
     <string name="detected_invalid_prefs">Detected invalid preference </string>
     <string name="detected_invalid_prefs_reset">Detected invalid preference. Restoring defaults</string>
