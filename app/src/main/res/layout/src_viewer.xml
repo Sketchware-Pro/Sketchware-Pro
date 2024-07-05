@@ -22,7 +22,6 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="8dp"
-            android:background="#50828282"
             android:clickable="true"
             android:focusable="true"
             android:padding="4dp"
@@ -46,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="Generating source code, please wait." />
+                android:text="@string/generating_source" />
         </LinearLayout>
     </LinearLayout>
 

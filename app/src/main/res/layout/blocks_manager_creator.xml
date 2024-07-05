@@ -44,7 +44,7 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="8dp"
                         android:text="Properties"
-                        android:textColor="#ff424242"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -62,8 +62,6 @@
                             android:gravity="center|left"
                             android:hint="Name"
                             android:padding="14dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,8 +87,6 @@
                                 android:gravity="center|left"
                                 android:hint="Type"
                                 android:padding="14dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,8 +120,6 @@
                             android:gravity="center|left"
                             android:hint="Type name"
                             android:padding="14dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -155,7 +149,7 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="8dp"
                         android:text="Design"
-                        android:textColor="#ff424242"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -196,8 +190,6 @@
                                 android:gravity="center|left"
                                 android:hint="color"
                                 android:padding="14dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -239,7 +231,7 @@
                         android:paddingRight="4dp"
                         android:paddingBottom="4dp"
                         android:text="Parameters"
-                        android:textColor="#ff757575"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="10sp" />
 
                     <HorizontalScrollView
@@ -251,7 +243,6 @@
                             android:id="@+id/parameter_holder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#fff5f5f5"
                             android:orientation="horizontal"
                             android:padding="8dp" />
                     </HorizontalScrollView>
@@ -270,8 +261,6 @@
                             android:gravity="center|left"
                             android:hint="Spec2"
                             android:padding="14dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -303,19 +292,17 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="8dp"
                         android:text="Code"
-                        android:textColor="#ff424242"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#fff5f5f5"
                         android:gravity="center|left|top"
                         android:hint="Code"
+                        android:background="@drawable/bg_round_light_grey"
                         android:padding="8dp"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
                         android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

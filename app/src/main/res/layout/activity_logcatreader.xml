@@ -27,7 +27,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                app:title="Logcat Reader" />
+                app:title="@string/design_drawer_menu_title_logcat_reader" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,7 +46,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:hint="Search log"
+            android:hint="@string/search_log"
             android:importantForAutofill="noExcludeDescendants"
             app:boxCornerRadiusBottomEnd="50dp"
             app:boxCornerRadiusBottomStart="50dp"
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Logcat hasn't captured anything yet"
+            android:text="@string/logcat_text"
             android:textSize="20sp" />
 
         <TextView
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Keep this screen open then run your app"
+            android:text="@string/logcat_subtext"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -164,7 +164,7 @@
                     android:focusable="false"
                     android:clickable="false"
                     android:checked="true"
-                    android:text="Auto scroll enabled" />
+                    android:text="@string/logcat_auto_scroll" />
             </LinearLayout>
 
             <LinearLayout
@@ -187,7 +187,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Filter by package name"
+                    android:text="@string/logcat_filter_by_pkg"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                 <ImageView
@@ -218,7 +218,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Clear all logs"
+                    android:text="@string/logcat_clear_logs"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                 <ImageView

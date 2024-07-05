@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/color_primary"
+        android:background="?colorPrimary"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingHorizontal="14dp"
@@ -34,7 +34,6 @@
                 android:id="@+id/tv_currentnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -42,7 +41,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" / "
-                android:textColor="#ffffffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -50,7 +48,6 @@
                 android:id="@+id/tv_totalnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -60,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textColor="#ffffffff"
             android:textSize="16sp"
             android:textStyle="bold" />
     </RelativeLayout>

@@ -291,7 +291,8 @@
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">false</item>
     </style>
-
+    
+    <!-- view pane themes -->
     <style name="ViewEditorThemeMd2" parent="Base.Theme.MaterialComponents.Light" />
     <style name="ViewEditorThemeMd3" parent="Base.Theme.Material3.Light" />
 

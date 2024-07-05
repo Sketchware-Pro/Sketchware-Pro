@@ -7,7 +7,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff008dcd"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="10dp"
@@ -35,7 +34,6 @@
             android:paddingEnd="8dp"
             android:paddingBottom="6dp"
             android:text="Title"
-            android:textColor="@color/tool_bar_text_color"
             android:textSize="15sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -63,7 +61,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffffffff"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -72,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp"
                         android:text="Event properties"
-                        android:textColor="#ff616161"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -90,8 +87,6 @@
                             android:layout_height="wrap_content"
                             android:hint="event name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,8 +105,6 @@
                             android:layout_height="wrap_content"
                             android:hint="widget/component name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,8 +123,6 @@
                             android:layout_height="wrap_content"
                             android:hint="listener name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,8 +150,6 @@
                                 android:hint="icon"
                                 android:inputType="number"
                                 android:padding="8dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,8 +183,6 @@
                             android:layout_height="wrap_content"
                             android:hint="description"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -214,8 +201,6 @@
                             android:layout_height="wrap_content"
                             android:hint="parameters"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -234,8 +219,6 @@
                             android:layout_height="wrap_content"
                             android:hint="spec  (### => variable name)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -254,8 +237,6 @@
                             android:layout_height="wrap_content"
                             android:hint="event code (### ==> variable name)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -265,7 +246,6 @@
                         android:layout_height="wrap_content"
                         android:padding="6dp"
                         android:text="Create New Listener"
-                        android:textColor="#ff212121"
                         android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -281,7 +261,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffffffff"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -297,7 +276,7 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Listener properties :"
-                            android:textColor="#ff616161"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="16sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -315,8 +294,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="listener name"
                                 android:padding="8dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -335,8 +312,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="listener code (### ==> variable name)"
                                 android:padding="8dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -355,8 +330,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="custom import"
                                 android:padding="8dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -370,32 +343,26 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/events_creator_cancel"
-                    style="@style/Widget.MaterialComponents.Button"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:background="#ff008dcd"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="cancel"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="#ffffffff"
                     android:textSize="14sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/events_creator_save"
-                    style="@style/Widget.MaterialComponents.Button"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:background="#ff008dcd"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Save"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="#ffffffff"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

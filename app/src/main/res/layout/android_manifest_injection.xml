@@ -35,7 +35,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Activities"
+                    android:text="@string/common_word_activities"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorPrimary" />
             </LinearLayout>

@@ -1,15 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/add"
-        android:title="Add to AndroidManifest" />
+        android:title="@string,/add_to_manifest" />
     <item
         android:id="@+id/edit"
-        android:title="Edit" />
-    <item android:title="Edit with..." />
+        android:title="@string/common_word_edit" />
+    <item android:title="@string/edit_with" />
     <item
         android:id="@+id/rename"
-        android:title="Rename" />
+        android:title="@string/common_word_rename" />
     <item
         android:id="@+id/delete"
-        android:title="Delete" />
+        android:title="@string/common_word_delete" />
 </menu>

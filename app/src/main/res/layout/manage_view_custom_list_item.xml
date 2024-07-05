@@ -50,7 +50,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="#fff6f6f6"
             android:paddingHorizontal="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp" />
@@ -69,7 +68,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textColor="#ff404040"
                 android:textSize="16sp" />
         </LinearLayout>
 

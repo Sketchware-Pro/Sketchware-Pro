@@ -9,7 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6.0dip"
-        android:background="#ffffffff"
         android:orientation="vertical"
         app:cardCornerRadius="5.0dip"
         app:cardElevation="4.0dip">
@@ -33,7 +32,6 @@
                     android:focusable="false"
                     android:padding="8.0dip"
                     android:text="New Listener"
-                    android:textColor="#ff2196f3"
                     android:textSize="18.0sp"
                     android:textStyle="bold" />
 
@@ -51,8 +49,6 @@
                         android:layout_height="wrap_content"
                         android:hint="name"
                         android:padding="8.0dip"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
                         android:textSize="16.0sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,8 +66,6 @@
                         android:layout_height="wrap_content"
                         android:hint="custom import"
                         android:padding="8.0dip"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
                         android:textSize="16.0sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,8 +83,6 @@
                         android:layout_height="wrap_content"
                         android:hint="Code (### => variable name)"
                         android:padding="8.0dip"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
                         android:textSize="16.0sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +93,6 @@
                     android:gravity="center"
                     android:padding="8.0dip"
                     android:text="Independent class/method"
-                    android:textColor="#ff616161"
                     android:textSize="16.0sp" />
 
                 <LinearLayout
@@ -125,7 +116,6 @@
                             android:gravity="center"
                             android:padding="8.0dip"
                             android:text="Cancel"
-                            android:textColor="#ff616161"
                             android:textSize="14.0sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -145,7 +135,6 @@
                             android:gravity="center"
                             android:padding="8.0dip"
                             android:text="Save"
-                            android:textColor="#ff2196f3"
                             android:textSize="14.0sp"
                             android:textStyle="bold" />
                     </LinearLayout>
