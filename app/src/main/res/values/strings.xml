@@ -992,6 +992,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_saved">Saved</string>
     <string name="common_word_save_as_new">Save as new</string>
     <string name="common_word_see_all">See All</string>
+    <string name="common_word_search">Search</string>
     <string name="common_word_see_more">See More</string>
     <string name="common_word_select">Select</string>
     <string name="common_word_settings">Settings</string>
@@ -2140,6 +2141,10 @@ Please try again later"</string>
     <string name="local_library_manager_no_libraries_body">You don\'t have any Local libraries yet, try downloading one.</string>
     <string name="local_library_manager_download_status">Download status</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
+    <string name="search_in_palettes">Search in Palettes</string>
+    <string name="searching">Searching...</string>
+    <string name="search_error_msg">Nothing found,\nplease try again with something else</string>
+    <string name="restoring">Restoring...</string>
     <string name="signatures_title">Signatures</string>
     <string name="appearance">Appearance</string>
     <string name="appearance_description">Change the appearance of the Sketchware and make it your own!</string>
