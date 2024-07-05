@@ -4,12 +4,12 @@
         android:id="@+id/menu_firebase_help"
         android:icon="@drawable/ic_help_white_50dp"
         android:orderInCategory="1"
-        android:title="Settings"
+        android:title="@string/common_word_help"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_firebase_settings"
         android:icon="@drawable/side_menu_setting_icon_over_white"
         android:orderInCategory="1"
-        android:title="Settings"
+        android:title="@string/common_word_settings"
         app:showAsAction="always" />
 </menu>

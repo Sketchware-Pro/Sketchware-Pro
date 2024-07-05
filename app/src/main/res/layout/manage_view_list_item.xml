@@ -75,7 +75,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:textColor="#ff404040"
                     android:textSize="16sp"
                     tools:text="main" />
 
@@ -83,7 +82,6 @@
                     android:id="@+id/tv_activity_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#ff9a9a9a"
                     android:textSize="15sp"
                     tools:text="MainActivity.java" />
             </LinearLayout>

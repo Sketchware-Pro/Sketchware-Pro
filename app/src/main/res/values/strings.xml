@@ -979,6 +979,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_project_information_app_name">App Name</string>
     <string name="common_word_project_information_package">Package</string>
     <string name="common_word_project_information_project">Project</string>
+    <string name="common_word_project_information_project_settings">Project settings</string>
     <string name="common_word_project_information_version_code">Version code</string>
     <string name="common_word_project_information_version_name">Version name</string>
     <string name="common_word_public">public</string>
@@ -1009,6 +1010,14 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_watch">Watch</string>
     <string name="common_word_widget">Widget</string>
     <string name="common_word_yes">Yes</string>
+    <string name="common_word_undo">Undo</string>
+    <string name="common_word_redo">Redo</string>
+    <string name="common_word_help">Help</string>
+    <string name="common_word_rename">Rename</string>
+    <string name="common_word_activities">Activities</string>
+    <string name="common_word_editor">Code editor</string>
+    <string name="common_word_activated">Activated</string>
+    <string name="common_word_code_editor">Code Editor</string>
     <string name="component_add_docs_button_title_go_to_docs">Read Documentation</string>
     <string name="component_add_message_docs_updated_soon">The docs page will be updated soon</string>
     <string name="component_context_menu_title">Component menu</string>
@@ -1500,7 +1509,7 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_title_docs">Documentation</string>
     <string name="main_drawer_title_export_urls">Export URLs</string>
     <string name="main_drawer_title_language_settings">Language Settings</string>
-    <string name="main_drawer_title_program_information">Program information</string>
+    <string name="main_drawer_title_program_information">App information</string>
     <string name="main_drawer_title_purchase_list">Purchase List</string>
     <string name="main_drawer_title_remove_ads">Remove Ads</string>
     <string name="main_drawer_title_save_sketchware">Save Sketchware</string>
@@ -2090,6 +2099,7 @@ Please try again later"</string>
     <string name="title_compatible_chrome_browser">Chrome Browser Required</string>
     <string name="title_discord_community">Discord</string>
     <string name="title_telegram_community">Telegram</string>
+    <string name="title_github_community">Github</string>
     <string name="title_sketchware">Sketchware Pro</string>
     <string name="view_panel_title_layouts">Layouts</string>
     <string name="view_panel_title_properties">Properties</string>
@@ -2215,6 +2225,32 @@ Please try again later"</string>
     <string name="detected_invalid_prefs_backup_filename">for backup filename. Restoring defaults</string>
     <string name="detected_invalid_prefs_legacy">Detected invalid preference for legacy</string>
     <string name="detected_invalid_prefs_code_editor"> Code Editor. Restoring defaults</string>
+    <string name="change_project_settings">Change project settings</string>
+    <string name="stringfog_manager">StringFog Manager</string>
+    <string name="stringfog_manager_about">Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer.</string>
+    <string name="generating_source">Generating source code, please wait.</string>
+    <string name="add_to_collection">Add to my collection</string>
+    <string name="enter_sound_name">Enter sound name</string>
+    <string name="add_sound">Add Sound</string>
+    <string name="customview_about">Custom View can be used to change the way items are displayed inside the ListView or the Spinner</string>
+    <string name="enter_activity_name">Enter activity name</string>
+    <string name="type">Type</string>
+    
+    <!-- menus -->
+    <string name="create_keystore">Create keystore</string>
+    <string name="about_title_drawer">About the team</string>
+    <string name="related_links">Related links</string>
+    <string name="blocks_collection">Blocks collection</string>
+    <string name="add_to_manifest">Add to AndroidManifest</string>
+    <string name="edit_with">Edit with...</string>
+    
+    <!-- logcat reader -->
+    <string name="search_log">Search log</string>
+    <string name="logcat_text">Logcat hasnt captured anything yet</string>
+    <string name="logcat_subtext">Keep this screen open then run your app</string>
+    <string name="logcat_filter_by_pkg">Filter by package name</string>
+    <string name="logcat_auto_scroll">Auto scroll enabled</string>
+    <string name="logcat_clear_logs">Clear all logs</string>
     
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>

@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    android:background="#fff6f6f6"
+    android:background="?attr/colorSurfaceContainerHigh"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -26,7 +26,6 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="4dp"
                 android:text="\#"
-                android:textColor="#ff757575"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -50,7 +49,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
-            android:background="#fff6f6f6" />
+            />
 
         <TextView
             android:id="@+id/tv_add_color"
@@ -58,9 +57,8 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
-            android:background="@color/color_primary"
-            android:gravity="center"
-            android:textColor="#ffffffff" />
+            android:background="?attr/colorPrimary"
+            android:gravity="center" />
     </LinearLayout>
 
     <HorizontalScrollView

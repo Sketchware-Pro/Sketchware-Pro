@@ -5,14 +5,14 @@
         android:id="@+id/menu_view_undo"
         android:icon="@drawable/ic_undo_24"
         android:orderInCategory="100"
-        android:title="Undo"
+        android:title="@string/common_word_undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_view_redo"
         android:icon="@drawable/ic_redo_24"
         android:orderInCategory="100"
-        android:title="Redo"
+        android:title="@string/common_word_redo"
         app:showAsAction="always" />
 
 </menu>

@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_below="@+id/preview_statusbar"
-                    android:background="@color/color_primary"
+                    android:background="?colorPrimary"
                     android:gravity="center_vertical"
                     android:padding="8dp">
 
@@ -43,7 +43,7 @@
                     android:id="@+id/preview_statusbar"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:background="#ff000000"
+                    android:background="?colorPrimary"
                     android:gravity="right"
                     android:orientation="horizontal"
                     android:padding="2dp">
@@ -139,7 +139,7 @@
             android:id="@+id/ed_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter activity name"
+            android:hint="@string/enter_activity_name"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1" />
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Type"
+                android:text="@string/type"
                 android:textColor="?colorPrimary"
                 android:textSize="14sp" />
 
@@ -203,7 +203,7 @@
                 android:layout_marginVertical="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/color_primary"
+                android:textColor="?colorPrimary"
                 android:textSize="14sp" />
 
             <com.besome.sketch.lib.ui.SelectableButtonBar
@@ -225,7 +225,7 @@
                 android:layout_marginVertical="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/color_primary"
+                android:textColor="?colorPrimary"
                 android:textSize="14sp" />
 
             <com.besome.sketch.lib.ui.SelectableButtonBar

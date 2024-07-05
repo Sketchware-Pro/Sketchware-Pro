@@ -1,4 +1,6 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="60dp"
@@ -6,7 +8,8 @@
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
-    android:elevation="4dp">
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+    style="?attr/materialCardViewFilledStyle">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +58,6 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
                 android:singleLine="true"
-                android:textColor="#ff404040"
                 android:textSize="16sp" />
 
             <HorizontalScrollView

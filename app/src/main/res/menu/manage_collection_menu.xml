@@ -4,13 +4,13 @@
         android:id="@+id/menu_collection_edit"
         android:icon="@drawable/ic_edit_white_48dp"
         android:orderInCategory="1"
-        android:title="edit"
+        android:title="@string/common_word_edit"
         android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_collection_delete"
         android:icon="@drawable/ic_delete_white_24dp"
         android:orderInCategory="1"
-        android:title="remove"
+        android:title="@string/common_word_remove"
         app:showAsAction="always" />
 </menu>

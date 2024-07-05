@@ -10,19 +10,18 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:textColor="@color/color_primary"
+        android:textColor="?attr/colorPrimary"
         android:textSize="14sp"
         android:textStyle="bold" />
 
     <View
         android:layout_width="380dp"
         android:layout_height="3dp"
-        android:background="@color/color_secondary" />
+        android:background="?attr/colorSecondary" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="300dp"
-        android:background="#ffffffff"
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -36,7 +35,6 @@
             android:id="@+id/var_type_list"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:background="#ffffffff"
             android:splitMotionEvents="false" />
     </LinearLayout>
 </LinearLayout>

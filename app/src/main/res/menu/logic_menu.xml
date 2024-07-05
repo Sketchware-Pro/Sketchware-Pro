@@ -5,28 +5,28 @@
         android:id="@+id/menu_logic_showsource"
         android:icon="@drawable/ic_code_24"
         android:orderInCategory="100"
-        android:title="Show Source Code"
+        android:title="@string/design_actionbar_title_show_source_code"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_logic_undo"
         android:icon="@drawable/selector_undo_24"
         android:orderInCategory="100"
-        android:title="Undo"
+        android:title="@string/common_word_undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_logic_redo"
         android:icon="@drawable/selector_redo_24"
         android:orderInCategory="100"
-        android:title="Redo"
+        android:title="@string/common_word_redo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_block_helper"
         android:icon="@drawable/ic_bookmark_24"
         android:orderInCategory="100"
-        android:title="Blocks collection"
+        android:title="@string/blocks_collection"
         app:showAsAction="always" />
 
 </menu>

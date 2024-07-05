@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:padding="16dp"
-            android:textColor="#ff404040"
             android:textSize="12sp" />
     </ScrollView>
 </LinearLayout>

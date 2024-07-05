@@ -12,6 +12,8 @@
         android:layout_marginRight="14dp"
         android:layout_marginBottom="3.5dp"
         android:orientation="vertical"
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp">
 
@@ -19,7 +21,6 @@
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
             android:orientation="vertical"
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
@@ -47,8 +48,6 @@
                         android:paddingTop="2dp"
                         android:paddingRight="2dp"
                         android:paddingBottom="6dp"
-                        android:text="application"
-                        android:textColor="#ff424242"
                         android:textSize="14sp" />
 
                     <include layout="@layout/block_customview_spec" />
@@ -74,7 +73,6 @@
                             android:id="@+id/down"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#ffffffff"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -102,7 +100,6 @@
                             android:id="@+id/up"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#ffffffff"
                             android:gravity="center"
                             android:orientation="vertical">
 

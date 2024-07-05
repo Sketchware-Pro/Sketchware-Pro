@@ -8,13 +8,11 @@
         android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffeeeeee"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff008dcd"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="10dp"
@@ -41,7 +39,7 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="6dp"
-                android:text="Title"
+                android:text="Block selector manage"
                 android:textColor="@color/tool_bar_text_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -69,7 +67,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffffff"
                 android:orientation="vertical"
                 android:paddingLeft="6dp"
                 android:paddingTop="8dp"
@@ -90,7 +87,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1"
-                        android:background="#fffafafa"
                         android:spinnerMode="dropdown" />
 
                     <LinearLayout
@@ -146,7 +142,7 @@
                     android:paddingTop="8dp"
                     android:paddingRight="8dp"
                     android:text="New menu: "
-                    android:textColor="#ff616161"
+                    android:textColor="?colorPrimary"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -170,8 +166,6 @@
                             android:gravity="center|left"
                             android:hint="Name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,8 +183,6 @@
                             android:gravity="center|left"
                             android:hint="Title"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,29 +195,21 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/canc"
-                            style="@style/Widget.MaterialComponents.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#ff008dcd"
                             android:gravity="center"
                             android:padding="8dp"
-                            android:text="cancel"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                            android:textColor="#ffffffff"
+                            android:text="@string/common_word_cancel"
                             android:textSize="11sp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/save"
-                            style="@style/Widget.MaterialComponents.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:background="#ff008dcd"
                             android:gravity="center"
                             android:padding="8dp"
-                            android:text="save"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                            android:textColor="#ffffffff"
+                            android:text="@string/common_word_save"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -266,7 +250,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffffff"
                     android:gravity="center|left"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -276,13 +259,10 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="#fffafafa"
                         android:gravity="center|left"
                         android:hint="Value"
                         android:padding="8dp"
                         android:singleLine="true"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
                         android:textSize="12sp" />
 
                     <LinearLayout

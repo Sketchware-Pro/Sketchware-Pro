@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="StringFog Manager"
+        android:text="@string/stringfog_manager"
         android:textAppearance="?attr/textAppearanceTitleLarge" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
@@ -27,7 +27,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:checked="true"
-        android:text="Activated" />
+        android:text="@string/common_word_activated" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
+            android:text="@string/stringfog_manager_about"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
     </LinearLayout>

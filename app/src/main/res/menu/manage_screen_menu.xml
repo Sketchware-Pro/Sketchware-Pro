@@ -5,7 +5,7 @@
         android:id="@+id/menu_screen_edit"
         android:icon="@drawable/ic_edit_white_48dp"
         android:orderInCategory="1"
-        android:title="edit"
+        android:title="@string/common_word_edit"
         android:visible="false"
         app:showAsAction="always" />
     <item
