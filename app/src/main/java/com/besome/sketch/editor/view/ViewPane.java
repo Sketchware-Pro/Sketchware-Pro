@@ -458,6 +458,9 @@ public class ViewPane extends RelativeLayout {
         if (classInfo.b("TabLayout")) {
             updateTabLayout((ItemTabLayout) view, injectHandler);
         }
+        if (classInfo.b("MaterialButton")){
+            updateMaterialButton((ItemMaterialButton) view, injectHandler);
+        }
         if (classInfo.b("SignInButton")) {
             ItemSignInButton button = (ItemSignInButton) view;
             boolean hasButtonSize = false;
@@ -947,6 +950,13 @@ public class ViewPane extends RelativeLayout {
         int tabTextColor = PropertiesUtil.isHexColor(textColor) ? PropertiesUtil.parseColor(textColor) : 0xff57beee;
         int tabSelectedTextColor = PropertiesUtil.isHexColor(selectedTextColor) ? PropertiesUtil.parseColor(selectedTextColor) : Color.WHITE;
         tabLayout.setTabTextColors(tabTextColor, tabSelectedTextColor);
+    }
+
+    private void updateMaterialButton(ItemMaterialButton materialButton, InjectAttributeHandler handler) {
+        String radius = handler.getAttributeValueOf("cornerRadius");
+        String stroke = handler.getAttributeValueOf("strokeWidth");
+        materialButton.setStrokeWidth(PropertiesUtil.resolveSize(stroke, 0));
+        materialButton.setCornerRadius(PropertiesUtil.resolveSize(radius, 8));
     }
 
     private String extractAttrValue(String line, String attrbute) {
