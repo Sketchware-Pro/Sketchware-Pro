@@ -76,23 +76,26 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
-                .setCancelable(false)
+                .setCancelable(true)
                 .create();
         EditText editText = view.findViewById(R.id.ed_input);
         CheckBox skipDownloadingDependencies = view.findViewById(R.id.checkbox);
         var linear = view.findViewById(R.id.btn_download);
         TextView text = view.findViewById(R.id.tv_progress);
         linear.setOnClickListener(v1 -> {
+            dialog.setCancelable(false);
             linear.setVisibility(View.GONE);
             skipDownloadingDependencies.setEnabled(false);
             String url = editText.getText().toString();
             if (url.isEmpty()) {
                 SketchwareUtil.toastError("Please enter a dependency");
+                dialog.setCancelable(true);
                 return;
             }
 
             var parts = url.split(":");
             if (parts.length != 3) {
+                dialog.setCancelable(true);
                 SketchwareUtil.toastError("Invalid dependency format");
                 return;
             }
