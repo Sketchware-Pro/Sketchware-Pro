@@ -49,7 +49,7 @@ import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 public class AboutModActivity extends AppCompatActivity {
-    private static final String ABOUT_TEAM_URL = "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json";
+    private static final String ABOUT_TEAM_URL = "https://raw.githubusercontent.com/aquilesTrindade/Sketchware-Pro/host-members-giturl/aboutus.json";
 
     private ViewPager viewPager;
     private ExtendedFloatingActionButton fab;
@@ -132,7 +132,7 @@ public class AboutModActivity extends AppCompatActivity {
                     if (data.discordInviteLink != null) discordInviteLink = data.discordInviteLink;
 
                     teamList = data.moddersteam;
-                    teamRecycler.setAdapter(new AboutAdapters.TeamRecyclerAdapter(teamList));
+                    teamRecycler.setAdapter(new AboutAdapters.TeamRecyclerAdapter(AboutModActivity.this, teamList));
 
                     changelogList = data.changelog;
                     changelogRecycler.setAdapter(new AboutAdapters.ChangelogRecyclerAdapter(changelogList));
@@ -172,7 +172,7 @@ public class AboutModActivity extends AppCompatActivity {
                 } else {
                     teamList = new Gson().fromJson(sharedPref.getString("moddersBackup", ""), Helper.TYPE_MAP_LIST);
                     changelogList = new Gson().fromJson(sharedPref.getString("changelogBackup", ""), Helper.TYPE_MAP_LIST);
-                    teamRecycler.setAdapter(new AboutAdapters.TeamRecyclerAdapter(teamList));
+                    teamRecycler.setAdapter(new AboutAdapters.TeamRecyclerAdapter(AboutModActivity.this, teamList));
                     changelogRecycler.setAdapter(new AboutAdapters.ChangelogRecyclerAdapter(changelogList));
                     loading.setVisibility(View.GONE);
                     if (SketchwareUtil.isConnected()) {

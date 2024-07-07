@@ -1,5 +1,8 @@
 package mod.ilyasse.activities.about;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,9 +37,11 @@ public class AboutAdapters {
     public static class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapter.ViewHolder> {
 
         private final ArrayList<HashMap<String, Object>> team;
+        private final Context context;
 
-        public TeamRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
+        public TeamRecyclerAdapter(Context context, ArrayList<HashMap<String, Object>> data) {
             team = data;
+            this.context = context;
         }
 
         @Override
@@ -120,6 +125,15 @@ public class AboutAdapters {
             } else {
                 holder.status.setVisibility(View.GONE);
             }
+            
+            Object githubUrl = team.get(position).get("modder_github");
+            if (githubUrl != null) {
+                holder.content.setOnClickListener(v -> {
+                   Intent intent = new Intent(Intent.ACTION_VIEW);
+                   intent.setData(Uri.parse((String) githubUrl));
+                   ((Activity) context).startActivity(intent);
+                });
+            }
         }
 
         @Override
@@ -130,6 +144,7 @@ public class AboutAdapters {
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
+            public final LinearLayout content;
             public final TextView title;
             public final LinearLayout sidebar;
             public final ImageView icon;
@@ -139,6 +154,7 @@ public class AboutAdapters {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
+                content = itemView.findViewById(R.id.member_content);
                 title = itemView.findViewById(R.id.tv_title);
                 sidebar = itemView.findViewById(R.id.view_leftline);
                 icon = itemView.findViewById(R.id.img_user_icon);
