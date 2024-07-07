@@ -5,6 +5,7 @@
       "modder_username": "Jbk0",
       "modder_description": "Main modder",
       "modder_img": "https://avatars.githubusercontent.com/u/40118124",
+      "modder_github": "https://github.com/JavkhlanK",
       "isTitled": true,
       "isMainModder": true,
       "isActive": true,
@@ -14,6 +15,7 @@
       "modder_username": "Hasrat",
       "modder_description": "Main modder",
       "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
+      "modder_github": "https://github.com/hasrat-ali",
       "isTitled": false,
       "isMainModder": true,
       "isActive": true,
@@ -23,6 +25,7 @@
       "modder_username": "Remaker",
       "modder_description": "Main modder",
       "modder_img": "https://avatars.githubusercontent.com/u/95296093",
+      "modder_github": "https://github.com/remaker17",
       "isTitled": false,
       "isMainModder": true,
       "isActive": true,
@@ -31,6 +34,7 @@
     {
       "modder_username": "Elfilibusterismo",
       "modder_description": "Main modder",
+      "modder_github": "https://github.com/elfilibusterismo",
       "modder_img": "https://avatars.githubusercontent.com/u/113604229",
       "isTitled": false,
       "isMainModder": true,
@@ -93,6 +97,7 @@
       "modder_username": "Tyron",
       "modder_description": "Easier restoring of projects, kotlinc port to Android",
       "modder_img": "https://i.imgur.com/gP8jauO.png",
+      "modder_github": "https://github.com/tyron12233",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -101,6 +106,7 @@
       "modder_username": "Ilyasse",
       "modder_description": "Hello hello hello...",
       "modder_img": "https://i.imgur.com/i8PHDA7.png",
+      "modder_github": "https://github.com/ilyassesalama",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -109,6 +115,7 @@
       "modder_username": "Iyxan23",
       "modder_description": "btw i use arch",
       "modder_img": "https://i.imgur.com/gOopPZT.png",
+      "modder_github": "https://github.com/iyxan23",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -117,6 +124,7 @@
       "modder_username": "Raival",
       "modder_description": "Improved pretty-print in Code Editor, replaceable generated files feature",
       "modder_img": "https://avatars.githubusercontent.com/u/81700082",
+      "modder_github": "https://github.com/Raival-e",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -125,6 +133,7 @@
       "modder_username": "Khaled",
       "modder_description": "sussy baka UwU",
       "modder_img": "https://avatars.githubusercontent.com/u/74397286",
+      "modder_github": "https://github.com/khaled-0",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -133,6 +142,7 @@
       "modder_username": "Zirus",
       "modder_description": "Backup dialog design improvement",
       "modder_img": "https://avatars.githubusercontent.com/u/70142054",
+      "modder_github": "https://github.com/Keller-Zirus",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -141,6 +151,7 @@
       "modder_username": "Pranav Purwar",
       "modder_description": "Visit my best work: https://rb.gy/enaq3a",
       "modder_img": "https://avatars.githubusercontent.com/u/75154889",
+      "modder_github": "https://github.com/PranavPurwar",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -157,6 +168,7 @@
       "modder_username": "NiceSapien",
       "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
       "modder_img": "https://avatars.githubusercontent.com/u/71333407",
+      "modder_github": "https://github.com/NiceSapien",
       "isTitled": false,
       "isMainModder": false,
       "title": null
@@ -165,6 +177,7 @@
       "modder_username": "HAKANKOKCU",
       "modder_description": "Fixed image issue for old Android versions in the \"About Sketchware Pro\" screen. Also please visit: https://tbudgie.netlify.app",
       "modder_img": "https://avatars.githubusercontent.com/u/103432992",
+      "modder_github": "https://github.com/HAKANKOKCU",
       "isTitled": false,
       "isMainModder": false,
       "title": null
