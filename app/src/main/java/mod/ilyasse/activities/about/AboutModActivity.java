@@ -49,7 +49,7 @@ import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 public class AboutModActivity extends AppCompatActivity {
-    private static final String ABOUT_TEAM_URL = "https://raw.githubusercontent.com/aquilesTrindade/Sketchware-Pro/host-members-giturl/aboutus.json";
+    private static final String ABOUT_TEAM_URL = "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json";
 
     private ViewPager viewPager;
     private ExtendedFloatingActionButton fab;
