@@ -1,10 +1,10 @@
 package mod.trindadedev.tools;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
 
 public class ApkUtils {
 
@@ -14,7 +14,7 @@ public class ApkUtils {
     }
 
     public void setApkPath(String path) {
-        this.apkPath = path;
+        apkPath = path;
     }
 
     public String getSHA1() {
@@ -26,15 +26,12 @@ public class ApkUtils {
     }
 
     private String getSignature(String algorithm) {
-        FileInputStream fis = null;
-        try {
-            File apkFile = new File(apkPath);
-            if (!apkFile.exists()) {
-                return null;
-            }
+        if (apkPath == null || apkPath.isEmpty()) {
+            return "APK path must be set before computing signature.";
+        }
 
+        try (FileInputStream fis = new FileInputStream(apkPath)) {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
-            fis = new FileInputStream(apkFile);
             byte[] buffer = new byte[8192];
             int bytesRead;
 
@@ -42,26 +39,20 @@ public class ApkUtils {
                 digest.update(buffer, 0, bytesRead);
             }
 
-            byte[] hashBytes = digest.digest();
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashBytes) {
-                sb.append(String.format("%02X:", b));
-            }
-            // Remove the last colon
-            sb.setLength(sb.length() - 1);
-
-            return sb.toString();
+            return byteArrayToHex(digest.digest());
         } catch (IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        }
+    }
+
+    private String byteArrayToHex(byte[] hashBytes) {
+        try (Formatter formatter = new Formatter()) {
+            for (byte b : hashBytes) {
+                formatter.format("%02X:", b);
             }
+            String result = formatter.toString();
+            return result.substring(0, result.length() - 1);  // Remove the last colon
         }
     }
 }
