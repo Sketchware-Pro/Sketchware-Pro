@@ -1,7 +1,5 @@
 package mod.trindadedev.tools;
 
-import android.content.Context;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,11 +8,9 @@ import java.security.NoSuchAlgorithmException;
 
 public class ApkUtils {
 
-    private Context context;
     private String apkPath;
 
-    public ApkUtils(Context context) {
-        this.context = context;
+    public ApkUtils() {
     }
 
     public void setApkPath(String path) {
