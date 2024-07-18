@@ -131,7 +131,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private DB r;
     private DB t;
     private Button buildSettings;
-    private static Button runProject;
+    private Button runProject;
     private ProjectFileSelector projectFileSelector;
     private ViewEditorFragment viewTabAdapter = null;
     private rs eventTabAdapter = null;
@@ -1125,7 +1125,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            Activity currentActivity = this.activity.get();
+            var currentActivity = activity.get();
 
             if (currentActivity != null) {
                 currentActivity.runOnUiThread(() -> {
@@ -1143,7 +1143,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             }
                             dialog.show();
                         }
-                        runProject.setText("Canceling build...");
+                        currentActivity.runProject.setText("Canceling build...");
                         publishProgress("Canceling build...");
                         cancelDialog.dismiss();
                         dialog.dismiss();
