@@ -9,9 +9,9 @@ import a.a.a.aB;
 
 public class ApkSignatures {
 
-    private Context context;
+    private final Context context;
+    private final ApkUtils projectApk;
     private String abMsg;
-    private ApkUtils projectApk;
 
     public ApkSignatures(Context context, String path) {
         this.context = context;
