@@ -21,7 +21,7 @@ public class AppearanceActivity extends AppCompatActivity {
     private void openFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(binding.fragmentContainer.getId(), fragment)
                 .commit();
     }
 }
