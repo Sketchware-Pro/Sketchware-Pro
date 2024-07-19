@@ -119,7 +119,7 @@ dependencies {
     implementation "androidx.annotation:annotation:1.6.0"
     implementation "com.android.tools:annotations:31.0.2"
     implementation "com.google.guava:guava:32.0.1-jre"
-    implementation 'androidx.exifinterface:exifinterface:1.3.6'
+    implementation 'androidx.exifinterface:exifinterface:1.3.7'
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
     implementation platform("$editorGroupId:bom:0.21.1-f243159-SNAPSHOT")
