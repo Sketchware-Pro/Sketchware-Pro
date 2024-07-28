@@ -105,7 +105,7 @@ public class EventsMaker extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0);
         newCard.addView(newLayout2);
-        makeup(newLayout2, 0x7f07043e, "Activity events", getNumOfEvents(""));
+        makeup(newLayout2, R.drawable.widget_source, "Activity events", getNumOfEvents(""));
         base.addView(newCard, 1);
         newLayout2.setOnClickListener(v -> {
             Intent intent = new Intent();
