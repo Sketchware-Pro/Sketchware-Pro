@@ -156,7 +156,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
         if (eventBlocks != null) {
-            if (eventBlocks.size() == 0) {
+            if (eventBlocks.isEmpty()) {
                 e(X);
             }
 
@@ -2307,7 +2307,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     BlockBean clone5 = addTargetId2 >= 0 ? o.a(addTargetId2).getBean().clone() : null;
                     ArrayList<BlockBean> data = ((Us) v).getData();
                     ArrayList<BlockBean> a5 = a(data, this.v[0], this.v[1], true);
-                    if (a5.size() > 0) {
+                    if (!a5.isEmpty()) {
                         Rs a6 = o.a(a5.get(0).id);
                         a(a6, this.v[0], this.v[1], true);
                         BlockBean blockBean3 = null;
