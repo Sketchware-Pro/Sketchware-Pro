@@ -20,9 +20,9 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 
 import com.android.annotations.NonNull;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
@@ -60,10 +60,6 @@ public class ConfigActivity extends AppCompatActivity {
     private HashMap<String, Object> setting_map = new HashMap<>();
 
     private LinearLayout content;
-    private NestedScrollView contentLayout;
-    private com.google.android.material.appbar.AppBarLayout appBarLayout;
-    private com.google.android.material.appbar.MaterialToolbar topAppBar;
-    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +68,7 @@ public class ConfigActivity extends AppCompatActivity {
         setContentView(R.layout.prefences_content_appbar);
 
         content = findViewById(R.id.content);
-        topAppBar = findViewById(R.id.topAppBar);
-        appBarLayout = findViewById(R.id.appBarLayout);
-        contentLayout = findViewById(R.id.contentLayout);
-        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
 
         topAppBar.setTitle("Mod Settings");
         topAppBar.setNavigationOnClickListener(view -> onBackPressed());
