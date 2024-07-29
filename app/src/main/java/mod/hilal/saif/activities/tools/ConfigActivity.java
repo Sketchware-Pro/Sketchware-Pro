@@ -1,51 +1,41 @@
 package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.dpToPx;
-import static mod.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
-import android.content.DialogInterface;
-import android.view.WindowManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
-import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import com.android.annotations.NonNull;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
-import com.topjohnwu.superuser.Shell;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
+import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import a.a.a.mB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -253,31 +243,19 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     public static Object getDefaultValue(String key) {
-        switch (key) {
-            case SETTING_ALWAYS_SHOW_BLOCKS:
-            case SETTING_LEGACY_CODE_EDITOR:
-            case SETTING_ROOT_AUTO_INSTALL_PROJECTS:
-            case SETTING_SHOW_BUILT_IN_BLOCKS:
-            case SETTING_SHOW_EVERY_SINGLE_BLOCK:
-            case SETTING_USE_NEW_VERSION_CONTROL:
-            case SETTING_USE_ASD_HIGHLIGHTER:
-                return false;
-
-            case SETTING_BACKUP_DIRECTORY:
-                return "/.sketchware/backups/";
-
-            case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING:
-                return true;
-
-            case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH:
-                return "/.sketchware/resources/block/My Block/palette.json";
-
-            case SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH:
-                return "/.sketchware/resources/block/My Block/block.json";
-
-            default:
-                throw new IllegalArgumentException("Unknown key '" + key + "'!");
-        }
+        return switch (key) {
+            case SETTING_ALWAYS_SHOW_BLOCKS, SETTING_LEGACY_CODE_EDITOR,
+                 SETTING_ROOT_AUTO_INSTALL_PROJECTS, SETTING_SHOW_BUILT_IN_BLOCKS,
+                 SETTING_SHOW_EVERY_SINGLE_BLOCK, SETTING_USE_NEW_VERSION_CONTROL,
+                 SETTING_USE_ASD_HIGHLIGHTER -> false;
+            case SETTING_BACKUP_DIRECTORY -> "/.sketchware/backups/";
+            case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING -> true;
+            case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH ->
+                    "/.sketchware/resources/block/My Block/palette.json";
+            case SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH ->
+                    "/.sketchware/resources/block/My Block/block.json";
+            default -> throw new IllegalArgumentException("Unknown key '" + key + "'!");
+        };
     }
 
     @SuppressLint("SetTextI18n")
