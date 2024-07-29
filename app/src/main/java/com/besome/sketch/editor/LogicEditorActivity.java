@@ -798,8 +798,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             }
                         }
                     } else {
-                        if (block.V.get(i) instanceof Ss) {
-                            Ss ss = (Ss) block.V.get(i);
+                        if (block.V.get(i) instanceof Ss ss) {
                             String javaName = M.getJavaName();
                             String xmlName = M.getXmlName();
                             if (D.equals("onBindCustomView")) {
@@ -2128,8 +2127,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             Y = null;
             Z.removeCallbacks(aa);
             if (!u) {
-                if (v instanceof Rs) {
-                    Rs rs = (Rs) v;
+                if (v instanceof Rs rs) {
                     if (rs.getBlockType() == 0) {
                         a(rs, event.getX(), event.getY());
                     }
@@ -2282,9 +2280,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 o.getLocationOnScreen(oLocationOnScreen);
                 bC.d(B).a(s(), a3, width - oLocationOnScreen[0], a2 - oLocationOnScreen[1], null, null);
                 C();
-            } else if (v instanceof Rs) {
+            } else if (v instanceof Rs rs13) {
                 p.a(this.v);
-                Rs rs13 = (Rs) v;
                 if (rs13.getBlockType() == 1) {
                     int addTargetId = o.getAddTargetId();
                     BlockBean clone3 = addTargetId >= 0 ? o.a(addTargetId).getBean().clone() : null;
