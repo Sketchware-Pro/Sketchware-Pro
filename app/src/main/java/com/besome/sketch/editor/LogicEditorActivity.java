@@ -1197,9 +1197,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     z = true;
                 }
             }
-            if (!z) {
-                return false;
-            }
+            return z;
         }
         return true;
     }
@@ -1957,16 +1955,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (M == null) {
             return true;
         }
-        if (bC.d(B).g(s())) {
-            menu.findItem(R.id.menu_logic_redo).setEnabled(true);
-        } else {
-            menu.findItem(R.id.menu_logic_redo).setEnabled(false);
-        }
-        if (bC.d(B).h(s())) {
-            menu.findItem(R.id.menu_logic_undo).setEnabled(true);
-        } else {
-            menu.findItem(R.id.menu_logic_undo).setEnabled(false);
-        }
+        menu.findItem(R.id.menu_logic_redo).setEnabled(bC.d(B).g(s()));
+        menu.findItem(R.id.menu_logic_undo).setEnabled(bC.d(B).h(s()));
         return true;
     }
 
