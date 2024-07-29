@@ -682,13 +682,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         RadioGroup radioGroup = customView.findViewById(R.id.rg);
         LinearLayout content = customView.findViewById(R.id.content);
         ArrayList<String> images = jC.d(B).m();
-        if (xq.a(B) || xq.b(B)) {
-            if (selectingImage) {
-                images.add(0, "default_image");
-            } else if (selectingBackgroundImage) {
-                images.add(0, "NONE");
-            }
+        if (selectingImage) {
+            images.add(0, "default_image");
+        } else if (selectingBackgroundImage) {
+            images.add(0, "NONE");
         }
+
 
         for (String image : images) {
             RadioButton radioButton = new RadioButton(this);
@@ -1369,9 +1368,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         RadioGroup radioGroup = customView.findViewById(R.id.rg);
         LinearLayout linearLayout = customView.findViewById(R.id.content);
         ArrayList<String> fontNames = jC.d(B).k();
-        if (xq.a(B) || xq.b(B)) {
-            fontNames.add(0, "default_font");
-        }
+        fontNames.add(0, "default_font");
         for (String fontName : fontNames) {
             RadioButton font = getFontRadioButton(fontName);
             radioGroup.addView(font);
