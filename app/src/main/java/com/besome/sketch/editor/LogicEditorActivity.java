@@ -535,7 +535,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         ArrayList<BlockBean> arrayList2 = new ArrayList<>();
         for (BlockBean next : arrayList) {
-            if (next.id != null && !next.id.equals("")) {
+            if (next.id != null && !next.id.isEmpty()) {
                 arrayList2.add(next.clone());
             }
         }
@@ -590,7 +590,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Rs firstBlock = null;
         for (int j = 0; j < arrayList2.size(); j++) {
             BlockBean blockBean = arrayList2.get(j);
-            if (blockBean.id != null && !blockBean.id.equals("")) {
+            if (blockBean.id != null && !blockBean.id.isEmpty()) {
                 Rs block = b(blockBean);
                 if (j == 0) {
                     firstBlock = block;
@@ -600,7 +600,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         for (BlockBean block : arrayList2) {
-            if (block.id != null && !block.id.equals("")) {
+            if (block.id != null && !block.id.isEmpty()) {
                 a(block, false);
             }
         }
@@ -2458,12 +2458,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             Configuration configuration = getResources().getConfiguration();
             boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
             if (isDarkTheme) {
-                codeEditor.setColorScheme( new SchemeDarcula());
+                codeEditor.setColorScheme(new SchemeDarcula());
             } else {
-                codeEditor.setColorScheme( new EditorColorScheme());
+                codeEditor.setColorScheme(new EditorColorScheme());
             }
         } else {
-            codeEditor.setColorScheme( new EditorColorScheme());
+            codeEditor.setColorScheme(new EditorColorScheme());
         }
 
         var dialog = new MaterialAlertDialogBuilder(this)
