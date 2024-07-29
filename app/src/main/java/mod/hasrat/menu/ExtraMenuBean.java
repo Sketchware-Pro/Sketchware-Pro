@@ -732,8 +732,8 @@ public class ExtraMenuBean {
             AsdAllEditor editor = new AsdAllEditor(logicEditor);
             editor.setCon(menu.getArgValue().toString());
             editor.show();
-            editor.saveLis(logicEditor, menu, editor);
-            editor.cancelLis(logicEditor, editor);
+            editor.saveLis(logicEditor, menu);
+            editor.cancelLis(editor);
             dialog.dismiss();
         });
         dialog.show();

@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -1535,8 +1534,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             AsdAllEditor editor = new AsdAllEditor(this);
             editor.setCon(ss.getArgValue().toString());
             editor.show();
-            editor.saveLis(this, ss, editor);
-            editor.cancelLis(this, editor);
+            editor.saveLis(this, ss);
+            editor.cancelLis(editor);
             dialog.dismiss();
         });
         dialog.b(getTranslatedString(R.string.common_word_select), v -> {
