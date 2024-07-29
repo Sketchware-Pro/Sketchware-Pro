@@ -427,7 +427,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(4)
         );
         titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface));
+        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface, getTheme()));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -437,7 +437,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant));
+        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant, getTheme()));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
@@ -548,7 +548,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface));
+        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface, getTheme()));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -558,7 +558,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant));
+        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant, getTheme()));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
