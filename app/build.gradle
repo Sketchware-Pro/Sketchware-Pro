@@ -98,7 +98,7 @@ android {
         buildConfig true
     }
 
-    configurations.implementation {
+    configurations.minApi26Implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
     }
 }
@@ -161,7 +161,6 @@ dependencies {
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
 
-    implementation 'javax.inject:javax.inject:1'
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {
