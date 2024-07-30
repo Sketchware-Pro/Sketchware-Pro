@@ -11,7 +11,6 @@ import android.util.Log;
 import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.material.color.DynamicColors;
 
 import mod.trindadedev.settings.appearance.theme.manage.ThemeManager;
 
@@ -49,7 +48,6 @@ public class SketchApplication extends Application {
             }
         });
         super.onCreate();
-        DynamicColors.applyToActivitiesIfAvailable(this);
         ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
     }
 }
