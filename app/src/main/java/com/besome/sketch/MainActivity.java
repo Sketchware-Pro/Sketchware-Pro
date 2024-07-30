@@ -140,7 +140,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme_Main);
+        setTheme(R.style.Theme_SketchwarePro_Main);
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 

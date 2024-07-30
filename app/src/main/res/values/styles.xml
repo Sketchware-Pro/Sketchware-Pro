@@ -176,7 +176,7 @@
         <item name="android:textColor">@color/primary_text_default_material_dark</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/AppTheme">
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="Theme.SketchwarePro">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -185,7 +185,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.Translucent" parent="@style/AppTheme">
+    <style name="Theme.AppCompat.Light.NoActionBar.Translucent" parent="Theme.SketchwarePro">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -193,7 +193,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" parent="@style/AppTheme">
+    <style name="Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" parent="Theme.SketchwarePro">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -276,7 +276,7 @@
         <item name="android:colorControlHighlight">@color/color_control_normal</item>
     </style>
 
-    <style name="AppTheme.Et" parent="@style/AppTheme">
+    <style name="AppTheme.Et" parent="Theme.SketchwarePro">
         <item name="colorControlHighlight">@android:color/transparent</item>
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="colorPrimary">#ff212121</item>
