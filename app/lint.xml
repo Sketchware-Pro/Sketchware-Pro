@@ -7,4 +7,5 @@
     <issue id="UseCompoundDrawables" severity="ignore" />
     <issue id="NotifyDataSetChanged" severity="ignore" />
     <issue id="HardcodedText" severity="ignore" />
+    <issue id="SetTextI18n" severity="ignore" />
 </lint>

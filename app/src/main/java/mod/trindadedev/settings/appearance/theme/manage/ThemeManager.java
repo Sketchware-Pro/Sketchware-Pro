@@ -2,10 +2,11 @@ package mod.trindadedev.settings.appearance.theme.manage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class ThemeManager {
-    
+
     public static final String THEME_PREF = "themedata";
     public static final String THEME_KEY = "idetheme";
 
