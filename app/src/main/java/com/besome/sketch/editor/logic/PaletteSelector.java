@@ -181,7 +181,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(R.layout.palettes_search_dialog)
-                .setCancelable(false)
+                .setCancelable(true)
                 .create();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
@@ -189,6 +189,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         dialog.setView(inflate);
 
         final TextView dialogTitle = inflate.findViewById(R.id.dialog_title);
+        final TextView dialogTitle2 = inflate.findViewById(R.id.dialog_title2);
         final MaterialButton btnCancel = inflate.findViewById(R.id.dialog_btn_cancel);
         final MaterialButton btnSearch = inflate.findViewById(R.id.dialog_btn_entre);
         final MaterialButton btnRestore = inflate.findViewById(R.id.dialog_btn_restore);
@@ -197,6 +198,8 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         final EditText searchValue = inflate.findViewById(R.id.edittext_search_value);
         final TextInputLayout searchInputLayout = inflate.findViewById(R.id.textInputLayout_search);
 
+        dialogTitle2.setText(R.string.by_edwardkoc_pixdev);
+        dialogTitle2.setTextSize(10);
         dialogTitle.setText(Helper.getResString(R.string.search_in_palettes));
         btnSearch.setText(Helper.getResString(R.string.common_word_search));
         btnRestore.setText(Helper.getResString(R.string.common_word_restore));
@@ -244,6 +247,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         btnSearch.setOnClickListener(v -> {
             if (!IsLoadStarted && validateSearch(searchValue.getText().toString(), searchInputLayout, errorMessage)) {
+                dialog.setCancelable(false);
                 IsLoadStarted = true;
                 btnSearch.setText(Helper.getResString(R.string.searching));
                 SPSaveSearchMainData.edit()
@@ -256,6 +260,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
         btnRestore.setOnClickListener(v -> {
             if (!IsLoadStarted) {
+                dialog.setCancelable(false);
                 IsLoadStarted = true;
                 btnRestore.setText(Helper.getResString(R.string.restoring));
                 ResetSavedInfo();

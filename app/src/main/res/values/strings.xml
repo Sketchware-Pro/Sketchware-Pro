@@ -2193,5 +2193,17 @@ Please try again later"</string>
     <string name="review_firebase_config_title">Review</string>
     <string name="edit_view_properties_title">Edit Properties</string>
 
+    <string name="create_new_widget">Create a Widget</string>
+    <string name="create">Create</string>
+    <string name="title_required">Title is required</string>
+    <string name="name_required">Name is required</string>
+    <string name="type_required">Type is required</string>
+    <string name="class_required">Class is required</string>
+    <string name="widget_type_title">Widget type</string>
+    <string name="new_class">OR Create a new Class</string>
+    <string name="add_to">Add Widget to Class :</string>
+    <string name="by_edwardkoc_pixdev">By Edward.KOC &amp; PixDev</string>
+    <string name="by_edward_koc">By Edward.KOC</string>
+
 
 </resources>

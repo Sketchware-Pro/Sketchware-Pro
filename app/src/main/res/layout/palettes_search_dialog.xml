@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/dialog_title"
@@ -42,6 +42,17 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="8dp"
                         tools:text="Amogus Dialog" />
+
+                    <TextView
+                        android:id="@+id/dialog_title2"
+                        style="@style/MaterialAlertDialog.Material3.Title.Text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="8dp"
+                        tools:text="By Edward.KOC &amp; PixDev"
+                        tools:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout

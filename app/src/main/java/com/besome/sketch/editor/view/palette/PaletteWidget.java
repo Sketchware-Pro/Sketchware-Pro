@@ -14,6 +14,8 @@ import com.besome.sketch.lib.ui.CustomScrollView;
 import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
+import java.util.HashMap;
+
 import a.a.a.wB;
 import dev.aldi.sayuti.editor.view.palette.IconBadgeView;
 import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
@@ -36,6 +38,7 @@ import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
+import mod.Edward.KOC.IconCustomWidget;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
 import mod.agus.jcoderz.editor.view.palette.IconDigitalClock;
 import mod.agus.jcoderz.editor.view.palette.IconGridView;
@@ -175,6 +178,10 @@ public class PaletteWidget extends LinearLayout {
         layoutContainer.removeAllViews();
     }
 
+    public void AddCustomWidgets(View view) {
+        layoutContainer.addView(view);
+    }
+
     private void initialize(Context context) {
         wB.a(context, this, R.layout.palette_widget);
         layoutContainer = findViewById(R.id.layout);
@@ -209,6 +216,33 @@ public class PaletteWidget extends LinearLayout {
         titleView.setTextColor(MaterialColors.getColor(titleView, com.google.android.material.R.attr.colorPrimary));
         target.addView(titleView);
     }
+
+    public View CustomWidget(HashMap<String, Object> map) {
+        String title = map.get("title").toString();
+        String name = map.get("name").toString();
+        if (map.get("Class").toString().equals("Layouts")) {
+            LinearLayout iconBase;
+            Context context = getContext();
+            iconBase = new IconCustomWidget(map, context);
+
+            layoutContainer.addView(iconBase);
+            return iconBase;
+        } else {
+            IconBase iconBase;
+            Context context = getContext();
+            iconBase = new IconCustomWidget(map, context);
+
+            iconBase.setText(title);
+            iconBase.setName(name);
+            if (map.get("Class").toString().equals("AndroidX")) {
+                layoutContainer.addView(iconBase);
+            } else {
+                widgetsContainer.addView(iconBase);
+            }
+            return iconBase;
+        }
+    }
+
 
     public View extraWidget(String tag, String title, String name) {
         IconBase iconBase;

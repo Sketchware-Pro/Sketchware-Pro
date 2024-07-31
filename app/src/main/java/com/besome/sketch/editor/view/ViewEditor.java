@@ -1,5 +1,9 @@
 package com.besome.sketch.editor.view;
 
+import static mod.Edward.KOC.IconCustomWidget.AddCustomWidgets;
+import static mod.Edward.KOC.IconCustomWidget.DeleteWidgetMap;
+import static mod.Edward.KOC.IconCustomWidget.SubstringCovert;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -61,6 +65,7 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
+import mod.Edward.KOC.IconCustomWidget;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
@@ -335,6 +340,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     deleteWidgetFromCollection(collectionWidget.getName());
                     break lol;
                 }
+                if (D && r instanceof IconCustomWidget) {
+                    DeleteWidgetMap(getContext(), (int) view.getTag());
+                    break lol;
+                }
                 viewPane.resetView(false);
                 if (r instanceof uy uyVar) {
                     ArrayList<ViewBean> arrayList = new ArrayList<>();
@@ -374,7 +383,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
                             if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
-                                hashMap.put(next.id, a(next.type));
+                                hashMap.put(next.id, a(next.type, null));
                             } else {
                                 hashMap.put(next.id, next.id);
                             }
@@ -551,6 +560,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void removeWidgetsAndLayouts() {
         paletteWidget.removeWidgetLayouts();
         paletteWidget.removeWidgets();
+        AddCustomWidgets(getContext(), paletteWidget);
     }
 
     public sy e(ViewBean viewBean) {
@@ -610,7 +620,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         dummyView.a(r, u, v, u, v);
         dummyView.a(G);
         if (isViewAnIconBase(r)) {
-            if (r instanceof uy) {
+            if (r instanceof uy || r instanceof IconCustomWidget) {
                 b(true);
                 viewPane.addRootLayout(null);
             } else {
@@ -861,8 +871,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         a2.setOnTouchListener(this);
     }
 
-    public final String a(int i) {
-        String b2 = wq.b(i);
+    public final String a(int i, String convert) {
+        String b2 = convert == null ? wq.b(i) : SubstringCovert(convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;
@@ -998,4 +1008,20 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             setOnClickListener(this);
         }
     }
+
+    public void CreateCustomWidget(HashMap<String, Object> map) {
+        View extraWidget = paletteWidget.CustomWidget(map);
+        extraWidget.setClickable(true);
+        Object position = map.get("position");
+        int tagValue = 0;
+        if (position instanceof Integer) {
+            tagValue = (Integer) position;
+        } else if (position instanceof Double) {
+            tagValue = ((Double) position).intValue();
+        }
+
+        extraWidget.setTag(tagValue);
+        extraWidget.setOnTouchListener(this);
+    }
+
 }
