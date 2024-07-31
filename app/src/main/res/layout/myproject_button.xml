@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/img_button"
     android:layout_width="0dp"
@@ -17,6 +17,7 @@
         android:layout_height="18dp"
         android:contentDescription="@null"
         android:scaleType="fitCenter"
+        app:tint="?attr/colorControlNormal"
         tools:src="@drawable/ic_backup" />
 
     <TextView
@@ -24,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="#ff757575"
+        android:textColor="?attr/colorControlNormal"
         android:textSize="12sp"
         tools:text="Back up" />
 </LinearLayout>

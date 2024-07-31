@@ -3,8 +3,6 @@ package com.besome.sketch.design;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -26,13 +24,16 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -51,9 +52,11 @@ import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -83,6 +86,7 @@ import a.a.a.yq;
 import a.a.a.zy;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+import dev.chrisbanes.insetter.Insetter;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
@@ -99,7 +103,7 @@ import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
 import mod.hey.studios.project.proguard.ProguardHandler;
-import mod.hey.studios.project.stringfog.ManageStringfogActivity;
+import mod.hey.studios.project.stringfog.ManageStringFogFragment;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
@@ -116,9 +120,9 @@ import mod.trindadedev.tools.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener {
     private ImageView xmlLayoutOrientation;
-    private boolean B = false;
+    private boolean B;
     private int currentTabNumber;
-    private UnsavedChangesSaver unsavedChangesSaver = null;
+    private UnsavedChangesSaver unsavedChangesSaver;
     private String sc_id;
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
@@ -126,15 +130,23 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private yq q;
     private DB r;
     private DB t;
-    /**
-     * The Run-Button in bottom right corner
-     */
+    private Button buildSettings;
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
-    private ViewEditorFragment viewTabAdapter = null;
-    private rs eventTabAdapter = null;
-    private br componentTabAdapter = null;
-
+    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (projectFileSelector != null) {
+                projectFileSelector.syncState();
+            }
+        }
+    });
+    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
+        }
+    });
+    private ViewEditorFragment viewTabAdapter;
     private final ActivityResultLauncher<Intent> openLibraryManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -152,24 +164,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
     });
-    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            if (projectFileSelector != null) {
-                projectFileSelector.syncState();
-            }
-        }
-    });
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             viewTabAdapter.j();
         }
     });
-    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            assert result.getData() != null;
-            projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
-        }
-    });
+    private rs eventTabAdapter;
+    private br componentTabAdapter;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -321,7 +322,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (v.getId() == R.id.btn_execute) {
                 new BuildAsyncTask(this).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
+                PopupMenu popupMenu = new PopupMenu(this, buildSettings, 0, R.attr.popupMenuStyle, R.style.Widget_Material3_PopupMenu);
                 Menu menu = popupMenu.getMenu();
 
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
@@ -335,40 +336,28 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
-                        case 1:
-                            new BuildSettingsDialog(this, sc_id).show();
-                            break;
-
-                        case 2:
-                            new Thread(() -> {
-                                FileUtil.deleteFile(q.projectMyscPath);
-                                runOnUiThread(() ->
-                                        SketchwareUtil.toast("Done cleaning temporary files!"));
-                            }).start();
-                            break;
-
-                        case 3:
-                            new CompileErrorSaver(sc_id).showLastErrors(this);
-                            break;
-
-                        case 4:
+                        case 1 -> new BuildSettingsDialog(this, sc_id).show();
+                        case 2 -> new Thread(() -> {
+                            FileUtil.deleteFile(q.projectMyscPath);
+                            runOnUiThread(() ->
+                                    SketchwareUtil.toast("Done cleaning temporary files!"));
+                        }).start();
+                        case 3 -> new CompileErrorSaver(sc_id).showLastErrors(this);
+                        case 4 -> {
                             if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                                 installBuiltApk();
                             } else {
                                 SketchwareUtil.toast("APK doesn't exist anymore");
                             }
-                            break;
-
-                        case 5:
-                            showCurrentActivitySrcCode();
-                            break;
-                        
-                        case 6:
+                        }
+                        case 5 -> showCurrentActivitySrcCode();
+                        case 6 -> {
                             ApkSignatures apkSignatures = new ApkSignatures(this, q.finalToInstallApkPath);
                             apkSignatures.showSignaturesDialog();
-                            break;
-                        default:
+                        }
+                        default -> {
                             return false;
+                        }
                     }
 
                     return true;
@@ -381,9 +370,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.design);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -399,18 +389,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
         drawer = findViewById(R.id.drawer_layout);
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(findViewById(R.id.container));
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
+        buildSettings = findViewById(R.id.btn_compiler_opt);
+        buildSettings.setOnClickListener(this);
         runProject = findViewById(R.id.btn_execute);
         runProject.setText(Helper.getResString(R.string.common_word_run));
         runProject.setOnClickListener(this);
-        findViewById(R.id.btn_compiler_opt).setOnClickListener(this);
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
         projectFileSelector = findViewById(R.id.file_selector);
         projectFileSelector.setScId(sc_id);
@@ -506,7 +496,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
             if (!drawer.isDrawerOpen(GravityCompat.END)) {
@@ -539,7 +529,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -554,7 +544,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         outState.putString("sc_id", sc_id);
         projectFileSelector.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -574,7 +564,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
         dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
-        dialog.a(R.drawable.exit_96);
+        dialog.a(R.drawable.ic_exit_24);
         dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
         dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), v -> {
             if (!mB.a()) {
@@ -621,7 +611,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
-        dialog.a(R.drawable.data_backup_96);
+        dialog.a(R.drawable.ic_history_24);
         dialog.b(Helper.getResString(R.string.design_restore_data_title));
         dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
         dialog.b(Helper.getResString(R.string.common_word_restore), v -> {
@@ -672,23 +662,27 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     private void showCurrentActivitySrcCode() {
-        ProgressDialog progress = new ProgressDialog(this);
-        progress.setMessage("Generating source...");
-        progress.setCancelable(false);
-        progress.show();
+        ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
+        loadingDialogBinding.tvProgress.setText("Generating source code...");
+        var loadingDialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Please wait")
+                .setCancelable(false)
+                .setView(loadingDialogBinding.getRoot())
+                .create();
+        loadingDialog.show();
 
         new Thread(() -> {
             String filename = projectFileSelector.getFileName();
             final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
+            var dialogBuilder = new MaterialAlertDialogBuilder(this)
                     .setTitle(filename)
                     .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
                 if (isFinishing()) return;
-                progress.dismiss();
+                loadingDialog.dismiss();
 
                 CodeEditor editor = new CodeEditor(this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
@@ -708,9 +702,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.setView(editor,
                         (int) getDip(24),
-                        (int) getDip(8),
+                        (int) getDip(20),
                         (int) getDip(24),
-                        (int) getDip(8));
+                        (int) getDip(0));
                 dialog.show();
             });
         }).start();
@@ -807,10 +801,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     /**
-     * Opens {@link ManageStringfogActivity}.
+     * Opens {@link ManageStringFogFragment}.
      */
     void toStringFogManager() {
-        launchActivity(ManageStringfogActivity.class, null);
+        var fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag("stringFogFragment") == null) {
+            var bottomSheet = new ManageStringFogFragment();
+            bottomSheet.show(fragmentManager, "stringFogFragment");
+        }
     }
 
     /**
@@ -886,8 +884,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private static class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
         private final WeakReference<DesignActivity> activity;
         private final BuildingDialog dialog;
-        private boolean canceled = false;
-        private boolean isBuildFinished = false;
+        private boolean canceled;
+        private boolean isBuildFinished;
 
         public BuildAsyncTask(DesignActivity activity) {
             super(activity.getApplicationContext());
@@ -1126,38 +1124,41 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            Activity currentActivity = this.activity.get();
+            var currentActivity = activity.get();
 
             if (currentActivity != null) {
                 currentActivity.runOnUiThread(() -> {
                     aB cancelDialog = new aB(currentActivity);
                     cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_title));
                     cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_desc));
-                    cancelDialog.a(R.drawable.ic_cancel_48dp);
+                    cancelDialog.a(R.drawable.ic_exit_24);
 
                     cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_btn_stop), v -> {
                         if (!isBuildFinished) {
                             if (!dialog.isCancelableOnBackPressed()) {
                                 dialog.setIsCancelableOnBackPressed(true);
                                 maybeShow();
-                                publishProgress("Canceling build...");
                                 canceled = true;
                             }
                             dialog.show();
                         }
+                        currentActivity.runProject.setText("Canceling build...");
+                        publishProgress("Canceling build...");
                         cancelDialog.dismiss();
+                        dialog.dismiss();
                     });
 
                     cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_btn_continue), v -> {
                         if (!isBuildFinished)
                             dialog.show();
-                        cancelDialog.dismiss();
+                        dialog.dismiss();
                     });
 
                     cancelDialog.show();
                 });
             }
         }
+
 
         @Override
         public void onCancelled() {

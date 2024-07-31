@@ -1,26 +1,22 @@
 package com.besome.sketch.editor.manage.font;
 
+import static mod.hey.studios.util.Helper.addBasicTextChangedListener;
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
-
-import java.util.ArrayList;
+import com.sketchware.remod.databinding.ManageFontAddBinding;
 
 import a.a.a.Np;
-import a.a.a.WB;
+import a.a.a.WB2;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
@@ -34,57 +30,67 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
     private static final int REQUEST_CODE_FONT_PICKER = 229;
 
-    private TextView fontPreview;
-    private CheckBox addOrAddedToCollection;
     private Uri fontUri = null;
     private boolean validFontPicked;
+    private boolean fromCollectionPage;
     private String sc_id;
-    private TextInputEditText inputFontName;
-    private TextInputLayout inputLayoutFontName;
-    private WB fontNameValidator;
-    private ImageView selectFile;
+    private WB2 fontNameValidator;
+
+    private ManageFontAddBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ManageFontAddBinding.inflate(getLayoutInflater());
         e(Helper.getResString(R.string.design_manager_font_title_add_font));
         d(Helper.getResString(R.string.common_word_save));
         b(Helper.getResString(R.string.common_word_cancel));
-        setContentView(R.layout.manage_font_add);
+        setContentView(binding.getRoot());
 
         Intent intent = getIntent();
         sc_id = intent.getStringExtra("sc_id");
-        addOrAddedToCollection = findViewById(R.id.add_to_collection_checkbox);
-        selectFile = findViewById(R.id.select_file);
-        fontPreview = findViewById(R.id.font_preview);
-        inputFontName = findViewById(R.id.ed_input);
-        inputLayoutFontName = findViewById(R.id.ti_input);
-        fontNameValidator = new WB(this, inputLayoutFontName, uq.b, intent.getStringArrayListExtra("font_names"));
-        fontPreview.setText(Helper.getResString(R.string.design_manager_font_description_look_like_this));
-        selectFile.setOnClickListener(this);
+        if (intent.getBooleanExtra("add_to_collection", false)) {
+            fromCollectionPage = true;
+            binding.addToCollectionCheckbox.setChecked(true);
+            binding.addToCollectionCheckbox.setEnabled(false);
+        }
+        binding.selectFile.setOnClickListener(this);
+        binding.clearInput.setOnClickListener(v -> binding.edInput.setText(""));
         r.setOnClickListener(this);
         s.setOnClickListener(this);
+
+        fontNameValidator = new WB2(this, binding.tiInput, uq.b, intent.getStringArrayListExtra("font_names"));
         if (intent.getIntExtra("request_code", -1) == 272) {
             e(Helper.getResString(R.string.design_manager_font_title_edit_font));
-            fontNameValidator = new WB(this, inputLayoutFontName, uq.b, new ArrayList<>());
-            inputFontName.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
-            inputFontName.setEnabled(false);
-            addOrAddedToCollection.setEnabled(false);
+            binding.edInput.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
+            binding.addToCollectionCheckbox.setEnabled(false);
         }
+        addBasicTextChangedListener(binding.edInput, str -> {
+            binding.buttonsHolder.animate().translationY(binding.tiInput.getError() != null ? 40 : 0);
+            binding.clearInput.setVisibility(str.isEmpty() ? View.GONE : View.VISIBLE);
+        });
+        binding.selectFile.setOnClickListener(view -> {
+            if (!mB.a()) {
+                Intent intent1 = new Intent(Intent.ACTION_GET_CONTENT);
+                intent1.setType("*/*");
+                startActivityForResult(Intent.createChooser(intent1, Helper.getResString(R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
+            }
+        });
     }
 
     private void saveFont() {
         if (isFontValid(fontNameValidator)) {
-            String fontName = this.inputFontName.getText().toString();
+            String fontName = binding.edInput.getText().toString();
             String pickedFontFilePath = fontUri.getPath();
             ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
             resourceBean.savedPos = 1;
             resourceBean.isNew = true;
 
-            if (addOrAddedToCollection.isChecked()) {
+            if (binding.addToCollectionCheckbox.isChecked()) {
                 try {
                     Np.g().a(sc_id, resourceBean);
                 } catch (Exception e) {
+                    Log.e("AddFontActivity", "Failed to add font to collection", e);
                     // Well, (parts of) the bytecode's lying, yy can be thrown.
                     //noinspection ConstantConditions
                     if (e instanceof yy) {
@@ -95,17 +101,22 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                                     bB.b(this, Helper.getResString(R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
                             case "fail_to_copy" ->
                                     bB.b(this, Helper.getResString(R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
+                            default -> {
+                            }
                         }
                     } else {
                         throw e;
                     }
                 }
-            } else {
+            }
+            if (!fromCollectionPage) {
                 Intent intent = new Intent();
                 intent.putExtra("resource_bean", resourceBean);
                 setResult(RESULT_OK, intent);
-                finish();
             }
+            finish();
+        } else {
+            bB.b(this, Helper.getResString(R.string.design_manager_message_no_font_selected), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -116,26 +127,34 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK) {
             Uri intentData = data.getData();
 
+
             String filenameExtension = FileUtil.getFileExtension(SketchwareUtil.getSafDocumentDisplayName(intentData).orElse(".ttf"));
             SketchwareUtil.copySafDocumentToTempFile(intentData, this, filenameExtension, tempFontFile -> {
                 fontUri = Uri.fromFile(tempFontFile);
                 try {
-                    validFontPicked = true;
                     Typeface typeface = Typeface.createFromFile(tempFontFile);
                     if (typeface.equals(Typeface.DEFAULT)) {
                         SketchwareUtil.toastError("Warning: Font doesn't seem to be valid");
+                        return;
                     }
-                    fontPreview.setTypeface(typeface);
-                    inputFontName.requestFocus();
-                    fontPreview.setVisibility(View.VISIBLE);
+                    validFontPicked = true;
+                    String extractedFontName = SketchwareUtil.getSafDocumentDisplayName(intentData).orElse("invalid.tff").toLowerCase();
+                    extractedFontName = extractedFontName.replaceAll("[^a-z0-9]", "").replace("ttf", "");
+
+                    binding.edInput.requestFocus();
+                    binding.fontPreviewView.setVisibility(View.VISIBLE);
+                    binding.fontPreviewTxt.setTypeface(typeface);
+                    binding.edInput.setText(extractedFontName);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     validFontPicked = false;
-                    fontPreview.setVisibility(View.GONE);
+                    binding.fontPreviewView.setVisibility(View.GONE);
                     SketchwareUtil.toast("Couldn't load font: " + e.getMessage());
                     LogUtil.e("AddFontActivity", "Failed to load font", e);
                 }
             }, e -> {
                 SketchwareUtil.toastError("Error while loading font: " + e.getMessage());
+                e.printStackTrace();
                 LogUtil.e("AddFontActivity", "Failed to load font", e);
             });
         }
@@ -144,28 +163,17 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
         if (id == R.id.common_dialog_cancel_button) {
             finish();
         } else if (id == R.id.common_dialog_ok_button) {
             saveFont();
-        } else if (id == R.id.select_file) {
-            if (!mB.a()) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
-                startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
-            }
         }
     }
 
-    private boolean isFontValid(WB wb) {
-        if (!wb.b()) {
+    private boolean isFontValid(WB2 wb) {
+        if (wb != null && !wb.b()) {
             return false;
         }
-        if (validFontPicked && fontUri != null) {
-            return true;
-        }
-        selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
-        return false;
+        return validFontPicked && fontUri != null;
     }
 }

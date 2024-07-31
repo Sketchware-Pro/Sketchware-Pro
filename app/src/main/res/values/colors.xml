@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_accent">#ff008dcd</color>
     <color name="color_btn_blue_highlight">#ff005e8a</color>
@@ -26,11 +25,16 @@
     <color name="light_grey">#ffc6c6c6</color>
     <color name="lighter_grey">#ffeeeeee</color>
     <color name="list_selected_background">#20008dcd</color>
+    <color name="main_tab_background">#ffffffff</color>
+    <color name="main_tab_indicator_color">#ff71bce9</color>
+    <color name="main_tab_selected_text_color">#ff007cc9</color>
+    <color name="main_tab_text_color">#ff007cc9</color>
     <color name="sc_item_bg">#fffff9ac</color>
     <color name="scolor_black_01">#ff1d2129</color>
     <color name="scolor_black_02">#ff757575</color>
     <color name="scolor_blue_01">#ff09a7ec</color>
     <color name="scolor_dark_yellow_01">#ffff8700</color>
+    <color name="scolor_green_01">#ff52f55c</color>
     <color name="scolor_green_02">#ff74f37c</color>
     <color name="scolor_green_normal">#ff26a59a</color>
     <color name="scolor_light_grey">#ffd4d4d4</color>
@@ -42,4 +46,41 @@
     <color name="scolor_sl_04">#ff008dcd</color>
     <color name="tool_bar_text_color">#ffffffff</color>
     <color name="transparent">#00ffffff</color>
+    <color name="darkGrey">#ff272822</color>
+    <color name="black">#ff000000</color>
+    <color name="orange">#ffcc7832</color>
+    <color name="gold">#ffe6b121</color>
+    <color name="monokia_pro_green">#ff9ccc6b</color>
+    <color name="monokia_pro_black">#ff2d2a2e</color>
+    <color name="monokia_pro_white">#fffcfcfa</color>
+    <color name="monokia_pro_pink">#ffff6188</color>
+    <color name="monokia_pro_sky">#ff78dce8</color>
+    <color name="monokia_pro_orange">#ffffd866</color>
+    <color name="monokia_pro_purple">#ffab9df2</color>
+    <color name="monokia_pro_grey">#ff727072</color>
+    <color name="colorBottomBarSW">#ff008dcd</color>
+    <color name="color_text_onSurface">#1A1C1E</color>
+    <color name="color_text_onSurfaceVariant">#41474D</color>
+
+    <!--  input layout  -->
+    <color name="inputLayoutBackgroundColor">#FAFAFA</color>
+    <color name="inputLayoutStrokeColor">#D3D3D3</color>
+
+    <!--  main layouts  -->
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="backgroundOpenColor">#F5F5F5</color>
+    <color name="dialogBackgroundColor">#FFFFFF</color>
+
+    <!--  views  -->
+    <color name="cardStrokeColor">#D1D1D1</color>
+
+    <color name="view_property_background_color">#ffffff</color>
+    <color name="view_property_tab_active">#ff0084c2</color>
+    <color name="view_property_tab_deactive">#30008dcd</color>
+    <color name="view_property_tab_active_text">#ffffffff</color>
+    <color name="view_property_tab_deactive_text">#ff000000</color>
+    <color name="view_property_grid_background">#30008dcd</color>
+    <color name="view_property_grid_see_all_background">#ff008dcd</color>
+    <color name="view_property_spinner_filter">#ff000000</color>
+
 </resources>

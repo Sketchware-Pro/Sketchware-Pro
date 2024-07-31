@@ -1,6 +1,7 @@
 package mod.elfilibustero.sketch.lib.ui;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class SketchFilePickerDialog extends aB {
     private final List<String> extensions = new ArrayList<>();
 
     public interface OnFileSelectedListener {
-        void onFileSelected(SketchFilePickerDialog dialog, File file);
+        void onFileSelected(DialogInterface dialog, File file);
     }
 
     public interface OnItemClickListener {
@@ -68,10 +69,9 @@ public class SketchFilePickerDialog extends aB {
         return this;
     }
 
-    @Override
-    public void onBackPressed() {
+    public void backPressed(DialogInterface dialog) {
         if (currentPath.equals(FileUtil.getExternalStorageDir())) {
-            dismiss();
+            dialog.dismiss();
         } else if (adapter != null) {
             var lastPath = currentPath.substring(0, currentPath.lastIndexOf(File.separator));
             var currentDirectory = new File(lastPath);
@@ -86,23 +86,14 @@ public class SketchFilePickerDialog extends aB {
     }
 
     public void setTitle(String title) {
-        super.b(title);
+        b(title);
     }
 
     public void setMessage(String message) {
-        super.a(message);
+        a(message);
     }
 
-    public void setIcon(int icon) {
-        super.a(icon);
-    }
-
-    public void show() {
-        init();
-        super.show();
-    }
-
-    private void init() {
+    public void init() {
         var recyclerView = new RecyclerView(activity);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         adapter = new FileAdapter(fileList);
@@ -121,14 +112,14 @@ public class SketchFilePickerDialog extends aB {
                 loadFiles(file, fileList, adapter);
             }
         });
-        super.b("Select", _v -> {
+        b("Select", v -> {
             if (filePath != null && !filePath.isDirectory()) {
                 if (onFileSelectedListener != null) {
                     onFileSelectedListener.onFileSelected(this, filePath);
                 }
             }
         });
-        super.a("Cancel", Helper.getDialogDismissListener(this)); 
+        a("Cancel", Helper.getDialogDismissListener(this));
     }
 
     private void loadFiles(File directory, List<File> fileList, FileAdapter adapter) {

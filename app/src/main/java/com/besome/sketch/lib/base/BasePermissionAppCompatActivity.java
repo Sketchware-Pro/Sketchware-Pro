@@ -16,7 +16,7 @@ import mod.hey.studios.util.Helper;
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {
 
     public boolean f(int i) {
-        boolean j = j();
+        boolean j = isStoragePermissionGranted();
         if (!j) {
             i(i);
         }
@@ -50,14 +50,14 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             });
             dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             Sp.a = true;
         }
     }
 
     @Override
-    public boolean j() {
+    public boolean isStoragePermissionGranted() {
         return ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
@@ -100,7 +100,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             });
             dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             Sp.a = true;
         }

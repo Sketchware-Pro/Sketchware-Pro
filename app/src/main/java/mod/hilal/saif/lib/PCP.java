@@ -8,11 +8,10 @@ import mod.hilal.saif.activities.tools.BlocksManager;
 
 public class PCP implements Zx.b {
 
-
     public final BlocksManager a;
     public final Dialog dialog;
     public final EditText e;
-    public boolean ii = false;
+    public boolean ii;
 
     public PCP(BlocksManager blocksManager, EditText editText, Dialog alertDialog) {
         a = blocksManager;

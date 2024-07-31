@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -23,6 +22,7 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
@@ -38,7 +38,6 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wq;
-import a.a.a.xB;
 import a.a.a.xw;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
@@ -256,7 +255,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
@@ -272,8 +271,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         });
 
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
-        Button delete = findViewById(R.id.btn_delete);
-        Button cancel = findViewById(R.id.btn_cancel);
+        MaterialButton delete = findViewById(R.id.btn_delete);
+        MaterialButton cancel = findViewById(R.id.btn_cancel);
         delete.setText(getTranslatedString(R.string.common_word_delete));
         cancel.setText(getTranslatedString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
@@ -305,7 +304,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_screen_delete) {
             a(!selecting);
         }
@@ -315,7 +314,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

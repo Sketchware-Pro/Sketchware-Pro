@@ -12,6 +12,8 @@ import com.besome.sketch.tools.CollectErrorActivity;
 
 import com.google.android.gms.analytics.Tracker;
 
+import mod.trindadedev.settings.appearance.theme.manage.ThemeManager;
+
 public class SketchApplication extends Application {
 
     private static Context mApplicationContext;
@@ -46,5 +48,6 @@ public class SketchApplication extends Application {
             }
         });
         super.onCreate();
+        ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
     }
 }

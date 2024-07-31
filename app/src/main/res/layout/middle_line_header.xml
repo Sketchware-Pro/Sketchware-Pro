@@ -1,7 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/header_icon" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    <TextView android:id="@id/header_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    <View android:id="@id/header_line" android:background="#ffc7c7c7" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="8.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/header_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/header_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/header_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="8dp"
+        android:background="#ffc7c7c7" />
 </LinearLayout>

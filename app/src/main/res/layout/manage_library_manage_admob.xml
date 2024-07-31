@@ -1,11 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:contentInsetStart="0dp"
+        app:contentInsetStart="0dp" />
 
     <LinearLayout
         android:id="@+id/layout_content"
@@ -32,12 +37,12 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textColor="@color/scolor_red_02"
+                android:textColor="?colorError"
                 android:textSize="14sp"
                 tools:text="@string/design_library_settings_title_enabled" />
 
-            <Switch
-                android:id="@id/lib_switch"
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/lib_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -80,16 +85,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:text="@string/design_library_admob_title_app_id"
                             android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:text="@string/design_library_admob_title_app_id" />
+                            android:textStyle="bold" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp">
+                        android:layout_margin="4dp"
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -111,7 +117,7 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -144,10 +150,11 @@
                             tools:text="@string/design_library_admob_title_banner" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp">
+                        android:layout_margin="4dp"
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -202,7 +209,7 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -235,10 +242,11 @@
                             tools:text="@string/design_library_admob_title_interstitial" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp">
+                        android:layout_margin="4dp"
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -293,7 +301,7 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -320,16 +328,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:text="Rewarded Ad"
                             android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:text="Rewarded Ad" />
+                            android:textStyle="bold" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp">
+                        android:layout_margin="4dp"
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -384,7 +393,7 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -412,10 +421,11 @@
                         tools:text="@string/design_library_admob_dialog_set_test_device_title" />
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
+                    android:layout_margin="4dp"
+                    app:cardElevation="2dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/list_test_device"
@@ -423,7 +433,7 @@
                         android:layout_height="match_parent"
                         android:padding="8dp"
                         tools:listitem="@layout/manage_library_setting_admob_test_device_item" />
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>
 
@@ -431,9 +441,6 @@
             android:id="@+id/btn_console"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/text_size_button_material"
-            android:theme="@style/AppTheme.Button.LightBlue"
             tools:text="@string/design_library_admob_button_goto_console" />
     </LinearLayout>
 </LinearLayout>

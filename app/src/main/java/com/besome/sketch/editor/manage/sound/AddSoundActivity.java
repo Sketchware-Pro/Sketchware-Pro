@@ -11,20 +11,20 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -38,7 +38,6 @@ import a.a.a.Qp;
 import a.a.a.WB;
 import a.a.a.bB;
 import a.a.a.uq;
-import a.a.a.xB;
 import a.a.a.yy;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -48,7 +47,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private static final int REQUEST_CODE_SOUND_PICKER = 218;
 
     private CheckBox addToCollection;
-    private EditText soundName;
+    private TextInputEditText soundName;
+    private TextInputLayout soundInputLayout;
     private TextView nowPlayingFilename;
     private TextView nowPlayingProgress;
     private TextView nowPlayingTotalDuration;
@@ -60,9 +60,9 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private WB soundNameValidator;
     private String sc_id;
     private String soundsDirectory;
-    private LinearLayout nowPlayingContainer;
+    private MaterialCardView nowPlayingContainer;
     private LinearLayout guide;
-    private RelativeLayout selectFile;
+    private MaterialCardView selectFile;
     private Timer timer = new Timer();
     private Uri soundUri = null;
     private boolean isSoundPlayable = false;
@@ -131,8 +131,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        e(getTranslatedString(R.string.design_manager_sound_title_add_sound));
         setContentView(R.layout.manage_sound_add);
+        e(getTranslatedString(R.string.design_manager_sound_title_add_sound));
         d(getTranslatedString(R.string.common_word_save));
         b(getTranslatedString(R.string.common_word_cancel));
 
@@ -144,23 +144,17 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         nowPlayingFilename = findViewById(R.id.file_name);
         nowPlayingProgress = findViewById(R.id.current_time);
         nowPlayingTotalDuration = findViewById(R.id.file_length);
-        LinearLayout addToCollectionContainer = findViewById(R.id.layout_check);
         nowPlayingContainer = findViewById(R.id.layout_control);
         guide = findViewById(R.id.layout_guide);
         addToCollection = findViewById(R.id.chk_collection);
-        TextView addToCollectionLabel = findViewById(R.id.tv_collection);
         selectFile = findViewById(R.id.select_file);
         playPause = findViewById(R.id.play);
         albumCover = findViewById(R.id.img_album);
         nowPlayingProgressBar = findViewById(R.id.seek);
-        addToCollectionContainer.setVisibility(View.VISIBLE);
         nowPlayingContainer.setVisibility(View.GONE);
-        addToCollectionLabel.setText(getTranslatedString(R.string.design_manager_title_add_to_collection));
-        EasyDeleteEditText easyDeleteSoundName = findViewById(R.id.ed_input);
-        soundName = easyDeleteSoundName.getEditText();
-        easyDeleteSoundName.setHint(getTranslatedString(R.string.design_manager_sound_hint_enter_sound_name));
-        soundNameValidator = new WB(this, easyDeleteSoundName.getTextInputLayout(), uq.b, existingSoundNames);
-        soundName.setPrivateImeOptions("defaultInputmode=english;");
+        soundInputLayout = findViewById(R.id.ti_input);
+        soundName = findViewById(R.id.ed_input);
+        soundNameValidator = new WB(this, soundInputLayout, uq.b, existingSoundNames);
         playPause.setEnabled(false);
         playPause.setOnClickListener(this);
         nowPlayingProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -193,7 +187,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (requestCode == 270) {
             e(getTranslatedString(R.string.design_manager_sound_title_edit_sound));
             ProjectResourceBean projectResourceBean = intent.getParcelableExtra("project_resource");
-            soundNameValidator = new WB(this, easyDeleteSoundName.getTextInputLayout(), uq.b, new ArrayList<>());
+            soundNameValidator = new WB(this, soundInputLayout, uq.b, new ArrayList<>());
             soundName.setText(projectResourceBean.resName);
             soundName.setEnabled(false);
             addToCollection.setEnabled(false);
@@ -283,7 +277,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                         timer.cancel();
                     } else {
                         int currentPosition = nowPlayingPlayer.getCurrentPosition() / 1000;
-                        nowPlayingProgress.setText(String.format("%d : %02d", currentPosition / 60, currentPosition % 60));
+                        nowPlayingProgress.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
                         nowPlayingProgressBar.setProgress(nowPlayingPlayer.getCurrentPosition() / 100);
                     }
                 });
@@ -321,7 +315,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 nowPlayingProgressBar.setProgress(0);
 
                 int duration = mp.getDuration() / 1000;
-                nowPlayingTotalDuration.setText(String.format("%d : %02d", duration / 60, duration % 60));
+                nowPlayingTotalDuration.setText(String.format("%d:%02d", duration / 60, duration % 60));
 
                 nowPlayingFilename.setText(editingSound ? soundUri.getLastPathSegment() : getFilenameOfPickedFile(soundUri));
 
@@ -332,7 +326,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 timer.cancel();
                 playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
                 nowPlayingProgressBar.setProgress(0);
-                nowPlayingProgress.setText("0 : 00");
+                nowPlayingProgress.setText("0:00");
             });
             nowPlayingPlayer.setDataSource(this, uri);
             nowPlayingPlayer.prepare();

@@ -57,7 +57,7 @@ public class CompileErrorSaver {
      * @return The last saved error text
      */
     public String getLogsFromFile() {
-        if (!logFileExists()) return MESSAGE_NO_COMPILE_ERRORS_SAVED;
+        if (!logFileExists()) return null;
         return FileUtil.readFile(path);
     }
 

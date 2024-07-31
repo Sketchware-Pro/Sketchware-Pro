@@ -452,18 +452,14 @@ public class ViewEditorFragment extends qA {
         menu.findItem(R.id.menu_view_undo).setEnabled(false);
         if (projectFileBean != null) {
             if (cC.c(sc_id).f(projectFileBean.getXmlName())) {
-                menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_white_48dp);
                 menu.findItem(R.id.menu_view_redo).setEnabled(true);
             } else {
-                menu.findItem(R.id.menu_view_redo).setIcon(R.drawable.ic_redo_grey_48dp);
                 menu.findItem(R.id.menu_view_redo).setEnabled(false);
             }
 
             if (cC.c(sc_id).g(projectFileBean.getXmlName())) {
-                menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_white_48dp);
                 menu.findItem(R.id.menu_view_undo).setEnabled(true);
             } else {
-                menu.findItem(R.id.menu_view_undo).setIcon(R.drawable.ic_undo_grey_48dp);
                 menu.findItem(R.id.menu_view_undo).setEnabled(false);
             }
         }

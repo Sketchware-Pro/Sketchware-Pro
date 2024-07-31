@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class ViewEvents extends LinearLayout {
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout container;
+            public final MaterialCardView container;
             public final ImageView icon;
             public final ImageView addAvailableIcon;
             public final TextView name;
@@ -133,7 +134,7 @@ public class ViewEvents extends LinearLayout {
                     dialog.b("Confirm Delete");
                     dialog.a("Click on Confirm to delete the selected Event.");
 
-                    dialog.b(Helper.getResString(R.string.common_word_delete), del -> {
+                    dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
                         dialog.dismiss();
                         EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
                         bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();

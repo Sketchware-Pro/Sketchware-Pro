@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffeeeeee"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_improved" />
@@ -11,7 +9,8 @@
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
@@ -19,24 +18,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="vertical"
-                app:cardCornerRadius="6dp"
-                app:cardElevation="3dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffffff"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -53,9 +51,9 @@
                         android:id="@+id/name_lay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center|left"
-                        android:orientation="vertical"
-                        android:padding="3dp">
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <EditText
                             android:id="@+id/name"
@@ -63,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:hint="Name"
-                            android:padding="8dp"
+                            android:padding="14dp"
                             android:textColor="#ff000000"
                             android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
@@ -73,16 +71,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
-                        android:gravity="center|left"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center|left"
-                            android:orientation="vertical"
-                            android:padding="3dp">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <EditText
                                 android:id="@+id/type"
@@ -90,7 +88,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center|left"
                                 android:hint="Type"
-                                android:padding="8dp"
+                                android:padding="14dp"
                                 android:textColor="#ff000000"
                                 android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
@@ -100,13 +98,14 @@
                             android:id="@+id/select_type"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="bottom|center"
+                            android:layout_marginHorizontal="8dp"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <ImageView
                                 android:id="@+id/image"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:scaleType="fitXY"
                                 android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
                         </LinearLayout>
@@ -115,9 +114,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center|left"
-                        android:orientation="vertical"
-                        android:padding="3dp">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <EditText
                             android:id="@+id/type_name"
@@ -125,31 +123,29 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:hint="Type name"
-                            android:padding="8dp"
+                            android:padding="14dp"
                             android:textColor="#ff000000"
                             android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="vertical"
-                app:cardCornerRadius="6dp"
-                app:cardElevation="3dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffffff"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -165,20 +161,22 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center|left"
-                        android:orientation="horizontal"
-                        android:baselineAligned="false">
+                        android:baselineAligned="false"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:id="@+id/reset"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="8dp"
                             android:gravity="center"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginTop="8dp"
                                 android:scaleType="fitXY"
                                 android:src="@drawable/selector_ic_rotate_right_36" />
                         </LinearLayout>
@@ -188,9 +186,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center|left"
-                            android:orientation="vertical"
-                            android:padding="3dp">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <EditText
                                 android:id="@+id/color"
@@ -198,7 +195,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center|left"
                                 android:hint="color"
-                                android:padding="8dp"
+                                android:padding="14dp"
                                 android:textColor="#ff000000"
                                 android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
@@ -208,12 +205,13 @@
                             android:id="@+id/colour_selector"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="bottom|center"
+                            android:layout_marginHorizontal="8dp"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:scaleType="fitXY"
                                 android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
                         </LinearLayout>
@@ -262,9 +260,8 @@
                         android:id="@+id/spec_2lay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center|left"
-                        android:orientation="vertical"
-                        android:padding="3dp">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <EditText
                             android:id="@+id/spec2"
@@ -272,32 +269,31 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
                             android:hint="Spec2"
-                            android:padding="8dp"
+                            android:padding="14dp"
                             android:textColor="#ff000000"
                             android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="vertical"
-                app:cardCornerRadius="6dp"
-                app:cardElevation="3dp">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="#ffffffff"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -322,45 +318,33 @@
                         android:textColorHint="#ff607d8b"
                         android:textSize="14sp" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancel"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="#ff008dcd"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/common_word_cancel"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="#ffffffff"
-                    android:textSize="12sp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/save"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="#ff008dcd"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/common_word_save"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="#ffffffff"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:layout_weight="1"
+            android:text="@string/common_word_cancel"
+            android:textSize="@dimen/text_size_button_material"
+            app:backgroundTint="?colorAccent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:text="@string/common_word_save"
+            android:textSize="@dimen/text_size_button_material" />
+    </LinearLayout>
 </LinearLayout>

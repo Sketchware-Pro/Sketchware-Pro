@@ -1,35 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="5dp">
-
-        <ImageView
-            android:id="@id/project_config_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/services_48" />
-
-        <TextView
-            android:id="@id/project_config_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Project Configuration"
-            android:textColor="@color/color_primary"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,41 +13,10 @@
         android:paddingBottom="10dp">
 
         <LinearLayout
-            android:id="@id/project_config_pref_layout"
+            android:id="@+id/project_config_pref_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/scolor_blue_01"
-        android:gravity="right"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingRight="18dp"
-        android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@id/text_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:text="@string/common_word_cancel"
-            android:textColor="#ffffffff"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@id/text_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="@string/common_word_save"
-            android:textColor="#ffffffff"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 </LinearLayout>

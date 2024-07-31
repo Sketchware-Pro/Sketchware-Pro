@@ -1,24 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/layout_main_drawer_header"
-    android:layout_width="320dp"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#fffafafa"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/side_menu_bg_puzzle"
-        android:clickable="true"
-        android:elevation="8dp"
-        android:focusable="true"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="8dp" />
-</LinearLayout>
+    android:layout_marginLeft="@dimen/main_drawer_horizontal_padding"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="@dimen/main_drawer_horizontal_padding"
+    android:layout_marginBottom="8dp"
+    android:fitsSystemWindows="true"
+    app:srcCompat="@drawable/swpro_header_logo"
+    app:tint="?attr/colorControlNormal" />

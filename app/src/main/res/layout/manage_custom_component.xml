@@ -17,14 +17,9 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?colorPrimary"
-                android:popupTheme="@style/ThemeOverlay.ToolbarMenu"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_height="wrap_content"   
                 app:layout_collapseMode="parallax"
-                app:title="@string/developer_tools_component_manager"
-                app:titleTextAppearance="@style/ToolbarTextAppearance"
-                app:titleTextColor="@android:color/white" />
+                app:title="@string/developer_tools_component_manager"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
@@ -32,11 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#F6F6F6"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/developer_tools_component_description_guide_add_component"
-            android:textColor="#9E9E9E"
             android:textSize="14sp"
             android:visibility="gone" />
 
@@ -45,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#F5F5F5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/manage_custom_component_list_item" />
     </LinearLayout>
@@ -56,6 +48,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:layout_margin="16dp"
-        app:backgroundTint="#FE5955"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

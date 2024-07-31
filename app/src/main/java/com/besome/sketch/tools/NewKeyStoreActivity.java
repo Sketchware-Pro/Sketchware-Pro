@@ -136,7 +136,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
@@ -145,50 +145,40 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
+        getSupportActionBar().setSubtitle("Export path: " + wq.D);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
-        ((TextView) findViewById(R.id.tv_new_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
+
+
         Button var2 = findViewById(R.id.btn_keystore_save);
-        var2.setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_button_create));
         var2.setOnClickListener(this);
         var2 = findViewById(R.id.btn_keystore_cancel);
-        var2.setText(Helper.getResString(R.string.common_word_cancel));
         var2.setOnClickListener(this);
-        ((TextView) findViewById(R.id.tv_keystore_path)).setText(wq.D);
         alias = findViewById(R.id.et_keystore_alias);
         TextInputLayout tilAlias = findViewById(R.id.ti_keystore_alias);
-        tilAlias.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_certificate_name));
         password = findViewById(R.id.et_keystore_passwd);
         TextInputLayout tilPassword = findViewById(R.id.ti_keystore_passwd);
-        tilPassword.setHint(Helper.getResString(R.string.myprojects_sign_apk_hint_enter_new_password));
         passwordConfirm = findViewById(R.id.et_keystore_passwd1);
         TextInputLayout tilPasswordConfirm = findViewById(R.id.ti_keystore_passwd1);
-        tilPasswordConfirm.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_confirm_password));
         EditText validity = findViewById(R.id.et_valid_year);
-        TextInputLayout tilValidity = findViewById(R.id.ti_valid_year);
-        tilValidity.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_validity));
         validity.setText(String.valueOf(validityInYears));
         ((TextView) findViewById(R.id.tv_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
         commonName = findViewById(R.id.et_dn_cn);
         TextInputLayout tilCommonName = findViewById(R.id.ti_dn_cn);
-        tilCommonName.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_first_and_last_name));
         organizationalUnit = findViewById(R.id.et_dn_ou);
         TextInputLayout tilOrganizationalUnit = findViewById(R.id.ti_dn_ou);
-        tilOrganizationalUnit.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_organizational_unit));
         organization = findViewById(R.id.et_dn_o);
         TextInputLayout tilOrganization = findViewById(R.id.ti_dn_o);
-        tilOrganization.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_organization));
         locality = findViewById(R.id.et_dn_l);
         TextInputLayout tilLocality = findViewById(R.id.ti_dn_l);
-        tilLocality.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_city));
         state = findViewById(R.id.et_dn_st);
         TextInputLayout tilState = findViewById(R.id.ti_dn_st);
-        tilState.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_state));
         country = findViewById(R.id.et_dn_c);
         TextInputLayout tilCountry = findViewById(R.id.ti_dn_c);
-        tilCountry.setHint(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_hint_country_code));
+
+
         aliasValidator = new VB(getApplicationContext(), tilAlias);
         passwordValidator = new SB(getApplicationContext(), tilPassword, 4, 32);
         passwordConfirmValidator = new SB(getApplicationContext(), tilPasswordConfirm, 4, 32);
@@ -198,6 +188,8 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         localityValidator = new RB(getApplicationContext(), tilLocality);
         stateValidator = new RB(getApplicationContext(), tilState);
         countryValidator = new RB(getApplicationContext(), tilCountry);
+
+
         alias.setPrivateImeOptions("defaultInputmode=english;");
         commonName.setPrivateImeOptions("defaultInputmode=english;");
         organizationalUnit.setPrivateImeOptions("defaultInputmode=english;");
@@ -210,7 +202,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

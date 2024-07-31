@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sketchware Pro</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
@@ -999,7 +998,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_share">Share</string>
     <string name="common_word_show">Show</string>
     <string name="common_word_sound">Sound</string>
-    <string name="common_word_step">STEP %d</string>
+    <string name="common_word_step">Step %d</string>
     <string name="common_word_submit">Submit</string>
     <string name="common_word_try_again">Try Again</string>
     <string name="common_word_update">Update</string>
@@ -1074,7 +1073,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_drawer_menu_title_source_code">Show Source Code</string>
     <string name="design_drawer_menu_title_theme">Theme</string>
     <string name="design_drawer_menu_title_view">View</string>
-    <string name="design_file_selector_title_java">Available Java Files</string>
+    <string name="design_file_selector_title_java">Available Java files</string>
     <string name="design_library_admob_button_goto_console">Open AdMob Console</string>
     <string name="design_library_admob_button_goto_setting">Open AdMob Setting</string>
     <string name="design_library_admob_button_manual_add_to_adunit">Add Manually</string>
@@ -1204,6 +1203,8 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_message_collection_name_conflict">There seems to be a naming conflict. Please make sure there are no duplicate names.</string>
     <string name="design_manager_message_collection_name_no_conflict">There were no naming conflicts</string>
     <string name="design_manager_message_edit_complete">Edit complete</string>
+    <string name="design_manager_message_invalid_font">Selected font is invalid</string>
+    <string name="design_manager_message_no_font_selected">You have to select a new font</string>
     <string name="design_manager_message_import_complete">Import complete</string>
     <string name="design_manager_sound_description_guide_add_sound">"Add background music
  or sound effects here"</string>
@@ -1218,7 +1219,7 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_view_description_guide_create_activity">To create a new Activity, add it here</string>
     <string name="design_manager_view_description_guide_create_custom_view">Create a new Custom View here</string>
     <string name="design_manager_view_description_guide_use_custom_view">Custom View can be used to change the way items are displayed inside the ListView or the Spinner</string>
-    <string name="design_manager_view_hint_enter_view_name">Enter View name</string>
+    <string name="design_manager_view_hint_enter_view_name">Enter view name</string>
     <string name="design_manager_view_message_no_view">No views to display</string>
     <string name="design_manager_view_message_slow_down">Including the drawer or the FAB may slow down the compilation time on certain devices.</string>
     <string name="design_manager_view_title_activity_name">Activity Name :</string>
@@ -1232,13 +1233,13 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_view_title_view_name">View Name :</string>
     <string name="design_manager_widget_hint_enter_widget_name">Enter widget name</string>
     <string name="design_manager_widget_title_actionbar_title">Widget Details</string>
-    <string name="design_option_menu_title_save_project">Save Project</string>
+    <string name="design_option_menu_title_save_project">Save project</string>
     <string name="design_property_recent_message_nodata">Recently used properties will be displayed</string>
-    <string name="design_quit_button_save_and_exit">Save &amp; Exit</string>
+    <string name="design_quit_button_save_and_exit">Save &amp; exit</string>
     <string name="design_quit_message_confirm_save">Do you want to save your changes before quitting?</string>
-    <string name="design_quit_title_exit_projet">Exit Project</string>
+    <string name="design_quit_title_exit_projet">Exit project</string>
     <string name="design_restore_data_message_confirm">Something went wrong and previous data was not saved. Would you like to recover it?</string>
-    <string name="design_restore_data_title">Restore Data</string>
+    <string name="design_restore_data_title">Restore project data</string>
     <string name="design_run_message_invalid_forever_block">Stop block does not exist in forever block</string>
     <string name="design_run_message_usage_break_block">Break block can only be used inside the repeat or forever blocks</string>
     <string name="design_run_title_ready_to_build">Getting ready to build</string>
@@ -1556,13 +1557,14 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_sign_apk_new_certificate_hint_certificate_name">Enter certificate name</string>
     <string name="myprojects_sign_apk_new_certificate_hint_city">City or Locality</string>
     <string name="myprojects_sign_apk_new_certificate_hint_confirm_password">Confirm the password</string>
-    <string name="myprojects_sign_apk_new_certificate_hint_country_code">Country Code(XX)</string>
+    <string name="myprojects_sign_apk_new_certificate_hint_country_code">Country Code (XX)</string>
     <string name="myprojects_sign_apk_new_certificate_hint_first_and_last_name">First and Last Name</string>
     <string name="myprojects_sign_apk_new_certificate_hint_organization">Organization</string>
     <string name="myprojects_sign_apk_new_certificate_hint_organizational_unit">Organizational Unit</string>
     <string name="myprojects_sign_apk_new_certificate_hint_state">State or Province</string>
     <string name="myprojects_sign_apk_new_certificate_title_certificate">Certificate</string>
-    <string name="myprojects_sign_apk_new_certificate_title_new_certificate">Create a New Certificate</string>
+    <string name="myprojects_sign_apk_new_certificate_title_new_certificate">Create new certificate</string>
+    <string name="myprojects_sign_apk_new_certificate_title_certificate_creds">Certificate credentials</string>
     <string name="myprojects_sign_apk_new_certificate_title_validity">Validity(Years)</string>
     <string name="picker_color_already_exist">This color already exists</string>
     <string name="picker_color_custom_color_not_found">No custom color found</string>
@@ -1574,15 +1576,15 @@ But, components should be added manually for working correctly."</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>
     <string name="preset_setting_title">Preset Settings</string>
     <string name="program_information_actionbar_title">Program Information</string>
-    <string name="program_information_button_check_update">Check Update</string>
-    <string name="program_information_button_reset_system">Reset system</string>
+    <string name="program_information_button_check_update">Check for Updates</string>
+    <string name="program_information_button_reset_system">Reset settings</string>
     <string name="program_information_reset_system_complete_initialize">All of the data was initialized</string>
     <string name="program_information_reset_system_confirm_description">"All projects will be resetted.
 Do you want to continue?"</string>
     <string name="program_information_reset_system_title">Reset</string>
     <string name="program_information_reset_system_title_all_settings">Reset all settings</string>
     <string name="program_information_reset_system_title_all_settings_data">Reset all settings and data</string>
-    <string name="program_information_title_docs">Update Log</string>
+    <string name="program_information_title_docs">Docs</string>
     <string name="program_information_title_open_source_license">Open Source Licenses</string>
     <string name="program_information_title_service_terms">Service terms</string>
     <string name="program_information_title_share_with_friends">Share with Friends</string>
@@ -2065,8 +2067,9 @@ Please try again later"</string>
     <string name="title_company_tel">Telephone</string>
     <string name="title_company_url">Website</string>
     <string name="title_compatible_chrome_browser">Chrome Browser Required</string>
-    <string name="title_facebook_community">Facebook</string>
-    <string name="title_sketchware">Sketchware</string>
+    <string name="title_discord_community">Discord</string>
+    <string name="title_telegram_community">Telegram</string>
+    <string name="title_sketchware">Sketchware Pro</string>
     <string name="view_panel_title_layouts">Layouts</string>
     <string name="view_panel_title_properties">Properties</string>
     <string name="view_panel_title_widgets">Widgets</string>
@@ -2086,6 +2089,8 @@ Please try again later"</string>
     <string name="text_subtitle_menu_local_library">Add local libraries</string>
     <string name="text_title_menu_broadcast">Background Service</string>
     <string name="text_subtitle_menu_broadcast">Import Background Service files</string>
+    <string name="text_title_menu_java">Java/Kotlin Manager</string>
+    <string name="text_subtitle_menu_java">Import Java/Kotlin files</string>
     <string name="component_description_video_ad">Video Ad lets you add video advertisements</string>
     <string name="component_description_progress_dialog">Create popup dialog style progress</string>
     <string name="component_description_date_picker_dialog">Dialog to pick date</string>
@@ -2128,10 +2133,31 @@ Please try again later"</string>
     <string name="code_shrinker_generate_debug_files">Generate debug files</string>
     <string name="local_library_manager_dependency_example">Example: org.ow2.asm:asm:9.5</string>
     <string name="local_library_manager">Local library Manager</string>
+    <string name="local_library_manager_download">Download a library</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
-    <string name="local_library_manager_dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+    <string name="local_library_manager_dependency_info">You can find the dependency of a library in GitHub, typically in the Readme file.</string>
+    <string name="local_library_manager_no_libraries_title">No Local libraries available</string>
+    <string name="local_library_manager_no_libraries_body">You don\'t have any Local libraries yet, try downloading one.</string>
+    <string name="local_library_manager_download_status">Download status</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
     <string name="signatures_title">Signatures</string>
+    <string name="appearance">Appearance</string>
+    <string name="appearance_description">Change the appearance of the Sketchware and make it your own!</string>
+    <string name="appearance_theme">Sketchware Theme</string>
+    <string name="appearance_theme_system">System default</string>
+    <string name="appearance_theme_light">Light theme</string>
+    <string name="appearance_theme_dark">Dark theme</string>
+
+    <!--  files manager screen  -->
+    <string name="assets_manager_title">Assets Manager</string>
+    <string name="assets_manager_options">Create or import</string>
+    <string name="assets_manager_add_new">Create new</string>
+    <string name="assets_manager_add_file">Import file</string>
+    <string name="assets_manager_nofiles_title">No files here</string>
+    <string name="assets_manager_nofiles_body">You don\'t have any files here yet, try creating one.</string>
+    <string name="assets_manager_rename">Rename</string>
+
+
     <!--  about the team screen  -->
     <string name="about_title">About Sketchware Pro</string>
     <string name="about_team_title">The team</string>
@@ -2141,4 +2167,26 @@ Please try again later"</string>
     <string name="about_loading_title">Getting data…</string>
     <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
     <string name="about_joindiscord">Join our Discord server</string>
+
+
+    <!--  links  -->
+    <string name="link_github_release">https://github.com/Sketchware-Pro/Sketchware-Pro/releases</string>
+    <string name="link_docs_url">https://sketchware-pro.vercel.app/docs</string>
+    <string name="link_ideas_url">https://discord.gg/4uxhMwCt</string>
+    <string name="link_discord_invite">https://discord.gg/kq39yhT4rX</string>
+    <string name="link_telegram_invite">https://t.me/sketchwarepro</string>
+    <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json</string>
+    <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
+    <string name="change_launcher_activity_dialog_title">Launcher Activity</string>
+    <string name="common_word_add_activtiy">Add Activity</string>
+    <string name="delete_custom_activity_dialog_message">All features related to %1$s will be removed. Are you sure?</string>
+    <string name="delete_custom_activity_dialog_title">Delete Activity</string>
+    <string name="delete_project_dialog_title">Delete Project</string>
+    <string name="delete_project_dialog_message">Are you sure you want to delete this project named %1$s?</string>
+    <string name="src_code_editor_unsaved_changes_dialog_warning_message">You have unsaved changes. Are you sure you want to exit?</string>
+    <string name="change_firebase_config_title">Change Firebase Config</string>
+    <string name="review_firebase_config_title">Review</string>
+    <string name="edit_view_properties_title">Edit Properties</string>
+
+
 </resources>

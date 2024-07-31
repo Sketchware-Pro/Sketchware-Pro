@@ -1,5 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
 
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -40,6 +42,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         binding = ManageCustomComponentAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -166,16 +169,18 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
         SketchFilePickerDialog dialog = new SketchFilePickerDialog(this)
                 .allowExtension("json")
                 .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((SketchFilePickerDialog _dialog, File file) -> {
+                .setOnFileSelectedListener((DialogInterface d, File file) -> {
                     try {
                         selectComponentToImport(file.getAbsolutePath());
                     } catch (Exception e) {
                         SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
                     }
-                    _dialog.dismiss();
+                    d.dismiss();
                 });
         dialog.setTitle(Helper.getResString(R.string.common_word_import));
-        dialog.setIcon(R.drawable.file_48_blue);
+        dialog.a(R.drawable.file_48_blue);
+        dialog.setOnDismissListener(d -> dialog.backPressed(d));
+        dialog.init();
         dialog.show();
     }
 
@@ -204,7 +209,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
                 choiceToImport.set(position);
             });
             dialog.a(listView);
-            dialog.b(Helper.getResString(R.string.common_word_import), view -> {
+            dialog.b(Helper.getResString(R.string.common_word_import), v -> {
                 int position = choiceToImport.get();
                 var component = components.get(position);
                 if (position != -1 && ComponentsHandler.isValidComponent(component)) {

@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.sketchware.remod.R;
 
 import a.a.a.wB;
@@ -17,7 +18,7 @@ public class PropertySwitchItem extends RelativeLayout implements View.OnClickLi
     private boolean value = false;
     private TextView tvName;
     private TextView tvDesc;
-    private Switch switchValue;
+    private MaterialSwitch switchValue;
 
     public PropertySwitchItem(Context context) {
         super(context);

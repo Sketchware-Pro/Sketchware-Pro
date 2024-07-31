@@ -209,191 +209,79 @@ public class ViewBean extends nA implements Parcelable {
     }
 
     public static int getViewTypeByTypeName(String typeName) {
-        switch (typeName) {
-            case "Switch":
-                return VIEW_TYPE_WIDGET_SWITCH;
-
-            case "MapView":
-                return VIEW_TYPE_WIDGET_MAPVIEW;
-
-            case "ProgressBar":
-                return VIEW_TYPE_WIDGET_PROGRESSBAR;
-
-            case "WebView":
-                return VIEW_TYPE_WIDGET_WEBVIEW;
-
-            case "TextView":
-                return VIEW_TYPE_WIDGET_TEXTVIEW;
-
-            case "SeekBar":
-                return VIEW_TYPE_WIDGET_SEEKBAR;
-
-            case "Spinner":
-                return VIEW_TYPE_WIDGET_SPINNER;
-
-            case "CalendarView":
-                return VIEW_TYPE_WIDGET_CALENDARVIEW;
-
-            case "ImageView":
-                return VIEW_TYPE_WIDGET_IMAGEVIEW;
-
-            case "LinearLayout":
-                return VIEW_TYPE_LAYOUT_LINEAR;
-
-            case "ListView":
-                return VIEW_TYPE_WIDGET_LISTVIEW;
-
-            case "HScrollView":
-                return VIEW_TYPE_LAYOUT_HSCROLLVIEW;
-
-            case "CheckBox":
-                return VIEW_TYPE_WIDGET_CHECKBOX;
-
-            case "EditText":
-                return VIEW_TYPE_WIDGET_EDITTEXT;
-
-            case "AdView":
-                return VIEW_TYPE_WIDGET_ADVIEW;
-
-            case "Button":
-                return VIEW_TYPE_WIDGET_BUTTON;
-
-            case "ScrollView":
-                return VIEW_TYPE_LAYOUT_VSCROLLVIEW;
-
-            default:
-                return ViewBeans.getViewTypeByTypeName(typeName);
-        }
+        return switch (typeName) {
+            case "Switch" -> VIEW_TYPE_WIDGET_SWITCH;
+            case "MapView" -> VIEW_TYPE_WIDGET_MAPVIEW;
+            case "ProgressBar" -> VIEW_TYPE_WIDGET_PROGRESSBAR;
+            case "WebView" -> VIEW_TYPE_WIDGET_WEBVIEW;
+            case "TextView" -> VIEW_TYPE_WIDGET_TEXTVIEW;
+            case "SeekBar" -> VIEW_TYPE_WIDGET_SEEKBAR;
+            case "Spinner" -> VIEW_TYPE_WIDGET_SPINNER;
+            case "CalendarView" -> VIEW_TYPE_WIDGET_CALENDARVIEW;
+            case "ImageView" -> VIEW_TYPE_WIDGET_IMAGEVIEW;
+            case "LinearLayout" -> VIEW_TYPE_LAYOUT_LINEAR;
+            case "ListView" -> VIEW_TYPE_WIDGET_LISTVIEW;
+            case "HScrollView" -> VIEW_TYPE_LAYOUT_HSCROLLVIEW;
+            case "CheckBox" -> VIEW_TYPE_WIDGET_CHECKBOX;
+            case "EditText" -> VIEW_TYPE_WIDGET_EDITTEXT;
+            case "AdView" -> VIEW_TYPE_WIDGET_ADVIEW;
+            case "Button" -> VIEW_TYPE_WIDGET_BUTTON;
+            case "ScrollView" -> VIEW_TYPE_LAYOUT_VSCROLLVIEW;
+            default -> ViewBeans.getViewTypeByTypeName(typeName);
+        };
     }
 
     public static String getViewTypeName(int type) {
-        switch (type) {
-            case VIEW_TYPE_LAYOUT_LINEAR:
-                return "LinearLayout";
-
-            case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
-                return "HScrollView";
-
-            case VIEW_TYPE_WIDGET_BUTTON:
-                return "Button";
-
-            case VIEW_TYPE_WIDGET_TEXTVIEW:
-                return "TextView";
-
-            case VIEW_TYPE_WIDGET_EDITTEXT:
-                return "EditText";
-
-            case VIEW_TYPE_WIDGET_IMAGEVIEW:
-                return "ImageView";
-
-            case VIEW_TYPE_WIDGET_WEBVIEW:
-                return "WebView";
-
-            case VIEW_TYPE_WIDGET_PROGRESSBAR:
-                return "ProgressBar";
-
-            case VIEW_TYPE_WIDGET_LISTVIEW:
-                return "ListView";
-
-            case VIEW_TYPE_WIDGET_SPINNER:
-                return "Spinner";
-
-            case VIEW_TYPE_WIDGET_CHECKBOX:
-                return "CheckBox";
-
-            case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
-                return "ScrollView";
-
-            case VIEW_TYPE_WIDGET_SWITCH:
-                return "Switch";
-
-            case VIEW_TYPE_WIDGET_SEEKBAR:
-                return "SeekBar";
-
-            case VIEW_TYPE_WIDGET_CALENDARVIEW:
-                return "CalendarView";
-
-            case VIEW_TYPE_WIDGET_ADVIEW:
-                return "AdView";
-
-            case VIEW_TYPE_WIDGET_MAPVIEW:
-                return "MapView";
-
-            default:
-                return ViewBeans.getViewTypeName(type);
-        }
+        return switch (type) {
+            case VIEW_TYPE_LAYOUT_LINEAR -> "LinearLayout";
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> "HScrollView";
+            case VIEW_TYPE_WIDGET_BUTTON -> "Button";
+            case VIEW_TYPE_WIDGET_TEXTVIEW -> "TextView";
+            case VIEW_TYPE_WIDGET_EDITTEXT -> "EditText";
+            case VIEW_TYPE_WIDGET_IMAGEVIEW -> "ImageView";
+            case VIEW_TYPE_WIDGET_WEBVIEW -> "WebView";
+            case VIEW_TYPE_WIDGET_PROGRESSBAR -> "ProgressBar";
+            case VIEW_TYPE_WIDGET_LISTVIEW -> "ListView";
+            case VIEW_TYPE_WIDGET_SPINNER -> "Spinner";
+            case VIEW_TYPE_WIDGET_CHECKBOX -> "CheckBox";
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW -> "ScrollView";
+            case VIEW_TYPE_WIDGET_SWITCH -> "Switch";
+            case VIEW_TYPE_WIDGET_SEEKBAR -> "SeekBar";
+            case VIEW_TYPE_WIDGET_CALENDARVIEW -> "CalendarView";
+            case VIEW_TYPE_WIDGET_ADVIEW -> "AdView";
+            case VIEW_TYPE_WIDGET_MAPVIEW -> "MapView";
+            default -> ViewBeans.getViewTypeName(type);
+        };
     }
 
     public static int getViewTypeResId(int type) {
-        switch (type) {
-            case VIEW_TYPE_LAYOUT_LINEAR:
-                return R.drawable.widget_linear_horizontal;
-
-            case VIEW_TYPE_LAYOUT_RELATIVE:
-                return R.drawable.widget_relative_layout;
-
-            case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
-                return R.drawable.widget_horizon_scrollview;
-
-            case VIEW_TYPE_WIDGET_BUTTON:
-                return R.drawable.widget_button;
-
-            case VIEW_TYPE_WIDGET_TEXTVIEW:
-                return R.drawable.widget_text_view;
-
-            case VIEW_TYPE_WIDGET_EDITTEXT:
-                return R.drawable.widget_edit_text;
-
-            case VIEW_TYPE_WIDGET_IMAGEVIEW:
-                return R.drawable.widget_image_view;
-
-            case VIEW_TYPE_WIDGET_WEBVIEW:
-                return R.drawable.widget_web_view;
-
-            case VIEW_TYPE_WIDGET_PROGRESSBAR:
-                return R.drawable.widget_progress_bar;
-
-            case VIEW_TYPE_WIDGET_LISTVIEW:
-                return R.drawable.widget_list_view;
-
-            case VIEW_TYPE_WIDGET_SPINNER:
-                return R.drawable.widget_spinner;
-
-            case VIEW_TYPE_WIDGET_CHECKBOX:
-                return R.drawable.widget_check_box;
-
-            case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
-                return R.drawable.widget_scrollview;
-
-            case VIEW_TYPE_WIDGET_SWITCH:
-                return R.drawable.widget_switch;
-
-            case VIEW_TYPE_WIDGET_SEEKBAR:
-                return R.drawable.widget_seek_bar;
-
-            case VIEW_TYPE_WIDGET_CALENDARVIEW:
-                return R.drawable.widget_calendarview;
-
-            case VIEW_TYPE_WIDGET_FAB:
-                return R.drawable.widget_fab;
-
-            case VIEW_TYPE_WIDGET_ADVIEW:
-                return R.drawable.widget_admob;
-
-            case VIEW_TYPE_WIDGET_MAPVIEW:
-                return R.drawable.widget_google_map;
-
-            default:
-                return ViewBeans.getViewTypeResId(type);
-        }
+        return switch (type) {
+            case VIEW_TYPE_LAYOUT_LINEAR -> R.drawable.widget_linear_horizontal;
+            case VIEW_TYPE_LAYOUT_RELATIVE -> R.drawable.widget_relative_layout;
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> R.drawable.widget_horizon_scrollview;
+            case VIEW_TYPE_WIDGET_BUTTON -> R.drawable.widget_button;
+            case VIEW_TYPE_WIDGET_TEXTVIEW -> R.drawable.widget_text_view;
+            case VIEW_TYPE_WIDGET_EDITTEXT -> R.drawable.widget_edit_text;
+            case VIEW_TYPE_WIDGET_IMAGEVIEW -> R.drawable.widget_image_view;
+            case VIEW_TYPE_WIDGET_WEBVIEW -> R.drawable.widget_web_view;
+            case VIEW_TYPE_WIDGET_PROGRESSBAR -> R.drawable.widget_progress_bar;
+            case VIEW_TYPE_WIDGET_LISTVIEW -> R.drawable.widget_list_view;
+            case VIEW_TYPE_WIDGET_SPINNER -> R.drawable.widget_spinner;
+            case VIEW_TYPE_WIDGET_CHECKBOX -> R.drawable.widget_check_box;
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW -> R.drawable.widget_scrollview;
+            case VIEW_TYPE_WIDGET_SWITCH -> R.drawable.widget_switch;
+            case VIEW_TYPE_WIDGET_SEEKBAR -> R.drawable.widget_seek_bar;
+            case VIEW_TYPE_WIDGET_CALENDARVIEW -> R.drawable.widget_calendarview;
+            case VIEW_TYPE_WIDGET_FAB -> R.drawable.widget_fab;
+            case VIEW_TYPE_WIDGET_ADVIEW -> R.drawable.widget_admob;
+            case VIEW_TYPE_WIDGET_MAPVIEW -> R.drawable.widget_google_map;
+            default -> ViewBeans.getViewTypeResId(type);
+        };
     }
 
     public Gx buildClassInfo(int type) {
-        String name;
-        switch (type) {
-            case VIEW_TYPE_LAYOUT_LINEAR:
-                name = "LinearLayout";
-                break;
+        String name = switch (type) {
+            case VIEW_TYPE_LAYOUT_LINEAR -> "LinearLayout";
 
             // RIP RelativeLayout
          /* case VIEW_TYPE_LAYOUT_RELATIVE:
@@ -401,77 +289,25 @@ public class ViewBean extends nA implements Parcelable {
                 break;
          */
 
-            case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
-                name = "HorizontalScrollView";
-                break;
-
-            case VIEW_TYPE_WIDGET_BUTTON:
-                name = "Button";
-                break;
-
-            case VIEW_TYPE_WIDGET_TEXTVIEW:
-                name = "TextView";
-                break;
-
-            case VIEW_TYPE_WIDGET_EDITTEXT:
-                name = "EditText";
-                break;
-
-            case VIEW_TYPE_WIDGET_IMAGEVIEW:
-                name = "ImageView";
-                break;
-
-            case VIEW_TYPE_WIDGET_WEBVIEW:
-                name = "WebView";
-                break;
-
-            case VIEW_TYPE_WIDGET_PROGRESSBAR:
-                name = "ProgressBar";
-                break;
-
-            case VIEW_TYPE_WIDGET_LISTVIEW:
-                name = "ListView";
-                break;
-
-            case VIEW_TYPE_WIDGET_SPINNER:
-                name = "Spinner";
-                break;
-
-            case VIEW_TYPE_WIDGET_CHECKBOX:
-                name = "CheckBox";
-                break;
-
-            case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
-                name = "ScrollView";
-                break;
-
-            case VIEW_TYPE_WIDGET_SWITCH:
-                name = "Switch";
-                break;
-
-            case VIEW_TYPE_WIDGET_SEEKBAR:
-                name = "SeekBar";
-                break;
-
-            case VIEW_TYPE_WIDGET_CALENDARVIEW:
-                name = "CalendarView";
-                break;
-
-            case VIEW_TYPE_WIDGET_FAB:
-                name = "FloatingActionButton";
-                break;
-
-            case VIEW_TYPE_WIDGET_ADVIEW:
-                name = "AdView";
-                break;
-
-            case VIEW_TYPE_WIDGET_MAPVIEW:
-                name = "MapView";
-                break;
-
-            default:
-                name = ViewBeans.buildClassInfo(type);
-        }
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> "HorizontalScrollView";
+            case VIEW_TYPE_WIDGET_BUTTON -> "Button";
+            case VIEW_TYPE_WIDGET_TEXTVIEW -> "TextView";
+            case VIEW_TYPE_WIDGET_EDITTEXT -> "EditText";
+            case VIEW_TYPE_WIDGET_IMAGEVIEW -> "ImageView";
+            case VIEW_TYPE_WIDGET_WEBVIEW -> "WebView";
+            case VIEW_TYPE_WIDGET_PROGRESSBAR -> "ProgressBar";
+            case VIEW_TYPE_WIDGET_LISTVIEW -> "ListView";
+            case VIEW_TYPE_WIDGET_SPINNER -> "Spinner";
+            case VIEW_TYPE_WIDGET_CHECKBOX -> "CheckBox";
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW -> "ScrollView";
+            case VIEW_TYPE_WIDGET_SWITCH -> "Switch";
+            case VIEW_TYPE_WIDGET_SEEKBAR -> "SeekBar";
+            case VIEW_TYPE_WIDGET_CALENDARVIEW -> "CalendarView";
+            case VIEW_TYPE_WIDGET_FAB -> "FloatingActionButton";
+            case VIEW_TYPE_WIDGET_ADVIEW -> "AdView";
+            case VIEW_TYPE_WIDGET_MAPVIEW -> "MapView";
+            default -> ViewBeans.buildClassInfo(type);
+        };
         return new Gx(name);
     }
 

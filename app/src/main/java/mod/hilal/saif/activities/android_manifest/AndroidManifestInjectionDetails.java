@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -32,6 +31,7 @@ import java.util.HashMap;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.ActComponentsDialog;
+import mod.remaker.view.CustomAttributeView;
 
 public class AndroidManifestInjectionDetails extends Activity {
 
@@ -108,12 +108,10 @@ public class AndroidManifestInjectionDetails extends Activity {
         gradientDrawable.setCornerRadii(new float[]{(float) i2, (float) i2, (float) i2 / 2, (float) i2 / 2, (float) i2, (float) i2, (float) i2 / 2, (float) i2 / 2});
         gradientDrawable.setColor(Color.parseColor("#ffffff"));
         RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        if (Build.VERSION.SDK_INT >= 21) {
-            view.setElevation((float) i3);
-            view.setBackground(rippleDrawable);
-            view.setClickable(true);
-            view.setFocusable(true);
-        }
+        view.setElevation((float) i3);
+        view.setBackground(rippleDrawable);
+        view.setClickable(true);
+        view.setFocusable(true);
     }
 
     private void showDial(int pos) {
@@ -220,24 +218,12 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void setToolbar() {
-        String str = "";
-        switch (type) {
-            case "all":
-                str = "Attributes for all activities";
-                break;
-
-            case "application":
-                str = "Application Attributes";
-                break;
-
-            case "permission":
-                str = "Application Permissions";
-                break;
-
-            default:
-                str = activityName;
-                break;
-        }
+        String str = switch (type) {
+            case "all" -> "Attributes for all activities";
+            case "application" -> "Application Attributes";
+            case "permission" -> "Application Permissions";
+            default -> activityName;
+        };
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText(str);
         ViewGroup par = (ViewGroup) findViewById(R.id.tx_toolbar_title).getParent();
         ImageView _img = findViewById(R.id.ig_toolbar_back);
@@ -280,31 +266,21 @@ public class AndroidManifestInjectionDetails extends Activity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
-            }
-
-            LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);
-            TextView attribute = convertView.findViewById(R.id.cus_attr_text);
-            ImageView options = convertView.findViewById(R.id.cus_attr_btn);
-            options.setVisibility(View.GONE);
-            a(root, (int) getDip(4), (int) getDip(2));
+            CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
             try {
                 SpannableString spannableString = new SpannableString((String) _data.get(position).get("value"));
                 spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, ((String) _data.get(position).get("value")).indexOf(":"), 33);
                 spannableString.setSpan(new ForegroundColorSpan(0xff212121), ((String) _data.get(position).get("value")).indexOf(":"), ((String) _data.get(position).get("value")).indexOf("=") + 1, 33);
                 spannableString.setSpan(new ForegroundColorSpan(0xff45a245), ((String) _data.get(position).get("value")).indexOf("\""), ((String) _data.get(position).get("value")).length(), 33);
-                attribute.setText(spannableString);
+                attributeView.text.setText(spannableString);
             } catch (Exception e) {
-                attribute.setText((String) _data.get(position).get("value"));
+                attributeView.text.setText((String) _data.get(position).get("value"));
             }
-            attribute.setPadding((int) getDip(12), (int) getDip(12), (int) getDip(12), (int) getDip(12));
-            attribute.setTextSize(16);
-            root.setVisibility(View.VISIBLE);
 
-            root.setOnClickListener(v -> showDial(position));
-            root.setOnLongClickListener(v -> {
+            attributeView.icon.setVisibility(View.GONE);
+            attributeView.setOnClickListener(v -> showDial(position));
+            attributeView.setOnLongClickListener(v -> {
                 new AlertDialog.Builder(AndroidManifestInjectionDetails.this)
                         .setTitle("Delete this attribute?")
                         .setMessage("This action cannot be undone.")
@@ -318,7 +294,7 @@ public class AndroidManifestInjectionDetails extends Activity {
                 return true;
             });
 
-            return convertView;
+            return attributeView;
         }
     }
 }

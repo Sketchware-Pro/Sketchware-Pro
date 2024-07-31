@@ -1,6 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@id/layout_color_item" android:layout_width="56.0dip" android:layout_height="56.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="12.0sp" android:textColor="#ff666666" android:gravity="center_horizontal" android:id="@id/tv_color_name" android:paddingTop="2.0dip" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_alignParentTop="true" />
-    <ImageView android:id="@id/img_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_color_item"
+    android:layout_width="56dp"
+    android:layout_height="56dp">
+
+    <TextView
+        android:id="@+id/tv_color_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:paddingTop="2dp"
+        android:textColor="#ff666666"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/img_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp" />
 </RelativeLayout>

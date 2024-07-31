@@ -1,15 +1,19 @@
 package com.besome.sketch.lib.base;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.android.annotations.NonNull;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -21,13 +25,14 @@ import a.a.a._A;
 import a.a.a.lC;
 import a.a.a.xB;
 
-public class BaseAppCompatActivity extends AppCompatActivity {
+public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     public FirebaseAnalytics mAnalytics;
 
     public Tracker d;
     @Deprecated
     public Context e;
+    public Activity parent;
     protected _A progressDialog;
     private ZA lottieDialog;
     private ArrayList<MA> taskList;
@@ -85,8 +90,12 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     }
 
-    public boolean j() {
+    public boolean isStoragePermissionGranted() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
+    }
+
+    public boolean j() {
+        return isStoragePermissionGranted();
     }
 
     public void k() {
@@ -134,5 +143,19 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         if (lottieDialog != null && lottieDialog.isShowing()) {
             lottieDialog.resumeAnimation();
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (parent != null) {
+            return parent.onCreateOptionsMenu(menu);
+        }
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (parent != null) {
+            return parent.onOptionsItemSelected(item);
+        }
+        return false;
     }
 }

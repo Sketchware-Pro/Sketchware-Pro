@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="elevated_item_without_shadow_elevation">3dp</dimen>
+</resources>

@@ -111,7 +111,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+
     }
 
     private void nextStep() {
@@ -130,6 +130,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         if (stepPosition > 0) {
             showStep(--stepPosition);
         } else {
@@ -187,7 +188,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
         binding = ManageLibraryAdmobBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         if (savedInstanceState != null) {
@@ -263,7 +263,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         dialog.a(R.drawable.chrome_96);
         dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
         dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(R.string.common_word_ok), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));

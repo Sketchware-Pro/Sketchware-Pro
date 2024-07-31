@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_rectangle_white"
     android:layout_marginLeft="4dp"
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
+    android:background="@drawable/bg_rectangle_white"
     android:elevation="2dp"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="?selectableItemBackground">
+
         <ImageView
             android:id="@+id/img_icon"
             android:layout_width="24dp"
@@ -23,15 +23,16 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="24dp"
             android:contentDescription="@null" />
+
         <TextView
             android:id="@+id/tv_component_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="72dp"
             android:layout_marginTop="12dp"
-            android:textColor="#ff404040"
             android:textSize="14sp"
             tools:text="Firebase DB" />
+
         <TextView
             android:id="@+id/tv_component_id"
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
             android:textColor="#ff9a9a9a"
             android:textSize="14sp"
             tools:text="36" />
+
         <LinearLayout
             android:id="@+id/events_preview"
             android:layout_width="wrap_content"
@@ -50,6 +52,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/img_menu"
             android:orientation="horizontal" />
+
         <ImageView
             android:id="@+id/img_menu"
             android:layout_width="wrap_content"
@@ -61,6 +64,7 @@
             android:padding="16dp"
             android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/component_option_layout"
         android:layout_width="match_parent"
@@ -69,11 +73,13 @@
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="16dp"
             android:background="@color/color_secondary" />
+
         <mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout
             android:id="@+id/component_option"
             android:layout_width="match_parent"

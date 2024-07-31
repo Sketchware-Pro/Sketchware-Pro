@@ -4,8 +4,11 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
@@ -15,7 +18,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,7 +69,7 @@ import mod.hey.studios.util.ProjectFile;
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
 
     private final int[] G = new int[2];
-    private final Handler s = new Handler();
+    private final Handler handler = new Handler();
     public boolean isLayoutChanged = true;
     public PaletteWidget paletteWidget;
     private ObjectAnimator animatorTranslateX;
@@ -85,7 +88,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean S = true;
     private boolean T = false;
     private LinearLayout paletteGroup;
-    private PaletteGroupItem basicPalette;
     private PaletteGroupItem favoritePalette;
     private String a;
     private LinearLayout aa;
@@ -98,9 +100,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private int displayHeight;
     private PaletteFavorite paletteFavorite;
     private LinearLayout k;
-    private TextView l;
+    private TextView fileName;
     private ImageView imgPhoneTopBg;
-    private LinearLayout n;
+    private LinearLayout toolbar;
     private ViewPane viewPane;
     private Vibrator vibrator;
     private View r = null;
@@ -110,6 +112,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private int scaledTouchSlop = 0;
     private ViewDummy dummyView;
     private ImageView deleteIcon;
+    private TextView deleteText;
+    private LinearLayout deleteView;
     private ObjectAnimator animatorTranslateY;
     private final Runnable ea = this::e;
 
@@ -123,18 +127,25 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         initialize(context);
     }
 
+    public static void shakeView(View view) {
+        ObjectAnimator
+                .ofFloat(view, "translationX", 0, 35, -35, 35, -35, 25, -25, 12, -12, 0)
+                .setDuration(200)
+                .start();
+    }
+
     private void animateUpDown() {
-        animatorTranslateY = ObjectAnimator.ofFloat(deleteIcon, "TranslationY", 0.0f);
+        animatorTranslateY = ObjectAnimator.ofFloat(deleteView, "TranslationY", 0.0f);
         animatorTranslateY.setDuration(500L);
-        animatorTranslateY.setInterpolator(new DecelerateInterpolator());
-        animatorTranslateX = ObjectAnimator.ofFloat(deleteIcon, "TranslationY", deleteIcon.getHeight());
-        animatorTranslateX.setDuration(300L);
-        animatorTranslateX.setInterpolator(new DecelerateInterpolator());
+        animatorTranslateY.setInterpolator(new OvershootInterpolator());
+        animatorTranslateX = ObjectAnimator.ofFloat(deleteView, "TranslationY", deleteView.getHeight() * 2);
+        animatorTranslateX.setDuration(500L);
+        animatorTranslateX.setInterpolator(new OvershootInterpolator());
         isAnimating = true;
     }
 
     private void g() {
-        basicPalette = new PaletteGroupItem(getContext());
+        PaletteGroupItem basicPalette = new PaletteGroupItem(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.weight = 1.0f;
@@ -243,13 +254,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             u = motionEvent.getRawX();
             v = motionEvent.getRawY();
             r = view;
-            if ((view instanceof sy) && ((sy) view).getFixed()) {
+            if ((view instanceof sy bean) && bean.getFixed()) {
                 return true;
             }
             if (isInsideItemScrollView(view) && draggingListener != null) {
                 draggingListener.b();
             }
-            s.postDelayed(ea, ViewConfiguration.getLongPressTimeout() / 2);
+            handler.postDelayed(ea, ViewConfiguration.getLongPressTimeout() / 2);
             return true;
         } else if (actionMasked != MotionEvent.ACTION_UP) {
             if (actionMasked != MotionEvent.ACTION_MOVE) {
@@ -262,7 +273,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     b(false);
                     dummyView.setDummyVisibility(View.GONE);
                     viewPane.clearViews();
-                    s.removeCallbacks(ea);
+                    handler.removeCallbacks(ea);
                     t = false;
                     return true;
                 }
@@ -270,12 +281,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             } else if (!t) {
                 if (Math.abs(u - motionEvent.getRawX()) >= scaledTouchSlop || Math.abs(v - motionEvent.getRawY()) >= scaledTouchSlop) {
                     r = null;
-                    s.removeCallbacks(ea);
+                    handler.removeCallbacks(ea);
                     return true;
                 }
                 return true;
             } else {
-                s.removeCallbacks(ea);
+                handler.removeCallbacks(ea);
                 dummyView.a(view, motionEvent.getRawX(), motionEvent.getRawY(), u, v);
                 if (a(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
@@ -307,7 +318,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             dummyView.setDummyVisibility(View.GONE);
             r = null;
             viewPane.clearViews();
-            s.removeCallbacks(ea);
+            handler.removeCallbacks(ea);
             return true;
         } else {
             lol:
@@ -331,30 +342,28 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     boolean areImagesAdded = false;
                     for (int i3 = 0; i3 < uyVar.getData().size(); i3++) {
                         ViewBean viewBean = uyVar.getData().get(i3);
-                        if (c(viewBean)) {
-                            arrayList.add(viewBean.clone());
-                            String backgroundResource = viewBean.layout.backgroundResource;
-                            String resName = viewBean.image.resName;
-                            if (!jC.d(a).l(backgroundResource) && Op.g().b(backgroundResource)) {
-                                ProjectResourceBean a2 = Op.g().a(backgroundResource);
-                                try {
-                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + a + File.separator + a2.resFullName);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                jC.d(a).b.add(a2);
-                                areImagesAdded = true;
+                        arrayList.add(viewBean.clone());
+                        String backgroundResource = viewBean.layout.backgroundResource;
+                        String resName = viewBean.image.resName;
+                        if (!jC.d(a).l(backgroundResource) && Op.g().b(backgroundResource)) {
+                            ProjectResourceBean a2 = Op.g().a(backgroundResource);
+                            try {
+                                oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + a + File.separator + a2.resFullName);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            if (!jC.d(a).l(resName) && Op.g().b(resName)) {
-                                ProjectResourceBean a3 = Op.g().a(resName);
-                                try {
-                                    oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + a + File.separator + a3.resFullName);
-                                } catch (Exception e2) {
-                                    e2.printStackTrace();
-                                }
-                                jC.d(a).b.add(a3);
-                                areImagesAdded = true;
+                            jC.d(a).b.add(a2);
+                            areImagesAdded = true;
+                        }
+                        if (!jC.d(a).l(resName) && Op.g().b(resName)) {
+                            ProjectResourceBean a3 = Op.g().a(resName);
+                            try {
+                                oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + a + File.separator + a3.resFullName);
+                            } catch (Exception e2) {
+                                e2.printStackTrace();
                             }
+                            jC.d(a).b.add(a3);
+                            areImagesAdded = true;
                         }
                     }
                     if (areImagesAdded) {
@@ -405,7 +414,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             dummyView.setDummyVisibility(View.GONE);
             r = null;
             viewPane.clearViews();
-            s.removeCallbacks(ea);
+            handler.removeCallbacks(ea);
             t = false;
             return true;
         }
@@ -456,11 +465,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteFavorite = findViewById(R.id.palette_favorite);
         dummyView = findViewById(R.id.dummy);
         deleteIcon = findViewById(R.id.icon_delete);
+        deleteText = findViewById(R.id.text_delete);
+        deleteView = findViewById(R.id.delete_view);
         FrameLayout shape = findViewById(R.id.shape);
         paletteGroup = findViewById(R.id.palette_group);
         g();
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
+        rippleRound(deleteView, "#696969", "#ffffff", 200);
         f = wB.a(context, 1.0f);
         I = (int) (I * f);
         J = (int) (J * f);
@@ -476,13 +488,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         k.setOrientation(LinearLayout.HORIZONTAL);
         k.setGravity(Gravity.CENTER_VERTICAL);
         k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25.0f)));
-        l = new TextView(context);
-        l.setTextColor(Color.WHITE);
-        l.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        fileName = new TextView(context);
+        fileName.setTextColor(Color.WHITE);
+        fileName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        l.setPadding((int) (f * 8.0f), 0, 0, 0);
-        l.setGravity(Gravity.CENTER_VERTICAL);
-        k.addView(l);
+        fileName.setPadding((int) (f * 8.0f), 0, 0, 0);
+        fileName.setGravity(Gravity.CENTER_VERTICAL);
+        k.addView(fileName);
         imgPhoneTopBg = new ImageView(context);
         imgPhoneTopBg.setImageResource(R.drawable.phone_bg_top);
         imgPhoneTopBg.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -490,22 +502,22 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         imgPhoneTopBg.setScaleType(ImageView.ScaleType.FIT_END);
         k.addView(imgPhoneTopBg);
         shape.addView(k);
-        n = new LinearLayout(context);
-        n.setBackgroundColor(0xff008dcd);
-        n.setOrientation(LinearLayout.HORIZONTAL);
-        n.setGravity(Gravity.CENTER_VERTICAL);
-        n.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 48.0f)));
+        toolbar = new LinearLayout(context);
+        toolbar.setBackgroundColor(0xff008dcd);
+        toolbar.setOrientation(LinearLayout.HORIZONTAL);
+        toolbar.setGravity(Gravity.CENTER_VERTICAL);
+        toolbar.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 48f)));
         TextView tvToolbar = new TextView(context);
         tvToolbar.setTextColor(Color.WHITE);
         tvToolbar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        tvToolbar.setPadding((int) (f * 16.0f), 0, 0, 0);
+        tvToolbar.setPadding((int) (f * 16f), 0, 0, 0);
         tvToolbar.setGravity(Gravity.CENTER_VERTICAL);
-        tvToolbar.setTextSize(15.0f);
+        tvToolbar.setTextSize(15f);
         tvToolbar.setText("Toolbar");
         tvToolbar.setTypeface(null, Typeface.BOLD);
-        n.addView(tvToolbar);
-        shape.addView(n);
+        toolbar.addView(tvToolbar);
+        shape.addView(toolbar);
         viewPane = new ViewPane(getContext());
         viewPane.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         shape.addView(viewPane);
@@ -546,20 +558,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         L.a();
         L.a(viewBean.id);
         return g;
-    }
-
-    private boolean c(ViewBean viewBean) {
-        int i;
-        int i2 = projectFileBean.fileType;
-        if (i2 == 1) {
-            int i3 = viewBean.type;
-            if (i3 != 0 && i3 != 4 && i3 != 5 && i3 != 3 && i3 != 6 && i3 != 11 && i3 != 13 && i3 != 14 && i3 == 8) {
-                return true;
-            }
-        } else if (i2 == 2 && (i = viewBean.type) != 0 && i != 12 && i != 2 && i != 4 && i != 5 && i != 3 && i != 6 && i != 11 && i != 13 && i != 14 && i == 8) {
-            return true;
-        }
-        return true;
     }
 
     public void d(ViewBean viewBean) {
@@ -627,10 +625,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (b(u, v)) {
             dummyView.setAllow(true);
             boolean isNotIcon = !isViewAnIconBase(r);
-            int width = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
-                    ViewGroup.LayoutParams.MATCH_PARENT : I);
-            int height = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
-                    ViewGroup.LayoutParams.MATCH_PARENT : J);
+            int width = isNotIcon ? r.getWidth() : r instanceof IconLinearHorizontal ?
+                    ViewGroup.LayoutParams.MATCH_PARENT : I;
+            int height = isNotIcon ? r.getHeight() : r instanceof IconLinearVertical ?
+                    ViewGroup.LayoutParams.MATCH_PARENT : J;
             viewPane.updateView((int) u, (int) v, width, height);
             return;
         }
@@ -677,7 +675,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean b(float f, float f2) {
         int[] locationOnScreen = new int[2];
         viewPane.getLocationOnScreen(locationOnScreen);
-        return f > ((float) locationOnScreen[0]) && f < ((float) locationOnScreen[0]) + (((float) viewPane.getWidth()) * viewPane.getScaleX()) && f2 > ((float) locationOnScreen[1]) && f2 < ((float) locationOnScreen[1]) + (((float) viewPane.getHeight()) * viewPane.getScaleY());
+        return f > locationOnScreen[0] && f < locationOnScreen[0] + (viewPane.getWidth() * viewPane.getScaleX()) && f2 > locationOnScreen[1] && f2 < locationOnScreen[1] + (viewPane.getHeight() * viewPane.getScaleY());
     }
 
     private void deleteWidgetFromCollection(String str) {
@@ -702,11 +700,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void setPreviewColors(String str) {
         k.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
         imgPhoneTopBg.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
-        n.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
+        toolbar.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
     }
 
     private void b(boolean z) {
-        deleteIcon.bringToFront();
+        deleteView.bringToFront();
         if (!isAnimating) {
             animateUpDown();
         }
@@ -726,9 +724,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         this.projectFileBean = projectFileBean;
         b = projectFileBean.getXmlName();
         if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
-            l.setText(projectFileBean.fileName.substring(1));
+            fileName.setText(projectFileBean.fileName.substring(1));
         } else {
-            l.setText(projectFileBean.getXmlName());
+            fileName.setText(projectFileBean.getXmlName());
         }
         removeFab();
         if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
@@ -761,7 +759,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void a() {
-        n.setVisibility(S ? View.VISIBLE : View.GONE);
+        toolbar.setVisibility(S ? View.VISIBLE : View.GONE);
         k.setVisibility(T ? View.GONE : View.VISIBLE);
 
         viewPane.setVisibility(View.VISIBLE);
@@ -774,47 +772,39 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int toolBarHeight = GB.a(getContext());
         int var9 = displayWidth - (int) (120.0F * f);
         int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (f * 48.0F) - (int) (f * 48.0F);
-        if (screenType == 0) {
-            if (da) {
-                var8 -= (int) (f * 56.0F);
-            }
+        if (screenType == 0 && da) {
+            var8 -= (int) (f * 56.0F);
         }
 
         float var11 = Math.min((float) var9 / (float) displayWidth, (float) var8 / (float) displayHeight);
         float var3 = Math.min((float) (var9 - var4 * 2) / (float) displayWidth, (float) (var8 - var5 * 2) / (float) displayHeight);
-        if (!isLandscapeMode) {
-            aa.setBackgroundResource(R.drawable.new_view_pane_background_port);
-        } else {
-            aa.setBackgroundResource(R.drawable.new_view_pane_background_land);
-        }
 
         aa.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         aa.setScaleX(var11);
         aa.setScaleY(var11);
-        aa.setX((float) -((int) (((float) displayWidth - (float) displayWidth * var11) / 2.0F)));
-        aa.setY((float) -((int) (((float) displayHeight - (float) displayHeight * var11) / 2.0F)));
-        int var10 = var4 - (int) (((float) displayWidth - (float) displayWidth * var3) / 2.0F);
+        aa.setX(-((int) ((displayWidth - displayWidth * var11) / 2.0F)));
+        aa.setY(-((int) ((displayHeight - displayHeight * var11) / 2.0F)));
+        int var10 = var4 - (int) ((displayWidth - displayWidth * var3) / 2.0F);
         int var13 = var5;
         if (k.getVisibility() == View.VISIBLE) {
             k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, statusBarHeight));
             k.setScaleX(var3);
             k.setScaleY(var3);
-            var11 = (float) statusBarHeight;
+            var11 = statusBarHeight;
             float var12 = var11 * var3;
-            k.setX((float) var10);
-            k.setY((float) (var5 - (int) ((var11 - var12) / 2.0F)));
+            k.setX(var10);
+            k.setY((var5 - (int) ((var11 - var12) / 2.0F)));
             var13 = var5 + (int) var12;
         }
 
         var8 = var13;
-        if (n.getVisibility() == View.VISIBLE) {
-            n.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, toolBarHeight));
-            n.setScaleX(var3);
-            n.setScaleY(var3);
-            float var12 = (float) toolBarHeight;
-            var11 = var12 * var3;
-            n.setX((float) var10);
-            n.setY((float) (var13 - (int) ((var12 - var11) / 2.0F)));
+        if (toolbar.getVisibility() == View.VISIBLE) {
+            toolbar.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, toolBarHeight));
+            toolbar.setScaleX(var3);
+            toolbar.setScaleY(var3);
+            var11 = (float) toolBarHeight * var3;
+            toolbar.setX(var10);
+            toolbar.setY((var13 - (int) (((float) toolBarHeight - var11) / 2.0F)));
             var8 = var13 + (int) var11;
         }
 
@@ -824,16 +814,16 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
 
         var5 = var13;
-        if (n.getVisibility() == View.VISIBLE) {
+        if (toolbar.getVisibility() == View.VISIBLE) {
             var5 = var13 - toolBarHeight;
         }
 
         viewPane.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, var5));
         viewPane.setScaleX(var3);
         viewPane.setScaleY(var3);
-        var11 = (float) var5;
-        viewPane.setX((float) var10);
-        viewPane.setY((float) (var8 - (int) ((var11 - var3 * var11) / 2.0F)));
+        var11 = var5;
+        viewPane.setX(var10);
+        viewPane.setY(var8 - (int) ((var11 - var3 * var11) / 2.0F));
         isLayoutChanged = false;
     }
 
@@ -929,7 +919,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void a(ArrayList<ViewBean> arrayList) {
-        if (arrayList == null || arrayList.size() == 0) {
+        if (arrayList == null || arrayList.isEmpty()) {
             return;
         }
         for (ViewBean view : arrayList) {
@@ -954,14 +944,28 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private boolean a(float x, float y) {
         int[] locationOnScreen = new int[2];
-        deleteIcon.getLocationOnScreen(locationOnScreen);
-        return x > ((float) locationOnScreen[0]) && x < ((float) (locationOnScreen[0] + deleteIcon.getWidth())) && y > ((float) locationOnScreen[1]) && y < ((float) (locationOnScreen[1] + deleteIcon.getHeight()));
+        deleteView.getLocationOnScreen(locationOnScreen);
+        return x > locationOnScreen[0] && x < locationOnScreen[0] + deleteView.getWidth() && y > locationOnScreen[1] && y < (locationOnScreen[1] + deleteView.getHeight());
     }
 
     private void updateDeleteIcon(boolean z) {
         if (D == z) return;
         D = z;
-        deleteIcon.setImageResource(D ? R.drawable.icon_delete_active : R.drawable.icon_delete);
+        if (D) {
+            rippleRound(deleteView, "#FF5D5D", "#ff0000", 200);
+            shakeView(deleteView);
+        } else {
+            rippleRound(deleteView, "#696969", "#ffffff", 200);
+        }
+        deleteText.setText(D ? "Release to delete" : "Drag here to delete");
+    }
+
+    private void rippleRound(View view, String focus, String pressed, double round) {
+        GradientDrawable GG = new GradientDrawable();
+        GG.setColor(Color.parseColor(focus));
+        GG.setCornerRadius((float) round);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        view.setBackground(RE);
     }
 
     enum PaletteGroup {

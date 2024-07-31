@@ -9,10 +9,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
-
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import a.a.a.Us;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.Tools;
+import mod.hilal.saif.activities.tools.AppSettings;
 
 public class LogicEditorDrawer extends LinearLayout {
 
@@ -51,9 +50,9 @@ public class LogicEditorDrawer extends LinearLayout {
         favorite = findViewById(R.id.layout_favorite);
         scrollView = findViewById(R.id.scv);
 
-        CardView tools = findViewById(R.id.new_button);
+        MaterialCardView tools = findViewById(R.id.new_button);
         tools.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), Tools.class);
+            Intent intent = new Intent(getContext(), AppSettings.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             getContext().startActivity(intent);
         });
@@ -65,7 +64,7 @@ public class LogicEditorDrawer extends LinearLayout {
 
     public View a(String str, ArrayList<BlockBean> arrayList) {
         Us collectionBlock = null;
-        if (arrayList.size() > 0) {
+        if (!arrayList.isEmpty()) {
             BlockBean blockBean = arrayList.get(0);
             collectionBlock = new Us(getContext(), blockBean.type, blockBean.typeName, blockBean.opCode, str, arrayList);
             favorite.addView(collectionBlock);

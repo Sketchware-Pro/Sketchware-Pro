@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
             <solid android:color="#ff000000" />
@@ -9,7 +7,10 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <gradient android:startColor="#ffff0000" android:endColor="#ff00ff00" android:angle="180.0" />
+                <gradient
+                    android:angle="180"
+                    android:endColor="#ff00ff00"
+                    android:startColor="#ffff0000" />
             </shape>
         </clip>
     </item>

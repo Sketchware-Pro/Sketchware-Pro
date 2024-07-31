@@ -9,52 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="12dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/arrow_back_white_48dp"
-                app:tint="#424242" />
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/about_title"
-                android:textColor="#424242"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <include layout="@layout/toolbar" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            style="@style/AboutPageTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            app:tabContentStart="56dp"
-            app:tabGravity="fill"
-            app:tabIndicatorAnimationMode="elastic"
-            app:tabIndicatorFullWidth="false"
-            app:tabInlineLabel="true"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/color_primary"
-            app:tabTextColor="#424242"
-            app:tabUnboundedRipple="true">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -70,13 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/about_majorchanges_title" />
-
         </com.google.android.material.tabs.TabLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +62,6 @@
                 android:id="@+id/team_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -122,7 +77,6 @@
                 android:id="@+id/changelog_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -139,11 +93,9 @@
         android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
-        android:visibility="visible"
         tools:visibility="gone">
 
         <ImageView
@@ -156,25 +108,18 @@
             android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="3dp"
             android:text="@string/about_loading_title"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
 
         <TextView
             android:id="@+id/tv_loading_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
-            android:paddingTop="3dp"
+            android:paddingTop="4dp"
             android:paddingRight="8dp"
-            android:paddingBottom="8dp"
             android:text="@string/about_loading_subtitle"
-            android:textColor="#424242"
-            android:textSize="12sp" />
+            android:textAppearance="?attr/textAppearanceBodySmall" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

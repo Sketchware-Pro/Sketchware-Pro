@@ -1,10 +1,6 @@
 package dev.aldi.sayuti.editor.injection;
 
 import android.app.AlertDialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -16,13 +12,15 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -33,6 +31,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.remaker.view.CustomAttributeView;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
@@ -73,18 +72,6 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         } else {
             finish();
         }
-    }
-
-    private void makeup(View view, int i2, int i3) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setCornerRadii(new float[]{(float) i2, (float) i2, (float) i2, (float) i2, (float) i2, (float) i2, (float) i2, (float) i2});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setElevation((float) i3);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
     }
 
     private void dialog(String type, int position) {
@@ -142,7 +129,17 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         private final ArrayList<HashMap<String, Object>> injections;
 
         public CustomAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            injections = arrayList;
+            injections = filterInjections(arrayList);
+        }
+
+        private ArrayList<HashMap<String, Object>> filterInjections(ArrayList<HashMap<String, Object>> arrayList) {
+            ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
+            for (HashMap<String, Object> injection : arrayList) {
+                if (injection.containsKey("type") && injection.get("type").toString().equals(widgetType)) {
+                    filteredList.add(injection);
+                }
+            }
+            return filteredList;
         }
 
         @Override
@@ -162,39 +159,30 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, parent, false);
-            }
+            CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);
-            TextView injection = convertView.findViewById(R.id.cus_attr_text);
-            ImageView options = convertView.findViewById(R.id.cus_attr_btn);
+            int violet = getColor(attributeView, R.attr.colorViolet);
+            int onSurface = getColor(attributeView, R.attr.colorOnSurface);
+            int green = getColor(attributeView, R.attr.colorGreen);
 
-            options.setRotation(90);
-            makeup(root, 10, 5);
-            makeup(options, 100, 0);
+            String value = getItem(position).get("value").toString();
+            SpannableString spannableString = new SpannableString(value);
+            spannableString.setSpan(new ForegroundColorSpan(violet), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(onSurface), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(green), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            if (!injections.get(position).containsKey("type") || !activityInjections.get(position).get("type").toString().equals(widgetType)) {
-                root.setVisibility(View.GONE);
-            } else {
-                String value = activityInjections.get(position).get("value").toString();
-                SpannableString spannableString = new SpannableString(value);
-                spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, value.indexOf(":"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new ForegroundColorSpan(0xff212121), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new ForegroundColorSpan(0xff45a245), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                injection.setText(spannableString);
-                root.setVisibility(View.VISIBLE);
-            }
-            options.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, options);
+            attributeView.text.setText(spannableString);
+            attributeView.icon.setRotation(90);
+            attributeView.icon.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.icon);
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
                 popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == 0) {
                         dialog("edit", position);
                     } else {
-                        activityInjections.remove(position);
-                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
+                        injections.remove(position);
+                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(injections));
                         notifyDataSetChanged();
                         SketchwareUtil.toast("Deleted successfully");
                     }
@@ -202,7 +190,14 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 });
                 popupMenu.show();
             });
-            return convertView;
+
+            return attributeView;
+        }
+
+        // todo: move that method to another class, maybe SkColors
+        // SkColors#getColor(View, int) ?????
+        private @ColorInt int getColor(View view, @AttrRes int resourceId) {
+            return MaterialColors.getColor(view, resourceId);
         }
     }
 }

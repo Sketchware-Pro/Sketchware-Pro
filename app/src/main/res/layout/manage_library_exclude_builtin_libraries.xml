@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_improved" />
@@ -13,37 +13,43 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/layout_switch"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingVertical="8dp">
+            style="?attr/materialCardViewFilledStyle"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-            <TextView
-                android:id="@+id/tv_enable"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout_switch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/scolor_red_02"
-                android:textSize="14sp"
-                tools:text="@string/design_library_settings_title_enabled" />
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Switch
-                android:id="@+id/lib_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginLeft="8dp"
-                android:clickable="false" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_enable"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="?colorControlNormal"
+                    android:textSize="18sp"
+                    tools:text="@string/design_library_settings_title_enabled" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/lib_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="8dp"
+                    android:clickable="false" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -61,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:padding="8dp">
 
                     <ImageView
@@ -99,16 +106,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#ff4d4d4d"
+                        android:textColor="?colorControlNormal"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         tools:text="Excluded built-in libraries" />
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
+                    android:layout_margin="4dp"
+                    style="?attr/materialCardViewFilledStyle"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                     <LinearLayout
                         android:id="@+id/item"
@@ -125,11 +134,11 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:padding="8dp"
-                            android:textColor="#ff4d4d4d"
+                            android:textColor="?colorControlNormal"
                             android:textSize="12sp"
                             tools:text="firebase-common-19.3.1, firebase-database-19.3.1" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

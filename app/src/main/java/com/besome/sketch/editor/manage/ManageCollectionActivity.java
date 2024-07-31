@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,12 +38,14 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.SelectableBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.WidgetCollectionBean;
+import com.besome.sketch.editor.manage.font.AddFontActivity;
 import com.besome.sketch.editor.manage.font.AddFontCollectionActivity;
 import com.besome.sketch.editor.manage.image.AddImageCollectionActivity;
 import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -130,11 +131,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, REQUEST_CODE_ADD_SOUND_DIALOG);
     }
-
     private void showAddFontDialog() {
-        Intent intent = new Intent(getApplicationContext(), AddFontCollectionActivity.class);
-        intent.putParcelableArrayListExtra("fonts", fonts);
+        Intent intent = new Intent(getApplicationContext(), AddFontActivity.class);
+        intent.putParcelableArrayListExtra("font_names", fonts);
         intent.putExtra("sc_id", sc_id);
+        intent.putExtra("add_to_collection", true);
         startActivityForResult(intent, REQUEST_CODE_ADD_FONT_DIALOG);
     }
 
@@ -342,8 +343,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         fab.setOnClickListener(this);
         actionButtonGroup = findViewById(R.id.layout_btn_group);
 
-        Button delete = findViewById(R.id.btn_delete);
-        Button cancel = findViewById(R.id.btn_cancel);
+        MaterialButton delete = findViewById(R.id.btn_delete);
+        MaterialButton cancel = findViewById(R.id.btn_cancel);
         delete.setText(Helper.getResString(R.string.common_word_delete));
         cancel.setText(Helper.getResString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
@@ -400,7 +401,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -417,7 +418,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_collection_delete) {
             changeDeletingItemsState(!selectingToBeDeletedItems);
         }
@@ -440,7 +441,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     @Override
     public void onResume() {
         super.onResume();
-        if (!j()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 

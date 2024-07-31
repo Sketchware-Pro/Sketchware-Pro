@@ -12,12 +12,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:focusable="false"
         android:padding="8dp"
         android:text="@string/about_team_title"
-        android:textColor="#424242"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        tools:text="Main contributors" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +32,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="#008DCD"
+            android:background="?attr/colorPrimary"
             android:orientation="horizontal" />
 
         <androidx.cardview.widget.CardView
@@ -63,15 +61,12 @@
                 android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:focusable="false"
                 android:paddingLeft="8dp"
                 android:paddingTop="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="2dp"
                 android:singleLine="true"
-                android:textColor="#424242"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 tools:text="A contributor" />
 
             <TextView
@@ -79,14 +74,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_user_name"
+                android:autoLink="all"
                 android:focusable="false"
                 android:paddingLeft="8dp"
-                android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:autoLink="all"
-                android:textColor="#212121"
-                android:textSize="12sp"
+                android:textAppearance="?attr/textAppearanceBodySmall"
                 tools:text="Their description" />
 
             <TextView
@@ -94,15 +87,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/tv_user_name"
-                android:paddingHorizontal="5dp"
                 android:layout_marginBottom="3dp"
-                android:paddingVertical="2dp"
                 android:layout_toEndOf="@+id/tv_user_name"
                 android:background="#676767"
                 android:focusable="false"
                 android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
                 android:textColor="#FFF"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 tools:text="status" />
         </RelativeLayout>
     </LinearLayout>

@@ -1,0 +1,8 @@
+<resources>
+    <style name="Platform.V27.Theme.SketchwarePro" parent="Platform.V23.Theme.SketchwarePro">
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="Platform.Theme.SketchwarePro" parent="Platform.V27.Theme.SketchwarePro" />
+</resources>

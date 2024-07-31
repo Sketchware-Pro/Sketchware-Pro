@@ -72,9 +72,10 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
         }
 
         dialog.a(propertyBinding.getRoot());
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), view -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             for (int i = 0, childCount = rgContent.getChildCount(); i < childCount; i++) {
                 RadioButton radioButton = (RadioButton) rgContent.getChildAt(i);
+
                 if (radioButton.isChecked()) {
                     setValue(radioButton.getTag().toString());
                 }

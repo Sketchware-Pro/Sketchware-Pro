@@ -1,6 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBox android:id="@id/checkbox_content" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="" android:layout_weight="1.0" />
-    <ImageView android:id="@id/img_delete" android:padding="5.0dip" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/ic_more_vert_grey600_24dp" android:scaleType="centerInside" />
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkbox_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:paddingStart="8dp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                tools:text="com.sketchware.pro:1.0.0" />
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:focusable="true"
+                android:clickable="true"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_more_vert_grey600_24dp"
+                app:tint="?attr/colorControlNormal" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

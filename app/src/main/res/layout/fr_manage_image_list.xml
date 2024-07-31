@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -26,9 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="#fff6f6f6"
                     android:gravity="center"
-                    android:textColor="@color/grey"
                     android:textSize="14sp"
                     android:visibility="gone"
                     tools:text="@string/design_manager_image_description_guide_add_image" />
@@ -38,7 +35,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="#fff5f5f5"
                     android:scrollbars="vertical"
                     android:splitMotionEvents="false"
                     tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -50,12 +46,11 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center|right"
+                android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
-                android:backgroundTint="@color/color_btn_ltpink_normal"
-                android:src="@drawable/ic_add_white_36dp"
+                android:src="@drawable/ic_add_24"
                 android:visibility="gone"
-                app:borderWidth="0dp"
+                tools:ignore="ContentDescription"
                 tools:visibility="visible" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -65,34 +60,29 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:animateLayoutChanges="true"
-            android:background="#ffffffff"
             android:orientation="horizontal"
             android:padding="4dp"
             android:visibility="gone"
             tools:visibility="visible">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"
-                android:theme="@style/AppTheme.Button.Blue"
+                app:backgroundTint="?colorAccent"
                 tools:text="@string/common_word_cancel" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_accept"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"
-                android:textStyle="bold"
-                android:theme="@style/AppTheme.Button.LightBlue"
                 tools:text="@string/common_word_delete" />
         </LinearLayout>
     </LinearLayout>
@@ -103,9 +93,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
-        android:textColor="#ffffffff"
-        android:textStyle="bold"
-        android:theme="@style/AppTheme.Button.LightBlue"
         android:visibility="gone"
         tools:text="@string/common_word_import" />
 </RelativeLayout>

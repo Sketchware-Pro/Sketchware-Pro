@@ -1,20 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/container" android:paddingLeft="32.0dip" android:paddingTop="32.0dip" android:paddingRight="32.0dip" android:paddingBottom="32.0dip" android:focusable="true" android:focusableInTouchMode="true" android:fitsSystemWindows="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
-        <androidx.recyclerview.widget.RecyclerView android:id="@id/category_list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:splitMotionEvents="false" />
-        <LinearLayout android:orientation="vertical" android:background="@drawable/border_bottom_corner_white_no_stroke" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/color_primary" android:id="@id/tv_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="16.0dip" android:layout_marginBottom="8.0dip" />
-            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
-                <TextView android:textSize="12.0sp" android:gravity="center" android:id="@id/empty_message" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="32.0dip" />
-                <ScrollView android:orientation="horizontal" android:id="@id/moreblock_layout" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-                <androidx.recyclerview.widget.RecyclerView android:id="@id/event_list" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:splitMotionEvents="false" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingTop="32dp"
+    android:paddingRight="32dp"
+    android:paddingBottom="32dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:splitMotionEvents="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bottom_corner_surface"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/empty_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <ScrollView
+                    android:id="@+id/moreblock_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/event_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:splitMotionEvents="false" />
             </LinearLayout>
-            <View android:background="@color/color_secondary" android:layout_width="fill_parent" android:layout_height="2.0dip" />
-            <androidx.recyclerview.widget.RecyclerView android:id="@id/events_preview" android:paddingLeft="16.0dip" android:paddingTop="8.0dip" android:paddingRight="16.0dip" android:paddingBottom="8.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="56.0dip">
-                <Button android:theme="@style/AppTheme.Button.LightBlue" android:textColor="#ffffffff" android:id="@id/cancel_button" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <Button android:theme="@style/AppTheme.Button.Blue" android:textColor="#ffffffff" android:id="@id/add_button" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/events_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bottom_corner_surface_variant"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancel_button"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/add_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

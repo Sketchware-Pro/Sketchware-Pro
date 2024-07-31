@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector android:enterFadeDuration="@integer/enter_fade_duration_time" android:exitFadeDuration="@integer/exit_fade_duration_time"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="@integer/enter_fade_duration_time" android:exitFadeDuration="@integer/exit_fade_duration_time">
     <item android:drawable="@android:color/transparent" android:state_activated="true" />
-    <item android:state_pressed="true" android:drawable="@color/list_selected_background" />
+    <item android:drawable="@color/list_selected_background" android:state_pressed="true" />
 </selector>

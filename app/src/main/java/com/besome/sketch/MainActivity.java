@@ -1,7 +1,6 @@
 package com.besome.sketch;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -13,16 +12,20 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.R;
@@ -39,6 +42,8 @@ import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
+import dev.chrisbanes.insetter.Insetter;
+import dev.chrisbanes.insetter.Side;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
@@ -119,7 +124,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     break;
 
                 case 212:
-                    if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
+                    if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && isStoragePermissionGranted()) {
                         projectsFragment.refreshProjectsList();
                     }
                     break;
@@ -135,10 +140,15 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_SketchwarePro_Main);
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
+                .applyToView(findViewById(R.id.layout_coordinator));
         setSupportActionBar(findViewById(R.id.toolbar));
 
         u = new DB(getApplicationContext(), "U1");
@@ -181,7 +191,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         coordinator = findViewById(R.id.layout_coordinator);
 
-        boolean hasStorageAccess = j();
+        boolean hasStorageAccess = isStoragePermissionGranted();
         if (!hasStorageAccess) {
             showNoticeNeedStorageAccess();
         }
@@ -208,7 +218,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                             BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, projectsFragment);
 
                             if (BackupFactory.zipContainsFile(path, "local_libs")) {
-                                new AlertDialog.Builder(MainActivity.this)
+                                new MaterialAlertDialogBuilder(MainActivity.this)
                                         .setTitle("Warning")
                                         .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
                                         .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
@@ -255,9 +265,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         xB.b().a();
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
@@ -279,7 +288,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (freeMegabytes < 100 && freeMegabytes > 0) {
             showNoticeNotEnoughFreeStorageSpace();
         }
-        if (j() && storageAccessDenied != null && storageAccessDenied.isShown()) {
+        if (isStoragePermissionGranted() && storageAccessDenied != null && storageAccessDenied.isShown()) {
             storageAccessDenied.dismiss();
         }
         Bundle bundle = new Bundle();
@@ -340,8 +349,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         dialog.b(Helper.getResString(R.string.common_message_insufficient_storage_space_title));
         dialog.a(R.drawable.high_priority_96_red);
         dialog.a(Helper.getResString(R.string.common_message_insufficient_storage_space));
-        dialog.b(Helper.getResString(R.string.common_word_ok),
-                Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

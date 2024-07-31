@@ -1,23 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
 
         <include layout="@layout/toolbar" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            style="@style/ManageViewTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -41,11 +38,10 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center|right"
+                android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
-                android:backgroundTint="@color/color_btn_ltpink_normal"
-                android:src="@drawable/ic_add_white_36dp"
-                app:borderWidth="0dp" />
+                android:src="@drawable/ic_add_24"
+                tools:ignore="ContentDescription" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
@@ -53,32 +49,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#ffffffff"
             android:orientation="horizontal"
             android:padding="4dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
                 android:textSize="@dimen/text_size_button_material"
-                android:theme="@style/AppTheme.Button.Blue" />
+                app:backgroundTint="?colorAccent" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:textStyle="bold"
-                android:theme="@style/AppTheme.Button.LightBlue" />
+                android:textSize="@dimen/text_size_button_material" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

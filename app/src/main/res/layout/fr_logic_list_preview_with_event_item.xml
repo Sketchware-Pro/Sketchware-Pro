@@ -1,8 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@id/container" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="4.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/img_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/android_icon" android:layout_alignParentBottom="true" android:layout_alignParentStart="true" />
-    <LinearLayout android:id="@id/ll_img_event" android:background="@drawable/circle_bg_white_outline_secondary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentEnd="true">
-        <ImageView android:id="@id/img_event" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_margin="2.0dip" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    android:layout_marginRight="4dp">
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/android_icon" />
+
+    <LinearLayout
+        android:id="@+id/ll_img_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/circle_bg_white_outline_secondary">
+
+        <ImageView
+            android:id="@+id/img_event"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="2dp" />
     </LinearLayout>
 </RelativeLayout>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -25,7 +24,7 @@
             android:layout_below="@+id/tv_name"
             android:layout_marginStart="40dp"
             android:paddingRight="60dp"
-            android:textColor="#ff9a9a9a"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 
         <ImageView
@@ -38,13 +37,6 @@
             android:background="#ffbdbdbd"
             android:scaleType="centerCrop" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="40dp"
-            android:background="#fff6f6f6" />
-
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
@@ -54,7 +46,7 @@
             android:layout_marginStart="40dp"
             android:paddingTop="16dp"
             android:paddingRight="60dp"
-            android:textColor="#ff404040"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp" />
     </RelativeLayout>
 

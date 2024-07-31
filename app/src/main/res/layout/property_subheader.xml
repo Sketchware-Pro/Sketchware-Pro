@@ -1,6 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:gravity="center_vertical" android:background="#fff6f6f6" android:layout_width="fill_parent" android:layout_height="36.0dip" android:translationY="-1.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="13.0sp" android:textColor="#ff9a9a9a" android:gravity="center_vertical" android:id="@id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
-    <ImageView android:id="@id/img_add" android:padding="8.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_add_circle_24" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:gravity="center_vertical"
+    android:background="@color/backgroundOpenColor"
+    android:translationY="-1dp">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="13sp" />
+
+    <ImageView
+        android:id="@+id/img_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_add_circle_24"
+        android:visibility="gone" />
 </RelativeLayout>

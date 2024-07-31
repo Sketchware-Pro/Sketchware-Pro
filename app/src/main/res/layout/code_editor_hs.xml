@@ -1,78 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#ff303030"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingLeft="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Code Editor"
-                android:textColor="#ffffffff"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="UTF-8"
-                android:textColor="#ffbdbdbd"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/menu_view_undo"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_undo_white_48dp" />
-
-        <ImageView
-            android:id="@+id/menu_view_redo"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginLeft="8dp"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_redo_white_48dp" />
-
-        <ImageView
-            android:id="@+id/save"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginLeft="8dp"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/save_white_48" />
-
-        <ImageView
-            android:id="@+id/more"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginLeft="8dp"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_more_vert_white_24dp" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <io.github.rosemoe.sora.widget.CodeEditor
         android:id="@+id/editor"

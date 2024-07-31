@@ -1,10 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <rotate android:fromDegrees="45.0" android:toDegrees="45.0" android:pivotX="87.0%" android:pivotY="139.99939%">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="87%"
+            android:pivotY="140%"
+            android:toDegrees="45">
             <shape android:shape="rectangle">
-                <stroke android:width="10.0dip" android:color="@color/transparent" />
+                <stroke
+                    android:width="10dp"
+                    android:color="@color/transparent" />
                 <solid android:color="#ff008dcd" />
             </shape>
         </rotate>

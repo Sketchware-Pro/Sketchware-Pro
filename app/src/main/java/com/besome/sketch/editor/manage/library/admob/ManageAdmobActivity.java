@@ -11,14 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +22,7 @@ import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageLibraryManageAdmobBinding;
 
 import java.util.ArrayList;
 
@@ -40,18 +37,12 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
 
     private static final int REQUEST_CODE_ENABLE_ADMOB = 8001;
     private static final int REQUEST_CODE_ADMOB_SETTINGS = 8002;
-    private DB A = null;
+    private DB A;
     private TestDeviceAdapter testDeviceAdapter;
     private ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList<>();
-    private Switch libSwitch;
-    private TextView tvBannerName;
-    private TextView tvBannerId;
-    private TextView tvInterName;
-    private TextView tvInterId;
     private ProjectLibraryBean admobLibraryBean;
     private String sc_id;
-    private TextView tvRewardId;
-    private TextView tvRewardName;
+    private ManageLibraryManageAdmobBinding binding;
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
@@ -60,7 +51,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
 
     private void setAppId(String appId) {
         if (!isEmpty(appId)) {
-            ((TextView) findViewById(R.id.tv_app_id)).setText(appId);
+            binding.tvAppId.setText(appId);
         }
     }
 
@@ -68,11 +59,11 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         if (!adId.isEmpty()) {
             if (adId.contains(" : ")) {
                 int indexOfSemicolon = adId.indexOf(" : ");
-                tvBannerName.setText(adId.substring(0, indexOfSemicolon));
-                tvBannerId.setText(adId.substring(indexOfSemicolon + 3));
+                binding.tvBannerName.setText(adId.substring(0, indexOfSemicolon));
+                binding.tvBannerId.setText(adId.substring(indexOfSemicolon + 3));
             } else {
-                tvBannerName.setText("");
-                tvBannerId.setText(adId);
+                binding.tvBannerName.setText("");
+                binding.tvBannerId.setText(adId);
             }
         }
     }
@@ -81,11 +72,11 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         if (!adId.isEmpty()) {
             if (adId.contains(" : ")) {
                 int indexOfSemicolon = adId.indexOf(" : ");
-                tvInterName.setText(adId.substring(0, indexOfSemicolon));
-                tvInterId.setText(adId.substring(indexOfSemicolon + 3));
+                binding.tvInterName.setText(adId.substring(0, indexOfSemicolon));
+                binding.tvInterId.setText(adId.substring(indexOfSemicolon + 3));
             } else {
-                tvInterName.setText("");
-                tvInterId.setText(adId);
+                binding.tvInterName.setText("");
+                binding.tvInterId.setText(adId);
             }
         }
     }
@@ -94,11 +85,11 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         if (!adId.isEmpty()) {
             if (adId.contains(" : ")) {
                 int indexOfSemicolon = adId.indexOf(" : ");
-                tvRewardName.setText(adId.substring(0, indexOfSemicolon));
-                tvRewardId.setText(adId.substring(indexOfSemicolon + 3));
+                binding.tvRewardName.setText(adId.substring(0, indexOfSemicolon));
+                binding.tvRewardId.setText(adId.substring(indexOfSemicolon + 3));
             } else {
-                tvRewardName.setText("");
-                tvRewardId.setText(adId);
+                binding.tvRewardName.setText("");
+                binding.tvRewardId.setText(adId);
             }
         }
     }
@@ -139,6 +130,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 236:
@@ -146,7 +138,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
                     break;
 
                 case REQUEST_CODE_ENABLE_ADMOB:
-                    libSwitch.setChecked(true);
+                    binding.libSwitch.setChecked(true);
                     admobLibraryBean.useYn = "Y";
                     break;
 
@@ -168,15 +160,15 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     public void onClick(View v) {
         if (!mB.a()) {
             int id = v.getId();
-            if (id == R.id.btn_console) {
+            if (id == binding.btnConsole.getId()) {
                 n();
-            } else if (id == R.id.layout_switch) {
-                if (!libSwitch.isChecked()) {
-                    libSwitch.setChecked(true);
+            } else if (id == binding.layoutSwitch.getId()) {
+                if (!binding.libSwitch.isChecked()) {
+                    binding.libSwitch.setChecked(true);
                     admobLibraryBean.useYn = "Y";
                 } else {
-                    libSwitch.setChecked(!libSwitch.isChecked());
-                    if ("Y".equals(admobLibraryBean.useYn) && !libSwitch.isChecked()) {
+                    binding.libSwitch.setChecked(!binding.libSwitch.isChecked());
+                    if ("Y".equals(admobLibraryBean.useYn) && !binding.libSwitch.isChecked()) {
                         configureLibrary();
                     } else {
                         admobLibraryBean.useYn = "Y";
@@ -190,7 +182,8 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_library_manage_admob);
+        binding = ManageLibraryManageAdmobBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -198,45 +191,33 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
             sc_id = savedInstanceState.getString("sc_id");
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_admob_title_admob_manager));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         A = new DB(getApplicationContext(), "P1");
         admobLibraryBean = getIntent().getParcelableExtra("admob");
-        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
-        ((TextView) findViewById(R.id.tv_title_banner_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_title_banner_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_inter)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
-        ((TextView) findViewById(R.id.tv_title_inter_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_title_inter_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_reward_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_title_reward_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
-        tvBannerId = findViewById(R.id.tv_banner_id);
-        tvBannerName = findViewById(R.id.tv_banner_name);
-        tvInterId = findViewById(R.id.tv_inter_id);
-        tvInterName = findViewById(R.id.tv_inter_name);
-        tvRewardId = findViewById(R.id.tv_reward_id);
-        tvRewardName = findViewById(R.id.tv_reward_name);
+        binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        binding.tvTitleBanner.setText(Helper.getResString(R.string.design_library_admob_title_banner));
+        binding.tvTitleBannerName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvTitleBannerId.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        binding.tvTitleInter.setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
+        binding.tvTitleInterName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvTitleInterId.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        binding.tvTitleRewardName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvTitleRewardId.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        binding.tvTitleTestDevice.setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
 
-        RecyclerView listTestDevice = findViewById(R.id.list_test_device);
-        listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        binding.listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         testDeviceAdapter = new TestDeviceAdapter();
-        listTestDevice.setAdapter(testDeviceAdapter);
+        binding.listTestDevice.setAdapter(testDeviceAdapter);
 
-        libSwitch = findViewById(R.id.lib_switch);
-        LinearLayout switchLayout = findViewById(R.id.layout_switch);
-        switchLayout.setOnClickListener(this);
+        binding.layoutSwitch.setOnClickListener(this);
 
-        Button btnConsole = findViewById(R.id.btn_console);
-        btnConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_console));
-        btnConsole.setOnClickListener(this);
+        binding.btnConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_console));
+        binding.btnConsole.setOnClickListener(this);
 
         configure();
     }
@@ -248,7 +229,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_admob_help) {
             o();
@@ -274,7 +255,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             if (!mB.a()) {
                 admobLibraryBean.useYn = "N";
-                libSwitch.setChecked(false);
+                binding.libSwitch.setChecked(false);
                 dialog.dismiss();
             }
         });
@@ -308,7 +289,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     }
 
     private void configure() {
-        libSwitch.setChecked("Y".equals(admobLibraryBean.useYn));
+        binding.libSwitch.setChecked("Y".equals(admobLibraryBean.useYn));
         setBannerAdUnit(admobLibraryBean.reserved1);
         setInterAdUnit(admobLibraryBean.reserved2);
         setRewardAdUnit(admobLibraryBean.reserved3);

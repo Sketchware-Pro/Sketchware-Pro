@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -22,13 +22,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="#ffffffff"
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -48,19 +47,15 @@
                         android:id="@+id/tv_no_collections"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#fff5f5f5"
                         android:gravity="center"
-                        android:textColor="@color/grey"
-                        android:textSize="12sp"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/collection_list"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="2dp"
                         android:layout_weight="1"
-                        android:background="#fff5f5f5"
                         android:scrollbars="vertical"
                         android:splitMotionEvents="false" />
                 </LinearLayout>
@@ -70,43 +65,34 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center|right"
+                android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
-                android:backgroundTint="@color/color_btn_ltpink_normal"
-                android:src="@drawable/ic_add_white_36dp"
-                app:borderWidth="0dp" />
+                android:src="@drawable/ic_add_24" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
             android:id="@+id/layout_btn_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
             android:orientation="horizontal"
-            android:padding="4dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <Button
                 android:id="@+id/btn_cancel"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:theme="@style/AppTheme.Button.Blue" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/text_size_button_material"
-                android:textStyle="bold"
-                android:theme="@style/AppTheme.Button.LightBlue" />
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

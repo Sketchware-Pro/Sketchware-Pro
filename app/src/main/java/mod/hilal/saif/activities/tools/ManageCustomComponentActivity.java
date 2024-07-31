@@ -1,5 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
@@ -55,6 +57,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component);
         init();
@@ -130,7 +133,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(this)
                 .allowExtension("json")
                 .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((SketchFilePickerDialog dialog, File file) -> {
+                .setOnFileSelectedListener((DialogInterface dialog, File file) -> {
                     try {
                         selectComponentToImport(file.getAbsolutePath());
                     } catch (Exception e) {
@@ -139,7 +142,9 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                     dialog.dismiss();
                 });
         filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
-        filePickerDialog.setIcon(R.drawable.file_48_blue);
+        filePickerDialog.a(R.drawable.file_48_blue);
+        filePickerDialog.setOnDismissListener(filePickerDialog::backPressed);
+        filePickerDialog.init();
         filePickerDialog.show();
     }
 
@@ -174,7 +179,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
                 }
             });
             dialog.a(listView);
-            dialog.b(Helper.getResString(R.string.common_word_import), view -> {
+            dialog.b(Helper.getResString(R.string.common_word_import), v -> {
                 for (int position : selectedPositions) {
                     var component = components.get(position);
                     if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -212,7 +217,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         dialog.b(Helper.getResString(R.string.common_word_export));
         dialog.a(Helper.getResString(R.string.developer_tools_component_message_export, componentName));
         dialog.a(R.drawable.export_96);
-        dialog.b(Helper.getResString(R.string.common_word_yes), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_yes), v -> {
             String fileName = componentName + ".json";
             String filePath = new File(COMPONENT_EXPORT_DIR, fileName).getAbsolutePath();
             FileUtil.writeFile(filePath, new Gson().toJson(List.of(componentsList.get(position))));

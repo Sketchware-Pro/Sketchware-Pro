@@ -1,64 +1,141 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp">
 
-    <TextView
-        android:id="@+id/font_preview"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/font_preview_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/design_manager_font_description_look_like_this"
-        android:textColor="#ff7d7d7d"
-        android:textSize="12sp"
+        android:layout_marginBottom="12dp"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible">
 
-    <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/font_preview_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Font preview"
+                android:textColor="#ff7d7d7d"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/font_preview_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is how your font looks like."
+                android:textSize="18sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/input_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_input"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginVertical="4dp"
-            android:layout_weight="1"
-            android:importantForAutofill="noExcludeDescendants">
+            android:importantForAutofill="noExcludeDescendants"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@id/ed_input"
+                android:id="@+id/ed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/design_manager_font_hint_enter_font_name"
+                android:hint="Font name"
                 android:imeOptions="actionDone"
                 android:inputType="text"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
                 android:lines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/select_file"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/add_96_blue" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/buttonsHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="20dp"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/select_file"
+                style="?attr/materialIconButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/transparent"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:paddingRight="25dp"
+                android:text="Select"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_add_24"
+                app:iconGravity="start"
+                app:iconPadding="0dp"
+                app:iconSize="22dp"
+                app:iconTint="?colorPrimary"
+                app:strokeColor="?colorPrimary"
+                app:strokeWidth="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clear_input"
+                style="?attr/materialIconButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/transparent"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:paddingRight="25dp"
+                android:text="Clear"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_reset_24"
+                app:iconGravity="start"
+                app:iconPadding="0dp"
+                app:iconSize="22dp"
+                app:iconTint="?colorPrimary"
+                app:strokeColor="?colorPrimary"
+                app:strokeWidth="1dp"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <CheckBox
         android:id="@+id/add_to_collection_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/design_manager_title_add_to_collection" />
-
+        android:layout_marginTop="4dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="Add to my collection"
+        android:translationX="-5dp" />
 </LinearLayout>

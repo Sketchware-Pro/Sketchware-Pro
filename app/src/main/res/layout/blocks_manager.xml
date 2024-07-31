@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,26 +8,26 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffeeeeee"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_improved" />
-
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/recycle_bin_card"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginHorizontal="14dp"
+            android:layout_marginVertical="8dp"
             android:orientation="vertical"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="3dp">
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
             <LinearLayout
                 android:id="@+id/recycle_bin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:gravity="center|start"
                 android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:padding="6dp">
 
                 <LinearLayout
                     android:layout_width="48dp"
@@ -58,19 +57,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Recycle bin"
-                        android:textColor="#ff757575"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/recycle_sub"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#ffbdbdbd"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         tools:text="Blocks: 23" />
                 </LinearLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,8 +81,9 @@
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:text="Palettes"
-            android:textColor="#ff9e9e9e"
-            android:textSize="16sp" />
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="18sp" />
 
         <ListView
             android:id="@+id/list_pallete"

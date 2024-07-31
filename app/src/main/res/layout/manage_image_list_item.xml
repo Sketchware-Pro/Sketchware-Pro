@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     android:background="@drawable/bg_outline"
@@ -24,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:alpha="0.8"
-        android:background="@drawable/circle_bg_dark_grey_alpha"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:visibility="gone"
         tools:visibility="visible">
@@ -44,17 +43,17 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:alpha="0.8"
-        android:background="#ff424242"
+        android:background="?attr/colorSurface"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/chk_select"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:minWidth="0dp"
             android:clickable="false"
-            android:contentDescription="@null"
             android:gravity="center"
-            android:theme="@style/AppTheme.Check.White"
             android:visibility="gone"
             tools:checked="true"
             tools:visibility="visible" />
@@ -63,13 +62,12 @@
             android:id="@+id/tv_image_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:gravity="center|left"
-            android:textColor="#fff5f5f5"
-            android:textSize="14sp"
-            tools:text="scenic" />
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            tools:text="Remaker" />
     </LinearLayout>
 
     <ImageView

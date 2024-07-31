@@ -1,40 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/view_property_background_color"
     android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/layout_rounded_border_lightblue"
         android:gravity="center_vertical"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:paddingHorizontal="8dp">
 
         <Spinner
             android:id="@+id/spn_widget"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#ffffffff"
+            android:backgroundTint="@color/view_property_spinner_filter"
             android:spinnerMode="dropdown" />
 
         <ImageView
             android:id="@+id/img_save"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
             android:contentDescription="@null"
-            android:src="@drawable/save_white_48" />
+            android:src="@drawable/save_icon_24px"
+            app:tint="#FFFFFFFF" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_property_group"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:background="#fff6f6f6"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="4dp"
@@ -44,7 +46,6 @@
         android:id="@+id/property_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffeeeeee"
         android:orientation="horizontal">
 
         <com.besome.sketch.lib.ui.CustomHorizontalScrollView

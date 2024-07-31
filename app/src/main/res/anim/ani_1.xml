@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fillAfter="true"
-    android:interpolator="@android:anim/bounce_interpolator">
-    <scale
-        android:duration="700"
-        android:fromXScale="0.9"
-        android:fromYScale="0.9"
-        android:pivotX="10.000002%"
-        android:pivotY="10.000002%"
-        android:toXScale="1.0"
-        android:toYScale="1.0" />
+    android:interpolator="@android:anim/linear_interpolator"
+    android:fillAfter="true">
+
+    <translate android:startOffset="0" android:fromXDelta="0" android:toXDelta="35" android:duration="20" />
+    <translate android:startOffset="20" android:fromXDelta="0" android:toXDelta="-35" android:duration="20" />
+    <translate android:startOffset="40" android:fromXDelta="0" android:toXDelta="35" android:duration="20" />
+    <translate android:startOffset="60" android:fromXDelta="0" android:toXDelta="-35" android:duration="20" />
+    <translate android:startOffset="80" android:fromXDelta="0" android:toXDelta="25" android:duration="20" />
+    <translate android:startOffset="100" android:fromXDelta="0" android:toXDelta="-25" android:duration="20" />
+    <translate android:startOffset="120" android:fromXDelta="0" android:toXDelta="12" android:duration="20" />
+    <translate android:startOffset="140" android:fromXDelta="0" android:toXDelta="-12" android:duration="20" />
+    <translate android:startOffset="160" android:fromXDelta="0" android:toXDelta="0" android:duration="40" />
 </set>

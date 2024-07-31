@@ -11,9 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.besome.sketch.ProjectsFragment;
+
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -25,6 +27,8 @@ import a.a.a.lC;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class BackupRestoreManager {
 
@@ -143,16 +147,15 @@ public class BackupRestoreManager {
                 if (BackupFactory.zipContainsFile(backupFilePath, "local_libs")) {
                     boolean restoringMultipleBackups = files.length > 1;
 
-                    new AlertDialog.Builder(act)
-                            .setTitle("Warning")
-                            .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
-                                    FileUtil.getFileNameNoExtension(backupFilePath)))
-                            .setPositiveButton("Copy", (dialog, which) ->
-                                    doRestore(backupFilePath, true))
-                            .setNegativeButton("Don't copy", (dialog, which) ->
-                                    doRestore(backupFilePath, false))
-                            .setNeutralButton(R.string.common_word_cancel, null)
-                            .show();
+                    new MaterialAlertDialogBuilder(act)
+                         .setTitle("Warning")
+                         .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
+                               FileUtil.getFileNameNoExtension(backupFilePath)))
+                         .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
+                         .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
+                         .setNeutralButton(R.string.common_word_cancel, null)
+                         .show();
+
                 } else {
                     doRestore(backupFilePath, false);
                 }

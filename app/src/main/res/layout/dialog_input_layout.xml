@@ -1,82 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="5dp">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/rename_96_blue" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rename file"
-            android:textColor="#ff008dcd"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dialoginputlayoutLinearLayout2"
+        android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp">
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:hint="Enter the new name"
+        app:hintEnabled="true">
 
-        <EditText
-            android:id="@+id/edittext_change_name"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:autofillHints=""
-            android:hint="New file name"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:textColorHint="#008dcd"
-            android:textSize="18sp" />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/renameOccurrencesCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff09a7ec"
-        android:gravity="right"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingRight="18dp"
-        android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@+id/text_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:text="@string/common_word_cancel"
-            android:textColor="#ffffffff"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="@string/common_word_save"
-            android:textColor="#ffffffff"
-            android:textStyle="bold" />
-    </LinearLayout>
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="10dp"
+        android:text="Rename occurrences in file"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </LinearLayout>

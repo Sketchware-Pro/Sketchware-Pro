@@ -12,6 +12,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,7 @@ import mod.hey.studios.util.ProjectFile;
 
 public class ViewPane extends RelativeLayout {
 
+    private Context context;
     private ViewGroup rootLayout;
     private int b = 99;
     private ArrayList<ViewInfo> viewInfos = new ArrayList<>();
@@ -116,6 +118,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void initialize() {
+        context = new ContextThemeWrapper(getContext(), R.style.ViewEditorTheme);
         setBackgroundColor(Color.WHITE);
         addRootLayout();
         initTextView();
@@ -158,9 +161,10 @@ public class ViewPane extends RelativeLayout {
 
     public sy g(ViewBean viewBean) {
         View findViewWithTag;
-        String str = viewBean.preId;
-        if (str != null && str.length() > 0 && !viewBean.preId.equals(viewBean.id)) {
-            rootLayout.findViewWithTag(viewBean.preId).setTag(viewBean.id);
+        String preId = viewBean.preId;
+        if (preId != null && preId.length() > 0 && !preId.equals(viewBean.id)) {
+            View preView = rootLayout.findViewWithTag(preId);
+            if (preView != null) preView.setTag(viewBean.id);
             viewBean.preId = "";
         }
         if (viewBean.id.charAt(0) == '_') {
@@ -221,57 +225,52 @@ public class ViewPane extends RelativeLayout {
                  ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
                  ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
                  ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
-                 ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(getContext());
-            case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> new ItemCardView(getContext());
-            case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW ->
-                    new ItemHorizontalScrollView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_BUTTON -> new ItemButton(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW -> new ItemTextView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT -> new ItemEditText(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW -> new ItemImageView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_WEBVIEW -> new ItemWebView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR -> new ItemProgressBar(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW -> new ItemListView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_SPINNER -> new ItemSpinner(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX -> new ItemCheckBox(getContext());
-            case ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW -> new ItemVerticalScrollView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_SWITCH -> new ItemSwitch(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR -> new ItemSeekBar(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW -> new ItemCalendarView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_ADVIEW -> new ItemAdView(getContext());
-            case ViewBean.VIEW_TYPE_WIDGET_MAPVIEW -> new ItemMapView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON -> new ItemRadioButton(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_RATINGBAR -> new ItemRatingBar(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_VIDEOVIEW -> new ItemVideoView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW -> new ItemSearchView(getContext());
+                 ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(context);
+            case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> new ItemCardView(context);
+            case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW -> new ItemHorizontalScrollView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_BUTTON -> new ItemButton(context);
+            case ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW -> new ItemTextView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_EDITTEXT -> new ItemEditText(context);
+            case ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW -> new ItemImageView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_WEBVIEW -> new ItemWebView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR -> new ItemProgressBar(context);
+            case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW -> new ItemListView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_SPINNER -> new ItemSpinner(context);
+            case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX -> new ItemCheckBox(context);
+            case ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW -> new ItemVerticalScrollView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_SWITCH -> new ItemSwitch(context);
+            case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR -> new ItemSeekBar(context);
+            case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW -> new ItemCalendarView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_ADVIEW -> new ItemAdView(context);
+            case ViewBean.VIEW_TYPE_WIDGET_MAPVIEW -> new ItemMapView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON -> new ItemRadioButton(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_RATINGBAR -> new ItemRatingBar(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_VIDEOVIEW -> new ItemVideoView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_SEARCHVIEW -> new ItemSearchView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW ->
-                    new ItemAutoCompleteTextView(getContext());
+                    new ItemAutoCompleteTextView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW ->
-                    new ItemMultiAutoCompleteTextView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_GRIDVIEW -> new ItemGridView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_ANALOGCLOCK -> new ItemAnalogClock(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER -> new ItemDatePicker(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER -> new ItemTimePicker(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_DIGITALCLOCK -> new ItemDigitalClock(getContext());
-            case ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT -> new ItemTabLayout(getContext());
-            case ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER -> new ItemViewPager(getContext());
+                    new ItemMultiAutoCompleteTextView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_GRIDVIEW -> new ItemGridView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_ANALOGCLOCK -> new ItemAnalogClock(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER -> new ItemDatePicker(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER -> new ItemTimePicker(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_DIGITALCLOCK -> new ItemDigitalClock(context);
+            case ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT -> new ItemTabLayout(context);
+            case ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER -> new ItemViewPager(context);
             case ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW ->
-                    new ItemBottomNavigationView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_BADGEVIEW -> new ItemBadgeView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_PATTERNLOCKVIEW ->
-                    new ItemPatternLockView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR -> new ItemWaveSideBar(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON -> new ItemMaterialButton(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON -> new ItemSignInButton(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW ->
-                    new ItemCircleImageView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW ->
-                    new ItemLottieAnimation(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW ->
-                    new ItemYoutubePlayer(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(getContext());
-            case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(getContext());
+                    new ItemBottomNavigationView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_BADGEVIEW -> new ItemBadgeView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_PATTERNLOCKVIEW -> new ItemPatternLockView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR -> new ItemWaveSideBar(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON -> new ItemMaterialButton(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON -> new ItemSignInButton(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW -> new ItemCircleImageView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW -> new ItemLottieAnimation(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW -> new ItemYoutubePlayer(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
             default -> null;
         };
         item.setId(++b);
@@ -581,7 +580,7 @@ public class ViewPane extends RelativeLayout {
         if (findViewWithTag != null) {
             return findViewWithTag;
         }
-        ItemFloatingActionButton itemFloatingActionButton = new ItemFloatingActionButton(getContext());
+        ItemFloatingActionButton itemFloatingActionButton = new ItemFloatingActionButton(context);
         itemFloatingActionButton.setTag("_fab");
         itemFloatingActionButton.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

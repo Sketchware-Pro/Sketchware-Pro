@@ -22,7 +22,9 @@ import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
 import com.besome.sketch.projects.MyProjectButtonLayout;
 import com.besome.sketch.projects.MyProjectSettingActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.BottomSheetProjectOptionsBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,12 +36,15 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import a.a.a.ZA;
+import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
+import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final ProjectsFragment projectsFragment;
@@ -256,14 +261,27 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         case 1 -> backupProject(projectMap);
                         case 2 -> toExportProjectActivity(projectMap);
                         case 3 -> {
-                            projectMap.put("confirmation", true);
-                            holder.setAnimateNextTransformation(true);
-                            notifyItemChanged(holder.getLayoutPosition());
+                            {
+                                aB dialog = new aB(projectsFragment.requireActivity());
+                                dialog.a(R.drawable.icon_delete);
+                                dialog.b(Helper.getResString(R.string.delete_project_dialog_title));
+                                dialog.a(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
+
+                                dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
+                                    deleteProject(holder.getLayoutPosition());
+                                    notifyItemChanged(holder.getLayoutPosition());
+                                    dialog.dismiss();
+                                });
+                                dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+                                dialog.show();
+                            }
                         }
                         case 4 -> showProjectSettingDialog(projectMap);
                     }
                 } else if (v.getId() == R.id.confirm_yes) {
-                    deleteProject(holder.getLayoutPosition());
+                    projectMap.put("confirmation", true);
+                    holder.setAnimateNextTransformation(true);
+                    notifyItemChanged(holder.getLayoutPosition());
                 } else if (v.getId() == R.id.confirm_no) {
                     projectMap.put("confirmation", false);
                     holder.setAnimateNextTransformation(true);
@@ -425,7 +443,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", yB.c(project, "sc_id"));
         intent.putExtra("is_update", true);
-        intent.putExtra("advanced_open", false);
         intent.putExtra("index", index);
         projectsFragment.openProjectSettings.launch(intent);
     }
@@ -445,5 +462,39 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", yB.c(project, "sc_id"));
         activity.startActivity(intent);
+    }
+
+
+    // TODO: call this method when that tiny arrow is clicked. also entirely remove collapsible layout code
+    private void showProjectOptionsBottomSheet(HashMap<String, Object> projectMap, int position, ProjectViewHolder holder) {
+        BottomSheetDialog projectOptionsBSD = new BottomSheetDialog(activity);
+        var binding = BottomSheetProjectOptionsBinding.inflate(LayoutInflater.from(activity));
+        var view = binding.getRoot();
+        projectOptionsBSD.setContentView(view);
+        projectOptionsBSD.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
+
+        binding.projectSettings.setOnClickListener(v -> {
+            toProjectSettingOrRequestPermission(projectMap, position);
+            projectOptionsBSD.dismiss();
+        });
+        binding.projectBackup.setOnClickListener(v -> {
+            backupProject(projectMap);
+            projectOptionsBSD.dismiss();
+        });
+        binding.exportSign.setOnClickListener(v -> {
+            toExportProjectActivity(projectMap);
+            projectOptionsBSD.dismiss();
+        });
+        binding.projectConfig.setOnClickListener(v -> {
+            showProjectSettingDialog(projectMap);
+            projectOptionsBSD.dismiss();
+        });
+        binding.projectDelete.setOnClickListener(v -> {
+            // confirmation is needed here before deleting the project
+            notifyItemChanged(position);
+            deleteProject(holder.getLayoutPosition());
+            projectOptionsBSD.dismiss();
+        });
+        projectOptionsBSD.show();
     }
 }

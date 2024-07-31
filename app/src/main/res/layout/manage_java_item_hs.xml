@@ -1,41 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="10dp"
-    android:paddingTop="8dp"
-    android:paddingRight="4dp"
-    android:paddingBottom="8dp">
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="24dp"
+    app:rippleColor="?attr/colorControlHighlight"
+    app:strokeWidth="0dp">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:focusable="false"
-        android:padding="5dp"
-        android:scaleType="fitCenter" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_weight="1"
-        android:focusable="false"
-        android:padding="8dp"
-        android:textColor="#ff212121"
-        android:textSize="16sp"
-        tools:text="MainActivity.java" />
+        android:minHeight="?attr/minTouchTargetSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp">
 
-    <ImageView
-        android:id="@+id/more"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:focusable="false"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_more_vert_grey600_24dp" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:focusable="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_folder_24" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            tools:text="MainActivity.java" />
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:focusable="false"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_more_vert_grey600_24dp"
+            app:tint="?attr/colorControlNormal" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

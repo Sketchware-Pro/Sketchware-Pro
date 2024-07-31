@@ -10,12 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -23,6 +23,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.sketchware.remod.R;
 
 import java.util.regex.Matcher;
@@ -49,7 +50,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         }
     });
 
-    private Switch libSwitch;
+    private MaterialSwitch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
     private TextView tvApiKey;
@@ -201,17 +202,25 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.manage_firebase_menu, menu);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Help").setIcon(getDrawable(R.drawable.help_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Config").setIcon(getDrawable(R.drawable.settings_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int itemId = menuItem.getItemId();
-        if (itemId == R.id.menu_firebase_help) {
-            openDoc();
-        } else if (itemId == R.id.menu_firebase_settings) {
-            toFirebaseActivity();
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+        String title = menuItem.getTitle().toString();
+        switch (title) {
+            case "Help":
+                openDoc();
+                break;
+
+            case "Config":
+                toFirebaseActivity();
+                break;
+
+            default:
+                return false;
         }
         return super.onOptionsItemSelected(menuItem);
     }

@@ -1,244 +1,59 @@
 package dev.aldi.sayuti.editor.manage;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-
-import org.cosmic.ide.dependency.resolver.api.Artifact;
+import com.sketchware.remod.databinding.ManageLocallibrariesBinding;
+import com.sketchware.remod.databinding.ViewItemLocalLibBinding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
-import mod.jbk.build.BuiltInLibraries;
-import mod.pranav.dependency.resolver.DependencyResolver;
+import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener {
-
+public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
     private boolean notAssociatedWithProject = false;
-    private ListView listview;
     private String local_lib_file = "";
     private static String local_libs_path = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
     private BuildSettings buildSettings;
 
-    private Gson gson = new Gson();
-
-    private void initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText(getString(R.string.local_library_manager));
-        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(back_icon);
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        ImageView import_library_icon = findViewById(R.id.ig_toolbar_load_file);
-        import_library_icon.setPadding((int) getDip(2), (int) getDip(2), (int) getDip(2), (int) getDip(2));
-        import_library_icon.setImageResource(R.drawable.download_80px);
-        import_library_icon.setVisibility(View.VISIBLE);
-        Helper.applyRippleToToolbarView(import_library_icon);
-        import_library_icon.setOnClickListener(this);
-    }
-
-    @Override
-    @SuppressLint("SetTextI18n")
-    public void onClick(View v) {
-        var view = getLayoutInflater().inflate(R.layout.library_downloader_dialog, null);
-
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setView(view)
-                .setCancelable(false)
-                .create();
-        EditText editText = view.findViewById(R.id.ed_input);
-        CheckBox skipDownloadingDependencies = view.findViewById(R.id.checkbox);
-        var linear = view.findViewById(R.id.btn_download);
-        TextView text = view.findViewById(R.id.tv_progress);
-        linear.setOnClickListener(v1 -> {
-            linear.setVisibility(View.GONE);
-            skipDownloadingDependencies.setEnabled(false);
-            String url = editText.getText().toString();
-            if (url.isEmpty()) {
-                SketchwareUtil.toastError("Please enter a dependency");
-                return;
-            }
-
-            var parts = url.split(":");
-            if (parts.length != 3) {
-                SketchwareUtil.toastError("Invalid dependency format");
-                return;
-            }
-            var group = parts[0];
-            var artifact = parts[1];
-            var version = parts[2];
-            var resolver = new DependencyResolver(group, artifact, version, skipDownloadingDependencies.isChecked(), buildSettings);
-            var handler = new Handler(Looper.getMainLooper());
-
-            class SetTextRunnable implements Runnable {
-                private final String message;
-
-                SetTextRunnable(String message) {
-                    this.message = message;
-                }
-
-                @Override
-                public void run() {
-                    text.setText(message);
-                }
-            }
-
-            Executors.newSingleThreadExecutor().execute(() -> {
-                BuiltInLibraries.maybeExtractAndroidJar(progress -> handler.post(new SetTextRunnable(progress)));
-                BuiltInLibraries.maybeExtractCoreLambdaStubsJar();
-
-                resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
-                    @Override
-                    public void onResolving(@NonNull Artifact artifact, @NonNull Artifact dependency) {
-                        handler.post(new SetTextRunnable("Resolving " + dependency + " for " + artifact));
-                    }
-
-                    @Override
-                    public void onResolutionComplete(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency " + dep + " resolved"));
-                    }
-
-                    @Override
-                    public void onArtifactFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Found " + dep + " in " + dep.getRepository().getName()));
-                    }
-
-                    @Override
-                    public void onArtifactNotFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dependency " + dep + " not found"));
-                    }
-
-                    @Override
-                    public void onSkippingResolution(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Skipping resolution for " + dep));
-                    }
-
-                    @Override
-                    public void onVersionNotFound(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Version not available for " + dep));
-                    }
-
-                    @Override
-                    public void onDependenciesNotFound(@NonNull Artifact dep) {
-                        handler.post(() -> {
-                            linear.setVisibility(View.VISIBLE);
-                            text.setText("Dependencies not found for  " + dep);
-                        });
-                    }
-
-                    @Override
-                    public void onInvalidScope(@NonNull Artifact dep, @NonNull String scope) {
-                        handler.post(new SetTextRunnable("Invalid scope for " + dep + ": " + scope));
-                    }
-
-                    @Override
-                    public void invalidPackaging(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Invalid packaging for dependency " + dep));
-                    }
-
-
-                    @Override
-                    public void onDownloadStart(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Downloading dependency " + dep));
-                    }
-
-                    @Override
-                    public void onDownloadEnd(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Downloaded dependency " + dep));
-                    }
-
-                    @Override
-                    public void onDownloadError(@NonNull Artifact dep, @NonNull Throwable e) {
-                        handler.post(() -> {
-                            dialog.dismiss();
-                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this,
-                                    "Downloading dependency '" + dep + "' failed: " + Log.getStackTraceString(e));
-                        });
-                    }
-
-                    @Override
-                    public void unzipping(@NonNull Artifact artifact) {
-                        handler.post(new SetTextRunnable("Unzipping dependency " + artifact));
-                    }
-
-                    @Override
-                    public void dexing(@NonNull Artifact dep) {
-                        handler.post(new SetTextRunnable("Dexing dependency " + dep));
-                    }
-
-                    @Override
-                    public void dexingFailed(@NonNull Artifact dependency, @NonNull Exception e) {
-                        handler.post(() -> {
-                            dialog.dismiss();
-                            SketchwareUtil.showAnErrorOccurredDialog(ManageLocalLibraryActivity.this,
-                                    "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
-                        });
-                    }
-
-                    @Override
-                    public void onTaskCompleted(@NonNull List<String> dependencies) {
-                        handler.post(() -> {
-                            linear.setVisibility(View.VISIBLE);
-
-                            dialog.dismiss();
-                            if (!notAssociatedWithProject) {
-                                new SetTextRunnable("Adding dependencies to project...").run();
-                                var fileContent = FileUtil.readFile(local_lib_file);
-                                var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
-                                enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toUnmodifiableList()));
-                                FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
-                            }
-                            loadFiles();
-                        });
-                    }
-                });
-            });
-        });
-        dialog.show();
-    }
-
+    private ManageLocallibrariesBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_permission);
+        binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        listview = findViewById(R.id.main_content);
-        findViewById(R.id.search_perm).setVisibility(View.GONE);
-        initToolbar();
+        ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton,
+                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
 
+        initButtons();
         if (getIntent().hasExtra("sc_id")) {
             String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
             buildSettings = new BuildSettings(sc_id);
@@ -247,6 +62,27 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
         loadFiles();
+    }
+
+    private void initButtons() {
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.downloadLibraryButton.setOnClickListener(this);
+    }
+
+    @Override
+    @SuppressLint("SetTextI18n")
+    public void onClick(View v) {
+
+        LibraryDownloaderDialogFragment dialogFragment = new LibraryDownloaderDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
+        bundle.putSerializable("buildSettings", buildSettings);
+        bundle.putString("local_lib_file", local_lib_file);
+        dialogFragment.setArguments(bundle);
+        if (getSupportFragmentManager().findFragmentByTag("library_downloader_dialog") != null)
+            return;
+        dialogFragment.setListener(this::loadFiles);
+        dialogFragment.show(getSupportFragmentManager(), "library_downloader_dialog");
     }
 
     private void loadFiles() {
@@ -262,7 +98,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
-        Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
+        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
 
         List<String> localLibraryNames = new LinkedList<>();
         for (String filename : arrayList) {
@@ -270,12 +106,16 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 localLibraryNames.add(Uri.parse(filename).getLastPathSegment());
             }
         }
-        listview.setAdapter(new LibraryAdapter(localLibraryNames));
-        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+        if (localLibraryNames.isEmpty()) {
+            binding.noContentLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.noContentLayout.setVisibility(View.GONE);
+        }
+        binding.librariesList.setLayoutManager(new LinearLayoutManager(this));
+        binding.librariesList.setAdapter(new LibraryAdapter(localLibraryNames));
     }
 
     public static HashMap<String, Object> createLibraryMap(String name) {
-
         String configPath = local_libs_path + name + "/config";
         String resPath = local_libs_path + name + "/res";
         String jarPath = local_libs_path + name + "/classes.jar";
@@ -310,7 +150,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         return localLibrary;
     }
 
-    public class LibraryAdapter extends BaseAdapter {
+    public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
         private final List<String> localLibraries;
 
@@ -318,34 +158,27 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             this.localLibraries = localLibraries;
         }
 
+        @NonNull
         @Override
-        public String getItem(int position) {
-            return localLibraries.get(position);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            var listBinding = ViewItemLocalLibBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            listBinding.getRoot().setLayoutParams(layoutParams);
+            return new ViewHolder(listBinding);
         }
 
         @Override
-        public int getCount() {
-            return localLibraries.size();
-        }
+        public void onBindViewHolder(ViewHolder holder, final int position) {
+            var binding = holder.listBinding;
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+            final String libraryName = localLibraries.get(position);
+            binding.checkboxContent.setText(libraryName);
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, parent, false);
-            }
-
-            final CheckBox enabled = convertView.findViewById(R.id.checkbox_content);
-            enabled.setText(localLibraries.get(position));
-            enabled.setOnClickListener(v -> {
-                String name = enabled.getText().toString();
+            binding.checkboxContent.setOnClickListener(v -> {
+                String name = binding.checkboxContent.getText().toString();
                 HashMap<String, Object> localLibrary = createLibraryMap(name);
 
-                if (!enabled.isChecked()) {
+                if (!binding.checkboxContent.isChecked()) {
                     int i = -1;
                     for (int j = 0; j < project_used_libs.size(); j++) {
                         HashMap<String, Object> nLocalLibrary = project_used_libs.get(j);
@@ -367,30 +200,43 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
             });
 
-            enabled.setChecked(false);
+            binding.checkboxContent.setChecked(false);
             if (!notAssociatedWithProject) {
                 lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
                 for (HashMap<String, Object> localLibrary : lookup_list) {
-                    if (enabled.getText().toString().equals(Objects.requireNonNull(localLibrary.get("name")).toString())) {
-                        enabled.setChecked(true);
+                    if (binding.checkboxContent.getText().toString().equals(Objects.requireNonNull(localLibrary.get("name")).toString())) {
+                        binding.checkboxContent.setChecked(true);
                     }
                 }
             } else {
-                enabled.setEnabled(false);
+                binding.checkboxContent.setEnabled(false);
             }
 
-            convertView.findViewById(R.id.img_delete).setOnClickListener(v -> {
+            binding.imgDelete.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
                 popupMenu.getMenu().add(Menu.NONE, Menu.NONE, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
-                    FileUtil.deleteFile(local_libs_path.concat(enabled.getText().toString()));
+                    FileUtil.deleteFile(local_libs_path.concat(binding.checkboxContent.getText().toString()));
                     SketchwareUtil.toast("Deleted successfully");
                     loadFiles();
                     return true;
                 });
                 popupMenu.show();
             });
-            return convertView;
+        }
+
+        @Override
+        public int getItemCount() {
+            return localLibraries.size();
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private final ViewItemLocalLibBinding listBinding;
+
+            public ViewHolder(@NonNull ViewItemLocalLibBinding listBinding) {
+                super(listBinding.getRoot());
+                this.listBinding = listBinding;
+            }
         }
     }
 }

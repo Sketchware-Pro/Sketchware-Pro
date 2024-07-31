@@ -45,7 +45,7 @@ public class GetKeyStoreCredentialsDialog {
         dialog.b(title);
         dialog.a(noticeText);
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(R.string.common_word_next), next -> {
+        dialog.b(Helper.getResString(R.string.common_word_next), v -> {
             if (mode == SigningMode.OWN_KEY_STORE) {
                 // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
                 if (new File(wq.j()).exists()) {
@@ -175,7 +175,7 @@ public class GetKeyStoreCredentialsDialog {
         inputContainer.addView(tilSigningAlgorithm);
 
         dialog.a(scrollView);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     public void show() {

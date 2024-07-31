@@ -27,6 +27,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.OldResourceIdMapper;
 
 public class EventsMakerDetails extends Activity {
 
@@ -153,7 +154,8 @@ public class EventsMakerDetails extends Activity {
             if (lisName.equals("")) {
                 icon.setImageResource(R.drawable.widget_source);
             } else {
-                icon.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
+                int imgRes = Integer.parseInt((String) _data.get(position).get("icon"));
+                icon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));
             }
             ((LinearLayout) icon.getParent()).setGravity(17);
             title.setText((String) _data.get(position).get("name"));

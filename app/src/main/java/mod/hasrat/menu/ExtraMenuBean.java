@@ -717,7 +717,7 @@ public class ExtraMenuBean {
 
         dialog.b(title);
         dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                     if (rb.isChecked()) {
@@ -732,8 +732,8 @@ public class ExtraMenuBean {
             AsdAllEditor editor = new AsdAllEditor(logicEditor);
             editor.setCon(menu.getArgValue().toString());
             editor.show();
-            editor.saveLis(logicEditor, menu, editor);
-            editor.cancelLis(logicEditor, editor);
+            editor.saveLis(logicEditor, menu);
+            editor.cancelLis(editor);
             dialog.dismiss();
         });
         dialog.show();
@@ -768,7 +768,7 @@ public class ExtraMenuBean {
         edittext.setText(ss.getArgValue().toString());
         dialog.a(root);
 
-        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             String content = edittext.getText().toString();
             if (!content.isEmpty() && content.charAt(0) == '@') {
                 content = " " + content;

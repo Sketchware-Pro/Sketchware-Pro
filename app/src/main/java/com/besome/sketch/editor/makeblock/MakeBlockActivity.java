@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -31,7 +32,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         dialog.b(Helper.getResString(R.string.logic_editor_more_block_dialog_message_confirm_goback));
         dialog.a(R.drawable.exit_96);
         dialog.a(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
-        dialog.b(Helper.getResString(R.string.common_word_goback), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_goback), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 finish();
@@ -55,7 +56,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
@@ -89,7 +90,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.moreblock_create) {
             if (makeBlock.a()) return false;
 
@@ -110,7 +111,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

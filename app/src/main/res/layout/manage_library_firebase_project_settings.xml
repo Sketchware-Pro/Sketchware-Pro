@@ -1,25 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:padding="16.0dip" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip">
-        <ImageView android:layout_gravity="center_vertical" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_title" />
-        <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:layout_gravity="center_vertical" android:id="@id/tv_title_project_id" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_title" />
+
+        <TextView
+            android:id="@+id/tv_title_project_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="?colorControlNormal"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <androidx.core.widget.NestedScrollView android:gravity="center" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginBottom="8.0dip" android:fillViewport="true">
-        <EditText android:textSize="14.0sp" android:gravity="center_vertical" android:id="@id/ed_input_project_id" android:background="@drawable/bg_round_light_grey" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:inputType="textMultiLine" android:imeOptions="actionDone" />
-    </androidx.core.widget.NestedScrollView>
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip">
-        <ImageView android:layout_gravity="center_vertical" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_title" />
-        <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:layout_gravity="center_vertical" android:id="@id/tv_title_app_id" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+
+        <EditText
+            android:id="@+id/ed_input_project_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:padding="14dp"
+            android:textSize="12sp"
+            android:textColor="?colorControlNormal"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_title" />
+
+        <TextView
+            android:id="@+id/tv_title_app_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="?colorControlNormal"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <androidx.core.widget.NestedScrollView android:gravity="center" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginBottom="8.0dip" android:fillViewport="true">
-        <EditText android:textSize="14.0sp" android:gravity="center_vertical" android:id="@id/ed_input_app_id" android:background="@drawable/bg_round_light_grey" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:inputType="textMultiLine" android:imeOptions="actionDone" />
-    </androidx.core.widget.NestedScrollView>
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip">
-        <ImageView android:layout_gravity="center_vertical" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_key_48dp" />
-        <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff4d4d4d" android:layout_gravity="center_vertical" android:id="@id/tv_title_api_key" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+        <EditText
+            android:id="@+id/ed_input_app_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:padding="14dp"
+            android:textSize="12sp"
+            android:textColor="?colorControlNormal"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_key_48dp" />
+
+        <TextView
+            android:id="@+id/tv_title_api_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="?colorControlNormal"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <androidx.core.widget.NestedScrollView android:gravity="center" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginBottom="8.0dip" android:fillViewport="true">
-        <EditText android:textSize="14.0sp" android:gravity="center_vertical" android:id="@id/ed_input_api_key" android:background="@drawable/bg_round_light_grey" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:inputType="textMultiLine" android:imeOptions="actionDone" />
-    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+        <EditText
+            android:id="@+id/ed_input_api_key"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:padding="14dp"
+            android:textSize="12sp"
+            android:textColor="?colorControlNormal"/>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

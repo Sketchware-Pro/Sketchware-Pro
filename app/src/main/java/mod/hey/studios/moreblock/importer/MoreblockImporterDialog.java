@@ -6,17 +6,15 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageCollectionPopupImportMoreBlockListItemBinding;
 
 import java.util.ArrayList;
 
@@ -27,24 +25,18 @@ import mod.jbk.util.BlockUtil;
 
 public class MoreblockImporterDialog extends aB {
 
-    private final ArrayList<MoreBlockCollectionBean> internalList;
-    private final CallBack callback;
-
     private final Activity act;
     private ArrayList<MoreBlockCollectionBean> list;
-    private Adapter la;
 
     public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
         super(act);
         this.act = act;
-        internalList = beanList;
         list = new ArrayList<>(beanList);
-        this.callback = callback;
-    }
 
-    public void show() {
-        super.b("Select a More Block");
-        super.a(R.drawable.more_block_96dp);
+        Adapter la = new Adapter();
+
+        b("Select a more block");
+        a(R.drawable.more_block_96dp);
 
         SearchView searchView = new SearchView(act);
 
@@ -75,12 +67,12 @@ public class MoreblockImporterDialog extends aB {
             @Override
             public boolean onQueryTextChange(String query) {
                 if (query.isEmpty()) {
-                    //just return the internal list
-                    list = new ArrayList<>(internalList);
+                    //just return the bean list
+                    list = new ArrayList<>(beanList);
                 } else {
                     list = new ArrayList<>();
 
-                    for (MoreBlockCollectionBean bean : internalList) {
+                    for (MoreBlockCollectionBean bean : beanList) {
                         if (bean.name.toLowerCase().contains(query.toLowerCase())
                                 || bean.spec.toLowerCase().contains(query.toLowerCase())) {
                             list.add(bean);
@@ -111,9 +103,6 @@ public class MoreblockImporterDialog extends aB {
             lw.setDividerHeight((int) getDip(10));
         }
 
-        la = new Adapter();
-        lw.setAdapter(la);
-
         LinearLayout ln = new LinearLayout(act);
         ln.setOrientation(LinearLayout.VERTICAL);
         ln.setLayoutParams(new LinearLayout.LayoutParams(
@@ -122,20 +111,20 @@ public class MoreblockImporterDialog extends aB {
         ln.addView(searchView);
         ln.addView(lw);
 
-        super.a(ln);
-        super.b(act.getString(R.string.common_word_select), v -> {
+        lw.setAdapter(la);
+
+        a(ln);
+        b(act.getString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
-                SketchwareUtil.toastError("Select a More Block");
+                SketchwareUtil.toastError("Select a more block");
             } else {
                 callback.onSelected(selectedBean);
-
                 dismiss();
             }
         });
-        super.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
-        super.show();
+        a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
     }
 
     public interface CallBack {
@@ -171,34 +160,32 @@ public class MoreblockImporterDialog extends aB {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ManageCollectionPopupImportMoreBlockListItemBinding binding;
+
             if (convertView == null) {
-                convertView = act.getLayoutInflater().inflate(R.layout.manage_collection_popup_import_more_block_list_item, parent, false);
-            }
-
-            FrameLayout blockArea = convertView.findViewById(R.id.block_area);
-            TextView title = convertView.findViewById(R.id.tv_block_name);
-            ImageView selected = convertView.findViewById(R.id.img_selected);
-
-            if (position == selectedPos) {
-                selected.setVisibility(View.VISIBLE);
+                binding = ManageCollectionPopupImportMoreBlockListItemBinding.inflate(act.getLayoutInflater(), parent, false);
+                convertView = binding.getRoot();
+                convertView.setTag(binding);
             } else {
-                selected.setVisibility(View.GONE);
+                binding = (ManageCollectionPopupImportMoreBlockListItemBinding) convertView.getTag();
             }
 
-            title.setText(getItem(position).name);
-            blockArea.removeAllViews();
-            BlockUtil.loadMoreblockPreview(blockArea, getItem(position).spec);
+            binding.imgSelected.setVisibility(position == selectedPos ? View.VISIBLE : View.GONE);
+
+            binding.tvBlockName.setText(getItem(position).name);
+            binding.blockArea.removeAllViews();
+            BlockUtil.loadMoreblockPreview(binding.blockArea, getItem(position).spec);
 
             View.OnClickListener listener = v -> {
                 selectedPos = position;
                 notifyDataSetChanged();
             };
 
-            convertView.findViewById(R.id.layout_item).setOnClickListener(listener);
-            blockArea.setOnClickListener(listener);
-            title.setOnClickListener(listener);
+            binding.getRoot().setOnClickListener(listener);
+            binding.blockArea.setOnClickListener(listener);
 
             return convertView;
         }
+
     }
 }

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="enter_fade_duration_time">100</integer>
     <integer name="exit_fade_duration_time">500</integer>

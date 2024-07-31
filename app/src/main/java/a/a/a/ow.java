@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -169,8 +170,8 @@ public class ow extends qA implements View.OnClickListener {
         ViewGroup item = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
         actionContainer = item.findViewById(R.id.layout_btn_group);
-        Button delete = item.findViewById(R.id.btn_delete);
-        Button cancel = item.findViewById(R.id.btn_cancel);
+        MaterialButton delete = item.findViewById(R.id.btn_delete);
+        MaterialButton cancel = item.findViewById(R.id.btn_cancel);
         add = item.findViewById(R.id.fab);
         delete.setText(xB.b().a(requireActivity(), R.string.common_word_delete));
         cancel.setText(xB.b().a(requireActivity(), R.string.common_word_cancel));

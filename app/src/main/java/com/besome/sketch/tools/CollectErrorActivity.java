@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
@@ -41,7 +42,7 @@ public class CollectErrorActivity extends Activity {
         if (intent != null) {
             final String error = intent.getStringExtra("error");
 
-            AlertDialog dialog = new AlertDialog.Builder(this)
+            var dialog = new MaterialAlertDialogBuilder(this)
                     .setTitle(xB.b().a(getApplicationContext(), R.string.common_error_an_error_occurred))
                     .setMessage("An error occurred while running Sketchware Pro. " +
                             "Do you want to report this error log so that we can fix it? " +

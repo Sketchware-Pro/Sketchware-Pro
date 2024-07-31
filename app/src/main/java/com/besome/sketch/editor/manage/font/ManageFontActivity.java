@@ -65,7 +65,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_font);
 
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
@@ -96,7 +96,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!super.isStoragePermissionGranted()) {
             finish();
         }
     }

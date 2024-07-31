@@ -1,30 +1,37 @@
 package mod.hey.studios.activity.managers.assets;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
+import com.sketchware.remod.databinding.DialogInputLayoutBinding;
+import com.sketchware.remod.databinding.ManageFileBinding;
+import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,21 +43,24 @@ import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class ManageAssetsActivity extends Activity {
+public class ManageAssetsActivity extends AppCompatActivity {
 
     private final ArrayList<String> currentTree = new ArrayList<>();
     private String current_path;
     private FilePathUtil fpu;
-    private GridView gridView;
-    private MyAdapter myAdapter;
+    private AssetsAdapter assetsAdapter;
     private String sc_id;
-    private TextView tv_noFileExist;
+
+    private ManageFileBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_file);
+        binding = ManageFileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         sc_id = getIntent().getStringExtra("sc_id");
         Helper.fixFileprovider();
@@ -62,28 +72,33 @@ public class ManageAssetsActivity extends Activity {
         refresh();
     }
 
-    @SuppressLint("SetTextI18n")
     private void setupUI() {
-        gridView = findViewById(R.id.list_file);
-        gridView.setNumColumns(1);
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.showOptionsButton.setOnClickListener(view -> hideShowOptionsButton(false));
+        binding.closeButton.setOnClickListener(view -> hideShowOptionsButton(true));
+        binding.createNewButton.setOnClickListener(v -> {
+            showCreateDialog();
+            hideShowOptionsButton(true);
+        });
+        binding.importNewButton.setOnClickListener(v -> {
+            showImportDialog();
+            hideShowOptionsButton(true);
+        });
 
-        FloatingActionButton fab = findViewById(R.id.fab_plus);
-        fab.setOnClickListener(v -> showCreateDialog());
+        ViewCompat.setOnApplyWindowInsetsListener(binding.createNewButton,
+                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+    }
 
-        tv_noFileExist = findViewById(R.id.text_info);
-        tv_noFileExist.setText("No files");
+    private void hideShowOptionsButton(boolean isHide) {
+        binding.optionsLayout.animate()
+                .translationY(isHide ? 300 : 0)
+                .alpha(isHide ? 0 : 1)
+                .setInterpolator(new OvershootInterpolator());
 
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Asset Manager");
-        ImageView imageView = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(imageView);
-        imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
-
-        ImageView ig_load_file = findViewById(R.id.ig_toolbar_load_file);
-        ig_load_file.setVisibility(View.VISIBLE);
-
-        Helper.applyRippleToToolbarView(ig_load_file);
-
-        ig_load_file.setOnClickListener(v -> showLoadDialog());
+        binding.showOptionsButton.animate()
+                .translationY(isHide ? 0 : 300)
+                .alpha(isHide ? 1 : 0)
+                .setInterpolator(new OvershootInterpolator());
     }
 
     @Override
@@ -101,51 +116,54 @@ public class ManageAssetsActivity extends Activity {
 
     @SuppressLint("SetTextI18n")
     private void showCreateDialog() {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+        var inputText = dialogBinding.inputText;
 
-        final View view = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
-        final RadioGroup folderOrFile = view.findViewById(R.id.dialog_radio_filetype);
-        final RadioButton file = view.findViewById(R.id.dialog_radio_filetype_class);
-        final RadioButton activity = view.findViewById(R.id.dialog_radio_filetype_activity);
-        final EditText filename = view.findViewById(R.id.dialog_edittext_name);
-        final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
-        final TextView save = view.findViewById(R.id.dialog_text_save);
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Create new")
+                .setMessage("If you're creating a file, make sure to add an extension.")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Create", null)
+                .create();
 
-        file.setText("File");
-        activity.setVisibility(View.GONE);
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                String editable = inputText.getText().toString().trim();
 
-        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        save.setOnClickListener(v -> {
-            if (filename.getText().toString().isEmpty()) {
-                SketchwareUtil.toastError("Invalid filename");
-                return;
-            }
+                if (editable.isEmpty()) {
+                    SketchwareUtil.toastError("Invalid name");
+                    return;
+                }
 
-            String editable = filename.getText().toString();
+                int checkedChipId = dialogBinding.chipGroupTypes.getCheckedChipId();
+                if (checkedChipId == R.id.chip_file) {
+                    FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
+                } else if (checkedChipId == R.id.chip_folder) {
+                    FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
+                } else {
+                    SketchwareUtil.toast("Select a file type");
+                    return;
+                }
 
-            int checkedRadioButtonId = folderOrFile.getCheckedRadioButtonId();
-            if (checkedRadioButtonId == R.id.dialog_radio_filetype_class) {
-                FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
-            } else if (checkedRadioButtonId == R.id.radio_button_folder) {
-                FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
-            } else {
-                SketchwareUtil.toast("Select a file type");
-                return;
-            }
-
-            refresh();
-            SketchwareUtil.toast("File was created successfully");
-            dialog.dismiss();
+                refresh();
+                SketchwareUtil.toast("File was created successfully");
+                dialogInterface.dismiss();
+            });
         });
 
-        dialog.setView(view);
+        dialogBinding.chipFile.setVisibility(View.VISIBLE);
+        dialogBinding.chipFolder.setVisibility(View.VISIBLE);
+
+        dialog.setView(dialogBinding.getRoot());
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        filename.requestFocus();
+        inputText.requestFocus();
     }
 
-    private void showLoadDialog() {
+    private void showImportDialog() {
         DialogProperties properties = new DialogProperties();
 
         properties.selection_mode = DialogConfigs.MULTI_MODE;
@@ -173,39 +191,39 @@ public class ManageAssetsActivity extends Activity {
     }
 
     private void showRenameDialog(final int position) {
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View view = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
-        final EditText newFileName = view.findViewById(R.id.edittext_change_name);
-        final TextView cancel = view.findViewById(R.id.text_cancel);
-        final TextView save = view.findViewById(R.id.text_save);
+        DialogInputLayoutBinding dialogBinding = DialogInputLayoutBinding.inflate(getLayoutInflater());
 
-        newFileName.setText(myAdapter.getFileName(position));
+        var inputText = dialogBinding.inputText;
 
-        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-        save.setOnClickListener(v -> {
-            if (!newFileName.getText().toString().isEmpty()) {
-                FileUtil.renameFile(myAdapter.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
-                refresh();
-                SketchwareUtil.toast("Renamed successfully");
-            }
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Rename " + assetsAdapter.getFileName(position))
+                .setView(dialogBinding.getRoot())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Rename", (dialogInterface, i) -> {
+                    if (!inputText.getText().toString().isEmpty()) {
+                        FileUtil.renameFile(assetsAdapter.getItem(position), new File(current_path, inputText.getText().toString()).getAbsolutePath());
+                        refresh();
+                        SketchwareUtil.toast("Renamed successfully");
+                    }
+                    dialogInterface.dismiss();
+                })
+                .create();
 
-            dialog.dismiss();
-        });
+        inputText.setText(assetsAdapter.getFileName(position));
 
-        dialog.setView(view);
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        newFileName.requestFocus();
+        inputText.requestFocus();
     }
 
     private void showDeleteDialog(final int position) {
-        new AlertDialog.Builder(this)
-                .setTitle(myAdapter.getFileName(position))
-                .setMessage("Are you sure you want to delete this " + (myAdapter.isFolder(position) ? "folder" : "file") + "? "
-                        + "This action cannot be reversed!")
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Delete " + assetsAdapter.getFileName(position) + "?")
+                .setMessage("Are you sure you want to delete this " + (assetsAdapter.isFolder(position) ? "folder" : "file") + "? "
+                        + "This action cannot be undone.")
                 .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
-                    FileUtil.deleteFile(myAdapter.getItem(position));
+                    FileUtil.deleteFile(assetsAdapter.getItem(position));
                     refresh();
                     SketchwareUtil.toast("Deleted successfully");
                 })
@@ -224,74 +242,61 @@ public class ManageAssetsActivity extends Activity {
         FileUtil.listDir(current_path, currentTree);
         Helper.sortPaths(currentTree);
 
-        myAdapter = new MyAdapter();
-
-        gridView.setAdapter(myAdapter);
-        gridView.setOnItemClickListener((parent, view, position, id) -> {
-            if (myAdapter.isFolder(position)) {
-                current_path = myAdapter.getItem(position);
-                refresh();
-                return;
-            }
-
-            myAdapter.goEditFile(position);
-        });
-        gridView.setOnItemLongClickListener((parent, view, position, id) -> {
-            view.findViewById(R.id.more).performClick();
-            return true;
-        });
-
+        assetsAdapter = new AssetsAdapter();
+        binding.filesListRecyclerView.setAdapter(assetsAdapter);
         if (currentTree.size() == 0) {
-            tv_noFileExist.setVisibility(View.VISIBLE);
+            binding.noContentLayout.setVisibility(View.VISIBLE);
         } else {
-            tv_noFileExist.setVisibility(View.GONE);
+            binding.noContentLayout.setVisibility(View.GONE);
         }
     }
 
-    private class MyAdapter extends BaseAdapter {
-
+    public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsViewHolder> {
+        @NonNull
         @Override
-        public int getCount() {
-            return currentTree.size();
+        public AssetsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ManageJavaItemHsBinding binding = ManageJavaItemHsBinding.inflate(inflater, parent, false);
+            var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            binding.getRoot().setLayoutParams(layoutParams);
+            return new AssetsViewHolder(binding);
         }
 
         @Override
-        public String getItem(int position) {
-            return currentTree.get(position);
-        }
+        public void onBindViewHolder(@NonNull AssetsViewHolder holder, int position) {
+            var item = getItem(position);
+            var binding = holder.binding;
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+            binding.title.setText(getFileName(position));
+            binding.getRoot().setOnClickListener(view -> {
+                if (isFolder(position)) {
+                    current_path = getItem(position);
+                    refresh();
+                } else {
+                    goEditFile(position);
+                }
+            });
 
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, parent, false);
-            }
-
-            TextView name = convertView.findViewById(R.id.title);
-            ImageView icon = convertView.findViewById(R.id.icon);
-            ImageView more = convertView.findViewById(R.id.more);
-
-            name.setText(getFileName(position));
+            binding.getRoot().setOnLongClickListener(view -> {
+                holder.binding.more.performClick();
+                return false;
+            });
             if (isFolder(position)) {
-                icon.setImageResource(R.drawable.ic_folder_48dp);
+                holder.binding.icon.setImageResource(R.drawable.ic_folder_24);
             } else {
                 try {
-                    if (FileUtil.isImageFile(getItem(position))) {
-                        Glide.with(ManageAssetsActivity.this).load(new File(getItem(position))).into(icon);
+                    if (FileUtil.isImageFile(item)) {
+                        Glide.with(holder.binding.icon.getContext()).load(new File(item)).into(holder.binding.icon);
                     } else {
-                        icon.setImageResource(R.drawable.file_48_blue);
+                        holder.binding.icon.setImageResource(R.drawable.ic_file_24);
                     }
                 } catch (Exception ignored) {
-                    icon.setImageResource(R.drawable.file_48_blue);
+                    holder.binding.icon.setImageResource(R.drawable.ic_file_24);
                 }
             }
-            Helper.applyRipple(ManageAssetsActivity.this, more);
-            more.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(ManageAssetsActivity.this, v);
+            Helper.applyRipple(holder.itemView.getContext(), holder.binding.more);
+            holder.binding.more.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), v);
 
                 if (!isFolder(position)) {
                     popupMenu.getMenu().add(0, 0, 0, "Edit");
@@ -300,31 +305,29 @@ public class ManageAssetsActivity extends Activity {
                 popupMenu.getMenu().add(0, 1, 0, "Rename");
                 popupMenu.getMenu().add(0, 2, 0, "Delete");
 
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case 0:
-                            goEditFile(position);
-                            break;
-
-                        case 1:
-                            showRenameDialog(position);
-                            break;
-
-                        case 2:
-                            showDeleteDialog(position);
-                            break;
-
-                        default:
+                popupMenu.setOnMenuItemClickListener(itemMenu -> {
+                    switch (itemMenu.getItemId()) {
+                        case 0 -> goEditFile(position);
+                        case 1 -> showRenameDialog(position);
+                        case 2 -> showDeleteDialog(position);
+                        default -> {
                             return false;
+                        }
                     }
 
                     return true;
                 });
-
                 popupMenu.show();
             });
+        }
 
-            return convertView;
+        @Override
+        public int getItemCount() {
+            return currentTree.size();
+        }
+
+        public String getItem(int position) {
+            return currentTree.get(position);
         }
 
         public String getFileName(int position) {
@@ -352,6 +355,15 @@ public class ManageAssetsActivity extends Activity {
                 viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 startActivity(viewIntent);
+            }
+        }
+
+        class AssetsViewHolder extends RecyclerView.ViewHolder {
+            ManageJavaItemHsBinding binding;
+
+            public AssetsViewHolder(ManageJavaItemHsBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
             }
         }
     }
