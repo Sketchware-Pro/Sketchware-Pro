@@ -120,9 +120,9 @@ import mod.trindadedev.tools.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener {
     private ImageView xmlLayoutOrientation;
-    private boolean B = false;
+    private boolean B;
     private int currentTabNumber;
-    private UnsavedChangesSaver unsavedChangesSaver = null;
+    private UnsavedChangesSaver unsavedChangesSaver;
     private String sc_id;
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
@@ -131,12 +131,22 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private DB r;
     private DB t;
     private Button buildSettings;
-    private static Button runProject;
+    private Button runProject;
     private ProjectFileSelector projectFileSelector;
-    private ViewEditorFragment viewTabAdapter = null;
-    private rs eventTabAdapter = null;
-    private br componentTabAdapter = null;
-
+    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (projectFileSelector != null) {
+                projectFileSelector.syncState();
+            }
+        }
+    });
+    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
+        }
+    });
+    private ViewEditorFragment viewTabAdapter;
     private final ActivityResultLauncher<Intent> openLibraryManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -154,24 +164,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
     });
-    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            if (projectFileSelector != null) {
-                projectFileSelector.syncState();
-            }
-        }
-    });
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             viewTabAdapter.j();
         }
     });
-    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            assert result.getData() != null;
-            projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
-        }
-    });
+    private rs eventTabAdapter;
+    private br componentTabAdapter;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -885,8 +884,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private static class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
         private final WeakReference<DesignActivity> activity;
         private final BuildingDialog dialog;
-        private boolean canceled = false;
-        private boolean isBuildFinished = false;
+        private boolean canceled;
+        private boolean isBuildFinished;
 
         public BuildAsyncTask(DesignActivity activity) {
             super(activity.getApplicationContext());
@@ -1125,7 +1124,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            Activity currentActivity = this.activity.get();
+            var currentActivity = activity.get();
 
             if (currentActivity != null) {
                 currentActivity.runOnUiThread(() -> {
@@ -1143,7 +1142,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             }
                             dialog.show();
                         }
-                        runProject.setText("Canceling build...");
+                        currentActivity.runProject.setText("Canceling build...");
                         publishProgress("Canceling build...");
                         cancelDialog.dismiss();
                         dialog.dismiss();

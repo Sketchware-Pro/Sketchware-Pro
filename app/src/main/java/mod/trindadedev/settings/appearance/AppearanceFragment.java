@@ -15,6 +15,7 @@ import mod.hey.studios.util.Helper;
 import mod.trindadedev.settings.appearance.theme.manage.ThemeManager;
 
 public class AppearanceFragment extends Fragment {
+
     private SettingsAppearanceBinding binding;
 
     @Override

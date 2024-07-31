@@ -1,20 +1,21 @@
 package mod.trindadedev.tools;
 
-import android.content.Context;
 import android.app.Activity;
+import android.content.Context;
+
+import com.sketchware.remod.R;
 
 import a.a.a.aB;
-import com.sketchware.remod.R;
 
 public class ApkSignatures {
 
-    private Context context;
+    private final Context context;
+    private final ApkUtils projectApk;
     private String abMsg;
-    private ApkUtils projectApk;
 
     public ApkSignatures(Context context, String path) {
         this.context = context;
-        projectApk = new ApkUtils(context);
+        projectApk = new ApkUtils();
         projectApk.setApkPath(path);
         try {
             abMsg = "SHA-1: " + getSha1() + "\n\nSHA-256: " + getSha256();
