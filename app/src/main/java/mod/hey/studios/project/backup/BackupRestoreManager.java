@@ -1,7 +1,6 @@
 package mod.hey.studios.project.backup;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -9,6 +8,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.view.LayoutInflater;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.besome.sketch.ProjectsFragment;
 
@@ -17,6 +19,7 @@ import dev.trindadedev.lib.filepicker.model.DialogProperties;
 import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
 
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -176,7 +179,7 @@ public class BackupRestoreManager {
         private final HashMap<Integer, Boolean> options;
         private final WeakReference<Activity> activityWeakReference;
         private BackupFactory bm;
-        private ProgressDialog dlg;
+        private AlertDialog dlg;
 
         BackupAsyncTask(WeakReference<Activity> activityWeakReference, String sc_id, String project_name, HashMap<Integer, Boolean> options) {
             this.activityWeakReference = activityWeakReference;
@@ -187,10 +190,14 @@ public class BackupRestoreManager {
 
         @Override
         protected void onPreExecute() {
-            dlg = new ProgressDialog(activityWeakReference.get());
-            dlg.setMessage("Creating backup...");
-            dlg.setCancelable(false);
-            dlg.show();
+            ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(LayoutInflater.from(activityWeakReference.get()));
+            loadingDialogBinding.tvProgress.setText("Creating backup...");
+            dlg = new MaterialAlertDialogBuilder(activityWeakReference.get())
+                  .setTitle("Please wait")
+                  .setCancelable(false)
+                  .setView(loadingDialogBinding.getRoot())
+                  .create();
+            dlg.show();      
         }
 
         @Override
@@ -223,7 +230,7 @@ public class BackupRestoreManager {
         private final ProjectsFragment projectsFragment;
         private final boolean restoreLocalLibs;
         private BackupFactory bm;
-        private ProgressDialog dlg;
+        private AlertDialog dlg;
         private boolean error = false;
 
         RestoreAsyncTask(WeakReference<Activity> activityWeakReference, String file, boolean restoreLocalLibraries, ProjectsFragment projectsFragment) {
@@ -235,9 +242,13 @@ public class BackupRestoreManager {
 
         @Override
         protected void onPreExecute() {
-            dlg = new ProgressDialog(activityWeakReference.get());
-            dlg.setMessage("Restoring...");
-            dlg.setCancelable(false);
+            ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(LayoutInflater.from(activityWeakReference.get()));
+            loadingDialogBinding.tvProgress.setText("Restoring...");
+            dlg = new MaterialAlertDialogBuilder(activityWeakReference.get())
+                  .setTitle("Please wait")
+                  .setCancelable(false)
+                  .setView(loadingDialogBinding.getRoot())
+                  .create();
             dlg.show();
         }
 
