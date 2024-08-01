@@ -1,4 +1,4 @@
-package mod.trindadedev.tools;
+package mod.trindadedev.tools.apk;
 
 import java.io.FileInputStream;
 import java.io.IOException;
