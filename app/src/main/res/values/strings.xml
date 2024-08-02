@@ -1347,28 +1347,6 @@ Do you want to continue?"</string>
     <string name="firebase_database_url">https://dependable-flag-825.firebaseio.com</string>
     <string name="ga_trackingId">UA-80718117-1</string>
     <string name="ideas_url">https://ideas.sketchware.io/</string>
-    <string name="import_project_desc_download_complete">Download for %s completed.</string>
-    <string name="import_project_desc_download_complete_is_not_root">Download for %s completed. Refresh Project list in the project tab and check the downloaded project.</string>
-    <string name="import_project_error_invalid_id">The ID is invalid.</string>
-    <string name="import_project_title_app_name">App Name</string>
-    <string name="import_project_title_expire_dt">Expiration Date</string>
-    <string name="import_project_title_package_name">Package Name</string>
-    <string name="import_project_title_user_name">Author</string>
-    <string name="included_collection_detail_desc_no_collection_to_display">No Collection To Display</string>
-    <string name="included_collection_detail_message_check_included_collection">Download complete. Please check included collection</string>
-    <string name="included_collection_detail_message_downloading_collection_data">Downloading Collection Data</string>
-    <string name="included_collection_detail_title">Included Collection Detail</string>
-    <string name="init_language_setting_dialog_message">"Sketchware's default language is English. Would you like to change it?"</string>
-    <string name="intro_button_explore">Explore</string>
-    <string name="intro_button_sign_in">Sign In</string>
-    <string name="intro_button_start">Start</string>
-    <string name="intro_guide_desc">Try Sketchware Now!</string>
-    <string name="intro_pager_1_description">User-friendly interface and hassle-free experience</string>
-    <string name="intro_pager_1_title">Create Awesome Apps</string>
-    <string name="intro_pager_2_description">No programming experience necessary</string>
-    <string name="intro_pager_2_title">Simple Block Programming</string>
-    <string name="intro_pager_3_description">Explore and share awesome creations with others</string>
-    <string name="intro_pager_3_title">Share With the World</string>
     <string name="invalid_component">Invalid component</string>
     <string name="invalid_icon_id">Invalid icon ID</string>
     <string name="invalid_required_fields">Some required fields are empty</string>
@@ -1529,6 +1507,7 @@ But, components should be added manually for working correctly."</string>
     <string name="manage_export_url_tab_title_apk">Signed APK</string>
     <string name="manage_export_url_tab_title_data">Exported Data</string>
     <string name="manage_export_url_word_extend">Expand</string>
+    <string name="medium_url">https://medium.com/sketchware</string>
     <string name="message_compatible_chrome_brower">The following page is compatible with Google Chrome. Would you like to install Chrome?</string>
     <string name="message_device_not_support">Your device does not support this hardware. This component may not function properly</string>
     <string name="message_device_not_supported">"This device is not supported. Google Play Services aren't installed."</string>
@@ -2156,11 +2135,18 @@ Please try again later"</string>
     <string name="local_library_manager">Local library Manager</string>
     <string name="local_library_manager_download">Download a library</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
-    <string name="local_library_manager_dependency_info">You can find the dependency of a library in Github, typically in the README file.</string>
+    <string name="local_library_manager_dependency_info">You can find the dependency of a library in GitHub, typically in the Readme file.</string>
     <string name="local_library_manager_no_libraries_title">No Local libraries available</string>
     <string name="local_library_manager_no_libraries_body">You don\'t have any Local libraries yet, try downloading one.</string>
+    <string name="local_library_manager_download_status">Download status</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
-
+    <string name="signatures_title">Signatures</string>
+    <string name="appearance">Appearance</string>
+    <string name="appearance_description">Change the appearance of the Sketchware and make it your own!</string>
+    <string name="appearance_theme">Sketchware Theme</string>
+    <string name="appearance_theme_system">System default</string>
+    <string name="appearance_theme_light">Light theme</string>
+    <string name="appearance_theme_dark">Dark theme</string>
 
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
@@ -2200,6 +2186,7 @@ Please try again later"</string>
     <string name="src_code_editor_unsaved_changes_dialog_warning_message">You have unsaved changes. Are you sure you want to exit?</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>
     <string name="review_firebase_config_title">Review</string>
+    <string name="edit_view_properties_title">Edit Properties</string>
 
 
 </resources>

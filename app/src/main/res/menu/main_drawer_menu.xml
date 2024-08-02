@@ -3,7 +3,7 @@
     <item
         android:id="@+id/about_team"
         android:icon="@drawable/ic_team_24"
-        android:title="About the Team" />
+        android:title="About the team" />
 
     <item
         android:id="@+id/changelog"
@@ -11,24 +11,19 @@
         android:title="Changelog" />
 
     <item
-        android:id="@+id/system_settings"
-        android:icon="@drawable/ic_settings_24"
-        android:title="System Settings" />
-
-    <item
         android:id="@+id/program_info"
         android:icon="@drawable/ic_sketchware_24"
-        android:title="Program Information" />
-
-    <item
-        android:id="@+id/dev_tools"
-        android:icon="@drawable/ic_terminal_24"
-        android:title="Developer Tools" />
+        android:title="App information" />
 
     <item
         android:id="@+id/create_release_keystore"
         android:icon="@drawable/ic_key_24"
-        android:title="Create Release Keystore" />
+        android:title="Create keystore" />
+
+    <item
+        android:id="@+id/app_settings"
+        android:icon="@drawable/ic_settings_24"
+        android:title="Settings" />
 
     <item android:title="Related links">
         <menu>

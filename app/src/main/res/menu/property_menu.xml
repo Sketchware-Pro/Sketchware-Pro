@@ -2,7 +2,7 @@
     xmlns:support="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_add_image_res"
-        android:icon="@drawable/icon_image_white_96"
+        android:icon="@drawable/photo_library_24px"
         android:orderInCategory="100"
         android:title="@string/design_actionbar_title_manager_image"
         support:showAsAction="always" />

@@ -28,7 +28,7 @@ public class DexCompiler {
             minApiLevel = Integer.parseInt(builder.settings.getValue(
                     ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
         } catch (NumberFormatException e) {
-            throw new CompilationFailedException("Invalid minSdkVersion specified in Project Settings", e);
+            throw new CompilationFailedException("Invalid minSdkVersion specified in Project Settings" + e.getMessage());
         }
 
         if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)) {

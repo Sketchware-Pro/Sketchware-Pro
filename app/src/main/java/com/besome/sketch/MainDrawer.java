@@ -16,16 +16,14 @@ import androidx.annotation.StringRes;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.besome.sketch.help.ProgramInfoActivity;
-import com.besome.sketch.help.SystemSettingActivity;
 import com.besome.sketch.tools.NewKeyStoreActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.sketchware.remod.R;
 
 import a.a.a.mB;
-import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
 import dev.chrisbanes.insetter.Side;
-import mod.hilal.saif.activities.tools.Tools;
+import mod.hilal.saif.activities.tools.AppSettings;
 import mod.ilyasse.activities.about.AboutModActivity;
 
 public class MainDrawer extends NavigationView {
@@ -89,16 +87,12 @@ public class MainDrawer extends NavigationView {
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("select", "changelog");
             activity.startActivity(intent);
-        } else if (id == R.id.system_settings) {
-            Intent intent = new Intent(activity, SystemSettingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            activity.startActivityForResult(intent, 107);
         } else if (id == R.id.program_info) {
             Intent intent = new Intent(activity, ProgramInfoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivityForResult(intent, 105);
-        } else if (id == R.id.dev_tools) {
-            Intent intent = new Intent(activity, Tools.class);
+        } else if (id == R.id.app_settings) {
+            Intent intent = new Intent(activity, AppSettings.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
         } else if (id == R.id.create_release_keystore) {

@@ -7,8 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffffff">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,19 +19,14 @@
                 android:id="@+id/property_group_list"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#ffffffff"
                 android:splitMotionEvents="false"
                 android:visibility="gone" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#ff008dcd" />
 
             <com.besome.sketch.lib.ui.CustomScrollView
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/content"

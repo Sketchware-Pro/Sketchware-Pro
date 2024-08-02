@@ -26,6 +26,7 @@ public class aB extends Dialog {
     private int dialogImageResId = -1;
     private String dialogTitleText = "";
     private String dialogMessageText = "";
+    private boolean msgIsSelectable = false;
     private View dialogCustomView;
     private View dialogButtonsContainer;
     private String dialogDefaultText = "Default";
@@ -87,6 +88,10 @@ public class aB extends Dialog {
         dialogDefaultText = defaultText;
         dialogDefaultListener = defaultListener;
     }
+    
+    public void setMessageIsSelectable(boolean msgIsSelectable) {
+        this.msgIsSelectable = msgIsSelectable;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +110,7 @@ public class aB extends Dialog {
         ImageView dialogImage = findViewById(R.id.dialog_img);
         TextView dialogTitle = findViewById(R.id.dialog_title);
         TextView dialogMessage = findViewById(R.id.dialog_msg);
+        dialogMessage.setTextIsSelectable(msgIsSelectable);
         FrameLayout dialogCustomViewContainer = findViewById(R.id.custom_view);
 
         dialogButtonsContainer = findViewById(R.id.layout_button);

@@ -3,6 +3,6 @@
         android:topLeftRadius="16dp"
         android:topRightRadius="16dp" />
     <gradient
-        android:endColor="@color/lighter_grey"
-        android:startColor="@color/lighter_grey" />
+        android:endColor="?android:attr/colorBackground"
+        android:startColor="?android:attr/colorBackground" />
 </shape>

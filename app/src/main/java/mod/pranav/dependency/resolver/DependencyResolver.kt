@@ -14,20 +14,21 @@ import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.util.Helper
 import mod.jbk.build.BuiltInLibraries
 import org.cosmic.ide.dependency.resolver.api.Artifact
+import org.cosmic.ide.dependency.resolver.api.EventReciever
 import org.cosmic.ide.dependency.resolver.api.Repository
 import org.cosmic.ide.dependency.resolver.getArtifact
-import org.cosmic.ide.dependency.resolver.initHost
 import org.cosmic.ide.dependency.resolver.repositories
-import org.w3c.dom.Element
-import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.regex.Pattern
 import java.util.zip.ZipFile
-import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
+import kotlinx.coroutines.runBlocking
+import okhttp3.internal.immutableListOf
+import org.cosmic.ide.dependency.resolver.eventReciever
+import javax.xml.parsers.DocumentBuilderFactory
 
 class DependencyResolver(
     private val groupId: String,
@@ -104,48 +105,64 @@ class DependencyResolver(
         }
     }
 
-    interface DependencyResolverCallback {
-        fun onDependencyResolved(dep: String) {}
-        fun onDependencyResolveFailed(e: Exception) {}
-        fun onDependencyNotFound(dep: String) {}
-        fun onTaskCompleted(deps: List<String>) {}
-        fun startResolving(dep: String) {}
-        fun downloading(dep: String) {}
-        fun dexing(dep: String) {}
-        fun dexingFailed(dependency: String, e: Exception) {}
-        fun invalidPackaging(dep: String) {}
-
-        fun log(msg: String) {}
+    open class DependencyResolverCallback : EventReciever() {
+        override fun onArtifactFound(artifact: Artifact) {}
+        override fun onArtifactNotFound(artifact: Artifact) {}
+        override fun onFetchingLatestVersion(artifact: Artifact) {}
+        override fun onFetchedLatestVersion(artifact: Artifact, version: String) {}
+        override fun onResolving(artifact: Artifact, dependency: Artifact) {}
+        override fun onResolutionComplete(artifact: Artifact) {}
+        override fun onSkippingResolution(artifact: Artifact) {}
+        override fun onVersionNotFound(artifact: Artifact) {}
+        override fun onDependenciesNotFound(artifact: Artifact) {}
+        override fun onInvalidScope(artifact: Artifact, scope: String) {}
+        override fun onInvalidPOM(artifact: Artifact) {}
+        override fun onDownloadStart(artifact: Artifact) {}
+        override fun onDownloadEnd(artifact: Artifact) {}
+        override fun onDownloadError(artifact: Artifact, error: Throwable) {}
+        open fun unzipping(artifact: Artifact) {}
+        open fun dexing(artifact: Artifact) {}
+        open fun onTaskCompleted(artifacts: List<String>) {}
+        open fun dexingFailed(artifact: Artifact, e: Exception) {}
+        open fun invalidPackaging(artifact: Artifact) {}
     }
 
-    private fun Artifact.toStr(): String {
-        return "$groupId:$artifactId:$version"
-    }
 
     fun resolveDependency(callback: DependencyResolverCallback) {
+        eventReciever = callback
         // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
-        val dependencies = mutableListOf<Artifact>()
-        callback.startResolving("$groupId:$artifactId:$version")
         val dependency = getArtifact(groupId, artifactId, version)
+
         if (dependency == null) {
-            callback.onDependencyNotFound("$groupId:$artifactId:$version")
+            callback.onArtifactNotFound(Artifact(groupId, artifactId, version))
             return
         }
+        val dependencies = mutableSetOf(dependency)
 
-        callback.onDependencyResolved(dependency.toStr())
-        resolve(dependency, dependencies, callback)
+        callback.onResolutionComplete(dependency)
+        if (skipDependencies.not()) {
+            runBlocking {
+                dependencies.addAll(dependency.resolve())
+            }
+        }
 
         // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
             dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
                 .toMutableList()
 
-        val dependencyClasspath = mutableListOf<Path>(
+        val libraryJars = immutableListOf(
             BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath()
                 .resolve("core-lambda-stubs.jar"),
-            Paths.get(buildSettings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
-                .resolve("android").absolutePath))
+            Paths.get(
+                buildSettings.getValue(
+                    BuildSettings.SETTING_ANDROID_JAR_PATH,
+                    BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
+                        .resolve("android.jar").absolutePath
+                )
+            )
         )
+        val dependencyClasspath = mutableListOf<Path>()
 
         val classpath = buildSettings.getValue(BuildSettings.SETTING_CLASSPATH, "")
 
@@ -157,19 +174,18 @@ class DependencyResolver(
 
         // download all the dependencies
         latestDeps.forEach { artifact ->
-            callback.startResolving(artifact.toStr())
-            // set the packaging type
-            artifact.getPOM()!!.bufferedReader().use {
-                it.forEachLine { line ->
-                    if (line.contains("<packaging>")) {
-                        artifact.extension =
-                            line.substringAfter("<packaging>").substringBefore("</packaging>")
-                    }
-                }
+            callback.onResolving(artifact, dependency)
+            if (artifact.version.startsWith("[")) {
+                artifact.version = artifact.version.substring(1, artifact.version.length - 1)
             }
+            val factory = DocumentBuilderFactory.newInstance()
+            val builder = factory.newDocumentBuilder()
+            val doc = builder.parse(artifact.getPOM())
+            val packaging = doc.getElementsByTagName("packaging").item(0)
+            if (packaging != null) artifact.extension = packaging.textContent
             val ext = artifact.extension
             if (ext != "jar" && ext != "aar") {
-                callback.invalidPackaging(artifact.toStr())
+                callback.invalidPackaging(artifact)
                 return@forEach
             }
             val path =
@@ -179,42 +195,41 @@ class DependencyResolver(
                     "classes.${artifact.extension}"
                 )
             if (Files.exists(path)) {
-                callback.log("Dependency ${artifact.toStr()} already exists, skipping...")
+                callback.onSkippingResolution(artifact)
             }
             Files.createDirectories(path.parent)
-            callback.downloading(artifact.toStr())
+            callback.onDownloadStart(artifact)
             try {
                 artifact.downloadTo(path.toFile())
                 if (path.toFile().exists().not()) {
                     latestDeps.remove(artifact)
-                    callback.onDependencyResolveFailed(Exception("Cannot download ${artifact.toStr()}"))
+                    callback.onDependenciesNotFound(artifact)
                     return@forEach
                 }
                 dependencyClasspath.add(
-                    Paths.get(
-                        downloadPath,
-                        "${artifact.artifactId}-v${artifact.version}",
-                        "classes.jar"
-                    )
+                    if (ext == "jar") path else
+                        Paths.get(
+                            downloadPath,
+                            "${artifact.artifactId}-v${artifact.version}",
+                            "classes.jar"
+                        )
                 )
             } catch (e: Exception) {
-                callback.onDependencyResolveFailed(e)
+                callback.onDownloadError(artifact, e)
             }
             if (path.toFile().exists().not()) {
-                callback.log("Cannot download ${artifact.toStr()}")
+                callback.onDownloadError(artifact, Exception("Download failed"))
+                return@forEach
             }
             if (ext == "aar") {
-                callback.log("Unzipping ${artifact.toStr()}")
+                callback.unzipping(artifact)
                 unzip(path)
                 Files.delete(path)
                 val packageName =
                     findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
                 path.parent.resolve("config").writeText(packageName)
             }
-        }
-        println(dependencyClasspath)
-        latestDeps.forEach { artifact ->
-            val jar =
+            val jar = if (ext == "jar") path else
                 Paths.get(
                     downloadPath,
                     "${artifact.artifactId}-v${artifact.version}",
@@ -223,143 +238,16 @@ class DependencyResolver(
             if (Files.notExists(jar)) {
                 return@forEach
             }
-            callback.dexing(artifact.toStr())
+            callback.dexing(artifact)
             try {
-                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) })
-                callback.onDependencyResolved(artifact.toStr())
+                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) }, libraryJars)
+                callback.onResolutionComplete(artifact)
             } catch (e: Exception) {
-                callback.dexingFailed(artifact.toStr(), e)
+                callback.dexingFailed(artifact, e)
                 return@resolveDependency
             }
         }
         callback.onTaskCompleted(latestDeps.map { "${it.artifactId}-v${it.version}" })
-    }
-
-    // copied from source to prevent useless recursive
-    private fun resolve(
-        artifact: Artifact,
-        dependencies: MutableList<Artifact>,
-        callback: DependencyResolverCallback
-    ) {
-        dependencies.add(artifact)
-
-        if (!skipDependencies) {
-            callback.log("Resolving sub-dependencies for ${artifact.toStr()}...")
-            val pom = artifact.getPOM()
-            if (pom == null) {
-                callback.log("Cannot resolve sub-dependencies for ${artifact.toStr()}")
-                return
-            }
-            val deps = pom.resolvePOM(dependencies, callback)
-            deps.forEach { dep ->
-                callback.log("Resolving ${dep.groupId}:${dep.artifactId}")
-                if (dep.version.isEmpty()) {
-                    callback.log("Fetching latest version of ${dep.artifactId}")
-                    val factory = DocumentBuilderFactory.newInstance()
-                    val builder = factory.newDocumentBuilder()
-                    val doc = builder.parse(dep.getMavenMetadata().byteInputStream())
-                    val v = doc.getElementsByTagName("release").item(0)
-                    if (v != null) {
-                        dep.version = v.textContent
-                        callback.log("Latest version of ${dep.groupId}:${dep.artifactId} is ${dep.version}")
-                    }
-                }
-                callback.log("Resolved ${dep.groupId}:${dep.artifactId}")
-                if (artifact.version.isEmpty() || artifact.repository == null) {
-                    callback.onDependencyNotFound(artifact.toStr())
-                    callback.log("Cannot resolve ${artifact.toStr()}")
-                    return
-                }
-                resolve(dep, dependencies, callback)
-            }
-        }
-    }
-
-    private fun InputStream.resolvePOM(
-        deps: List<Artifact>,
-        callback: DependencyResolverCallback
-    ): List<Artifact> {
-        val artifacts = mutableListOf<Artifact>()
-        val factory = DocumentBuilderFactory.newInstance()
-        val builder = factory.newDocumentBuilder()
-        val doc = builder.parse(this)
-
-        val elem = doc.getElementsByTagName("dependencies")
-        if (elem.length == 0) {
-            callback.log("No dependencies found")
-            return artifacts
-        }
-        val dependencies = elem.item(elem.length - 1) as Element
-        val dependencyElements = dependencies.getElementsByTagName("dependency")
-        val el = dependencies.getElementsByTagName("packaging").item(0)
-        val packaging = if (el == null) "jar" else el.textContent
-        for (i in 0 until dependencyElements.length) {
-            val dependencyElement = dependencyElements.item(i) as Element
-            val scopeItem = dependencyElement.getElementsByTagName("scope").item(0)
-            if (scopeItem != null) {
-                val scope = scopeItem.textContent
-                // if scope is test/provided, there is no need to download them
-                if (scope.isNotEmpty() && (scope == "test" || scope == "provided")) {
-                    callback.log("Skipping dependency with scope $scope")
-                    continue
-                }
-            }
-            val groupId = dependencyElement.getElementsByTagName("groupId").item(0).textContent
-            val artifactId =
-                dependencyElement.getElementsByTagName("artifactId").item(0).textContent
-
-            if (artifactId.endsWith("bom")) {
-                // TODO: handle versions from BOMs
-                callback.log("Skipping possibly BOM $artifactId")
-                continue
-            }
-            val artifact = Artifact(groupId, artifactId, extension = packaging)
-            initHost(artifact)
-            if (artifact.repository == null) {
-                callback.log("No repository for ${artifact.toStr()}")
-                continue
-            }
-            val item = dependencyElement.getElementsByTagName("version").item(0)
-            if (item != null) {
-                var version = item.textContent
-                // Some libraries define an array of compatible dependency versions.
-                if (version.startsWith("[")) {
-                    // remove square brackets so that we have something like `1.0.0,1.0.1` left
-                    val versionArray = version.substring(1, version.length - 1)
-                    val versions = versionArray.split(",")
-                    val metadata = artifact.getMavenMetadata()
-
-                    // sometimes, some of the defined versions don't exist, so we need to check all of them
-                    versions.forEach { v ->
-                        if (metadata.contains(v)) {
-                            version = v
-                        }
-                    }
-                }
-                if (version.equals("+")) {
-                    // fallback to fetching latest version from #resolve(Artifact, MutableList<Artifact>, DependencyResolverCallback)
-                    version = ""
-                }
-                if (version.startsWith("\${")) {
-                    val tagName = version.substring(2, version.length - 1)
-                    val tag = doc.getElementsByTagName(tagName).item(0)
-                    if (tag == null) {
-                        callback.log("$artifactId has no version tag $tagName")
-                        continue
-                    }
-                    version = tag.textContent
-                }
-                artifact.version = version
-            }
-
-            if (deps.any { it.groupId == groupId && it.artifactId == artifactId && it.version >= version }) {
-                println("Dependency ${artifact.toStr()} already resolved, skipping...")
-                continue
-            }
-
-            artifacts.add(artifact)
-        }
-        return artifacts
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
@@ -399,13 +287,14 @@ class DependencyResolver(
         }
     }
 
-    private fun compileJar(jarFile: Path, jars: List<Path>) {
+    private fun compileJar(jarFile: Path, jars: List<Path>, libraryJars: List<Path>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             D8.run(
                 D8Command.builder()
                     .setIntermediate(true)
                     .setMode(CompilationMode.RELEASE)
                     .addProgramFiles(jarFile)
+                    .addLibraryFiles(libraryJars)
                     .addClasspathFiles(jars)
                     .setOutput(jarFile.parent, OutputMode.DexIndexed)
                     .build()
