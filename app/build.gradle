@@ -128,8 +128,7 @@ dependencies {
     implementation "$editorGroupId:language-textmate"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
-    implementation "com.github.angads25:filepicker:1.1.1"
-
+    
     minApi26Implementation "com.android.tools.build:bundletool:1.15.6"
     //noinspection GradleDependency copied from above dependency for not just runtime access
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
@@ -161,7 +160,9 @@ dependencies {
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
 
-
+    implementation "com.github.aquilesTrindade.trindade-util:components:3.0.9-beta"
+    implementation "com.github.aquilesTrindade.trindade-util:filepicker:3.0.9-beta"
+    
     // Analytics and Crashlytics
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
