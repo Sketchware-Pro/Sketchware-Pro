@@ -3,7 +3,6 @@ package mod.hilal.saif.activities.tools;
 import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 import static mod.SketchwareUtil.dpToPx;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.help.SystemSettingActivity;
@@ -25,6 +25,7 @@ import dev.trindadedev.lib.filepicker.model.DialogConfigs;
 import dev.trindadedev.lib.filepicker.model.DialogProperties;
 import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 
@@ -73,10 +74,10 @@ public class AppSettings extends AppCompatActivity {
         dialog.setDialogSelectionListener(files -> {
             final boolean isDirectory = new File(files[0]).isDirectory();
             if (files.length > 1 || isDirectory) {
-                new AlertDialog.Builder(this)
+                new MaterialAlertDialogBuilder(this)
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
-                            new AlertDialog.Builder(this)
+                            new MaterialAlertDialogBuilder(this)
                                     .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
                                     .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
                                     .setPositiveButton(R.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
@@ -91,7 +92,7 @@ public class AppSettings extends AppCompatActivity {
                         })
                         .show();
             } else {
-                new AlertDialog.Builder(this)
+                new MaterialAlertDialogBuilder(this)
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
                             switch (which) {
@@ -104,7 +105,7 @@ public class AppSettings extends AppCompatActivity {
                                     intent.putExtra("xml", "");
                                     startActivity(intent);
                                 }
-                                case 1 -> new AlertDialog.Builder(this)
+                                case 1 -> new MaterialAlertDialogBuilder(this)
                                         .setTitle("Delete file?")
                                         .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
                                         .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
@@ -230,7 +231,7 @@ public class AppSettings extends AppCompatActivity {
 
         tv_progress.setText("Signing APK...");
 
-        AlertDialog building_dialog = new AlertDialog.Builder(this)
+        AlertDialog building_dialog = new MaterialAlertDialogBuilder(this)
                 .setView(building_root)
                 .create();
 
