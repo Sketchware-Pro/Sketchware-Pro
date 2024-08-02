@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_height="wrap_content"
+     android:layout_width="match_parent"
+     android:orientation="vertical">
+
+    <ImageView
+         android:layout_height="80dp"
+         android:layout_width="80dp"
+         android:padding="16dp"
+         android:layout_marginTop="16dp"
+         android:id="@+id/icon"
+         android:layout_gravity="center" />
+
+    <com.google.android.material.textfield.TextInputLayout
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         app:hintEnabled="true"
+         android:hint="Enter the new name"
+         android:layout_marginHorizontal="20dp"
+         android:layout_marginTop="10dp"
+         android:id="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+             android:layout_height="match_parent"
+             android:layout_width="match_parent"
+             android:imeOptions="actionDone"
+             android:singleLine="true"
+             android:inputType="text"
+             android:id="@+id/inputText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
