@@ -15,6 +15,7 @@ import com.sketchware.remod.R;
 import a.a.a.Rs;
 import a.a.a.Ts;
 import a.a.a.wB;
+import mod.Edward.KOC.Logic.PaletteSelectorXSearch;
 
 public class PaletteBlock extends LinearLayout {
 
@@ -74,7 +75,7 @@ public class PaletteBlock extends LinearLayout {
     private void initialize(Context context) {
         a = context;
         wB.a(context, this, R.layout.palette_block);
-        PaletteSelector paletteSelector = findViewById(R.id.palette_selector);
+        PaletteSelectorXSearch paletteSelector = findViewById(R.id.palette_selector);
         customScrollView = findViewById(R.id.scv);
         horizontalScrollView = findViewById(R.id.hscv);
         blockBuilder = findViewById(R.id.block_builder);

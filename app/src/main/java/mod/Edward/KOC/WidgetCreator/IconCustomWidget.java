@@ -1,4 +1,4 @@
-package mod.Edward.KOC;
+package mod.Edward.KOC.WidgetCreator;
 
 import static com.besome.sketch.beans.ViewBean.getViewTypeResId;
 

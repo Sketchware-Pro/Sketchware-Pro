@@ -38,7 +38,7 @@ import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
-import mod.Edward.KOC.IconCustomWidget;
+import mod.Edward.KOC.WidgetCreator.IconCustomWidget;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
 import mod.agus.jcoderz.editor.view.palette.IconDigitalClock;
 import mod.agus.jcoderz.editor.view.palette.IconGridView;

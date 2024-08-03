@@ -1,8 +1,8 @@
 package com.besome.sketch.editor.view;
 
-import static mod.Edward.KOC.IconCustomWidget.AddCustomWidgets;
-import static mod.Edward.KOC.IconCustomWidget.DeleteWidgetMap;
-import static mod.Edward.KOC.IconCustomWidget.SubstringCovert;
+import static mod.Edward.KOC.WidgetCreator.IconCustomWidget.AddCustomWidgets;
+import static mod.Edward.KOC.WidgetCreator.IconCustomWidget.DeleteWidgetMap;
+import static mod.Edward.KOC.WidgetCreator.IconCustomWidget.SubstringCovert;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -65,7 +65,7 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
-import mod.Edward.KOC.IconCustomWidget;
+import mod.Edward.KOC.WidgetCreator.IconCustomWidget;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;

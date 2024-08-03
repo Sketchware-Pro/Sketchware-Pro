@@ -1,8 +1,8 @@
 package a.a.a;
 
-import static mod.Edward.KOC.IconCustomWidget.AddExtraClasses;
-import static mod.Edward.KOC.IconCustomWidget.AddWidgetsByTitle;
-import static mod.Edward.KOC.IconCustomWidget.GetWidgetsListMap;
+import static mod.Edward.KOC.WidgetCreator.IconCustomWidget.AddExtraClasses;
+import static mod.Edward.KOC.WidgetCreator.IconCustomWidget.AddWidgetsByTitle;
+import static mod.Edward.KOC.WidgetCreator.IconCustomWidget.GetWidgetsListMap;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;

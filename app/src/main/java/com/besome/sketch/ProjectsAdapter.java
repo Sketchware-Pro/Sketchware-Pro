@@ -41,6 +41,7 @@ import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.yB;
+import mod.SketchwareUtil;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -277,6 +278,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             }
                         }
                         case 4 -> showProjectSettingDialog(projectMap);
+                        case 5 -> SketchwareUtil.showMessage(v.getContext(), "Config");
                     }
                 } else if (v.getId() == R.id.confirm_yes) {
                     projectMap.put("confirmation", true);

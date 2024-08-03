@@ -28,7 +28,7 @@
         android:layout_width="120dp"
         android:layout_height="match_parent">
 
-        <com.besome.sketch.editor.logic.PaletteSelector
+        <mod.Edward.KOC.Logic.PaletteSelectorXSearch
             android:id="@+id/palette_selector"
             android:layout_width="120dp"
             android:layout_height="wrap_content" />

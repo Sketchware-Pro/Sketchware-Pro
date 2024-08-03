@@ -1,4 +1,4 @@
-package com.besome.sketch.editor.logic;
+package mod.Edward.KOC.Logic;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,7 +31,7 @@ import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import com.sketchware.remod.R;
 
-public class PaletteSelector extends LinearLayout implements View.OnClickListener {
+public class PaletteSelectorXSearch extends LinearLayout implements View.OnClickListener {
 
     private Context context;
     private Vs onBlockCategorySelectListener;
@@ -42,12 +42,12 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
     private Boolean IsFirstItemSelected = false;
     private static SharedPreferences SPSaveSearchMainData;
 
-    public PaletteSelector(Context context) {
+    public PaletteSelectorXSearch(Context context) {
         super(context);
         initialize(context);
     }
 
-    public PaletteSelector(Context context, AttributeSet attributeSet) {
+    public PaletteSelectorXSearch(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         initialize(context);
     }
