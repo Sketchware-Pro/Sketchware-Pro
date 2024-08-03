@@ -159,9 +159,10 @@ dependencies {
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
-
-    implementation "com.github.aquilesTrindade.trindade-util:components:3.0.9-beta"
-    implementation "com.github.aquilesTrindade.trindade-util:filepicker:3.0.9-beta"
+    
+    def tUtilVersion = "3.1.0-beta"
+    implementation "com.github.aquilesTrindade.trindade-util:components:$tUtilVersion"
+    implementation "com.github.aquilesTrindade.trindade-util:filepicker:$tUtilVersion"
     
     // Analytics and Crashlytics
     if (analyticsEnabled) {
