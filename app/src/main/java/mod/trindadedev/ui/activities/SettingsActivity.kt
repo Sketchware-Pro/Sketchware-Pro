@@ -33,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment) // Replace with your actual container ID
+            .replace(binding.fragment_container.id, fragment)
             .commit()
     }
 }
