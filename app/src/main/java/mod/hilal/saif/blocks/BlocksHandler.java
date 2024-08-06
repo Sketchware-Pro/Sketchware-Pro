@@ -2060,6 +2060,16 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "return;");
+        hashMap.put("type", " ");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "return;");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "return");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "returnNumber");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
@@ -2406,6 +2416,16 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad register fullscreen content callbacks (This Block isn't needed anymore, please remove it)");
         arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "CatchException");
+        hashMap.put("type", "s");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "e.getMessage()");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "Get Exception Message");
+        arrayList.add(hashMap);
     }
 
     private static void checkDir() {
@@ -2447,7 +2467,7 @@ public class BlocksHandler {
             logicEditorActivity.a("Map put values", 0xff555555);
             logicEditorActivity.a(" ", "mapPut");
         }
-        if (showBuiltIn() && (showAll() || isMapUsed)) {
+        if (showAll() || isMapUsed) {
             logicEditorActivity.a(" ", "hashmapPutNumber");
             logicEditorActivity.a(" ", "hashmapPutNumber2");
             logicEditorActivity.a(" ", "hashmapPutBoolean");
@@ -2459,7 +2479,7 @@ public class BlocksHandler {
             logicEditorActivity.a("Map get values", 0xff555555);
             logicEditorActivity.a("s", "mapGet");
         }
-        if (showBuiltIn() && (showAll() || isMapUsed)) {
+        if (showAll() || isMapUsed) {
             logicEditorActivity.a("d", "hashmapGetNumber");
             logicEditorActivity.a("b", "hashmapGetBoolean");
             logicEditorActivity.a("a", "hashmapGetMap");
@@ -2493,10 +2513,10 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "addListInt");
             logicEditorActivity.a(" ", "insertListInt");
         }
-        if (showBuiltIn() && (showAll() || isListNumUsed)) {
+        if (showAll() || isListNumUsed) {
             logicEditorActivity.a(" ", "setAtPosListnum");
         }
-        if (showBuiltIn() && (showAll() || isListNumUsed)) {
+        if (showAll() || isListNumUsed) {
             logicEditorActivity.a(" ", "sortListnum");
         }
         if (showAll() || isListStrUsed || inOnFilesPickedEvent) {
@@ -2507,7 +2527,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "addListStr");
             logicEditorActivity.a(" ", "insertListStr");
         }
-        if (showBuiltIn() && (showAll() || isListStrUsed)) {
+        if (showAll() || isListStrUsed) {
             logicEditorActivity.a(" ", "setAtPosListstr");
         }
         if (showAll() || isListStrUsed) {
@@ -2517,9 +2537,7 @@ public class BlocksHandler {
             logicEditorActivity.a("List Map", 0xff555555);
             logicEditorActivity.a("b", "containListMap");
             logicEditorActivity.a("s", "getAtListMap");
-            if (showBuiltIn()) {
-                logicEditorActivity.a("a", "getMapAtPosListmap");
-            }
+            logicEditorActivity.a("a", "getMapAtPosListmap");
             logicEditorActivity.a(" ", "addListMap");
             logicEditorActivity.a(" ", "insertListMap");
             logicEditorActivity.a(" ", "setListMap");
@@ -2538,11 +2556,9 @@ public class BlocksHandler {
             logicEditorActivity.a("d", "lengthList");
             logicEditorActivity.a(" ", "deleteList");
             logicEditorActivity.a(" ", "clearList");
-            if (showBuiltIn()) {
-                logicEditorActivity.a(" ", "reverseList");
-                logicEditorActivity.a(" ", "shuffleList");
-                logicEditorActivity.a(" ", "swapInList");
-            }
+            logicEditorActivity.a(" ", "reverseList");
+            logicEditorActivity.a(" ", "shuffleList");
+            logicEditorActivity.a(" ", "swapInList");
         }
     }
 
@@ -2550,20 +2566,31 @@ public class BlocksHandler {
         if (showBuiltIn()) {
             checkDir();
         }
+        logicEditorActivity.a("if else blocks", 0xff555555);
+        logicEditorActivity.a("c", "if");
+        logicEditorActivity.a("e", "ifElse");
+        logicEditorActivity.a("Try Catch Blocks", 0xff555555);
+        if (showAll()) {
+            logicEditorActivity.a("e", "tryCatch");
+            logicEditorActivity.a("s", "CatchException");
+        }
+        logicEditorActivity.a("Loops Blocks", 0xff555555);
         logicEditorActivity.a("c", "repeat");
-        if (showBuiltIn()) {
+        if (showAll()) {
             logicEditorActivity.a("c", "repeatKnownNum");
             logicEditorActivity.a("c", "RepeatKnownNumDescending");
         }
         logicEditorActivity.a("c", "forever");
-        if (showBuiltIn()) {
+        if (showAll()) {
             logicEditorActivity.a("c", "whileLoop");
+            logicEditorActivity.a("f", "continue");
         }
-        logicEditorActivity.a("c", "if");
-        logicEditorActivity.a("e", "ifElse");
-        if (showBuiltIn()) {
+        logicEditorActivity.a("f", "break");
+        if (showAll()) {
+            logicEditorActivity.a("Check element type", 0xff555555);
             logicEditorActivity.a("b", "instanceOfOperator");
-            logicEditorActivity.a("b", "isEmpty");
+            logicEditorActivity.a("Switch Blocks", 0xff555555);
+
             logicEditorActivity.a("c", "switchStr");
             logicEditorActivity.a(" ", "caseStrAnd");
             logicEditorActivity.a("c", "caseStr");
@@ -2571,9 +2598,11 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "caseNumAnd");
             logicEditorActivity.a("c", "caseNum");
             logicEditorActivity.a("c", "defaultSwitch");
-            logicEditorActivity.a("e", "tryCatch");
+            logicEditorActivity.a("Ternary Blocks", 0xff555555);
             logicEditorActivity.a("s", "ternaryString");
             logicEditorActivity.a("d", "ternaryNumber");
+            logicEditorActivity.a("Return Blocks", 0xff555555);
+            logicEditorActivity.a("f", "return;");
             logicEditorActivity.a("f", "returnString");
             logicEditorActivity.a("f", "returnNumber");
             logicEditorActivity.a("f", "returnBoolean");
@@ -2581,8 +2610,6 @@ public class BlocksHandler {
             logicEditorActivity.a("f", "returnListStr");
             logicEditorActivity.a("f", "returnListMap");
             logicEditorActivity.a("f", "returnView");
-            logicEditorActivity.a("f", "break");
-            logicEditorActivity.a("f", "continue");
         }
     }
 
@@ -2609,16 +2636,16 @@ public class BlocksHandler {
         logicEditorActivity.a("d", "stringIndex");
         logicEditorActivity.a("d", "stringLastIndex");
         logicEditorActivity.a("s", "stringSub");
-        if (showBuiltIn()) {
+        if (showAll()) {
             logicEditorActivity.a("s", "stringSubSingle");
         }
         logicEditorActivity.a("b", "stringEquals");
         logicEditorActivity.a("b", "stringContains");
-        if (showBuiltIn()) {
+        if (showAll()) {
             logicEditorActivity.a("b", "stringMatches");
         }
         logicEditorActivity.a("s", "stringReplace");
-        if (showBuiltIn()) {
+        if (showAll()) {
             logicEditorActivity.a("s", "stringReplaceFirst");
             logicEditorActivity.a("s", "stringReplaceAll");
             logicEditorActivity.a("s", "reverse");
@@ -2637,7 +2664,7 @@ public class BlocksHandler {
         logicEditorActivity.a("s", "mapToStr");
         logicEditorActivity.a(" ", "strToListMap");
         logicEditorActivity.a("s", "listMapToStr");
-        if (showBuiltIn()) {
+        if (showAll()) {
             logicEditorActivity.a(" ", "GsonStringToListString");
             logicEditorActivity.a(" ", "GsonStringToListNumber");
             logicEditorActivity.a("s", "GsonListTojsonString");

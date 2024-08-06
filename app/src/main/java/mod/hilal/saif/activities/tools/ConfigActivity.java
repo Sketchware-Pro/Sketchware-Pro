@@ -286,7 +286,7 @@ public class ConfigActivity extends AppCompatActivity {
                 "May slow down loading blocks in Logic Editor.",
                 SETTING_SHOW_BUILT_IN_BLOCKS,
                 false, false);
-        addSwitchPreference("Show all variable blocks",
+        addSwitchPreference("Show all Modded Blocks",
                 "All variable blocks will be visible, even if you don't have variables for them.",
                 SETTING_ALWAYS_SHOW_BLOCKS,
                 false, false);
