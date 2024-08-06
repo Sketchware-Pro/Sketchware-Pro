@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static mod.jbk.util.OldResourceIdMapper.getDrawableFromOldResourceId;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -338,7 +340,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
             public void bind(HashMap<String, Object> item) {
                 type.setText((String) item.get("name"));
                 id.setText((String) item.get("id"));
-                icon.setImageResource(Integer.parseInt((String) item.get("icon")));
+                icon.setImageResource(getDrawableFromOldResourceId(Integer.parseInt((String) item.get("icon"))));
             }
 
             @Override

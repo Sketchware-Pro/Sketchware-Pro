@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
 import static mod.hilal.saif.activities.tools.EventsMaker.EVENTS_FILE;
+import static mod.jbk.util.OldResourceIdMapper.getDrawableFromOldResourceId;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -153,7 +154,7 @@ public class EventsMakerDetails extends Activity {
             if (lisName.equals("")) {
                 icon.setImageResource(R.drawable.widget_source);
             } else {
-                icon.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
+                icon.setImageResource(getDrawableFromOldResourceId(Integer.parseInt(_data.get(position).get("icon").toString())));
             }
             ((LinearLayout) icon.getParent()).setGravity(17);
             title.setText((String) _data.get(position).get("name"));
