@@ -1359,6 +1359,8 @@ Do you want to continue?"</string>
     <string name="invalid_value_rule_3">Only use letters(a-z), numbers and Special characters(_)</string>
     <string name="invalid_value_rule_4">Only use small letters(a-z), numbers and special character(_)</string>
     <string name="invalid_value_rule_5">"Special letters(&amp;, &lt;, >, \", ') are not allowed"</string>
+    <string name="invalid_value_rule_6">Only use small letters(a-z)</string>
+    <string name="invalid_value_rule_7">Only use small letters(a-z),\nnumbers and special character(_)</string>
     <string name="logic_block_favorites_delete_message">Are you sure you want to delete your saved block from My Collection? This action can not be undone.</string>
     <string name="logic_block_favorites_delete_title">Delete from My Collection</string>
     <string name="logic_block_favorites_save_guide">Saved blocks are added to My Collection and are accessible from all the projects.</string>

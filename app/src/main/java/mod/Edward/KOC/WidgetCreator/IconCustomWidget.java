@@ -60,14 +60,14 @@ public class IconCustomWidget extends IconBase {
     ));
     public static List<String> choices_array = Arrays.asList(
             "BottomNavigationView", "Button", "CardView", "CheckBox", "CodeView", "EditText", "GridView",
-            "HorizontalScrollView", "ImageView", "LinearLayout", "ListView", "MaterialButton", "ProgressBar",
-            "RadioButton", "RecyclerView", "SeekBar", "Spinner", "SwipeRefreshLayout", "TabLayout",
+            "GroupLayout", "HorizontalScrollView", "ImageView", "LinearLayout", "ListView", "MaterialButton", "ProgressBar",
+            "RadioButton", "RecyclerView", "SeekBar", "Spinner", "SwipeRefreshLayout", "Switch", "TabLayout",
             "TextInputLayout", "TextView", "VerticalScrollView", "VideoView", "ViewPager", "WebView"
     );
     public static List<String> types_array = Arrays.asList(
             "32", "3", "36", "11", "47", "5", "25",
-            "2", "6", "0", "9", "41", "8", "19",
-            "48", "14", "10", "39", "30", "38",
+            "40", "2", "6", "0", "9", "41", "8", "19",
+            "48", "14", "10", "39", "13", "30", "38",
             "4", "12", "21", "31", "7"
     );
     private final HashMap<String, Object> MapInfo = new HashMap<>();
@@ -110,7 +110,7 @@ public class IconCustomWidget extends IconBase {
             case 6:
                 viewBean.image.resName = f;
                 break;
-            case 7, 10, 12, 14, 36 ,39:
+            case 7, 10, 12, 14, 36 ,39 ,40:
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
             case 8:
                 viewBean.text.text = Title;
