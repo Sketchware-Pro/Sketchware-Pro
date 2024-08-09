@@ -1,4 +1,4 @@
-package mod.trindadedev.tools;
+package mod.trindadedev.tools.apk;
 
 import android.app.Activity;
 import android.content.Context;
