@@ -27,6 +27,7 @@ import com.besome.sketch.ctrls.ViewIdSpinnerItem;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -444,11 +445,11 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         private void configure(int imageResId, int propertyNameResId) {
             propertyMenuItem.setVisibility(VISIBLE);
-            propertyMenuItem.setCardBackgroundColor(getResources().getColor(R.color.view_property_grid_see_all_background));
+            propertyMenuItem.setCardBackgroundColor(MaterialColors.getColor(this, R.attr.colorPrimaryContainer));
             icon.setImageResource(imageResId);
-            icon.setColorFilter(0xFFFFFFFF, PorterDuff.Mode.SRC_ATOP);
+            icon.setColorFilter(MaterialColors.getColor(this, R.attr.colorOnPrimaryContainer), PorterDuff.Mode.SRC_ATOP);
             title.setText(Helper.getResString(propertyNameResId));
-            title.setTextColor(Color.WHITE);
+            title.setTextColor(MaterialColors.getColor(this, R.attr.colorOnPrimaryContainer));
             setOnClickListener(this);
         }
 
