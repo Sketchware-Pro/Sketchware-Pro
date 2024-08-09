@@ -18,7 +18,7 @@
         android:paddingHorizontal="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:textColor="@drawable/on_selector_tab_round"
+        android:textColor="@color/on_selector_tab_round"
         android:textSize="12sp" />
 
 </LinearLayout>
