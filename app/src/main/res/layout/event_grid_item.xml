@@ -1,13 +1,15 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="4dp"
     android:minWidth="96dp"
     android:minHeight="74dp"
-    style="?attr/materialCardViewFilledStyle"
-    app:cardBackgroundColor="@color/view_property_grid_background">
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -45,7 +47,8 @@
             android:paddingHorizontal="4dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:textColor="?colorControlNormal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="12sp" />
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>
