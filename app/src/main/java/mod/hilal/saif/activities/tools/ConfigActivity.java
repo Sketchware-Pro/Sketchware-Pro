@@ -41,7 +41,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
-import dev.trindadedev.lib.ui.components.preferences.*;
+import dev.trindadedev.lib.ui.components.preference.*;
 
 public class ConfigActivity extends AppCompatActivity {
 
