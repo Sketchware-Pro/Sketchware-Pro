@@ -4,20 +4,17 @@
     android:layout_width="150dp"
     android:layout_height="match_parent"
     android:layout_marginTop="56dp"
-    android:background="?colorSurfaceBright"
+    android:background="?attr/colorSurfaceContainerHigh"
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/new_button"
+        style="?attr/materialCardViewOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="?colorSurfaceBright"
-        app:cardCornerRadius="10dp"
-        app:rippleColor="?colorControlHighlight"
-        app:strokeColor="?colorControlHighlight">
+        android:layout_marginBottom="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,13 +36,6 @@
                 android:textSize="12sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="2dp"
-        android:layout_marginVertical="8dp"
-        android:background="?colorControlHighlight" />
 
     <TextView
         android:id="@+id/tv_block_collection"

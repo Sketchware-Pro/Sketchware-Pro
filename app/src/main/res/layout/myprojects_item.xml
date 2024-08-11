@@ -8,7 +8,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginBottom="10dp"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,8 +75,8 @@
                             android:id="@+id/app_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.6"
                             android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             tools:text="InternalDemo" />
 
                         <TextView
@@ -84,8 +84,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
-                            android:alpha="0.6"
                             android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="10sp"
                             tools:text="1.0(1)" />
                     </LinearLayout>
@@ -94,8 +94,8 @@
                         android:id="@+id/package_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:alpha="0.6"
                         android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         tools:text="com.jbk.internal.demo" />
                 </LinearLayout>
 
@@ -120,7 +120,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
                     android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorTertiary"
+                    android:textColor="?attr/colorPrimary"
                     tools:text="605" />
             </RelativeLayout>
         </LinearLayout>
@@ -135,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
-                android:background="?attr/colorOutline" />
+                android:background="?attr/colorOutlineVariant" />
 
             <com.besome.sketch.projects.MyProjectButtonLayout
                 android:id="@+id/project_option"
