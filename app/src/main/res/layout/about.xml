@@ -1,15 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:ignore="ContentDescription">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:visibility="gone">
 
         <include layout="@layout/toolbar" />
 
@@ -20,19 +22,25 @@
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/about_team_title" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/about_changelog_title" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/about_majorchanges_title" />
         </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,6 +78,7 @@
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:paddingBottom="70dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/about_teamview" />
             </LinearLayout>
 
@@ -84,10 +93,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingBottom="70dp" />
+                    android:paddingBottom="70dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/loading_view"
@@ -96,6 +106,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:visibility="gone">
 
         <ImageView
@@ -126,13 +137,13 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
+        android:layout_gravity="center|bottom"
         android:text="@string/about_joindiscord"
         android:textAllCaps="false"
         android:textColor="#FFF"
         app:backgroundTint="#5865F2"
         app:icon="@drawable/ic_discord"
         app:iconTint="#FFF" />
-</RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
