@@ -16,7 +16,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.sketchware.remod.R;
 
-import dev.trindadedev.lib.ui.components.preferences.PreferenceSwitch;
+import dev.trindadedev.lib.ui.components.preference.PreferenceSwitch;
 import mod.hey.studios.util.Helper;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
