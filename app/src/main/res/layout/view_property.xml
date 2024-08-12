@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceContainerHigh"
+    android:background="?attr/colorSurfaceContainer"
     android:orientation="vertical">
 
     <com.google.android.material.divider.MaterialDivider
@@ -29,8 +29,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:contentDescription="@null"
-            android:src="@drawable/save_icon_24px"
-            app:tint="#FFFFFFFF" />
+            android:src="@drawable/save_icon_24px" />
     </LinearLayout>
 
     <LinearLayout

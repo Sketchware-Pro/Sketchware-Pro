@@ -28,11 +28,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -55,6 +55,7 @@ public class AboutModActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> teamList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> changelogList = new ArrayList<>();
     private TabLayout tablayout;
+    private AppBarLayout appbar;
     private Toolbar toolbar;
     private LinearLayout root;
     private LinearLayout trash;
@@ -81,6 +82,7 @@ public class AboutModActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         LinearLayout loading = findViewById(R.id.loading_view);
         tablayout = findViewById(R.id.tab_layout);
+        appbar = findViewById(R.id.app_bar);
         toolbar = findViewById(R.id.toolbar);
         root = findViewById(R.id.root);
         trash = findViewById(R.id.trash);
@@ -162,7 +164,8 @@ public class AboutModActivity extends AppCompatActivity {
                             "Discord server if this error keeps showing up:\n" + e.getMessage() +
                             "\n\nStack trace: " + Log.getStackTraceString(e));
                 }
-                fab.setVisibility(View.VISIBLE);
+                appbar.setVisibility(View.VISIBLE);
+                fab.show();
             }
 
             @SuppressLint("SetTextI18n")
@@ -179,7 +182,8 @@ public class AboutModActivity extends AppCompatActivity {
                     changelogRecycler.setAdapter(new AboutAdapters.ChangelogRecyclerAdapter(changelogList));
                     loading.setVisibility(View.GONE);
                     if (SketchwareUtil.isConnected()) {
-                        fab.setVisibility(View.VISIBLE);
+                        fab.show();
+                        appbar.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -187,10 +191,8 @@ public class AboutModActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        teamRecycler.setLayoutManager(new LinearLayoutManager(this));
-        changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
-        fab.setVisibility(View.GONE);
         initViewPager();
+        fab.hide();
 
         requestData.startRequestNetwork(RequestNetworkController.GET, getString(R.string.link_about_team), "", requestDataListener);
 

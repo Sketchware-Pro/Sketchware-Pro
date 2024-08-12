@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             style="?attr/materialCardViewFilledStyle"
-            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+            app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
             <LinearLayout
                 android:id="@+id/layout_switch"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                     <TextView
                         android:id="@+id/tv_app_id"
@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                     <TextView
                         android:id="@+id/tv_api_key"
@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                     <TextView
                         android:id="@+id/tv_storage_url"

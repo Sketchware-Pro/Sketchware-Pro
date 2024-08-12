@@ -49,12 +49,6 @@ If you'd like to contribute to Sketchware Pro, follow these steps:
 
 We welcome contributions of any size, whether they are major features or bug fixes, but please note that all contributions will be thoroughly reviewed.
 
-### What Changes We're Unlikely to Accept
-
-Most changes related to the user interface (components that already exist in vanilla Sketchware) are unlikely to be accepted. If something design-related gets changed, ideally the whole app should follow the new style too, which is challenging, especially for mods.
-> [!NOTE]
-> In the meantime, we don't accept UI changes in the main branch, but we do in the [redesign branch](https://github.com/Sketchware-Pro/Sketchware-Pro/tree/material-redesign) since we're actively working on a material design version of Sketchware Pro.
-
 ### Commit Message
 
 When you make changes to one or more files, you need to commit those changes with a commit message. Here are some guidelines:

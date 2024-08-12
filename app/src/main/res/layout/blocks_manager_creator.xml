@@ -28,7 +28,7 @@
                 android:layout_marginBottom="14dp"
                 android:orientation="vertical"
                 style="?attr/materialCardViewFilledStyle"
-                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+                app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                 <LinearLayout
                     android:layout_width="match_parent"
