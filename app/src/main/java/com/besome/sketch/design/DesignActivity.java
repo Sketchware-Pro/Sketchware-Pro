@@ -91,6 +91,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.codeware.AIViewGeneratorActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -875,6 +876,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             optionalLauncher.launch(intent);
         }
+    }
+
+    public void toAiViewGenerator() {
+        Intent intent = new Intent(getApplicationContext(), AIViewGeneratorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     private static class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {

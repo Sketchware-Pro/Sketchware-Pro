@@ -58,6 +58,11 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         menusLayout.addView(addDrawerItem(4, false,
                 R.drawable.multiple_devices_48, R.string.design_drawer_menu_title_view, R.string.design_drawer_menu_description_view
         ));
+
+        menusLayout.addView(addDrawerItem(25, false,
+                R.drawable.layout_48, R.string.design_drawer_menu_title_generate_view, R.string.design_drawer_menu_description_generate_view
+        ));
+
         /* Add Image Manager */
         menusLayout.addView(addDrawerItem(5, false,
                 R.drawable.ic_picture_48dp, R.string.design_drawer_menu_title_image, R.string.design_drawer_menu_description_image
@@ -200,6 +205,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
                     case 22:
                         designActivity.toLogReader();
+                        return;
+
+                    case 25:
+                        designActivity.toAiViewGenerator();
                         return;
                     case 2:
                     default:

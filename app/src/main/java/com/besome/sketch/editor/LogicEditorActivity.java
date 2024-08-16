@@ -75,7 +75,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
 import a.a.a.DB;
@@ -2027,7 +2026,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 generateButton.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 HiveAI hiveAI = new HiveAI();
-                hiveAI.generate(question.getText().toString(), resultText -> {
+                hiveAI.generateCode(question.getText().toString(), resultText -> {
                     runOnUiThread(() -> {
                         codeEditor.setText(Lx.j(resultText, false));
                         codeEditor.setVisibility(View.VISIBLE);

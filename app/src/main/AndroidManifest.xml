@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -64,7 +64,6 @@
             android:name="com.besome.sketch.projects.MyProjectSettingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
         <activity android:name="com.besome.sketch.tools.CompileLogActivity" />
         <activity android:name="com.besome.sketch.tools.CollectErrorActivity" />
         <activity
@@ -83,6 +82,7 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -305,8 +305,7 @@
         <activity
             android:name="mod.ilyasse.activities.about.AboutModActivity"
             android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
+        <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.PresetSettingActivity"
             android:configChanges="orientation|screenSize"
@@ -316,9 +315,13 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
+        <activity
+            android:name="mod.codeware.AIViewGeneratorActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
-
     </application>
+
 </manifest>

@@ -1067,6 +1067,8 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_drawer_menu_description_view">Manage multiple screens</string>
     <string name="design_drawer_menu_title">Configuration</string>
     <string name="design_drawer_menu_title_collection">Collection</string>
+    <string name="design_drawer_menu_title_generate_view">AI view generator</string>
+    <string name="design_drawer_menu_description_generate_view">Generator custom view</string>
     <string name="design_drawer_menu_title_font">Font</string>
     <string name="design_drawer_menu_title_image">Image</string>
     <string name="design_drawer_menu_title_library">Library</string>
