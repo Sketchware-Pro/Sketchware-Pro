@@ -171,10 +171,10 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             spannableString.setSpan(new ForegroundColorSpan(onSurface), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(green), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            attributeView.text.setText(spannableString);
-            attributeView.icon.setRotation(90);
-            attributeView.icon.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.icon);
+            attributeView.getTextView().setText(spannableString);
+            attributeView.getImageView().setRotation(90);
+            attributeView.getImageView().setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.getImageView());
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
                 popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {

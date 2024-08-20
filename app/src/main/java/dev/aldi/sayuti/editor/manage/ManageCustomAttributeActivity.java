@@ -94,8 +94,8 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            attributeView.icon.setImageResource(R.drawable.ic_property_inject);
-            attributeView.text.setText(getItem(position));
+            attributeView.getImageView().setImageResource(R.drawable.ic_property_inject);
+            attributeView.getTextView().setText(getItem(position));
             attributeView.setOnClickListener(v -> {
                 Intent i = new Intent();
                 i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);
