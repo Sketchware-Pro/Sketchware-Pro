@@ -28,7 +28,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ManageCustomAttributeBinding binding = ManageCustomAttributeBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.manage_custom_attribute);
+        setContentView(binding.getRoot());
         binding.topAppBar.setNavigationOnClickListener(view -> onBackPressed());
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
