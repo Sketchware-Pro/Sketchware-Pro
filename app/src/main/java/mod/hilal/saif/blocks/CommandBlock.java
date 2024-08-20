@@ -21,7 +21,8 @@ import mod.hey.studios.util.Helper;
  * >replace
  * setSupportActionBar(_toolbar);
  * getSupportActionBar().setDisplayHomeAsUpEnabled(true);
- * BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/
+ * BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs
+ */
 public class CommandBlock {
 
     public static String applyCommands(String fileName, String c) {
@@ -107,24 +108,24 @@ public class CommandBlock {
         }
 
         //old method
-		/*
-		if(command.equals("replace")){
-			int xxx = (int)(index + distance - before -1);
-			if ( xxx <0 ){ xxx = 0; }
+        /*
+        if(command.equals("replace")){
+            int xxx = (int)(index + distance - before -1);
+            if ( xxx <0 ){ xxx = 0; }
 
-			int ff = (int)(index + distance - before);
-			if ( ff <0 ){ ff = 0; }
-			int tt = (int)(index + distance + after +1);
-			if ( tt > a.size() ){ tt = a.size(); }
-			a.subList(ff , tt).clear();
+            int ff = (int)(index + distance - before);
+            if ( ff <0 ){ ff = 0; }
+            int tt = (int)(index + distance + after +1);
+            if ( tt > a.size() ){ tt = a.size(); }
+            a.subList(ff , tt).clear();
 
-			if (xxx > a.size()-2){
-				a.add(input);
-			} else {
-				a.add((int)(xxx+1) , input);
-			}
-		}
-		*/
+            if (xxx > a.size()-2){
+                a.add(input);
+            } else {
+                a.add((int)(xxx+1) , input);
+            }
+        }
+        */
 
         if (command.equals("replace")) {
             if (before == 0 && after == 0) {
@@ -392,25 +393,25 @@ public class CommandBlock {
             }
 
             ///old method
-		/*
-		if(command.equals("replace")){
-			boolean isZ = false;
-			int xxx = (int)(index + distance - before -1);
-			if ( xxx <=0 ){ isZ = true; xxx = 0; }
+        /*
+        if(command.equals("replace")){
+            boolean isZ = false;
+            int xxx = (int)(index + distance - before -1);
+            if ( xxx <=0 ){ isZ = true; xxx = 0; }
 
-			int ff = (int)(index + distance - before);
-			if ( ff <0 ){ ff = 0; }
-			int tt = (int)(index + distance + after +1);
-			if ( tt > a.size() ){ tt = a.size(); }
-			a.subList(ff , tt).clear();
-			//// fix bug
-			if (xxx > a.size()-2){
-				a.add(input);
-			} else if(isZ) {
-				a.add(0, input);
-			} else {
-				a.add((int)(xxx+1) , input);
-			} continue ;}*/
+            int ff = (int)(index + distance - before);
+            if ( ff <0 ){ ff = 0; }
+            int tt = (int)(index + distance + after +1);
+            if ( tt > a.size() ){ tt = a.size(); }
+            a.subList(ff , tt).clear();
+            //// fix bug
+            if (xxx > a.size()-2){
+                a.add(input);
+            } else if(isZ) {
+                a.add(0, input);
+            } else {
+                a.add((int)(xxx+1) , input);
+            } continue ;}*/
 
             if (command.equals("replace")) {
                 if (before == 0 && after == 0) {
