@@ -54,7 +54,7 @@ public class CommandBlock {
         }
     }
 
-    public static String N(String c, HashMap<String, Object> map) {
+    private static String N(String c, HashMap<String, Object> map) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         String reference = (String) map.get("reference");
@@ -192,7 +192,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static String getExceptFirstLine(String c) {
+    private static String getExceptFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         if (a.size() > 0) {
@@ -210,7 +210,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static String getFirstLine(String c) {
+    private static String getFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         if (a.size() > 0) {
             return a.get(0);
@@ -241,7 +241,7 @@ public class CommandBlock {
     }
 
     // Write Temporary File
-    public static void WTF(ArrayList<HashMap<String, Object>> list) {
+    private static void WTF(ArrayList<HashMap<String, Object>> list) {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         try {
@@ -284,7 +284,7 @@ public class CommandBlock {
         }
     }
 
-    public static void writeLog(String s) {
+    private static void writeLog(String s) {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/log.txt");
         String text = "";
         if (FileUtil.isExistFile(path)) {
@@ -293,7 +293,7 @@ public class CommandBlock {
         FileUtil.writeFile(path, text.concat("\n=>").concat(s));
     }
 
-    public static void getCBs(ArrayList<HashMap<String, Object>> arr, String c, String sid, String eid) {
+    private static void getCBs(ArrayList<HashMap<String, Object>> arr, String c, String sid, String eid) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         boolean b = false;
         int n = -1;
@@ -314,7 +314,7 @@ public class CommandBlock {
         }
     }
 
-    public static String assemble(ArrayList<String> a) {
+    private static String assemble(ArrayList<String> a) {
         String res = "";
         for (int i = 0; i < a.size(); i++) {
             if (res.equals("")) {
@@ -326,7 +326,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static String aCs(ArrayList<HashMap<String, Object>> arr, String c) {
+    private static String aCs(ArrayList<HashMap<String, Object>> arr, String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         for (int i = 0; i < arr.size(); i++) {
@@ -479,7 +479,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static int getIndex(ArrayList<String> a, String r) {
+    private static int getIndex(ArrayList<String> a, String r) {
         for (int i = 0; i < a.size(); i++) {
             if (a.get(i).contains(r)) {
                 return i;
@@ -488,7 +488,7 @@ public class CommandBlock {
         return -1;
     }
 
-    public static String rCCs(String c, String sid, String eid) {
+    private static String rCCs(String c, String sid, String eid) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         ArrayList<String> r = new ArrayList<>();
         String res = "";
@@ -519,7 +519,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static void aC(ArrayList<String> arr, ArrayList<HashMap<String, Object>> arr2, Pair<Integer, Integer> p) {
+    private static void aC(ArrayList<String> arr, ArrayList<HashMap<String, Object>> arr2, Pair<Integer, Integer> p) {
         String ref;
         int dis;
         int af;
