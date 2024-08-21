@@ -12,62 +12,63 @@ import a.a.a.sy;
 
 public class ItemFloatingActionButton extends FloatingActionButton implements sy {
 
-    public int maincolor;
-    public ViewBean r;
-    public boolean s;
-    public boolean t;
+    private int maincolor;
+    private ViewBean viewBean;
+    private boolean isSelected;
+    private boolean isFixed;
 
-    public ItemFloatingActionButton(Context var1) {
-        super(var1);
-        a(var1);
-    }
-
-    public void a(Context var1) {
+    public ItemFloatingActionButton(Context context) {
+        super(context);
         setCompatElevation(0.0F);
         setDrawingCacheEnabled(true);
     }
 
+    @Override
     public ViewBean getBean() {
-        return r;
+        return viewBean;
     }
 
+    @Override
     public boolean getFixed() {
-        return t;
+        return isFixed;
     }
 
     public boolean getSelection() {
-        return s;
+        return isSelected;
     }
 
-    public void onDraw(Canvas var1) {
-        if (s) {
+    @Override
+    public void onDraw(Canvas canvas) {
+        if (isSelected) {
             setBackgroundTintList(ColorStateList.valueOf(0x9599d5d0));
         } else {
-            ColorStateList var2 = ColorStateList.valueOf(getResources().getColor(R.color.color_accent));
+            ColorStateList colorStateList = ColorStateList.valueOf(getResources().getColor(R.color.color_accent));
             if (maincolor != 0) {
-                var2 = ColorStateList.valueOf(maincolor);
+                colorStateList = ColorStateList.valueOf(maincolor);
             }
 
-            setBackgroundTintList(var2);
+            setBackgroundTintList(colorStateList);
         }
 
-        super.onDraw(var1);
+        super.onDraw(canvas);
     }
 
-    public void setBean(ViewBean var1) {
-        r = var1;
+    @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
     }
 
-    public void setFixed(boolean var1) {
-        t = var1;
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
-    public void setMainColor(int var1) {
-        maincolor = var1;
+    public void setMainColor(int color) {
+        maincolor = color;
     }
 
-    public void setSelection(boolean var1) {
-        s = var1;
+    @Override
+    public void setSelection(boolean isSelected) {
+        this.isSelected = isSelected;
         invalidate();
     }
 }
