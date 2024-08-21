@@ -1,14 +1,8 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.besome.sketch.editor.view.item;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
-import android.widget.ImageButton;
 
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import a.a.a.sy;
 
 public class ItemFloatingActionButton extends FloatingActionButton implements sy {
+
     public int maincolor;
     public ViewBean r;
     public boolean s;
@@ -23,55 +18,55 @@ public class ItemFloatingActionButton extends FloatingActionButton implements sy
 
     public ItemFloatingActionButton(Context var1) {
         super(var1);
-        this.a(var1);
+        a(var1);
     }
 
     public void a(Context var1) {
-        ((FloatingActionButton)this).setCompatElevation(0.0F);
-        ((ImageButton)this).setDrawingCacheEnabled(true);
+        setCompatElevation(0.0F);
+        setDrawingCacheEnabled(true);
     }
 
     public ViewBean getBean() {
-        return this.r;
+        return r;
     }
 
     public boolean getFixed() {
-        return this.t;
+        return t;
     }
 
     public boolean getSelection() {
-        return this.s;
+        return s;
     }
 
     public void onDraw(Canvas var1) {
-        if (this.s) {
-            this.setBackgroundTintList(ColorStateList.valueOf(-1785080368));
+        if (s) {
+            setBackgroundTintList(ColorStateList.valueOf(-1785080368));
         } else {
-            ColorStateList var2 = ColorStateList.valueOf(this.getResources().getColor(2131034159));
-            if (this.maincolor != 0) {
-                var2 = ColorStateList.valueOf(this.maincolor);
+            ColorStateList var2 = ColorStateList.valueOf(getResources().getColor(2131034159));
+            if (maincolor != 0) {
+                var2 = ColorStateList.valueOf(maincolor);
             }
 
-            this.setBackgroundTintList(var2);
+            setBackgroundTintList(var2);
         }
 
         super.onDraw(var1);
     }
 
     public void setBean(ViewBean var1) {
-        this.r = var1;
+        r = var1;
     }
 
     public void setFixed(boolean var1) {
-        this.t = var1;
+        t = var1;
     }
 
     public void setMainColor(int var1) {
-        this.maincolor = var1;
+        maincolor = var1;
     }
 
     public void setSelection(boolean var1) {
-        this.s = var1;
-        ((ImageButton)this).invalidate();
+        s = var1;
+        invalidate();
     }
 }
