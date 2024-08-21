@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
 
 import a.a.a.sy;
 
@@ -40,9 +41,9 @@ public class ItemFloatingActionButton extends FloatingActionButton implements sy
 
     public void onDraw(Canvas var1) {
         if (s) {
-            setBackgroundTintList(ColorStateList.valueOf(-1785080368));
+            setBackgroundTintList(ColorStateList.valueOf(0x9599d5d0));
         } else {
-            ColorStateList var2 = ColorStateList.valueOf(getResources().getColor(2131034159));
+            ColorStateList var2 = ColorStateList.valueOf(getResources().getColor(R.color.color_accent));
             if (maincolor != 0) {
                 var2 = ColorStateList.valueOf(maincolor);
             }
