@@ -12,11 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,11 +35,8 @@ import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.wB;
 import a.a.a.yq;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -461,8 +455,8 @@ public class AndroidManifestInjection extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            attributeView.icon.setVisibility(View.GONE);
-            attributeView.text.setText((String) list_map.get(position).get("act_name"));
+            attributeView.getImageView().setVisibility(View.GONE);
+            attributeView.getTextView().setText((String) list_map.get(position).get("act_name"));
             attributeView.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);

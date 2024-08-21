@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -21,9 +19,9 @@ import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.AddCustomAttributeBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,30 +34,29 @@ import mod.remaker.view.CustomAttributeView;
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
     private ArrayList<HashMap<String, Object>> activityInjections = new ArrayList<>();
-    private ListView listView;
+
     private String activityInjectionsFilePath = "";
     private String widgetType = "";
+
+    private AddCustomAttributeBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_custom_attribute);
+        binding = AddCustomAttributeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
-        listView = findViewById(R.id.add_attr_listview);
-        fab.setOnClickListener(v -> dialog("create", 0));
+        binding.addAttrFab.setOnClickListener(v -> dialog("create", 0));
 
-        TextView title = findViewById(R.id.tx_toolbar_title);
-        ImageView back = findViewById(R.id.ig_toolbar_back);
-        Helper.applyRippleToToolbarView(back);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(binding.igToolbarBack);
+        binding.igToolbarBack.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {
             String sc_id = getIntent().getStringExtra("sc_id");
             String activityFilename = getIntent().getStringExtra("file_name");
             widgetType = getIntent().getStringExtra("widget_type");
 
-            title.setText(widgetType);
+            binding.txToolbarTitle.setText(widgetType);
 
             activityInjectionsFilePath = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
             if (!FileUtil.isExistFile(activityInjectionsFilePath) || FileUtil.readFile(activityInjectionsFilePath).equals("")) {
@@ -67,8 +64,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             } else {
                 activityInjections = new Gson().fromJson(FileUtil.readFile(activityInjectionsFilePath), Helper.TYPE_MAP_LIST);
             }
-            listView.setAdapter(new CustomAdapter(activityInjections));
-            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+            binding.addAttrListview.setAdapter(new CustomAdapter(activityInjections));
+            ((BaseAdapter) binding.addAttrListview.getAdapter()).notifyDataSetChanged();
         } else {
             finish();
         }
@@ -111,8 +108,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                     activityInjections.get(position).put("value", newValue);
                     SketchwareUtil.toast("Saved");
                 }
-                listView.setAdapter(new CustomAdapter(activityInjections));
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                binding.addAttrListview.setAdapter(new CustomAdapter(activityInjections));
+                ((BaseAdapter) binding.addAttrListview.getAdapter()).notifyDataSetChanged();
                 dialog.dismiss();
                 FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(activityInjections));
             }
@@ -171,10 +168,10 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             spannableString.setSpan(new ForegroundColorSpan(onSurface), value.indexOf(":"), value.indexOf("=") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(green), value.indexOf("\""), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            attributeView.text.setText(spannableString);
-            attributeView.icon.setRotation(90);
-            attributeView.icon.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.icon);
+            attributeView.getTextView().setText(spannableString);
+            attributeView.getImageView().setRotation(90);
+            attributeView.getImageView().setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.getImageView());
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
                 popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 popupMenu.setOnMenuItemClickListener(item -> {
