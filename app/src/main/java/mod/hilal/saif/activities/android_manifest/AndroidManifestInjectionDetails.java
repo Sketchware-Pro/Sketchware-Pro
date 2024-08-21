@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -281,7 +282,7 @@ public class AndroidManifestInjectionDetails extends Activity {
             attributeView.getImageView().setVisibility(View.GONE);
             attributeView.setOnClickListener(v -> showDial(position));
             attributeView.setOnLongClickListener(v -> {
-                new AlertDialog.Builder(AndroidManifestInjectionDetails.this)
+                new MaterialAlertDialogBuilder(AndroidManifestInjectionDetails.this)
                         .setTitle("Delete this attribute?")
                         .setMessage("This action cannot be undone.")
                         .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
