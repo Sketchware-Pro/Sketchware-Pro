@@ -19,7 +19,7 @@
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
+            android:background="?colorSurfaceContainerHigh"
             android:orientation="vertical"
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
@@ -36,6 +36,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="?selectableItemBackground"
                     android:orientation="vertical">
 
                     <TextView

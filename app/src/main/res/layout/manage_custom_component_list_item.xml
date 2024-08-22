@@ -6,7 +6,7 @@
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
-    android:background="@drawable/bg_rectangle_white"
+    android:background="?colorSurfaceContainerHigh"
     android:elevation="2dp"
     android:orientation="vertical">
 
