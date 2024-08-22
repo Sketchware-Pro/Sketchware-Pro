@@ -2,8 +2,6 @@ package mod.hilal.saif.activities.android_manifest;
 
 import static mod.SketchwareUtil.getDip;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -15,16 +13,18 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.CustomDialogAttributeBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.ActComponentsDialog;
 import mod.remaker.view.CustomAttributeView;
 
-public class AndroidManifestInjectionDetails extends Activity {
+public class AndroidManifestInjectionDetails extends AppCompatActivity {
 
     private static String ATTRIBUTES_FILE_PATH;
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
@@ -116,78 +116,45 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void showDial(int pos) {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
-        create.setView(inflate);
-        create.setCanceledOnTouchOutside(true);
-        ///create.setCancelable(true);
-        create.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        final TextView textsave = inflate.findViewById(R.id.dialog_btn_save);
-        final TextView textcancel = inflate.findViewById(R.id.dialog_btn_cancel);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle("Edit Value");
+        CustomDialogAttributeBinding attributeBinding = CustomDialogAttributeBinding.inflate(getLayoutInflater());
+        dialog.setView(attributeBinding.getRoot());
 
-        final EditText editText3 = inflate.findViewById(R.id.dialog_input_res);
-        editText3.setVisibility(View.GONE);
-        final EditText editText2 = inflate.findViewById(R.id.dialog_input_attr);
-        editText2.setVisibility(View.GONE);
-        final EditText editText = inflate.findViewById(R.id.dialog_input_value);
-        final TextView textView = (TextView) ((ViewGroup) editText2.getParent()).getChildAt(0);
-        textView.setText("Edit Value");
-        editText.setText((String) listMap.get(pos).get("value"));
-        editText.setHint("android:attr=\"value\"");
-        textsave.setOnClickListener(view -> {
-            listMap.get(pos).put("value", editText.getText().toString());
+        attributeBinding.inputRes.setVisibility(View.GONE);
+        attributeBinding.inputAttr.setVisibility(View.GONE);
+
+        attributeBinding.inputValue.setText((String) listMap.get(pos).get("value"));
+        attributeBinding.inputValue.setHint("android:attr=\"value\"");
+        dialog.setPositiveButton(R.string.common_word_save, (dialog1, which) -> {
+            listMap.get(pos).put("value", attributeBinding.inputValue.getText().toString());
             applyChange();
-            create.dismiss();
         });
 
-        textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
-
-        create.show();
+        dialog.show();
     }
 
     private void showAddDial() {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
-        create.setView(inflate);
-        create.setCanceledOnTouchOutside(true);
-        ///create.setCancelable(true);
-        create.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        final TextView textsave = inflate.findViewById(R.id.dialog_btn_save);
-        final TextView textcancel = inflate.findViewById(R.id.dialog_btn_cancel);
-
-        final EditText editText3 = inflate.findViewById(R.id.dialog_input_res);
-        //editText3.setVisibility(View.GONE);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(type.equals("permission") ? "Add new permission" : "Add new attribute");
+        CustomDialogAttributeBinding attributeBinding = CustomDialogAttributeBinding.inflate(getLayoutInflater());
+        dialog.setView(attributeBinding.getRoot());
         if (type.equals("permission")) {
-            editText3.setText("android");
+            attributeBinding.inputRes.setText("android");
+            attributeBinding.inputAttr.setText("name");
+            attributeBinding.inputLayoutValue.setHint("permission");
         }
-        final EditText editText2 = inflate.findViewById(R.id.dialog_input_attr);
-        //editText2.setVisibility(View.GONE);
-        if (type.equals("permission")) {
-            editText2.setText("name");
-        }
-        final EditText editText = inflate.findViewById(R.id.dialog_input_value);
-        if (type.equals("permission")) {
-            editText3.setHint("permission");
-        }
-        final TextView textView = (TextView) ((ViewGroup) editText2.getParent()).getChildAt(0);
-        if (type.equals("permission")) {
-            textView.setText("Add new Permission");
-        } else {
-            textView.setText("Add new Attribute");
-        }
-
-        textsave.setOnClickListener(_view -> {
-            String fstr = editText3.getText().toString().trim() + ":" + editText2.getText().toString().trim() + "=\"" + editText.getText().toString().trim() + "\"";
+        dialog.setPositiveButton(R.string.common_word_save, (dialog1, which) -> {
+            String fstr = attributeBinding.inputRes.getText().toString().trim() + ":" + attributeBinding.inputAttr.getText().toString().trim() + "=\"" + attributeBinding.inputValue.getText().toString().trim() + "\"";
             HashMap<String, Object> map = new HashMap<>();
             map.put("name", constant);
             map.put("value", fstr);
             listMap.add(map);
             applyChange();
-            create.dismiss();
+            dialog1.dismiss();
         });
-
-        textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
-        create.show();
+        dialog.setNegativeButton(R.string.common_word_cancel, (dialog1, which) -> dialog1.dismiss());
+        dialog.show();
     }
 
     private void applyChange() {
