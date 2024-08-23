@@ -14,13 +14,11 @@ import mod.hey.studios.util.Helper;
 
 public class LicenseActivity extends BaseAppCompatActivity {
 
-    private ActivityOssLibrariesBinding binding;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        binding = ActivityOssLibrariesBinding.inflate(getLayoutInflater());
+        ActivityOssLibrariesBinding binding = ActivityOssLibrariesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
