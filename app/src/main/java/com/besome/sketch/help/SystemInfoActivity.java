@@ -6,16 +6,14 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ActivitySystemInfoBinding;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
+import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ActivitySystemInfoBinding;
 
 import a.a.a.GB;
 import a.a.a.mB;
@@ -29,10 +27,10 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        binding = ActivitySystemInfoBinding.inflate(getLayoutInflater());       
-        setContentView(binding.getRoot());     
+        binding = ActivitySystemInfoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        
+
         addApiLevelInfo();
         addAndroidVersionNameInfo();
         addScreenResolutionInfo();
