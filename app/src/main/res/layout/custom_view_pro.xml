@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#ffffffff"
+        android:background="?colorSurfaceContainerHigh"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -36,6 +37,8 @@
                 android:id="@+id/custom_view_pro_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:textColor="#ff757575"
                 android:textSize="16sp" />
 
@@ -44,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/light_grey"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

@@ -7,6 +7,7 @@
         android:id="@+id/confirm_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?colorSurfaceContainerHigh"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
@@ -20,7 +21,8 @@
                 android:id="@+id/tv_warning_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ff7d7d7d"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp"
                 tools:text="@string/common_message_confirm" />
         </LinearLayout>
@@ -53,7 +55,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@null"
-                    android:textColor="#ff757575"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -79,7 +82,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@null"
-                    android:textColor="#ff757575"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

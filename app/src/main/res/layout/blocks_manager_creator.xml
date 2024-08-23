@@ -44,7 +44,8 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="8dp"
                         android:text="Properties"
-                        android:textColor="#ff424242"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -62,9 +63,10 @@
                             android:gravity="center|left"
                             android:hint="Name"
                             android:padding="14dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
-                            android:textSize="14sp" />
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
+                            android:textSize="14sp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
@@ -89,8 +91,9 @@
                                 android:gravity="center|left"
                                 android:hint="Type"
                                 android:padding="14dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,8 +127,9 @@
                             android:gravity="center|left"
                             android:hint="Type name"
                             android:padding="14dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -155,7 +159,8 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="8dp"
                         android:text="Design"
-                        android:textColor="#ff424242"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -196,8 +201,9 @@
                                 android:gravity="center|left"
                                 android:hint="color"
                                 android:padding="14dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,8 +232,9 @@
                         android:hint="block spec"
                         android:padding="8dp"
                         android:singleLine="true"
-                        android:textColor="#fff5f5f5"
-                        android:textColorHint="#ffcfd8dc"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -239,7 +246,8 @@
                         android:paddingRight="4dp"
                         android:paddingBottom="4dp"
                         android:text="Parameters"
-                        android:textColor="#ff757575"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="10sp" />
 
                     <HorizontalScrollView
@@ -270,8 +278,9 @@
                             android:gravity="center|left"
                             android:hint="Spec2"
                             android:padding="14dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -303,7 +312,8 @@
                         android:paddingRight="8dp"
                         android:paddingBottom="8dp"
                         android:text="Code"
-                        android:textColor="#ff424242"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                     <EditText
@@ -314,8 +324,9 @@
                         android:gravity="center|left|top"
                         android:hint="Code"
                         android:padding="8dp"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
