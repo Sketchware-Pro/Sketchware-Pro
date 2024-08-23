@@ -151,7 +151,6 @@ public class BuildSettingsDialog {
 
     private EditText addInputPref(String key, String defaultValue, String hint, int inputType, LinearLayout addTo) {
         TextInputLayout textInputLayout = new TextInputLayout(activity);
-
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -161,9 +160,7 @@ public class BuildSettingsDialog {
                 0,
                 0
         );
-
         textInputLayout.setLayoutParams(layoutParams);
-
         addTo.addView(textInputLayout);
 
         EditText editText = new EditText(activity);
@@ -179,7 +176,7 @@ public class BuildSettingsDialog {
         editText.setTextSize(16f);
         editText.setTextColor(ThemeUtils.getColor(editText, R.attr.colorOnSurface));
         editText.setHint(hint);
-        editText.setHintTextColor(ThemeUtils.getColor(editText, R.attr.colorOnSurfaceVariant));
+        editText.setHintTextColor(ThemeUtils.getColor(editText, R.attr.colorPrimary));
         editText.setText(settings.getValue(key, defaultValue));
         editText.setTag(key);
         editText.setInputType(inputType);
