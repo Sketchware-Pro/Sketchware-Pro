@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 public class br extends qA implements View.OnClickListener {
+
     private ProjectFileBean projectFile;
     private Adapter adapter;
     private TextView empty;
@@ -88,11 +89,162 @@ public class br extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
+    public void unselectAll() {
+        if (projectFile != null) {
+            for (ComponentBean component : jC.a(sc_id).e(projectFile.getJavaName())) {
+                component.initValue();
+            }
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void initialize(ViewGroup viewGroup) {
+        empty = viewGroup.findViewById(R.id.empty_message);
+        RecyclerView componentList = viewGroup.findViewById(R.id.component_list);
+        componentList.setHasFixedSize(true);
+        empty.setVisibility(View.GONE);
+        empty.setText(xB.b().a(requireContext(), R.string.component_message_no_components));
+        componentList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+        adapter = new Adapter();
+        componentList.setAdapter(adapter);
+        fab = viewGroup.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    public void setProjectFile(ProjectFileBean projectFileBean) {
+        projectFile = projectFileBean;
+    }
+
+    private void openEvent(String targetId, String eventName, String eventText) {
+        Intent intent = new Intent(requireActivity().getApplicationContext(), LogicEditorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("id", targetId);
+        intent.putExtra("event", eventName);
+        intent.putExtra("project_file", projectFile);
+        intent.putExtra("event_text", eventText);
+        startActivity(intent);
+    }
+
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private static final ConcatAdapter.Config EVENTS_ADAPTER_CONFIG = new ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build();
         private final RecyclerView.RecycledViewPool eventViewHolders = new RecyclerView.RecycledViewPool();
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ComponentBean componentBean = components.get(position);
+            holder.type.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
+            holder.icon.setImageResource(ComponentBean.getIconResource(componentBean.type));
+
+            switch (componentBean.type) {
+                case ComponentBean.COMPONENT_TYPE_SHAREDPREF ->
+                        holder.id.setText(componentBean.componentId + " : " + componentBean.param1);
+                case ComponentBean.COMPONENT_TYPE_FIREBASE,
+                     ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE,
+                     ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
+                    String path = componentBean.param1;
+                    if (path.length() == 0) {
+                        path = "/";
+                    }
+                    holder.id.setText(componentBean.componentId + " : " + path);
+                }
+                default -> holder.id.setText(componentBean.componentId);
+            }
+
+            ArrayList<EventBean> addedEvents = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
+            ArrayList<String> availableEvents = new ArrayList<>(Arrays.asList(oq.a(componentBean.getClassInfo())));
+
+            holder.eventsPreview.removeAllViews();
+            holder.eventsPreview.setAlpha(1.0f);
+            holder.eventsPreview.setTranslationX(0.0f);
+            if (componentBean.isCollapsed) {
+                holder.optionLayout.setVisibility(View.GONE);
+                holder.menu.setRotation(0.0f);
+            } else {
+                holder.optionLayout.setVisibility(View.VISIBLE);
+                holder.menu.setRotation(-180.0f);
+                if (componentBean.isConfirmation) {
+                    if (holder.shouldAnimateNextTransformation()) {
+                        holder.collapsibleComponentLayout.showConfirmation();
+                        holder.setAnimateNextTransformation(false);
+                    } else {
+                        holder.collapsibleComponentLayout.showConfirmationWithoutAnimation();
+                    }
+                } else {
+                    if (holder.shouldAnimateNextTransformation()) {
+                        holder.collapsibleComponentLayout.hideConfirmation();
+                        holder.setAnimateNextTransformation(false);
+                    } else {
+                        holder.collapsibleComponentLayout.hideConfirmationWithoutAnimation();
+                    }
+                }
+            }
+            holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+            if (addedEvents.size() > 0 || availableEvents.size() > 0) {
+                for (EventBean event : addedEvents) {
+                    if (availableEvents.contains(event.eventName)) {
+                        LinearLayout linearLayout = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                        layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
+                        linearLayout.setLayoutParams(layoutParams);
+                        ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(event.eventName));
+                        linearLayout.findViewById(R.id.icon_bg).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
+                        holder.eventsPreview.addView(linearLayout);
+                        availableEvents.remove(event.eventName);
+                    }
+                }
+
+                for (String eventName : availableEvents) {
+                    LinearLayout linearLayout2 = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
+                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
+                    linearLayout2.setLayoutParams(layoutParams2);
+                    ImageView imageView = linearLayout2.findViewById(R.id.icon);
+                    imageView.setImageResource(oq.a(eventName));
+                    ColorMatrix colorMatrix = new ColorMatrix();
+                    colorMatrix.setSaturation(0.0f);
+                    imageView.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+                    holder.eventsPreview.addView(linearLayout2);
+                    linearLayout2.setScaleX(0.8f);
+                    linearLayout2.setScaleY(0.8f);
+                }
+
+                holder.componentEvents.setVisibility(View.VISIBLE);
+                if (!componentBean.isCollapsed) {
+                    holder.eventsPreview.setTranslationX(holder.eventsPreview.getWidth());
+                    holder.eventsPreview.setAlpha(0);
+                }
+                holder.addedEventsAdapter.submitList(addedEvents);
+                holder.availableEventsAdapter.submitList(availableEvents);
+                holder.componentEvents.setAdapter(holder.componentEventsAdapter);
+            } else {
+                holder.componentEvents.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item_component, parent, false));
+        }
+
+        @Override
+        public int getItemCount() {
+            int size = components.size();
+            if (size == 0) {
+                empty.setVisibility(View.VISIBLE);
+            } else {
+                empty.setVisibility(View.GONE);
+            }
+            return size;
+        }
 
         private class ViewHolder extends CollapsibleViewHolder {
             public final MaterialCardView root;
@@ -298,154 +450,5 @@ public class br extends qA implements View.OnClickListener {
                 }
             }
         }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ComponentBean componentBean = components.get(position);
-            holder.type.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
-            holder.icon.setImageResource(ComponentBean.getIconResource(componentBean.type));
-
-            switch (componentBean.type) {
-                case ComponentBean.COMPONENT_TYPE_SHAREDPREF ->
-                        holder.id.setText(componentBean.componentId + " : " + componentBean.param1);
-                case ComponentBean.COMPONENT_TYPE_FIREBASE, ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE, ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
-                    String path = componentBean.param1;
-                    if (path.length() == 0) {
-                        path = "/";
-                    }
-                    holder.id.setText(componentBean.componentId + " : " + path);
-                }
-                default -> holder.id.setText(componentBean.componentId);
-            }
-
-            ArrayList<EventBean> addedEvents = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
-            ArrayList<String> availableEvents = new ArrayList<>(Arrays.asList(oq.a(componentBean.getClassInfo())));
-
-            holder.eventsPreview.removeAllViews();
-            holder.eventsPreview.setAlpha(1.0f);
-            holder.eventsPreview.setTranslationX(0.0f);
-            if (componentBean.isCollapsed) {
-                holder.optionLayout.setVisibility(View.GONE);
-                holder.menu.setRotation(0.0f);
-            } else {
-                holder.optionLayout.setVisibility(View.VISIBLE);
-                holder.menu.setRotation(-180.0f);
-                if (componentBean.isConfirmation) {
-                    if (holder.shouldAnimateNextTransformation()) {
-                        holder.collapsibleComponentLayout.showConfirmation();
-                        holder.setAnimateNextTransformation(false);
-                    } else {
-                        holder.collapsibleComponentLayout.showConfirmationWithoutAnimation();
-                    }
-                } else {
-                    if (holder.shouldAnimateNextTransformation()) {
-                        holder.collapsibleComponentLayout.hideConfirmation();
-                        holder.setAnimateNextTransformation(false);
-                    } else {
-                        holder.collapsibleComponentLayout.hideConfirmationWithoutAnimation();
-                    }
-                }
-            }
-            holder.optionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-            if (addedEvents.size() > 0 || availableEvents.size() > 0) {
-                for (EventBean event : addedEvents) {
-                    if (availableEvents.contains(event.eventName)) {
-                        LinearLayout linearLayout = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                        layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
-                        linearLayout.setLayoutParams(layoutParams);
-                        ((ImageView) linearLayout.findViewById(R.id.icon)).setImageResource(oq.a(event.eventName));
-                        linearLayout.findViewById(R.id.icon_bg).setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
-                        holder.eventsPreview.addView(linearLayout);
-                        availableEvents.remove(event.eventName);
-                    }
-                }
-
-                for (String eventName : availableEvents) {
-                    LinearLayout linearLayout2 = (LinearLayout) wB.a(requireContext(), R.layout.fr_logic_list_item_event_preview);
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
-                    linearLayout2.setLayoutParams(layoutParams2);
-                    ImageView imageView = linearLayout2.findViewById(R.id.icon);
-                    imageView.setImageResource(oq.a(eventName));
-                    ColorMatrix colorMatrix = new ColorMatrix();
-                    colorMatrix.setSaturation(0.0f);
-                    imageView.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-                    holder.eventsPreview.addView(linearLayout2);
-                    linearLayout2.setScaleX(0.8f);
-                    linearLayout2.setScaleY(0.8f);
-                }
-
-                holder.componentEvents.setVisibility(View.VISIBLE);
-                if (!componentBean.isCollapsed) {
-                    holder.eventsPreview.setTranslationX(holder.eventsPreview.getWidth());
-                    holder.eventsPreview.setAlpha(0);
-                }
-                holder.addedEventsAdapter.submitList(addedEvents);
-                holder.availableEventsAdapter.submitList(availableEvents);
-                holder.componentEvents.setAdapter(holder.componentEventsAdapter);
-            } else {
-                holder.componentEvents.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item_component, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            int size = components.size();
-            if (size == 0) {
-                empty.setVisibility(View.VISIBLE);
-            } else {
-                empty.setVisibility(View.GONE);
-            }
-            return size;
-        }
-    }
-
-    public void unselectAll() {
-        if (projectFile != null) {
-            for (ComponentBean component : jC.a(sc_id).e(projectFile.getJavaName())) {
-                component.initValue();
-            }
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    private void initialize(ViewGroup viewGroup) {
-        empty = viewGroup.findViewById(R.id.empty_message);
-        RecyclerView componentList = viewGroup.findViewById(R.id.component_list);
-        componentList.setHasFixedSize(true);
-        empty.setVisibility(View.GONE);
-        empty.setText(xB.b().a(requireContext(), R.string.component_message_no_components));
-        componentList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-        adapter = new Adapter();
-        componentList.setAdapter(adapter);
-        fab = viewGroup.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
-    }
-
-    public void setProjectFile(ProjectFileBean projectFileBean) {
-        projectFile = projectFileBean;
-    }
-
-    private void openEvent(String targetId, String eventName, String eventText) {
-        Intent intent = new Intent(requireActivity().getApplicationContext(), LogicEditorActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        intent.putExtra("id", targetId);
-        intent.putExtra("event", eventName);
-        intent.putExtra("project_file", projectFile);
-        intent.putExtra("event_text", eventText);
-        startActivity(intent);
     }
 }
