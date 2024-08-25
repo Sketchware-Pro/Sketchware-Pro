@@ -34,6 +34,29 @@ on:
   workflow_dispatch:
 
 jobs:
+  notifyTelegram:
+    name: Notify Telegram
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get Git Commit Info
+        id: git_info
+        run: |
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+
+      - name: Send a message to Telegram
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
+          MESSAGE: "A new build has been triggered by ${{ env.COMMIT_AUTHOR }}.\nCommit message: ${{ env.COMMIT_MESSAGE }}\n\nI will send you the APKs here if the build is successful."
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
+          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\"}" \
+          -H "Content-Type: application/json"
+
   buildMinApi26:
     name: Build minApi26 debug APK
     runs-on: ubuntu-latest
@@ -64,9 +87,41 @@ jobs:
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
+        id: upload-minApi26-debug
         with:
           name: apk-minApi26-debug
           path: app/build/outputs/apk/minApi26/debug
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-minApi26-debug
+          path: ./downloaded-artifact/minApi26
+
+      - name: Set up Python environment
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install telethon
+
+      - name: Get Git Commit Info
+        id: git_info
+        run: |
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+
+      - name: Send APK to Telegram
+        env:
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
+          FILE_PATH: ./downloaded-artifact/minApi26/app-minApi26-debug.apk
+          DESCRIPTION: "Commit by: ${{ env.COMMIT_AUTHOR }}\nCommit message: ${{ env.COMMIT_MESSAGE }}\nVersion: Android > 8"
+        run: |
+          . venv/bin/activate
+          python ./.github/workflows/deploy_artifacts.py
 
   buildMinApi21:
     name: Build minApi21 debug APK
@@ -98,6 +153,38 @@ jobs:
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
+        id: upload-minApi21-debug
         with:
           name: apk-minApi21-debug
           path: app/build/outputs/apk/minApi21/debug
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-minApi21-debug
+          path: ./downloaded-artifact/minApi21
+
+      - name: Set up Python environment
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install telethon
+
+      - name: Get Git Commit Info
+        id: git_info
+        run: |
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+
+      - name: Send APK to Telegram
+        env:
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
+          FILE_PATH: ./downloaded-artifact/minApi21/app-minApi21-debug.apk
+          DESCRIPTION: "Commit by: ${{ env.COMMIT_AUTHOR }}\nCommit message: ${{ env.COMMIT_MESSAGE }}\nVersion: Android < 8"
+        run: |
+          . venv/bin/activate
+          python ./.github/workflows/deploy_artifacts.py
