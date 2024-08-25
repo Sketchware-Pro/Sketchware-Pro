@@ -13,6 +13,7 @@ file_path = os.getenv("FILE_PATH")
 # Create the client with bot token directly
 os.remove('bot_session.session') if os.path.exists('bot_session.session') else None
 client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
+client.parse_mode = 'markdown'
 
 def human_readable_size(size, decimal_places=2):
     for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
