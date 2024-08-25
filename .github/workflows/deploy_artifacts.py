@@ -38,17 +38,25 @@ async def send_file():
     
     print(f"Sending file: {file_path} to Telegram channel: {group_id}")
 
-    # Send the file to the channel with progress callback
-    await client.send_file(
-        entity=group_id, 
-        file=file_path,
-        parse_mode='markdown',
-        caption=os.getenv("DESCRIPTION"),
-        progress_callback=progress,
-        reply_to=int(os.getenv("TOPIC_ID"))
-    )
-    print("\nFile sent successfully")
+    try:
+        # Send the file to the channel with progress callback
+        await client.send_file(
+            entity=group_id, 
+            file=file_path,
+            parse_mode='markdown',
+            caption=os.getenv("DESCRIPTION"),
+            progress_callback=progress,
+            reply_to=int(os.getenv("TOPIC_ID"))
+        )
+        print("\nFile sent successfully")
+    finally:
+        # Disconnect the client after sending the file
+        await client.disconnect()
 
-# Run the async function
-with client:
-    client.loop.run_until_complete(send_file())
+try:
+    with client:
+        client.loop.run_until_complete(send_file())
+finally:
+    # Disconnect the client if it's still connected
+    if client.is_connected():
+        client.loop.run_until_complete(client.disconnect())
