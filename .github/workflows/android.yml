@@ -56,6 +56,7 @@ jobs:
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
           -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\"}" \
           -H "Content-Type: application/json"
+        continue-on-error: true
 
   buildMinApi26:
     name: Build minApi26 debug APK
@@ -105,12 +106,14 @@ jobs:
           pip install telethon
 
       - name: Get Git Commit Info
+        continue-on-error: true
         id: git_info
         run: |
           echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
 
       - name: Send APK to Telegram
+        continue-on-error: true
         env:
           API_ID: ${{ secrets.TELEGRAM_API_ID }}
           API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
@@ -171,12 +174,14 @@ jobs:
           pip install telethon
 
       - name: Get Git Commit Info
+        continue-on-error: true
         id: git_info
         run: |
           echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
 
       - name: Send APK to Telegram
+        continue-on-error: true
         env:
           API_ID: ${{ secrets.TELEGRAM_API_ID }}
           API_HASH: ${{ secrets.TELEGRAM_API_HASH }}

@@ -41,7 +41,8 @@ async def send_file():
     # Send the file to the channel with progress callback
     await client.send_file(
         entity=group_id, 
-        file=file_path, 
+        file=file_path,
+        parse_mode='markdown',
         caption=os.getenv("DESCRIPTION"),
         progress_callback=progress,
         reply_to=int(os.getenv("TOPIC_ID"))
