@@ -88,7 +88,7 @@ public class BuildSettingsDialog {
             radioButton.setLayoutParams(layoutParams);
             radioButton.setId(View.generateViewId());
             radioButton.setText(choice);
-            radioButton.setTextColor(0xff000000);
+            radioButton.setTextColor(R.attr.colorOnSurface);
             radioButton.setTextSize(16f);
 
             if (settings.getValue(key, defaultValue).equals(choice)) {
@@ -128,7 +128,7 @@ public class BuildSettingsDialog {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setText(label);
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTextColor(0xff000000);
+        checkBox.setTextColor(R.attr.colorPrimary);
         checkBox.setPadding(
                 (int) getDip(4),
                 (int) getDip(8),
@@ -176,9 +176,9 @@ public class BuildSettingsDialog {
                 (int) getDip(8)
         );
         editText.setTextSize(16f);
-        editText.setTextColor(0xff000000);
+        editText.setTextColor(R.attr.colorOnSurface);
         editText.setHint(hint);
-        editText.setHintTextColor(0xff607d8b);
+        editText.setHintTextColor(R.attr.colorPrimary);
         editText.setText(settings.getValue(key, defaultValue));
         editText.setTag(key);
         editText.setInputType(inputType);
