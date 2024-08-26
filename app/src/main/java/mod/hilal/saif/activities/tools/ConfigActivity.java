@@ -491,7 +491,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(8),
                 dpToPx(8)
         );
-        switchView.setTextColor(ContextCompat.getColor(switchView, R.attr.colorOnSurface);
+        switchView.setTextColor(ContextCompat.getColor(switchView, R.attr.colorOnSurface));
         switchView.setTextSize(12);
         switchContainer.addView(switchView);
 
