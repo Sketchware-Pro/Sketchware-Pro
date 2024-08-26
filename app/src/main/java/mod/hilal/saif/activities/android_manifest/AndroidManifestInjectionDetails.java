@@ -116,7 +116,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void showDial(int pos) {
-        final AlertDialog create = new MaterialAlertDialogBuilder(this).create();
+        final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
@@ -146,7 +146,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void showAddDial() {
-        final AlertDialog create = new MaterialAlertDialogBuilder(this).create();
+        final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
