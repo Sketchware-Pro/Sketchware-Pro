@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -115,7 +116,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void showDial(int pos) {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
+        final AlertDialog create = new MaterialAlertDialogBuilder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
@@ -145,7 +146,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void showAddDial() {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
+        final AlertDialog create = new MaterialAlertDialogBuilder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
