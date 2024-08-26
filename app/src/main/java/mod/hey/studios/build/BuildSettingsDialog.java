@@ -15,8 +15,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
-import androidx.core.content.ContextCompat;
 
 import mod.SketchwareUtil;
 
@@ -60,7 +60,7 @@ public class BuildSettingsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText(title);
         textView.setTextSize(14f);
-        textView.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
+        textView.setTextColor(MaterialColors.getColor(textView, R.attr.colorOnSurface));
         textView.setTypeface(null, Typeface.BOLD);
         textView.setPadding(
                 0,
@@ -88,7 +88,7 @@ public class BuildSettingsDialog {
             radioButton.setLayoutParams(layoutParams);
             radioButton.setId(View.generateViewId());
             radioButton.setText(choice);
-            radioButton.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
+            radioButton.setTextColor(MaterialColors.getColor(radioButton, R.attr.colorOnSurface));
             radioButton.setTextSize(16f);
 
             if (settings.getValue(key, defaultValue).equals(choice)) {
@@ -128,7 +128,7 @@ public class BuildSettingsDialog {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setText(label);
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
+        checkBox.setTextColor(MaterialColors.getColor(checkBox, R.attr.colorOnSurface));
         checkBox.setPadding(
                 (int) getDip(4),
                 (int) getDip(8),
@@ -176,9 +176,9 @@ public class BuildSettingsDialog {
                 (int) getDip(8)
         );
         editText.setTextSize(16f);
-        editText.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
+        editText.setTextColor(MaterialColors.getColor(editText, R.attr.colorOnSurface));
         editText.setHint(hint);
-        editText.setHintTextColor(getResources().getColor(R.attr.colorOnSurfaceVariant, getTheme()));
+        editText.setHintTextColor(MaterialColors.getColor(editText, R.attr.colorOnSurfaceVariant));
         editText.setText(settings.getValue(key, defaultValue));
         editText.setTag(key);
         editText.setInputType(inputType);
