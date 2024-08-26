@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.google.android.material.color.MaterialColors;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
@@ -444,11 +445,11 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         private void configure(int imageResId, int propertyNameResId) {
             propertyMenuItem.setVisibility(VISIBLE);
-            propertyMenuItem.setCardBackgroundColor(getResources().getColor(R.color.view_property_grid_see_all_background));
+            propertyMenuItem.setCardBackgroundColor(MaterialColors.getColor(this, R.attr.colorPrimaryContainer));
             icon.setImageResource(imageResId);
-            icon.setColorFilter(0xFFFFFFFF, PorterDuff.Mode.SRC_ATOP);
+            icon.setColorFilter(MaterialColors.getColor(this, R.attr.colorOnPrimaryContainer), PorterDuff.Mode.SRC_ATOP);
             title.setText(Helper.getResString(propertyNameResId));
-            title.setTextColor(Color.WHITE);
+            title.setTextColor(MaterialColors.getColor(this, R.attr.colorOnPrimaryContainer));
             setOnClickListener(this);
         }
 

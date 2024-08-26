@@ -281,7 +281,7 @@ public class AndroidManifestInjectionDetails extends Activity {
             attributeView.icon.setVisibility(View.GONE);
             attributeView.setOnClickListener(v -> showDial(position));
             attributeView.setOnLongClickListener(v -> {
-                new AlertDialog.Builder(AndroidManifestInjectionDetails.this)
+                new MaterialAlertDialogBuilder(AndroidManifestInjectionDetails.this)
                         .setTitle("Delete this attribute?")
                         .setMessage("This action cannot be undone.")
                         .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
