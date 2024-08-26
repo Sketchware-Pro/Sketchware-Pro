@@ -60,7 +60,7 @@ public class BuildSettingsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText(title);
         textView.setTextSize(14f);
-        textView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.attr.colorOnSurface));
+        textView.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
         textView.setTypeface(null, Typeface.BOLD);
         textView.setPadding(
                 0,
@@ -88,7 +88,7 @@ public class BuildSettingsDialog {
             radioButton.setLayoutParams(layoutParams);
             radioButton.setId(View.generateViewId());
             radioButton.setText(choice);
-            radioButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.attr.colorOnSurface));
+            radioButton.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
             radioButton.setTextSize(16f);
 
             if (settings.getValue(key, defaultValue).equals(choice)) {
@@ -128,7 +128,7 @@ public class BuildSettingsDialog {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setText(label);
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTextColor(ContextCompat.getColor(getApplicationContext(), R.attr.colorOnSurface));
+        checkBox.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
         checkBox.setPadding(
                 (int) getDip(4),
                 (int) getDip(8),
@@ -176,9 +176,9 @@ public class BuildSettingsDialog {
                 (int) getDip(8)
         );
         editText.setTextSize(16f);
-        editText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.attr.colorOnSurface));
+        editText.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
         editText.setHint(hint);
-        editText.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.attr.colorOnSurfaceVariant));
+        editText.setHintTextColor(getResources().getColor(R.attr.colorOnSurfaceVariant, getTheme()));
         editText.setText(settings.getValue(key, defaultValue));
         editText.setTag(key);
         editText.setInputType(inputType);

@@ -28,7 +28,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 
 import com.android.annotations.NonNull;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -450,7 +449,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(4)
         );
         titleView.setText(title);
-        titleView.setTextColor(ContextCompat.getColor(titleView, R.color.color_text_onSurface));
+        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface, getTheme()));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -460,7 +459,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(ContextCompat.getColor(subtitleView, R.color.color_text_onSurfaceVariant));
+        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant, getTheme()));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
@@ -491,7 +490,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(8),
                 dpToPx(8)
         );
-        switchView.setTextColor(ContextCompat.getColor(switchView, R.attr.colorOnSurface));
+        switchView.setTextColor(getResources().getColor(R.attr.colorOnSurface, getTheme()));
         switchView.setTextSize(12);
         switchContainer.addView(switchView);
 
@@ -571,7 +570,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         titleView.setText(title);
-        titleView.setTextColor(ContextCompat.getColor(titleView, R.color.color_text_onSurface));
+        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface, getTheme()));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -581,7 +580,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(ContextCompat.getColor(subtitleView, R.color.color_text_onSurfaceVariant));
+        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant, getTheme()));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
