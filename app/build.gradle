@@ -55,6 +55,9 @@ android {
             minSdkVersion 21
             versionNameSuffix "-minApi21"
         }
+        androidResources {
+        generateLocaleConfig = true
+    }
     }
 
     buildTypes {
