@@ -1,16 +1,5 @@
 package com.besome.sketch.editor.manage.image;
 
-import a.a.a.By;
-import a.a.a.HB;
-import a.a.a.MA;
-import a.a.a.Op;
-import a.a.a.PB;
-import a.a.a.bB;
-import a.a.a.iB;
-import a.a.a.oB;
-import a.a.a.uq;
-import a.a.a.xB;
-import a.a.a.yy;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
@@ -26,13 +15,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.google.android.gms.analytics.HitBuilders;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import a.a.a.By;
+import a.a.a.HB;
+import a.a.a.MA;
+import a.a.a.Op;
+import a.a.a.PB;
+import a.a.a.bB;
+import a.a.a.iB;
+import a.a.a.oB;
+import a.a.a.uq;
+import a.a.a.xB;
+import a.a.a.yy;
 
 public class AddImageActivity extends BaseDialogActivity implements View.OnClickListener {
 
