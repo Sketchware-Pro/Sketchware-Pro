@@ -59,7 +59,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component);
         init();

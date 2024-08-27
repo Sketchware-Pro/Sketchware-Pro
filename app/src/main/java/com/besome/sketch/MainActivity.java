@@ -141,7 +141,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_Main);
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();

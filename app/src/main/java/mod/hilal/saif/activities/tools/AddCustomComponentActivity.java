@@ -42,7 +42,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         binding = ManageCustomComponentAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

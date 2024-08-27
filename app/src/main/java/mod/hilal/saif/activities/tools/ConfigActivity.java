@@ -25,7 +25,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.activity.EdgeToEdge;
+//import androidx.activity.EdgeToEdge;
+import com.google.android.material.color.MaterialColors;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AlertDialog;
 
@@ -77,7 +78,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prefences_content_appbar);
 
@@ -449,7 +450,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(4)
         );
         titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface));
+        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorOnSurface));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -459,7 +460,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant));
+        subtitleView.setTextColor(MaterialColors.getColor(subtitleView, R.attr.colorOnSurfaceVariant));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 
@@ -490,7 +491,7 @@ public class ConfigActivity extends AppCompatActivity {
                 dpToPx(8),
                 dpToPx(8)
         );
-        switchView.setTextColor(Color.parseColor("#000000"));
+        switchView.setTextColor(MaterialColors.getColor(switchView, R.attr.colorOnSurface));
         switchView.setTextSize(12);
         switchContainer.addView(switchView);
 
@@ -570,7 +571,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface));
+        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorOnSurfaceVariant));
         titleView.setTextSize(16);
         textContainer.addView(titleView);
 
@@ -580,7 +581,7 @@ public class ConfigActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         subtitleView.setText(subtitle);
-        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant));
+        subtitleView.setTextColor(MaterialColors.getColor(subtitleView, R.attr.colorOnSurfaceVariant));
         subtitleView.setTextSize(12);
         textContainer.addView(subtitleView);
 

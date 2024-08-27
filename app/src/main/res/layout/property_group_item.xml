@@ -17,6 +17,7 @@
         android:paddingHorizontal="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:textColor="#ffffffff"
+        android:duplicateParentState="true"
+        android:textColor="@drawable/on_selector_tab_round"
         android:textSize="12sp" />
 </LinearLayout>

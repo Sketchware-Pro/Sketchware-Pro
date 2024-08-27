@@ -5,7 +5,7 @@
     android:layout_height="74dp"
     android:layout_margin="4dp"
     style="?attr/materialCardViewFilledStyle"
-    app:cardBackgroundColor="@color/view_property_grid_background">
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:paddingHorizontal="4dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:textColor="?colorControlNormal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="10sp" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:singleLine="true"
-            android:textColor="@color/scolor_black_02"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"
             android:visibility="gone" />
     </LinearLayout>

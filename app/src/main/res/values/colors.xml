@@ -61,7 +61,7 @@
     <color name="colorBottomBarSW">#ff008dcd</color>
     <color name="color_text_onSurface">#1A1C1E</color>
     <color name="color_text_onSurfaceVariant">#41474D</color>
-
+    
     <color name="seed">#008dcd</color>
     <color name="md_theme_light_primary">#006493</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>

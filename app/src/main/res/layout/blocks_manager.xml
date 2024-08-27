@@ -18,7 +18,7 @@
             android:layout_marginHorizontal="14dp"
             android:layout_marginVertical="8dp"
             android:orientation="vertical"
-            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+            app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
             <LinearLayout
                 android:id="@+id/recycle_bin"
