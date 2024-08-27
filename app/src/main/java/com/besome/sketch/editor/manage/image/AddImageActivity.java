@@ -20,6 +20,7 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.google.android.gms.analytics.HitBuilders;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -124,8 +125,8 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 215 && (imageView = this.preview) != null) {
             imageView.setEnabled(true);
-            if (resultCode == -1) {
-                this.tv_add_photo.setVisibility(8);
+            if (resultCode == RESULT_OK) {
+                this.tv_add_photo.setVisibility(View.GONE);
                 this.imageRotationDegrees = 0;
                 this.imageScaleY = 1;
                 this.imageScaleX = 1;
@@ -164,73 +165,59 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case 2131230869:
-                setResult(0); // R.id.cancel_button
-                finish();
-                return;
-            case 2131230909:
-                finish(); // R.id.common_dialog_cancel_button
-                return;
-            case 2131230914:
-                save(); // R.id.common_dialog_ok_button
-                return;
-            case 2131231150:
-                flipImageHorizontally(); // R.id.img_horizontal
-                return;
-            case 2131231176:
-                setImageRotation(this.imageRotationDegrees + 90); // R.id.img_rotate
-                return;
-            case 2131231181:
-                this.preview.setEnabled(false); // R.id.img_selected
-                if (this.editing) {
-                    pickImages(false);
-                    return;
-                } else {
-                    pickImages(true);
-                    return;
-                }
-            case 2131231203:
-                flipImageVertically(); // R.id.img_vertical
-                return;
-            default:
-                return;
+        int id = view.getId();
+        if (id == R.id.cancel_button) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if (id == R.id.common_dialog_cancel_button) {
+            finish();
+        } else if (id == R.id.common_dialog_ok_button) {
+            save();
+        } else if (id == R.id.img_horizontal) {
+            flipImageHorizontally();
+        } else if (id == R.id.img_rotate) {
+            setImageRotation(this.imageRotationDegrees + 90);
+        } else if (id == R.id.img_selected) {
+            this.preview.setEnabled(false);
+            pickImages(!this.editing);
+        } else if (id == R.id.img_vertical) {
+            flipImageVertically();
         }
     }
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        e(xB.b().a(this, 2131625272));
-        d(xB.b().a(getApplicationContext(), 2131625031));
-        setContentView(2131427526);
+        e(xB.b().a(this, R.string.design_manager_image_title_add_image));
+        d(xB.b().a(getApplicationContext(), R.string.common_word_save));
+        setContentView(R.layout.manage_image_add);
         Intent intent = getIntent();
         this.existingImages = intent.getParcelableArrayListExtra("images");
         this.sc_id = intent.getStringExtra("sc_id");
         this.dir_path = intent.getStringExtra("dir_path");
-        this.image = (ProjectResourceBean) intent.getParcelableExtra("edit_target");
+        this.image = intent.getParcelableExtra("edit_target");
         if (this.image != null) {
             this.editing = true;
         }
-        this.layout_img_inform = (LinearLayout) findViewById(2131231354);
-        this.layout_img_modify = (LinearLayout) findViewById(2131231355);
-        this.chk_collection = (CheckBox) findViewById(2131230887);
-        this.tv_desc = (TextView) findViewById(2131231944);
-        this.tv_imgcnt = (TextView) findViewById(2131232004);
-        this.tv_collection = (TextView) findViewById(2131231913);
-        this.tv_add_photo = (TextView) findViewById(2131231865);
-        this.preview = (ImageView) findViewById(2131231181);
-        this.img_rotate = (ImageView) findViewById(2131231176);
-        this.img_vertical = (ImageView) findViewById(2131231203);
-        this.img_horizontal = (ImageView) findViewById(2131231150);
-        this.ed_input = (EasyDeleteEditText) findViewById(2131230990);
+        this.layout_img_inform = findViewById(R.id.layout_img_inform);
+        this.layout_img_modify = findViewById(R.id.layout_img_modify);
+        this.chk_collection = findViewById(R.id.chk_collection);
+        this.tv_desc = findViewById(R.id.tv_desc);
+        this.tv_imgcnt = findViewById(R.id.tv_imgcnt);
+        this.tv_collection = findViewById(R.id.tv_collection);
+        this.tv_add_photo = findViewById(R.id.tv_add_photo);
+        this.preview = findViewById(R.id.img_selected);
+        this.img_rotate = findViewById(R.id.img_rotate);
+        this.img_vertical = findViewById(R.id.img_vertical);
+        this.img_horizontal = findViewById(R.id.img_horizontal);
+        this.ed_input = findViewById(R.id.ed_input);
         this.ed_input_edittext = this.ed_input.getEditText();
         this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        this.ed_input.setHint(xB.b().a(this, 2131625268)); // R.string.design_manager_image_hint_enter_image_name
+        this.ed_input.setHint(xB.b().a(this, R.string.design_manager_image_hint_enter_image_name));
         this.O = new PB(this, this.ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
         this.O.a(1);
-        this.tv_collection.setText(xB.b().a(getApplicationContext(), 2131625289)); // R.string.design_manager_title_add_to_collection
-        this.tv_add_photo.setText(xB.b().a(getApplicationContext(), 2131625272)); // R.string.design_manager_image_title_add_image
+        this.tv_collection.setText(xB.b().a(getApplicationContext(), R.string.design_manager_title_add_to_collection));
+        this.tv_add_photo.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_title_add_image));
         this.preview.setOnClickListener(this);
         this.img_rotate.setOnClickListener(this);
         this.img_vertical.setOnClickListener(this);
@@ -251,7 +238,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         super.onPostCreate(bundle);
         if (this.editing) {
             this.image.isEdited = true;
-            e(xB.b().a(this, 2131625274));
+            e(xB.b().a(this, R.string.design_manager_image_title_edit_image));
             ProjectResourceBean projectResourceBean = this.image;
             this.imageRotationDegrees = projectResourceBean.rotate;
             this.imageScaleX = projectResourceBean.flipHorizontal;
@@ -261,7 +248,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             this.ed_input_edittext.setText(this.image.resName);
             this.ed_input_edittext.setEnabled(false);
             this.chk_collection.setEnabled(false);
-            this.tv_add_photo.setVisibility(8);
+            this.tv_add_photo.setVisibility(View.GONE);
             ProjectResourceBean projectResourceBean2 = this.image;
             if (projectResourceBean2.savedPos == 0) {
                 setImageFromFile(a(projectResourceBean2));
@@ -301,27 +288,27 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     public final void s() {
         TextView textView = this.tv_desc;
         if (textView != null) {
-            textView.setVisibility(4);
+            textView.setVisibility(View.INVISIBLE);
         }
         LinearLayout linearLayout = this.layout_img_inform;
         if (linearLayout == null || this.layout_img_modify == null || this.tv_imgcnt == null) {
             return;
         }
-        linearLayout.setVisibility(8);
-        this.layout_img_modify.setVisibility(0);
-        this.tv_imgcnt.setVisibility(8);
+        linearLayout.setVisibility(View.GONE);
+        this.layout_img_modify.setVisibility(View.VISIBLE);
+        this.tv_imgcnt.setVisibility(View.GONE);
     }
 
     public final void pickImages(boolean allowMultiple) {
         try {
-            Intent intent = new Intent("android.intent.action.PICK", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
             if (allowMultiple) {
-                intent.putExtra("android.intent.extra.ALLOW_MULTIPLE", true);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             }
-            startActivityForResult(Intent.createChooser(intent, xB.b().a(this, 2131624976)), 215);
+            startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 215);
         } catch (ActivityNotFoundException unused) {
-            bB.b(this, xB.b().a(this, 2131624907), 0).show();
+            bB.b(this, xB.b().a(this, R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -363,9 +350,9 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         if (linearLayout == null || this.layout_img_modify == null || this.tv_imgcnt == null) {
             return;
         }
-        linearLayout.setVisibility(0);
-        this.layout_img_modify.setVisibility(8);
-        this.tv_imgcnt.setVisibility(0);
+        linearLayout.setVisibility(View.VISIBLE);
+        this.layout_img_modify.setVisibility(View.GONE);
+        this.tv_imgcnt.setVisibility(View.VISIBLE);
         TextView textView = this.tv_imgcnt;
         StringBuilder sb = new StringBuilder();
         sb.append("+ ");
@@ -395,7 +382,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         if (this.B || this.imageFilePath != null) {
             return true;
         }
-        this.tv_desc.startAnimation(AnimationUtils.loadAnimation(this, 2130771980));
+        this.tv_desc.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 
@@ -423,7 +410,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             } else {
                 intent.putExtra("images", AddImageActivity.this.images);
             }
-            AddImageActivity.this.setResult(-1, intent);
+            AddImageActivity.this.setResult(RESULT_OK, intent);
             AddImageActivity.this.finish();
         }
 
@@ -542,11 +529,11 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                     if (hashCode == -105163457 && message.equals("duplicate_name")) {
                         str = "";
                         if (c != 0) {
-                            a = xB.b().a(AddImageActivity.this.getApplicationContext(), 2131624903);
+                            a = xB.b().a(AddImageActivity.this.getApplicationContext(), R.string.collection_duplicated_name);
                         } else if (c != 1) {
-                            a = c != 2 ? "" : xB.b().a(AddImageActivity.this.getApplicationContext(), 2131624904);
+                            a = c != 2 ? "" : xB.b().a(AddImageActivity.this.getApplicationContext(), R.string.collection_failed_to_copy);
                         } else {
-                            a = xB.b().a(AddImageActivity.this.getApplicationContext(), 2131624905);
+                            a = xB.b().a(AddImageActivity.this.getApplicationContext(), R.string.collection_no_exist_file);
                         }
                         a2 = e4.a();
                         if (a2 != null && a2.size() > 0) {
