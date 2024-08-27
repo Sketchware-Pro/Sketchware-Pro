@@ -5,7 +5,6 @@ import a.a.a.HB;
 import a.a.a.MA;
 import a.a.a.Op;
 import a.a.a.PB;
-import a.a.a._t;
 import a.a.a.bB;
 import a.a.a.iB;
 import a.a.a.oB;
@@ -292,7 +291,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
     public final void save() {
         if (a(this.O)) {
-            new Handler().postDelayed(new _t(this), 500L);
+            new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
         }
     }
 
