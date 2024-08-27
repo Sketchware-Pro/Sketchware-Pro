@@ -12,6 +12,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:gravity="center_vertical"
+        android:layout_marginBottom="8dp"
         android:importantForAutofill="noExcludeDescendants">
 
         <EditText
@@ -28,7 +29,7 @@
         android:orientation="horizontal"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:background="?attr/colorOnSurface"
+	    android:background="?attr/colorSurface"
 	    android:elevation="16dp"
 	    android:gravity="center_vertical|center_horizontal"
 	    android:paddingBottom="5dp"
@@ -36,22 +37,33 @@
 
         <Button
             android:id="@+id/btn_black"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:checked="true"
-            android:textSize="12sp" />
+            android:layout_marginLeft="5dp"
+		    android:layout_marginRight="5dp"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_grey"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:textSize="12sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_white"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:textSize="12sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+		    android:layout_marginRight="5dp"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:layout_weight="1" />
+            
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -67,7 +79,7 @@
         android:id="@+id/layout_btn_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
+        android:background="?attr/colorSurface"
         android:gravity="center|right"
         android:orientation="horizontal"
         android:padding="4dp">
