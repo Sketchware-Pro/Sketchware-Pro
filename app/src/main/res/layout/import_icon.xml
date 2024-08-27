@@ -11,29 +11,33 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
+        android:gravity="center_vertical"
         android:importantForAutofill="noExcludeDescendants">
 
         <EditText
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="?attr/colorOnSurface"
+	    android:elevation="16dp"
+	    android:gravity="center_vertical|center_horizontal"
+	    android:paddingBottom="5dp"
+	    android:paddingTop="5dp">
 
         <Button
             android:id="@+id/btn_black"
             android:layout_width="60dp"
             android:layout_height="25dp"
-            android:background="#ffe5e5e5"
             android:checked="true"
             android:textSize="12sp" />
 
@@ -41,14 +45,12 @@
             android:id="@+id/btn_grey"
             android:layout_width="60dp"
             android:layout_height="25dp"
-            android:background="#ffe5e5e5"
             android:textSize="12sp" />
 
         <Button
             android:id="@+id/btn_white"
             android:layout_width="60dp"
             android:layout_height="25dp"
-            android:background="#ffe5e5e5"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -57,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#fff5f5f5"
+        android:background="?attr/colorSurface"
         android:scrollbars="vertical"
         android:splitMotionEvents="false" />
 
