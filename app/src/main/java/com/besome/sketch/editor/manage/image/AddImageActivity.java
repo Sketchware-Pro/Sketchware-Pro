@@ -38,73 +38,32 @@ import a.a.a.xB;
 import a.a.a.yy;
 
 public class AddImageActivity extends BaseDialogActivity implements View.OnClickListener {
+    private ArrayList<ProjectResourceBean> existingImages;
+    private TextView tv_add_photo;
+    private ImageView preview;
+    private ArrayList<Uri> pickedImageUris;
+    private PB O;
+    private EditText ed_input_edittext;
+    private EasyDeleteEditText ed_input;
+    private TextView tv_desc;
+    private CheckBox chk_collection;
+    private String sc_id;
+    private ArrayList<ProjectResourceBean> images;
+    private boolean multipleImagesPicked = false;
+    private LinearLayout layout_img_inform = null;
+    private LinearLayout layout_img_modify = null;
+    private TextView tv_imgcnt = null;
+    private boolean B = false;
+    private String imageFilePath = null;
+    private int imageRotationDegrees = 0;
+    private int imageExifOrientation = 0;
+    private int imageScaleY = 1;
+    private int imageScaleX = 1;
+    private String dir_path = "";
+    private boolean editing = false;
+    private ProjectResourceBean image = null;
 
-    public ArrayList<ProjectResourceBean> existingImages;
-
-    public TextView tv_collection;
-
-    public TextView tv_add_photo;
-
-    public ImageView img_rotate;
-
-    public ImageView img_vertical;
-
-    public ImageView img_horizontal;
-
-    public ImageView preview;
-
-    public ArrayList<Uri> pickedImageUris;
-    public PB O;
-
-    public EditText ed_input_edittext;
-
-    public EasyDeleteEditText ed_input;
-
-    public int imageFilePathLastIndexOfSlash;
-
-    public int imageFilePathIndexOfFilenameExtension;
-
-    public oB fileUtil;
-
-    public TextView tv_desc;
-
-    public CheckBox chk_collection;
-
-    public String sc_id;
-
-    public ArrayList<ProjectResourceBean> images;
-
-    public boolean multipleImagesPicked = false;
-    public boolean u = false;
-
-    public LinearLayout layout_img_inform = null;
-
-    public LinearLayout layout_img_modify = null;
-
-    public TextView tv_imgcnt = null;
-    public boolean B = false;
-
-    public String imageFilePath = null;
-
-    public int imageRotationDegrees = 0;
-
-    public int imageExifOrientation = 0;
-
-    public int imageScaleY = 1;
-
-    public int imageScaleX = 1;
-
-    public String dir_path = "";
-
-    public boolean editing = false;
-
-    public ProjectResourceBean image = null;
-
-    public static void a(AddImageActivity addImageActivity) {
-        addImageActivity.k();
-    }
-
-    public final void flipImageVertically() {
+    private void flipImageVertically() {
         if (imageFilePath != null && !imageFilePath.isEmpty()) {
             if (imageRotationDegrees != 90 && imageRotationDegrees != 270) {
                 imageScaleY *= -1;
@@ -194,12 +153,12 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         chk_collection = findViewById(R.id.chk_collection);
         tv_desc = findViewById(R.id.tv_desc);
         tv_imgcnt = findViewById(R.id.tv_imgcnt);
-        tv_collection = findViewById(R.id.tv_collection);
+        TextView tv_collection = findViewById(R.id.tv_collection);
         tv_add_photo = findViewById(R.id.tv_add_photo);
         preview = findViewById(R.id.img_selected);
-        img_rotate = findViewById(R.id.img_rotate);
-        img_vertical = findViewById(R.id.img_vertical);
-        img_horizontal = findViewById(R.id.img_horizontal);
+        ImageView img_rotate = findViewById(R.id.img_rotate);
+        ImageView img_vertical = findViewById(R.id.img_vertical);
+        ImageView img_horizontal = findViewById(R.id.img_horizontal);
         ed_input = findViewById(R.id.ed_input);
         ed_input_edittext = ed_input.getEditText();
         ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
@@ -218,8 +177,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         imageRotationDegrees = 0;
         imageScaleY = 1;
         imageScaleX = 1;
-        fileUtil = new oB();
-        fileUtil.f(dir_path); // java.io.File.mkdirs
+        new oB().f(dir_path); // java.io.File.mkdirs
         images = new ArrayList<>();
     }
 
@@ -246,7 +204,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public final ArrayList<String> getReservedImageNames() {
+    private ArrayList<String> getReservedImageNames() {
         var names = new ArrayList<String>();
         names.add("app_icon");
         for (var existingImage : existingImages) {
@@ -255,17 +213,17 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         return names;
     }
 
-    public final void refreshPreview() {
+    private void refreshPreview() {
         preview.setImageBitmap(iB.a(iB.a(iB.a(imageFilePath, 1024, 1024), imageExifOrientation), imageRotationDegrees, imageScaleX, imageScaleY));
     }
 
-    public final void save() {
+    private void save() {
         if (a(O)) {
             new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
         }
     }
 
-    public final void s() {
+    private void s() {
         if (tv_desc != null) {
             tv_desc.setVisibility(View.INVISIBLE);
         }
@@ -276,7 +234,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public final void pickImages(boolean allowMultiple) {
+    private void pickImages(boolean allowMultiple) {
         try {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
@@ -289,16 +247,15 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public final void setImageFromFile(String path) {
+    private void setImageFromFile(String path) {
         imageFilePath = path;
         preview.setImageBitmap(iB.a(path, 1024, 1024));
-        imageFilePathLastIndexOfSlash = path.lastIndexOf("/");
-        imageFilePathIndexOfFilenameExtension = path.lastIndexOf(".");
+        int indexOfFilenameExtension = path.lastIndexOf(".");
         if (path.endsWith(".9.png")) {
-            imageFilePathIndexOfFilenameExtension = path.lastIndexOf(".9.png");
+            indexOfFilenameExtension = path.lastIndexOf(".9.png");
         }
         if (ed_input_edittext != null && (ed_input_edittext.getText() == null || ed_input_edittext.getText().length() <= 0)) {
-            ed_input_edittext.setText(path.substring(imageFilePathLastIndexOfSlash + 1, imageFilePathIndexOfFilenameExtension));
+            ed_input_edittext.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
         }
         try {
             imageExifOrientation = iB.a(path);
@@ -309,7 +266,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         s();
     }
 
-    public final void setImageRotation(int i) {
+    private void setImageRotation(int i) {
         if (imageFilePath != null && !imageFilePath.isEmpty()) {
             imageRotationDegrees = i;
             if (imageRotationDegrees == 360) {
@@ -319,7 +276,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public final void onMultipleImagesPicked(int count) {
+    private void onMultipleImagesPicked(int count) {
         if (layout_img_inform == null || layout_img_modify == null || tv_imgcnt == null) {
             return;
         }
@@ -329,7 +286,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         tv_imgcnt.setText("+ " + (count - 1) + " more");
     }
 
-    public final void flipImageHorizontally() {
+    private void flipImageHorizontally() {
         if (imageFilePath != null && !imageFilePath.isEmpty()) {
             if (imageRotationDegrees != 90 && imageRotationDegrees != 270) {
                 imageScaleX *= -1;
@@ -340,7 +297,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public boolean a(PB pb) {
+    private boolean a(PB pb) {
         if (!pb.b()) {
             return false;
         }
@@ -351,14 +308,14 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         return false;
     }
 
-    public final void setImageFromUri(Uri uri) {
+    private void setImageFromUri(Uri uri) {
         String filePath;
         if (uri != null && (filePath = HB.a(this, uri)) != null) {
             setImageFromFile(filePath);
         }
     }
 
-    class SaveAsyncTask extends MA {
+    private class SaveAsyncTask extends MA {
         public SaveAsyncTask(Context context) {
             super(context);
             AddImageActivity.this.a(this);
@@ -550,7 +507,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public final void handleImagePickClipData(ClipData clipData) {
+    private void handleImagePickClipData(ClipData clipData) {
         if (clipData != null) {
             pickedImageUris = new ArrayList<>();
             for (int i = 0; i < clipData.getItemCount(); i++) {
@@ -563,7 +520,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    public final String a(ProjectResourceBean projectResourceBean) {
+    private String a(ProjectResourceBean projectResourceBean) {
         return dir_path + File.separator + projectResourceBean.resFullName;
     }
 }
