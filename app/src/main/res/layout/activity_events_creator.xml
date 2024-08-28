@@ -49,10 +49,10 @@
                     android:id="@+id/layout_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginBottom="14dp"
                     style="?attr/materialCardViewFilledStyle"
                     app:cardBackgroundColor="?attr/colorSurfaceContainer">
                     
@@ -74,15 +74,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="4dp">
+                            android:orientation="vertical">
                             
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_eventname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="event name"
-                                android:padding="8dp"
+                                android:hint="Event Name"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                         
@@ -91,15 +89,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="4dp">
+                            android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_varname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="widget/component name"
-                                android:padding="8dp"
+                                android:hint="Widget/Component name"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                         
@@ -108,15 +104,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="4dp">
+                            android:orientation="vertical">
                             
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenername"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="listener name"
-                                android:padding="8dp"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                         
@@ -133,16 +127,14 @@
                                 android:layout_margin="3dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="4dp">
+                                android:orientation="vertical">
                                 
                                 <com.google.android.material.textfield.TextInputEditText
                                      android:id="@+id/events_creator_icon"
                                      android:layout_width="match_parent"
                                      android:layout_height="wrap_content"
-                                     android:hint="icon"
+                                     android:hint="Icon"
                                      android:inputType="number"
-                                     android:padding="8dp"
                                      android:textSize="14sp" />
                            </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,15 +158,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
+                        android:orientation="vertical">
                         
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="description"
-                            android:padding="8dp"
+                            android:hint="Description"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,15 +173,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
+                        android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_params"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="parameters"
-                            android:padding="8dp"
+                            android:hint="Parameters"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,15 +188,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
+                        android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_spec"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="spec  (### => variable name)"
-                            android:padding="8dp"
+                            android:hint="Spec  (### => Variable name)"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,15 +203,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
+                        android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="event code (### ==> variable name)"
-                            android:padding="8dp"
+                            android:hint="Event code (### ==> Variable name)"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -272,15 +256,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="4dp">
+                            android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenernameA"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="listener name"
-                                android:padding="8dp"
+                                android:hint="Listener Name"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -289,15 +271,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="4dp">
+                            android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenercode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="listener code (### ==> variable name)"
-                                android:padding="8dp"
+                                android:hint="Listener Code (### ==> variable name)"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -306,15 +286,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"                            
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="4dp">
+                            android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenercustomimport"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="custom import"
-                                android:padding="8dp"
+                                android:hint="Custom Import"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -324,6 +302,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="14dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
