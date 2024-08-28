@@ -5,7 +5,6 @@ import a.a.a.HB;
 import a.a.a.MA;
 import a.a.a.Op;
 import a.a.a.PB;
-import a.a.a.au;
 import a.a.a.bB;
 import a.a.a.iB;
 import a.a.a.mB;
@@ -86,10 +85,6 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     public boolean editing = false;
 
     public ProjectResourceBean editTarget = null;
-
-    public static void a(AddImageCollectionActivity addImageCollectionActivity) {
-        addImageCollectionActivity.k();
-    }
 
     public final void flipImageHorizontally() {
         String imageFilePath = this.imageFilePath;
@@ -271,7 +266,10 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
 
     public final void save() {
         if (a(this.imageNameValidator)) {
-            new Handler().postDelayed(new au(this), 500L);
+            new Handler().postDelayed(() -> {
+                k();
+                new SaveAsyncTask(getApplicationContext()).execute();
+            }, 500L);
         }
     }
 
