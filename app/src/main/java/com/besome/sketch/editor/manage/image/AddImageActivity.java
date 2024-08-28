@@ -335,7 +335,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
 
         @Override
-        public void b() {
+        public void b() throws By {
             try {
                 publishProgress("Now processing..");
                 if (!multipleImagesPicked) {
@@ -413,10 +413,10 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                         }
                         message += "[" + names + "]";
                     }
-                    throw new RuntimeException(new By(message));
+                    throw new By(message);
                 }
                 e.printStackTrace();
-                throw new RuntimeException(new By(e.getMessage()));
+                throw new By(e.getMessage());
             }
         }
 

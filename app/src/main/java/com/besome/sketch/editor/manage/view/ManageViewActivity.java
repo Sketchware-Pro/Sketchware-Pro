@@ -345,17 +345,13 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         @Override
-        public void b() {
+        public void b() throws By {
             try {
                 publishProgress(getTranslatedString(R.string.common_message_progress));
                 m();
             } catch (Exception e) {
                 e.printStackTrace();
-                try {
-                    throw new By(getTranslatedString(R.string.common_error_unknown));
-                } catch (By ex) {
-                    ex.printStackTrace();
-                }
+                throw new By(getTranslatedString(R.string.common_error_unknown));
             }
         }
 
