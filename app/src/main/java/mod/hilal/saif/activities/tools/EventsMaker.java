@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import a.a.a.aB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -118,36 +119,33 @@ public class EventsMaker extends Activity {
     }
 
     private void showAddDial() {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        AddNewListenerBinding listenerBinding = AddNewListenerBinding.inflate(getLayoutInflater());
-        create.setView(listenerBinding.getRoot());
-        create.setCanceledOnTouchOutside(true);
-        create.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        create.getWindow().setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        create.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        listenerBinding.save.setOnClickListener(v -> {
-            if (!listenerBinding.name.getText().toString().equals("")) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", listenerBinding.name.getText().toString());
-                if (listenerBinding.separate.isChecked()) {
-                    hashMap.put("code", "//" + listenerBinding.name.getText().toString() + "\n" + listenerBinding.code.getText().toString());
-                    hashMap.put("s", "true");
-                } else {
-                    hashMap.put("code", listenerBinding.code.getText().toString());
-                    hashMap.put("s", "false");
-                }
-                hashMap.put("imports", listenerBinding.customimport.getText().toString());
-                listMap.add(hashMap);
-                addItem();
-                create.dismiss();
-                return;
-            }
+        var listenerBinding = AddNewListenerBinding.inflate(getLayoutInflater());
+        var dialog = new aB(this);
+        dialog.b("New Listener");
+        dialog.a("Type info of new listener");
+        dialog.a(listenerBinding.getRoot());
+        dialog.a("Save", v -> {
+             if (!listenerBinding.name.getText().toString().equals("")) {
+                  HashMap<String, Object> hashMap = new HashMap<>();
+                  hashMap.put("name", listenerBinding.name.getText().toString());
+                  if (listenerBinding.separate.isChecked()) {
+                       hashMap.put("code", "//" + listenerBinding.name.getText().toString() + "\n" + listenerBinding.code.getText().toString());
+                       hashMap.put("s", "true");
+                  } else {
+                       hashMap.put("code", listenerBinding.code.getText().toString());
+                       hashMap.put("s", "false");
+                  }
+                  hashMap.put("imports", listenerBinding.customimport.getText().toString());
+                  listMap.add(hashMap);
+                  addItem();
+                  create.dismiss();
+                  return;
+             }
             SketchwareUtil.toastError("Invalid name!");
         });
-        listenerBinding.cancel.setOnClickListener(Helper.getDialogDismissListener(create));
-        create.show();
+        
+        dialog.a("Cancel", v -> dialog.dismiss());
+        dialog.show();
     }
 
     private void a(View view, int i, int i2, boolean z) {

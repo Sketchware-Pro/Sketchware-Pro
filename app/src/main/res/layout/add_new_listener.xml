@@ -5,37 +5,17 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6.0dip"
-        android:background="#ffffffff"
-        android:orientation="vertical"
-        app:cardCornerRadius="5.0dip"
-        app:cardElevation="4.0dip">
-
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8.0dip">
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8.0dip">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:focusable="false"
-                    android:padding="8.0dip"
-                    android:text="New Listener"
-                    android:textColor="#ff2196f3"
-                    android:textSize="18.0sp"
-                    android:textStyle="bold" />
+                android:padding="8dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="fill_parent"
@@ -43,17 +23,15 @@
                     android:layout_margin="3.0dip"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="4.0dip">
+                    android:padding="4dp">
 
                     <EditText
                         android:id="@+id/name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="name"
-                        android:padding="8.0dip"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
-                        android:textSize="16.0sp" />
+                        android:hint="Name"
+                        android:padding="8dp"
+                        android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -62,17 +40,15 @@
                     android:layout_margin="3.0dip"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="4.0dip">
+                    android:padding="4dp">
 
                     <EditText
                         android:id="@+id/customimport"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="custom import"
-                        android:padding="8.0dip"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
-                        android:textSize="16.0sp" />
+                        android:hint="Custom import"
+                        android:padding="8dp"
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -89,8 +65,6 @@
                         android:layout_height="wrap_content"
                         android:hint="Code (### => variable name)"
                         android:padding="8.0dip"
-                        android:textColor="#ff000000"
-                        android:textColorHint="#ff607d8b"
                         android:textSize="16.0sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,55 +75,7 @@
                     android:gravity="center"
                     android:padding="8.0dip"
                     android:text="Independent class/method"
-                    android:textColor="#ff616161"
                     android:textSize="16.0sp" />
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1.0"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4.0dip">
-
-                        <TextView
-                            android:id="@+id/cancel"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:gravity="center"
-                            android:padding="8.0dip"
-                            android:text="Cancel"
-                            android:textColor="#ff616161"
-                            android:textSize="14.0sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1.0"
-                        android:orientation="vertical"
-                        android:padding="4.0dip">
-
-                        <TextView
-                            android:id="@+id/save"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:gravity="center"
-                            android:padding="8.0dip"
-                            android:text="Save"
-                            android:textColor="#ff2196f3"
-                            android:textSize="14.0sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
