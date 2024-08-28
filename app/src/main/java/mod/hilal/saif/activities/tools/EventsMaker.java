@@ -124,7 +124,7 @@ public class EventsMaker extends Activity {
         dialog.b("New Listener");
         dialog.a("Type info of new listener");
         dialog.a(listenerBinding.getRoot());
-        dialog.a("Save", v -> {
+        dialog.b("Save", v -> {
              if (!listenerBinding.listenerName.getText().toString().equals("")) {
                   HashMap<String, Object> hashMap = new HashMap<>();
                   hashMap.put("name", listenerBinding.listenerName.getText().toString());
@@ -200,7 +200,7 @@ public class EventsMaker extends Activity {
             }
             listenerBinding.listenerCode.setText(str);
         }
-        dialog.a("Save", v -> {
+        dialog.b("Save", v -> {
             if (!listenerBinding.listenerName.getText().toString().equals("")) {
                 HashMap<String, Object> hashMap = listMap.get(position);
                 overrideEvents((String) hashMap.get("name"), listenerBinding.listenerName.getText().toString());
@@ -215,12 +215,12 @@ public class EventsMaker extends Activity {
                 hashMap.put("imports", listenerBinding.listenerCustomImport.getText().toString());
                 FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
                 refreshList();
-                create.dismiss();
+                dialog.dismiss();
                 return;
             }
             SketchwareUtil.toastError("Invalid name!");
         });
-        dialog.a("Cancel", -> dialog.dismiss());
+        dialog.a("Cancel", v -> dialog.dismiss());
         dialog.show();
     }
 
