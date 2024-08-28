@@ -51,7 +51,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          MESSAGE: "A new build has been triggered by ${{ env.COMMIT_AUTHOR }}.\nCommit message: ${{ env.COMMIT_MESSAGE }}\n\nI will send you the APKs here if the build is successful."
+          MESSAGE: "A new build has been triggered by **${{ env.COMMIT_AUTHOR }}**.\n**Commit message:** ${{ env.COMMIT_MESSAGE }}\n\nI will send you the APKs here if the build is successful."
         run: |
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
           -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\"}" \
@@ -121,7 +121,7 @@ jobs:
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
           FILE_PATH: ./downloaded-artifact/minApi26/app-minApi26-debug.apk
-          DESCRIPTION: "*Commit by:* ${{ env.COMMIT_AUTHOR }}\n*Commit message:* ${{ env.COMMIT_MESSAGE }}\n*Version:* Android > 8"
+          DESCRIPTION: "**Commit by:** ${{ env.COMMIT_AUTHOR }}\n**Commit message:** ${{ env.COMMIT_MESSAGE }}\n**Version:** Android > 8"
         run: |
           . venv/bin/activate
           python ./.github/workflows/deploy_artifacts.py
