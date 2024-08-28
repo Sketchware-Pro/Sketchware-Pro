@@ -25,7 +25,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.QB;
 import a.a.a.bB;
@@ -47,9 +46,8 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     private ArrayList<String> getReservedSelectedCollectionNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
-        while (it.hasNext()) {
-            names.add(it.next().resName);
+        for (ProjectResourceBean selectedCollection : this.selectedCollections) {
+            names.add(selectedCollection.resName);
         }
         return names;
     }
@@ -57,36 +55,32 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     private ArrayList<String> getReservedProjectImageNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.projectImages.iterator();
-        while (it.hasNext()) {
-            names.add(it.next().resName);
+        for (ProjectResourceBean projectImage : this.projectImages) {
+            names.add(projectImage.resName);
         }
         return names;
     }
 
     private boolean n() {
-        ArrayList arrayList = new ArrayList();
-        Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean next = it.next();
-            if (next.isDuplicateCollection) {
-                arrayList.add(next.resName);
+        ArrayList<String> duplicateNames = new ArrayList<>();
+        for (ProjectResourceBean selectedCollection : this.selectedCollections) {
+            if (selectedCollection.isDuplicateCollection) {
+                duplicateNames.add(selectedCollection.resName);
             }
         }
-        if (arrayList.size() <= 0) {
+        if (duplicateNames.isEmpty()) {
             return false;
         }
-        String a = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
-        Iterator it2 = arrayList.iterator();
-        String str = "";
-        while (it2.hasNext()) {
-            String str2 = (String) it2.next();
-            if (str.length() > 0) {
-                str = str + ", ";
+
+        String names = "";
+        for (String name : duplicateNames) {
+            if (!names.isEmpty()) {
+                names = names + ", ";
             }
-            str = str + str2;
+            names = names + name;
         }
-        bB.a(getApplicationContext(), a + "\n[" + str + "]", bB.TOAST_WARNING).show();
+        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
+                R.string.common_message_name_unavailable) + "\n[" + names + "]", bB.TOAST_WARNING).show();
         return true;
     }
 
@@ -136,12 +130,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         int i = 0;
         while (i < this.selectedCollections.size()) {
             ProjectResourceBean projectResourceBean2 = this.selectedCollections.get(i);
-            StringBuilder sb = new StringBuilder();
-            sb.append(name);
-            sb.append("_");
-            i++;
-            sb.append(i);
-            projectResourceBean2.resName = sb.toString();
+            projectResourceBean2.resName = name + "_" + ++i;
             projectResourceBean2.isDuplicateCollection = false;
         }
         this.nameValidator.a(getReservedSelectedCollectionNames());
@@ -155,17 +144,17 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             finish();
         }
         setContentView(R.layout.manage_image_import);
-        ImageView img_backbtn = (ImageView) findViewById(R.id.img_backbtn);
+        ImageView img_backbtn = findViewById(R.id.img_backbtn);
         img_backbtn.setOnClickListener(this);
-        this.tv_currentnum = (TextView) findViewById(R.id.tv_currentnum);
-        TextView tv_totalnum = (TextView) findViewById(R.id.tv_totalnum);
-        TextView tv_sendbtn = (TextView) findViewById(R.id.tv_sendbtn);
+        this.tv_currentnum = findViewById(R.id.tv_currentnum);
+        TextView tv_totalnum = findViewById(R.id.tv_totalnum);
+        TextView tv_sendbtn = findViewById(R.id.tv_sendbtn);
         tv_sendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
         tv_sendbtn.setOnClickListener(this);
-        TextView tv_samename = (TextView) findViewById(R.id.tv_samename);
+        TextView tv_samename = findViewById(R.id.tv_samename);
         tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_title_apply_same_naming));
         this.adapter = new ItemAdapter();
-        RecyclerView recycler_list = (RecyclerView) findViewById(R.id.recycler_list);
+        RecyclerView recycler_list = findViewById(R.id.recycler_list);
         recycler_list.setHasFixedSize(true);
         recycler_list.setAdapter(this.adapter);
         recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
@@ -174,13 +163,13 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         int selectedCollectionsSize = this.selectedCollections.size();
         this.tv_currentnum.setText(String.valueOf(1));
         tv_totalnum.setText(String.valueOf(selectedCollectionsSize));
-        EasyDeleteEditText ed_input = (EasyDeleteEditText) findViewById(R.id.ed_input);
+        EasyDeleteEditText ed_input = findViewById(R.id.ed_input);
         this.ed_input_edittext = ed_input.getEditText();
         this.ed_input_edittext.setText(this.selectedCollections.get(0).resName);
         this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
         ed_input.setHint(xB.b().a(this, R.string.design_manager_image_hint_enter_image_name));
         this.nameValidator = new QB(getApplicationContext(), ed_input.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
-        this.chk_samename = (CheckBox) findViewById(R.id.chk_samename);
+        this.chk_samename = findViewById(R.id.chk_samename);
         this.chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
@@ -190,10 +179,10 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 nameValidator.a(1);
             }
         });
-        Button btn_decide = (Button) findViewById(R.id.btn_decide);
+        Button btn_decide = findViewById(R.id.btn_decide);
         btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         btn_decide.setOnClickListener(this);
-        this.img = (ImageView) findViewById(R.id.img);
+        this.img = findViewById(R.id.img);
     }
 
     @Override
@@ -210,42 +199,33 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(ManageImageImportActivity.class.getSimpleName().toString());
+        this.d.setScreenName(ManageImageImportActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void initializeLogic() {
-        ArrayList duplicateCollections = new ArrayList();
-        ArrayList notDuplicateCollections = new ArrayList();
-        Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean next = it.next();
-            if (isNameInUseByProjectImage(next.resName)) {
-                next.isDuplicateCollection = true;
-                duplicateCollections.add(next);
+        ArrayList<ProjectResourceBean> duplicateCollections = new ArrayList<>();
+        ArrayList<ProjectResourceBean> notDuplicateCollections = new ArrayList<>();
+        for (ProjectResourceBean selectedCollection : this.selectedCollections) {
+            if (isNameInUseByProjectImage(selectedCollection.resName)) {
+                selectedCollection.isDuplicateCollection = true;
+                duplicateCollections.add(selectedCollection);
             } else {
-                next.isDuplicateCollection = false;
-                notDuplicateCollections.add(next);
+                selectedCollection.isDuplicateCollection = false;
+                notDuplicateCollections.add(selectedCollection);
             }
         }
-        if (duplicateCollections.size() > 0) {
+        if (!duplicateCollections.isEmpty()) {
             bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), bB.TOAST_WARNING).show();
         } else {
             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), bB.TOAST_NORMAL).show();
         }
         this.selectedCollections = new ArrayList<>();
-        Iterator it2 = duplicateCollections.iterator();
-        while (it2.hasNext()) {
-            this.selectedCollections.add((ProjectResourceBean) it2.next());
-        }
-        Iterator it3 = notDuplicateCollections.iterator();
-        while (it3.hasNext()) {
-            this.selectedCollections.add((ProjectResourceBean) it3.next());
-        }
+        this.selectedCollections.addAll(duplicateCollections);
+        this.selectedCollections.addAll(notDuplicateCollections);
     }
 
     private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout layout_item;
             public final ImageView img_conflict;
@@ -254,10 +234,10 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.layout_item = (LinearLayout) itemView.findViewById(R.id.layout_item);
-                this.img_conflict = (ImageView) itemView.findViewById(R.id.img_conflict);
-                this.img = (ImageView) itemView.findViewById(R.id.img);
-                this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+                this.layout_item = itemView.findViewById(R.id.layout_item);
+                this.img_conflict = itemView.findViewById(R.id.img_conflict);
+                this.img = itemView.findViewById(R.id.img);
+                this.tv_name = itemView.findViewById(R.id.tv_name);
                 this.img.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
@@ -282,8 +262,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            ProjectResourceBean projectResourceBean = (ProjectResourceBean) ManageImageImportActivity.this.selectedCollections.get(position);
-            String str = projectResourceBean.resFullName;
+            ProjectResourceBean projectResourceBean = ManageImageImportActivity.this.selectedCollections.get(position);
             if (projectResourceBean.isDuplicateCollection) {
                 viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
             } else {
@@ -294,8 +273,13 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             } else {
                 viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
             }
-            Glide.with(ManageImageImportActivity.this.getApplicationContext()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(viewHolder.img));
-            viewHolder.tv_name.setText(((ProjectResourceBean) ManageImageImportActivity.this.selectedCollections.get(position)).resName);
+            Glide.with(ManageImageImportActivity.this.getApplicationContext())
+                    .load(projectResourceBean.resFullName)
+                    .asBitmap()
+                    .centerCrop()
+                    .error(R.drawable.ic_remove_grey600_24dp)
+                    .into(new BitmapImageViewTarget(viewHolder.img));
+            viewHolder.tv_name.setText(ManageImageImportActivity.this.selectedCollections.get(position).resName);
         }
 
         @Override
@@ -310,13 +294,17 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     private void showPreview(int index) {
-        Glide.with(getApplicationContext()).load(this.selectedCollections.get(index).resFullName).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(img));
+        Glide.with(getApplicationContext())
+                .load(this.selectedCollections.get(index).resFullName)
+                .asBitmap()
+                .centerCrop()
+                .error(R.drawable.ic_remove_grey600_24dp)
+                .into(new BitmapImageViewTarget(img));
     }
 
     private boolean isNameInUseByProjectImage(String name) {
-        Iterator<ProjectResourceBean> it = this.projectImages.iterator();
-        while (it.hasNext()) {
-            if (it.next().resName.equals(name)) {
+        for (ProjectResourceBean projectImage : this.projectImages) {
+            if (projectImage.resName.equals(name)) {
                 return true;
             }
         }
