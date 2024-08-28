@@ -51,10 +51,10 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          MESSAGE: "A new build has been triggered by **${{ env.COMMIT_AUTHOR }}**.\n**Commit message:** ${{ env.COMMIT_MESSAGE }}\n\nI will send you the APKs here if the build is successful."
+          MESSAGE: "A new build has been triggered by *${{ env.COMMIT_AUTHOR }}*.\n*Commit message:* ${{ env.COMMIT_MESSAGE }}\n\nI will send you the APKs here if the build is successful."
         run: |
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
-          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\"}" \
+          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\", \"parse_mode\": \"markdown\"}" \
           -H "Content-Type: application/json"
         continue-on-error: true
 
