@@ -1,53 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff008dcd"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="4dp"
-        android:paddingBottom="8dp">
+        android:fitsSystemWindows="true">
 
-        <ImageView
-            android:id="@+id/ig_toolbar_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/arrow_back_white_48dp" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <TextView
-            android:id="@+id/tx_toolbar_title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:gravity="center|start"
-            android:paddingStart="10dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="6dp"
-            android:text="Title"
-            android:textColor="@color/tool_bar_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/abc_ic_ab_back_material"
+                app:title="@string/program_information_title_open_source_license" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-
-    <ScrollView
-        android:id="@+id/events_creator_scrollview"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -63,7 +56,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffffffff"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -72,7 +64,6 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp"
                         android:text="Event properties"
-                        android:textColor="#ff616161"
                         android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -84,14 +75,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_eventname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="event name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,14 +93,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_varname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="widget/component name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,14 +111,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_listenername"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="listener name"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,15 +137,13 @@
                             android:orientation="vertical"
                             android:padding="4dp">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_icon"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="icon"
                                 android:inputType="number"
                                 android:padding="8dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -188,14 +171,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="description"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,14 +189,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_params"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="parameters"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -228,14 +207,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_spec"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="spec  (### => variable name)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -248,14 +225,12 @@
                         android:orientation="vertical"
                         android:padding="4dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="event code (### ==> variable name)"
                             android:padding="8dp"
-                            android:textColor="#ff000000"
-                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -309,7 +284,7 @@
                             android:orientation="vertical"
                             android:padding="4dp">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenernameA"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -329,7 +304,7 @@
                             android:orientation="vertical"
                             android:padding="4dp">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenercode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -349,14 +324,12 @@
                             android:orientation="vertical"
                             android:padding="4dp">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenercustomimport"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="custom import"
                                 android:padding="8dp"
-                                android:textColor="#ff000000"
-                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -398,6 +371,7 @@
                     android:textColor="#ffffffff"
                     android:textSize="14sp" />
             </LinearLayout>
+          </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

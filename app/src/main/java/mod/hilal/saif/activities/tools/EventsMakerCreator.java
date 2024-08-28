@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.EventsCreatorBinding;
+import com.sketchware.remod.databinding.ActivityEventsCreatorBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,12 +30,12 @@ public class EventsMakerCreator extends Activity {
     private boolean isEdit = false;
     private String lisName;
 
-    private EventsCreatorBinding binding;
+    private ActivityEventsCreatorBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = EventsCreatorBinding.inflate(getLayoutInflater());
+        binding = ActivityEventsCreatorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         if (getIntent().hasExtra("lis_name")) {
             lisName = getIntent().getStringExtra("lis_name");
@@ -163,13 +163,12 @@ public class EventsMakerCreator extends Activity {
 
     private void setToolbar() {
         if (isEdit) {
-            binding.txToolbarTitle.setText(event_name);
+            binding.toolbar.setTitle(event_name);
         } else if (isActivityEvent) {
-            binding.txToolbarTitle.setText("Create a new Activity event");
+            binding.toolbar.setTitle("Create a new Activity event");
         } else {
-            binding.txToolbarTitle.setText(lisName + "Create a new event");
+            binding.toolbar.setTitle(lisName + "Create a new event");
         }
-        binding.igToolbarBack.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(binding.igToolbarBack);
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
     }
 }
