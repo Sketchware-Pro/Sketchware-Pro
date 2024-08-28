@@ -7,13 +7,15 @@ api_hash = os.getenv("API_HASH")
 bot_token = os.getenv("BOT_TOKEN")
 group_id = int(os.getenv("CHAT_ID"))
 
-# File to send
-file_path = os.getenv("FILE_PATH")
+# File paths to send
+apk_min_api21 = os.getenv("APK_MIN_API21")
+apk_min_api26 = os.getenv("APK_MIN_API26")
 
 # Create the client with bot token directly
 os.remove('bot_session.session') if os.path.exists('bot_session.session') else None
 client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
 client.parse_mode = 'markdown'
+
 
 def human_readable_size(size, decimal_places=2):
     for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
@@ -22,41 +24,41 @@ def human_readable_size(size, decimal_places=2):
         size /= 1024.0
     return f"{size:.{decimal_places}f} {unit}"
 
-# Total file size for progress tracking
-total_size = os.path.getsize(file_path)
-total_size_readable = human_readable_size(total_size)
 
 async def progress(current, total):
-    progress_percentage = (current / total_size) * 100
+    progress_percentage = (current / total) * 100
     uploaded_size_readable = human_readable_size(current)
-    print(f"Uploaded {uploaded_size_readable} of {total_size_readable} - {progress_percentage:.2f}%")
+    total_size_readable = human_readable_size(total)
+    print(f"{progress_percentage:.2f}% uploaded - {uploaded_size_readable}/{total_size_readable}", end='\r')
 
-async def send_file():
+
+async def send_file(file_path, version):
     if not os.path.exists(file_path):
-        print("File not found")
+        print("File not found", file_path)
         return
-    
-    print(f"Sending file: {file_path} to Telegram channel: {group_id}")
+
+    print(f"Sending file: {file_path} to the Telegram group")
+
+    message = os.getenv("DESCRIPTION") + f"**Version:** Android {'< 8' if version else '> 8'}"
 
     try:
-        # Send the file to the channel with progress callback
         await client.send_file(
-            entity=group_id, 
+            entity=group_id,
             file=file_path,
             parse_mode='markdown',
-            caption=os.getenv("DESCRIPTION"),
+            caption=message,
             progress_callback=progress,
             reply_to=int(os.getenv("TOPIC_ID"))
         )
         print("\nFile sent successfully")
-    finally:
-        # Disconnect the client after sending the file
-        await client.disconnect()
+    except Exception as e:
+        print(f"Failed to send file: {e}")
+
 
 try:
     with client:
-        client.loop.run_until_complete(send_file())
+        client.loop.run_until_complete(send_file(apk_min_api21, 21))
+        client.loop.run_until_complete(send_file(apk_min_api26, 26))
 finally:
-    # Disconnect the client if it's still connected
     if client.is_connected():
         client.loop.run_until_complete(client.disconnect())
